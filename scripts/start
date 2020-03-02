@@ -1,0 +1,3 @@
+#!/bin/bash
+#		start script
+docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e "HOSTNAME="`hostname` -e "WALLET=3BjDVN35cZdsRzyo4Q9VY3LFy1RteNBxPz" -it williambnorton/noianode:latest ~/darp/scripts/forever.bash
