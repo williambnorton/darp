@@ -1,38 +1,46 @@
 #!/bin/bash
-#       forever.bash
+#      forever.bash - Run inside the docker
 #
-#       HOSTNAME,WALLET is set as a param passed to Docker
 #       /etc/wireguard is a mount of ~/wireguard
 #       when changes are made they are reflected outside Docker
-#       the watch script will run wg-quick when files change in this direvtory
+#       the host watch script will wg-quick when files change in ~/wireguard 
+#
+#	I expect $HOSTNAME [ $PORT ] [ $WALLET ] environmentals to be set
 #
 HOSTNAME=`echo $HOSTNAME|awk -F. '{print $1}'`
-
+if [ "$HOSTNAME" == "" ]; then
+	HOSTNAME="DEV1";
+fi 
+GENESIS=`curl "http://drpeering.com/genesisnodes"`
+echo GENESIS=$GENESIS
 redis-server &          #start up our data server
-
 #
 #       Forever loop running in docker
 #
 echo `date` STARTING Measurement Apparatus
 cd
 
-echo $0 Loop started `date` > forever
+echo $0 Loop started `date` > /tmp/forever
 echo $0 `date` > NOIA.log
-while [ -f forever ]
+while [ -f /tmp/forever ]
 do
+	git clone https://github.com/williambnorton/darp.git
         #clear
         #
         #       Configure Wireguard with new public and private keys
         #
-        echo `date` Configuring *NEW* Wireguard Public and Private eKeys
-        /configWG.bash
+        echo `date` 'Configuring *NEW* Wireguard Public and Private eKeys'
+        darp/scripts/configWG.bash
         PUBLICKEY=`cat /etc/wireguard/publickey`
 
-        rm forever      #UNCOMMENT TO MAKE IT STOP ON CRASH
+        rm /tmp/forever      #UNCOMMENT TO MAKE IT STOP ON CRASH
         echo `date` Starting SR Simulator on $HOSTNAME
-        echo "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}"
-        curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
-
+        #echo "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}"
+        #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
+        #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
+	
+	echo curl "http://$GENESIS/codenconfig/$HOSTNAME/$PUBLICKEY" # | bash
+	exit;
         #
         #       We exitted the code - see if we are to restart
         #
@@ -63,6 +71,7 @@ do
         fi
         echo `date` SLEEPING - should probably gen new keys or docker pull
         sleep 15
+	rm -rf darp
 done
 
 
