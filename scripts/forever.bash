@@ -44,7 +44,7 @@ do
 	
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
         echo `date` Fetching code from $GENESIS 
-	exit;
+	#exit;
         #
         #       We exitted the code - see if we are to restart
         #
