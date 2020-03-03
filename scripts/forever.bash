@@ -28,6 +28,7 @@ echo $0 Loop started `date` > /tmp/forever
 echo $0 `date` > NOIA.log
 while [ -f /tmp/forever ]
 do
+        echo `date` Forever loop 0.1
         #clear
         #
         #       Configure Wireguard with new public and private keys
@@ -40,10 +41,10 @@ do
         echo `date` Starting SR Simulator on $HOSTNAME
         #echo "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}"
         #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
-        #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
+        curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
 	
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
-        echo `date` Fetching code from $GENESIS 
+        echo `date` should deliver feed redis commands from $GENESIS 
 	#exit;
         #
         #       We exitted the code - see if we are to restart
