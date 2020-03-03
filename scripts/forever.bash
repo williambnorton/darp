@@ -33,7 +33,7 @@ do
         #       Configure Wireguard with new public and private keys
         #
         echo `date` 'Configuring *NEW* Wireguard Public and Private eKeys'
-        darp/scripts/configWG.bash
+        /darp/scripts/configWG.bash
         PUBLICKEY=`cat /etc/wireguard/publickey`
 
         rm /tmp/forever      #UNCOMMENT TO MAKE IT STOP ON CRASH
