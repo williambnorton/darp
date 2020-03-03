@@ -80,16 +80,8 @@ function setME() {
                         });
                         res.on('end', function () {
                             var json = JSON.parse(data);
-                            console.log("json="+JSON.stringify(json,null,2));
-                            for (var SR in json) {
-                                var entry = json[SR];
-                                //console.log("getGenesisIP(): returning "+entry.ipaddr);
-                                //return entry.ipaddr; //+":"+entry.port;
-                                console.log("SR=" + SR + " entry=" + JSON.stringify(entry, null, 2));
-                                // will output a Javascript object
-                                //var NoiaSWHash=json
-                                //console.log("NoiaSWHash="+NoiaSWHash+" mySR.NoiaSWHash="+mySR.NoiaSWHash);
-                            }
+                            console.log("genesis told us ipaddr="+JSON.stringify(json,null,2));
+                            
                             return null; //no answer - we have no genesis node IP
                         });
                     });
