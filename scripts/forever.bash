@@ -43,6 +43,7 @@ do
         #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
 	
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
+        echo `date` Fetching code from $GENESIS 
 	exit;
         #
         #       We exitted the code - see if we are to restart
