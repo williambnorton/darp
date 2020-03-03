@@ -41,11 +41,26 @@ do
         echo `date` Starting SR Simulator on $HOSTNAME
         #echo "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}"
         #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
-        curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
+#        curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
 	
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
         echo `date` should deliver feed redis commands from $GENESIS 
-	#exit;
+
+        node /darp/express/express &
+        echo $$ > express.pid
+
+        node /darp/handlepulse/handlepulse &
+        echo $$ > handlepulse.pid
+        
+        node /darp/pulser/pulser &
+        echo $$ > pulser.pid
+	
+        while :
+        dd
+                echo `date` waiting 
+                sleep 600
+        done
+        #exit;
         #
         #       We exitted the code - see if we are to restart
         #
@@ -77,6 +92,7 @@ do
                 rm forever #loop wil not run unless this file exists
                 exit 1
         fi
+        kill `cat express.pid` `cat pulser.pid` `cat handlepulse.pid`
         echo `date` SLEEPING - should probably gen new keys or docker pull
         sleep 15
 	rm -rf darp
