@@ -11,8 +11,12 @@ HOSTNAME=`echo $HOSTNAME|awk -F. '{print $1}'`
 if [ "$HOSTNAME" == "" ]; then
 	HOSTNAME="DEV1";
 fi 
-GENESIS=`curl "http://drpeering.com/genesisnodes"`
+if [ "$PORT" == "" ]; then   #make sure this UDP/TCP port is open in firewall
+	PORT="65013";   
+fi 
+GENESIS=`curl "http://drpeering.com/genesisnodes"|awk -F: '{ print $1 }'`
 echo GENESIS=$GENESIS
+
 redis-server &          #start up our data server
 #
 #       Forever loop running in docker
@@ -24,7 +28,6 @@ echo $0 Loop started `date` > /tmp/forever
 echo $0 `date` > NOIA.log
 while [ -f /tmp/forever ]
 do
-	git clone https://github.com/williambnorton/darp.git
         #clear
         #
         #       Configure Wireguard with new public and private keys
@@ -39,7 +42,7 @@ do
         #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
         #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
 	
-	echo curl "http://$GENESIS/codenconfig/$HOSTNAME/$PUBLICKEY" # | bash
+	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
 	exit;
         #
         #       We exitted the code - see if we are to restart
@@ -56,6 +59,9 @@ do
         if [ $rc -eq 36 ]; then
                 echo `date` "SOFTWARE RELOAD MESSAGE RECEIVED"
                 echo `date` > forever
+                mv /darp /tmp
+                rm -rf /tmp/darp
+               	git clone https://github.com/williambnorton/darp.git
         fi
         if [ $rc -eq 32 ]; then
                 echo `date` "REBOOT MESSAGE RECEIVED"

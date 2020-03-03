@@ -93,14 +93,10 @@ function setME() {
                             return null; //no answer - we have no genesis node IP
                         });
                     });
-                    req.on('error', function (e) {
-                        console.log(e.message);
-                    });
-
                 });
-
-
-
+                req.on('error', function (e) {
+                        console.log(e.message);
+                });
                 return;
             }
         });
