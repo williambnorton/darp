@@ -51,30 +51,31 @@ do
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
         echo `date` should deliver feed redis commands from $GENESIS 
 
+        cd /drp/config/
+        node config &   #connect to a genesis node for setting config in redis
+
         cd /darp/express/
         node express &
         echo $$ > express.pid
-
-        cd /darp/handlepulse/
-        node handlepulse &
-        echo $$ > handlepulse.pid
         
         cd /darp/pulser/
         node pulser &
         echo $$ > pulser.pid
 	
-        while [ ] 
-        do
-                echo `date` waiting 
-                sleep 600
-        done
+       cd /darp/handlepulse/
+        node handlepulse 
+        rc=$?
+        #echo $$ > handlepulse.pid
+                echo ""
+                sleep 60
+                kill `cat /darp/pulser/pulser.pid` `cat /darp/express/express.pid`
         #exit;
         #
         #       We exitted the code - see if we are to restart
         #
         YYMMDD=`date +%y%m%d`
-        node <noia.$YYMMDD.js
-        rc=$?
+        #node <noia.$YYMMDD.js
+        #rc=$?
         echo node rc=$rc
         if [ $rc -eq 120 ]; then
                 echo `date` "PAUSE MESSAGE RECEIVED"
