@@ -32,6 +32,7 @@ function setME() {
                 var PORT=process.env.PORT||"65013";
                 var PUBLICKEY=process.env.PUBLICKEY||"";
                 var GENESIS=entry.ipaddr+":"+entry.port+":"+entry.publickey+":"+entry.geo+":"+entry.geo+'.1'+":";
+
                 redisClient.hmset("me", {
                     "geo" : HOST,
                     "port" : PORT,
@@ -53,6 +54,7 @@ function setME() {
                     "pktDrops": "0",
                     "remoteState": "0"
                 }); 
+
                 redisClient.hmset("genesis", {
                     "geo" : entry.geo,
                     "port" : entry.port,
@@ -75,8 +77,8 @@ function setME() {
                 }); 
 
                 
-                // get the config from the genesis node
-                var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config/", function (res) {
+                // get my config from the genesis node
+                var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config?geo="+HOST+"&port="+PORT+"&publickey="+PUBLICKEY+"&genesis="+GENESIS, function (res) {
                         var data = '', json_data;
                         res.on('data', function (stream) {
                             data += stream;
@@ -100,11 +102,12 @@ function setME() {
     });
 }
 
-var GEO=process.env.HOSTNAME; // || require('os').hostname();
-var PUBLICKEY=process.env.PUBLICKEY || "";
+var GEO=process.env.HOSTNAME||"DEVOPS";
+var PUBLICKEY=process.env.PUBLICKEY || "fakePublicKeyToGetIne9Y84mparSK5APjcDuXow2ArEvBIuufpj4=";
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
 //GEO=GEO.toString().split('.').split(',');
+
 
 console.log("config GEO="+GEO+" publickey="+PUBLICKEY+" WALLET="+WALLET+"");
 

@@ -13,7 +13,9 @@ var app = express();
 app.get('/', function (req, res) {
    res.send('Hello World');
 })
-
+//
+// Configuration for node - allocate a mint
+//
 app.get('/config', function (req, res) {
    console.log('config goes here');
 
