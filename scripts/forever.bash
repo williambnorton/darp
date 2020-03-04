@@ -31,7 +31,7 @@ do
         echo `date` Forever loop 0.1
         mv /darp /tmp
         rm -rf /tmp/darp
-        git clone https://github.com/williambnorton/darp.git      
+        git clone https://github.com/williambnorton/darp.git    /darp   
         #clear
         #
         #       Configure Wireguard with new public and private keys
@@ -46,18 +46,15 @@ do
         #curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
 #        curl "http://drpeering.com/noia.php?geo=${HOSTNAME}&publickey=${PUBLICKEY}" > noia.`date +%y%m%d`.js
 
+        cd /darp/express/
+        node express &
+        echo $$ > express.pid
+        sleep 2   #allow express to start up
         node /darp/config/config
 
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
         echo `date` should deliver feed redis commands from $GENESIS 
-
-        cd /drp/config/
-        node config &   #connect to a genesis node for setting config in redis
-
-        cd /darp/express/
-        node express &
-        echo $$ > express.pid
-        
+       
         cd /darp/pulser/
         node pulser &
         echo $$ > pulser.pid
