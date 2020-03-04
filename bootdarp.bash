@@ -1,5 +1,5 @@
 #!/bin/bash
-#		bootda
+#		boot
 echo `date` Starting $0 script
 cd /
 mv /darp /tmp
@@ -10,4 +10,4 @@ ln -s /root/darp /darp
 echo `date` Launching updated darp forever script
 ls -l /darp
 cd /darp/scripts
-./forever.bash
+./forever.bash  #Start the system

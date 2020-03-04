@@ -1,8 +1,5 @@
 "use strict";
 exports.__esModule = true;
-//
-// express.ts - code to handle config route
-//
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -11,7 +8,7 @@ app.get('/', function (req, res) {
     res.send('Hello World');
 });
 app.get('/config', function (req, res) {
-    res.send('config goes here');
+    console.log('config goes here');
     console.log("geo=" + req.query.geo + " publickey=" + req.query.publickey + " query=" + JSON.stringify(req.query, null, 2) + " port=" + req.query.port + " wallet=" + req.query.wallet);
     var geo = req.query.geo;
     var publickey = req.query.publickey;
@@ -19,6 +16,7 @@ app.get('/config', function (req, res) {
     var wallet = req.query.wallet || "";
     // store incoming public key, ipaddr, port, geo, etc.
     var incomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP);
     if ((typeof geo == "undefined") ||
         (typeof publickey == "undefined"))
         res.end("express.js : missing geo and/or publickey ");
@@ -30,13 +28,31 @@ app.get('/config', function (req, res) {
                 console.log("err=" + err);
             }
             else {
-                var record = {
+                var me = {
+                    "geo": geo,
+                    "port": port,
                     "ipaddr": incomingIP,
-                    "mint": newMint
+                    "publickey": publickey,
+                    "mint": newMint,
+                    "bootTime": "0",
+                    "group": me.group,
+                    "pulseGroups": me.group,
+                    "genesis": me.genesis,
+                    //statistics
+                    "lastSeq": "0",
+                    "pulseTimestamp": "0",
+                    "inOctets": "0",
+                    "outOctets": "0",
+                    "inMsgs": "0",
+                    "outMsgs": "0",
+                    "owl": "0",
+                    "pktDrops": "0",
+                    "remoteState": "0"
                 };
-                console.log("returning record=" + JSON.stringify(record, null, 2));
+                expressRedisClient.hmset("me", me);
+                console.log("returning record=" + JSON.stringify(me, null, 2));
                 res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify(record, null, 2));
+                res.end(JSON.stringify(me, null, 2));
             }
         });
     }

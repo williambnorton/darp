@@ -1,8 +1,8 @@
-import { getMaxListeners } from "cluster";
-
 //
-// express.ts - code to handle config route
+// express.ts - set up the "me" and connect to the network by getting config from the genesis node
 //
+//import { me } from '../config/config';
+import { dump, now, me } from '../lib/lib';
 
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/config', function (req, res) {
-   res.send('config goes here');
+   console.log('config goes here');
 
    console.log("geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
    var geo=req.query.geo;
@@ -24,6 +24,7 @@ app.get('/config', function (req, res) {
    var wallet=req.query.wallet||"";
    // store incoming public key, ipaddr, port, geo, etc.
    var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+   console.log("geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
 
    if ( (typeof geo == "undefined") ||
         (typeof publickey == "undefined") )
@@ -35,13 +36,32 @@ app.get('/config', function (req, res) {
          if (err) {
             console.log("err="+err);
            } else {
-            var record={
-               "ipaddr" : incomingIP,
-               "mint" : newMint
-            };
-            console.log("returning record="+JSON.stringify(record,null,2));
+            var me={
+               "geo" : geo,
+               "port" : port,
+               "ipaddr" : incomingIP,   //set by genesis node on connection
+               "publickey" : publickey,
+               "mint": newMint,      //set by genesis node
+               "bootTime": "0",
+               "group": me.group,
+               "pulseGroups" : me.group,  //list of groups I will pulse
+               "genesis" : me.genesis,
+               //statistics
+               "lastSeq": "0",
+               "pulseTimestamp": "0",
+               "inOctets": "0",
+               "outOctets": "0",
+               "inMsgs": "0",
+               "outMsgs": "0",
+               "owl": "0",
+               "pktDrops": "0",
+               "remoteState": "0"
+           }
+            expressRedisClient.hmset("me",me ); 
+
+            console.log("returning record="+JSON.stringify(me,null,2));
             res.setHeader('Content-Type', 'application/json');   
-            res.end(JSON.stringify(record,null,2));
+            res.end(JSON.stringify(me,null,2));
          }
       });
 
