@@ -60,7 +60,8 @@ do
         node /darp/pulser/pulser &
         echo $$ > pulser.pid
 	
-        while :
+        while [ ] 
+        
         do
                 echo `date` waiting 
                 sleep 600
