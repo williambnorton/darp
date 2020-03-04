@@ -29,15 +29,19 @@ echo $0 `date` > NOIA.log
 while [ -f /tmp/forever ]
 do
         echo `date` Forever loop 0.1
-        mv /darp /tmp
         rm -rf /tmp/darp
-        git clone https://github.com/williambnorton/darp.git    /darp   
+        mv /root/darp /tmp/darp
+        git clone https://github.com/williambnorton/darp.git    /root/darp   
+        mv /darp /tmp
+        ln -s /root/darp /darp
+        echo `date` new darp installed
         #clear
         #
         #       Configure Wireguard with new public and private keys
         #
         echo `date` 'Configuring *NEW* Wireguard Public and Private eKeys'
-        /darp/scripts/configWG.bash
+        cd /darp/scripts/
+        ./configWG.bash
         PUBLICKEY=`cat /etc/wireguard/publickey`
 
         rm /tmp/forever      #UNCOMMENT TO MAKE IT STOP ON CRASH
