@@ -51,17 +51,19 @@ do
 	echo curl "http://$GENESIS/codenconfig?geo=$HOSTNAME&publickey=$PUBLICKEY" # | bash
         echo `date` should deliver feed redis commands from $GENESIS 
 
-        node /darp/express/express &
+        cd /darp/express/
+        node express &
         echo $$ > express.pid
 
-        node /darp/handlepulse/handlepulse &
+        cd /darp/handlepulse/
+        node handlepulse &
         echo $$ > handlepulse.pid
         
-        node /darp/pulser/pulser &
+        cd /darp/pulser/
+        node pulser &
         echo $$ > pulser.pid
 	
         while [ ] 
-        
         do
                 echo `date` waiting 
                 sleep 600
