@@ -61,7 +61,7 @@ do
         echo $$ > pulser.pid
 	
         while :
-        dd
+        do
                 echo `date` waiting 
                 sleep 600
         done
