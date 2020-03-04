@@ -1,3 +1,5 @@
+import { getMaxListeners } from "cluster";
+
 //
 // express.ts - code to handle config route
 //
@@ -22,20 +24,41 @@ app.get('/config', function (req, res) {
    var wallet=req.query.wallet||"";
    // store incoming public key, ipaddr, port, geo, etc.
    var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
    if ( (typeof geo == "undefined") ||
         (typeof publickey == "undefined") )
         res.end("express.js : missing geo and/or publickey ");
    // send hmset me command
    else {
-      var record={
-         "ipaddr" : incomingIP
-      };
-      console.log("returning record="+JSON.stringify(record,null,2));
-      
-      res.end(JSON.stringify(record,null,2));
-   }
+      console.log("good call ");
+      expressRedisClient.incr("mintStack", (err, newMint) => {
+         if (err) {
+            console.log("err="+err);
+           } else {
+            var record={
+               "ipaddr" : incomingIP,
+               "mint" : newMint
+            };
+            console.log("returning record="+JSON.stringify(record,null,2));
+            res.setHeader('Content-Type', 'application/json');   
+            res.end(JSON.stringify(record,null,2));
+         }
+      });
 
+   }
 })
+
+function popMint() {
+var mint=0;
+   expressRedisClient.incr("mintStack", (err, newMint) => {
+      if (err) {
+       console.log("err="+err);
+      } else {
+       //debug('Generated incremental id: %s.', newId);
+       mint=newMint;;
+      }
+     });
+}
 
 expressRedisClient.hget("me","port",function (err,port){
 //console.log("express(): err="+err+" port="+port);

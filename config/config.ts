@@ -80,11 +80,10 @@ function setME() {
                         });
                         res.on('end', function () {
                             var json = JSON.parse(data);
-                            console.log("genesis told us ipaddr="+JSON.stringify(json,null,2));
+                            console.log("genesis told us :"+JSON.stringify(json,null,2));
                             
                             return null; //no answer - we have no genesis node IP
                         });
-                    });
                 });
                 req.on('error', function (e) {
                         console.log(e.message);

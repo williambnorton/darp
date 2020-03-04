@@ -77,34 +77,13 @@ function setME() {
                     });
                     res.on('end', function () {
                         var json = JSON.parse(data);
-                        console.log("json=" + JSON.stringify(json, null, 2));
-                        for (var SR in json) {
-                            var entry = json[SR];
-                            //console.log("getGenesisIP(): returning "+entry.ipaddr);
-                            //return entry.ipaddr; //+":"+entry.port;
-                            console.log("SR=" + SR + " entry=" + JSON.stringify(entry, null, 2));
-                            // will output a Javascript object
-                            //var NoiaSWHash=json
-                            //console.log("NoiaSWHash="+NoiaSWHash+" mySR.NoiaSWHash="+mySR.NoiaSWHash);
-                        }
+                        console.log("genesis told us :" + JSON.stringify(json, null, 2));
                         return null; //no answer - we have no genesis node IP
                     });
                 });
                 req.on('error', function (e) {
                     console.log(e.message);
                 });
-                /****
-                                redisClient.hgetall('me', function (err, me) {
-                                    if (err) {
-                                        console.log("CONFIG ERROR");
-                                    } else {
-                                        console.log('me='+dump(me));
-                                    }
-                                    //pull down config from the genesis Node, even if it s me.
-                                    console.log("1) Fetch codenconfig from genesis to set my external ipaddr and port");
-                                    console.log("2) ");
-                                });
-                                ***/
                 return;
             }
         });

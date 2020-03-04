@@ -1,3 +1,5 @@
+"use strict";
+exports.__esModule = true;
 //
 // express.ts - code to handle config route
 //
@@ -22,13 +24,36 @@ app.get('/config', function (req, res) {
         res.end("express.js : missing geo and/or publickey ");
     // send hmset me command
     else {
-        var record = {
-            "ipaddr": incomingIP
-        };
-        console.log("returning record=" + JSON.stringify(record, null, 2));
-        res.end(JSON.stringify(record, null, 2));
+        console.log("good call ");
+        expressRedisClient.incr("mintStack", function (err, newMint) {
+            if (err) {
+                console.log("err=" + err);
+            }
+            else {
+                var record = {
+                    "ipaddr": incomingIP,
+                    "mint": newMint
+                };
+                console.log("returning record=" + JSON.stringify(record, null, 2));
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(record, null, 2));
+            }
+        });
     }
 });
+function popMint() {
+    var mint = 0;
+    expressRedisClient.incr("mintStack", function (err, newMint) {
+        if (err) {
+            console.log("err=" + err);
+        }
+        else {
+            //debug('Generated incremental id: %s.', newId);
+            mint = newMint;
+            ;
+        }
+    });
+}
 expressRedisClient.hget("me", "port", function (err, port) {
     //console.log("express(): err="+err+" port="+port);
     if (!port)
