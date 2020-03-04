@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
 app.get('/config', function (req, res) {
    res.send('config goes here');
 
-   console.log("geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify((req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
+   console.log("geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
    var geo=req.query.geo;
    var publickey=req.query.publickey;
    var port=req.query.port||65013;

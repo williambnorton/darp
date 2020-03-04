@@ -14,17 +14,16 @@ var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 // get the genesis node
-redisClient.hgetall("me", function (err, identity) {
-    if (err) {
-        HOST = getGenesisIP();
-        console.log("HOST=" + HOST);
-    }
-    else {
-        console.log("me=" + lib_1.dump(me));
-        HOST = me.ipaddr; //+":"+me.port;
-    }
-    console.log("Now that we have the genesisIP " + HOST + " - fetch the codenconfig");
-});
+//redisClient.hgetall("me", function (err, identity) {
+//if (err) {
+//HOST=getGenesisIP();
+//console.log("HOST="+HOST);
+//} else {
+//console.log("me="+dump(me));
+//HOST=me.ipaddr; //+":"+me.port;
+//} 
+//console.log("Now that we have the genesisIP "+HOST+" - fetch the codenconfig");
+//});
 function pulse() {
     // pulse list of pulseGroups
     redisClient.hgetall('pulseGroups', function (err, pulseGroups) {
