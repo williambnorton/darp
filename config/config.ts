@@ -78,10 +78,11 @@ function setMeIP() {
                 var json = JSON.parse(data);
                 //gME=json;  //set my global variable  for convenuience
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
-                var me=JSON.parse(json);
-                redisClient.hmset("me", me);
+                //var me=JSON.parse(json);
+                redisClient.hmset("me", json);
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
-
+                redisClient.hgetall("me",function (err,me) { console.log(dump(me));});
+                /***
                 redisClient.hmset("me", {
                     "geo" : ""+me.geo,
                     "port" : ""+me.port,
@@ -107,6 +108,7 @@ function setMeIP() {
                     "remoteState": "0"
     
                 });  //my assigned identify
+                ****/
             });
         });
     });
