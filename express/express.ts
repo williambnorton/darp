@@ -49,16 +49,16 @@ app.get('/config', function (req, res) {
                
                var newNode={
                   "geo" : geo,
-                  "port" : port,
+                  "port" : ""+port,
                   "ipaddr" : incomingIP,   //set by genesis node on connection
                   "publickey" : publickey,
-                  "mint" : newMint,      //set by genesis node
-                  "bootTime" : now(),   //boot time is when joined the group
+                  "mint" : ""+newMint,      //set by genesis node
+                  "bootTime" : ""+now(),   //boot time is when joined the group
                   "group": geo+".1",
                   "pulseGroups" : geo+".1",  //list of groups I will pulse
                   //genesis connection info
                   "genesisIP" : genesis.genesisIP,
-                  "genesisPort" : genesis.genesisPort,
+                  "genesisPort" : ""+genesis.genesisPort,
                   "genesisPublickey" : genesis.genesisPublickey,
                   //statistics
                   "lastSeq": "0",

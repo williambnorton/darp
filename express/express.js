@@ -45,16 +45,16 @@ app.get('/config', function (req, res) {
                     //console.log("express(): err="+err+" port="+port);
                     var newNode = {
                         "geo": geo,
-                        "port": port,
+                        "port": "" + port,
                         "ipaddr": incomingIP,
                         "publickey": publickey,
-                        "mint": newMint,
-                        "bootTime": lib_1.now(),
+                        "mint": "" + newMint,
+                        "bootTime": "" + lib_1.now(),
                         "group": geo + ".1",
                         "pulseGroups": geo + ".1",
                         //genesis connection info
                         "genesisIP": genesis.genesisIP,
-                        "genesisPort": genesis.genesisPort,
+                        "genesisPort": "" + genesis.genesisPort,
                         "genesisPublickey": genesis.genesisPublickey,
                         //statistics
                         "lastSeq": "0",
