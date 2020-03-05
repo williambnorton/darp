@@ -63,9 +63,9 @@ setMeIP();  //later this should start with just an IP of genesis node
 
 function setMeIP() {
 
-    redisClient.hgetall("me", function (err,me) {
-        console.log("me="+me);
-        var URL="http://"+me.ipaddr+":"+me.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&wallet="+WALLET;
+    redisClient.hgetall("genesis", function (err,genesis) {
+        console.log("genesis="+genesis);
+        var URL="http://"+genesis.ipaddr+":"+genesis.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&wallet="+WALLET;
         console.log("Fetching URL for config: "+URL);
         var req = http.get(URL, function (res) {
             var data = '', json_data;
