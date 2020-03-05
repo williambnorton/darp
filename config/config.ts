@@ -55,7 +55,7 @@ function setME() {
 //                var HOST=process.env.HOSTNAME||"noName";
 //                var PORT=process.env.PORT||"65013";
 //                var PUBLICKEY=process.env.PUBLICKEY||"";
-                var GENESIS=entry.ipaddr+":"+entry.port+":"+entry.publickey+":"+entry.geo+":"+entry.geo+'.1'+":";
+//                var GENESIS=entry.ipaddr+":"+entry.port+":"+entry.publickey+":"+entry.geo+":"+entry.geo+'.1'+":";
 
                 redisClient.hmset("me", {
                     "geo" : GEO,
@@ -66,7 +66,10 @@ function setME() {
                     "bootTime": "0",
                     "group": entry.group,
                     "pulseGroups" : entry.group,  //list of groups I will pulse
-                    "genesis" : GENESIS,
+                    //my genesis
+                    "genesisIP" : entry.ipaddr,
+                    "genesisPort" : entry.port,
+                    "genesisPublickey" : entry.publickey,
                     //statistics
                     "lastSeq": "0",
                     "pulseTimestamp": "0",
@@ -88,7 +91,11 @@ function setME() {
                     "bootTime": entry.bootTime,
                     "group": entry.group,
                     "pulseGroups": entry.group,   //pulse owner:group mints
-                    "genesis" : GENESIS,
+                    //
+                    "genesisIP" : entry.ipaddr,
+                    "genesisPort" : entry.port,
+                    "genesisPublickey" : entry.publickey,
+                    //
                     "lastSeq" : entry.lastSeq,
                     "pulseTimestamp": entry.pulseTimestamp,
                     "inOctets": entry.inOctets,
@@ -101,7 +108,7 @@ function setME() {
                 }); 
                 
                 // get my config from the genesis node
-                var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&genesis="+GENESIS, function (res) {
+                var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY, function (res) {
                         var data = '', json_data;
                         res.on('data', function (stream) {
                             data += stream;
@@ -109,6 +116,7 @@ function setME() {
                         res.on('end', function () {
                             var json = JSON.parse(data);
                             console.log("genesis told us :"+JSON.stringify(json,null,2));
+
                             
                             return null; //no answer - we have no genesis node IP
                         });
