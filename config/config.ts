@@ -64,7 +64,7 @@ setMeIP();  //later this should start with just an IP of genesis node
 function setMeIP() {
 
     redisClient.hgetall("genesis", function (err,genesis) {
-        console.log("genesis="+genesis);
+        console.log("setMeIP(): genesis="+dump(genesis));
         var URL="http://"+genesis.ipaddr+":"+genesis.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&wallet="+WALLET;
         console.log("Fetching URL for config: "+URL);
         var req = http.get(URL, function (res) {
@@ -76,7 +76,7 @@ function setMeIP() {
                 var json = JSON.parse(data);
                 //gME=json;  //set my global variable  for convenuience
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
-                redisClient.hmset("me", json);  //my assigned identify
+                redisClient.hset("me", json);  //my assigned identify
             });
         });
     });
