@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
 // Configuration for node - allocate a mint
 //
 app.get('/config', function (req, res) {
-    console.log('config requested ' + lib_1.dump(req.query));
+    console.log('EXPRESS; config requested with params: ' + lib_1.dump(req.query));
     console.log("geo=" + req.query.geo + " publickey=" + req.query.publickey + " query=" + JSON.stringify(req.query, null, 2) + " port=" + req.query.port + " wallet=" + req.query.wallet);
     var geo = req.query.geo;
     var publickey = req.query.publickey;

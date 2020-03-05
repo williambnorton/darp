@@ -4,8 +4,10 @@
 //  me - my internal state and pointer to genesis
 //
 import { dump, now } from "../lib/lib";
-
+module.exports= { gME };
 var http = require('http');
+
+var gME={};
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
@@ -116,10 +118,11 @@ function setME() {
                         });
                         res.on('end', function () {
                             var json = JSON.parse(data);
-                            console.log("genesis told us :"+JSON.stringify(json,null,2));
+                            gME=json;  //set my global variable
+                            console.log("setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
                             redisClient.hmset("me", json);
                             
-                            return null; //no answer - we have no genesis node IP
+                            return null; //done
                         });
                 });
                 req.on('error', function (e) {
