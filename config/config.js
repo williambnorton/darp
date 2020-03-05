@@ -97,7 +97,7 @@ if (process.argv.length > 2)
     var PUBLICKEY = process.argv[2];
 console.log("env=" + JSON.stringify(process.env, null, 2));
 var GEO = GEO || process.env.HOSTNAME || "DEVOPS";
-var PUBLICKEY = PUBLICKEY || process.env.PUBLICKEY || "fakePublicKeyToGetIne9Y84mparSK5APjcDuXow2ArEvBIuufpj4=";
+var PUBLICKEY = PUBLICKEY || process.env.PUBLICKEY || "";
 var WALLET = WALLET || process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //GEO=GEO.toString().split('.').split(',');
 console.log("config GEO=" + GEO + " publickey=" + PUBLICKEY + " WALLET=" + WALLET + "");
