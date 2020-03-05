@@ -80,7 +80,7 @@ app.get('/nodefactory', function (req, res) {
                         console.log("* * * * * * * I am the Genesis Node * * * * * * *");
                         var genesisEntry=geo+":"+geo+".1";
                         console.log("EXPRESS GENESIS NODE SETTING "+genesisEntry+"="+dump(newNode));
-                        expressRedisClient.hmset(genesisEntry,{newNode});       
+                        expressRedisClient.hmset(genesisEntry,JSON.stringify(newNode,null,2));       
                         console.log("EXPRESS GENESIS NODE SETTING "+genesisEntry+"="+dump(newNode));
 
                         res.setHeader('Content-Type', 'application/json');   
