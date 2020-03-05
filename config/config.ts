@@ -31,16 +31,15 @@ var WALLET=WALLET||process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a3
 
 //GEO=GEO.toString().split('.').split(',');
 
-console.log("config starting with GEO="+GEO+" publickey="+PUBLICKEY+" WALLET="+WALLET+"");
+console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+" WALLET="+WALLET+"");
 
 if (PUBLICKEY=="") Usage();
 
 setME();
 
 //
-//  set the necessary genesis data to join the genesis group
+//  get the genesis node and request config from it
 //
-
 function setME() {
     var req = http.get("http://drpeering.com/seglist1.json", function (res) {
         var data = '', json_data;
@@ -56,7 +55,8 @@ function setME() {
 //                var PORT=process.env.PORT||"65013";
 //                var PUBLICKEY=process.env.PUBLICKEY||"";
 //                var GENESIS=entry.ipaddr+":"+entry.port+":"+entry.publickey+":"+entry.geo+":"+entry.geo+'.1'+":";
-
+                //create my "me" record
+                /*** 
                 redisClient.hmset("me", {
                     "geo" : GEO,
                     "port" : PORT,
@@ -81,6 +81,7 @@ function setME() {
                     "pktDrops": "0",
                     "remoteState": "0"
                 }); 
+                ****/
 
                 redisClient.hmset("genesis", {
                     "geo" : entry.geo,
@@ -116,7 +117,7 @@ function setME() {
                         res.on('end', function () {
                             var json = JSON.parse(data);
                             console.log("genesis told us :"+JSON.stringify(json,null,2));
-
+                            redisClient.hmset("me", json);
                             
                             return null; //no answer - we have no genesis node IP
                         });
