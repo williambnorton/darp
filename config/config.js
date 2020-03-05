@@ -1,32 +1,46 @@
 "use strict";
 exports.__esModule = true;
-module.exports = { gME: gME };
+//
+//  config.ts - initialize the redis database
+//
+//  me - my internal state and pointer to genesis
+//
+var lib_1 = require("../lib/lib");
 var http = require('http');
-var gME = {};
+exports.gME = {
+    //look to redis for things that don't change
+    "geo": "",
+    "port": "",
+    "ipaddr": "",
+    "publickey": "",
+    "mint": "",
+    "bootTime": "",
+    "group": "",
+    "pulseGroups": "",
+    "wallet": "",
+    //genesis connection info
+    "genesisIP": "",
+    "genesisPort": "",
+    "genesisPublickey": "" //shared with us during config
+};
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 redisClient.flushall();
-/*
-for (var i=0; i< process.argv.length; i++) {
-    console.log("argv["+i+"]="+process.argv[i]);
-}
-*/
-if (process.argv.length > 4)
-    var WALLET = process.argv[4];
-if (process.argv.length > 3)
-    var GEO = process.argv[3];
-if (process.argv.length > 2)
-    var PUBLICKEY = process.argv[2];
 //console.log("env="+JSON.stringify(process.env,null,2));
-var GEO = GEO || process.env.HOSTNAME || "DEVOPS";
+var GEO = process.env.HOSTNAME || "DEVOPS";
 var PORT = process.env.PORT || "65013";
-var PUBLICKEY = PUBLICKEY || process.env.PUBLICKEY || "";
-var WALLET = WALLET || process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+var PUBLICKEY = process.env.PUBLICKEY || "";
+var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //GEO=GEO.toString().split('.').split(',');
 console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " WALLET=" + WALLET + "");
+exports.gME.bootTime = "" + lib_1.now();
+exports.gME.geo = GEO;
+exports.gME.publickey = PUBLICKEY;
+exports.gME.port = PORT;
+exports.gME.wallet = WALLET;
 if (PUBLICKEY == "")
     Usage();
-setME();
+setME(); //later this should start with just an IP of genesis node 
 //
 //  get the genesis node and request config from it
 //
@@ -104,9 +118,11 @@ function setME() {
                     });
                     res.on('end', function () {
                         var json = JSON.parse(data);
-                        gME = json; //set my global variable
+                        exports.gME = json; //set my global variable  for convenuience
                         console.log("setting redis && gME with what genesis told us we are:" + JSON.stringify(json, null, 2));
-                        redisClient.hmset("me", json);
+                        redisClient.hmset("me", json); //my assigned identify
+                        //and starting pulseGroup
+                        // if 
                         return null; //done
                     });
                 });

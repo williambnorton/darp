@@ -5,6 +5,7 @@ exports.__esModule = true;
 //
 //import { me } from '../config/config';
 var lib_1 = require("../lib/lib");
+var config_1 = require("../config/config");
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -37,6 +38,10 @@ app.get('/config', function (req, res) {
             }
             else {
                 expressRedisClient.hgetall("genesis", function (err, genesis) {
+                    if (err) {
+                        console.log("Cant find Genesis node - maybe I am Genesis Node?");
+                    }
+                    console.log("gSR=" + lib_1.dump(config_1.gME));
                     //console.log("express(): err="+err+" port="+port);
                     var newNode = {
                         "geo": geo,
@@ -62,6 +67,8 @@ app.get('/config', function (req, res) {
                         "pktDrops": "0",
                         "remoteState": "0"
                     };
+                    var pulseGroupEntry = geo + ":" + ".1";
+                    console.log("Storing newNode as geo:mypulsegroup");
                     expressRedisClient.hmset(geo + ":" + genesis + ".1", newNode);
                     console.log("returning config for new node=" + JSON.stringify(newNode, null, 2));
                     res.setHeader('Content-Type', 'application/json');
