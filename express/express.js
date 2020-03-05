@@ -10,7 +10,7 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 app.get('/', function (req, res) {
-    res.send('Hello World');
+    res.send('express root dir');
 });
 //
 // Configuration for node - allocate a mint
