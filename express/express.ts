@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 //
 // Configuration for node - allocate a mint
 //
-app.get('/config', function (req, res) {
+app.get('/nodefactory', function (req, res) {
    //console.log('****EXPRESS; config requested with params: '+dump(req.query));
 
    //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
@@ -80,15 +80,16 @@ app.get('/config', function (req, res) {
                         //I am Genesis Node
                         var genesisEntry=geo+":"+geo+".1";
                         console.log("EXPRESS GENESIS NODE SETTING "+genesisEntry+"="+dump(newNode));
+
                         expressRedisClient.hmset(genesisEntry,JSON.stringify(newNode,null,2));       
                         res.setHeader('Content-Type', 'application/json');   
                         res.end(JSON.stringify(newNode,null,2));
                      } else {
                         //attached to genesis node
                         var entry=geo+":"+newNode.group+".1"
-                        console.log("EXPRESS  Storing newNode as geo:mypulsegroup "+entry)
-                        expressRedisClient.hmset(entry,JSON.stringify(newNode,null,2)); 
+                        console.log("EXPRESS  Storing newNode as geo:mypulsegroup "+entry);
 
+                        expressRedisClient.hmset(entry,JSON.stringify(newNode,null,2)); 
                         console.log("EXPRESS returning config for new node="+JSON.stringify(newNode,null,2));
                         res.setHeader('Content-Type', 'application/json');   
                         res.end(JSON.stringify(newNode,null,2));
