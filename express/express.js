@@ -70,8 +70,9 @@ app.get('/config', function (req, res) {
                     if (newMint == 1) {
                         //I am Genesis Node
                         var genesisEntry = geo + ":" + geo + ".1";
-                        console.log("EXPRESS  GENSIS NODE SETTING " + genesisEntry);
+                        console.log("EXPRESS  GENSIS NODE SETTING " + genesisEntry + lib_1.dump(newNode));
                         expressRedisClient.hmset(genesisEntry, newNode);
+                        console.log("COMPLETED CONFIG ");
                     }
                     else {
                         //attached to genesis node
