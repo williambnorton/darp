@@ -36,7 +36,7 @@ app.get('/config', function (req, res) {
                 console.log("err=" + err);
             }
             else {
-                expressRedisClient.hget("me", "genesis", function (err, genesis) {
+                expressRedisClient.hgetall("genesis", function (err, genesis) {
                     //console.log("express(): err="+err+" port="+port);
                     var newNode = {
                         "geo": geo,
@@ -47,7 +47,10 @@ app.get('/config', function (req, res) {
                         "bootTime": lib_1.now(),
                         "group": geo + ".1",
                         "pulseGroups": geo + ".1",
-                        "genesis": genesis,
+                        //genesis connection info
+                        "genesisIP": genesis.genesisIP,
+                        "genesisPort": genesis.genesisPort,
+                        "genesisPublickey": genesis.genesisPublickey,
                         //statistics
                         "lastSeq": "0",
                         "pulseTimestamp": "0",
