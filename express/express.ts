@@ -74,14 +74,14 @@ app.get('/config', function (req, res) {
                if (newMint==1) {
                   //I am Genesis Node
                   var genesisEntry=geo+":"+geo+".1";
-                  console.log("EXPRESS  GENSIS NODE SETTING "+genesisEntry+dump(newNode));
-                  expressRedisClient.hmset(genesisEntry,newNode);
+                  console.log("EXPRESS  GENSIS NODE SETTING "+genesisEntry+"="+dump(newNode));
+                  expressRedisClient.hmset(genesisEntry,JSON.stringify(newNode,null,2));
                   console.log("COMPLETED CONFIG ");
                } else {
                   //attached to genesis node
                   var entry=geo+":"+newNode.group+".1"
                   console.log("EXPRESS  Storing newNode as geo:mypulsegroup "+entry)
-                  expressRedisClient.hmset(entry,newNode); 
+                  expressRedisClient.hmset(entry,JSON.stringify(newNode,null,2)); 
 
                   console.log("EXPRESS returning config for new node="+JSON.stringify(newNode,null,2));
                   res.setHeader('Content-Type', 'application/json');   
