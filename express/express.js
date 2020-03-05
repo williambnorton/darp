@@ -71,12 +71,13 @@ app.get('/nodefactory', function (req, res) {
                             "pktDrops": "0",
                             "remoteState": "0"
                         };
-                        console.log("****** incoming=" + incomingIP + " newNode=" + lib_1.dump(newNode));
+                        console.log("EXPRESS ****** incoming=" + incomingIP + " newNode=" + lib_1.dump(newNode));
                         if (newMint == 1) {
-                            //I am Genesis Node
+                            console.log("* * * * * * * I am the Genesis Node * * * * * * *");
                             var genesisEntry = geo + ":" + geo + ".1";
                             console.log("EXPRESS GENESIS NODE SETTING " + genesisEntry + "=" + lib_1.dump(newNode));
                             expressRedisClient.hmset(genesisEntry, newNode);
+                            console.log("EXPRESS GENESIS NODE SETTING " + genesisEntry + "=" + lib_1.dump(newNode));
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify(newNode, null, 2));
                         }
