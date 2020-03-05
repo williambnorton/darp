@@ -25,37 +25,40 @@ app.get('/config', function (req, res) {
         res.end("express.js : missing geo and/or publickey ");
     // send hmset me command
     else {
-        console.log("good call ");
+        console.log("gallocating a new mint ");
         expressRedisClient.incr("mintStack", function (err, newMint) {
             if (err) {
                 console.log("err=" + err);
             }
             else {
-                var me = {
-                    "geo": geo,
-                    "port": port,
-                    "ipaddr": incomingIP,
-                    "publickey": publickey,
-                    "mint": newMint,
-                    "bootTime": "0",
-                    "group": me.group,
-                    "pulseGroups": me.group,
-                    "genesis": me.genesis,
-                    //statistics
-                    "lastSeq": "0",
-                    "pulseTimestamp": "0",
-                    "inOctets": "0",
-                    "outOctets": "0",
-                    "inMsgs": "0",
-                    "outMsgs": "0",
-                    "owl": "0",
-                    "pktDrops": "0",
-                    "remoteState": "0"
-                };
-                expressRedisClient.hmset("me", me);
-                console.log("returning record=" + JSON.stringify(me, null, 2));
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify(me, null, 2));
+                expressRedisClient.hget("me", "genesis", function (err, genesis) {
+                    //console.log("express(): err="+err+" port="+port);
+                    var me = {
+                        "geo": geo,
+                        "port": port,
+                        "ipaddr": incomingIP,
+                        "publickey": publickey,
+                        "mint": newMint,
+                        "bootTime": "0",
+                        "group": geo + ".1",
+                        "pulseGroups": geo + ".1",
+                        "genesis": genesis,
+                        //statistics
+                        "lastSeq": "0",
+                        "pulseTimestamp": "0",
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "owl": "0",
+                        "pktDrops": "0",
+                        "remoteState": "0"
+                    };
+                    expressRedisClient.hmset("me", me);
+                    console.log("returning record=" + JSON.stringify(me, null, 2));
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(me, null, 2));
+                });
             }
         });
     }

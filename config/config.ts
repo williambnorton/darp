@@ -75,7 +75,6 @@ function setME() {
                     "pktDrops": entry.pktDrops,
                     "remoteState": entry.remoteState
                 }); 
-
                 
                 // get my config from the genesis node
                 var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config?geo="+HOST+"&port="+PORT+"&publickey="+PUBLICKEY+"&genesis="+GENESIS, function (res) {
