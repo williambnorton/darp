@@ -8,6 +8,13 @@ cd /darp
 echo `date` new darp version `ls build*` installed
 ls -l /darp
 
+cd /darp
+redis-server &  #temp to help building
+cd /darp/express
+node express &
+
+
+
 echo `date` Launching forever script
 cd /darp/scripts
 #./forever.bash  #Start the system
