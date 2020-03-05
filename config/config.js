@@ -65,7 +65,7 @@ function setMeIP() {
                 var json = JSON.parse(data);
                 //gME=json;  //set my global variable  for convenuience
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:" + JSON.stringify(json, null, 2));
-                redisClient.hset("me", json); //my assigned identify
+                redisClient.hmset("me", JSON.stringify(json, null, 2)); //my assigned identify
             });
         });
     });
