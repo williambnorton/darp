@@ -75,7 +75,7 @@ app.get('/config', function (req, res) {
                   //I am Genesis Node
                   var genesisEntry=geo+":"+geo+".1";
                   console.log("EXPRESS  GENSIS NODE SETTING "+genesisEntry);
-                  expressRedisClient.hmset(genesis,newNode);
+                  expressRedisClient.hmset(genesisEntry,newNode);
                } else {
                   //attached to genesis node
                   var entry=geo+":"+newNode.group+".1"
