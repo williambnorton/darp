@@ -17,7 +17,9 @@ fi
 GENESIS=`curl "http://drpeering.com/genesisnodes"|awk -F: '{ print $1 }'`
 echo GENESIS=$GENESIS
 
+kill `cat redis-server.pid`
 redis-server &          #start up our data server
+echo $$ > redis-server.pid
 #
 #       Forever loop running in docker
 #
@@ -30,12 +32,13 @@ while [ -f /tmp/forever ]
 do
         echo `date` Forever loop 0.1
         rm -rf /tmp/darp
-        mv /root/darp /tmp/darp
-        git clone https://github.com/williambnorton/darp.git    /root/darp   
-        mv /darp /tmp
-        ln -s /root/darp /darp
+        mv /darp /tmp/darp
+        git clone https://github.com/williambnorton/darp.git    /darp     
+        #mv /darp /tmp
+        #.ln -s /root/darp /darp
         echo `date` new darp installed
-        #clear
+        ls -l /darp
+
         #
         #       Configure Wireguard with new public and private keys
         #
