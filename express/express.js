@@ -83,6 +83,7 @@ app.get('/config', function (req, res) {
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(newNode, null, 2));
                     }
+                    console.log("Exitting config");
                 });
             }
         });

@@ -77,6 +77,7 @@ app.get('/config', function (req, res) {
                   console.log("EXPRESS GENESIS NODE SETTING "+genesisEntry+"="+dump(newNode));
                   expressRedisClient.hmset(genesisEntry,JSON.stringify(newNode,null,2));
                   console.log("EXPRESS COMPLETED CONFIG ");
+
                } else {
                   //attached to genesis node
                   var entry=geo+":"+newNode.group+".1"
@@ -87,6 +88,7 @@ app.get('/config', function (req, res) {
                   res.setHeader('Content-Type', 'application/json');   
                   res.end(JSON.stringify(newNode,null,2));
                }
+               console.log("Exitting config");
             });
          }
       });
