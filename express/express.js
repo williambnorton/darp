@@ -47,6 +47,8 @@ app.get('/nodefactory', function (req, res) {
                             console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                         }
                         console.log("******** EXPRESS redis me=" + lib_1.dump(me));
+                        console.log("* * * * * * * I am the Genesis Node * * * * * * *");
+                        var nodeEntry = geo + ":" + me.group + ".1";
                         var newNode = {
                             "geo": geo,
                             "port": "" + port,
@@ -71,21 +73,16 @@ app.get('/nodefactory', function (req, res) {
                             "pktDrops": "0",
                             "remoteState": "0"
                         };
-                        console.log("EXPRESS ****** incoming=" + incomingIP + " newNode=" + lib_1.dump(newNode));
+                        expressRedisClient.hmset(nodeEntry, newNode);
                         if (newMint == 1) {
-                            console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                            var genesisEntry = geo + ":" + geo + ".1";
-                            console.log("EXPRESS GENESIS NODE SETTING " + genesisEntry + "=" + lib_1.dump(newNode));
-                            expressRedisClient.hmset(genesisEntry, JSON.stringify(newNode));
-                            console.log("EXPRESS GENESIS NODE SETTING " + genesisEntry + "=" + lib_1.dump(newNode));
                             res.setHeader('Content-Type', 'application/json');
-                            res.end(JSON.stringify(newNode, null, 2));
+                            res.end('{"msg":"GENESIS NODE CREATED"}');
                         }
                         else {
                             //attached to genesis node
-                            var entry = geo + ":" + newNode.group + ".1";
-                            console.log("EXPRESS  Storing newNode as geo:mypulsegroup " + entry);
-                            expressRedisClient.hmset(entry, newNode);
+                            //var entry=geo+":"+newNode.group+".1"
+                            //console.log("EXPRESS  Storing newNode as geo:mypulsegroup "+entry);
+                            //expressRedisClient.hmset(entry,newNode); 
                             console.log("EXPRESS returning config for new node=" + JSON.stringify(newNode, null, 2));
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify(newNode, null, 2));
