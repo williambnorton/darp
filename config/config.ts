@@ -12,8 +12,33 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 
 redisClient.flushall();
 
+/*
+for (var i=0; i< process.argv.length; i++) {
+    console.log("argv["+i+"]="+process.argv[i]);
+}
+*/
+if (process.argv.length>4)
+    var WALLET=process.argv[4];
+if (process.argv.length>3)
+    var GEO=process.argv[3];
+if (process.argv.length>2)
+    var PUBLICKEY=process.argv[2];
+//console.log("env="+JSON.stringify(process.env,null,2));
+var GEO=GEO||process.env.HOSTNAME||"DEVOPS";
+var PORT=process.env.PORT||"65013";
+var PUBLICKEY=PUBLICKEY||process.env.PUBLICKEY || "";
+var WALLET=WALLET||process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+
+//GEO=GEO.toString().split('.').split(',');
+
+console.log("config starting with GEO="+GEO+" publickey="+PUBLICKEY+" WALLET="+WALLET+"");
+
+if (PUBLICKEY=="") Usage();
+
+setME();
+
 //
-//  get the necessary genesis data to join the genesis group
+//  set the necessary genesis data to join the genesis group
 //
 
 function setME() {
@@ -27,13 +52,13 @@ function setME() {
             //console.log("getGenesisIP(): json="+JSON.stringify(json,null,2));
             for (var SR in json) {
                 var entry = json[SR];
-                var HOST=process.env.HOSTNAME||"noName";
-                var PORT=process.env.PORT||"65013";
-                var PUBLICKEY=process.env.PUBLICKEY||"";
+//                var HOST=process.env.HOSTNAME||"noName";
+//                var PORT=process.env.PORT||"65013";
+//                var PUBLICKEY=process.env.PUBLICKEY||"";
                 var GENESIS=entry.ipaddr+":"+entry.port+":"+entry.publickey+":"+entry.geo+":"+entry.geo+'.1'+":";
 
                 redisClient.hmset("me", {
-                    "geo" : HOST,
+                    "geo" : GEO,
                     "port" : PORT,
                     "ipaddr" : "",   //set by genesis node on connection
                     "publickey" : PUBLICKEY,
@@ -76,7 +101,7 @@ function setME() {
                 }); 
                 
                 // get my config from the genesis node
-                var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config?geo="+HOST+"&port="+PORT+"&publickey="+PUBLICKEY+"&genesis="+GENESIS, function (res) {
+                var req = http.get("http://"+entry.ipaddr+":"+entry.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&genesis="+GENESIS, function (res) {
                         var data = '', json_data;
                         res.on('data', function (stream) {
                             data += stream;
@@ -100,28 +125,6 @@ function setME() {
     });
 }
 
-/*
-for (var i=0; i< process.argv.length; i++) {
-    console.log("argv["+i+"]="+process.argv[i]);
-}
-*/
-if (process.argv.length>4)
-    var WALLET=process.argv[4];
-if (process.argv.length>3)
-    var GEO=process.argv[3];
-if (process.argv.length>2)
-    var PUBLICKEY=process.argv[2];
-//console.log("env="+JSON.stringify(process.env,null,2));
-var GEO=GEO||process.env.HOSTNAME||"DEVOPS";
-var PUBLICKEY=PUBLICKEY||process.env.PUBLICKEY || "";
-var WALLET=WALLET||process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
-
-//GEO=GEO.toString().split('.').split(',');
-
-console.log("config GEO="+GEO+" publickey="+PUBLICKEY+" WALLET="+WALLET+"");
-
-if (PUBLICKEY=="") Usage();
-setME();
 
 function Usage() {
     console.log("usage: node config publickey [geo]");
