@@ -75,7 +75,30 @@ app.get('/nodefactory', function (req, res) {
                            "pktDrops": "0",
                            "remoteState": "0"
                      }
-                     expressRedisClient.hmset(nodeEntry,newNode);       
+                     expressRedisClient.hmset(nodeEntry,{
+                        "geo" : geo,
+                        "port" : ""+port,
+                        "ipaddr" : incomingIP,   //set by genesis node on connection
+                        "publickey" : publickey,
+                        "mint" : ""+newMint,      //set by genesis node
+                        "bootTime" : ""+now(),   //boot time is when joined the group
+                        "group": geo+".1",
+                        "pulseGroups" : geo+".1",  //list of groups I will pulse
+                        //genesis connection info
+                        "genesisIP" : me.genesisIP,
+                        "genesisPort" : me.genesisPort,
+                        "genesisPublickey" : me.genesisPublickey,
+                        //statistics
+                        "lastSeq": "0",
+                        "pulseTimestamp": "0",
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "owl": "0",
+                        "pktDrops": "0",
+                        "remoteState": "0"
+                  });       
                      if (newMint==1) {
                            res.setHeader('Content-Type', 'application/json');   
                            res.end('{"msg":"GENESIS NODE CREATED"}');
