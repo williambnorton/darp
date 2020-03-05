@@ -7,7 +7,6 @@ import { dump, now, me } from "../lib/lib";
 
 var http = require('http');
 
-
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
