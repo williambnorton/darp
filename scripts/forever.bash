@@ -31,13 +31,6 @@ echo $0 `date` > NOIA.log
 while [ -f /tmp/forever ]
 do
         echo `date` Forever loop 0.1
-        rm -rf /tmp/darp
-        mv /darp /tmp/darp
-        git clone https://github.com/williambnorton/darp.git    /darp     
-        #mv /darp /tmp
-        #.ln -s /root/darp /darp
-        echo `date` new darp installed
-        ls -l /darp
 
         #
         #       Configure Wireguard with new public and private keys
