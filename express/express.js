@@ -37,43 +37,52 @@ app.get('/config', function (req, res) {
                 console.log("err=" + err);
             }
             else {
-                expressRedisClient.hgetall("genesis", function (err, genesis) {
-                    if (err) {
-                        console.log("Cant find Genesis node - maybe I am Genesis Node?");
-                    }
-                    console.log("gSR=" + lib_1.dump(config_1.gME));
-                    //console.log("express(): err="+err+" port="+port);
-                    var newNode = {
-                        "geo": geo,
-                        "port": port,
-                        "ipaddr": incomingIP,
-                        "publickey": publickey,
-                        "mint": newMint,
-                        "bootTime": lib_1.now(),
-                        "group": geo + ".1",
-                        "pulseGroups": geo + ".1",
-                        //genesis connection info
-                        "genesisIP": genesis.genesisIP,
-                        "genesisPort": genesis.genesisPort,
-                        "genesisPublickey": genesis.genesisPublickey,
-                        //statistics
-                        "lastSeq": "0",
-                        "pulseTimestamp": "0",
-                        "inOctets": "0",
-                        "outOctets": "0",
-                        "inMsgs": "0",
-                        "outMsgs": "0",
-                        "owl": "0",
-                        "pktDrops": "0",
-                        "remoteState": "0"
-                    };
-                    var pulseGroupEntry = geo + ":" + ".1";
-                    console.log("Storing newNode as geo:mypulsegroup");
-                    expressRedisClient.hmset(geo + ":" + genesis + ".1", newNode);
+                //               expressRedisClient.hgetall("genesis",function (err,genesis){
+                //                  if (err) {
+                //                     console.log("Cant find Genesis node - maybe I am Genesis Node?")
+                //                  }
+                console.log("gME=" + lib_1.dump(config_1.gME));
+                //console.log("express(): err="+err+" port="+port);
+                var newNode = {
+                    "geo": geo,
+                    "port": port,
+                    "ipaddr": incomingIP,
+                    "publickey": publickey,
+                    "mint": newMint,
+                    "bootTime": lib_1.now(),
+                    "group": geo + ".1",
+                    "pulseGroups": geo + ".1",
+                    //genesis connection info
+                    "genesisIP": config_1.gME.genesisIP,
+                    "genesisPort": config_1.gME.genesisPort,
+                    "genesisPublickey": config_1.gME.genesisPublickey,
+                    //statistics
+                    "lastSeq": "0",
+                    "pulseTimestamp": "0",
+                    "inOctets": "0",
+                    "outOctets": "0",
+                    "inMsgs": "0",
+                    "outMsgs": "0",
+                    "owl": "0",
+                    "pktDrops": "0",
+                    "remoteState": "0"
+                };
+                if (newMint == 1) {
+                    //I am Genesis Node
+                    var genesis = config_1.gME.geo + ":" + config_1.gME.geo + ".1";
+                    console.log("GENSIS NODE SETTING " + genesis);
+                    expressRedisClient.hmset(genesis, newNode);
+                }
+                else {
+                    //attached to genesis node
+                    var entry = config_1.gME.geo + ":" + newNode.group + ".1";
+                    console.log("Storing newNode as geo:mypulsegroup " + entry);
+                    expressRedisClient.hmset(entry, newNode);
                     console.log("returning config for new node=" + JSON.stringify(newNode, null, 2));
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(newNode, null, 2));
-                });
+                }
+                //      });
             }
         });
     }

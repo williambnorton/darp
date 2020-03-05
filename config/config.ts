@@ -43,9 +43,25 @@ gME.publickey=PUBLICKEY;
 gME.port=PORT;
 gME.wallet=WALLET;
 
-if (PUBLICKEY=="") Usage();
+//if (PUBLICKEY=="") Usage();
 
-setME();  //later this should start with just an IP of genesis node 
+setMeIP();  //later this should start with just an IP of genesis node 
+
+function setMeIP() {
+    var staticGenesisNodeIP="104.42.192.234"; //from simple - could fetch this elsewhere
+    var req = http.get("http://"+staticGenesisNodeIP+":65013/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY, function (res) {
+        var data = '', json_data;
+        res.on('data', function (stream) {
+            data += stream;
+        });
+        res.on('end', function () {
+            var json = JSON.parse(data);
+            gME=json;  //set my global variable  for convenuience
+            console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
+            redisClient.hmset("me", json);  //my assigned identify
+        });
+    });
+}
 
 //
 //  get the genesis node and request config from it

@@ -39,12 +39,13 @@ app.get('/config', function (req, res) {
          if (err) {
             console.log("err="+err);
          } else {
-               expressRedisClient.hgetall("genesis",function (err,genesis){
-                  if (err) {
-                     console.log("Cant find Genesis node - maybe I am Genesis Node?")
-                  }
-                  console.log("gSR="+dump(gME));
+//               expressRedisClient.hgetall("genesis",function (err,genesis){
+//                  if (err) {
+//                     console.log("Cant find Genesis node - maybe I am Genesis Node?")
+//                  }
+                  console.log("gME="+dump(gME));
                //console.log("express(): err="+err+" port="+port);
+               
                var newNode={
                   "geo" : geo,
                   "port" : port,
@@ -55,9 +56,9 @@ app.get('/config', function (req, res) {
                   "group": geo+".1",
                   "pulseGroups" : geo+".1",  //list of groups I will pulse
                   //genesis connection info
-                  "genesisIP" : genesis.genesisIP,
-                  "genesisPort" : genesis.genesisPort,
-                  "genesisPublickey" : genesis.genesisPublickey,
+                  "genesisIP" : gME.genesisIP,
+                  "genesisPort" : gME.genesisPort,
+                  "genesisPublickey" : gME.genesisPublickey,
                   //statistics
                   "lastSeq": "0",
                   "pulseTimestamp": "0",
@@ -69,14 +70,22 @@ app.get('/config', function (req, res) {
                   "pktDrops": "0",
                   "remoteState": "0"
                }
-               var pulseGroupEntry=geo+":"+".1"
-               console.log("Storing newNode as geo:mypulsegroup")
-               expressRedisClient.hmset(geo+":"+genesis+".1",newNode); 
+               if (newMint==1) {
+                  //I am Genesis Node
+                  var genesis=gME.geo+":"+gME.geo+".1";
+                  console.log("GENSIS NODE SETTING "+genesis);
+                  expressRedisClient.hmset(genesis,newNode);
+               } else {
+                  //attached to genesis node
+                  var entry=gME.geo+":"+newNode.group+".1"
+                  console.log("Storing newNode as geo:mypulsegroup "+entry)
+                  expressRedisClient.hmset(entry,newNode); 
 
-               console.log("returning config for new node="+JSON.stringify(newNode,null,2));
-               res.setHeader('Content-Type', 'application/json');   
-               res.end(JSON.stringify(newNode,null,2));
-            });
+                  console.log("returning config for new node="+JSON.stringify(newNode,null,2));
+                  res.setHeader('Content-Type', 'application/json');   
+                  res.end(JSON.stringify(newNode,null,2));
+               }
+      //      });
          }
       });
 
