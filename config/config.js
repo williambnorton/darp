@@ -70,7 +70,7 @@ function setMeIP() {
                 //var me=JSON.parse(json);
                 redisClient.hmset("me", json);
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:" + JSON.stringify(json, null, 2));
-                redisClient.hgetall("me", function (err, me) { console.log(lib_1.dump(me)); });
+                redisClient.hgetall("me", function (err, me) { console.log("*********************" + lib_1.dump(me)); });
                 /***
                 redisClient.hmset("me", {
                     "geo" : ""+me.geo,
