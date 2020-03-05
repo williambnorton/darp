@@ -41,7 +41,7 @@ app.get('/config', function (req, res) {
                     if (err) {
                         console.log("Cant find Genesis node - maybe I am Genesis Node?");
                     }
-                    //console.log("EXPRESS  gME="+dump(gME));
+                    console.log("EXPRESS  genesis==" + lib_1.dump(genesis));
                     //console.log("express(): err="+err+" port="+port);
                     var newNode = {
                         "geo": geo,

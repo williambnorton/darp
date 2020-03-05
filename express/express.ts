@@ -44,10 +44,10 @@ app.get('/config', function (req, res) {
                       console.log("Cant find Genesis node - maybe I am Genesis Node?")
                      
                   }
-                  //console.log("EXPRESS  gME="+dump(gME));
-               //console.log("express(): err="+err+" port="+port);
+                  console.log("EXPRESS  genesis=="+dump(genesis));
+                  //console.log("express(): err="+err+" port="+port);
                
-               var newNode={
+                  var newNode={
                   "geo" : geo,
                   "port" : ""+port,
                   "ipaddr" : incomingIP,   //set by genesis node on connection
@@ -70,15 +70,15 @@ app.get('/config', function (req, res) {
                   "owl": "0",
                   "pktDrops": "0",
                   "remoteState": "0"
-               }
-               if (newMint==1) {
+                  }
+                  if (newMint==1) {
                   //I am Genesis Node
                   var genesisEntry=geo+":"+geo+".1";
                   console.log("EXPRESS GENESIS NODE SETTING "+genesisEntry+"="+dump(newNode));
                   expressRedisClient.hmset(genesisEntry,JSON.stringify(newNode,null,2));
                   console.log("EXPRESS COMPLETED CONFIG ");
 
-               } else {
+                  } else {
                   //attached to genesis node
                   var entry=geo+":"+newNode.group+".1"
                   console.log("EXPRESS  Storing newNode as geo:mypulsegroup "+entry)
@@ -87,8 +87,8 @@ app.get('/config', function (req, res) {
                   console.log("EXPRESS returning config for new node="+JSON.stringify(newNode,null,2));
                   res.setHeader('Content-Type', 'application/json');   
                   res.end(JSON.stringify(newNode,null,2));
-               }
-               console.log("Exitting config");
+                  }
+                  console.log("Exitting config");
             });
          }
       });
