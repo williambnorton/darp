@@ -34,7 +34,7 @@ var PORT = process.env.PORT || "65013";
 var PUBLICKEY = process.env.PUBLICKEY || "";
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //GEO=GEO.toString().split('.').split(',');
-console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + "PORT=" + PORT + " WALLET=" + WALLET + "");
+console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
 redisClient.hmset("me", {
     "geo": GEO,
     "port": PORT,
@@ -63,6 +63,7 @@ function setMeIP() {
                 data += stream;
             });
             res.on('end', function () {
+                console.log("CONFIG data=" + data);
                 var json = JSON.parse(data);
                 //gME=json;  //set my global variable  for convenuience
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:" + JSON.stringify(json, null, 2));
