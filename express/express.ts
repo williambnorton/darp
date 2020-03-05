@@ -44,31 +44,35 @@ app.get('/config', function (req, res) {
                   }
                   console.log("******** EXPRESS redis genesis="+dump(genesis));
                   //console.log("express(): err="+err+" port="+port);
-               
-                  var newNode={
-                  "geo" : geo,
-                  "port" : ""+port,
-                  "ipaddr" : incomingIP,   //set by genesis node on connection
-                  "publickey" : publickey,
-                  "mint" : ""+newMint,      //set by genesis node
-                  "bootTime" : ""+now(),   //boot time is when joined the group
-                  "group": geo+".1",
-                  "pulseGroups" : geo+".1",  //list of groups I will pulse
-                  //genesis connection info
-                  "genesisIP" : genesis.genesisIP,
-                  "genesisPort" : ""+genesis.genesisPort,
-                  "genesisPublickey" : genesis.genesisPublickey,
-                  //statistics
-                  "lastSeq": "0",
-                  "pulseTimestamp": "0",
-                  "inOctets": "0",
-                  "outOctets": "0",
-                  "inMsgs": "0",
-                  "outMsgs": "0",
-                  "owl": "0",
-                  "pktDrops": "0",
-                  "remoteState": "0"
-                  }
+                  expressRedisClient.hgetall("me",function (err,me){
+                     if (err) {
+                         console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
+                     }
+
+                     var newNode={
+                        "geo" : geo,
+                        "port" : ""+port,
+                        "ipaddr" : incomingIP,   //set by genesis node on connection
+                        "publickey" : publickey,
+                        "mint" : ""+newMint,      //set by genesis node
+                        "bootTime" : ""+now(),   //boot time is when joined the group
+                        "group": geo+".1",
+                        "pulseGroups" : geo+".1",  //list of groups I will pulse
+                        //genesis connection info
+                        "genesisIP" : me.genesisIP,
+                        "genesisPort" : me.genesisPort,
+                        "genesisPublickey" : me.genesisPublickey,
+                        //statistics
+                        "lastSeq": "0",
+                        "pulseTimestamp": "0",
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "owl": "0",
+                        "pktDrops": "0",
+                        "remoteState": "0"
+                     }
 
                   console.log("************* newNode="+dump(newNode));
 
@@ -90,6 +94,7 @@ app.get('/config', function (req, res) {
                   res.end(JSON.stringify(newNode,null,2));
                   }
                   console.log("Exitting config");
+               });
             });
          }
       });
