@@ -1,5 +1,10 @@
 "use strict";
 exports.__esModule = true;
+//
+// express.ts - set up the "me" and connect to the network by getting config from the genesis node
+//
+//import { me } from '../config/config';
+var lib_1 = require("../lib/lib");
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -11,7 +16,7 @@ app.get('/', function (req, res) {
 // Configuration for node - allocate a mint
 //
 app.get('/config', function (req, res) {
-    console.log('config goes here');
+    console.log('config requested ' + lib_1.dump(req.query));
     console.log("geo=" + req.query.geo + " publickey=" + req.query.publickey + " query=" + JSON.stringify(req.query, null, 2) + " port=" + req.query.port + " wallet=" + req.query.wallet);
     var geo = req.query.geo;
     var publickey = req.query.publickey;
@@ -25,7 +30,7 @@ app.get('/config', function (req, res) {
         res.end("express.js : missing geo and/or publickey ");
     // send hmset me command
     else {
-        console.log("gallocating a new mint ");
+        console.log("allocating a new mint ");
         expressRedisClient.incr("mintStack", function (err, newMint) {
             if (err) {
                 console.log("err=" + err);
@@ -33,13 +38,13 @@ app.get('/config', function (req, res) {
             else {
                 expressRedisClient.hget("me", "genesis", function (err, genesis) {
                     //console.log("express(): err="+err+" port="+port);
-                    var me = {
+                    var newNode = {
                         "geo": geo,
                         "port": port,
                         "ipaddr": incomingIP,
                         "publickey": publickey,
                         "mint": newMint,
-                        "bootTime": "0",
+                        "bootTime": lib_1.now(),
                         "group": geo + ".1",
                         "pulseGroups": geo + ".1",
                         "genesis": genesis,
@@ -54,10 +59,10 @@ app.get('/config', function (req, res) {
                         "pktDrops": "0",
                         "remoteState": "0"
                     };
-                    expressRedisClient.hmset("me", me);
-                    console.log("returning record=" + JSON.stringify(me, null, 2));
+                    expressRedisClient.hmset(geo + ":" + genesis + ".1", newNode);
+                    console.log("returning config for new node=" + JSON.stringify(newNode, null, 2));
                     res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify(me, null, 2));
+                    res.end(JSON.stringify(newNode, null, 2));
                 });
             }
         });

@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 // Configuration for node - allocate a mint
 //
 app.get('/config', function (req, res) {
-   console.log('config goes here');
+   console.log('config requested '+dump(req.query));
 
    console.log("geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
    var geo=req.query.geo;
@@ -33,39 +33,39 @@ app.get('/config', function (req, res) {
         res.end("express.js : missing geo and/or publickey ");
    // send hmset me command
    else {
-      console.log("gallocating a new mint ");
+      console.log("allocating a new mint ");
       expressRedisClient.incr("mintStack", (err, newMint) => {
          if (err) {
             console.log("err="+err);
-           } else {
+         } else {
                expressRedisClient.hget("me","genesis",function (err,genesis){
                //console.log("express(): err="+err+" port="+port);
-               var me={
-               "geo" : geo,
-               "port" : port,
-               "ipaddr" : incomingIP,   //set by genesis node on connection
-               "publickey" : publickey,
-               "mint": newMint,      //set by genesis node
-               "bootTime": "0",
-               "group": geo+".1",
-               "pulseGroups" : geo+".1",  //list of groups I will pulse
-               "genesis" : genesis,
-               //statistics
-               "lastSeq": "0",
-               "pulseTimestamp": "0",
-               "inOctets": "0",
-               "outOctets": "0",
-               "inMsgs": "0",
-               "outMsgs": "0",
-               "owl": "0",
-               "pktDrops": "0",
-               "remoteState": "0"
+               var newNode={
+                  "geo" : geo,
+                  "port" : port,
+                  "ipaddr" : incomingIP,   //set by genesis node on connection
+                  "publickey" : publickey,
+                  "mint" : newMint,      //set by genesis node
+                  "bootTime" : now(),   //boot time is when joined the group
+                  "group": geo+".1",
+                  "pulseGroups" : geo+".1",  //list of groups I will pulse
+                  "genesis" : genesis,
+                  //statistics
+                  "lastSeq": "0",
+                  "pulseTimestamp": "0",
+                  "inOctets": "0",
+                  "outOctets": "0",
+                  "inMsgs": "0",
+                  "outMsgs": "0",
+                  "owl": "0",
+                  "pktDrops": "0",
+                  "remoteState": "0"
                }
-               expressRedisClient.hmset("me",me ); 
+               expressRedisClient.hmset(geo+":"+genesis+".1",newNode); 
 
-               console.log("returning record="+JSON.stringify(me,null,2));
+               console.log("returning config for new node="+JSON.stringify(newNode,null,2));
                res.setHeader('Content-Type', 'application/json');   
-               res.end(JSON.stringify(me,null,2));
+               res.end(JSON.stringify(newNode,null,2));
             });
          }
       });
