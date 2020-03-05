@@ -39,7 +39,7 @@ var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b288
 
 //GEO=GEO.toString().split('.').split(',');
 
-console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+" WALLET="+WALLET+"");
+console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+"PORT="+PORT+" WALLET="+WALLET+"");
 
 redisClient.hmset("me", {
     "geo" : GEO,
@@ -53,7 +53,7 @@ redisClient.hmset("me", {
 });
 
 redisClient.hmset("genesis",{
-    "port" : "65013",
+    "port" : "65013",               //default
     "ipaddr" : "104.42.192.234"   //set by genesis node on connection
  });
 
@@ -67,6 +67,7 @@ function setMeIP() {
         console.log("setMeIP(): genesis="+dump(genesis));
         var URL="http://"+genesis.ipaddr+":"+genesis.port+"/config?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&wallet="+WALLET;
         console.log("Fetching URL for config: "+URL);
+        //FETCH CONFIG
         var req = http.get(URL, function (res) {
             var data = '', json_data;
             res.on('data', function (stream) {
