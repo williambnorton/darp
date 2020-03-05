@@ -49,7 +49,6 @@ app.get('/nodefactory', function (req, res) {
                          console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                      }
                      console.log("******** EXPRESS redis me="+dump(me));
-                        console.log("* * * * * * * I am the Genesis Node * * * * * * *");
                         var nodeEntry=geo+":"+me.group+".1";
                         var newNode={
                            "geo" : geo,
@@ -75,6 +74,8 @@ app.get('/nodefactory', function (req, res) {
                            "pktDrops": "0",
                            "remoteState": "0"
                      }
+                     console.log("* * * * * * * I am the Genesis Node * * * * * * *"+dump(newNode));
+
                      expressRedisClient.hmset(nodeEntry,{
                         "geo" : geo,
                         "port" : ""+port,
