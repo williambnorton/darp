@@ -78,18 +78,18 @@ function setMeIP() {
                 console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
                 var me=JSON.parse(json);
                 redisClient.hmset("me", {
-                    "geo" : me.geo,
-                    "port" : me.port,
-                    "ipaddr" : me.ipaddr,   //set by genesis node on connection
-                    "publickey" : me.publickey,
-                    "mint" : me.mint,      //set by genesis node
-                    "bootTime" : me.bootTime,   //boot time is when joined the group
-                    "group": me.group,
-                    "pulseGroups" : me.pulseGroups,  //list of groups I will pulse
+                    "geo" : ""+me.geo,
+                    "port" : ""+me.port,
+                    "ipaddr" : ""+me.ipaddr,   //set by genesis node on connection
+                    "publickey" : ""+me.publickey,
+                    "mint" : ""+me.mint,      //set by genesis node
+                    "bootTime" : ""+me.bootTime,   //boot time is when joined the group
+                    "group": ""+me.group,
+                    "pulseGroups" : ""+me.pulseGroups,  //list of groups I will pulse
                     //genesis connection info
-                    "genesisIP" : me.genesisIP,
-                    "genesisPort" : me.genesisPort,
-                    "genesisPublickey" : me.genesisPublickey,
+                    "genesisIP" : ""+me.genesisIP,
+                    "genesisPort" : ""+me.genesisPort,
+                    "genesisPublickey" : ""+me.genesisPublickey,
                     //statistics
                     "lastSeq": "0",
                     "pulseTimestamp": "0",
