@@ -18,33 +18,31 @@ app.get('/', function (req, res) {
 // Configuration for node - allocate a mint
 //
 app.get('/config', function (req, res) {
-   console.log('EXPRESS; config requested with params: '+dump(req.query));
+   console.log('****EXPRESS; config requested with params: '+dump(req.query));
 
-   console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
+   //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
    var geo=req.query.geo;
    var publickey=req.query.publickey;
    var port=req.query.port||65013;
    var wallet=req.query.wallet||"";
    // store incoming public key, ipaddr, port, geo, etc.
    var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-   console.log("EXPRESS  geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
+   console.log("****EXPRESS  geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
 
    if ( (typeof geo == "undefined") ||
         (typeof publickey == "undefined") )
         res.end("express.js : missing geo and/or publickey ");
    // send hmset me command
    else {
-      console.log("allocating a new mint ");
       expressRedisClient.incr("mintStack", (err, newMint) => {
          if (err) {
-            console.log("err="+err);
+            console.log("mintStack alloocation err="+err);
          } else {
                expressRedisClient.hgetall("genesis",function (err,genesis){
                   if (err) {
-                      console.log("Cant find Genesis node - maybe I am Genesis Node?")
-                     
+                      console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                   }
-                  console.log("EXPRESS  genesis=="+dump(genesis));
+                  console.log("******** EXPRESS redis genesis="+dump(genesis));
                   //console.log("express(): err="+err+" port="+port);
                
                   var newNode={
@@ -71,6 +69,9 @@ app.get('/config', function (req, res) {
                   "pktDrops": "0",
                   "remoteState": "0"
                   }
+
+                  console.log("************* newNode="+dump(newNode));
+
                   if (newMint==1) {
                   //I am Genesis Node
                   var genesisEntry=geo+":"+geo+".1";
