@@ -61,7 +61,7 @@ app.get('/nodefactory', function (req, res) {
                             //genesis connection info
                             "genesisIP": me.genesisIP,
                             "genesisPort": me.genesisPort,
-                            "genesisPublickey": me.genesisPublickey || "",
+                            "genesisPublickey": me.genesisPublickey || publickey,
                             //statistics
                             "lastSeq": "0",
                             "pulseTimestamp": "0",
