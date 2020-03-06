@@ -89,12 +89,12 @@ app.get('/nodefactory', function (req, res) {
 
                         // create the pulseGroup as well - the MAZORE.1 as a list of mints
                         expressRedisClient.lpush(me.group, newMint);   //I am the first in the list of mints
-                        console.log("push genesis first mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+me.ipaddr+" port="+me.port+" ipaddr="+me.publickey+" wallet="+me.wallet);
+                        console.log("push genesis first mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+incomingIP+" port="+me.port+" publickey="+me.publickey+" wallet="+me.wallet);
 
                         expressRedisClient.hmset("mint:"+newMint, {   //Assigned MINT TABLE - needed info to connect to remote
                            "mint" : ""+newMint,
                            "geo" : me.geo,
-                           "ipaddr" : me.ipaddr,
+                           "ipaddr" : incomingIP,
                            "port" : ""+me.port,
                            "publickey" : ""+me.publickey,
                            "wallet" : ""+me.wallet

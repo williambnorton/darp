@@ -25,7 +25,7 @@ do
                 fi
         fi
 done
-#echo PRIVATEKEY=$PRIVATEKEY PUBLICKEY=$PUBLICKEY
+echo PRIVATEKEY=$PRIVATEKEY PUBLICKEY=$PUBLICKEY
 #
 #	The wgbase model will be used to re-build the conf file
 #
