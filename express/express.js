@@ -49,7 +49,7 @@ app.get('/nodefactory', function (req, res) {
                         var nodeEntry = geo + ":" + me.group + ".1";
                         console.log("******** EXPRESS redis me=" + lib_1.dump(me));
                         //console.log("nodeEntry="+JSON.stringify())
-                        expressRedisClient.hmset(nodeEntry, {
+                        var obj = {
                             "geo": geo,
                             "port": "" + port,
                             "ipaddr": incomingIP,
@@ -72,7 +72,35 @@ app.get('/nodefactory', function (req, res) {
                             "owl": "0",
                             "pktDrops": "0",
                             "remoteState": "0"
-                        });
+                        };
+                        expressRedisClient.hmset(nodeEntry, obj);
+                        /***
+                                                expressRedisClient.hmset(nodeEntry, {
+                                                   "geo" : geo,
+                                                   "port" : ""+port,
+                                                   "ipaddr" : incomingIP,   //set by genesis node on connection
+                                                   "publickey" : publickey,
+                                                   "mint" : ""+newMint,      //set by genesis node
+                                                   "bootTime" : ""+now(),   //boot time is when joined the group
+                                                   "group": geo+".1",
+                                                   "pulseGroups" : me.group,  //list of groups I will pulse
+                                                   //genesis connection info
+                                                   "genesisIP" : me.genesisIP,
+                                                   "genesisPort" : me.genesisPort,
+                                                   "genesisPublickey" : me.genesisPublickey||publickey,
+                                                   //statistics
+                                                   "lastSeq": "0",
+                                                   "pulseTimestamp": "0",
+                                                   "inOctets": "0",
+                                                   "outOctets": "0",
+                                                   "inMsgs": "0",
+                                                   "outMsgs": "0",
+                                                   "owl": "0",
+                                                   "pktDrops": "0",
+                                                   "remoteState": "0"
+                                                });
+                        **/
+                        console.log("**************");
                         if (newMint == 1) {
                             console.log("* * * * * * * I am the Genesis Node * * * * * * *");
                             console.log("nodeEntry=" + nodeEntry + " genesisPublickey=" + me.publickey + " pulseGroups" + me.group);
