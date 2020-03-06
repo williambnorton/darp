@@ -68,7 +68,7 @@ function setMe() {
                         for (var group in ary) {
                             console.log("group="+group+" ary[]="+ary[group]);
                             //create me.geo:me.pulseGroups
-                            var groupEntryName=me.geo+":"+me.pulseGroups[group];
+                            var groupEntryName=me.geo+":"+ary[group];
                             console.log("setMe() creating "+groupEntryName);
                         }
                     }
