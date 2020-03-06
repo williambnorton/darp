@@ -14,9 +14,12 @@ redisClient.flushall();
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO=process.env.HOSTNAME||"DEVOPS";   //passed into docker
 var PORT=process.env.PORT||"65013";         //passed into docker
-var PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8', function (err,obj) {
-    return "deadbeef00deadbeef00deadbeef0012";
-});
+var PUBLICKEY;
+try {
+    PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+} catch (err) {
+    PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
+}
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
 //GEO=GEO.toString().split('.').split(',');
