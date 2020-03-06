@@ -14,7 +14,7 @@ redisClient.flushall();
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO=process.env.HOSTNAME||"DEVOPS";
 var PORT=process.env.PORT||"65013";
-var PUBLICKEY=process.env.PUBLICKEY || "";
+var PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
 //GEO=GEO.toString().split('.').split(',');
