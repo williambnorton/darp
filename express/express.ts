@@ -50,34 +50,38 @@ app.get('/nodefactory', function (req, res) {
                      }
                      console.log("******** EXPRESS redis me="+dump(me));
                         var nodeEntry=geo+":"+me.group+".1";
+                        var newNode = {
+                           "geo" : geo,
+                           "port" : ""+port,
+                           "ipaddr" : incomingIP,   //set by genesis node on connection
+                           "publickey" : publickey,
+                           "mint" : ""+newMint,      //set by genesis node
+                           "bootTime" : ""+now(),   //boot time is when joined the group
+                           "group": geo+".1",
+                           "pulseGroups" : geo+".1",  //list of groups I will pulse
+                           //genesis connection info
+                           "genesisIP" : me.genesisIP,
+                           "genesisPort" : me.genesisPort,
+                           "genesisPublickey" : me.genesisPublickey||"",
+                           //statistics
+                           "lastSeq": "0",
+                           "pulseTimestamp": "0",
+                           "inOctets": "0",
+                           "outOctets": "0",
+                           "inMsgs": "0",
+                           "outMsgs": "0",
+                           "owl": "0",
+                           "pktDrops": "0",
+                           "remoteState": "0"
+                        };
                      if (newMint==1) {
-                        me.genesisPublickey=me.publickey
+                        console.log("* * * * * * * I am the Genesis Node * * * * * * *");
+                        newNode.genesisPublickey=me.publickey
+                        newNode.pulseGroups=me.group;  //only on genesis group to start
+                     } else {
+                        //put my pulseGroup into entry
                      }
-                     console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                     expressRedisClient.hmset(nodeEntry,{
-                        "geo" : geo,
-                        "port" : ""+port,
-                        "ipaddr" : incomingIP,   //set by genesis node on connection
-                        "publickey" : publickey,
-                        "mint" : ""+newMint,      //set by genesis node
-                        "bootTime" : ""+now(),   //boot time is when joined the group
-                        "group": geo+".1",
-                        "pulseGroups" : geo+".1",  //list of groups I will pulse
-                        //genesis connection info
-                        "genesisIP" : me.genesisIP,
-                        "genesisPort" : me.genesisPort,
-                        "genesisPublickey" : me.genesisPublickey||"",
-                        //statistics
-                        "lastSeq": "0",
-                        "pulseTimestamp": "0",
-                        "inOctets": "0",
-                        "outOctets": "0",
-                        "inMsgs": "0",
-                        "outMsgs": "0",
-                        "owl": "0",
-                        "pktDrops": "0",
-                        "remoteState": "0"
-                     });       
+                     expressRedisClient.hmset(nodeEntry,newNode);       
                      expressRedisClient.hgetall(nodeEntry, function(err,json) {
                         if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
                         else {
