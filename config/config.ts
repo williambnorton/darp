@@ -41,7 +41,7 @@ var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b288
 
 console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+" PORT="+PORT+" WALLET="+WALLET+"");
 
-redisClient.hmset("me", {
+redisClient.hmset("me", {  //what i have so far
     "geo" : GEO,
     "port" : PORT,
     "publickey" : PUBLICKEY,
@@ -52,7 +52,7 @@ redisClient.hmset("me", {
     "wallet" : WALLET
 });
 
-redisClient.hmset("genesis",{
+redisClient.hmset("genesis",{       //what I have so far
     "port" : "65013",               //default
     "ipaddr" : "104.42.192.234"   //set by genesis node on connection
  });

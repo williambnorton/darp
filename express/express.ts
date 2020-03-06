@@ -81,7 +81,6 @@ app.get('/nodefactory', function (req, res) {
                      expressRedisClient.hgetall(nodeEntry, function(err,json) {
                         res.setHeader('Content-Type', 'application/json');   
                         res.end(JSON.stringify(json));
-
                         console.log("Exitting config");
                      });
                      
