@@ -63,6 +63,7 @@ function setMe() {
                             //create me.geo:me.pulseGroups
                             var groupEntryName = me.geo + ":" + ary[group];
                             console.log("setMe() creating " + groupEntryName);
+                            redisClient.hmset(groupEntryName, json);
                         }
                     }
                 });
