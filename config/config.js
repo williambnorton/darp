@@ -57,7 +57,8 @@ function setMe() {
                         console.log("CONFIG ERROR");
                     else {
                         console.log("ME **********" + lib_1.dump(me));
-                        for (var group in me.pulseGroups.split(",")) {
+                        var ary = me.pulseGroups.split(",");
+                        for (var group in ary) {
                             console.log("group=" + me.pulseGroups[group]);
                             //create me.geo:me.pulseGroups
                             var groupEntryName = me.geo + ":" + me.pulseGroups[group];
