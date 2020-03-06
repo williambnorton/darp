@@ -77,9 +77,12 @@ app.get('/nodefactory', function (req, res) {
                             "remoteState": "0"
                         });
                         expressRedisClient.hgetall(nodeEntry, function (err, json) {
+                            if (err)
+                                console.log("hgetall nodeEntry=" + nodeEntry + " failed");
+                            console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(json));
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify(json));
-                            console.log("Exitting config");
+                            console.log("EXPRESS nodeFactory done");
                         });
                     });
                 });
