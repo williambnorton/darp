@@ -56,7 +56,7 @@ app.get('/nodefactory', function (req, res) {
                             "publickey": publickey,
                             "mint": "" + newMint,
                             "bootTime": "" + lib_1.now(),
-                            "group": geo + ".1",
+                            "group": me.group,
                             "pulseGroups": me.group,
                             //genesis connection info
                             "genesisIP": me.genesisIP,
@@ -104,6 +104,8 @@ app.get('/nodefactory', function (req, res) {
                                 "genesisPublickey": me.publickey
                             });
                         }
+                        //push mint onto mint list for the group
+                        expressRedisClient.lpush(me.group + ".mints", newMint); //new node in group to pulse
                         //
                         // whether genesis node or not, set a MAZORE:MAZORE.1 entry
                         //

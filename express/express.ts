@@ -58,7 +58,7 @@ app.get('/nodefactory', function (req, res) {
                            "publickey" : publickey,
                            "mint" : ""+newMint,      //set by genesis node
                            "bootTime" : ""+now(),   //boot time is when joined the group
-                           "group": geo+".1",
+                           "group": me.group,
                            "pulseGroups" : me.group,  //list of groups I will pulse
                            //genesis connection info
                            "genesisIP" : me.genesisIP,
@@ -100,6 +100,9 @@ app.get('/nodefactory', function (req, res) {
                            "wallet" : ""+me.wallet
                         });
                         console.log("pushed genesis first mint - me");
+         
+
+
 
                         //here we would coninually update expiuration date
                      } else {
@@ -110,6 +113,8 @@ app.get('/nodefactory', function (req, res) {
                            "genesisPublickey" : me.publickey
                         });
                      }
+                        //push mint onto mint list for the group
+                     expressRedisClient.lpush(me.group+".mints", newMint);  //new node in group to pulse
                      //
                      // whether genesis node or not, set a MAZORE:MAZORE.1 entry
                      //
