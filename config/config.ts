@@ -66,7 +66,7 @@ function setMe() {
                         console.log("ME **********"+dump(me));
                         var ary=me.pulseGroups.split(",");
                         for (var group in ary) {
-                            console.log("group="+me.pulseGroups[group]);
+                            console.log("group="+group+" ary[]="+ary[group]);
                             //create me.geo:me.pulseGroups
                             var groupEntryName=me.geo+":"+me.pulseGroups[group];
                             console.log("setMe() creating "+groupEntryName);
