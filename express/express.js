@@ -57,7 +57,7 @@ app.get('/nodefactory', function (req, res) {
                             "mint": "" + newMint,
                             "bootTime": "" + lib_1.now(),
                             "group": geo + ".1",
-                            "pulseGroups": geo + ".1",
+                            "pulseGroups": me.group,
                             //genesis connection info
                             "genesisIP": me.genesisIP,
                             "genesisPort": me.genesisPort,
@@ -75,10 +75,10 @@ app.get('/nodefactory', function (req, res) {
                         });
                         if (newMint == 1) {
                             console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                            //expressRedisClient.hmset(nodeEntry, {
-                            //   "genesisPublickey" : me.publickey,
-                            //   "pulseGroups" : me.group
-                            //});
+                            expressRedisClient.hmset(nodeEntry, {
+                                "genesisPublickey": me.publickey,
+                                "pulseGroups": me.group
+                            });
                         }
                         else {
                             console.log("* * * * * * * Node mint #" + newMint + " * * * * * * *");
