@@ -48,7 +48,7 @@ app.get('/nodefactory', function (req, res) {
                         }
                         console.log("******** EXPRESS redis me=" + lib_1.dump(me));
                         var nodeEntry = geo + ":" + me.group + ".1";
-                        var newNode = {
+                        expressRedisClient.hmset(nodeEntry, {
                             "geo": geo,
                             "port": "" + port,
                             "ipaddr": incomingIP,
@@ -71,16 +71,21 @@ app.get('/nodefactory', function (req, res) {
                             "owl": "0",
                             "pktDrops": "0",
                             "remoteState": "0"
-                        };
+                        });
                         if (newMint == 1) {
                             console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                            newNode.genesisPublickey = me.publickey;
-                            newNode.pulseGroups = me.group; //only on genesis group to start
+                            expressRedisClient.hmset(nodeEntry, {
+                                "genesisPublickey": me.publickey,
+                                "pulseGroups": me.group
+                            });
                         }
                         else {
+                            console.log("* * * * * * * Node mint #" + newMint + " * * * * * * *");
                             //put my pulseGroup into entry
                         }
-                        expressRedisClient.hmset(nodeEntry, newNode);
+                        //
+                        // whether genesis node or not, set a MAZORE:MAZORE.1 entry
+                        //
                         expressRedisClient.hgetall(nodeEntry, function (err, json) {
                             if (err)
                                 console.log("hgetall nodeEntry=" + nodeEntry + " failed");
