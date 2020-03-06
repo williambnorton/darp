@@ -23,6 +23,7 @@ console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+" PORT="+POR
 
 redisClient.hmset("me", {  //what i have so far
     "geo" : GEO,
+    "group" : GEO+".1",
     "port" : PORT,
     "publickey" : PUBLICKEY,
     "bootTime" : ""+now(),   //boot time is when joined the group

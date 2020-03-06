@@ -19,6 +19,7 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
 redisClient.hmset("me", {
     "geo": GEO,
+    "group": GEO + ".1",
     "port": PORT,
     "publickey": PUBLICKEY,
     "bootTime": "" + lib_1.now(),
