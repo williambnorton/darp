@@ -58,8 +58,9 @@ function setMe() {
                     else {
                         console.log("ME **********" + lib_1.dump(me));
                         for (var group in me.pulseGroups) {
+                            console.log("group=" + me.pulseGroups[group]);
                             //create me.geo:me.pulseGroups
-                            var groupEntryName = me.geo + ":" + group;
+                            var groupEntryName = me.geo + ":" + me.pulseGroups[group];
                             console.log("setMe() creating " + groupEntryName);
                         }
                     }
