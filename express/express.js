@@ -100,7 +100,7 @@ app.get('/nodefactory', function (req, res) {
                                                    "remoteState": "0"
                                                 });
                         **/
-                        console.log("**************");
+                        //console.log("**************");
                         if (newMint == 1) {
                             console.log("* * * * * * * I am the Genesis Node * * * * * * *");
                             console.log("nodeEntry=" + nodeEntry + " genesisPublickey=" + me.publickey + " pulseGroups" + me.group);
