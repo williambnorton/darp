@@ -75,10 +75,10 @@ app.get('/nodefactory', function (req, res) {
                         });
                         if (newMint == 1) {
                             console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                            expressRedisClient.hmset(nodeEntry, {
-                                "genesisPublickey": me.publickey,
-                                "pulseGroups": me.group
-                            });
+                            //expressRedisClient.hmset(nodeEntry, {
+                            //   "genesisPublickey" : me.publickey,
+                            //   "pulseGroups" : me.group
+                            //});
                         }
                         else {
                             console.log("* * * * * * * Node mint #" + newMint + " * * * * * * *");

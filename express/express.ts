@@ -38,13 +38,13 @@ app.get('/nodefactory', function (req, res) {
          if (err) {
             console.log("mintStack alloocation err="+err);
          } else {
-               expressRedisClient.hgetall("genesis",function (err,genesis){
+               expressRedisClient.hgetall("genesis",function (err,genesis){   //get GENESIS data
                   if (err) {
                       console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                   }
                   console.log("******** EXPRESS redis genesis="+dump(genesis));
                   //console.log("express(): err="+err+" port="+port);
-                  expressRedisClient.hgetall("me",function (err,me){
+                  expressRedisClient.hgetall("me",function (err,me){          //get ME data
                      if (err) {
                          console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                      }
@@ -77,10 +77,10 @@ app.get('/nodefactory', function (req, res) {
                         });
                      if (newMint==1) {
                         console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                        expressRedisClient.hmset(nodeEntry, {
-                           "genesisPublickey" : me.publickey,
-                           "pulseGroups" : me.group
-                        });
+                        //expressRedisClient.hmset(nodeEntry, {
+                        //   "genesisPublickey" : me.publickey,
+                        //   "pulseGroups" : me.group
+                        //});
                      } else {
                         console.log("* * * * * * * Node mint #"+newMint+" * * * * * * *");
                         //put my pulseGroup into entry
