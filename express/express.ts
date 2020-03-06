@@ -80,14 +80,17 @@ app.get('/nodefactory', function (req, res) {
                      //console.log("**************");
                      if (newMint==1) {
                         console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                        console.log("nodeEntry="+nodeEntry+" genesisPublickey=" +me.publickey+" pulseGroups" + me.group);
+                        console.log("nodeEntry="+nodeEntry+" genesisPublickey=" +me.publickey+" pulseGroups" + me.pulseGroups + " me.group="+me.group);
                         expressRedisClient.hmset(nodeEntry, {
                            "genesisPublickey" : me.publickey,
                            "pulseGroups" : me.group
                         });
+                        console.log("updated genesis node entry");
+
                         // create the pulseGroup as well - the MAZORE.1 as a list of mints
                         expressRedisClient.lpush(me.group, newMint);   //I am the first in the list of mints
-                        
+                        console.log("push genesis first mint - me");
+
                         expressRedisClient.hmset("mint:"+newMint, {   //Assigned MINT TABLE - needed info to connect to remote
                            "mint" : ""+newMint,
                            "geo" : me.geo,
@@ -96,6 +99,8 @@ app.get('/nodefactory', function (req, res) {
                            "publickey" : ""+me.publickey,
                            "wallet" : ""+me.wallet
                         });
+                        console.log("pushed genesis first mint - me");
+
                         //here we would coninually update expiuration date
                      } else {
                         console.log("* * * * * * * Node mint #"+newMint+" * * * * * * *");
