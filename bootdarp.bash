@@ -7,7 +7,6 @@ mv /darp /tmp/darp
 echo `date` Cloning new darp code from github
 git clone https://github.com/williambnorton/darp.git    /darp     
 cd /darp
-echo `date` New darp version: `ls build*` installed
 ls -l /darp
 
 #temp to scaffolding to help build
@@ -20,3 +19,4 @@ node express &
 #cd /darp/scripts
 #./forever.bash  #Start the system
 
+echo `date` New darp version: `ls /darp/build*` installed
