@@ -25,19 +25,21 @@ function pulse() {
       var pulseGroups=me.pulseGroups.split(" ");
       for (var PG in pulseGroups) {
         var pulseGroup=pulseGroups[PG];
+        console.log("* pulseGroup="+pulseGroup);
         //fetch the group mints mint:2 : 2  mint:5 : 5   ....
         redisClient.hgetall(pulseGroup, function(err, pulseGroupNodes) {
           if (err) {
             console.log("hgetall pulseGroup mints "+pulseGroupNodes+" failed");
           } else {
-            console.log("pulseGroup="+dump(pulseGroupNodes));
+            console.log("*** ** ** pulseGroupNodes="+dump(pulseGroupNodes));
             for (var mintKey in pulseGroupNodes) {
-              console.log("pulser mintKey="+mintKey);
+              console.log("**** pulser mintKey="+mintKey);
               redisClient.hgetall(mintKey, function(err, mint) {
                 if (err) {
                   console.log("hgetall mint "+mintKey+" failed");
                 } else {
-                  console.log("mintKey="+dump(mintKey));
+                  console.log("***** mintKey="+dump(mintKey));
+
                 }
               });
             }
