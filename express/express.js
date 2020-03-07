@@ -74,7 +74,7 @@ app.get('/nodefactory', function (req, res) {
                             "remoteState": "0"
                         };
                         expressRedisClient.hmset(nodeEntry, obj);
-                        //console.log("**************");
+                        //console.log("****************      GENESIS NODE       ********");
                         if (newMint == 1) {
                             console.log("* * * * * * * I am the Genesis Node * * * * * * *");
                             console.log("nodeEntry=" + nodeEntry + " genesisPublickey=" + me.publickey + " pulseGroups" + me.pulseGroups + " me.group=" + me.group);
@@ -96,12 +96,14 @@ app.get('/nodefactory', function (req, res) {
                             });
                             console.log("pushed genesis first mint - me");
                         }
-                        else { //NON GENESIS NODE
+                        else { //******************* REGULAR NODE ****************
                             console.log("* * * * * * * Node mint #" + newMint + " * * * * * * *");
                             //put my pulseGroup into entry
                             expressRedisClient.hmset(nodeEntry, {
                                 "genesisPublickey": me.publickey
                             });
+                            expressRedisClient.rpush(me.group, newMint); //I am the first in the list of mints
+                            console.log("push mint - me mint=" + newMint + " geo=" + me.geo + " ipaddr" + incomingIP + " port=" + me.port + " publickey=" + me.publickey + " wallet=" + me.wallet);
                         }
                         //push mint onto mint list for the group
                         expressRedisClient.rpush(me.group + ".mints", newMint); //new node in group to pulse
