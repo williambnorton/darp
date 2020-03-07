@@ -109,12 +109,12 @@ app.get('/nodefactory', function (req, res) {
                            "genesisPublickey" : me.publickey
                         });
 
-                        expressRedisClient.rpush(me.group, newMint);   //I am the first in the list of mints
-                        console.log("push mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+incomingIP+" port="+me.port+" publickey="+me.publickey+" wallet="+me.wallet);
-
-                     }
+                        //expressRedisClient.rpush(me.group, newMint);   //I am the first in the list of mints
+                        //console.log("push mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+incomingIP+" port="+me.port+" publickey="+me.publickey+" wallet="+me.wallet);
                         //push mint onto mint list for the group
-                     expressRedisClient.rpush(me.group+".mints", newMint);  //new node in group to pulse
+                        expressRedisClient.rpush(me.group+".mints", newMint);  //new node in group to pulse
+                     }
+
                      //
                      // whether genesis node or not, set a MAZORE:MAZORE.1 entry
                      //
