@@ -51,7 +51,7 @@ app.get('/nodefactory', function (req, res) {
                      var nodeEntry=geo+":"+me.group;
                      console.log("******** EXPRESS redis me="+dump(me));
                         //console.log("nodeEntry="+JSON.stringify())
-                     var obj={
+                     var newNode={
                            "geo" : geo,
                            "port" : ""+port,
                            "ipaddr" : incomingIP,   //set by genesis node on connection
@@ -75,47 +75,10 @@ app.get('/nodefactory', function (req, res) {
                            "pktDrops": "0",
                            "remoteState": "0"
                      };
-                     expressRedisClient.hmset(nodeEntry, obj);
+                     //make any adjustmenets here for gebnesis vs non genesis nodes
+                     expressRedisClient.hmset(nodeEntry, newNode);
 
-                     //console.log("****************      GENESIS NODE       ********");
-                     if (newMint==1) {
-                        console.log("* * * * * * * I am the Genesis Node * * * * * * *");
-                        
-                        //expressRedisClient.hmset(nodeEntry, {
-                        //   "genesisPublickey" : me.publickey,
-                        //   "pulseGroups" : me.group
-                        //});
-                        //console.log("updated genesis node entry");
-
-                        // create the pulseGroup as well - the MAZORE.1 as a list of mints
-                        console.log("push genesis first mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+incomingIP+" port="+me.port+" publickey="+me.publickey+" wallet="+me.wallet);
-
-                        //expressRedisClient.hmset("mint:"+newMint, {   //Assigned MINT TABLE - needed info to connect to remote
-                        //   "mint" : ""+newMint,
-                        //   "geo" : geo,
-                        //   "ipaddr" : incomingIP,
-                        //   "port" : ""+port,
-                        //   "publickey" : ""+publickey,
-                        //   "wallet" : ""+wallet
-                        //});
-                        //console.log("pushed genesis first mint - me");
-
-                     } else {   //******************* REGULAR NODE ****************
-                        console.log("* * * * * * * Node mint #"+newMint+" * * * * * * *");
-
-                        console.log("pushed genesis first mint - me");
-                        //put my pulseGroup into entry
-                        //expressRedisClient.hmset(nodeEntry, {
-                        //   "genesisPublickey" : me.publickey
-                        //});
-
-                        //expressRedisClient.rpush(me.group, newMint);   //I am the first in the list of mints
-                        //console.log("push mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+incomingIP+" port="+me.port+" publickey="+me.publickey+" wallet="+me.wallet);
-                        //push mint onto mint list for the group
-                        console.log("about to save newMint to mintTable: "+me.group+".mints w/new "+ "newMint="+newMint);
-                        //expressRedisClient.rpush(me.group+".mints", newMint);  //new node in group to pulse
-                     }
-                     console.log("nodeEntry="+nodeEntry+" me.publickey=" +me.publickey+" pulseGroups" + me.pulseGroups + " me.group="+me.group);
+                     console.log("nodeEntry="+nodeEntry+" publickey=" +publickey+" pulseGroups" + newNode.pulseGroups + " me.group="+me.group);
                      expressRedisClient.rpush(me.group, newMint);   //I am the first in the list of mints
 
                      expressRedisClient.hmset("mint:"+newMint, {   //Assigned MINT TABLE - needed info to connect to remote
