@@ -78,7 +78,22 @@ function setMe() {
                             var nodeEntry=me.geo+":"+ary[group];
                             console.log("setMe() creating "+nodeEntry);
                             
-                            redisClient.hmset(nodeEntry,json);
+                            redisClient.hmset(nodeEntry,json);  //save <me>:MAZORE.1
+                            //eventually, on pulse? we need to add own mint to MAZORE.1
+
+                            //we need mintTable - for me
+                     //Assigned MINT TABLE - needed info to connect to remote
+                     redisClient.hmset("mint:"+json.newMint, {   
+                        "mint" : json.mint,
+                        "geo" : json.geo,
+                        "ipaddr" : json.ipaddr,
+                        "port" : ""+json.port,
+                        "publickey" : ""+json.publickey,
+                        "wallet" : ""+json.wallet
+                     });
+                            //reinit wireguard
+
+
                             redisClient.hgetall(nodeEntry, function(err,json) {
                                 if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
                                 else {
