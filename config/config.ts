@@ -4,6 +4,7 @@
 //  me - my internal state and pointer to genesis
 //
 import { dump, now } from "../lib/lib";
+import { setWireguard } from "../wireguard/wireguard";
 var http = require('http');
 
 const pulseRedis = require('redis');
@@ -74,10 +75,20 @@ function setMe() {
                         for (var group in ary) {
                             console.log("group="+group+" ary[]="+ary[group]);
                             //create me.geo:me.pulseGroups
-                            var groupEntryName=me.geo+":"+ary[group];
-                            console.log("setMe() creating "+groupEntryName);
+                            var nodeEntry=me.geo+":"+ary[group];
+                            console.log("setMe() creating "+nodeEntry);
                             
-                            redisClient.hmset(groupEntryName,json);
+                            redisClient.hmset(nodeEntry,json);
+                            redisClient.hgetall(nodeEntry, function(err,json) {
+                                if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
+                                else {
+                                   console.log("EXPRESS nodeFactory sent us our config json="+dump(json));
+                                   //res.setHeader('Content-Type', 'application/json');   
+                                   //res.end(JSON.stringify(json));
+                                   console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+
+                                }
+                             });
                         }
                     }
                 });

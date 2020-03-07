@@ -95,9 +95,8 @@ app.get('/nodefactory', function (req, res) {
                                 "wallet": "" + me.wallet
                             });
                             console.log("pushed genesis first mint - me");
-                            //here we would coninually update expiuration date
                         }
-                        else {
+                        else { //NON GENESIS NODE
                             console.log("* * * * * * * Node mint #" + newMint + " * * * * * * *");
                             //put my pulseGroup into entry
                             expressRedisClient.hmset(nodeEntry, {
@@ -105,7 +104,7 @@ app.get('/nodefactory', function (req, res) {
                             });
                         }
                         //push mint onto mint list for the group
-                        expressRedisClient.lpush(me.group + ".mints", newMint); //new node in group to pulse
+                        expressRedisClient.rpush(me.group + ".mints", newMint); //new node in group to pulse
                         //
                         // whether genesis node or not, set a MAZORE:MAZORE.1 entry
                         //
@@ -116,6 +115,7 @@ app.get('/nodefactory', function (req, res) {
                                 console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(json));
                                 res.setHeader('Content-Type', 'application/json');
                                 res.end(JSON.stringify(json));
+                                console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 console.log("EXPRESS nodeFactory done");
                             }
                         });
