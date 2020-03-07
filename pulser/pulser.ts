@@ -1,4 +1,4 @@
-import { dump, getGenesis } from "../lib/lib";
+import { dump, getGenesis, now } from "../lib/lib";
 
 //
 //  pulse - send my owl measurements to my pulseGroups
@@ -14,63 +14,62 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 pulse();
 
 function pulse() {
-  
-  //get my pulsegroups
   redisClient.hgetall("me", function(err, me) {
     if (err) {
       console.log("hgetall me failed");
     } else {
-      console.log("me="+JSON.stringify(me,null,2));
+      //console.log("me="+JSON.stringify(me,null,2));
       //  MAZORE.1 MAZDAL.1
       var pulseGroups=me.pulseGroups.split(" ");
       for (var PG in pulseGroups) {
         var pulseGroup=pulseGroups[PG];
-        console.log("* pulseGroup="+pulseGroup);
-        //fetch the group mints mint:2 : 2  mint:5 : 5   ....
-        redisClient.hgetall(pulseGroup, function(err, pulseGroupNodes) {
+        
+        //make a pulse message
+        console.log("pulse(): Make a pulse Message, pulseGroup="+pulseGroup);
+      
+        //I am pulsing my measurement from others
+        //in the format OWL:MAZORE:MAZORE.1=1:2-1=23,3-1=46
+        var pulse="OWL"+me.seqNum+","+now()+","+me.geo+":"+pulseGroup+"=";  //MAZORE:MAZJAP.1
+        //
+        //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
+        //
+        redisClient.hgetall(pulseGroup+".owls", function (err, owls) {
           if (err) {
-            console.log("hgetall pulseGroup mints "+pulseGroupNodes+" failed");
+            console.log("couldn't find any owls");
           } else {
-            console.log("*** ** ** pulseGroupNodes="+dump(pulseGroupNodes));
-            for (var mintKey in pulseGroupNodes) {   //mint:1  mint:2  mint:3
-              console.log("**** pulser mintKey="+mintKey);
-              redisClient.hgetall(mintKey, function(err, mintKey) {
-                if (err) {
-                  console.log("hgetall mintKey "+mintKey+" failed");
-                } else {
-                  console.log("***** go pulse mintKey="+dump(mintKey));
-                    console.log("do anything with each mint in pulseGroup - iterator?");
-                    console.log("callback here to make OWL pulse entries, then again to pulse it to each mint");
-                }
-              });
-            }
+            console.log("make my pulse message from these owls="+owls);
+
           }
         });
-      } 
-      /**** 
-      // for each pulseGroup name, hgetall <pulseGoupName> to get population
-      for (var pulseGroup in pulseGroups) {
-        var groupEntry=pulseGroups[pulseGroup];
-          console.log("groupEntry="+JSON.stringify(groupEntry,null,2));
+        //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   
+        // handlepulse stores all OWLS here: (MAZORE.1.workingOWLs = 2-1: 23 3-1: 43 2-3: 43 ... )
 
-          redisClient.hgetall(groupEntry+".owls", function(err, owls) {
-            console.log("owls="+JSON.stringify(owls,null,2));
-            // for each pulseGroup population, make a pulsePacket
-            var pulseMsg=makePulse(groupEntry,owls);
-            // for each node in pulseGroup, send pulseMessage
-            console.log("pulse="+pulseMsg);
-            for (var owl in owls) {
-                console.log("pulsing pulseMsg:"+pulseMsg+" owl="+owl+" to "+HOST+":"+PORT);
-                 networkClient.send(pulseMsg, 0, pulseMsg.length, PORT, HOST, function(err, bytes) {
-                  if (err) throw err;
-                    console.log('UDP message sent to ' + HOST +':'+ PORT);
-                    //networkClient.close();
-                });
-            }
 
-          });
-       ****/
 
+      }
+    }
+  });
+}
+
+function forEachMint(pulseGroup,callback) { 
+  console.log("forEachMint() : pulseGroup="+pulseGroup);
+  //fetch the group mints mint:2 : 2  mint:5 : 5   ....
+  redisClient.hgetall(pulseGroup, function(err, pulseGroupNodes) {
+    console.log("insideIterator");
+    if (err) {
+            console.log("forEachMint(): hgetall pulseGroup mints "+pulseGroupNodes+" failed");
+    } else {
+      console.log("forEachMint(): *** ** ** pulseGroupNodes="+dump(pulseGroupNodes));
+      for (var mintKey in pulseGroupNodes) {   //mint:1  mint:2  mint:3
+        console.log("forEachMint(): **** pulser mintKey="+mintKey);
+        redisClient.hgetall(mintKey, function(err, mintKey) {
+                if (err) {
+                  console.log("forEachMint(): hgetall mintKey "+mintKey+" failed");
+                } else {
+                    callback(mintKey);
+                }
+        });
+      }
     }
   });
   //setTimeout(pulse,3000); //pulse again in 3 seconds
