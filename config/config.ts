@@ -17,10 +17,11 @@ var GEO=process.env.HOSTNAME||"DEVOPS";   //passed into docker
 var PORT=process.env.PORT||"65013";         //passed into docker
 var PUBLICKEY;
 try {
-    PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+    PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8').replace(/[\n\t\r]/g,"");
 } catch (err) {
     PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
 }
+
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
 //GEO=GEO.toString().split('.').split(',');
@@ -95,18 +96,16 @@ function setMe() {
                             redisClient.hmset("mint:"+json.mint, newMintEntry);
 
                             //if we haven't installed out genesis node, install it in the mint table now
-                            var genesisMint={
-                                
+                            var genesisMint={  
                                     "mint" : "1",
                                     "geo" : json.group.split(".")[0],
                                     "ipaddr" : json.genesisIP,
                                     "port" : ""+json.genesisPort,
                                     "publickey" : ""+json.genesisPublickey,
                                     "wallet" : ""
-                            
                             } 
                             console.log("genesisMint="+dump(genesisMint));                           
-                            redisClient.hset("mint:1",genesisMint);
+                            redisClient.hmset("mint:1",genesisMint);
 
 
                             redisClient.hgetall(nodeEntry, function(err,json) {

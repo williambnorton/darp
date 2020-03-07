@@ -15,7 +15,7 @@ var GEO = process.env.HOSTNAME || "DEVOPS"; //passed into docker
 var PORT = process.env.PORT || "65013"; //passed into docker
 var PUBLICKEY;
 try {
-    PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+    PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8').replace(/[\n\t\r]/g, "");
 }
 catch (err) {
     PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
@@ -94,7 +94,7 @@ function setMe() {
                                 "wallet": ""
                             };
                             console.log("genesisMint=" + lib_1.dump(genesisMint));
-                            redisClient.hset("mint:1", genesisMint);
+                            redisClient.hmset("mint:1", genesisMint);
                             redisClient.hgetall(nodeEntry, function (err, json) {
                                 if (err)
                                     console.log("hgetall nodeEntry=" + nodeEntry + " failed");
