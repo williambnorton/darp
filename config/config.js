@@ -83,7 +83,7 @@ function setMe() {
                                 "wallet": "" + json.wallet
                             };
                             console.log("newMintEntry=" + lib_1.dump(newMintEntry));
-                            redisClient.hmset("mint:" + json.newMint, newMintEntry);
+                            redisClient.hmset("mint:" + json.mint, newMintEntry);
                             //reinit wireguard
                             redisClient.hgetall(nodeEntry, function (err, json) {
                                 if (err)

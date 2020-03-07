@@ -82,17 +82,17 @@ function setMe() {
                             //eventually, on pulse? we need to add own mint to MAZORE.1
 
                             //we need mintTable - for me
-                     //Assigned MINT TABLE - needed info to connect to remote
-                     var newMintEntry={   
-                        "mint" : json.mint,
-                        "geo" : json.geo,
-                        "ipaddr" : json.ipaddr,
-                        "port" : ""+json.port,
-                        "publickey" : ""+json.publickey,
-                        "wallet" : ""+json.wallet
-                     }
-                     console.log("newMintEntry="+dump(newMintEntry));
-                     redisClient.hmset("mint:"+json.newMint, newMintEntry);
+                             //Assigned MINT TABLE - needed info to connect to remote
+                            var newMintEntry={   
+                                "mint" : json.mint,
+                                "geo" : json.geo,
+                                "ipaddr" : json.ipaddr,
+                                "port" : ""+json.port,
+                                "publickey" : ""+json.publickey,
+                                "wallet" : ""+json.wallet
+                            }
+                            console.log("newMintEntry="+dump(newMintEntry));
+                            redisClient.hmset("mint:"+json.mint, newMintEntry);
                             //reinit wireguard
 
 
