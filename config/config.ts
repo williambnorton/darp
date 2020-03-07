@@ -18,6 +18,7 @@ var PORT=process.env.PORT||"65013";         //passed into docker
 var PUBLICKEY;
 try {
     PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+    console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
 } catch (err) {
     PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
 }
