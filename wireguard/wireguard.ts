@@ -4,6 +4,9 @@
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
+export function getPublicKey() {
+    return require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+}
 export function setWireguard() {
 //we assume these file were set by configWG
 var BASECONFIG;
