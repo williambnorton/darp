@@ -84,7 +84,15 @@ function setMe() {
                             };
                             console.log("newMintEntry=" + lib_1.dump(newMintEntry));
                             redisClient.hmset("mint:" + json.mint, newMintEntry);
-                            //reinit wireguard
+                            //if we haven't installed out genesis node, install it in the mint table now
+                            redisClient.hset("mint:1", {
+                                "mint": "1",
+                                "geo": json.group.split(".")[0],
+                                "ipaddr": json.genesisIP,
+                                "port": "" + json.genesisPort,
+                                "publickey": "" + json.genesisPublickey,
+                                "wallet": ""
+                            });
                             redisClient.hgetall(nodeEntry, function (err, json) {
                                 if (err)
                                     console.log("hgetall nodeEntry=" + nodeEntry + " failed");
@@ -95,6 +103,7 @@ function setMe() {
                                     console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 }
                             });
+                            //reinit wireguard
                         }
                     }
                 });
