@@ -31,14 +31,14 @@ function pulse() {
                     }
                     else {
                         console.log("*** ** ** pulseGroupNodes=" + lib_1.dump(pulseGroupNodes));
-                        for (var mintKey in pulseGroupNodes) {
+                        for (var mintKey in pulseGroupNodes) { //mint:1  mint:2  mint:3
                             console.log("**** pulser mintKey=" + mintKey);
-                            redisClient.hgetall(mintKey, function (err, mint) {
+                            redisClient.hgetall(mintKey, function (err, mintKey) {
                                 if (err) {
-                                    console.log("hgetall mint " + mintKey + " failed");
+                                    console.log("hgetall mintKey " + mintKey + " failed");
                                 }
                                 else {
-                                    console.log("***** mintKey=" + lib_1.dump(mintKey));
+                                    console.log("***** go pulse mintKey=" + lib_1.dump(mintKey));
                                 }
                             });
                         }
