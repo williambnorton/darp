@@ -13,7 +13,7 @@ echo `date` configuring initial wireguard keys
 cd /darp/scripts/
 ./configWG.bash
 PUBLICKEY=`cat /etc/wireguard/publickey`
-
+echo PUBLICKEY=$PUBLICKEY
 #temp to scaffolding to help build
 cd /darp
 redis-server &  #temp to help building

@@ -15,7 +15,7 @@ var GEO = process.env.HOSTNAME || "DEVOPS"; //passed into docker
 var PORT = process.env.PORT || "65013"; //passed into docker
 var PUBLICKEY;
 try {
-    PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8').replace(/[\n\t\r]/g, "");
+    PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
 }
 catch (err) {
     PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
