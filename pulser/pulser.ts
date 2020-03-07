@@ -33,11 +33,13 @@ function pulse() {
         //
         //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
         //
-        redisClient.hgetall(pulseGroup+".owls", function (err, owls) {
+        redisClient.hgetall(pulseGroup, function (err, mints) {
           if (err) {
             console.log("couldn't find any owls");
           } else {
-            console.log("make my pulse message from these owls="+owls);
+
+            console.log("make my pulse message from these mints="+mints);
+            //for each mint in the group, fetch the PEER-ME : OWL
 
           }
         });
