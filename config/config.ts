@@ -83,14 +83,16 @@ function setMe() {
 
                             //we need mintTable - for me
                      //Assigned MINT TABLE - needed info to connect to remote
-                     redisClient.hmset("mint:"+json.newMint, {   
+                     var newMintEntry={   
                         "mint" : json.mint,
                         "geo" : json.geo,
                         "ipaddr" : json.ipaddr,
                         "port" : ""+json.port,
                         "publickey" : ""+json.publickey,
                         "wallet" : ""+json.wallet
-                     });
+                     }
+                     console.log("newMintEntry="+dump(newMintEntry));
+                     redisClient.hmset("mint:"+json.newMint, newMintEntry);
                             //reinit wireguard
 
 
