@@ -39,7 +39,8 @@ function pulse() {
                   console.log("hgetall mintKey "+mintKey+" failed");
                 } else {
                   console.log("***** go pulse mintKey="+dump(mintKey));
-
+                    console.log("do anything with each mint in pulseGroup - iterator?");
+                    console.log("callback here to make OWL pulse entries, then again to pulse it to each mint");
                 }
               });
             }

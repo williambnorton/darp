@@ -39,6 +39,8 @@ function pulse() {
                                 }
                                 else {
                                     console.log("***** go pulse mintKey=" + lib_1.dump(mintKey));
+                                    console.log("do anything with each mint in pulseGroup - iterator?");
+                                    console.log("callback here to make OWL pulse entries, then again to pulse it to each mint");
                                 }
                             });
                         }
