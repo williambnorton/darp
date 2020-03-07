@@ -105,6 +105,7 @@ app.get('/nodefactory', function (req, res) {
                             //expressRedisClient.rpush(me.group, newMint);   //I am the first in the list of mints
                             //console.log("push mint - me mint="+newMint+" geo="+me.geo+" ipaddr"+incomingIP+" port="+me.port+" publickey="+me.publickey+" wallet="+me.wallet);
                             //push mint onto mint list for the group
+                            console.log("about to save newMint to mintTable: " + me.group + ".mints w/new " + "newMint=" + newMint);
                             expressRedisClient.rpush(me.group + ".mints", newMint); //new node in group to pulse
                         }
                         //
