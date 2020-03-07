@@ -64,6 +64,7 @@ app.get('/nodefactory', function (req, res) {
                            "genesisIP" : me.genesisIP,
                            "genesisPort" : me.genesisPort,
                            "genesisPublickey" : me.genesisPublickey||publickey,
+                           "wallet" : wallet,
                            //statistics
                            "lastSeq": "0",
                            "pulseTimestamp": "0",
@@ -83,12 +84,12 @@ app.get('/nodefactory', function (req, res) {
                      
                      //Assigned MINT TABLE - needed info to connect to remote
                      expressRedisClient.hmset("mint:"+newMint, {   
-                        "mint" : ""+newMint,
-                        "geo" : me.geo,
-                        "ipaddr" : incomingIP,
-                        "port" : ""+me.port,
-                        "publickey" : ""+me.publickey,
-                        "wallet" : ""+me.wallet
+                        "mint" : newNode.mint,
+                        "geo" : newNode.geo,
+                        "ipaddr" : newNode.ipaddr,
+                        "port" : ""+newNode.port,
+                        "publickey" : ""+newNode.publickey,
+                        "wallet" : ""+newNode.wallet
                      });
                      //
                      // whether genesis node or not, set a MAZORE:MAZORE.1 entry
