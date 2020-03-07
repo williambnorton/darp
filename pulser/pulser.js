@@ -37,6 +37,14 @@ function pulse() {
                     else {
                         console.log("make my pulse message from these mints=" + lib_1.dump(mints));
                         //for each mint in the group, fetch the PEER-ME : OWL
+                        for (var mint in mints) {
+                            var entry = mints[mint];
+                            var owlLabel = entry.mint + "-" + me.mint; //src to me
+                            console.log("got fetch this owl owlLabel=" + owlLabel);
+                            redisClient.hget(entry.group + ".owls", owlLabel, function (err, owl) {
+                                console.log(entry.mint + "->" + me.mint + "=" + owl);
+                            });
+                        }
                     }
                 });
                 //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   
