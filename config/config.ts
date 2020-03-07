@@ -95,14 +95,18 @@ function setMe() {
                             redisClient.hmset("mint:"+json.mint, newMintEntry);
 
                             //if we haven't installed out genesis node, install it in the mint table now
-                            redisClient.hset("mint:1",{
+                            var genesisMint={
+                                
                                     "mint" : "1",
                                     "geo" : json.group.split(".")[0],
                                     "ipaddr" : json.genesisIP,
                                     "port" : ""+json.genesisPort,
                                     "publickey" : ""+json.genesisPublickey,
                                     "wallet" : ""
-                            });
+                            
+                            } 
+                            console.log("genesisMint="+dump(genesisMint));                           
+                            redisClient.hset("mint:1",genesisMint);
 
 
                             redisClient.hgetall(nodeEntry, function(err,json) {
