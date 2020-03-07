@@ -79,11 +79,8 @@ app.get('/nodefactory', function (req, res) {
                      expressRedisClient.hmset(nodeEntry, newNode);
 
                      console.log("nodeEntry="+nodeEntry+" publickey=" +publickey+" pulseGroups" + newNode.pulseGroups + " me.group="+me.group);
-                     expressRedisClient.hget(me.group, "mints", function(err,mints) {
-                        console.log("mints is "+mints);
-                        if (err) mints="1";
-                        else expressRedisClient.hset(me.group,"+mints+",newNode.mint+","+mints);
-                     });
+                     expressRedisClient.hset(me.group, "mint:"+newMint, newMint);
+                     
                      //Assigned MINT TABLE - needed info to connect to remote
                      expressRedisClient.hmset("mint:"+newMint, {   
                         "mint" : ""+newMint,
