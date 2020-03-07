@@ -32,10 +32,10 @@ function pulse() {
                 //
                 redisClient.hgetall(pulseGroup, function (err, mints) {
                     if (err) {
-                        console.log("couldn't find any owls");
+                        console.log("couldn't find any mints for " + pulseGroup);
                     }
                     else {
-                        console.log("make my pulse message from these mints=" + mints);
+                        console.log("make my pulse message from these mints=" + lib_1.dump(mints));
                         //for each mint in the group, fetch the PEER-ME : OWL
                     }
                 });
