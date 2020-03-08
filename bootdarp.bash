@@ -17,13 +17,18 @@ echo PUBLICKEY=$PUBLICKEY
 #temp to scaffolding to help build
 cd /darp
 redis-server &  #temp to help building
+
 cd /darp/express
 node express &
+
+cd /darp/handlepulse
+node handlepulse &
 
 #echo `date` Launching forever script
 #cd /darp/scripts
 #./forever.bash  #Start the system
 
 cd /darp/config
+node config
 
 echo `date` New darp version: `ls /darp/build*` installed

@@ -44,7 +44,7 @@ function pulse() {
                             console.log("go fetch this owl owlLabel=" + owlLabel);
                             redisClient.hget(entry.group + ".owls", owlLabel, function (err, owl) {
                                 console.log("fetching my owls " + owlLabel + "=" + owl);
-                                console.log("");
+                                console.log("set remotestate ");
                             });
                         }
                     }

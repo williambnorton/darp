@@ -15,5 +15,6 @@ server.on('listening', function () {
 });
 server.on('message', function (message, remote) {
     console.log(" received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
+    console.log("handlepulse : ");
 });
 server.bind(PORT, HOST);
