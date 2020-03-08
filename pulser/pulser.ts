@@ -42,9 +42,10 @@ function pulse() {
             //for each mint in the group, fetch the PEER-ME : OWL
             for (var mint in mints) {
               var entry=mints[mint];
+              console.log("entry="+entry+" mint="+mint+" mints="+mints);
 
               var owlLabel=entry.mint+"-"+me.mint;  //src to me
-              console.log("got fetch this owl owlLabel="+owlLabel);
+              console.log("go fetch this owl owlLabel="+owlLabel);
               
               redisClient.hget(entry.group+".owls",owlLabel, function(err, owl) {
                 console.log(owlLabel+"="+owl);
