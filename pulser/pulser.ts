@@ -47,7 +47,7 @@ function pulse() {
               console.log("got fetch this owl owlLabel="+owlLabel);
               
               redisClient.hget(entry.group+".owls",owlLabel, function(err, owl) {
-                console.log(entry.mint+"->"+me.mint+"="+owl);
+                console.log(owlLabel+"="+owl);
               });
             }
           }
