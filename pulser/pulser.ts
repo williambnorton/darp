@@ -44,7 +44,7 @@ function pulse() {
               var entry=mints[mint];
               console.log("entry="+entry+" mint="+mint+" mints="+mints);
 
-              var owlLabel=entry.mint+"-"+me.mint;  //src to me
+              var owlLabel=entry+"-"+me.mint;  //src to me
               console.log("go fetch this owl owlLabel="+owlLabel);
               
               redisClient.hget(entry.group+".owls",owlLabel, function(err, owl) {
