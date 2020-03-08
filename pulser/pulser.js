@@ -22,31 +22,42 @@ function pulse() {
             var pulseGroups = me.pulseGroups.split(" ");
             for (var PG in pulseGroups) {
                 var pulseGroup = pulseGroups[PG];
+                var pulseGroupOwner = pulseGroup.split(".")[0];
+                var ownerPulseLabel = pulseGroupOwner + ":" + pulseGroup;
                 //make a pulse message
                 console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup);
                 //I am pulsing my measurement from others
                 //in the format OWL:MAZORE:MAZORE.1=1:2-1=23,3-1=46
-                var pulse = "OWL" + me.seqNum + "," + lib_1.now() + "," + me.geo + ":" + pulseGroup + "="; //MAZORE:MAZJAP.1
+                var pulseMessage = "OWL" + me.seqNum + "," + lib_1.now() + "," + me.geo + ":" + pulseGroup + "="; //MAZORE:MAZJAP.1
                 //
                 //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
                 //
-                redisClient.hgetall(pulseGroup, function (err, mints) {
+                //                  MAZORE:MAZORE.1 - use its last pulse to get mints to pulse
+                //
+                redisClient.hgetall(ownerPulseLabel, function (err, ownerPulse) {
                     if (err) {
-                        console.log("couldn't find any mints for " + pulseGroup);
+                        console.log("couldn't find any mints from groupOwner pulse = maybe it is gone now " + pulseGroup);
                     }
                     else {
-                        console.log("make my pulse message from these mints=" + lib_1.dump(mints));
+                        console.log("ownerPulse=" + lib_1.dump(ownerPulse));
+                        /***
+                        //groupOwner pulses are authirative wrt to population to pulse on their behalf
+                        console.log("make my pulse message from these mints="+dump(mints));
                         //for each mint in the group, fetch the PEER-ME : OWL
                         for (var mint in mints) {
-                            var entry = mints[mint];
-                            console.log("entry=" + entry + " mint=" + mint + " mints=" + mints);
-                            var owlLabel = entry + "-" + me.mint; //src to me
-                            console.log("go fetch this owl owlLabel=" + owlLabel);
-                            redisClient.hget(entry.group + ".owls", owlLabel, function (err, owl) {
-                                console.log("fetching my owls " + owlLabel + "=" + owl);
-                                console.log("set remotestate ");
-                            });
+                          var entry=mints[mint];
+                          console.log("entry="+entry+" mint="+mint+" mints="+mints);
+            
+                          var owlLabel=entry+"-"+me.mint;  //src to me
+                          console.log("go fetch this owl owlLabel="+owlLabel);
+                          
+                          redisClient.hget(entry.group+".owls",owlLabel, function(err, owl) {
+                            console.log("fetching my owls "+owlLabel+"="+owl);
+                            console.log("set remotestate ");
+            
+                          });
                         }
+                        ****/
                     }
                 });
                 //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   
