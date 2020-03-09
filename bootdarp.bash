@@ -15,6 +15,8 @@ cd /darp/scripts/
 PUBLICKEY=`cat /etc/wireguard/publickey`
 echo PUBLICKEY=$PUBLICKEY
 cd /darp
+
+echo `date` bootdarp: starting redis and express
 redis-server &  #temp to help building
 sleep 1
 #
@@ -41,5 +43,5 @@ sleep 3
 
 echo `date` New darp version: `cd /darp;ls build*` installed and running
 
-cd /darp/pulser
-node pulser
+#cd /darp/pulser
+#node pulser &
