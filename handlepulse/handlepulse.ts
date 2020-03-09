@@ -3,6 +3,9 @@
 //
 import { now, ts ,dump } from '../lib/lib.js';
 
+const pulseRedis = require('redis');
+var redisClient = pulseRedis.createClient(); //creates a new client
+
 redisClient.hgetall("me", function (err,me) {
   if (err) {
     console.log("hgetall me failed");
@@ -19,8 +22,6 @@ redisClient.hgetall("me", function (err,me) {
 // listen for incoming pulses and convert into redis commands
 //
 
-const pulseRedis = require('redis');
-var redisClient = pulseRedis.createClient(); //creates a new client
 
 
 var dgram = require('dgram');

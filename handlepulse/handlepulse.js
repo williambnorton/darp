@@ -4,6 +4,8 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
+var pulseRedis = require('redis');
+var redisClient = pulseRedis.createClient(); //creates a new client
 redisClient.hgetall("me", function (err, me) {
     if (err) {
         console.log("hgetall me failed");
@@ -20,8 +22,6 @@ redisClient.hgetall("me", function (err, me) {
 //
 // listen for incoming pulses and convert into redis commands
 //
-var pulseRedis = require('redis');
-var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 server.on('listening', function () {
