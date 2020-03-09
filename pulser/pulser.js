@@ -43,17 +43,15 @@ function pulse() {
                         console.log("make my pulse message from these mints=" + lib_1.dump(mints));
                         //for each mint in the group, fetch the PEER-ME : OWL
                         for (var mint in mints) {
-                            var entry = mints[mint];
-                            console.log("entry=" + entry + " mint=" + mint + " mints=" + mints);
-                            var srcMint = entry.split(">")[0];
-                            var rest = entry.split(">")[1];
-                            var dstMint = rest.split("=")[0];
-                            var owl = rest.split("=")[1];
+                            var owl = mints[mint];
+                            console.log("owl=" + owl + " mint=" + mint + " mints=" + mints);
+                            //var srcMint=mint.split(">")[0];
+                            //var dstMint=mint.split(">")[1];
                             if (virgin) {
                                 pulseMessage += ",";
                                 virgin = 0;
                             }
-                            pulseMessage += entry;
+                            pulseMessage += mint + "=" + owl;
                             //var owlLabel=entry+"-"+me.mint;  //src to me
                             console.log("");
                         }
