@@ -52,7 +52,7 @@ function pulse() {
                                 var owl = mints[mint];
                                 var srcMint = mint.split(">")[0];
                                 var dstMint = mint.split(">")[1];
-                                console.log("srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + mints);
+                                console.log("srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + lib_1.dump(mints));
                                 if (srcMint != me.mint) {
                                     if (virgin)
                                         virgin = 0;
@@ -62,7 +62,7 @@ function pulse() {
                                     //var owlLabel=entry+"-"+me.mint;  //src to me
                                     console.log("");
                                     console.log("send this pulseMessage=" + pulseMessage);
-                                    redisClient.hgetall("mint:" + mint, function (err, mintTableEntry) {
+                                    redisClient.hgetall("mint:" + srcMint, function (err, mintTableEntry) {
                                         console.log("mintTableEntry=" + lib_1.dump(mintTableEntry));
                                         var PORT = mintTableEntry.port;
                                         var HOST = mintTableEntry.ipaddr;
