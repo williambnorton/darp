@@ -2,8 +2,9 @@
 #		    bootdarp.bash - fetch updated darp software and launch forever script
 #
 
-/darp/updateWG.bash
+/darp/updateSW.bash
 echo `date` bootdarp: SOFTWARE UPDATE COMPLETE
+
 #Now we are running in the new code /darp directory
 cd /darp
 ls -l /darp
@@ -16,10 +17,12 @@ echo PUBLICKEY=$PUBLICKEY
 cd /darp
 redis-server &  #temp to help building
 sleep 1
+#
+#   need express before config
+#
 cd /darp/express
 node express &
 sleep 1
-
 
 #echo `date` Launching forever script
 #cd /darp/scripts
