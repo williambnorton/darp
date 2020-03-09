@@ -25,14 +25,20 @@ app.get('/nodefactory', function (req, res) {
    var publickey=req.query.publickey;
    var port=req.query.port||65013;
    var wallet=req.query.wallet||"";
+   var incomingTimestamp=req.query.ts||now();
+   var OWL=Math.round(now()-incomingTimestamp);
    // store incoming public key, ipaddr, port, geo, etc.
    var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
    //console.log("****EXPRESS  geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
 
+//
+//    Admission control goies here - test wallet, stop accepting nodeFactory requests
+//
+
    if ( (typeof geo == "undefined") ||
         (typeof publickey == "undefined") )
         res.end("express.js : missing geo and/or publickey ");
-   // send hmset me command
+        // send hmset me command
    else {
       expressRedisClient.incr("mintStack", (err, newMint) => {
          if (err) {
@@ -67,19 +73,19 @@ app.get('/nodefactory', function (req, res) {
                            "wallet" : wallet,
                            //statistics
                            "lastSeq": "0",      //lastSeq I sent out
-                           "pulseTimestamp": "0", //last pulseTimestamp
+                           "pulseTimestamp": ""+now(), //last pulseTimestamp we sent
                            "inOctets": "0",
                            "outOctets": "0",
                            "inMsgs": "0",
                            "outMsgs": "0",
-                           "owl": "0",
+                           "owl": ""+OWL,
                            "pktDrops": "0",
                            "remoteState": "0"   //and there are mints : owls for received pulses 
                      };
-                     //make any adjustmenets here for gebnesis vs non genesis nodes
+                     //make any adjustmenets here for genesis vs non genesis nodes
                      expressRedisClient.hmset(nodeEntry, newNode);
                      if ( newMint == 1 ) {
-                        expressRedisClient.hset("me","mint",1);
+                        expressRedisClient.hset("me","mint",1);  //I am genesis - set me.mint=1
                         expressRedisClient.hset(me.group, "1"+">"+"1", 0 );  
                      } else {
                         console.log("nodeEntry="+nodeEntry+" publickey=" +publickey+" pulseGroups" + newNode.pulseGroups + " me.group="+me.group);
