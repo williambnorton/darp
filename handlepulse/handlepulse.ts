@@ -22,8 +22,6 @@ redisClient.hgetall("me", function (err,me) {
 // listen for incoming pulses and convert into redis commands
 //
 
-
-
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
@@ -38,24 +36,31 @@ server.on('listening', function() {
 server.on('message', function(message, remote) {
 console.log(" received pulse from "+remote.address + ':' + remote.port +' - ' + message);
 var ary=message.split(",");
-var incomingIP=remote.address;
-var pulseType=ary[0];
-var seqNum=ary[1];                            //56
-var pulseTimestamp=ary[2];                    //1583783486546
-var pulseLabel=ary[3];  //MAZORE:MAZORE.1     //MAZORE:MAZORE.1
-var pulseSource=ary[3].split(":")[0];         //MAZORE
-var pulseGroup=ary[3].split(":")[1];          //MAZORE.1
-var pulseGroupOwner=pulseGroup.split(".")[0];  //MAZORE
-var receiveTimestamp=now();
-var OWL=receiveTimestamp-pulseTimestamp;
-var owls=ary[4];
+try {
+  var incomingIP=remote.address;
+  var pulseType=ary[0];
+  var seqNum=ary[1];                            //56
+  var pulseTimestamp=ary[2];                    //1583783486546
+  var pulseLabel=ary[3];  //MAZORE:MAZORE.1     //MAZORE:MAZORE.1
+  var pulseSource=ary[3].split(":")[0];         //MAZORE
+  var pulseGroup=ary[3].split(":")[1];          //MAZORE.1
+  var pulseGroupOwner=pulseGroup.split(".")[0];  //MAZORE
+  var receiveTimestamp=now();
+  var OWL=receiveTimestamp-pulseTimestamp;
+  var owls=ary[4];
+} catch(err) {
+  console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
+  process.exit(127);
+}
+console.log("pulseLabel="+pulseLabel+" OWL="+OWL+" from "+incomingIP+" owls="+owls);
 
 redisClient.exists(pulseLabel, function(err, reply) {
   if (reply === 1) {
       console.log('exists');
       //update stats
   } else {   //create node
-    redisClient.hmset(pulseLabel,{
+    console.log("NEW NODE TO ADD: "+pulseLabel);
+    redisClient.hmset(pulseLabel, {
       "geo" : pulseSource,
       "group": pulseGroup,      //add all nodes to gebnesis group
       "pulseTimestamp": ""+pulseTimestamp, //last pulseTimestamp we sent

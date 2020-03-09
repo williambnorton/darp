@@ -9,5 +9,5 @@ rm -rf /tmp/darp
 mv /darp /tmp/darp
 echo `date` Cloning new darp code from github
 git clone https://github.com/williambnorton/darp.git    /darp     
-
+cd /darp
 echo `date` Completed git clone for `ls build*`
