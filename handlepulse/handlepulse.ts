@@ -77,12 +77,13 @@ for (var mint in owls) {
 */
 }
 
-
-        
-
 });
 
-redisClient.hgetall("me",function (err,me) {
-  console.log("me="+dump(me));
-  server.bind(me.port, me.ipaddr);
+redisClient.hgetall("me", function (err,me) {
+    if (err) {
+      console.log("hgetall me failed");
+    } else {
+      console.log("me="+dump(me));
+      server.bind(me.port, me.ipaddr);
+    }
 });

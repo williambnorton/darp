@@ -73,6 +73,11 @@ server.on('message', function (message, remote) {
     }
 });
 redisClient.hgetall("me", function (err, me) {
-    console.log("me=" + lib_js_1.dump(me));
-    server.bind(me.port, me.ipaddr);
+    if (err) {
+        console.log("hgetall me failed");
+    }
+    else {
+        console.log("me=" + lib_js_1.dump(me));
+        server.bind(me.port, me.ipaddr);
+    }
 });
