@@ -50,27 +50,29 @@ function pulse() {
                             //for each mint in the group, fetch the PEER-ME : OWL
                             for (var mint in mints) {
                                 var owl = mints[mint];
-                                console.log("owl=" + owl + " mint=" + mint + " mints=" + mints);
-                                //var srcMint=mint.split(">")[0];
-                                //var dstMint=mint.split(">")[1];
-                                if (virgin)
-                                    virgin = 0;
-                                else
-                                    pulseMessage += ",";
-                                pulseMessage += mint + "=" + owl;
-                                //var owlLabel=entry+"-"+me.mint;  //src to me
-                                console.log("");
-                                console.log("send this pulseMessage=" + pulseMessage);
-                                redisClient.hgetall("mint:" + mint, function (err, mintTableEntry) {
-                                    console.log("mintTableEntry=" + lib_1.dump(mintTableEntry));
-                                    var PORT = mintTableEntry.port;
-                                    var HOST = mintTableEntry.ipaddr;
-                                    datagramClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function (err, bytes) {
-                                        if (err)
-                                            throw err;
-                                        console.log('UDP message sent to ' + HOST + ':' + PORT);
+                                var srcMint = mint.split(">")[0];
+                                var dstMint = mint.split(">")[1];
+                                console.log("srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + mints);
+                                if (srcMint != me.mint) {
+                                    if (virgin)
+                                        virgin = 0;
+                                    else
+                                        pulseMessage += ",";
+                                    pulseMessage += mint + "=" + owl;
+                                    //var owlLabel=entry+"-"+me.mint;  //src to me
+                                    console.log("");
+                                    console.log("send this pulseMessage=" + pulseMessage);
+                                    redisClient.hgetall("mint:" + mint, function (err, mintTableEntry) {
+                                        console.log("mintTableEntry=" + lib_1.dump(mintTableEntry));
+                                        var PORT = mintTableEntry.port;
+                                        var HOST = mintTableEntry.ipaddr;
+                                        datagramClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function (err, bytes) {
+                                            if (err)
+                                                throw err;
+                                            console.log('UDP message sent to ' + HOST + ':' + PORT);
+                                        });
                                     });
-                                });
+                                }
                             }
                         }
                     });
