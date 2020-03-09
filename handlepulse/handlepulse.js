@@ -4,6 +4,19 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
+redisClient.hgetall("me", function (err, me) {
+    if (err) {
+        console.log("hgetall me failed");
+    }
+    else {
+        if (me == null) {
+            console.log("handlePulse() - can't find me entry...exitting");
+            process.exit(127);
+        }
+        console.log("me=" + lib_js_1.dump(me));
+        server.bind(me.port, me.ipaddr);
+    }
+});
 //
 // listen for incoming pulses and convert into redis commands
 //

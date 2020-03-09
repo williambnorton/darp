@@ -3,7 +3,18 @@
 //
 import { now, ts ,dump } from '../lib/lib.js';
 
-
+redisClient.hgetall("me", function (err,me) {
+  if (err) {
+    console.log("hgetall me failed");
+  } else {
+    if (me==null) {
+      console.log("handlePulse() - can't find me entry...exitting");
+      process.exit(127);
+    }
+    console.log("me="+dump(me));
+    server.bind(me.port, me.ipaddr);
+  }
+});
 //
 // listen for incoming pulses and convert into redis commands
 //
@@ -24,7 +35,7 @@ server.on('listening', function() {
 //  message format: 0,56,1583783486546,MAZORE:MAZORE.1,1>1=0,2>1=0
 //
 server.on('message', function(message, remote) {
- console.log(" received pulse from "+remote.address + ':' + remote.port +' - ' + message);
+console.log(" received pulse from "+remote.address + ':' + remote.port +' - ' + message);
 var ary=message.split(",");
 var incomingIP=remote.address;
 var pulseType=ary[0];
