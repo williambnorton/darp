@@ -19,6 +19,7 @@ function pulse() {
         else {
             //console.log("me="+JSON.stringify(me,null,2));
             //  MAZORE.1 MAZDAL.1
+            console.log("pulseing pulsegorup: " + me.pulseGroups);
             var pulseGroups = me.pulseGroups.split(" ");
             for (var PG in pulseGroups) {
                 var pulseGroup = pulseGroups[PG];
