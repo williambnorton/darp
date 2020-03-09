@@ -50,10 +50,9 @@ function pulse() {
               //var srcMint=mint.split(">")[0];
               //var dstMint=mint.split(">")[1];
 
-              if (virgin) {
-                pulseMessage+=",";
-                virgin=0;
-              }
+              if (virgin) virgin=0;
+              else pulseMessage+=",";
+
               pulseMessage+=mint+"="+owl;
               //var owlLabel=entry+"-"+me.mint;  //src to me
               console.log("");

@@ -47,10 +47,10 @@ function pulse() {
                             console.log("owl=" + owl + " mint=" + mint + " mints=" + mints);
                             //var srcMint=mint.split(">")[0];
                             //var dstMint=mint.split(">")[1];
-                            if (virgin) {
-                                pulseMessage += ",";
+                            if (virgin)
                                 virgin = 0;
-                            }
+                            else
+                                pulseMessage += ",";
                             pulseMessage += mint + "=" + owl;
                             //var owlLabel=entry+"-"+me.mint;  //src to me
                             console.log("");
