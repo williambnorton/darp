@@ -51,12 +51,12 @@ app.get('/nodefactory', function (req, res) {
                         //console.log("nodeEntry="+JSON.stringify())
                         var newNode = {
                             "geo": geo,
+                            "group": me.group,
                             "port": "" + port,
                             "ipaddr": incomingIP,
                             "publickey": publickey,
                             "mint": "" + newMint,
                             "bootTime": "" + lib_1.now(),
-                            "group": me.group,
                             "pulseGroups": me.group,
                             //genesis connection info
                             "genesisIP": me.genesisIP,
@@ -72,13 +72,13 @@ app.get('/nodefactory', function (req, res) {
                             "outMsgs": "0",
                             "owl": "0",
                             "pktDrops": "0",
-                            "remoteState": "0"
+                            "remoteState": "0" //and there are mints : owls for received pulses 
                         };
                         //make any adjustmenets here for gebnesis vs non genesis nodes
                         expressRedisClient.hmset(nodeEntry, newNode);
                         console.log("nodeEntry=" + nodeEntry + " publickey=" + publickey + " pulseGroups" + newNode.pulseGroups + " me.group=" + me.group);
-                        //expressRedisClient.hset(me.group, "mint:"+newMint, newMint);
-                        expressRedisClient.hset(me.geo + ":" + me.group, newMint, 0);
+                        expressRedisClient.hset(me.group, "mint:" + newMint, newMint);
+                        //expressRedisClient.hset(me.geo+":"+me.group, newMint, 0);
                         //Assigned MINT TABLE - needed info to connect to remote
                         expressRedisClient.hmset("mint:" + newMint, {
                             "mint": newNode.mint,

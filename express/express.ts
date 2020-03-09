@@ -53,12 +53,12 @@ app.get('/nodefactory', function (req, res) {
                         //console.log("nodeEntry="+JSON.stringify())
                      var newNode={
                            "geo" : geo,
+                           "group": me.group,      //add all nodes to gebnesis group
                            "port" : ""+port,
                            "ipaddr" : incomingIP,   //set by genesis node on connection
                            "publickey" : publickey,
                            "mint" : ""+newMint,      //set by genesis node
                            "bootTime" : ""+now(),   //boot time is when joined the group
-                           "group": me.group,      //add all nodes to gebnesis group
                            "pulseGroups" : me.group,  //list of groups I will pulse
                            //genesis connection info
                            "genesisIP" : me.genesisIP,
@@ -66,22 +66,22 @@ app.get('/nodefactory', function (req, res) {
                            "genesisPublickey" : me.genesisPublickey||publickey,
                            "wallet" : wallet,
                            //statistics
-                           "lastSeq": "0",
-                           "pulseTimestamp": "0",
+                           "lastSeq": "0",      //lastSeq I sent out
+                           "pulseTimestamp": "0", //last pulseTimestamp
                            "inOctets": "0",
                            "outOctets": "0",
                            "inMsgs": "0",
                            "outMsgs": "0",
                            "owl": "0",
                            "pktDrops": "0",
-                           "remoteState": "0"
+                           "remoteState": "0"   //and there are mints : owls for received pulses 
                      };
                      //make any adjustmenets here for gebnesis vs non genesis nodes
                      expressRedisClient.hmset(nodeEntry, newNode);
 
                      console.log("nodeEntry="+nodeEntry+" publickey=" +publickey+" pulseGroups" + newNode.pulseGroups + " me.group="+me.group);
-                     //expressRedisClient.hset(me.group, "mint:"+newMint, newMint);
-                     expressRedisClient.hset(me.geo+":"+me.group, newMint, 0);
+                     expressRedisClient.hset(me.group, "mint:"+newMint, newMint);
+                     //expressRedisClient.hset(me.geo+":"+me.group, newMint, 0);
 
                      //Assigned MINT TABLE - needed info to connect to remote
                      expressRedisClient.hmset("mint:"+newMint, {   
