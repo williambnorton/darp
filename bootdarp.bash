@@ -42,3 +42,6 @@ echo    `date` Waiting for config to connect
 sleep 5
 
 echo `date` New darp version: `cd /darp;ls build*` installed and running
+
+cd /darp/pulser
+node pulser
