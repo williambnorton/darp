@@ -14,6 +14,10 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 pulse();
 
 function pulse() {
+  redisClient.hget('me', 'lastSeq', function(err, lastSeq) {
+    console.log(lastSeq);
+    redisClient.hset('me','lastSeq',lastSeq+1);
+  });
   redisClient.hgetall("me", function(err, me) {
     if (err) {
       console.log("hgetall me failed");
@@ -35,6 +39,8 @@ function pulse() {
       
         //I am pulsing my measurement from others
         //in the format OWL:MAZORE:MAZORE.1=1:2-1=23,3-1=46
+
+
         var pulseMessage="OWL"+me.lastSeq+","+now()+","+me.geo+":"+pulseGroup+"=";  //MAZORE:MAZJAP.1
         //
         //  assume the handlePulse routine will store the data into the MAZORE.1.owls object

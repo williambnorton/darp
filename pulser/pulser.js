@@ -12,6 +12,10 @@ var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 pulse();
 function pulse() {
+    redisClient.hget('me', 'lastSeq', function (err, lastSeq) {
+        console.log(lastSeq);
+        redisClient.hset('me', 'lastSeq', lastSeq + 1);
+    });
     redisClient.hgetall("me", function (err, me) {
         if (err) {
             console.log("hgetall me failed");
