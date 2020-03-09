@@ -29,6 +29,6 @@ node handlepulse &
 #./forever.bash  #Start the system
 
 cd /darp/config
-node config
+node config &
 
-echo `date` New darp version: `ls /darp/build*` installed
+echo `date` New darp version: `cd /darp;ls build*` installed and running
