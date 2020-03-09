@@ -9,11 +9,11 @@ var lib_1 = require("../lib/lib");
 var http = require('http');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-redisClient.flushall();
+redisClient.flushall(); //clean slate
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO = process.env.HOSTNAME || "DEVOPS"; //passed into docker
 var PORT = process.env.PORT || "65013"; //passed into docker
-var PUBLICKEY;
+var PUBLICKEY = "";
 try {
     PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
     console.log("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
@@ -30,7 +30,7 @@ redisClient.hmset("me", {
     "port": PORT,
     "publickey": PUBLICKEY,
     "bootTime": "" + lib_1.now(),
-    //genesis connection info
+    //genesis connection info-evebtually find gnesis node online
     "genesisIP": "104.42.192.234",
     "genesisPort": "65013",
     "wallet": WALLET

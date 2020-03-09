@@ -10,12 +10,12 @@ var http = require('http');
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
-redisClient.flushall();
+redisClient.flushall();    //clean slate
 
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO=process.env.HOSTNAME||"DEVOPS";   //passed into docker
 var PORT=process.env.PORT||"65013";         //passed into docker
-var PUBLICKEY;
+var PUBLICKEY="";
 try {
     PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
     console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
@@ -35,7 +35,7 @@ redisClient.hmset("me", {  //what i have so far
     "port" : PORT,
     "publickey" : PUBLICKEY,
     "bootTime" : ""+now(),   //boot time is when joined the group
-    //genesis connection info
+    //genesis connection info-evebtually find gnesis node online
     "genesisIP" : "104.42.192.234",
     "genesisPort" : "65013",
     "wallet" : WALLET

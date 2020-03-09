@@ -35,6 +35,7 @@ function pulse() {
         var pulseMessage="OWL"+me.seqNum+","+now()+","+me.geo+":"+pulseGroup+"=";  //MAZORE:MAZJAP.1
         //
         //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
+        //                MAZORE.1 contains a list of mint:owl tuples
         //
         redisClient.hgetall(pulseGroup, function (err, mints) {
           if (err) {
