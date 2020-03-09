@@ -43,7 +43,7 @@ function pulse() {
           //I am pulsing my measurement from others
           //in the format OWL,seq#,pulseTimestamp,MAZORE:MAZORE.1=1>2=23,3>1=46
 
-          var pulseMessage="OWL"+lastSeq+","+now()+","+me.geo+":"+pulseGroup+"=";  //MAZORE:MAZJAP.1
+          var pulseMessage="OWL,"+lastSeq+","+now()+","+me.geo+":"+pulseGroup+",";  //MAZORE:MAZJAP.1
           //
           //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
           //                MAZORE.1 contains a list of mint:owl tuples
@@ -65,17 +65,18 @@ function pulse() {
                 else pulseMessage+=",";
 
                 pulseMessage+=mint+"="+owl;
+              }
+              for (var mint in mints) { //send pulseMsgs to each group member
                 //var owlLabel=entry+"-"+me.mint;  //src to me
                 console.log("");
                 console.log("send this pulseMessage="+pulseMessage); 
                 redisClient.hgetall("mint:"+srcMint, function(err,mintTableEntry){
                     console.log("mintTableEntry="+dump(mintTableEntry));
-                    var PORT=mintTableEntry.port; 
-                    var HOST=mintTableEntry.ipaddr;
+
                     if (srcMint!=me.mint) {  //don't send to myself
-                      networkClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function(err, bytes) {
+                      networkClient.send(pulseMessage, 0, pulseMessage.length, mintTableEntry.port, mintTableEntry.ipaddr, function(err, bytes) {
                         if (err) throw err;
-                          console.log('UDP message '+message+' sent to ' + HOST +':'+ PORT);
+                          console.log('UDP message '+message+' sent to ' + mintTableEntry.ipaddr +':'+ mintTableEntry.port);
                       });  
                     }
                 });
