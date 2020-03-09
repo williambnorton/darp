@@ -12,6 +12,7 @@ var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 pulse();
 function pulse() {
+    var datagramClient = dgram.createSocket('udp4');
     redisClient.hget('me', 'lastSeq', function (err, lastSeq) {
         lastSeq = parseInt(lastSeq);
         console.log(lastSeq);
@@ -59,9 +60,19 @@ function pulse() {
                                 pulseMessage += mint + "=" + owl;
                                 //var owlLabel=entry+"-"+me.mint;  //src to me
                                 console.log("");
+                                console.log("send this pulseMessage=" + pulseMessage);
+                                redisClient.hgetall("mint:" + mint, function (err, mintTableEntry) {
+                                    console.log("mintTableEntry=" + lib_1.dump(mintTableEntry));
+                                    var PORT = mintTableEntry.port;
+                                    var HOST = mintTableEntry.ipaddr;
+                                    datagramClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function (err, bytes) {
+                                        if (err)
+                                            throw err;
+                                        console.log('UDP message sent to ' + HOST + ':' + PORT);
+                                    });
+                                });
                             }
                         }
-                        console.log("send this pulseMessage=" + pulseMessage);
                     });
                     //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   
                     // handlepulse stores all OWLS here: (MAZORE.1.workingOWLs = 2-1: 23 3-1: 43 2-3: 43 ... )
@@ -69,6 +80,7 @@ function pulse() {
             }
         });
     });
+    datagramClient.close();
 }
 //
 //  iterator through each mint of a pulseGroup
