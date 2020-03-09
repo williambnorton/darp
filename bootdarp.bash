@@ -36,10 +36,10 @@ node config &
 echo    `date` Waiting for config to connect
 sleep 3
 
-cd /darp/handlepulse
-node handlepulse &
-echo    `date` Waiting for express to start web services for nodefactory service 
-sleep 3
+#cd /darp/handlepulse
+#node handlepulse &
+#echo    `date` Waiting for express to start web services for nodefactory service 
+#sleep 3
 
 echo `date` New darp version: `cd /darp;ls build*` installed and running
 
