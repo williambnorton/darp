@@ -69,7 +69,7 @@ function pulse() {
                                         networkClient.send(pulseMessage, 0, pulseMessage.length, mintTableEntry.port, mintTableEntry.ipaddr, function (err, bytes) {
                                             if (err)
                                                 throw err;
-                                            console.log('UDP message ' + message + ' sent to ' + mintTableEntry.ipaddr + ':' + mintTableEntry.port);
+                                            console.log('UDP message ' + pulseMessage + ' sent to ' + mintTableEntry.ipaddr + ':' + mintTableEntry.port);
                                         });
                                     }
                                 });
