@@ -73,7 +73,7 @@ function pulse() {
                     console.log("mintTableEntry="+dump(mintTableEntry));
                     var PORT=mintTableEntry.port;
                     var HOST=mintTableEntry.ipaddr;
-                    datagramClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function(err, bytes) {
+                    networkClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function(err, bytes) {
                       if (err) throw err;
                         console.log('UDP message sent to ' + HOST +':'+ PORT);
                     });  
