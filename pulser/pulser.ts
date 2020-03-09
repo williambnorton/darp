@@ -25,6 +25,7 @@ function pulse() {
         var pulseGroup=pulseGroups[PG];
         var pulseGroupOwner=pulseGroup.split(".")[0];
         var ownerPulseLabel=pulseGroupOwner+":"+pulseGroup;
+        var pulseSrc=me.geo;
 
         //make a pulse message
         console.log("pulse(): Make a pulse Message, pulseGroup="+pulseGroup);
@@ -35,15 +36,11 @@ function pulse() {
         //
         //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
         //
-        //                  MAZORE:MAZORE.1 - use its last pulse to get mints to pulse
-        //
-        redisClient.hgetall(ownerPulseLabel, function (err, ownerPulse) {
+        redisClient.hgetall(pulseGroup, function (err, mints) {
           if (err) {
-            console.log("couldn't find any mints from groupOwner pulse = maybe it is gone now "+pulseGroup);
+            console.log("couldn't find any mints for "+pulseGroup);
           } else {
-            console.log("ownerPulse="+dump(ownerPulse));
-            /***
-            //groupOwner pulses are authirative wrt to population to pulse on their behalf
+
             console.log("make my pulse message from these mints="+dump(mints));
             //for each mint in the group, fetch the PEER-ME : OWL
             for (var mint in mints) {
@@ -59,7 +56,6 @@ function pulse() {
 
               });
             }
-            ****/
           }
         });
         //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   

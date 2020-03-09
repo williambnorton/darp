@@ -77,7 +77,7 @@ app.get('/nodefactory', function (req, res) {
                         //make any adjustmenets here for gebnesis vs non genesis nodes
                         expressRedisClient.hmset(nodeEntry, newNode);
                         console.log("nodeEntry=" + nodeEntry + " publickey=" + publickey + " pulseGroups" + newNode.pulseGroups + " me.group=" + me.group);
-                        expressRedisClient.hset(me.group, "mint:" + newMint, newMint);
+                        expressRedisClient.hset(me.group, newMint + ">" + me.mint, 0);
                         //expressRedisClient.hset(me.geo+":"+me.group, newMint, 0);
                         //Assigned MINT TABLE - needed info to connect to remote
                         expressRedisClient.hmset("mint:" + newMint, {
