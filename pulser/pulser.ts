@@ -41,23 +41,28 @@ function pulse() {
           if (err) {
             console.log("couldn't find any mints for "+pulseGroup);
           } else {
-
+            var virgin=1;
             console.log("make my pulse message from these mints="+dump(mints));
             //for each mint in the group, fetch the PEER-ME : OWL
             for (var mint in mints) {
               var entry=mints[mint];  
               console.log("entry="+entry+" mint="+mint+" mints="+mints);
+              var srcMint=entry.split(">")[0];
+              var rest=entry.split(">")[1];
+              var dstMint=rest.split("=")[0];
+              var owl=rest.split("=")[1];
 
-              var owlLabel=entry+"-"+me.mint;  //src to me
-              console.log("go fetch this owl owlLabel="+owlLabel);
+              if (virgin) {
+                pulseMessage+=",";
+                virgin=0;
+              }
+              pulseMessage+=entry;
+              //var owlLabel=entry+"-"+me.mint;  //src to me
+              console.log("");
               
-              redisClient.hget(entry.group+".owls",owlLabel, function(err, owl) {
-                console.log("fetching my owls "+owlLabel+"="+owl);
-                console.log("");
-
-              });
             }
           }
+          console.log("send this pulseMessage="+pulseMessage);         
         });
         //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   
         // handlepulse stores all OWLS here: (MAZORE.1.workingOWLs = 2-1: 23 3-1: 43 2-3: 43 ... )
@@ -67,6 +72,9 @@ function pulse() {
   });
 }
 
+//
+//  iterator through each mint of a pulseGroup
+//
 function forEachMint(pulseGroup,callback) { 
   console.log("forEachMint() : pulseGroup="+pulseGroup);
   //fetch the group mints mint:2 : 2  mint:5 : 5   ....
@@ -82,7 +90,7 @@ function forEachMint(pulseGroup,callback) {
                 if (err) {
                   console.log("forEachMint(): hgetall mintKey "+mintKey+" failed");
                 } else {
-                    callback(mintKey);
+                    callback(mintKey);  //callback may fetch mint table
                 }
         });
       }
