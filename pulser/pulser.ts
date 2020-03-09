@@ -17,16 +17,17 @@ function pulse() {
   var datagramClient=dgram.createSocket('udp4');
 
   redisClient.hget('me', 'lastSeq', function(err, lastSeq) {
-    lastSeq=parseInt(lastSeq);
-    console.log(lastSeq);
-    redisClient.hset('me','lastSeq',""+(lastSeq+1));
+    lastSeq=parseInt(lastSeq)+1;
+    console.log("lastSeq="+lastSeq);
+    redisClient.hset('me','lastSeq',""+lastSeq);
+
     redisClient.hgetall("me", function(err, me) {
       if (err) {
         console.log("hgetall me failed");
       } else {
         //console.log("me="+JSON.stringify(me,null,2));
         //  MAZORE.1 MAZDAL.1
-        console.log("pulsing pulsegroup: "+me.pulseGroups)
+        console.log("pulsing pulsegroup: "+me.pulseGroups);
       
         var pulseGroups=me.pulseGroups.split(" ");
         for (var PG in pulseGroups) {
@@ -40,8 +41,7 @@ function pulse() {
           console.log("pulse(): Make a pulse Message, pulseGroup="+pulseGroup);
       
           //I am pulsing my measurement from others
-          //in the format OWL:MAZORE:MAZORE.1=1:2-1=23,3-1=46
-
+          //in the format OWL,seq#,pulseTimestamp,MAZORE:MAZORE.1=1>2=23,3>1=46
 
           var pulseMessage="OWL"+lastSeq+","+now()+","+me.geo+":"+pulseGroup+"=";  //MAZORE:MAZJAP.1
           //
@@ -61,24 +61,24 @@ function pulse() {
                 var dstMint=mint.split(">")[1];
                 console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+owl+" mint="+mint+" mints="+dump(mints));
 
-                if (srcMint!=me.mint) {
-                  if (virgin) virgin=0;
-                  else pulseMessage+=",";
+                if (virgin) virgin=0;
+                else pulseMessage+=",";
 
-                  pulseMessage+=mint+"="+owl;
-                  //var owlLabel=entry+"-"+me.mint;  //src to me
-                  console.log("");
-                  console.log("send this pulseMessage="+pulseMessage); 
-                  redisClient.hgetall("mint:"+srcMint, function(err,mintTableEntry){
+                pulseMessage+=mint+"="+owl;
+                //var owlLabel=entry+"-"+me.mint;  //src to me
+                console.log("");
+                console.log("send this pulseMessage="+pulseMessage); 
+                redisClient.hgetall("mint:"+srcMint, function(err,mintTableEntry){
                     console.log("mintTableEntry="+dump(mintTableEntry));
-                    var PORT=mintTableEntry.port;
+                    var PORT=mintTableEntry.port; 
                     var HOST=mintTableEntry.ipaddr;
-                    networkClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function(err, bytes) {
-                      if (err) throw err;
-                        console.log('UDP message sent to ' + HOST +':'+ PORT);
-                    });  
-                  });
-                }
+                    if (srcMint!=me.mint) {  //don't send to myself
+                      networkClient.send(pulseMessage, 0, pulseMessage.length, PORT, HOST, function(err, bytes) {
+                        if (err) throw err;
+                          console.log('UDP message '+message+' sent to ' + HOST +':'+ PORT);
+                      });  
+                    }
+                });
               }
             }
       
@@ -90,6 +90,7 @@ function pulse() {
     });
   });
   datagramClient.close();
+  setTimeout(pulse,5000);
 }
 
 //
