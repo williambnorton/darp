@@ -30,7 +30,7 @@ function pulse() {
                 console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup);
                 //I am pulsing my measurement from others
                 //in the format OWL:MAZORE:MAZORE.1=1:2-1=23,3-1=46
-                var pulseMessage = "OWL" + me.seqNum + "," + lib_1.now() + "," + me.geo + ":" + pulseGroup + "="; //MAZORE:MAZJAP.1
+                var pulseMessage = "OWL" + me.lastSeq + "," + lib_1.now() + "," + me.geo + ":" + pulseGroup + "="; //MAZORE:MAZJAP.1
                 //
                 //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
                 //                MAZORE.1 contains a list of mint:owl tuples
