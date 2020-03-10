@@ -78,7 +78,7 @@ server.on('message', function (message, remote) {
                 "inMsgs": "0",
                 "outMsgs": "0",
                 "pktDrops": "0",
-                "remoteState": message //store literal owls
+                "remoteState": message.toString() //store literal owls
             };
             redisClient.hmset(pulseLabel, newNode);
             console.log("HANDLEPULSE: ADDED NEW NODE: " + pulseLabel + lib_js_1.dump(newNode));
