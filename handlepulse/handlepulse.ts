@@ -81,6 +81,8 @@ redisClient.exists(pulseLabel, function(err, reply) {
     })
   }
 });
+
+
     // for each mint table entry, if match - set this data
 for (var mint in owls) {
   console.log(ts()+"owls="+owls+" mint="+mint+" owl="+owls[mint]);

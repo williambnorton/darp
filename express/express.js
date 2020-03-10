@@ -132,6 +132,9 @@ function popMint() {
         }
     });
 }
+//
+// bind the TCP port for externalizing 
+//
 expressRedisClient.hget("me", "port", function (err, port) {
     if (!port)
         port = 65013;
