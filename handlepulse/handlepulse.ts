@@ -6,6 +6,9 @@ import { now, ts ,dump } from '../lib/lib.js';
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
+var dgram = require('dgram');
+var server = dgram.createSocket('udp4');
+
 redisClient.hgetall("me", function (err,me) {
   if (err) {
     console.log("hgetall me failed");
@@ -24,8 +27,6 @@ redisClient.hgetall("me", function (err,me) {
 // listen for incoming pulses and convert into redis commands
 //
 
-var dgram = require('dgram');
-var server = dgram.createSocket('udp4');
 
 server.on('listening', function() {
   var address = server.address();
@@ -97,7 +98,7 @@ for (var mint in owls) {
 }
 
 });
-
+/***
 redisClient.hgetall("me", function (err,me) {
     if (err) {
       console.log("hgetall me failed");
@@ -106,3 +107,4 @@ redisClient.hgetall("me", function (err,me) {
       server.bind(me.port, me.ipaddr);
     }
 });
+***/

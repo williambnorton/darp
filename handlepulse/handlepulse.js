@@ -6,6 +6,8 @@ exports.__esModule = true;
 var lib_js_1 = require("../lib/lib.js");
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+var dgram = require('dgram');
+var server = dgram.createSocket('udp4');
 redisClient.hgetall("me", function (err, me) {
     if (err) {
         console.log("hgetall me failed");
@@ -23,8 +25,6 @@ redisClient.hgetall("me", function (err, me) {
 //
 // listen for incoming pulses and convert into redis commands
 //
-var dgram = require('dgram');
-var server = dgram.createSocket('udp4');
 server.on('listening', function () {
     var address = server.address();
     console.log('UDP Server listening on ' + address.address + ':' + address.port);
@@ -94,12 +94,13 @@ server.on('message', function (message, remote) {
         */
     }
 });
-redisClient.hgetall("me", function (err, me) {
+/***
+redisClient.hgetall("me", function (err,me) {
     if (err) {
-        console.log("hgetall me failed");
-    }
-    else {
-        console.log("me=" + lib_js_1.dump(me));
-        server.bind(me.port, me.ipaddr);
+      console.log("hgetall me failed");
+    } else {
+      console.log("me="+dump(me));
+      server.bind(me.port, me.ipaddr);
     }
 });
+***/ 
