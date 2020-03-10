@@ -109,7 +109,6 @@ function setMe() {
                             //console.log("genesisMint="+dump(genesisMint));                           
                             redisClient.hmset("mint:1",genesisMint);
 
-
                             redisClient.hgetall(nodeEntry, function(err,json) {
                                 if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
                                 else {

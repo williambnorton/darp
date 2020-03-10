@@ -72,15 +72,15 @@ app.get('/nodefactory', function (req, res) {
                            "genesisPublickey" : me.genesisPublickey||publickey,
                            "wallet" : wallet,
                            //statistics
-                           //"lastSeq": "0",      //lastSeq I sent out
-                           //"pulseTimestamp": ""+now(), //last pulseTimestamp we sent
-                           //"inOctets": "0",
-                           //"outOctets": "0",
-                           //"inMsgs": "0",
-                           //"outMsgs": "0",
-                           //"owl": ""+OWL,
-                           //"pktDrops": "0",
-                           //"remoteState": "0"   //and there are mints : owls for received pulses 
+                           "lastSeq": "0",      //lastSeq I sent out
+                           "pulseTimestamp": ""+now(), //last pulseTimestamp we sent
+                           "inOctets": "0",
+                           "outOctets": "0",
+                           "inMsgs": "0",
+                           "outMsgs": "0",
+                           "owl": ""+OWL,
+                           "pktDrops": "0",
+                           "remoteState": "0"   //and there are mints : owls for received pulses 
                      };
                      //make any adjustmenets here for genesis vs non genesis nodes
                      expressRedisClient.hmset(nodeEntry, newNode);

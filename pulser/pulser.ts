@@ -78,13 +78,22 @@ function pulse() {
                 console.log("PULSER: srcMint="+srcMint+" dstMint="+dstMint+" owl="+owl+" mint="+mint+" mints="+dump(mints));
 
                 console.log("send this pulseMessage="+pulseMessage); 
+                redisClient.exists("mint:"+mint, function (err,result) {
+                  if (result==1) {
+                    //we have this mint
+                  }
+                  else {
+                    //we don't have this mint - ask groupOwner
+                  }
+                });
+
                 redisClient.hgetall("mint:"+srcMint, function(err,mintTableEntry){
                     console.log("mintTableEntry="+dump(mintTableEntry));
 
                     if (srcMint!=me.mint) {  //don't send to myself
                       networkClient.send(pulseMessage, 0, pulseMessage.length, mintTableEntry.port, mintTableEntry.ipaddr, function(err, bytes) {
                         if (err) throw err;
-                          console.log('UDP message '+pulseMessage+' sent to ' + mintTableEntry.ipaddr +':'+ mintTableEntry.port);
+                          console.log('PULSE: pulsing UDP message '+pulseMessage+' sent to ' + mintTableEntry.ipaddr +':'+ mintTableEntry.port);
                       });  
                     }
                 });
