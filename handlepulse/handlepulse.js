@@ -52,7 +52,9 @@ server.on('message', function (message, remote) {
         console.log("ERROR - BAD PULSE from " + remote.address + ':' + remote.port + ' - ' + message);
         process.exit(127);
     }
-    console.log("pulseLabel=" + pulseLabel + " OWL=" + OWL + " from " + incomingIP + " owls=" + owls);
+    console.log("pulseType=" + pulseType + " seqNum=" + seqNum + " ms pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
+    console.log("pulseLabel=" + pulseLabel + " OWL=" + OWL + " ms from " + incomingIP + " owls=" + owls);
+    console.log("pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ms receiveTimestamp= " + receiveTimestamp + " owls=" + owls);
     redisClient.exists(pulseLabel, function (err, reply) {
         if (reply === 1) {
             console.log('exists');
