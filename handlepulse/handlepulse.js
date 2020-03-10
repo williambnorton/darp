@@ -46,7 +46,10 @@ server.on('message', function (message, remote) {
         var pulseGroupOwner = pulseGroup.split(".")[0]; //MAZORE
         var receiveTimestamp = lib_js_1.now();
         var OWL = receiveTimestamp - pulseTimestamp;
-        var owls = ary[4];
+        ary.pop();
+        ary.pop();
+        ary.pop();
+        var owls = ary;
     }
     catch (err) {
         console.log("ERROR - BAD PULSE from " + remote.address + ':' + remote.port + ' - ' + message);

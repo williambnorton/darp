@@ -48,7 +48,10 @@ try {
   var pulseGroupOwner=pulseGroup.split(".")[0];  //MAZORE
   var receiveTimestamp=now();
   var OWL=receiveTimestamp-pulseTimestamp;
-  var owls=ary[4];
+  ary.pop();
+  ary.pop();
+  ary.pop();
+  var owls=ary;
 } catch(err) {
   console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
   process.exit(127);
@@ -90,7 +93,7 @@ redisClient.exists(pulseLabel, function(err, reply) {
 var ary=owls.split(",");
 for (var i=0; i<ary.length; i++) {
   console.log("HANDLEPULSE ary["+i+"]="+ary[i]);
-  
+
   /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) { 
     //"port" : ""+port,
       //"publickey" : publickey,
