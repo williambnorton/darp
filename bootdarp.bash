@@ -20,7 +20,7 @@ echo `date` bootdarp: starting redis and express
 redis-server &  #temp to help building
 sleep 1
 #
-#   need express before config
+#   need express (TCP/65013) before config
 #
 cd /darp/express
 node express &
@@ -32,7 +32,6 @@ sleep 3
 
 cd /darp/config
 node config &
-
 echo    `date` Waiting for config to connect
 sleep 3
 
