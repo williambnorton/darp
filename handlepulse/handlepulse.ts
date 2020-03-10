@@ -80,7 +80,7 @@ redisClient.exists(pulseLabel, function(err, reply) {
       "inMsgs": "0",
       "outMsgs": "0",
       "pktDrops": "0",
-      "remoteState": owls    //store literal owls
+      "remoteState": message    //store literal owls
     };
     redisClient.hmset(pulseLabel, newNode)
     console.log("HANDLEPULSE: ADDED NEW NODE: "+pulseLabel+dump(newNode));
@@ -91,7 +91,7 @@ redisClient.exists(pulseLabel, function(err, reply) {
     // for each mint table entry, if match - set this data
 //var ary=owls; //.split(",");
 for (var i=0; i<owls.length; i++) {
-  console.log("HANDLEPULSE ary["+i+"]="+owls[i]);
+  console.log("HANDLEPULSE owls["+i+"]="+owls[i]);
 
   /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) { 
     //"port" : ""+port,
@@ -104,7 +104,7 @@ for (var i=0; i<owls.length; i++) {
       //"wallet" : wallet,
     });
   */
-}
+  }
 
 });
 /***
