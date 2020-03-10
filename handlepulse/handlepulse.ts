@@ -62,11 +62,11 @@ console.log("pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ms re
 
 redisClient.exists(pulseLabel, function(err, reply) {
   if (reply === 1) {
-      console.log('exists');
+      console.log('this pulsing node exists');
       //update stats
   } else {   //create node
-    console.log("NEW NODE TO ADD: "+pulseLabel);
-    redisClient.hmset(pulseLabel, {
+    console.log("HANDLEPULSE: ADDING: "+pulseLabel);
+    var newNode={
       "geo" : pulseSource,
       "group": pulseGroup,      //add all nodes to gebnesis group
       "pulseTimestamp": ""+pulseTimestamp, //last pulseTimestamp we sent
@@ -81,7 +81,10 @@ redisClient.exists(pulseLabel, function(err, reply) {
       "outMsgs": "0",
       "pktDrops": "0",
       "remoteState": owls    //store literal owls
-    })
+    };
+    redisClient.hmset(pulseLabel, newNode)
+    console.log("HANDLEPULSE: ADDED NEW NODE: "+pulseLabel+dump(newNode));
+
   }
 });
 

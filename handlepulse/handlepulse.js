@@ -57,12 +57,12 @@ server.on('message', function (message, remote) {
     console.log("pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ms receiveTimestamp= " + receiveTimestamp + " owls=" + owls);
     redisClient.exists(pulseLabel, function (err, reply) {
         if (reply === 1) {
-            console.log('exists');
+            console.log('this pulsing node exists');
             //update stats
         }
         else { //create node
-            console.log("NEW NODE TO ADD: " + pulseLabel);
-            redisClient.hmset(pulseLabel, {
+            console.log("HANDLEPULSE: ADDING: " + pulseLabel);
+            var newNode = {
                 "geo": pulseSource,
                 "group": pulseGroup,
                 "pulseTimestamp": "" + pulseTimestamp,
@@ -77,7 +77,9 @@ server.on('message', function (message, remote) {
                 "outMsgs": "0",
                 "pktDrops": "0",
                 "remoteState": owls //store literal owls
-            });
+            };
+            redisClient.hmset(pulseLabel, newNode);
+            console.log("HANDLEPULSE: ADDED NEW NODE: " + pulseLabel + lib_js_1.dump(newNode));
         }
     });
     // for each mint table entry, if match - set this data
