@@ -86,7 +86,7 @@ server.on('message', function (message, remote) {
         }
     });
     // for each mint table entry, if match - set this data
-    var ary = owls.split(",");
+    var ary = owls; //.split(",");
     for (var i = 0; i < ary.length; i++) {
         console.log("HANDLEPULSE ary[" + i + "]=" + ary[i]);
         /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) {
