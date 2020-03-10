@@ -137,11 +137,11 @@ var mint=0;
 }
 
 expressRedisClient.hget("me","port",function (err,port){
-if (!port) port=65013;
-var server = app.listen(port,'0.0.0.0', function () {
-   var host = server.address().address
-   var port = server.address().port  
-   console.log("Express app listening at http://%s:%s", host, port)
-})
+   if (!port) port=65013;
+      var server = app.listen(port,'0.0.0.0', function () {
+      var host = server.address().address
+      var port = server.address().port  
+      console.log("Express app listening at http://%s:%s", host, port)
+   })
 
 });

@@ -45,3 +45,5 @@ echo `date` New darp version: `cd /darp;ls build*` installed and running
 
 #cd /darp/pulser
 #node pulser &
+echo `date` - now you should run     cd /darp/handlepulse;node handlepulse
+echo `date` - now you should run     cd /darp/pulser;node pulser
