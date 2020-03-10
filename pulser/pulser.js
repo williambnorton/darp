@@ -11,6 +11,9 @@ var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 pulse();
+//
+//
+//
 function pulse() {
     var datagramClient = dgram.createSocket('udp4');
     redisClient.hget('me', 'lastSeq', function (err, lastSeq) {
@@ -52,7 +55,7 @@ function pulse() {
                                 var owl = mints[mint];
                                 var srcMint = mint.split(">")[0];
                                 var dstMint = mint.split(">")[1];
-                                console.log("srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + lib_1.dump(mints));
+                                console.log("PULSER: collecting mints srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + lib_1.dump(mints));
                                 if (virgin)
                                     virgin = 0;
                                 else
@@ -61,7 +64,10 @@ function pulse() {
                             }
                             for (var mint in mints) { //send pulseMsgs to each group member
                                 //var owlLabel=entry+"-"+me.mint;  //src to me
-                                console.log("");
+                                console.log("PULSER: in send loop");
+                                var srcMint = mint.split(">")[0];
+                                var dstMint = mint.split(">")[1];
+                                console.log("PULSER: srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + lib_1.dump(mints));
                                 console.log("send this pulseMessage=" + pulseMessage);
                                 redisClient.hgetall("mint:" + srcMint, function (err, mintTableEntry) {
                                     console.log("mintTableEntry=" + lib_1.dump(mintTableEntry));
