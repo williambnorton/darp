@@ -97,7 +97,7 @@ function pulse() {
         });
     });
     datagramClient.close();
-    setTimeout(pulse, 5000);
+    setTimeout(pulse, 10 * 1000);
 }
 //
 //  iterator through each mint of a pulseGroup
