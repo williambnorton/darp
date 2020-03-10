@@ -88,9 +88,10 @@ redisClient.exists(pulseLabel, function(err, reply) {
 
     // for each mint table entry, if match - set this data
 var ary=owls.split(",");
-for (var i=0; i< ary.length; i++) {
+for (var i=0; i<ary.length; i++) {
   console.log("HANDLEPULSE ary["+i+"]="+ary[i]);
-/*  redisClient.hmgetall(pulseLabel, "mint:"+mint) { 
+  
+  /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) { 
     //"port" : ""+port,
       //"publickey" : publickey,
       //"mint" : ""+newMint,      //set by genesis node
@@ -99,8 +100,8 @@ for (var i=0; i< ary.length; i++) {
       //"genesisPort" : me.genesisPort,
       //"genesisPublickey" : me.genesisPublickey||publickey,
       //"wallet" : wallet,
-  });
-*/
+    });
+  */
 }
 
 });

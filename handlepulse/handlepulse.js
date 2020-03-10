@@ -87,14 +87,14 @@ server.on('message', function (message, remote) {
     for (var i = 0; i < ary.length; i++) {
         console.log("HANDLEPULSE ary[" + i + "]=" + ary[i]);
         /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) {
-            //"port" : ""+port,
-              //"publickey" : publickey,
-              //"mint" : ""+newMint,      //set by genesis node
-              //genesis connection info
-              //"genesisIP" : me.genesisIP,
-              //"genesisPort" : me.genesisPort,
-              //"genesisPublickey" : me.genesisPublickey||publickey,
-              //"wallet" : wallet,
+          //"port" : ""+port,
+            //"publickey" : publickey,
+            //"mint" : ""+newMint,      //set by genesis node
+            //genesis connection info
+            //"genesisIP" : me.genesisIP,
+            //"genesisPort" : me.genesisPort,
+            //"genesisPublickey" : me.genesisPublickey||publickey,
+            //"wallet" : wallet,
           });
         */
     }
