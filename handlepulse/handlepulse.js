@@ -46,9 +46,9 @@ server.on('message', function (message, remote) {
         var pulseGroupOwner = pulseGroup.split(".")[0]; //MAZORE
         var receiveTimestamp = lib_js_1.now();
         var OWL = receiveTimestamp - pulseTimestamp;
-        ary.pop();
-        ary.pop();
-        ary.pop();
+        ary.unshift();
+        ary.unshift();
+        ary.unshift();
         var owls = ary;
     }
     catch (err) {

@@ -48,9 +48,9 @@ try {
   var pulseGroupOwner=pulseGroup.split(".")[0];  //MAZORE
   var receiveTimestamp=now();
   var OWL=receiveTimestamp-pulseTimestamp;
-  ary.pop();
-  ary.pop();
-  ary.pop();
+  ary.unshift();
+  ary.unshift();
+  ary.unshift();
   var owls=ary;
 } catch(err) {
   console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
