@@ -16,7 +16,8 @@ redisClient.hgetall("me", function (err, me) {
             process.exit(127);
         }
         console.log("me=" + lib_js_1.dump(me));
-        server.bind(me.port, "0.0.0.0");
+        //server.bind(me.port, "0.0.0.0");
+        server.bind(me.port, '0.0.0.0');
     }
 });
 //
