@@ -33,7 +33,7 @@ server.on('listening', function () {
 //  message format: 0,56,1583783486546,MAZORE:MAZORE.1,1>1=0,2>1=0
 //
 server.on('message', function (message, remote) {
-    console.log(" received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
+    console.log("HANDLEPULSE: received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
     var ary = message.toString().split(",");
     try {
         var incomingIP = remote.address;
@@ -52,16 +52,16 @@ server.on('message', function (message, remote) {
         console.log("ERROR - BAD PULSE from " + remote.address + ':' + remote.port + ' - ' + message);
         process.exit(127);
     }
-    console.log("pulseType=" + pulseType + " seqNum=" + seqNum + " ms pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
-    console.log("pulseLabel=" + pulseLabel + " OWL=" + OWL + " ms from " + incomingIP + " owls=" + owls);
-    console.log("pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ms receiveTimestamp= " + receiveTimestamp + " owls=" + owls);
+    console.log("HANDLEPULSE pulseType=" + pulseType + " seqNum=" + seqNum + " ms pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
+    console.log("HANDLEPULSE pulseLabel=" + pulseLabel + " OWL=" + OWL + " ms from " + incomingIP + " owls=" + owls);
+    console.log("HANDLEPULSE pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ms receiveTimestamp= " + receiveTimestamp + " owls=" + owls);
     redisClient.exists(pulseLabel, function (err, reply) {
         if (reply === 1) {
-            console.log('this pulsing node exists');
+            console.log('HANDLEPULSE this pulsing node exists');
             //update stats
         }
         else { //create node
-            console.log("HANDLEPULSE: ADDING: " + pulseLabel);
+            console.log("HANDLEPULSE: ADDING NODE: " + pulseLabel);
             var newNode = {
                 "geo": pulseSource,
                 "group": pulseGroup,
@@ -83,8 +83,9 @@ server.on('message', function (message, remote) {
         }
     });
     // for each mint table entry, if match - set this data
-    for (var mint in owls) {
-        console.log(lib_js_1.ts() + "owls=" + owls + " mint=" + mint + " owl=" + owls[mint]);
+    var ary = owls.split(",");
+    for (var i = 0; i < ary.length; i++) {
+        console.log("HANDLEPULSE ary[" + i + "]=" + ary[i]);
         /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) {
             //"port" : ""+port,
               //"publickey" : publickey,
