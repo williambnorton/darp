@@ -44,4 +44,5 @@ sleep 1
 
 cd /darp/pulser
 #node pulser &
+echo `date` '------------> Please start pulser'
 
