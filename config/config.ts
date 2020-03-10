@@ -53,9 +53,9 @@ setMe();  //later this should start with just an IP of genesis node
 
 function setMe() {
     redisClient.hgetall("genesis", function (err,genesis) {
-        console.log("setMeIP(): genesis="+dump(genesis));
+        //console.log("setMe(): genesis="+dump(genesis));
         var URL="http://"+genesis.ipaddr+":"+genesis.port+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&wallet="+WALLET;
-        console.log("Fetching URL for config: "+URL);
+        //console.log("Fetching URL for config: "+URL);
         //FETCH CONFIG
         var req = http.get(URL, function (res) {
             var data = '', json_data;
@@ -63,23 +63,23 @@ function setMe() {
                 data += stream;
             });
             res.on('end', function () {
-                console.log("CONFIG data="+data);
+                //console.log("CONFIG data="+data);
                 var json = JSON.parse(data);
                 //gME=json;  //set my global variable  for convenuience
                 //console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
                 //var me=JSON.parse(json);
                 redisClient.hmset("me", json);
-                console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
+                //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
                 redisClient.hgetall("me",function (err,me) { 
                     if (err) console.log("CONFIG ERROR");
                     else {
-                        console.log("ME **********"+dump(me));
+                        //console.log("ME **********"+dump(me));
                         var ary=me.pulseGroups.split(",");
                         for (var group in ary) {
-                            console.log("group="+group+" ary[]="+ary[group]);
+                            //console.log("group="+group+" ary[]="+ary[group]);
                             //create me.geo:me.pulseGroups
                             var nodeEntry=me.geo+":"+ary[group];
-                            console.log("setMe() creating "+nodeEntry);
+                            //console.log("setMe() creating "+nodeEntry);
                             
                             redisClient.hmset(nodeEntry,json);  //save <me>:MAZORE.1
                             //eventually, on pulse? we need to add own mint to MAZORE.1
@@ -94,7 +94,7 @@ function setMe() {
                                 "publickey" : ""+json.publickey,
                                 "wallet" : ""+json.wallet
                             }
-                            console.log("newMintEntry="+dump(newMintEntry));
+                            //console.log("newMintEntry="+dump(newMintEntry));
                             redisClient.hmset("mint:"+json.mint, newMintEntry);
 
                             //if we haven't installed out genesis node, install it in the mint table now
@@ -106,7 +106,7 @@ function setMe() {
                                     "publickey" : ""+json.genesisPublickey,
                                     "wallet" : ""
                             } 
-                            console.log("genesisMint="+dump(genesisMint));                           
+                            //console.log("genesisMint="+dump(genesisMint));                           
                             redisClient.hmset("mint:1",genesisMint);
 
 

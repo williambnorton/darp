@@ -34,7 +34,7 @@ server.on('listening', function () {
 //
 server.on('message', function (message, remote) {
     console.log(" received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
-    var ary = message.split(",");
+    var ary = message.toString().split(",");
     try {
         var incomingIP = remote.address;
         var pulseType = ary[0];
