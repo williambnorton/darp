@@ -121,7 +121,7 @@ function setMe() {
                                 }
                              });
 
-
+                             //make sure there is a genesis group node MAZORE:MAZORE:1 
 
                             //reinit wireguard
 

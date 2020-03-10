@@ -107,6 +107,7 @@ function setMe() {
                                     console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 }
                             });
+                            //make sure there is a genesis group node MAZORE:MAZORE:1 
                             //reinit wireguard
                         }
                     }
