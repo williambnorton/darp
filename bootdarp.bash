@@ -24,7 +24,7 @@ sleep 1
 #
 cd /darp/express
 node express &
-sleep 1
+sleep 3
 
 #echo `date` Launching forever script
 #cd /darp/scripts

@@ -45,14 +45,14 @@ app.get('/nodefactory', function (req, res) {
                     if (err) {
                         console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                     }
-                    console.log("******** EXPRESS redis genesis=" + lib_1.dump(genesis));
+                    //console.log("******** EXPRESS redis genesis="+dump(genesis));
                     //console.log("express(): err="+err+" port="+port);
                     expressRedisClient.hgetall("me", function (err, me) {
                         if (err) {
                             console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                         }
                         var nodeEntry = geo + ":" + me.group;
-                        console.log("******** EXPRESS redis me=" + lib_1.dump(me));
+                        //console.log("******** EXPRESS redis me="+dump(me));
                         //console.log("nodeEntry="+JSON.stringify())
                         var newNode = {
                             "geo": geo,
@@ -86,7 +86,7 @@ app.get('/nodefactory', function (req, res) {
                             expressRedisClient.hset(me.group, "1" + ">" + "1", 0);
                         }
                         else {
-                            console.log("nodeEntry=" + nodeEntry + " publickey=" + publickey + " pulseGroups" + newNode.pulseGroups + " me.group=" + me.group);
+                            //console.log("nodeEntry="+nodeEntry+" publickey=" +publickey+" pulseGroups" + newNode.pulseGroups + " me.group="+me.group);
                             expressRedisClient.hset(me.group, newMint + ">" + me.mint, 0);
                             //expressRedisClient.hset(me.geo+":"+me.group, newMint, 0);
                         }
@@ -109,7 +109,7 @@ app.get('/nodefactory', function (req, res) {
                                 console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(json));
                                 res.setHeader('Content-Type', 'application/json');
                                 res.end(JSON.stringify(json));
-                                console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                                console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 console.log("EXPRESS nodeFactory done");
                             }
                         });
