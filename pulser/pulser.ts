@@ -81,13 +81,18 @@ function pulse() {
                 console.log("PULSER: srcMint="+srcMint+" dstMint="+dstMint+" owl="+owl+" mint="+mint+" mints="+dump(mints));
 
                 console.log("PULSER: send this pulseMessage="+pulseMessage); 
-                redisClient.exists("mint:"+mint, function (err,result) {
+                redisClient.exists("mint:"+srcMint, function (err,result) {
                   if (result==1) {
                     //we have this mint
+                    console.log("PULSER: we have this mint - "+mint);
+
                   }
                   else {
                     console.log("PULSER: we don't have this mint - "+mint);
                     //we don't have this mint - ask groupOwner
+
+                    //and add this to wireguard config
+                    
                   }
                 });
 
