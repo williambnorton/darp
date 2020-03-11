@@ -54,12 +54,13 @@ server.on('message', function (message, remote) {
         console.log("ERROR - BAD PULSE from " + remote.address + ':' + remote.port + ' - ' + message);
         process.exit(127);
     }
-    console.log("HANDLEPULSE pulseType=" + pulseType + " seqNum=" + seqNum + " ms pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
+    console.log("HANDLEPULSE pulseType=" + pulseType + " seqNum=" + seqNum + " pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
     console.log("HANDLEPULSE pulseLabel=" + pulseLabel + " OWL=" + OWL + " ms from " + incomingIP + " owls=" + owls);
-    console.log("HANDLEPULSE pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ms receiveTimestamp= " + receiveTimestamp + " owls=" + owls);
+    console.log("HANDLEPULSE pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " receiveTimestamp= " + receiveTimestamp + " owls=" + owls);
     redisClient.exists(pulseLabel, function (err, reply) {
         if (reply === 1) {
             console.log('HANDLEPULSE this pulsing node exists');
+            redisClient.hmset(pulseLabel, newNode);
             //update stats
         }
         else { //create node
@@ -87,7 +88,11 @@ server.on('message', function (message, remote) {
     // for each mint table entry, if match - set this data
     //var ary=owls; //.split(",");
     for (var i = 0; i < owls.length; i++) {
-        console.log("HANDLEPULSE owls[" + i + "]=" + owls[i]);
+        var key = owls[i].split("=")[0];
+        var owl = owls[i].split("=")[1];
+        console.log("HANDLEPULSE key=" + key + " owl=" + owl);
+        //store the OWLs in redis
+        redisClient.hset(pulseGroup, key, owl); // store OWL
         /*  redisClient.hmgetall(pulseLabel, "mint:"+mint) {
           //"port" : ""+port,
             //"publickey" : publickey,
