@@ -36,10 +36,19 @@ redisClient.hmset("me", {
     "genesisPort": "65013",
     "wallet": WALLET
 });
-redisClient.hmset("genesis", {
-    "port": "65013",
-    "ipaddr": "104.42.192.234" //set by genesis node on connection
-});
+if (process.env.GENESIS) {
+    redisClient.hmset("genesis", {
+        "port": "65013",
+        "ipaddr": "104.42.192.234" //set by genesis node on connection
+    });
+}
+else {
+    console.log("Using environmental variable to set GENESIS to " + process.env.GENESIS);
+    redisClient.hmset("genesis", {
+        "port": "65013",
+        "ipaddr": process.env.GENESIS //set by genesis node on connection
+    });
+}
 //if (PUBLICKEY=="") Usage();
 setMe(); //later this should start with just an IP of genesis node 
 function setMe() {
