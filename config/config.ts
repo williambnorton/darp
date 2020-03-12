@@ -3,9 +3,15 @@
 //
 //  me - my internal state and pointer to genesis
 //
-import { dump, now } from "../lib/lib";
+import { dump, now, getMyIP } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
 var http = require('http');
+let GENESIS=getMyIP(function (d) { console.log("d="+d);});
+//if ( typeof GENESIS == "undefined" ) {
+//    console.log("GENESIS env var not available - I must be GENESIS Node");
+
+//    process.exit(-1)
+//}
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
@@ -42,7 +48,7 @@ redisClient.hmset("me", {  //what i have so far
     "wallet" : WALLET
 });
 
-if (process.env.GENESIS) {
+if (GENESIS) {
     redisClient.hmset("genesis",{       //what I have so far
         "port" : "65013",               //default
         "ipaddr" : "104.42.192.234"   //set by genesis node on connection
@@ -51,7 +57,7 @@ if (process.env.GENESIS) {
     console.log("Using environmental variable to set GENESIS to "+process.env.GENESIS);
     redisClient.hmset("genesis",{       //what I have so far
         "port" : "65013",               //default
-        "ipaddr" : process.env.GENESIS   //set by genesis node on connection
+        "ipaddr" : GENESIS   //set by genesis node on connection
     });  
 }
 

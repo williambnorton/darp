@@ -2,6 +2,11 @@
 #		    bootdarp.bash - fetch updated darp software and launch forever script
 #
 
+if [ "$GENESIS" == "" ]; then
+   GENESIS=`curl ifconfig.co`
+    echo `date` GENESIS set to $GENESIS
+fi
+
 /darp/updateSW.bash
 echo `date` bootdarp: SOFTWARE UPDATE COMPLETE
 
@@ -12,7 +17,7 @@ ls -l /darp
 echo `date` bootdarp: configuring initial wireguard keys
 cd /darp/scripts/
 ./configWG.bash
-PUBLICKEY=`cat /etc/wireguard/publickey`
+export PUBLICKEY=`cat /etc/wireguard/publickey`
 echo PUBLICKEY=$PUBLICKEY
 cd /darp
 

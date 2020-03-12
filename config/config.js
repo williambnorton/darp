@@ -7,6 +7,11 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var http = require('http');
+var GENESIS = lib_1.getMyIP(function (d) { console.log("d=" + d); });
+//if ( typeof GENESIS == "undefined" ) {
+//    console.log("GENESIS env var not available - I must be GENESIS Node");
+//    process.exit(-1)
+//}
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 redisClient.flushall(); //clean slate
@@ -36,7 +41,7 @@ redisClient.hmset("me", {
     "genesisPort": "65013",
     "wallet": WALLET
 });
-if (process.env.GENESIS) {
+if (GENESIS) {
     redisClient.hmset("genesis", {
         "port": "65013",
         "ipaddr": "104.42.192.234" //set by genesis node on connection
@@ -46,7 +51,7 @@ else {
     console.log("Using environmental variable to set GENESIS to " + process.env.GENESIS);
     redisClient.hmset("genesis", {
         "port": "65013",
-        "ipaddr": process.env.GENESIS //set by genesis node on connection
+        "ipaddr": GENESIS //set by genesis node on connection
     });
 }
 //if (PUBLICKEY=="") Usage();
