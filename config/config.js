@@ -6,8 +6,9 @@ exports.__esModule = true;
 //  me - my internal state and pointer to genesis
 //
 var lib_1 = require("../lib/lib");
+var DEFAULT_GENESIS = "71.202.2.184";
 var http = require('http');
-var GENESIS = lib_1.getMyIP(function (d) { console.log("d=" + d); });
+//let GENESIS=getMyIP(function (d) { console.log("d="+d);});
 //if ( typeof GENESIS == "undefined" ) {
 //    console.log("GENESIS env var not available - I must be GENESIS Node");
 //    process.exit(-1)
@@ -41,26 +42,28 @@ redisClient.hmset("me", {
     "genesisPort": "65013",
     "wallet": WALLET
 });
-if (GENESIS) {
+if (typeof process.env.GENESIS == "undefined") {
+    console.log("using default genesis " + DEFAULT_GENESIS);
     redisClient.hmset("genesis", {
         "port": "65013",
-        "ipaddr": "104.42.192.234" //set by genesis node on connection
+        "ipaddr": DEFAULT_GENESIS
+        //set by genesis node on connection
     });
 }
 else {
     console.log("Using environmental variable to set GENESIS to " + process.env.GENESIS);
     redisClient.hmset("genesis", {
         "port": "65013",
-        "ipaddr": GENESIS //set by genesis node on connection
+        "ipaddr": process.env.GENESIS //set by genesis node on connection
     });
 }
 //if (PUBLICKEY=="") Usage();
 setMe(); //later this should start with just an IP of genesis node 
 function setMe() {
     redisClient.hgetall("genesis", function (err, genesis) {
-        //console.log("setMe(): genesis="+dump(genesis));
+        console.log("setMe(): genesis=" + lib_1.dump(genesis));
         var URL = "http://" + genesis.ipaddr + ":" + genesis.port + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&wallet=" + WALLET;
-        //console.log("Fetching URL for config: "+URL);
+        console.log("Fetching URL for config: " + URL);
         //FETCH CONFIG
         var req = http.get(URL, function (res) {
             var data = '', json_data;
