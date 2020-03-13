@@ -4,6 +4,7 @@
 #			~/wireguard outside the Docker is our /etc/wireguard
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
+
 echo `date` $0 creating wireguard configuration
 DARPDIR=~/darp
 cd $DARPDIR/wireguard
