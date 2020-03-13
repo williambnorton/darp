@@ -9,6 +9,9 @@ fi
 
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
+#
+#The order of startup is important here
+
 ~/darp/updateSW.bash
 echo `date` bootdarp: SOFTWARE UPDATE COMPLETE
 
@@ -23,14 +26,17 @@ export PUBLICKEY=`cat /etc/wireguard/publickey`
 echo PUBLICKEY=$PUBLICKEY
 cd ~/darp
 
-echo `date` bootdarp: starting redis and express
+echo `date` bootdarp: starting redis
 redis-server &  #temp to help building
+echo $$>redis-server.pid
 sleep 1
 #
 #   need express (TCP/65013) before config
 #
+echo `date` bootdarp: starting express
 cd ~/darp/express
 node express &
+echo $$>express.pid
 sleep 2
 
 #echo `date` Launching forever script
@@ -39,17 +45,20 @@ sleep 2
 
 cd ~/darp/config
 node config &
-echo    `date` Waiting for config to connect
+echo $$>config.pid
+echo `date` Waiting for config to connect
 sleep 1
 
 echo `date` New darp version: `cd /darp;ls build*` installed and running
 
 cd ~/darp/handlepulse
 node handlepulse &
-echo    `date` Starting handlepulse
+echo $$>handlepulse.pid
+echo `date` Starting handlepulse
 sleep 1
 
 cd ~/darp/pulser
-#node pulser &
-echo `date` '------------> Please start pulser'
+node pulser &
+echo $$>pulser.pid
+#echo `date` '------------> Please start pulser'
 
