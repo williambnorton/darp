@@ -11,4 +11,5 @@ echo `date` Cloning new darp code from github
 git clone https://github.com/williambnorton/darp.git    ~/darp     
 cd ~/darp
 npm update
+npm i @types/node
 echo `date` Completed git clone into ~/darp for `ls build*`
