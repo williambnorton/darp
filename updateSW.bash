@@ -12,4 +12,5 @@ git clone https://github.com/williambnorton/darp.git    ~/darp
 cd ~/darp
 npm update
 npm i @types/node
+npm install redis express
 echo `date` Completed git clone into ~/darp for `ls build*`
