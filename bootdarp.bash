@@ -1,6 +1,7 @@
 #!/bin/bash
 #		    bootdarp.bash - fetch updated darp software and launch forever script
 # 
+DARPDIR=~/darp
 
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl ifconfig.co`
@@ -16,15 +17,16 @@ fi
 echo `date` bootdarp: SOFTWARE UPDATE COMPLETE
 
 #Now we are running in the new code /darp directory
-cd ~/darp
-ls -l ~/darp
+cd ~
+cd $DARPDIR
+ls -l 
 
 echo `date` bootdarp: configuring initial wireguard keys
-cd ~/darp/scripts/
+cd $DARPDIR/scripts/
 ./configWG.bash
-export PUBLICKEY=`cat /etc/wireguard/publickey`
+export PUBLICKEY=`cat $DARPDIR/wireguard/publickey`
 echo PUBLICKEY=$PUBLICKEY
-cd ~/darp
+cd $DARPDIR
 
 echo `date` bootdarp: starting redis
 redis-server &  #temp to help building
