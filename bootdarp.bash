@@ -12,7 +12,7 @@ fi
 #
 #The order of startup is important here
 
-~/darp/updateSW.bash
+./updateSW.bash
 echo `date` bootdarp: SOFTWARE UPDATE COMPLETE
 
 #Now we are running in the new code /darp directory
