@@ -1,25 +1,27 @@
 #!/bin/bash
 #		    bootdarp.bash - fetch updated darp software and launch forever script
-#
+# 
 
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl ifconfig.co`
     echo `date` GENESIS set to $GENESIS
 fi
 
-/darp/updateSW.bash
+#update SW is destructive - should be done after run in docker loop
+#when genesis node leanrs of new SW it quits and downloads 
+~/darp/updateSW.bash
 echo `date` bootdarp: SOFTWARE UPDATE COMPLETE
 
 #Now we are running in the new code /darp directory
-cd /darp
-ls -l /darp
+cd ~/darp
+ls -l ~/darp
 
 echo `date` bootdarp: configuring initial wireguard keys
-cd /darp/scripts/
+cd ~/darp/scripts/
 ./configWG.bash
 export PUBLICKEY=`cat /etc/wireguard/publickey`
 echo PUBLICKEY=$PUBLICKEY
-cd /darp
+cd ~/darp
 
 echo `date` bootdarp: starting redis and express
 redis-server &  #temp to help building
@@ -27,7 +29,7 @@ sleep 1
 #
 #   need express (TCP/65013) before config
 #
-cd /darp/express
+cd ~/darp/express
 node express &
 sleep 2
 
@@ -35,19 +37,19 @@ sleep 2
 #cd /darp/scripts
 #./forever.bash  #Start the system
 
-cd /darp/config
+cd ~/darp/config
 node config &
 echo    `date` Waiting for config to connect
 sleep 1
 
 echo `date` New darp version: `cd /darp;ls build*` installed and running
 
-cd /darp/handlepulse
+cd ~/darp/handlepulse
 node handlepulse &
 echo    `date` Starting handlepulse
 sleep 1
 
-cd /darp/pulser
+cd ~/darp/pulser
 #node pulser &
 echo `date` '------------> Please start pulser'
 
