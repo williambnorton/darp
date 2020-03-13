@@ -44,6 +44,7 @@ sleep 2
 #./forever.bash  #Start the system
 
 cd ~/darp/config
+kill `cat config.pid`
 node config &
 echo $$>config.pid
 echo `date` Waiting for config to connect
@@ -52,12 +53,14 @@ sleep 1
 echo `date` New darp version: `cd /darp;ls build*` installed and running
 
 cd ~/darp/handlepulse
+kill `cat handlepulse.pid`
 node handlepulse &
 echo $$>handlepulse.pid
 echo `date` Starting handlepulse
 sleep 1
 
 cd ~/darp/pulser
+kill `cat pulser.pid`
 node pulser &
 echo $$>pulser.pid
 #echo `date` '------------> Please start pulser'
