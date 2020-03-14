@@ -28,16 +28,20 @@ app.get('/', function (req, res) {
    res.setHeader("Access-Control-Allow-Origin", "*");
    //
    expressRedisClient.hgetall("me", function (err,me){
-      var pulseGroup=me.pulseGroup;
-      expressRedisClient.hgetall(pulseGroup, function (err, pulsegroup) {
-         res.end(JSON.stringify(pulseGroup, null, 2));
+      var pulseGroups=me.pulseGroups;
+      console.log("pulseGroups="+pulseGroups);
+      expressRedisClient.hgetall(pulseGroups, function (err, pulseGroup) {
+         console.log("pulseGroup="+pulseGroup);
 
+         //expressRedisClient.hgetall(pulseGroup, function (err, pulsegroup) {
+           // res.end(JSON.stringify(pulseGroup, null, 2));
+         //});
       });
-
-      });
+   });
    return;
 
-})
+});
+
 //
 // Configuration for node - allocate a mint
 //
