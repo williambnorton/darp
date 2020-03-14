@@ -29,8 +29,10 @@ app.get('/', function (req, res) {
         console.log("pulseGroups=" + pulseGroups);
         expressRedisClient.hgetall(pulseGroups, function (err, pulseGroup) {
             console.log("pulseGroup=" + pulseGroup);
+            for (var i = 0; i < pulseGroup.length; i++) {
+                res.end(JSON.stringify(pulseGroup[i], null, 2));
+            }
             //expressRedisClient.hgetall(pulseGroup, function (err, pulsegroup) {
-            // res.end(JSON.stringify(pulseGroup, null, 2));
             //});
         });
     });
