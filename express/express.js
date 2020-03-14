@@ -11,7 +11,11 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 app.get('/', function (req, res) {
-    res.send('express root dir');
+    //res.send('express root dir');
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(lib_1.me, null, 3));
+    return;
 });
 //
 // Configuration for node - allocate a mint
