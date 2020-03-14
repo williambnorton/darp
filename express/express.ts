@@ -11,14 +11,30 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
-app.get('/', function (req, res) {
+app.get('/me', function (req, res) {
    //res.send('express root dir');
    res.setHeader('Content-Type', 'application/json');
    res.setHeader("Access-Control-Allow-Origin", "*");
    expressRedisClient.hgetall("me", function (err,me){
       res.end(JSON.stringify(me, null, 3));
-
    });
+   return;
+
+})
+
+app.get('/', function (req, res) {
+   res.send('express root dir');
+   res.setHeader('Content-Type', 'application/json');
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   //
+   expressRedisClient.hgetall("me", function (err,me){
+      var pulseGroup=me.pulseGroup;
+      expressRedisClient.hgetall("group", function (err, pulsegroup) {
+         res.end(JSON.stringify(pulseGroup, null, 2));
+         
+      });
+
+      });
    return;
 
 })
