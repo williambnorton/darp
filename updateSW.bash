@@ -4,6 +4,9 @@
 echo `date` updateSW.bash
 #this should be a check to see if code has changed and the do soft reload.
 # for now, just replace code with new
+cd ~/darp
+kill `cat *.pid`
+
 cd /tmp
 rm -rf /tmp/darp
 mv ~/darp /tmp/darp
@@ -13,4 +16,6 @@ cd ~/darp
 npm update
 npm i @types/node
 npm install redis express
+
 echo `date` Completed git clone into ~/darp for `ls build*`
+echo 'CHANGE into new darp:    cd ~;cd darp'

@@ -30,7 +30,7 @@ cd $DARPDIR
 
 echo `date` bootdarp: starting redis
 redis-server &  #temp to help building
-echo $$>redis-server.pid
+echo $$>$DARPDIR/redis-server.pid
 sleep 1
 #
 #   need express (TCP/65013) before config
@@ -38,7 +38,7 @@ sleep 1
 echo `date` bootdarp: starting express
 cd ~/darp/express
 node express &
-echo $$>express.pid
+echo $$>$DARPDIR/express.pid
 sleep 2
 
 #echo `date` Launching forever script
@@ -48,7 +48,7 @@ sleep 2
 cd ~/darp/config
 kill `cat config.pid`
 node config &
-echo $$>config.pid
+echo $$>$DARPDIR/config.pid
 echo `date` Waiting for config to connect
 sleep 1
 
@@ -57,13 +57,13 @@ echo `date` New darp version: `cd /darp;ls build*` installed and running
 cd ~/darp/handlepulse
 kill `cat handlepulse.pid`
 node handlepulse &
-echo $$>handlepulse.pid
+echo $$>$DARPDIR/handlepulse.pid
 echo `date` Starting handlepulse
 sleep 1
 
 cd ~/darp/pulser
 kill `cat pulser.pid`
 node pulser &
-echo $$>pulser.pid
+echo $$>$DARPDIR/pulser.pid
 #echo `date` '------------> Please start pulser'
 
