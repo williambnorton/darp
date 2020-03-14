@@ -23,15 +23,15 @@ app.get('/me', function (req, res) {
 })
 
 app.get('/', function (req, res) {
-   res.send('express root dir');
+   //res.send('express root dir');
    res.setHeader('Content-Type', 'application/json');
    res.setHeader("Access-Control-Allow-Origin", "*");
    //
    expressRedisClient.hgetall("me", function (err,me){
       var pulseGroup=me.pulseGroup;
-      expressRedisClient.hgetall("group", function (err, pulsegroup) {
+      expressRedisClient.hgetall(pulseGroup, function (err, pulsegroup) {
          res.end(JSON.stringify(pulseGroup, null, 2));
-         
+
       });
 
       });
