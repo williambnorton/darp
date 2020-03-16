@@ -1,12 +1,8 @@
 //
 // express.ts - set up the "me" and connect to the network by getting config from the genesis node
 //
-//import { me } from '../config/config';
 import { dump, now, me } from '../lib/lib';
-//import { gME } from '../config/config';
-var rKeys = require('../rKeys/rKeys.js'),
-rk = rKeys.rk;
-console.log("rk="+dump(rk));
+//import { listenerCount } from 'cluster';
 
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -31,6 +27,7 @@ function forEachPulseGroupMint(callback) {
    expressRedisClient.hgetall("me", function (err,me){
       var results=new Array();
       var myPulseGroups=me.pulseGroups.split(" ");
+      console.log("pulseGroup="+myPulseGroups);
       for (var pulseGroup in myPulseGroups) {
          var entry=myPulseGroups[pulseGroup];
          expressRedisClient.hgetall(entry, function (err, mintTableEntry) {
@@ -39,13 +36,16 @@ function forEachPulseGroupMint(callback) {
                var mintEntry=pulseGroup[mint];
                var srcMint=parseInt(mint.split(">")[0]);
                var dstMint=parseInt(mint.split(">")[1]);
+               console.log("");
 
                expressRedisClient.hgetall("mint:"+srcMint, function (err, mintTableEntry) {
                   if (err) {console.log("forEachPulseGroupMint(): ERROR")}
                   if (mintTableEntry.length==myPulseGroups.length) {
                      console.log("returning results="+dump(results));
-                     callback(results);  
+                     callback(results);
                   } else { 
+                     console.log("adding to results "+dump(mintTableEntry));
+                     console.log("mintTableEntry.length="+mintTableEntry.length+" myPulseGroups.length="+myPulseGroups.length);
                      results.push(mintTableEntry);
                   }
                });
@@ -82,25 +82,22 @@ fetch( function(results) {
 //
 //    htmlPulseGroups() - 
 //
-function htmlPulseGroups(res) {
+function htmlPulseGroups() {
    console.log("htmlPulseGroups(): ");
-   var str="";
-   forEachPulseGroupMint(function (pulseGroup, mintTableEntry){
-      console.log("htmlPulseGroups(): pulseGroup="+pulseGroup+" mintTableEntry="+dump(mintTableEntry));
-      str+=mintTableEntry.geo+":"+mintTableEntry.ipaddr+":"+mintTableEntry.port+":"+mintTableEntry.publickey+":"+mintTableEntry.wallet;
+   forEachPulseGroupMint(function (pulseGroup, mintTable){
+      console.log("htmlPulseGroups(): pulseGroup="+pulseGroup+" mintTable="+dump(mintTable));
       //console.log("str="+str);
-      return str;
    });
-   console.log("Exitting htmlPulseGroups() str="+str);
-   return str;
 }
 
 app.get('/', function (req, res) {
+   //list(req,res);
+   //return;
    //res.send('express root dir');
-   res.setHeader('Content-Type', 'application/json');
+   res.setHeader('Content-Type', 'javascript/text');
    res.setHeader("Access-Control-Allow-Origin", "*");
-   htmlPulseGroups(res);
-   res.end("{}");
+   var html=htmlPulseGroups();
+   res.end(html);
    //
     return;
 
