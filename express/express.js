@@ -6,6 +6,8 @@ exports.__esModule = true;
 //import { me } from '../config/config';
 var lib_1 = require("../lib/lib");
 //import { gME } from '../config/config';
+var rKeys = require('../rKeys/rKeys.js'), rk = rKeys.rk;
+console.log("rk=" + lib_1.dump(rk));
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -19,23 +21,82 @@ app.get('/me', function (req, res) {
     });
     return;
 });
+//
+// forEachPulseGroupMint() iterator
+//
+function forEachPulseGroupMint(callback) {
+    expressRedisClient.hgetall("me", function (err, me) {
+        var results = new Array();
+        var myPulseGroups = me.pulseGroups.split(" ");
+        for (var pulseGroup in myPulseGroups) {
+            var entry = myPulseGroups[pulseGroup];
+            expressRedisClient.hgetall(entry, function (err, mintTableEntry) {
+                for (var mint in mintTableEntry) {
+                    var mintEntry = pulseGroup[mint];
+                    var srcMint = parseInt(mint.split(">")[0]);
+                    var dstMint = parseInt(mint.split(">")[1]);
+                    expressRedisClient.hgetall("mint:" + srcMint, function (err, mintTableEntry) {
+                        if (err) {
+                            console.log("forEachPulseGroupMint(): ERROR");
+                        }
+                        if (mintTableEntry.length == myPulseGroups.length) {
+                            console.log("returning results=" + lib_1.dump(results));
+                            callback(results);
+                        }
+                        else {
+                            results.push(mintTableEntry);
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+/**
+function fetch( callback ) {
+   var results = new Array();
+   client.smembers( "users", function(err,users) {
+      if ( users.length == 0 )
+         return callback( results );
+      users.forEach( function(id) {
+         client.hgetall(id, function(err,items) {
+            var obj = {};
+            obj[id] = items; # here id can be accessed since it is part of the closure
+            results.push(obj);
+            if ( results.length == users.length ) {
+               callback( results );
+            }
+         });
+      });
+   });
+}
+
+fetch( function(results) {
+   console.log(JSON.stringify(results));
+});
+**/
+//
+//    htmlPulseGroups() - 
+//
+function htmlPulseGroups(res) {
+    console.log("htmlPulseGroups(): ");
+    var str = "";
+    forEachPulseGroupMint(function (pulseGroup, mintTableEntry) {
+        console.log("htmlPulseGroups(): pulseGroup=" + pulseGroup + " mintTableEntry=" + lib_1.dump(mintTableEntry));
+        str += mintTableEntry.geo + ":" + mintTableEntry.ipaddr + ":" + mintTableEntry.port + ":" + mintTableEntry.publickey + ":" + mintTableEntry.wallet;
+        //console.log("str="+str);
+        return str;
+    });
+    console.log("Exitting htmlPulseGroups() str=" + str);
+    return str;
+}
 app.get('/', function (req, res) {
     //res.send('express root dir');
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
+    htmlPulseGroups(res);
+    res.end("{}");
     //
-    expressRedisClient.hgetall("me", function (err, me) {
-        var pulseGroups = me.pulseGroups;
-        console.log("pulseGroups=" + pulseGroups);
-        expressRedisClient.hgetall(pulseGroups, function (err, pulseGroup) {
-            console.log("pulseGroup=" + pulseGroup);
-            for (var i = 0; i < pulseGroup.length; i++) {
-                res.end(JSON.stringify(pulseGroup[i], null, 2));
-            }
-            //expressRedisClient.hgetall(pulseGroup, function (err, pulsegroup) {
-            //});
-        });
-    });
     return;
 });
 //
