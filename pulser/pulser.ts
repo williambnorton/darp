@@ -102,16 +102,20 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         } else {
           console.log("mintEntry is undefined Can't find mint="+mint);
           console.log("PULSING "+pulseMsg+"to  sendToAry="+dump(sendToAry)); 
-          for (var node=sendToAry.pop(); node!=null; node=sendToAry.pop()) {
-            
+          for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
+            if (typeof node != "undefined" && node != null) {
             //sending msg
-            networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
-              if(error){
-                networkClient.close();
-              }else{
-                console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port);
-              }
-            });
+              console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+              networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+                if(error){
+                  networkClient.close();
+                }else{
+                  console.log("dump node="+dump(node));
+                  
+                  console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port);
+                }
+              });
+            }
           }
 
           //pulseMsg+=mint+",";
