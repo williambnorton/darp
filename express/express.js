@@ -29,18 +29,19 @@ function forEachPulseGroupMint(callback) {
         for (var pulseGroup in myPulseGroups) {
             var entry = myPulseGroups[pulseGroup];
             expressRedisClient.hgetall(entry, function (err, mintTableEntry) {
+                console.log("mintTableEntry.length=" + mintTableEntry.length + " mintTableEntry=" + lib_1.dump(mintTableEntry));
                 for (var mint in mintTableEntry) {
                     var mintEntry = pulseGroup[mint];
                     var srcMint = parseInt(mint.split(">")[0]);
                     var dstMint = parseInt(mint.split(">")[1]);
-                    console.log("");
+                    console.log("srcMint=" + srcMint);
                     expressRedisClient.hgetall("mint:" + srcMint, function (err, mintTableEntry) {
                         if (err) {
                             console.log("forEachPulseGroupMint(): ERROR");
                         }
                         if (mintTableEntry.length == myPulseGroups.length) {
-                            console.log("returning results=" + lib_1.dump(results));
-                            callback(results);
+                            console.log("returning results=" + lib_1.dump(mintTableEntry));
+                            callback(mintTableEntry);
                         }
                         else {
                             console.log("adding to results " + lib_1.dump(mintTableEntry));
@@ -87,6 +88,7 @@ function htmlPulseGroups() {
     });
 }
 app.get('/', function (req, res) {
+    console.log("fetching '/' state");
     //list(req,res);
     //return;
     //res.send('express root dir');

@@ -29,6 +29,7 @@ echo PUBLICKEY=$PUBLICKEY
 cd $DARPDIR
 
 echo `date` bootdarp: starting redis
+redis-cli shutdown  #stop server
 redis-server &  #temp to help building
 echo $$>$DARPDIR/redis-server.pid
 sleep 1

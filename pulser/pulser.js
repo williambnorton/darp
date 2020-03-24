@@ -16,117 +16,154 @@ pulse();
 //
 function pulse() {
     var datagramClient = dgram.createSocket('udp4');
-    redisClient.hget('me', 'lastSeq', function (err, lastSeq) {
-        lastSeq = parseInt(lastSeq) + 1;
-        console.log("lastSeq=" + lastSeq);
-        redisClient.hset('me', 'lastSeq', "" + lastSeq);
-        //
-        //  get me object
-        //
-        redisClient.hgetall("me", function (err, me) {
+    //  get all my pulseGroups
+    redisClient.hgetall("me", function (err, me) {
+        redisClient.incr("me", "lastSeq", function () { });
+        var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
+        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, reply) {
             if (err) {
-                console.log("hgetall me failed");
+                throw err;
             }
-            else {
-                //console.log("me="+JSON.stringify(me,null,2));
-                //  MAZORE.1 MAZDAL.1
-                console.log("pulsing pulsegroup: " + me.pulseGroups);
-                var pulseGroups = me.pulseGroups.split(" ");
-                for (var PG in pulseGroups) {
-                    var pulseGroup = pulseGroups[PG];
+            console.log("myPulseGroups=" + lib_1.dump(reply));
+            cursor = reply[0];
+            if (cursor === '0') {
+                console.log('Scan Complete ');
+                // do your processing
+                // reply[1] is an array of matched keys: me.geo:*
+                var SRs = reply[1];
+                console.log("We need to pulse each of these SRs=" + SRs);
+                for (var i in SRs) {
+                    console.log(" i=" + i + " SR[i]=" + SRs[i]);
+                    var pulseLabel = SRs[i];
+                    var pulseSrc = pulseLabel.split(":")[0];
+                    var pulseGroup = pulseLabel.split(":")[1];
                     var pulseGroupOwner = pulseGroup.split(".")[0];
-                    var ownerPulseLabel = pulseGroupOwner + ":" + pulseGroup;
-                    var pulseSrc = me.geo;
+                    var ownerPulseLabel = pulseGroupOwner + ":" + pulseGroupOwner + ".1";
                     //make a pulse message
-                    console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup);
-                    //I am pulsing my measurement from others
-                    //in the format OWL,seq#,pulseTimestamp,MAZORE:MAZORE.1=1>2=23,3>1=46
-                    var pulseMessage = "OWL," + lastSeq + "," + lib_1.now() + "," + me.geo + ":" + pulseGroup + ","; //MAZORE:MAZJAP.1
-                    //
-                    //  assume the handlePulse routine will store the data into the MAZORE.1.owls object
-                    //                MAZORE.1 contains a list of mint:owl tuples
-                    //
-                    redisClient.hgetall(pulseGroup, function (err, mints) {
-                        if (err) {
-                            console.log("couldn't find any mints for " + pulseGroup);
-                        }
-                        else {
-                            var virgin = 1;
-                            console.log("make my pulse message from these mints=" + lib_1.dump(mints));
-                            //for each mint in the group, fetch the PEER-ME : OWL
-                            for (var mint in mints) {
-                                var owl = mints[mint];
-                                var srcMint = mint.split(">")[0];
-                                var dstMint = mint.split(">")[1];
-                                console.log("PULSER: collecting mints srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint); //+" mints="+dump(mints));
-                                if (virgin)
-                                    virgin = 0;
-                                else
-                                    pulseMessage += ",";
-                                pulseMessage += mint + "=" + owl;
-                            }
-                            console.log("PULSER: pulseMessage=" + pulseMessage);
-                            for (var mint in mints) { //send pulseMsgs to each group member
-                                //var owlLabel=entry+"-"+me.mint;  //src to me
-                                console.log("PULSER: in send loop");
-                                var srcMint = mint.split(">")[0];
-                                var dstMint = mint.split(">")[1];
-                                console.log("PULSER: srcMint=" + srcMint + " dstMint=" + dstMint + " owl=" + owl + " mint=" + mint + " mints=" + lib_1.dump(mints));
-                                console.log("PULSER: send this pulseMessage=" + pulseMessage);
-                                redisClient.exists("mint:" + srcMint, function (err, result) {
-                                    if (result == 1) {
-                                        //we have this mint
-                                        console.log("PULSER: we have this mint - " + mint);
-                                    }
-                                    else {
-                                        console.log("PULSER: we don't have this mint - " + mint);
-                                        //we don't have this mint - ask groupOwner
-                                        //and add this to wireguard config
-                                    }
-                                });
-                                redisClient.hgetall("mint:" + srcMint, function (err, mintTableEntry) {
-                                    console.log("PULSER: mintTableEntry=" + lib_1.dump(mintTableEntry));
-                                    if (srcMint != me.mint) { //don't send to myself
-                                        networkClient.send(pulseMessage, 0, pulseMessage.length, mintTableEntry.port, mintTableEntry.ipaddr, function (err, bytes) {
-                                            if (err)
-                                                throw err;
-                                            console.log('PULSER: pulsing UDP message ' + pulseMessage + ' sent to ' + mintTableEntry.ipaddr + ':' + mintTableEntry.port);
-                                        });
-                                    }
-                                });
-                            }
-                        }
+                    console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ownerPulseLabel=" + ownerPulseLabel + " pulseSrc=" + pulseSrc);
+                    //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
+                    var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.lastSeq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
+                    //get mintTable to get credentials   
+                    var owls = "";
+                    mintList(ownerPulseLabel, function (err, mints) {
+                        // get nodes' list of mints to send pulse to
+                        // and send pulse
+                        console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
+                        buildPulsePkt(mints, pulseMessage, null);
                     });
-                    //for eah mint, get mintTable entry   <pulseGroup>.workingOWLs   
-                    // handlepulse stores all OWLS here: (MAZORE.1.workingOWLs = 2-1: 23 3-1: 43 2-3: 43 ... )
                 }
             }
         });
     });
     datagramClient.close();
-    setTimeout(pulse, 10 * 1000);
+    //setTimeout(pulse,10*1000);
+}
+//
+//  buildPulsePkt() - build and send pulse
+//  sendToAry - a stack of IP:Port to get this msg
+//
+function buildPulsePkt(mints, pulseMsg, sendToAry) {
+    if (sendToAry == null)
+        sendToAry = new Array();
+    console.log("buildPulsePkt(): mints=" + mints);
+    var mint = mints.pop(); //get our mint to add to the msg
+    console.log("buildPulsePkt() mint=" + mint + " mints=" + mints + " pulseMsg=" + pulseMsg);
+    redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+        if (err) {
+            console.log("buildPulsePkt(): ERROR - ");
+        }
+        else {
+            if (mintEntry != null) {
+                console.log("get my measurement from mintEntry=" + lib_1.dump(mintEntry));
+                if (mintEntry.owl == 0)
+                    pulseMsg += mint + ",";
+                else
+                    pulseMsg += mint + "=" + mintEntry.owl + ",";
+                sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port });
+                if (mint != null) {
+                    console.log("mint popped=" + mint);
+                    buildPulsePkt(mints, pulseMsg, sendToAry);
+                    console.log("after call");
+                    return;
+                }
+                else {
+                    console.log("Complete - now invoke sendTo for each of my mints pulseMsg=" + pulseMsg);
+                    console.log("NOT GETTING HERE EEVR PULSER sendToAry=" + lib_1.dump(sendToAry));
+                }
+            }
+            else {
+                if (typeof mint != "undefined") {
+                    console.log("mintEntry is null - Can't find mint=" + mint);
+                    pulseMsg += mint + ",";
+                    buildPulsePkt(mints, pulseMsg, sendToAry);
+                }
+                else {
+                    console.log("mintEntry is undefined Can't find mint=" + mint);
+                    console.log("PULSING " + pulseMsg + "to  sendToAry=" + lib_1.dump(sendToAry));
+                    for (var node = sendToAry.pop(); node != null; node = sendToAry.pop()) {
+                        //sending msg
+                        networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
+                            if (error) {
+                                networkClient.close();
+                            }
+                            else {
+                                console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
+                            }
+                        });
+                    }
+                    //pulseMsg+=mint+",";
+                    //buildPulsePkt(mints,pulseMsg,sendToAry);
+                }
+            }
+        }
+    });
+}
+//
+//  mintList() - callback with list of mints/owls for this node
+//
+function mintList(SR, callback) {
+    console.log("mintList() : SR=" + SR);
+    //fetch the group mints mint:2 : 2  mint:5 : 5   ....
+    redisClient.hgetall(SR, function (err, pulseGroup) {
+        //console.log("insideIterator");
+        if (err) {
+            console.log("mintList(): hgetall pulseGroup mints " + pulseGroup + " failed");
+        }
+        else {
+            console.log("mintList(): pulseGroup=" + lib_1.dump(pulseGroup));
+            //callback(null,pulseGroup.owls.replace(/=[0-9]*,/g,','));
+            var owlList = pulseGroup.owls.replace(/=[0-9]*/g, '').split(",");
+            console.log("mintList(): owlList=" + owlList);
+            callback(null, owlList); //send back a list of mints
+        }
+    });
 }
 //
 //  iterator through each mint of a pulseGroup
 //
-function forEachMint(pulseGroup, callback) {
-    console.log("forEachMint() : pulseGroup=" + pulseGroup);
+function forEachMint(SR, callback) {
+    console.log("forEachMint() : SR=" + SR);
     //fetch the group mints mint:2 : 2  mint:5 : 5   ....
-    redisClient.hgetall(pulseGroup, function (err, pulseGroupNodes) {
-        console.log("insideIterator");
+    redisClient.hgetall(SR, function (err, SR) {
+        //console.log("insideIterator");
         if (err) {
-            console.log("forEachMint(): hgetall pulseGroup mints " + pulseGroupNodes + " failed");
+            console.log("forEachMint(): hgetall pulseGroup mints " + SR + " failed");
         }
         else {
-            console.log("forEachMint(): *** ** ** pulseGroupNodes=" + lib_1.dump(pulseGroupNodes));
-            for (var mintKey in pulseGroupNodes) { //mint:1  mint:2  mint:3
-                console.log("forEachMint(): **** pulser mintKey=" + mintKey);
-                redisClient.hgetall(mintKey, function (err, mintKey) {
+            //console.log("forEachMint(): *** ** ** pulseGroupNodes="+dump(SR));
+            var mints = SR.owls.split(",");
+            console.log("mints=" + mints + " len=" + mints.length);
+            for (var mint in mints) { //mint:1  mint:2  mint:3
+                console.log("forEachMint: pulser mint=" + mint);
+                redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                     if (err) {
-                        console.log("forEachMint(): hgetall mintKey " + mintKey + " failed");
+                        console.log("forEachMint(): hgetall mintKey " + mint + " failed");
                     }
                     else {
-                        callback(mintKey); //callback may fetch mint table
+                        if (mintEntry) {
+                            //console.log("callback mintEntry="+dump(mintEntry));
+                            callback(err, mintEntry); //callback may fetch mint table
+                        }
                     }
                 });
             }
@@ -134,33 +171,3 @@ function forEachMint(pulseGroup, callback) {
     });
     //setTimeout(pulse,3000); //pulse again in 3 seconds
 }
-/*
-function makePulse(groupEntry,owls) {
-  console.log("groupEntry="+groupEntry+" owls="+owls);
-  var seqNum="1"; //fetch the from pulseGroupTable MazORE.1 seqNum:
-
-  var d = new Date();
-  var now=d.getTime();
-  var srcNode="1";
-
-  //var pulse="0:"+seqNum+":"+now+":"+myMint+":"+groupEntry;
-  var pulse="OWL:"+seqNum+":"+now+":"+me.geo+":"+groupEntry+":"+"2:1:23,3:1:243"  //MAZORE:MAZJAP.1
-//OWL:MAZORE:MAZORE.1:1:2-1=23,3-1=46
-
-  for (var owl in owls) {
-    //console.log("owl="+owl+"="+owls[owl]);
-    var owlMeasurement=owl.split(":");
-
-    if (owlMeasurement.length==3) {
-      // for each node in pulseGroup, send pulseMessage
-      var group=owlMeasurement[0];
-      var srcMint=parseInt(owlMeasurement[1]);
-      var dstMint=parseInt(owlMeasurement[2]);
-      //console.log("group="+group+" srcMint="+srcMint+" dstMint="+dstMint);
-      if (dstMint==me.mint) pulse+=":"+srcMint+":"+owls[owl];
-    }
-  }
-  return pulse;
-}
-
-*/
