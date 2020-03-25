@@ -38,7 +38,7 @@ redisClient.hmset("me", {
     "publickey": PUBLICKEY,
     "bootTime": "" + lib_1.now(),
     //genesis connection info-evebtually find gnesis node online
-    "genesisIP": "104.42.192.234",
+    "genesisIP": DEFAULT_GENESIS,
     "genesisPort": "65013",
     "wallet": WALLET
 });

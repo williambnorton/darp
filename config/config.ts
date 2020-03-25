@@ -44,7 +44,7 @@ redisClient.hmset("me", {  //what i have so far
     "publickey" : PUBLICKEY,
     "bootTime" : ""+now(),   //boot time is when joined the group
     //genesis connection info-evebtually find gnesis node online
-    "genesisIP" : "104.42.192.234",
+    "genesisIP" : DEFAULT_GENESIS,
     "genesisPort" : "65013",
     "wallet" : WALLET
 });
