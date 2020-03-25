@@ -139,7 +139,10 @@ function mintList(SR, callback) {
         else {
             console.log("mintList(): pulseGroup=" + lib_1.dump(pulseGroup));
             //callback(null,pulseGroup.owls.replace(/=[0-9]*,/g,','));
-            var owlList = pulseGroup.owls.replace(/=[0-9]*/g, '').split(",");
+            var owlList = new Array();
+            if (pulseGroup && pulseGroup.owls) {
+                owlList = pulseGroup.owls.replace(/=[0-9]*/g, '').split(",");
+            }
             console.log("mintList(): owlList=" + owlList);
             callback(null, owlList); //send back a list of mints
         }
