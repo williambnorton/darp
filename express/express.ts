@@ -1,7 +1,7 @@
 //
 // express.ts - set up the "me" and connect to the network by getting config from the genesis node
 //
-import { dump, now, me } from '../lib/lib';
+import { dump, now } from '../lib/lib';
 //import { listenerCount } from 'cluster';
 
 const expressRedis = require('redis');
@@ -21,75 +21,14 @@ app.get('/me', function (req, res) {
 })
 
 //
-// forEachPulseGroupMint() iterator
-//
-function forEachPulseGroupMint(callback) {
-   expressRedisClient.hgetall("me", function (err,me){
-      var results=new Array();
-      var myPulseGroups=me.pulseGroups.split(" ");
-      console.log("pulseGroup="+myPulseGroups);
-      for (var pulseGroup in myPulseGroups) {
-         var entry=myPulseGroups[pulseGroup];
-
-         expressRedisClient.hgetall(entry, function (err, mintTableEntry) {
-            console.log("mintTableEntry.length="+mintTableEntry.length+" mintTableEntry="+dump(mintTableEntry));
-            for (var mint in mintTableEntry) {
-               var mintEntry=pulseGroup[mint];
-               var srcMint=parseInt(mint.split(">")[0]);
-               var dstMint=parseInt(mint.split(">")[1]);
-               console.log("srcMint="+srcMint);
-
-               expressRedisClient.hgetall("mint:"+srcMint, function (err, mintTableEntry) {
-                  if (err) {console.log("forEachPulseGroupMint(): ERROR")}
-                  
-                  if (mintTableEntry.length==myPulseGroups.length) {
-                     console.log("returning results="+dump(mintTableEntry));
-                     callback(mintTableEntry);
-                  } else { 
-                     console.log("adding to results "+dump(mintTableEntry));
-                     console.log("mintTableEntry.length="+mintTableEntry.length+" myPulseGroups.length="+myPulseGroups.length);
-                     results.push(mintTableEntry);
-                  }
-               });
-            }  
-         });   
-      }   
-   });
-}
-
-/** 
-function fetch( callback ) {
-   var results = new Array();
-   client.smembers( "users", function(err,users) {
-      if ( users.length == 0 )
-         return callback( results );
-      users.forEach( function(id) {
-         client.hgetall(id, function(err,items) {
-            var obj = {};
-            obj[id] = items; # here id can be accessed since it is part of the closure
-            results.push(obj);
-            if ( results.length == users.length ) {
-               callback( results );
-            }
-         });
-      });
-   });
-}
-
-fetch( function(results) {
-   console.log(JSON.stringify(results));
-});
-**/
-
-//
 //    htmlPulseGroups() - 
 //
 function htmlPulseGroups() {
    console.log("htmlPulseGroups(): ");
-   forEachPulseGroupMint(function (pulseGroup, mintTable){
-      console.log("htmlPulseGroups(): pulseGroup="+pulseGroup+" mintTable="+dump(mintTable));
+   //forEachPulseGroupMint(function (pulseGroup, mintTable){
+     // console.log("htmlPulseGroups(): pulseGroup="+pulseGroup+" mintTable="+dump(mintTable));
       //console.log("str="+str);
-   });
+   //});
 }
 
 app.get('/', function (req, res) {
@@ -99,15 +38,19 @@ app.get('/', function (req, res) {
    //res.send('express root dir');
    res.setHeader('Content-Type', 'javascript/text');
    res.setHeader("Access-Control-Allow-Origin", "*");
-   var html=htmlPulseGroups();
-   res.end(html);
+   expressRedisClient.hgetall("me", function (err,me){
+      res.end(JSON.stringify(me, null, 2));
+   });
+   //var html=htmlPulseGroups();
+   //res.end(html);
    //
     return;
 
 });
 
 //
-// Configuration for node - allocate a mint
+// nodeFactory
+//       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
    console.log('****EXPRESS; config requested with params: '+dump(req.query));
@@ -208,8 +151,8 @@ app.get('/nodefactory', function (req, res) {
                         }
                      });
                      
+                  });
                });
-            });
          }
       });
 

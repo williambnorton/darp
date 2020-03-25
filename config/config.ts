@@ -23,11 +23,13 @@ redisClient.flushall();    //clean slate
 var GEO=process.env.HOSTNAME||"DEVOPS";   //passed into docker
 var PORT=process.env.PORT||"65013";         //passed into docker
 var PUBLICKEY="";
+
 try {
     PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
     PUBLICKEY=PUBLICKEY.replace(/^\n|\n$/g, '');
     console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
 } catch (err) {
+    console.log("PUBLICKEY lookup failed");
     PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
 }
 
@@ -133,7 +135,7 @@ function setMe() {
                                    //res.setHeader('Content-Type', 'application/json');   
                                    //res.end(JSON.stringify(json));
                                    console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-
+                                    
                                 }
                              });
 
