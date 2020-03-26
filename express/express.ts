@@ -77,7 +77,7 @@ app.get('/nodefactory', function (req, res) {
    else {
       expressRedisClient.incr("mintStack", (err, newMint) => {
          if (err) {
-            console.log("mintStack alloocation err="+err);
+            console.log("mintStack allocation err="+err);
          } else {
                expressRedisClient.hgetall("genesis",function (err,genesis){   //get GENESIS data
                   if (err) {
@@ -148,6 +148,7 @@ app.get('/nodefactory', function (req, res) {
                            console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
 
                            console.log("EXPRESS nodeFactory done");
+                           console.log("-----");
                         }
                      });
                      
