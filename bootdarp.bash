@@ -36,7 +36,6 @@ do
     echo `date` Starting redis
     redis-cli shutdown  #stop server if runniung
     redis-server --save "" --appendonly no &  #store nothing
-    echo $$ > $DARPDIR/redis-server.pid
     echo `date`" redis started"
     sleep 1
 
