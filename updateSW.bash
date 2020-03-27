@@ -18,9 +18,5 @@ npm i @types/node
 npm install redis express
 
 echo `date` Completed git clone into ~/darp for `ls Build*`
-echo 'CHANGE into new darp:           cd ~;cd darp;ls'
-
-
-
-
+echo 'CLONED INTO new darp directory:           cd ~;cd darp;ls'
 
