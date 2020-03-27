@@ -36,7 +36,7 @@ app.get('/', function (req, res) {
    //list(req,res);
    //return;
    //res.send('express root dir');
-   res.setHeader('Content-Type', 'html/text');
+   res.setHeader('Content-Type', 'text/json');
    res.setHeader("Access-Control-Allow-Origin", "*");
    expressRedisClient.hgetall("me", function (err,me){
       res.end(JSON.stringify(me, null, 2));
@@ -126,6 +126,7 @@ app.get('/nodefactory', function (req, res) {
                            "pktDrops": "0",
                            "remoteState": "0"   //and there are mints : owls for received pulses 
                      };
+
                      //make any adjustmenets here for genesis vs non genesis nodes
                      expressRedisClient.hmset(nodeEntry, newNode);
                      if ( newMint == 1 ) {

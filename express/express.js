@@ -33,7 +33,7 @@ app.get('/', function (req, res) {
     //list(req,res);
     //return;
     //res.send('express root dir');
-    res.setHeader('Content-Type', 'html/text');
+    res.setHeader('Content-Type', 'text/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     expressRedisClient.hgetall("me", function (err, me) {
         res.end(JSON.stringify(me, null, 2));
