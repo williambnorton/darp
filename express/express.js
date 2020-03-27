@@ -85,6 +85,13 @@ app.get('/nodefactory', function (req, res) {
                         var nodeEntry = geo + ":" + me.group;
                         //console.log("******** EXPRESS redis me="+dump(me));
                         //console.log("nodeEntry="+JSON.stringify())
+                        // I am Genesis node
+                        if (newMint == 1) {
+                            console.log("* * * * * * * I AM GENESIS NODE * * * * * * ");
+                            incomingIP = me.genesisIP;
+                            port = me.genesisPort;
+                            publickey = me.genesisPublickey;
+                        }
                         var newNode = {
                             "geo": geo,
                             "group": me.group,
