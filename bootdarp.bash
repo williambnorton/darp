@@ -17,7 +17,7 @@ DARPDIR=$HOME/darp
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
-   echo `date` rc=$? No GENESIS ENV Variable so setting self to Genesis node: $GENESIS
+   echo `date` Genesis node: $GENESIS
 fi
 
 #update SW is destructive - should be done after run in docker loop
