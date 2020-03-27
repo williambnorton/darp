@@ -96,8 +96,8 @@ app.get('/nodefactory', function (req, res) {
                      if (newMint==1) {
                         console.log("* * * * * * * I AM GENESIS NODE * * * * * * ")
                         incomingIP=me.genesisIP;
-                        port=me.genesisPort||publickey;
-                        publickey=me.genesisPublickey;
+                        port=me.genesisPort;
+                        publickey=me.genesisPublickey||publickey;
                         console.log("incomingIP="+incomingIP+" port="+port+" publickey="+publickey);
                      }
 
