@@ -62,15 +62,17 @@ do
 
     cd $DARPDIR
     cd $DARPDIR/pulser
-    kill `cat pulser.pid`
+    kill `cat $DARPDIR/pulser.pid`
     node pulser &
     echo $$>$DARPDIR/pulser.pid
     #echo `date` '------------> Please start pulser'
 
     cd $DARPDIR
     cd $DARPDIR/handlepulse
-    kill `cat handlepulse.pid`
+    kill `cat $DARPDIR/handlepulse.pid`
     node handlepulse 
+    $rc=$?
+    
     #echo $$>$DARPDIR/handlepulse.pid
     #echo `date` Starting handlepulse
     echo `handlePulse finished -restarting all`
