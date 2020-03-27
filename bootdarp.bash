@@ -30,7 +30,7 @@ do
     rm $DARPDIR/forever  #comment this to rerun forever
 
     cd $DARPDIR
-    VERSION = `ls Build*`
+    VERSION=`ls Build*`
     echo `date` Starting $VERSION
     sleep 2
     echo `date` Starting redis
@@ -46,7 +46,7 @@ do
     ./updateSW.bash
     echo `date` SOFTWARE UPDATE COMPLETE
     cd $DARPDIR
-    echo `date` RUNNING SOFTWARE VERSION `ls -l *build*`
+    ls -l Build*
 
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
