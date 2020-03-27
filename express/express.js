@@ -91,6 +91,7 @@ app.get('/nodefactory', function (req, res) {
                             incomingIP = me.genesisIP;
                             port = me.genesisPort || publickey;
                             publickey = me.genesisPublickey;
+                            console.log("incomingIP=" + incomingIP + " port=" + port + " publickey=" + publickey);
                         }
                         var newNode = {
                             "geo": geo,
