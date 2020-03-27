@@ -92,7 +92,13 @@ function setMe() {
                             //console.log("setMe() creating "+nodeEntry);
                             redisClient.hmset(nodeEntry, json); //save <me>:MAZORE.1
                             //eventually, on pulse? we need to add own mint to MAZORE.1
-                            //we need mintTable - for me
+                            // I am Genesis node
+                            if (json.mint == 1) {
+                                console.log("* * * * * * * I AM GENESIS NODE * * * * * * ");
+                                json.ipaddr = json.genesisIP;
+                                json.port = json.genesisPort;
+                                json.publickey = json.genesisPublickey;
+                            }
                             //Assigned MINT TABLE - needed info to connect to remote
                             var newMintEntry = {
                                 "mint": json.mint,

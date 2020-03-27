@@ -105,7 +105,14 @@ function setMe() {
                             redisClient.hmset(nodeEntry,json);  //save <me>:MAZORE.1
                             //eventually, on pulse? we need to add own mint to MAZORE.1
 
-                            //we need mintTable - for me
+                            // I am Genesis node
+                            if (json.mint==1) {
+                                console.log("* * * * * * * I AM GENESIS NODE * * * * * * ")
+                                json.ipaddr=json.genesisIP;
+                                json.port=json.genesisPort;
+                                json.publickey=json.genesisPublickey;
+                            }
+
                              //Assigned MINT TABLE - needed info to connect to remote
                             var newMintEntry={   
                                 "mint" : json.mint,
@@ -136,8 +143,7 @@ function setMe() {
                                    console.log("EXPRESS nodeFactory sent us our config json="+dump(json));
                                    //res.setHeader('Content-Type', 'application/json');   
                                    //res.end(JSON.stringify(json));
-                                   console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                                    
+                                   console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff"); 
                                 }
                              });
 
