@@ -1,11 +1,23 @@
 #!/bin/bash
 #		    bootdarp.bash - fetch updated darp software and launch forever script
 # 
+#   This is the primary entry point for the container
+#       We expect environmental variables on startup:
+#           HOSTNAME - can be derived by `hostname` and put in the command line
+#           
+#       Optional parms:
+#           WALLET - a wallet to hold credits and debits for use
+#           GENESIS - a starting point for connection into the mesh
+# 
+#       We create
+#           GENESIS - if it isn't passed in , we find one from DrPeering
+#           DARPDIR - the root of all darp info
+#
 DARPDIR=$HOME/darp
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" == "" ]; then
-   GENESIS=`curl ifconfig.co`
-   echo `date` rc=$? No GENESIS ENV CVariable so setting self to Genesis node: $GENESIS
+   GENESIS=`curl http://drpeering.com/genesisnodes`
+   echo `date` rc=$? No GENESIS ENV Variable so setting self to Genesis node: $GENESIS
 fi
 
 #update SW is destructive - should be done after run in docker loop
@@ -17,7 +29,16 @@ while :
 do
     rm $DARPDIR/forever  #comment this to rerun forever
 
-    echo `date` $0 : kill old processes to be restarted
+    cd $DARPDIR
+    VERSION = `ls Build*`
+    echo `date` Starting redis
+    redis-cli shutdown  #stop server if runniung
+    redis-server --save "" --appendonly no &  #store nothing
+    echo $$ > $DARPDIR/redis-server.pid
+    echo `date`" redis started"
+    sleep 1
+
+    echo `date` $0 : killing old processes to be restarted
     kill `cat $DARPDIR/*.pid`
     sleep 1
     ./updateSW.bash
@@ -26,19 +47,11 @@ do
     echo `date` RUNNING SOFTWARE VERSION `ls -l *build*`
 
     #Now we are running in the new code /darp directory
-    echo `date` Configuring initial wireguard keys
+    echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
     ./configWG.bash
     export PUBLICKEY=`cat $DARPDIR/wireguard/publickey`
     echo PUBLICKEY=$PUBLICKEY
-    sleep 1
-
-    cd $DARPDIR
-    echo `date` Starting redis
-    redis-cli shutdown  #stop server if runniung
-    redis-server --save "" --appendonly no &  #store nothing
-    echo $$ > $DARPDIR/redis-server.pid
-    echo `date`" redis started"
     sleep 1
 
     #
