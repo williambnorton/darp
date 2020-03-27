@@ -31,6 +31,8 @@ do
 
     cd $DARPDIR
     VERSION = `ls Build*`
+    echo `date` Starting $VERSION
+    sleep 2
     echo `date` Starting redis
     redis-cli shutdown  #stop server if runniung
     redis-server --save "" --appendonly no &  #store nothing
