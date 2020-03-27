@@ -33,8 +33,8 @@ do
     cd $DARPDIR
     echo `date` Starting redis
     redis-cli shutdown  #stop server
-    redis-server &  #temp to help building
-    echo $$>$DARPDIR/redis-server.pid
+    redis-server --save "" --appendonly no &  #store nothing
+    echo $$ > $DARPDIR/redis-server.pid
     echo `date`" redis started"
     sleep 1
 
