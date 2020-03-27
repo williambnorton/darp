@@ -99,8 +99,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     buildPulsePkt(mints, pulseMsg, sendToAry);
                 }
                 else {
-                    console.log("mintEntry is undefined Can't find mint=" + mint);
-                    console.log("PULSING " + pulseMsg + "to  sendToAry=" + lib_1.dump(sendToAry));
+                    console.log("MUST BE END OF PULSEGROUP LIST : mintEntry is undefined Can't find mint=" + mint);
+                    console.log("PULSING " + pulseMsg + " to  sendToAry=" + lib_1.dump(sendToAry));
                     var _loop_1 = function (node) {
                         if (typeof node != "undefined" && node != null) {
                             //sending msg
@@ -110,7 +110,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                     networkClient.close();
                                 }
                                 else {
-                                    console.log("dump node=" + lib_1.dump(node));
+                                    console.log("sent dump node=" + lib_1.dump(node));
                                     console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
                                 }
                             });
