@@ -34,7 +34,7 @@ do
     echo `date` Starting $VERSION
     sleep 2
     echo `date` Starting redis
-    redis-cli shutdown  #stop server if runniung
+    ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
     redis-server --save "" --appendonly no &  #store nothing
     echo `date`" redis started"
     sleep 1
@@ -42,7 +42,7 @@ do
     echo `date` $0 : killing old processes to be restarted
     kill `cat $DARPDIR/*.pid`
     sleep 1
-    ./updateSW.bash
+    ./updateSW.bash 
     echo `date` SOFTWARE UPDATE COMPLETE
     cd $DARPDIR
     ls -l Build*
