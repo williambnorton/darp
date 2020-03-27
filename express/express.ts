@@ -100,7 +100,7 @@ app.get('/nodefactory', function (req, res) {
                            "publickey" : publickey,
                            "mint" : ""+newMint,      //set by genesis node
                            "bootTime" : ""+now(),   //boot time is when joined the group
-                           //"pulseGroups" : me.group,  //list of groups I will pulse
+                           "pulseGroups" : me.group,  //list of groups I will pulse
                            //genesis connection info
                            "genesisIP" : me.genesisIP,
                            "genesisPort" : me.genesisPort,

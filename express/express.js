@@ -93,7 +93,7 @@ app.get('/nodefactory', function (req, res) {
                             "publickey": publickey,
                             "mint": "" + newMint,
                             "bootTime": "" + lib_1.now(),
-                            //"pulseGroups" : me.group,  //list of groups I will pulse
+                            "pulseGroups": me.group,
                             //genesis connection info
                             "genesisIP": me.genesisIP,
                             "genesisPort": me.genesisPort,
