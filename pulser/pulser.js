@@ -10,7 +10,8 @@ var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-pulse();
+//pulse();
+setTimeout(pulse, 1 * 1000);
 //
 //  pulse - pulser for each me.pulseGroups
 //
