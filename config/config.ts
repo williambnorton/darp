@@ -11,6 +11,10 @@ if (! process.env.HOSTNAME  ) {
     process.env.HOSTNAME=require('os').hostname();
     console.log("setting HOSTNAME to "+process.env.HOSTNAME);
 }
+if (! process.env.PORT) {
+    console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
+    process.env.PORT="65013"
+}
 if (! process.env.GENESIS  ) {
     console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT");
     process.env.GENESIS="71.202.2.184"
@@ -105,13 +109,7 @@ function setMe() {
                             redisClient.hmset(nodeEntry,json);  //save <me>:MAZORE.1
                             //eventually, on pulse? we need to add own mint to MAZORE.1
 
-                            // I am Genesis node
-                            if (json.mint==1) {
-                                console.log("* * * * * * * I AM GENESIS NODE * * * * * * ")
-                                json.ipaddr=json.genesisIP;
-                                json.port=json.genesisPort;
-                                json.publickey=json.genesisPublickey;
-                            }
+
 
                              //Assigned MINT TABLE - needed info to connect to remote
                             var newMintEntry={   
