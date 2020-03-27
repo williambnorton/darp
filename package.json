@@ -1,0 +1,30 @@
+{
+  "name": "darp",
+  "version": "1.0.1",
+  "description": "Distrinbuted Routing Autonomous Protocol",
+  "main": "bootdarp.bash",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "testdarp.bash"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williambnorton/darp.git"
+  },
+  "keywords": [
+    "DARP",
+    "Routing"
+  ],
+  "author": "William B. Norton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/williambnorton/darp/issues"
+  },
+  "homepage": "https://github.com/williambnorton/darp#readme",
+  "dependencies": {
+    "@types/node": "^13.9.5"
+  }
+}

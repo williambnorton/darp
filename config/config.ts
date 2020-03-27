@@ -1,26 +1,35 @@
 //
-//  config.ts - initialize the redis database
+//  config.ts - initialize the redis database with envirnmental variables:
+//          HOSTNAME - human readable text name
+//          GENESIS - IPaddr or ipaddr:port
+//          PUBLICKEY - Public key 
 //
+
+//if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
+if (! process.env.HOSTNAME  ) {
+    console.log("No HOSTNAME enviropnmental variable specified ");
+    process.env.HOSTNAME=require('os').hostname();
+    console.log("setting HOSTNAME to "+process.env.HOSTNAME);
+}
+if (! process.env.GENESIS  ) {
+    console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT");
+    process.env.GENESIS="71.202.2.184"
+    process.env.PORT="65013"
+    console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT);
+}
+
 //  me - my internal state and pointer to genesis
 //
 import { dump, now } from "../lib/lib";
-let DEFAULT_GENESIS="71.202.2.184";
 import { setWireguard } from "../wireguard/wireguard";
 var http = require('http');
-//let GENESIS=getMyIP(function (d) { console.log("d="+d);});
-//if ( typeof GENESIS == "undefined" ) {
-//    console.log("GENESIS env var not available - I must be GENESIS Node");
-
-//    process.exit(-1)
-//}
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-
 redisClient.flushall();    //clean slate
 
 //console.log("env="+JSON.stringify(process.env,null,2));
-var GEO=process.env.HOSTNAME||"DEVOPS";   //passed into docker
+var GEO=process.env.HOSTNAME;   //passed into docker
 GEO=GEO.split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT=process.env.PORT||"65013";         //passed into docker
 var PUBLICKEY="";
@@ -47,25 +56,17 @@ redisClient.hmset("me", {  //what i have so far
     "publickey" : PUBLICKEY,
     "bootTime" : ""+now(),   //boot time is when joined the group
     //genesis connection info-evebtually find gnesis node online
-    "genesisIP" : DEFAULT_GENESIS,
+    "genesisIP" : process.env.GENESIS,
     "genesisPort" : "65013",
     "wallet" : WALLET
 });
 
-if (typeof process.env.GENESIS == "undefined") {
-    console.log("using default genesis "+DEFAULT_GENESIS);
-    redisClient.hmset("genesis",{       //what I have so far
-        "port" : "65013",               //default
-        "ipaddr" : DEFAULT_GENESIS
-           //set by genesis node on connection
-    });
-} else {
-    console.log("Using environmental variable to set GENESIS to "+process.env.GENESIS);
-    redisClient.hmset("genesis",{       //what I have so far
+
+console.log("Using environmental variable to set GENESIS to "+process.env.GENESIS);
+redisClient.hmset("genesis",{       //what I have so far
         "port" : "65013",               //default
         "ipaddr" : process.env.GENESIS   //set by genesis node on connection
-    });  
-}
+});  
 
 //if (PUBLICKEY=="") Usage();
 

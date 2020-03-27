@@ -5,7 +5,7 @@ DARPDIR=$HOME/darp
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl ifconfig.co`
-   echo `date` GENESIS set to $GENESIS
+   echo `date` rc=$? No GENESIS ENV CVariable so setting self to Genesis node: $GENESIS
 fi
 
 #update SW is destructive - should be done after run in docker loop
@@ -15,7 +15,8 @@ fi
 echo `date` >$DARPDIR/forever
 while :
 do
-    rm $DARPDIR/forever
+    rm $DARPDIR/forever  #comment this to rerun forever
+
     echo `date` $0 : kill old processes to be restarted
     kill `cat $DARPDIR/*.pid`
     sleep 1
@@ -34,7 +35,7 @@ do
 
     cd $DARPDIR
     echo `date` Starting redis
-    redis-cli shutdown  #stop server
+    redis-cli shutdown  #stop server if runniung
     redis-server --save "" --appendonly no &  #store nothing
     echo $$ > $DARPDIR/redis-server.pid
     echo `date`" redis started"
@@ -47,7 +48,7 @@ do
     echo `date` Starting express for nodeFactory and externalize stats
     cd $DARPDIR/express
     node express &
-    echo $$>$DARPDIR/express.pid
+    echo $$ > $DARPDIR/express.pid
     sleep 1
 
     #echo `date` Launching forever script
@@ -58,7 +59,7 @@ do
     cd $DARPDIR/config
     kill `cat $DARPDIR/config.pid`
     node config &
-    echo $$>$DARPDIR/config.pid
+    echo $$ > $DARPDIR/config.pid
     echo `date` Waiting for config to connect
     sleep 1
 
@@ -66,7 +67,7 @@ do
     cd $DARPDIR/pulser
     kill `cat $DARPDIR/pulser.pid`
     node pulser &
-    echo $$>$DARPDIR/pulser.pid
+    echo $$ > $DARPDIR/pulser.pid
     #echo `date` '------------> Please start pulser'
 
     cd $DARPDIR
@@ -78,8 +79,10 @@ do
     if [ -f $DARPDIR/forever ]; then
         #echo $$>$DARPDIR/handlepulse.pid
         #echo `date` Starting handlepulse
-        echo `date` New darp version: `cd /darp;ls build*` installed and running
-        sleep 10 
+        echo `date` New darp version: `cd /darp;ls build*` installed and about to start
+        cd $DARPDIR
+        ls -l
+        sleep 15 
     else 
         echo `handlePulse finished -restarting all`
         exit -1
