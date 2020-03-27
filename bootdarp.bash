@@ -13,6 +13,7 @@ fi
 #
 #The order of startup is important here
 while :
+do
     echo `date` $0 : kill old processes to be restarted
     kill `cat $DARPDIR/*.pid`
     sleep 1
