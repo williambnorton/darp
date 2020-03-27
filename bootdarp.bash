@@ -12,8 +12,10 @@ fi
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
+echo `date` >$DARPDIR/forever
 while :
 do
+    rm $DARPDIR/forever
     echo `date` $0 : kill old processes to be restarted
     kill `cat $DARPDIR/*.pid`
     sleep 1
@@ -73,10 +75,13 @@ do
     node handlepulse 
     $rc=$?
     
-    #echo $$>$DARPDIR/handlepulse.pid
-    #echo `date` Starting handlepulse
-    echo `handlePulse finished -restarting all`
-    sleep 10 
-    echo `date` New darp version: `cd /darp;ls build*` installed and running
-
+    if [ -f $DARPDIR/forever ]; then
+        #echo $$>$DARPDIR/handlepulse.pid
+        #echo `date` Starting handlepulse
+        echo `date` New darp version: `cd /darp;ls build*` installed and running
+        sleep 10 
+    else 
+        echo `handlePulse finished -restarting all`
+        exit -1
+    fi
 done
