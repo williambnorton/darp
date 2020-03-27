@@ -11,13 +11,14 @@ if (! process.env.HOSTNAME  ) {
     process.env.HOSTNAME=require('os').hostname();
     console.log("setting HOSTNAME to "+process.env.HOSTNAME);
 }
-if (! process.env.PORT) {
-    console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
-    process.env.PORT="65013"
-}
+
 if (! process.env.GENESIS  ) {
     console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT");
     process.env.GENESIS="71.202.2.184"
+    process.env.PORT="65013"
+}
+if (! process.env.PORT) {
+    console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
     process.env.PORT="65013"
 }
 console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME);
@@ -36,10 +37,10 @@ redisClient.flushall();    //clean slate
 var GEO=process.env.HOSTNAME;   //passed into docker
 GEO=GEO.split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT=process.env.PORT||"65013";         //passed into docker
-var PUBLICKEY="";
-
+var PUBLICKEY=process.env.PUBLICKEY;
+if (!PUBLICKEY)
 try {
-    PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+    PUBLICKEY=require('fs').readFileSync('../wireguard/publickey', 'utf8');
     PUBLICKEY=PUBLICKEY.replace(/^\n|\n$/g, '');
     console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
 } catch (err) {

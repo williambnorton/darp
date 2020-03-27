@@ -12,13 +12,13 @@ if (!process.env.HOSTNAME) {
     process.env.HOSTNAME = require('os').hostname();
     console.log("setting HOSTNAME to " + process.env.HOSTNAME);
 }
-if (!process.env.PORT) {
-    console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
-    process.env.PORT = "65013";
-}
 if (!process.env.GENESIS) {
     console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT");
     process.env.GENESIS = "71.202.2.184";
+    process.env.PORT = "65013";
+}
+if (!process.env.PORT) {
+    console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
     process.env.PORT = "65013";
 }
 console.log("GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME);
@@ -33,16 +33,17 @@ redisClient.flushall(); //clean slate
 var GEO = process.env.HOSTNAME; //passed into docker
 GEO = GEO.split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT = process.env.PORT || "65013"; //passed into docker
-var PUBLICKEY = "";
-try {
-    PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
-    PUBLICKEY = PUBLICKEY.replace(/^\n|\n$/g, '');
-    console.log("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
-}
-catch (err) {
-    console.log("PUBLICKEY lookup failed");
-    PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
-}
+var PUBLICKEY = process.env.PUBLICKEY;
+if (!PUBLICKEY)
+    try {
+        PUBLICKEY = require('fs').readFileSync('../wireguard/publickey', 'utf8');
+        PUBLICKEY = PUBLICKEY.replace(/^\n|\n$/g, '');
+        console.log("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
+    }
+    catch (err) {
+        console.log("PUBLICKEY lookup failed");
+        PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
+    }
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //GEO=GEO.toString().split('.').split(',');
 console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
