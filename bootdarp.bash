@@ -14,6 +14,8 @@
 #           DARPDIR - the root of all darp info
 #
 DARPDIR=$HOME/darp
+MYIP=`curl ifconfig.co`
+echo `date` MYIP=$MYIP
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
