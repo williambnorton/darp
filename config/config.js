@@ -126,7 +126,7 @@ function setMe() {
                                     console.log("EXPRESS nodeFactory sent us our config json=" + lib_1.dump(json));
                                     //res.setHeader('Content-Type', 'application/json');   
                                     //res.end(JSON.stringify(json));
-                                    console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                                    console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 }
                             });
                             //make sure there is a genesis group node MAZORE:MAZORE:1 

@@ -110,8 +110,6 @@ function setMe() {
                             redisClient.hmset(nodeEntry,json);  //save <me>:MAZORE.1
                             //eventually, on pulse? we need to add own mint to MAZORE.1
 
-
-
                              //Assigned MINT TABLE - needed info to connect to remote
                             var newMintEntry={   
                                 "mint" : json.mint,
@@ -126,12 +124,12 @@ function setMe() {
 
                             //if we haven't installed out genesis node, install it in the mint table now
                             var genesisMint={  
-                                    "mint" : "1",
-                                    "geo" : json.group.split(".")[0],
-                                    "ipaddr" : json.genesisIP,
-                                    "port" : ""+json.genesisPort,
-                                    "publickey" : ""+json.genesisPublickey,
-                                    "wallet" : ""
+                                "mint" : "1",
+                                "geo" : json.group.split(".")[0],
+                                "ipaddr" : json.genesisIP,
+                                "port" : ""+json.genesisPort,
+                                "publickey" : ""+json.genesisPublickey,
+                                "wallet" : ""
                             } 
                             //console.log("genesisMint="+dump(genesisMint));                           
                             redisClient.hmset("mint:1",genesisMint);
@@ -142,7 +140,7 @@ function setMe() {
                                    console.log("EXPRESS nodeFactory sent us our config json="+dump(json));
                                    //res.setHeader('Content-Type', 'application/json');   
                                    //res.end(JSON.stringify(json));
-                                   console.log("Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff"); 
+                                   console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff"); 
                                 }
                              });
 
