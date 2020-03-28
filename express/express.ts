@@ -64,7 +64,7 @@ app.get('/nodefactory', function (req, res) {
    var OWL=Math.round(now()-incomingTimestamp);
    // store incoming public key, ipaddr, port, geo, etc.
    var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-   //console.log("****EXPRESS  geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
+   console.log("****EXPRESS  geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
 
 //
 //    Admission control goies here - test wallet, stop accepting nodeFactory requests
