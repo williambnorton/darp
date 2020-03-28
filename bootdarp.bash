@@ -45,13 +45,13 @@ do
     echo `date`" redis started"
     sleep 1
 
-    echo `date` $0 : killing old processes to be restarted
-    kill `cat $DARPDIR/*.pid`
-    sleep 1
-    ./updateSW.bash 
-    echo `date` SOFTWARE UPDATE COMPLETE
-    cd $DARPDIR
-    ls -l Build*
+    #echo `date` $0 : killing old processes to be restarted
+    #kill `cat $DARPDIR/*.pid`
+    #sleep 1
+    ./updateSW.bash >/dev/null
+    export VERSION=`ls Build*`
+    echo `date` Running DARP $VERSION
+    sleep 2
 
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
