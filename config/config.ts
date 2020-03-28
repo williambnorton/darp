@@ -31,6 +31,7 @@ console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME=
 //
 import { dump, now } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
+import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
 
 const pulseRedis = require('redis');
@@ -63,6 +64,7 @@ redisClient.hmset("me", {  //what i have so far
     "group" : GEO+".1",
     "port" : PORT,
     "publickey" : PUBLICKEY,
+    "version" : process.env.VERSION,
     "bootTime" : ""+now(),   //boot time is when joined the group
     //genesis connection info-evebtually find gnesis node online
     "genesisIP" : process.env.GENESIS,
@@ -84,7 +86,7 @@ setMe();  //later this should start with just an IP of genesis node
 function setMe() {
     redisClient.hgetall("genesis", function (err,genesis) {
         console.log("setMe(): genesis="+dump(genesis));
-        var URL="http://"+genesis.ipaddr+":"+genesis.port+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&wallet="+WALLET;
+        var URL="http://"+genesis.ipaddr+":"+genesis.port+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+WALLET;
         console.log("Fetching URL for config: "+URL);
         //FETCH CONFIG
         var req = http.get(URL, function (res) {

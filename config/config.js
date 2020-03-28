@@ -56,6 +56,7 @@ redisClient.hmset("me", {
     "group": GEO + ".1",
     "port": PORT,
     "publickey": PUBLICKEY,
+    "version": process.env.VERSION,
     "bootTime": "" + lib_1.now(),
     //genesis connection info-evebtually find gnesis node online
     "genesisIP": process.env.GENESIS,
@@ -72,7 +73,7 @@ setMe(); //later this should start with just an IP of genesis node
 function setMe() {
     redisClient.hgetall("genesis", function (err, genesis) {
         console.log("setMe(): genesis=" + lib_1.dump(genesis));
-        var URL = "http://" + genesis.ipaddr + ":" + genesis.port + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&wallet=" + WALLET;
+        var URL = "http://" + genesis.ipaddr + ":" + genesis.port + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET;
         console.log("Fetching URL for config: " + URL);
         //FETCH CONFIG
         var req = http.get(URL, function (res) {
