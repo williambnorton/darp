@@ -25,13 +25,17 @@ if (! process.env.VERSION) {
     console.log("No VERSION enviropnmental variable specified - setting to noVersion");
     process.env.VERSION="noVersion"
 }
-console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION);
+if (! process.env.MYIP) {
+    console.log("No MYIP enviropnmental variable specified ");
+    process.env.MYIP="noMYIP"
+}
+console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 //  me - my internal state and pointer to genesis
 //
 import { dump, now } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
-import { Z_VERSION_ERROR } from "zlib";
+//import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
 
 const pulseRedis = require('redis');
@@ -65,6 +69,7 @@ redisClient.hmset("me", {  //what i have so far
     "port" : PORT,
     "publickey" : PUBLICKEY,
     "version" : process.env.VERSION,
+    "ipaddr" : process.env.MYIP,
     "bootTime" : ""+now(),   //boot time is when joined the group
     //genesis connection info-evebtually find gnesis node online
     "genesisIP" : process.env.GENESIS,

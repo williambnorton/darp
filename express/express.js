@@ -62,7 +62,7 @@ app.get('/nodefactory', function (req, res) {
     //console.log("req="+dump(req));
     var version = req.query.version;
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
-    console.log("req=" + lib_1.dump(req.connection));
+    //console.log("req="+dump(req.connection));
     //
     //    Admission control goies here - test wallet, stop accepting nodeFactory requests
     //
