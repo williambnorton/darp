@@ -96,8 +96,8 @@ app.get('/nodefactory', function (req, res) {
                             incomingIP = me.genesisIP;
                             port = me.genesisPort;
                             publickey = me.genesisPublickey || publickey;
-                            console.log("incomingIP=" + incomingIP + " port=" + port + " publickey=" + publickey);
                         }
+                        console.log("incomingIP=" + incomingIP + " port=" + port + " publickey=" + publickey);
                         var newNode = {
                             "geo": geo,
                             "group": me.group,
@@ -151,12 +151,12 @@ app.get('/nodefactory', function (req, res) {
                             if (err)
                                 console.log("hgetall nodeEntry=" + nodeEntry + " failed");
                             else {
-                                console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(json));
+                                //console.log("EXPRESS nodeFactory about to send json="+dump(json));
                                 res.setHeader('Content-Type', 'application/json');
                                 res.end(JSON.stringify(json));
-                                console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                                //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 console.log("EXPRESS nodeFactory done");
-                                console.log("-----");
+                                //console.log("-----");
                             }
                         });
                     });

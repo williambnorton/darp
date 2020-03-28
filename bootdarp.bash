@@ -99,10 +99,10 @@ do
     if [ -f $DARPDIR/forever ]; then
         #echo $$>$DARPDIR/handlepulse.pid
         #echo `date` Starting handlepulse
-        echo `date` New darp version: `cd /darp;ls build*` installed and about to start
+        echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
         ls -l
-        sleep 15 
+        sleep 5 
     else 
         echo `handlePulse finished -restarting all`
         exit -1

@@ -78,9 +78,9 @@ redisClient.hmset("genesis", {
 setMe(); //later this should start with just an IP of genesis node 
 function setMe() {
     redisClient.hgetall("genesis", function (err, genesis) {
-        console.log("setMe(): genesis=" + lib_1.dump(genesis));
+        //console.log("setMe(): genesis="+dump(genesis));
         var URL = "http://" + genesis.ipaddr + ":" + genesis.port + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP;
-        console.log("Fetching URL for config: " + URL);
+        console.log("CONFIG: Fetching URL for config: " + URL);
         //FETCH CONFIG
         var req = http.get(URL, function (res) {
             var data = '', json_data;
@@ -134,7 +134,7 @@ function setMe() {
                                 if (err)
                                     console.log("hgetall nodeEntry=" + nodeEntry + " failed");
                                 else {
-                                    console.log("EXPRESS nodeFactory sent us our config json=" + lib_1.dump(json));
+                                    console.log("CONFIG nodeFactory sent us our config json=" + lib_1.dump(json));
                                     //res.setHeader('Content-Type', 'application/json');   
                                     //res.end(JSON.stringify(json));
                                     console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
