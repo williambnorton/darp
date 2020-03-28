@@ -21,7 +21,11 @@ if (! process.env.PORT) {
     console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
     process.env.PORT="65013"
 }
-console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME);
+if (! process.env.VERSION) {
+    console.log("No VERSION enviropnmental variable specified - setting to noVersion");
+    process.env.VERSION="noVersion"
+}
+console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION);
 
 //  me - my internal state and pointer to genesis
 //
