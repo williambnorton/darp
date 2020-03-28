@@ -53,9 +53,9 @@ app.get('/', function (req, res) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-   console.log('****EXPRESS; config requested with params: '+dump(req.query));
+   //console.log('****EXPRESS; config requested with params: '+dump(req.query));
 
-   console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet);
+   //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
    var geo=req.query.geo;
    var publickey=req.query.publickey;
    var port=req.query.port||65013;
@@ -64,7 +64,8 @@ app.get('/nodefactory', function (req, res) {
    var OWL=Math.round(now()-incomingTimestamp);
    // store incoming public key, ipaddr, port, geo, etc.
    var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-   console.log("****EXPRESS  geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP);
+   var version=req.query.version;
+   console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
 
 //
 //    Admission control goies here - test wallet, stop accepting nodeFactory requests
