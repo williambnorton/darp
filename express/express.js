@@ -57,7 +57,8 @@ app.get('/nodefactory', function (req, res) {
     var incomingTimestamp = req.query.ts || lib_1.now();
     var OWL = Math.round(lib_1.now() - incomingTimestamp);
     // store incoming public key, ipaddr, port, geo, etc.
-    var incomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    //   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var incomingIP = req.connection.remoteAddress;
     var version = req.query.version;
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
     //
@@ -107,6 +108,7 @@ app.get('/nodefactory', function (req, res) {
                             "genesisIP": me.genesisIP,
                             "genesisPort": me.genesisPort,
                             "genesisPublickey": me.genesisPublickey || publickey,
+                            "version": version,
                             "wallet": wallet,
                             //statistics
                             "lastSeq": "0",
