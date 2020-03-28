@@ -16,18 +16,19 @@
 DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 export MYIP=$MYIP
-echo `date` MYIP=$MYIP
+#echo `date` MYIP=$MYIP
 
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
-   echo `date` Genesis node: $GENESIS
+   #echo `date` Genesis node: $GENESIS
 fi
 
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
+echo `date` "$0 Starting loop. GENESIS=$GENESIS MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
@@ -40,7 +41,7 @@ do
     sleep 2
     echo `date` Starting redis
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
-    redis-server --save "" --appendonly no &  #store nothing
+    ( redis-server --save "" --appendonly no 2>&1 ) >/dev/null &  #store nothing
     echo `date`" redis started"
     sleep 1
 
