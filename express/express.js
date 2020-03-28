@@ -60,8 +60,9 @@ app.get('/nodefactory', function (req, res) {
     //   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     var incomingIP = req.connection.remoteAddress;
     //console.log("req="+dump(req));
-    var version = lib_1.dump(req); //req.query.version;
+    var version = req.query.version;
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
+    console.log("req=" + lib_1.dump(req));
     //
     //    Admission control goies here - test wallet, stop accepting nodeFactory requests
     //
