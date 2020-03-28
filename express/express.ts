@@ -65,7 +65,7 @@ app.get('/nodefactory', function (req, res) {
    // store incoming public key, ipaddr, port, geo, etc.
 //   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
    var incomingIP=req.connection.remoteAddress;
-
+   console.log("req="+dump(req));
    var version=req.query.version;
    console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
 
