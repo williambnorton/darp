@@ -5,8 +5,8 @@ echo `date` updateSW.bash
 #this should be a check to see if code has changed and the do soft reload.
 # for now, just replace code with new
 cd ~/darp
-kill `cat *.pid`
-
+#kill `cat *.pid`
+echo `date` Current SW is `ls Build*`
 cd /tmp
 rm -rf /tmp/darp
 mv ~/darp /tmp/darp
