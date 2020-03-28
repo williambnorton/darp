@@ -56,7 +56,7 @@ do
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
-    ./configWG.bash
+    ./configWG.bash >/dev/null
     export PUBLICKEY=`cat $DARPDIR/wireguard/publickey`
     echo PUBLICKEY=$PUBLICKEY
     sleep 1
