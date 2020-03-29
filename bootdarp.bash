@@ -49,6 +49,7 @@ do
     #kill `cat $DARPDIR/*.pid`
     #sleep 1
     ./updateSW.bash >/dev/null
+    cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` Running DARP $VERSION
     sleep 2
