@@ -51,7 +51,7 @@ do
     ./updateSW.bash >/dev/null
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * * * * * * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * * *"
+    echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
     sleep 2
 
     #Now we are running in the new code /darp directory
@@ -76,7 +76,7 @@ do
     #cd /darp/scripts
     #./forever.bash  #Start the system
     cd $DARPDIR
-    echo `date` Connecting to GENESIS node to get configuration into redis
+    echo `date` Connecting to GENESIS node to get my configuration
     cd $DARPDIR/config
     if [ -f  $DARPDIR/config.pid ]; then
         kill `cat $DARPDIR/config.pid`

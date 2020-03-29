@@ -131,6 +131,12 @@ app.get('/nodefactory', function (req, res) {
                     node.gSRlist = {
                         nodeEntry: "owls=1,2,3,4,5,6,7,8,9"
                     };
+                    //console.log("EXPRESS nodeFactory about to send json="+dump(json));
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(node));
+                    //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                    console.log("EXPRESS nodeFactory done");
+                    //console.log("-----");
                 });
             }
             ;

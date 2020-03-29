@@ -1,20 +1,21 @@
 #!/bin/bash
 #		    updateSW.bash
 #
+DARPDIR=~/darp
 echo `date` updateSW.bash
-cd ~/darp
+cd $DARPDIR
 CURRENT=`ls Build*`
-#this should be a check to see if code has changed and the do soft reload.
-# for now, just replace code with new
-cd ~/darp
 #kill `cat *.pid`
 echo `date` Current SW is `ls Build*`
 cd /tmp
 rm -rf /tmp/darp
-mv ~/darp /tmp/darp
+mv $DARPDIR /tmp/darp
 echo `date` Cloning new darp code from github
 git clone https://github.com/williambnorton/darp.git    ~/darp     
-cd ~/darp
+#
+#   We are in the moved old DARP directory (if things changed)
+#
+cd $DARPDIR
 NEW=`ls Build*`
 npm update
 npm i @types/node
@@ -25,8 +26,9 @@ if [ "$CURRENT" == "$NEW" ]; then
 	echo `date` No Change
 	exit 0
 else
-	echo `date` Software changed
+	echo `date` Software changed. Was $CURRENT Now is $NEW
+    echo 'CLONED INTO new darp directory.           cd ~;cd darp;ls'
+
 	exit 1
 fi
-echo 'CLONED INTO new darp directory.           cd ~;cd darp;ls'
 

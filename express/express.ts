@@ -87,7 +87,7 @@ app.get('/nodefactory', function (req, res) {
                me : {},
                mintTable : {},
                gSRlist : {}
-               
+
 
 
             };
@@ -100,10 +100,12 @@ app.get('/nodefactory', function (req, res) {
                   //console.log("nodeEntry="+JSON.stringify())
                // I am Genesis node
                if (newMint==1) {
-                  console.log("* * * * * * * I AM SEEDING GENESIS NODE * * * * * *")
-//                  incomingIP=me.genesisIP;
-//                  port=me.genesisPort;
-//                  publickey=me.genesisPublickey||publickey;
+                  console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
+                  me.genesisGeo=geo;
+                  //me.genesisPort
+                  incomingIP=me.genesisIP;
+                  port=me.genesisPort;
+                  publickey=me.genesisPublickey||publickey;
                }
                console.log("incomingIP="+incomingIP+" port="+port+" publickey="+publickey);
 
@@ -115,9 +117,9 @@ app.get('/nodefactory', function (req, res) {
                      "publickey" : publickey,
                      "mint" : ""+newMint,      //set by genesis node
                      "bootTime" : ""+now(),   //boot time is when joined the group
-                     "pulseGroups" : me.group,  //list of groups I will pulse
+                     //"pulseGroups" : me.group,  //list of groups I will pulse - now derivd from gSRlist
                      //genesis connection info
-                     //"genesisGeo" : me.genesisGeo,
+                     "genesisGeo" : me.genesisGeo,
                      "genesisIP" : me.genesisIP,
                      "genesisPort" : me.genesisPort,
                      "genesisPublickey" : me.genesisPublickey||publickey,
@@ -141,6 +143,14 @@ app.get('/nodefactory', function (req, res) {
                node.gSRlist={  //receiver should 
                   nodeEntry : "owls=1,2,3,4,5,6,7,8,9"
                };
+               //console.log("EXPRESS nodeFactory about to send json="+dump(json));
+               res.setHeader('Content-Type', 'application/json');   
+               res.end(JSON.stringify(node));
+               //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+
+               console.log("EXPRESS nodeFactory done");
+               //console.log("-----");
+
             });
          };
       });
