@@ -28,7 +28,7 @@ npm install redis express
 
 echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
 if [ "$CURRENT" == "$NEW" ]; then
-	echo `date` No Change
+	echo `date` No Change DAEMON=$DAEMON
     if [ "$DAEMON" != "YES" ]; then
         echo "Exitting $0";
 	    exit 0
