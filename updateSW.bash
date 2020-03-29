@@ -35,8 +35,8 @@ if [ "$CURRENT" == "$NEW" ]; then
     fi
 else
 	echo `date` Software changed. Was $CURRENT Now is $NEW
-    echo 'CLONED INTO new darp directory.           cd ~;cd darp;ls'
-    ps aux | grep 'node handlepulse|awk '{ print $2}'
+    echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
+    ps aux | grep 'node handlepulse'|awk '{ print $2}'
 	exit 1
 fi
     sleep 60
