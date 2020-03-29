@@ -1,10 +1,18 @@
 #!/bin/bash
 #		    updateSW.bash
 #
+if [ $# -gt 1 ]; then
+    DAEMON=YES
+else 
+    DAEMON="NO"
+fi
 DARPDIR=~/darp
+while :
+do
 echo `date` updateSW.bash
 cd $DARPDIR
 CURRENT=`ls Build*`
+handlepulsePID=`cat handlepulse.pid`
 #kill `cat *.pid`
 echo `date` Current SW is `ls Build*`
 cd /tmp
@@ -23,12 +31,16 @@ npm install redis express
 
 echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
 if [ "$CURRENT" == "$NEW" ]; then
-	echo `date` No Change
-	exit 0
+	echo `date` No Change to software
 else
 	echo `date` Software changed. Was $CURRENT Now is $NEW
     echo 'CLONED INTO new darp directory.           cd ~;cd darp;ls'
-
-	exit 1
+	kill $handlepulsePID
+    exit 1
 fi
 
+if [ "$DAEMON" == "NO" ]; then
+    exit 0;
+fi
+
+done
