@@ -48,7 +48,7 @@ do
     #echo `date` $0 : killing old processes to be restarted
     #kill `cat $DARPDIR/*.pid`
     #sleep 1
-    ./updateSW.bash >/dev/null
+    ./updateSW.bash #>/dev/null
     cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
