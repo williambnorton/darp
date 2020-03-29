@@ -30,7 +30,7 @@ echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
 if [ "$CURRENT" == "$NEW" ]; then
 	echo `date` No Change
     if [ "$DAEMON" != "YES" ]; then
-        console.log("Exitting $0");
+        echo "Exitting $0";
 	    exit 0
     fi
 else
