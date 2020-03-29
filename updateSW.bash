@@ -42,5 +42,5 @@ do
         kill `ps aux | grep 'node handlepulse'| grep -v grep | awk '{ print $2}'`
 	    exit 1
     fi
-    sleep 60
+    sleep 10
 done
