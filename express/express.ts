@@ -83,6 +83,67 @@ app.get('/nodefactory', function (req, res) {
          if (err) {
             console.log("mintStack allocation err="+err);
          } else {
+            var node={
+               me : {},
+               mintTable : {},
+               gSRlist : {}
+            };
+            //generate the me config records that the new node will adopt
+            expressRedisClient.hgetall("me",function (err,me){          //get ME data
+               if (err) {
+                   console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
+               }
+               //console.log("******** EXPRESS redis me="+dump(me));
+                  //console.log("nodeEntry="+JSON.stringify())
+               // I am Genesis node
+               if (newMint==1) {
+                  console.log("* * * * * * * I AM SEEDING GENESIS NODE * * * * * *")
+//                  incomingIP=me.genesisIP;
+//                  port=me.genesisPort;
+//                  publickey=me.genesisPublickey||publickey;
+               }
+               console.log("incomingIP="+incomingIP+" port="+port+" publickey="+publickey);
+
+               node.me={
+                     "geo" : geo,
+                     "group": me.group,      //add all nodes to genesis group
+                     "port" : ""+port,
+                     "ipaddr" : incomingIP,   //set by genesis node on connection
+                     "publickey" : publickey,
+                     "mint" : ""+newMint,      //set by genesis node
+                     "bootTime" : ""+now(),   //boot time is when joined the group
+                     "pulseGroups" : me.group,  //list of groups I will pulse
+                     //genesis connection info
+                     //"genesisGeo" : me.genesisGeo,
+                     "genesisIP" : me.genesisIP,
+                     "genesisPort" : me.genesisPort,
+                     "genesisPublickey" : me.genesisPublickey||publickey,
+                     "version" : version,
+                     "wallet" : wallet,
+                     //statistics
+                     "lastSeq": "0",      //lastSeq I sent out
+                     "pulseTimestamp": ""+now(), //last pulseTimestamp we sent
+                     "inOctets": "0",
+                     "outOctets": "0",
+                     "inMsgs": "0",
+                     "outMsgs": "0",
+                     "owl": ""+OWL,
+                     "pktDrops": "0",
+                     "remoteState": "0"   //and there are mints : owls for received pulses 
+               };
+               var nodeEntry=geo+":"+me.group;
+               node.mintTable={
+                  "mint:1" : ""
+               };
+               node.gSRlist={  //receiver should 
+                  nodeEntry : "owls=1,2,3,4,5,6,7,8,9"
+               };
+            });
+         };
+      });
+   }
+});
+         /*   
                expressRedisClient.hgetall("genesis",function (err,genesis){   //get GENESIS data
                   if (err) {
                       console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
@@ -105,9 +166,9 @@ app.get('/nodefactory', function (req, res) {
                      }
                      console.log("incomingIP="+incomingIP+" port="+port+" publickey="+publickey);
 
-                     var newNode={
+                     var newMintRecord={
                            "geo" : geo,
-                           "group": me.group,      //add all nodes to gebnesis group
+                           "group": me.group,      //add all nodes to genesis group
                            "port" : ""+port,
                            "ipaddr" : incomingIP,   //set by genesis node on connection
                            "publickey" : publickey,
@@ -133,7 +194,7 @@ app.get('/nodefactory', function (req, res) {
                      };
 
                      //make any adjustmenets here for genesis vs non genesis nodes
-                     expressRedisClient.hmset(nodeEntry, newNode);
+                     //expressRedisClient.hmset(nodeEntry, newNode);
                      if ( newMint == 1 ) {
                         expressRedisClient.hset("me","mint",1);  //I am genesis - set me.mint=1
                         expressRedisClient.hset(me.group, "1"+">"+"1", 0 );  
@@ -169,11 +230,12 @@ app.get('/nodefactory', function (req, res) {
                      
                   });
                });
-         }
+            });
       });
 
    }
 })
+*/
 
 function popMint() {
 var mint=0;

@@ -29,7 +29,6 @@ if (! process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
     process.env.MYIP="noMYIP"
 }
-console.log("GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 //  me - my internal state and pointer to genesis
 //
@@ -61,7 +60,9 @@ var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b288
 
 //GEO=GEO.toString().split('.').split(',');
 
+console.log("CONFIG GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+" PORT="+PORT+" WALLET="+WALLET+"");
+
 
 redisClient.hmset("me", {  //what i have so far
     "geo" : GEO,
@@ -103,13 +104,18 @@ function setMe() {
                 //console.log("CONFIG data="+data);
                 var json = JSON.parse(data);
                 //gME=json;  //set my global variable  for convenuience
-                //console.log("CONFIG setMeIP(): setting redis && gME with what genesis told us we are:"+JSON.stringify(json,null,2));
+                console.log("CONFIG network auto config:"+JSON.stringify(json,null,2));
                 //var me=JSON.parse(json);
                 redisClient.hmset("me", json);
                 //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
                 redisClient.hgetall("me",function (err,me) { 
                     if (err) console.log("CONFIG ERROR");
                     else {
+                        //
+                        //  Create Genesis Mint - 
+                        //              DEVOPS:DEVOP.1
+                        //
+
                         //console.log("ME **********"+dump(me));
                         var ary=me.pulseGroups.split(",");
                         for (var group in ary) {
@@ -118,7 +124,7 @@ function setMe() {
                             var nodeEntry=me.geo+":"+ary[group];
                             //console.log("setMe() creating "+nodeEntry);
                             
-                            redisClient.hmset(nodeEntry,json);  //save <me>:MAZORE.1
+                            redisClient.hmset(nodeEntry,json);  //save <me>:<myGroup>.1
                             //eventually, on pulse? we need to add own mint to MAZORE.1
 
                              //Assigned MINT TABLE - needed info to connect to remote
