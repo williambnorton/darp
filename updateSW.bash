@@ -2,7 +2,7 @@
 #		    updateSW.bash
 #
 echo parm count= $#
-if [ $# -ne 1 ]; then
+if [ $# -ne 0 ]; then
     echo `date` Running $0 in DAEMON mode. $#
     DAEMON="YES"
 fi
