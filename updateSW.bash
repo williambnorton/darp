@@ -39,7 +39,7 @@ do
 	    echo `date` Software changed. Was $CURRENT Now is $NEW
         echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
         echo Should kill handlepulse to force reload
-        ps aux | grep 'node handlepulse'|awk '{ print $2}'
+        kill `ps aux | grep 'node handlepulse'| grep -v grep | awk '{ print $2}'`
 	    exit 1
     fi
     sleep 60
