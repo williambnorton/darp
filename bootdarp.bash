@@ -53,6 +53,7 @@ do
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
     sleep 2
+    ./updateSW.bash & #>/dev/null
 
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
