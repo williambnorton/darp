@@ -6,6 +6,11 @@ if [ $# -ne 0 ]; then
     echo `date` Running $0 in DAEMON mode. $#
     DAEMON="YES"
 fi
+    cd $DARPDIR
+    npm update
+    npm i @types/node
+    npm install redis express
+
 echo `date` updateSW.bash
 while :
 do
@@ -18,15 +23,12 @@ do
     rm -rf /tmp/darp
     mv $DARPDIR /tmp/darp
     echo `date` Cloning new darp code from github
-    git clone https://github.com/williambnorton/darp.git    ~/darp     
+    git clone https://github.com/williambnorton/darp.git    /tmp/darp     
+    cd /tmp/darp
+    NEW=`ls Build*`
 #
 #   We are in the moved old DARP directory (if things changed)
 #
-    cd $DARPDIR
-    NEW=`ls Build*`
-    npm update
-    npm i @types/node
-    npm install redis express
 
     echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
     if [ "$CURRENT" == "$NEW" ]; then
