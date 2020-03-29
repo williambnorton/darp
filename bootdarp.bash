@@ -51,7 +51,7 @@ do
     ./updateSW.bash >/dev/null
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` Running DARP $VERSION
+    echo `date` "* * * * * * * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * * *"
     sleep 2
 
     #Now we are running in the new code /darp directory
@@ -78,7 +78,9 @@ do
     cd $DARPDIR
     echo `date` Connecting to GENESIS node to get configuration into redis
     cd $DARPDIR/config
-    kill `cat $DARPDIR/config.pid`
+    if [ -f  $DARPDIR/config.pid ]; then
+        kill `cat $DARPDIR/config.pid`
+    fi
     node config &
     echo $$ > $DARPDIR/config.pid
     echo `date` Waiting for config to connect
@@ -86,20 +88,23 @@ do
 
     cd $DARPDIR
     cd $DARPDIR/pulser
-    kill `cat $DARPDIR/pulser.pid`
+    if [ -f  $DARPDIR/pulser.pid ]; then
+        kill `cat $DARPDIR/pulser.pid`
+    fi
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
     #echo `date` '------------> Please start pulser'
 
     cd $DARPDIR
     cd $DARPDIR/handlepulse
-    kill `cat $DARPDIR/handlepulse.pid`
-    node handlepulse 
+    if [ -f  $DARPDIR/handlepulse.pid ]; then
+        kill `cat $DARPDIR/handlepulse.pid`
+    fi
+    echo `date` Starting handlepulse
+    node handlepulse #this will stop when handlepulse receives reload msg
     $rc=$?
     
     if [ -f $DARPDIR/forever ]; then
-        #echo $$>$DARPDIR/handlepulse.pid
-        #echo `date` Starting handlepulse
         echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
         ls -l
