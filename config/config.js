@@ -90,10 +90,10 @@ function setMe() {
             res.on('end', function () {
                 //console.log("CONFIG data="+data);
                 var json = JSON.parse(data);
-                //gME=json;  //set my global variable  for convenuience
-                console.log("CONFIG network auto config:" + JSON.stringify(json, null, 2));
+                //gME=json;  //set my global variable  for convenience
+                console.log("CONFIG network auto config from node factory:" + JSON.stringify(json, null, 2));
                 //var me=JSON.parse(json);
-                redisClient.hmset("me", json);
+                redisClient.hmset("me", json.me);
                 //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
                 redisClient.hgetall("me", function (err, me) {
                     if (err)

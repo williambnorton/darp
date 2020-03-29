@@ -91,10 +91,12 @@ app.get('/nodefactory', function (req, res) {
                     //console.log("nodeEntry="+JSON.stringify())
                     // I am Genesis node
                     if (newMint == 1) {
-                        console.log("* * * * * * * I AM SEEDING GENESIS NODE * * * * * *");
-                        //                  incomingIP=me.genesisIP;
-                        //                  port=me.genesisPort;
-                        //                  publickey=me.genesisPublickey||publickey;
+                        console.log("* * * * * * * I AM GENESIS NODE * * * * * *");
+                        me.genesisGeo = geo;
+                        //me.genesisPort
+                        incomingIP = me.genesisIP;
+                        port = me.genesisPort;
+                        publickey = me.genesisPublickey || publickey;
                     }
                     console.log("incomingIP=" + incomingIP + " port=" + port + " publickey=" + publickey);
                     node.me = {
@@ -105,9 +107,9 @@ app.get('/nodefactory', function (req, res) {
                         "publickey": publickey,
                         "mint": "" + newMint,
                         "bootTime": "" + lib_1.now(),
-                        "pulseGroups": me.group,
+                        //"pulseGroups" : me.group,  //list of groups I will pulse - now derivd from gSRlist
                         //genesis connection info
-                        //"genesisGeo" : me.genesisGeo,
+                        "genesisGeo": me.genesisGeo,
                         "genesisIP": me.genesisIP,
                         "genesisPort": me.genesisPort,
                         "genesisPublickey": me.genesisPublickey || publickey,
