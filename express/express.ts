@@ -87,6 +87,9 @@ app.get('/nodefactory', function (req, res) {
                me : {},
                mintTable : {},
                gSRlist : {}
+               
+
+
             };
             //generate the me config records that the new node will adopt
             expressRedisClient.hgetall("me",function (err,me){          //get ME data
