@@ -2,6 +2,7 @@
 #		    updateSW.bash
 #
 if [ $# -ne 1 ]; then
+    echo `date` Running $0 in DAEMON mode. $#
     DAEMON="YES"
 fi
 echo `date` updateSW.bash
