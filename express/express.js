@@ -84,6 +84,7 @@ app.get('/nodefactory', function (req, res) {
                 };
                 //generate the me config records that the new node will adopt
                 expressRedisClient.hgetall("me", function (err, me) {
+                    var _a, _b;
                     if (err) {
                         console.log("Cant find Genesis node in redis - maybe I am Genesis Node?");
                     }
@@ -129,12 +130,12 @@ app.get('/nodefactory', function (req, res) {
                     };
                     var nodeEntry = geo + ":" + me.group;
                     node.gSRlist = [
-                        { newMint: node.me }
+                        (_a = {}, _a[nodeEntry] = node.me, _a)
                     ];
                     var mintEntry = "mint:" + newMint;
-                    node.mintTable = {
-                        mintEntry: node.me
-                    };
+                    node.mintTable = (_b = {},
+                        _b["mint:" + newMint] = node.me,
+                        _b);
                     //console.log("EXPRESS nodeFactory about to send json="+dump(json));
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(node));

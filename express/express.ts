@@ -141,12 +141,12 @@ app.get('/nodefactory', function (req, res) {
                var nodeEntry=geo+":"+me.group;
 
                node.gSRlist=[  //receiver should 
-                  { newMint : node.me }
+                  { [nodeEntry] : node.me }
                ];
-               
+
                var mintEntry="mint:"+newMint;
                node.mintTable={
-                  mintEntry : node.me
+                  ["mint:"+newMint] : node.me
                };
                //console.log("EXPRESS nodeFactory about to send json="+dump(json));
                res.setHeader('Content-Type', 'application/json');   
