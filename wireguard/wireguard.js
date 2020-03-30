@@ -6,7 +6,7 @@ exports.__esModule = true;
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 function getPublicKey() {
-    return require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+    return require('fs').readFileSync(process.env.DARPDIR + '/etc/wireguard/publickey', 'utf8');
 }
 exports.getPublicKey = getPublicKey;
 function setWireguard() {

@@ -127,8 +127,9 @@ app.get('/nodefactory', function (req, res) {
                         "remoteState": "0" //and there are mints : owls for received pulses 
                     };
                     var nodeEntry = geo + ":" + me.group;
+                    var mintEntry = "mint:" + newMint;
                     node.mintTable = {
-                        "mint:1": ""
+                        mintEntry: node.me
                     };
                     node.gSRlist = {
                         nodeEntry: "owls=1,2,3,4,5,6,7,8,9"
