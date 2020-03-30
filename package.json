@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/williambnorton/darp#readme",
   "dependencies": {
-    "@types/node": "^13.9.5"
+    "@types/node": "^13.9.5",
+    "express": "^4.17.1",
+    "redis": "^3.0.2"
   }
 }

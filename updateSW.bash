@@ -22,7 +22,21 @@ do
     cd /tmp/darp
     NEW=`ls Build*`
 
-    cd $DARPDIR
+   if [ "$CURRENT" == "$NEW" ]; then
+	    echo `date` No Change DAEMON=$DAEMON
+        if [ "$DAEMON" != "YES" ]; then
+            echo "Exitting $0";
+	        exit 0
+        fi
+    else
+	    echo `date` Software changed. Was $CURRENT Now is $NEW
+
+        echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
+        echo Should kill handlepulse to force reload
+        kill `ps aux | grep 'node handlepulse'| grep -v grep | awk '{ print $2}'`
+	    exit 1
+    fi
+
     npm update
     npm i @types/node
     npm install redis express
@@ -31,19 +45,7 @@ do
 #
 
     echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
-    if [ "$CURRENT" == "$NEW" ]; then
-	    echo `date` No Change DAEMON=$DAEMON
-        if [ "$DAEMON" != "YES" ]; then
-            echo "Exitting $0";
-	        exit 0
-        fi
-    else
-	    echo `date` Software changed. Was $CURRENT Now is $NEW
-        
-        echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
-        echo Should kill handlepulse to force reload
-        kill `ps aux | grep 'node handlepulse'| grep -v grep | awk '{ print $2}'`
-	    exit 1
-    fi
+    sleep 1
+ 
     sleep 10
 done
