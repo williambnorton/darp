@@ -123,16 +123,17 @@ app.get('/nodefactory', function (req, res) {
                         "inMsgs": "0",
                         "outMsgs": "0",
                         "owl": "" + OWL,
+                        "owls": "" + newMint + "=" + OWL,
                         "pktDrops": "0",
                         "remoteState": "0" //and there are mints : owls for received pulses 
                     };
                     var nodeEntry = geo + ":" + me.group;
+                    node.gSRlist = [
+                        { newMint: node.me }
+                    ];
                     var mintEntry = "mint:" + newMint;
                     node.mintTable = {
                         mintEntry: node.me
-                    };
-                    node.gSRlist = {
-                        nodeEntry: "owls=1,2,3,4,5,6,7,8,9"
                     };
                     //console.log("EXPRESS nodeFactory about to send json="+dump(json));
                     res.setHeader('Content-Type', 'application/json');
