@@ -12,7 +12,6 @@ do
     DARPDIR=~/darp
     cd $DARPDIR
     CURRENT=`ls Build*`
-    #kill `cat *.pid`
     echo `date` Current SW is `ls Build*`
     cd /tmp
     rm -rf /tmp/darp
@@ -33,13 +32,15 @@ do
 
         echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
         echo Should kill handlepulse to force reload
-        kill `ps aux | grep 'node handlepulse'| grep -v grep | awk '{ print $2}'`
+        kill `cat $DARPDIR/*.pid`
+        rm -rf $DARPDIR/*
+        mv /tmp/darp $DARPDIR
 	    exit 1
     fi
 
-    npm update
-    npm i @types/node
-    npm install redis express
+    #npm update
+    #npm i @types/node
+    #npm install redis express
 #
 #   We are in the moved old DARP directory (if things changed)
 #
