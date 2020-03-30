@@ -13,7 +13,7 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-DARPDIR=$HOME/darp
+export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 export MYIP=$MYIP
 #echo `date` MYIP=$MYIP
@@ -55,10 +55,14 @@ do
     sleep 2
     ./updateSW.bash & #>/dev/null
 
+    npm update
+    npm i @types/node
+    npm install redis express
+
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
-    ./configWG.bash >/dev/null
+    ./configWG.bash #>/dev/null
     export PUBLICKEY=`cat $DARPDIR/wireguard/publickey`
     echo PUBLICKEY=$PUBLICKEY
     sleep 1
@@ -106,10 +110,14 @@ do
     $rc=$?
 
     echo `date` DARP Finished rc=$rc
+    echo `date` DARP Finished rc=$rc
+    echo `date` DARP Finished rc=$rc
     #
     #   Finished DARP - exit
     #
     kill `cat $DARPDIR/*.pid`    #kill all processes
+    rm $DARPDIR/*.pid
+
     if [ -f $DARPDIR/forever ]; then
         echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
