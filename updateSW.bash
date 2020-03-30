@@ -34,7 +34,7 @@ do
         echo Should kill handlepulse to force reload
         kill `cat $DARPDIR/*.pid`
         rm -rf $DARPDIR/*
-        mv /tmp/darp $DARPDIR
+        mv /tmp/darp $HOME
 	    exit 1
     fi
 
