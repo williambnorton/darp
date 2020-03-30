@@ -63,51 +63,50 @@ var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b288
 console.log("CONFIG GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 console.log("CONFIG starting with GEO="+GEO+" publickey="+PUBLICKEY+" PORT="+PORT+" WALLET="+WALLET+"");
 
-
-redisClient.hmset("me", {  //what i have so far
+//  mint:0 is me  and  mint:1 is Genesis node 
+redisClient.hmset("mint:0",{
+    "mint" : "0",      //set by genesis node
     "geo" : GEO,
-    "group" : GEO+".1",
-    "port" : PORT,
+    "group": GEO+".1",      //add all nodes to genesis group
+    // wireguard configuration details
+    "port" : ""+PORT,
+    "ipaddr" : process.env.MYIP,   //set by genesis node on connection
     "publickey" : PUBLICKEY,
-    "version" : process.env.VERSION,
-    "ipaddr" : process.env.MYIP,
-    "bootTime" : ""+now(),   //boot time is when joined the group
-    //genesis connection info-evebtually find gnesis node online
+    //
+    "bootTime" : ""+now(),   //So we can detect reboots
+    //genesis connection info
+    "genesisGeo" : "",
     "genesisIP" : process.env.GENESIS,
     "genesisPort" : "65013",
-    "wallet" : WALLET
-});
+    "genesisPublickey" : "",
 
+    "version" : process.env.VERSION,  //software version
+    "wallet" : WALLET,
+    "owl": ""   //how long it took this node's last record to reach me
+ });
 
-console.log("Using environmental variable to set GENESIS to "+process.env.GENESIS);
-redisClient.hmset("genesis",{       //what I have so far
-        "port" : "65013",               //default
-        "ipaddr" : process.env.GENESIS   //set by genesis node on connection
-});  
+getConfiguration();  //later this should start with just an IP of genesis node 
 
-//if (PUBLICKEY=="") Usage();
+function getConfiguration() {
+    var URL="http://"+process.env.GENESIS+":"+"65013"+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP+"&ts="+now();
+    console.log("CONFIG: Fetching URL for config: "+URL);
+    //FETCH CONFIG
+    var req = http.get(URL, function (res) {
+        var data = '', json_data;
+        res.on('data', function (stream) {
+            data += stream;
+        });
+        res.on('end', function () {
+            //console.log("CONFIG data="+data);
+            var json = JSON.parse(data);
+            //gME=json;  //set my global variable  for convenience
+            console.log("CONFIG from node factory:"+JSON.stringify(json,null,2));
+/******
+            //var me=JSON.parse(json);
+            redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS
+            redisClient.hmset("mintTable", json.mintTable); //
 
-setMe();  //later this should start with just an IP of genesis node 
-
-function setMe() {
-    redisClient.hgetall("genesis", function (err,genesis) {
-        //console.log("setMe(): genesis="+dump(genesis));
-        var URL="http://"+genesis.ipaddr+":"+genesis.port+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP;
-        console.log("CONFIG: Fetching URL for config: "+URL);
-        //FETCH CONFIG
-        var req = http.get(URL, function (res) {
-            var data = '', json_data;
-            res.on('data', function (stream) {
-                data += stream;
-            });
-            res.on('end', function () {
-                //console.log("CONFIG data="+data);
-                var json = JSON.parse(data);
-                //gME=json;  //set my global variable  for convenience
-                console.log("CONFIG network auto config from node factory:"+JSON.stringify(json,null,2));
-                //var me=JSON.parse(json);
-                redisClient.hmset("me", json.me);
-                //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
+            //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
                 redisClient.hgetall("me",function (err,me) { 
                     if (err) console.log("CONFIG ERROR");
                     else {
@@ -170,6 +169,7 @@ function setMe() {
                 });
 
             });
+            *****/
         });
     });
 }

@@ -56,100 +56,110 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //GEO=GEO.toString().split('.').split(',');
 console.log("CONFIG GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
-redisClient.hmset("me", {
+//  mint:0 is me  and  mint:1 is Genesis node 
+redisClient.hmset("mint:0", {
+    "mint": "0",
     "geo": GEO,
     "group": GEO + ".1",
-    "port": PORT,
-    "publickey": PUBLICKEY,
-    "version": process.env.VERSION,
+    // wireguard configuration details
+    "port": "" + PORT,
     "ipaddr": process.env.MYIP,
+    "publickey": PUBLICKEY,
+    //
     "bootTime": "" + lib_1.now(),
-    //genesis connection info-evebtually find gnesis node online
+    //genesis connection info
+    "genesisGeo": "",
     "genesisIP": process.env.GENESIS,
     "genesisPort": "65013",
-    "wallet": WALLET
+    "genesisPublickey": "",
+    "version": process.env.VERSION,
+    "wallet": WALLET,
+    "owl": "" //how long it took this node's last record to reach me
 });
-console.log("Using environmental variable to set GENESIS to " + process.env.GENESIS);
-redisClient.hmset("genesis", {
-    "port": "65013",
-    "ipaddr": process.env.GENESIS //set by genesis node on connection
-});
-//if (PUBLICKEY=="") Usage();
-setMe(); //later this should start with just an IP of genesis node 
-function setMe() {
-    redisClient.hgetall("genesis", function (err, genesis) {
-        //console.log("setMe(): genesis="+dump(genesis));
-        var URL = "http://" + genesis.ipaddr + ":" + genesis.port + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP;
-        console.log("CONFIG: Fetching URL for config: " + URL);
-        //FETCH CONFIG
-        var req = http.get(URL, function (res) {
-            var data = '', json_data;
-            res.on('data', function (stream) {
-                data += stream;
-            });
-            res.on('end', function () {
-                //console.log("CONFIG data="+data);
-                var json = JSON.parse(data);
-                //gME=json;  //set my global variable  for convenience
-                console.log("CONFIG network auto config from node factory:" + JSON.stringify(json, null, 2));
-                //var me=JSON.parse(json);
-                redisClient.hmset("me", json.me);
-                //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
-                redisClient.hgetall("me", function (err, me) {
-                    if (err)
-                        console.log("CONFIG ERROR");
-                    else {
-                        //
-                        //  Create Genesis Mint - 
-                        //              DEVOPS:DEVOP.1
-                        //
-                        //console.log("ME **********"+dump(me));
-                        var ary = me.pulseGroups.split(",");
-                        for (var group in ary) {
-                            //console.log("group="+group+" ary[]="+ary[group]);
-                            //create me.geo:me.pulseGroups
-                            var nodeEntry = me.geo + ":" + ary[group];
-                            //console.log("setMe() creating "+nodeEntry);
-                            redisClient.hmset(nodeEntry, json); //save <me>:<myGroup>.1
-                            //eventually, on pulse? we need to add own mint to MAZORE.1
-                            //Assigned MINT TABLE - needed info to connect to remote
-                            var newMintEntry = {
-                                "mint": json.mint,
-                                "geo": json.geo,
-                                "ipaddr": json.ipaddr,
-                                "port": "" + json.port,
-                                "publickey": "" + json.publickey,
-                                "wallet": "" + json.wallet
-                            };
-                            //console.log("newMintEntry="+dump(newMintEntry));
-                            redisClient.hmset("mint:" + json.mint, newMintEntry);
-                            //if we haven't installed out genesis node, install it in the mint table now
-                            var genesisMint = {
-                                "mint": "1",
-                                "geo": json.group.split(".")[0],
-                                "ipaddr": json.genesisIP,
-                                "port": "" + json.genesisPort,
-                                "publickey": "" + json.genesisPublickey,
-                                "wallet": ""
-                            };
-                            //console.log("genesisMint="+dump(genesisMint));                           
-                            redisClient.hmset("mint:1", genesisMint);
-                            redisClient.hgetall(nodeEntry, function (err, json) {
-                                if (err)
-                                    console.log("hgetall nodeEntry=" + nodeEntry + " failed");
+getConfiguration(); //later this should start with just an IP of genesis node 
+function getConfiguration() {
+    var URL = "http://" + process.env.GENESIS + ":" + "65013" + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_1.now();
+    console.log("CONFIG: Fetching URL for config: " + URL);
+    //FETCH CONFIG
+    var req = http.get(URL, function (res) {
+        var data = '', json_data;
+        res.on('data', function (stream) {
+            data += stream;
+        });
+        res.on('end', function () {
+            //console.log("CONFIG data="+data);
+            var json = JSON.parse(data);
+            //gME=json;  //set my global variable  for convenience
+            console.log("CONFIG from node factory:" + JSON.stringify(json, null, 2));
+            /******
+                        //var me=JSON.parse(json);
+                        redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS
+                        redisClient.hmset("mintTable", json.mintTable); //
+            
+                        //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
+                            redisClient.hgetall("me",function (err,me) {
+                                if (err) console.log("CONFIG ERROR");
                                 else {
-                                    console.log("CONFIG nodeFactory sent us our config json=" + lib_1.dump(json));
-                                    //res.setHeader('Content-Type', 'application/json');   
-                                    //res.end(JSON.stringify(json));
-                                    console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                                    //
+                                    //  Create Genesis Mint -
+                                    //              DEVOPS:DEVOP.1
+                                    //
+            
+                                    //console.log("ME **********"+dump(me));
+                                    var ary=me.pulseGroups.split(",");
+                                    for (var group in ary) {
+                                        //console.log("group="+group+" ary[]="+ary[group]);
+                                        //create me.geo:me.pulseGroups
+                                        var nodeEntry=me.geo+":"+ary[group];
+                                        //console.log("setMe() creating "+nodeEntry);
+                                        
+                                        redisClient.hmset(nodeEntry,json);  //save <me>:<myGroup>.1
+                                        //eventually, on pulse? we need to add own mint to MAZORE.1
+            
+                                         //Assigned MINT TABLE - needed info to connect to remote
+                                        var newMintEntry={
+                                            "mint" : json.mint,
+                                            "geo" : json.geo,
+                                            "ipaddr" : json.ipaddr,
+                                            "port" : ""+json.port,
+                                            "publickey" : ""+json.publickey,
+                                            "wallet" : ""+json.wallet
+                                        }
+                                        //console.log("newMintEntry="+dump(newMintEntry));
+                                        redisClient.hmset("mint:"+json.mint, newMintEntry);
+            
+                                        //if we haven't installed out genesis node, install it in the mint table now
+                                        var genesisMint={
+                                            "mint" : "1",
+                                            "geo" : json.group.split(".")[0],
+                                            "ipaddr" : json.genesisIP,
+                                            "port" : ""+json.genesisPort,
+                                            "publickey" : ""+json.genesisPublickey,
+                                            "wallet" : ""
+                                        }
+                                        //console.log("genesisMint="+dump(genesisMint));
+                                        redisClient.hmset("mint:1",genesisMint);
+            
+                                        redisClient.hgetall(nodeEntry, function(err,json) {
+                                            if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
+                                            else {
+                                               console.log("CONFIG nodeFactory sent us our config json="+dump(json));
+                                               //res.setHeader('Content-Type', 'application/json');
+                                               //res.end(JSON.stringify(json));
+                                               console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                                            }
+                                         });
+            
+                                         //make sure there is a genesis group node MAZORE:MAZORE:1
+            
+                                        //reinit wireguard
+            
+                                    }
                                 }
                             });
-                            //make sure there is a genesis group node MAZORE:MAZORE:1 
-                            //reinit wireguard
-                        }
-                    }
-                });
-            });
+            
+                        });
+                        *****/
         });
     });
 }
