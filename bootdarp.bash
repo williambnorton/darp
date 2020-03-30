@@ -104,7 +104,12 @@ do
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
     $rc=$?
-    
+
+    echo `date` DARP Finished rc=$rc
+    #
+    #   Finished DARP - exit
+    #
+    kill `cat $DARPDIR/*.pid`    #kill all processes
     if [ -f $DARPDIR/forever ]; then
         echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
@@ -114,4 +119,5 @@ do
         echo `handlePulse finished -restarting all`
         exit -1
     fi
+
 done
