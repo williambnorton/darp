@@ -13,7 +13,7 @@ function setWireguard() {
     //we assume these file were set by configWG
     var BASECONFIG;
     try {
-        BASECONFIG = require('fs').readFileSync('/etc/wireguard/wg0.conf', 'utf8');
+        BASECONFIG = require('fs').readFileSync(process.env.DARPDIR + 'etc/wireguard/wg0.conf', 'utf8');
     }
     catch (err) {
         BASECONFIG = "deadbeef00deadbeef00deadbeef0012";
