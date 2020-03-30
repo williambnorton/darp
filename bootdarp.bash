@@ -53,7 +53,7 @@ do
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
     sleep 2
-    ./updateSW.bash & #>/dev/null
+    ./updateSW.bash -deamon & #>/dev/null
 
     #npm update
     #npm i @types/node
