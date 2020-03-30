@@ -55,9 +55,9 @@ do
     sleep 2
     ./updateSW.bash & #>/dev/null
 
-    npm update
-    npm i @types/node
-    npm install redis express
+    #npm update
+    #npm i @types/node
+    #npm install redis express
 
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard

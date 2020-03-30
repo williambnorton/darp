@@ -4,9 +4,9 @@
 #			~/wireguard outside the Docker is our /etc/wireguard
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
-
 echo `date` $0 creating wireguard configuration
 DARPDIR=~/darp
+mkdir -p $DARPDIR/etc/wireguard
 cd $DARPDIR/etc/wireguard
 umask 077
 echo `date` "This will create publickey and privatekey We do not want them to include space characters, braces or brackets or commas"
