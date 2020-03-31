@@ -125,7 +125,7 @@ app.get('/nodefactory', function (req, res) {
 
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
-         var genesisGroupRecord={  //one record per pulse - index = <geo>:<group>
+         var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
             "group": genesis.geo+".1",      //add all nodes to genesis group
                "seq" : "0",         //last sequence number heard
@@ -143,7 +143,7 @@ app.get('/nodefactory', function (req, res) {
                "pktDrops": "0",     //as detected by missed seq#
                "remoteState": "0"   //and there are mints : owls for received pulses 
          };
-         var newSegmentRecord={  //one record per pulse - index = <geo>:<group>
+         var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
             "group": genesis.geo+".1",      //add all nodes to genesis group
                "seq" : "0",         //last sequence number heard
@@ -162,12 +162,10 @@ app.get('/nodefactory', function (req, res) {
                "remoteState": "0"   //and there are mints : owls for received pulses 
          };
          var node={
-            me : newMintRecord,
-            genesis : genesis,
-            gSRlist : [
-               genesisGroupRecord,
-               newSegmentRecord
-            ] 
+            mint0 : newMintRecord,     //YOU
+            mint1 : genesis,           //GENESIS NODE
+            genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
+            newSegmentEntry : newSegmentEntry  //your pulseGroup entry for your participation in pulseGroup
          }
 
          console.log("EXPRESS nodeFactory about to send json="+dump(node));

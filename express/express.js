@@ -118,7 +118,7 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
-            var genesisGroupRecord = {
+            var genesisGroupEntry = {
                 "geo": genesis.geo,
                 "group": genesis.geo + ".1",
                 "seq": "0",
@@ -136,7 +136,7 @@ app.get('/nodefactory', function (req, res) {
                 "pktDrops": "0",
                 "remoteState": "0" //and there are mints : owls for received pulses 
             };
-            var newSegmentRecord = {
+            var newSegmentEntry = {
                 "geo": geo,
                 "group": genesis.geo + ".1",
                 "seq": "0",
@@ -155,12 +155,10 @@ app.get('/nodefactory', function (req, res) {
                 "remoteState": "0" //and there are mints : owls for received pulses 
             };
             var node = {
-                me: newMintRecord,
-                genesis: genesis,
-                gSRlist: [
-                    genesisGroupRecord,
-                    newSegmentRecord
-                ]
+                mint0: newMintRecord,
+                mint1: genesis,
+                genesisGroupEntry: genesisGroupEntry,
+                newSegmentEntry: newSegmentEntry //your pulseGroup entry for your participation in pulseGroup
             };
             console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(node));
             res.setHeader('Content-Type', 'application/json');
