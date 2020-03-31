@@ -158,7 +158,8 @@ app.get('/nodefactory', function (req, res) {
                 mint0: newMintRecord,
                 mint1: genesis,
                 genesisGroupEntry: genesisGroupEntry,
-                newSegmentEntry: newSegmentEntry //your pulseGroup entry for your participation in pulseGroup
+                newSegmentEntry: newSegmentEntry,
+                gSRlist: genesis.geo + ":" + genesis.geo + ".1," + geo + ":" + genesis.geo + ".1"
             };
             console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(node));
             res.setHeader('Content-Type', 'application/json');
