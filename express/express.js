@@ -91,69 +91,80 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 //genesis connection info
-                "genesisGeo": geo,
-                "genesisIP": clientIncomingIP,
-                "genesisPort": port,
-                "genesisPublickey": publickey,
+                //"genesisGeo" : geo,
+                //"genesisIP" : clientIncomingIP,
+                //"genesisPort" : port,
+                //"genesisPublickey" : publickey,
                 "version": version,
                 "wallet": wallet,
                 "owl": "" + OWL //how long it took this node's last record to reach me
             };
             expressRedisClient.hmset("mint:0", mint0);
+            mint0.mint = "1";
+            expressRedisClient.hmset("mint:1", mint0);
         }
-        expressRedisClient.hgetall("mint:0", function (err, me) {
-            // Create the config that the new node will adopt
-            var newMintRecord = {
-                "mint": "" + newMint,
-                "geo": geo,
-                // wireguard configuration details
-                "port": "" + port,
-                "ipaddr": incomingIP,
-                "publickey": publickey,
-                //
-                "bootTime": "" + lib_1.now(),
-                //genesis connection info
-                "genesisGeo": me.genesisGeo,
-                "genesisIP": me.genesisIP,
-                "genesisPort": me.genesisPort,
-                "genesisPublickey": me.genesisPublickey,
-                "version": version,
-                "wallet": wallet,
-                "owl": "" + OWL //how long it took this node's last record to reach me
-            };
-            expressRedisClient.hmset("mint:" + newMint, newMintRecord);
-            var newSegmentRecord = {
-                "seq": "0",
-                "pulseTimestamp": "0",
-                "srcMint": "" + newMint,
-                "geo": geo,
-                "group": me.group,
-                // =
-                "owls": "" + newMint + "=" + OWL,
-                //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                //node statistics - we measure these ourselves
-                "owl": "" + OWL,
-                "inOctets": "0",
-                "outOctets": "0",
-                "inMsgs": "0",
-                "outMsgs": "0",
-                "pktDrops": "0",
-                "remoteState": "0" //and there are mints : owls for received pulses 
-            };
-            var nodeConfig = {
-                me: newMintRecord,
-                gSRlist: "DEVOPS:DEVOP.1",
-                //mint0 : mint0,  //this is the new nodes 'me'
-                //mint1 : mint1,
-                "DEVOPS:DEVOPS.1": newSegmentRecord
-            };
-            console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(nodeConfig));
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(nodeConfig));
-            //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-            console.log("EXPRESS nodeFactory done");
-            //console.log("-----");
-        });
+        else {
+            // CONFIG for NON-GENESIS NODE
+            var newMintRecord = {};
+            expressRedisClient.hgetall("mint:1", function (err, me) {
+                // Create the config that the new node will adopt
+                var newMintRecord = {
+                    "mint": "" + newMint,
+                    "geo": geo,
+                    // wireguard configuration details
+                    "port": "" + port,
+                    "ipaddr": clientIncomingIP,
+                    "publickey": publickey,
+                    //
+                    "bootTime": "" + lib_1.now(),
+                    //genesis connection info
+                    //"genesisGeo" : me.genesisGeo,
+                    //"genesisIP" : me.genesisIP,
+                    //"genesisPort" : me.genesisPort,
+                    //"genesisPublickey" : me.genesisPublickey,
+                    "version": version,
+                    "wallet": wallet,
+                    "owl": "" + OWL //how long it took this node's last record to reach me
+                };
+                expressRedisClient.hmset("mint:" + newMint, newMintRecord);
+                //hscan for all members of this genesis group
+                //   for each pulsegroup member
+                //      add to mint table to send
+                //      push recent owl onto mintsStack
+                //    ship
+                var newSegmentRecord = {
+                    "seq": "0",
+                    "pulseTimestamp": "0",
+                    "srcMint": "" + newMint,
+                    "geo": geo,
+                    "group": me.group,
+                    // =
+                    "owls": "" + newMint + "=" + OWL,
+                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                    //node statistics - we measure these ourselves
+                    "owl": "" + OWL,
+                    "inOctets": "0",
+                    "outOctets": "0",
+                    "inMsgs": "0",
+                    "outMsgs": "0",
+                    "pktDrops": "0",
+                    "remoteState": "0" //and there are mints : owls for received pulses 
+                };
+                var nodeConfig = {
+                    me: newMintRecord,
+                    gSRlist: "DEVOPS:DEVOP.1",
+                    //mint0 : mint0,  //this is the new nodes 'me'
+                    //mint1 : mint1,
+                    "DEVOPS:DEVOPS.1": newSegmentRecord
+                };
+                console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(nodeConfig));
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(nodeConfig));
+                //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                console.log("EXPRESS nodeFactory done");
+                //console.log("-----");
+            });
+        }
     });
 });
 function popMint() {

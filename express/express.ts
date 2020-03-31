@@ -97,42 +97,49 @@ app.get('/nodefactory', function (req, res) {
             //
             "bootTime" : ""+now(),   //So we can detect reboots
             //genesis connection info
-            "genesisGeo" : geo,
-            "genesisIP" : clientIncomingIP,
-            "genesisPort" : port,
-            "genesisPublickey" : publickey,
+            //"genesisGeo" : geo,
+            //"genesisIP" : clientIncomingIP,
+            //"genesisPort" : port,
+            //"genesisPublickey" : publickey,
 
             "version" : version,  //software version
             "wallet" : wallet,
             "owl": ""+OWL   //how long it took this node's last record to reach me
          }
-         expressRedisClient.hmset("mint:0",mint0);         
-      }
-
-      expressRedisClient.hgetall("mint:0", function (err,me) {
+         expressRedisClient.hmset("mint:0",mint0); 
+         mint0.mint="1";
+         expressRedisClient.hmset("mint:1",mint0); 
+      } else {
+         // CONFIG for NON-GENESIS NODE
+         var newMintRecord={};
+         expressRedisClient.hgetall("mint:1", function (err,me) {
          // Create the config that the new node will adopt
-         var newMintRecord={
+            var newMintRecord={
             "mint" : ""+newMint,      //set by genesis node
             "geo" : geo,
             // wireguard configuration details
             "port" : ""+port,
-            "ipaddr" : incomingIP,   //set by genesis node on connection
+            "ipaddr" : clientIncomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
             "bootTime" : ""+now(),   //So we can detect reboots
             //genesis connection info
-            "genesisGeo" : me.genesisGeo,
-            "genesisIP" : me.genesisIP,
-            "genesisPort" : me.genesisPort,
-            "genesisPublickey" : me.genesisPublickey,
-
+            //"genesisGeo" : me.genesisGeo,
+            //"genesisIP" : me.genesisIP,
+            //"genesisPort" : me.genesisPort,
+            //"genesisPublickey" : me.genesisPublickey,
             "version" : version,  //software version
             "wallet" : wallet,
             "owl": ""+OWL   //how long it took this node's last record to reach me
-         };
-         expressRedisClient.hmset("mint:"+newMint,newMintRecord);
+            };
+            expressRedisClient.hmset("mint:"+newMint,newMintRecord);
 
-         var newSegmentRecord={  //one record per pulse - index = <geo>:<group>
+      //hscan for all members of this genesis group
+      //   for each pulsegroup member
+      //      add to mint table to send
+      //      push recent owl onto mintsStack
+      //    ship
+      var newSegmentRecord={  //one record per pulse - index = <geo>:<group>
             "seq" : "0",
             "pulseTimestamp": "0", //last pulseTimestamp received from this node
             "srcMint" : ""+newMint,      //set by genesis node
@@ -150,6 +157,7 @@ app.get('/nodefactory', function (req, res) {
             "pktDrops": "0",     //as detected by missed seq#
             "remoteState": "0"   //and there are mints : owls for received pulses 
          };
+      
          var nodeConfig={
             me : newMintRecord,
             gSRlist : "DEVOPS:DEVOP.1",
@@ -166,6 +174,7 @@ app.get('/nodefactory', function (req, res) {
          console.log("EXPRESS nodeFactory done");
          //console.log("-----");
       });
+      }
    });
 });
 

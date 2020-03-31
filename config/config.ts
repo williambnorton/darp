@@ -75,10 +75,10 @@ redisClient.hmset("mint:0",{
     //
     "bootTime" : ""+now(),   //So we can detect reboots
     //genesis connection info
-    "genesisGeo" : "",
-    "genesisIP" : process.env.GENESIS,
-    "genesisPort" : "65013",
-    "genesisPublickey" : "",
+    //"genesisGeo" : "",   mint:1 is always genesis node
+    //"genesisIP" : process.env.GENESIS,
+    //"genesisPort" : "65013",
+    //"genesisPublickey" : "",
 
     "version" : process.env.VERSION,  //software version
     "wallet" : WALLET,
@@ -101,6 +101,8 @@ function getConfiguration() {
             var json = JSON.parse(data);
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:"+JSON.stringify(json,null,2));
+
+
 /******
             //var me=JSON.parse(json);
             redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS

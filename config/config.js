@@ -68,10 +68,10 @@ redisClient.hmset("mint:0", {
     //
     "bootTime": "" + lib_1.now(),
     //genesis connection info
-    "genesisGeo": "",
-    "genesisIP": process.env.GENESIS,
-    "genesisPort": "65013",
-    "genesisPublickey": "",
+    //"genesisGeo" : "",   mint:1 is always genesis node
+    //"genesisIP" : process.env.GENESIS,
+    //"genesisPort" : "65013",
+    //"genesisPublickey" : "",
     "version": process.env.VERSION,
     "wallet": WALLET,
     "owl": "" //how long it took this node's last record to reach me
