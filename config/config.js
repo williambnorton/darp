@@ -39,7 +39,7 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 redisClient.flushall(); //clean slate
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO = process.env.HOSTNAME; //passed into docker
-GEO = GEO.split(".")[0].split(":")[0].split(",")[0].split("+")[0];
+GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT = process.env.PORT || "65013"; //passed into docker
 var PUBLICKEY = process.env.PUBLICKEY;
 if (!PUBLICKEY)
