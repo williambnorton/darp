@@ -119,11 +119,11 @@ app.get('/nodefactory', function (req, res) {
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
             var genesisGroupRecord = {
+                "geo": genesis.geo,
+                "group": genesis.geo + ".1",
                 "seq": "0",
                 "pulseTimestamp": "0",
                 "srcMint": "1",
-                "geo": genesis.geo,
-                "group": genesis.group,
                 // =
                 "owls": "1," + newMint,
                 //"owls" : getOWLs(me.group),  //owls other guy is reporting
@@ -137,11 +137,11 @@ app.get('/nodefactory', function (req, res) {
                 "remoteState": "0" //and there are mints : owls for received pulses 
             };
             var newSegmentRecord = {
+                "geo": geo,
+                "group": genesis.geo + ".1",
                 "seq": "0",
                 "pulseTimestamp": "0",
                 "srcMint": "" + newMint,
-                "geo": geo,
-                "group": genesis.group,
                 // =
                 "owls": "1," + newMint + "=" + OWL,
                 //"owls" : getOWLs(me.group),  //owls other guy is reporting

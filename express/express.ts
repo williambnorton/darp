@@ -126,12 +126,12 @@ app.get('/nodefactory', function (req, res) {
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
          var genesisGroupRecord={  //one record per pulse - index = <geo>:<group>
+            "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
+            "group": genesis.geo+".1",      //add all nodes to genesis group
                "seq" : "0",         //last sequence number heard
                "pulseTimestamp": "0", //last pulseTimestamp received from this node
                "srcMint" : "1",      //claimed mint # for this node
-               "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
-               "group": genesis.group,      //add all nodes to genesis group
-               // =
+              // =
                "owls" : "1,"+newMint,  //owls other guy is reporting
                //"owls" : getOWLs(me.group),  //owls other guy is reporting
                //node statistics - we measure these ourselves
@@ -144,11 +144,11 @@ app.get('/nodefactory', function (req, res) {
                "remoteState": "0"   //and there are mints : owls for received pulses 
          };
          var newSegmentRecord={  //one record per pulse - index = <geo>:<group>
+            "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+            "group": genesis.geo+".1",      //add all nodes to genesis group
                "seq" : "0",         //last sequence number heard
                "pulseTimestamp": "0", //last pulseTimestamp received from this node
                "srcMint" : ""+newMint,      //claimed mint # for this node
-               "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
-               "group": genesis.group,      //add all nodes to genesis group
                // =
                "owls" : "1,"+newMint+"="+OWL,  //owls other guy is reporting
                //"owls" : getOWLs(me.group),  //owls other guy is reporting
