@@ -8,7 +8,7 @@ var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
-redisClient.hgetall("me", function (err, me) {
+redisClient.hgetall("mint:0", function (err, me) {
     if (err) {
         console.log("hgetall me failed");
     }

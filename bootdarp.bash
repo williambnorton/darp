@@ -107,7 +107,7 @@ do
     fi
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
-    $rc=$?
+    rc=$?
 
     echo `date` DARP Finished rc=$rc
     echo `date` DARP Finished rc=$rc

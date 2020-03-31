@@ -30,11 +30,12 @@ do
     else
 	    echo `date` Software changed. Was $CURRENT Now is $NEW
 
-        echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
+        echo 'CLONED INTO /tmp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
         echo Killing handlepulse to force reload
 
         killList=`cat $DARPDIR/*.pid`
         if [ "$killList" != "" ]; then
+            echo `date` killList=$killList
             kill $killList
         fi
         cd /tmp
