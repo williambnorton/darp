@@ -31,11 +31,14 @@ do
 	    echo `date` Software changed. Was $CURRENT Now is $NEW
 
         echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
-        echo Should kill handlepulse to force reload
+        echo Killing handlepulse to force reload
+
         kill `cat $DARPDIR/*.pid`
         cd /tmp
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
         mv darp $HOME
+        echo `date` New Code installed:
+        cd $DARPDIR; ls
 	    exit 1
     fi
 
