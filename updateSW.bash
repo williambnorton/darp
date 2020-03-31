@@ -31,7 +31,7 @@ do
 	    echo `date` Software changed. Was $CURRENT Now is $NEW
 
         echo 'CLONED INTO /tmp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
-        echo Killing handlepulse to force reload
+        echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
 
         killList=`cat $DARPDIR/*.pid`
         if [ "$killList" != "" ]; then
