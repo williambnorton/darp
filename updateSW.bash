@@ -33,7 +33,10 @@ do
         echo 'CLONED INTO new darp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
         echo Killing handlepulse to force reload
 
-        kill `cat $DARPDIR/*.pid`
+        killList=`cat $DARPDIR/*.pid`
+        if [ "$killList" != "" ]; then
+            kill $killList
+        fi
         cd /tmp
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
         mv darp $HOME
