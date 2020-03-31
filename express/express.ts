@@ -96,12 +96,6 @@ app.get('/nodefactory', function (req, res) {
             "publickey" : publickey,
             //
             "bootTime" : ""+now(),   //So we can detect reboots
-            //genesis connection info
-            //"genesisGeo" : geo,
-            //"genesisIP" : clientIncomingIP,
-            //"genesisPort" : port,
-            //"genesisPublickey" : publickey,
-
             "version" : version,  //software version
             "wallet" : wallet,
             "owl": ""+OWL   //how long it took this node's last record to reach me
@@ -109,12 +103,12 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
          expressRedisClient.hmset("mint:1",mint0); 
-      } else {
-         // CONFIG for NON-GENESIS NODE
-         var newMintRecord={};
-         expressRedisClient.hgetall("mint:1", function (err,me) {
-         // Create the config that the new node will adopt
-            var newMintRecord={
+      } 
+      // CONFIG for NODE
+      var newMintRecord={};
+      expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
+         // Use the genesis node info to create the config
+         var newMintRecord={
             "mint" : ""+newMint,      //set by genesis node
             "geo" : geo,
             // wireguard configuration details
@@ -123,58 +117,68 @@ app.get('/nodefactory', function (req, res) {
             "publickey" : publickey,
             //
             "bootTime" : ""+now(),   //So we can detect reboots
-            //genesis connection info
-            //"genesisGeo" : me.genesisGeo,
-            //"genesisIP" : me.genesisIP,
-            //"genesisPort" : me.genesisPort,
-            //"genesisPublickey" : me.genesisPublickey,
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl": ""+OWL   //how long it took this node's last record to reach me
-            };
-            expressRedisClient.hmset("mint:"+newMint,newMintRecord);
-
-      //hscan for all members of this genesis group
-      //   for each pulsegroup member
-      //      add to mint table to send
-      //      push recent owl onto mintsStack
-      //    ship
-      var newSegmentRecord={  //one record per pulse - index = <geo>:<group>
-            "seq" : "0",
-            "pulseTimestamp": "0", //last pulseTimestamp received from this node
-            "srcMint" : ""+newMint,      //set by genesis node
-            "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
-            "group": me.group,      //add all nodes to genesis group
-            // =
-            "owls" : ""+newMint+"="+OWL,  //owls other guy is reporting
-            //"owls" : getOWLs(me.group),  //owls other guy is reporting
-            //node statistics - we measure these ourselves
-            "owl": ""+OWL,   //how long it took this node's last record to reach me
-            "inOctets": "0",
-            "outOctets": "0",
-            "inMsgs": "0",
-            "outMsgs": "0",
-            "pktDrops": "0",     //as detected by missed seq#
-            "remoteState": "0"   //and there are mints : owls for received pulses 
+            "owl" : ""+OWL   //how long it took this node's last record to reach me
          };
-      
-         var nodeConfig={
+         expressRedisClient.hmset("mint:"+newMint,newMintRecord);
+
+         // Now for a record of this newNode in the Genesis group
+         //get group owner (genesis group) OWLS
+         var genesisGroupRecord={  //one record per pulse - index = <geo>:<group>
+               "seq" : "0",         //last sequence number heard
+               "pulseTimestamp": "0", //last pulseTimestamp received from this node
+               "srcMint" : "1",      //claimed mint # for this node
+               "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
+               "group": genesis.group,      //add all nodes to genesis group
+               // =
+               "owls" : "1,"+newMint,  //owls other guy is reporting
+               //"owls" : getOWLs(me.group),  //owls other guy is reporting
+               //node statistics - we measure these ourselves
+               "owl": ""+OWL,   //how long it took this node's last record to reach me
+               "inOctets": "0",
+               "outOctets": "0",
+               "inMsgs": "0",
+               "outMsgs": "0",
+               "pktDrops": "0",     //as detected by missed seq#
+               "remoteState": "0"   //and there are mints : owls for received pulses 
+         };
+         var newSegmentRecord={  //one record per pulse - index = <geo>:<group>
+               "seq" : "0",         //last sequence number heard
+               "pulseTimestamp": "0", //last pulseTimestamp received from this node
+               "srcMint" : ""+newMint,      //claimed mint # for this node
+               "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+               "group": genesis.group,      //add all nodes to genesis group
+               // =
+               "owls" : "1,"+newMint+"="+OWL,  //owls other guy is reporting
+               //"owls" : getOWLs(me.group),  //owls other guy is reporting
+               //node statistics - we measure these ourselves
+               "owl": ""+OWL,   //how long it took this node's last record to reach me
+               "inOctets": "0",
+               "outOctets": "0",
+               "inMsgs": "0",
+               "outMsgs": "0",
+               "pktDrops": "0",     //as detected by missed seq#
+               "remoteState": "0"   //and there are mints : owls for received pulses 
+         };
+         var node={
             me : newMintRecord,
-            gSRlist : "DEVOPS:DEVOP.1",
-            //mint0 : mint0,  //this is the new nodes 'me'
-            //mint1 : mint1,
-            "DEVOPS:DEVOPS.1" : newSegmentRecord
+            genesis : genesis,
+            gSRlist : [
+               genesisGroupRecord,
+               newSegmentRecord
+            ] 
          }
 
-         console.log("EXPRESS nodeFactory about to send json="+dump(nodeConfig));
+         console.log("EXPRESS nodeFactory about to send json="+dump(node));
          res.setHeader('Content-Type', 'application/json');   
-         res.end(JSON.stringify(nodeConfig));
+         res.end(JSON.stringify(node));
          //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
 
          console.log("EXPRESS nodeFactory done");
-         //console.log("-----");
       });
-      }
+
+
    });
 });
 
@@ -185,8 +189,8 @@ var mint=0;
       if (err) {
        console.log("err="+err);
       } else {
-       //debug('Generated incremental id: %s.', newId);
-       mint=newMint;;
+         //debug('Generated incremental id: %s.', newId);
+         mint=newMint;
       }
      });
 }

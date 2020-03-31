@@ -17,12 +17,25 @@ redisClient.hgetall("mint:0", function (err,me) {
       console.log("handlePulse() - can't find me entry...exitting");
       process.exit(127);
     }
-    console.log("me="+dump(me));
-    //server.bind(me.port, "0.0.0.0");
-
-    server.bind(me.port, '0.0.0.0');
+    console.log("handlePulse(): me="+dump(me));
+    server.bind(me.port, "0.0.0.0");
   }
 });
+
+redisClient.hgetall("mint:1", function (err,genesis) {
+  if (err) {
+    console.log("hgetall genesis failed");
+  } else {
+    if (genesis==null) {
+      console.log("handlePulse() - can't find genesis entry...exitting");
+      process.exit(127);
+    }
+    console.log("handlePulse(): genesis="+dump(genesis));
+    //server.bind(me.port, "0.0.0.0");
+  }
+});
+
+
 //
 // listen for incoming pulses and convert into redis commands
 //

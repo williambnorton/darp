@@ -46,7 +46,7 @@ function pulse() {
                     var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.lastSeq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
                     //get mintTable to get credentials   
                     var owls = "";
-                    mintList(ownerPulseLabel, function (err, mints) {
+                    lib_1.mintList(ownerPulseLabel, function (err, mints) {
                         // get nodes' list of mints to send pulse to
                         // and send pulse
                         console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
@@ -126,59 +126,35 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         }
     });
 }
-//
-//  mintList() - callback with list of mints/owls for this node
-//
-function mintList(SR, callback) {
-    console.log("mintList() : SR=" + SR);
-    //fetch the group mints mint:2 : 2  mint:5 : 5   ....
-    redisClient.hgetall(SR, function (err, pulseGroup) {
-        //console.log("insideIterator");
-        if (err) {
-            console.log("mintList(): hgetall pulseGroup mints " + pulseGroup + " failed");
-        }
-        else {
-            console.log("mintList(): pulseGroup=" + lib_1.dump(pulseGroup));
-            //callback(null,pulseGroup.owls.replace(/=[0-9]*,/g,','));
-            var owlList = new Array();
-            if (pulseGroup && pulseGroup.owls) {
-                owlList = pulseGroup.owls.replace(/=[0-9]*/g, '').split(",");
-            }
-            console.log("mintList(): owlList=" + owlList);
-            callback(null, owlList); //send back a list of mints
-        }
-    });
-}
-//
+/****
 //  iterator through each mint of a pulseGroup
 //
-function forEachMint(SR, callback) {
-    console.log("forEachMint() : SR=" + SR);
-    //fetch the group mints mint:2 : 2  mint:5 : 5   ....
-    redisClient.hgetall(SR, function (err, SR) {
-        //console.log("insideIterator");
-        if (err) {
-            console.log("forEachMint(): hgetall pulseGroup mints " + SR + " failed");
-        }
-        else {
-            //console.log("forEachMint(): *** ** ** pulseGroupNodes="+dump(SR));
-            var mints = SR.owls.split(",");
-            console.log("mints=" + mints + " len=" + mints.length);
-            for (var mint in mints) { //mint:1  mint:2  mint:3
-                console.log("forEachMint: pulser mint=" + mint);
-                redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                    if (err) {
-                        console.log("forEachMint(): hgetall mintKey " + mint + " failed");
-                    }
-                    else {
-                        if (mintEntry) {
-                            //console.log("callback mintEntry="+dump(mintEntry));
-                            callback(err, mintEntry); //callback may fetch mint table
-                        }
-                    }
-                });
+function forEachMint(SR,callback) {
+  console.log("forEachMint() : SR="+SR);
+  //fetch the group mints mint:2 : 2  mint:5 : 5   ....
+  redisClient.hgetall(SR, function(err, SR) {
+    //console.log("insideIterator");
+    if (err) {
+            console.log("forEachMint(): hgetall pulseGroup mints "+SR+" failed");
+    } else {
+      //console.log("forEachMint(): *** ** ** pulseGroupNodes="+dump(SR));
+      var mints=SR.owls.split(",");
+      console.log("mints="+mints+" len="+mints.length);
+      for (var mint in mints) {   //mint:1  mint:2  mint:3
+        console.log("forEachMint: pulser mint="+mint);
+        redisClient.hgetall("mint:"+mint, function(err, mintEntry) {
+          if (err) {
+            console.log("forEachMint(): hgetall mintKey "+mint+" failed");
+          } else {
+            if (mintEntry) {
+              //console.log("callback mintEntry="+dump(mintEntry));
+              callback(err,mintEntry);  //callback may fetch mint table
             }
-        }
-    });
-    //setTimeout(pulse,3000); //pulse again in 3 seconds
+          }
+        });
+      }
+    }
+  });
+  //setTimeout(pulse,3000); //pulse again in 3 seconds
 }
+**/ 

@@ -1,4 +1,4 @@
-import { dump, getGenesis, now } from "../lib/lib";
+import { dump, getGenesis, now, mintList } from "../lib/lib";
 import { builtinModules } from "module";
 
 //
@@ -128,30 +128,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
   });
 }
 
-//
-//  mintList() - callback with list of mints/owls for this node
-//
-function mintList(SR,callback) {
-  console.log("mintList() : SR="+SR);
-  //fetch the group mints mint:2 : 2  mint:5 : 5   ....
-  redisClient.hgetall(SR, function(err, pulseGroup) {
-    //console.log("insideIterator");
-    if (err) {
-            console.log("mintList(): hgetall pulseGroup mints "+pulseGroup+" failed");
-    } else {
-      console.log("mintList(): pulseGroup="+dump(pulseGroup));
-      //callback(null,pulseGroup.owls.replace(/=[0-9]*,/g,','));
-      var owlList=new Array();
-      if (pulseGroup  && pulseGroup.owls ) {
-        owlList=pulseGroup.owls.replace(/=[0-9]*/g,'').split(",");
-      } 
-      console.log("mintList(): owlList="+owlList);
-      callback(null,owlList); //send back a list of mints
-      
-    }
-  });
-}
-//
+
+/****
 //  iterator through each mint of a pulseGroup
 //
 function forEachMint(SR,callback) { 
@@ -182,3 +160,4 @@ function forEachMint(SR,callback) {
   });
   //setTimeout(pulse,3000); //pulse again in 3 seconds
 }
+**/
