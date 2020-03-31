@@ -86,7 +86,7 @@ app.get('/nodefactory', function (req, res) {
                 "geo": geo,
                 // wireguard configuration details
                 "port": "" + port,
-                "ipaddr": clientIncomingIP,
+                "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
                 "bootTime": "" + lib_1.now(),
@@ -113,7 +113,7 @@ app.get('/nodefactory', function (req, res) {
                     "geo": geo,
                     // wireguard configuration details
                     "port": "" + port,
-                    "ipaddr": clientIncomingIP,
+                    "ipaddr": incomingIP,
                     "publickey": publickey,
                     //
                     "bootTime": "" + lib_1.now(),

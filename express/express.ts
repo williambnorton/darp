@@ -92,7 +92,7 @@ app.get('/nodefactory', function (req, res) {
             "geo" : geo,
             // wireguard configuration details
             "port" : ""+port,
-            "ipaddr" : clientIncomingIP,   //set by genesis node on connection
+            "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
             "bootTime" : ""+now(),   //So we can detect reboots
@@ -119,7 +119,7 @@ app.get('/nodefactory', function (req, res) {
             "geo" : geo,
             // wireguard configuration details
             "port" : ""+port,
-            "ipaddr" : clientIncomingIP,   //set by genesis node on connection
+            "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
             "bootTime" : ""+now(),   //So we can detect reboots
