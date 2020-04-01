@@ -119,7 +119,7 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
-            lib_1.getMints(expressRedisClient, genesis.group, function (err, owls) {
+            lib_1.mintList(expressRedisClient, genesis.group, function (err, owls) {
                 var genesisGroupEntry = {
                     "geo": genesis.geo,
                     "group": genesis.geo + ".1",

@@ -10,7 +10,7 @@
 //    PUBLICKEY - Public key 
 //
 
-import { dump, now, getMints } from '../lib/lib';
+import { dump, now, mintList } from '../lib/lib';
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -126,7 +126,7 @@ app.get('/nodefactory', function (req, res) {
 
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
-         getMints(expressRedisClient,genesis.group, function(err,owls){
+         mintList(expressRedisClient,genesis.group, function(err,owls){
             var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
                "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
                "group": genesis.geo+".1",      //add all nodes to genesis group
