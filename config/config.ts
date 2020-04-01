@@ -75,12 +75,6 @@ redisClient.hmset("mint:0",{
     "publickey" : PUBLICKEY,
     //
     "bootTime" : ""+now(),   //So we can detect reboots
-    //genesis connection info
-    //"genesisGeo" : "",   mint:1 is always genesis node
-    //"genesisIP" : process.env.GENESIS,
-    //"genesisPort" : "65013",
-    //"genesisPublickey" : "",
-
     "version" : process.env.VERSION,  //software version
     "wallet" : WALLET,
     "owl": ""   //how long it took this node's last record to reach me
@@ -106,9 +100,9 @@ function getConfiguration() {
             redisClient.hmset("gSRlist",json.gSRlist);
             redisClient.hmset("mint:0",json.mint0);
             redisClient.hmset("mint:1",json.mint1);
-            console.log("mint:1 done");
+            console.log("mint:1 done entryKey="+json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group);
             redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
-            console.log("genesis done");
+            console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
             redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
             console.log("newSegment done");
 
