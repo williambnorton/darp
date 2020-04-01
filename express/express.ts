@@ -98,10 +98,11 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            //"owl": "   //
+            "owl": "0"   //
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
+         mint0.owl="0"
          expressRedisClient.hmset("mint:1",mint0); 
       } 
       // CONFIG for NODE
@@ -119,7 +120,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            //"owl" : ""+OWL   //how long it took this node's last record to reach me
+            "owl" : ""+OWL   //how long it took this node's last record to reach me
          };
          expressRedisClient.hmset("mint:"+newMint,newMintRecord);
 
@@ -156,7 +157,7 @@ app.get('/nodefactory', function (req, res) {
                "owls" : "1,"+newMint+"="+OWL,  //owls other guy is reporting
                //"owls" : getOWLs(me.group),  //owls other guy is reporting
                //node statistics - we measure these ourselves
-               "owl": ""+OWL,   //how long it took this node's last record to reach me
+               //"owl": ""+OWL,   //how long it took this node's last record to reach me
                "inOctets": "0",
                "outOctets": "0",
                "inMsgs": "0",

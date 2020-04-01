@@ -91,10 +91,12 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet
+                "wallet": wallet,
+                "owl": "0" //
             };
             expressRedisClient.hmset("mint:0", mint0);
             mint0.mint = "1";
+            mint0.owl = "0";
             expressRedisClient.hmset("mint:1", mint0);
         }
         // CONFIG for NODE
@@ -111,7 +113,8 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet
+                "wallet": wallet,
+                "owl": "" + OWL //how long it took this node's last record to reach me
             };
             expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             // Now for a record of this newNode in the Genesis group
@@ -146,7 +149,7 @@ app.get('/nodefactory', function (req, res) {
                     "owls": "1," + newMint + "=" + OWL,
                     //"owls" : getOWLs(me.group),  //owls other guy is reporting
                     //node statistics - we measure these ourselves
-                    "owl": "" + OWL,
+                    //"owl": ""+OWL,   //how long it took this node's last record to reach me
                     "inOctets": "0",
                     "outOctets": "0",
                     "inMsgs": "0",
