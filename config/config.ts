@@ -106,10 +106,13 @@ function getConfiguration() {
             redisClient.hmset("gSRlist",json.gSRlist);
             redisClient.hmset("mint:0",json.mint0);
             redisClient.hmset("mint:1",json.mint1);
-
+            console.log("mint:1 done");
             redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
+            console.log("genesis done");
             redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
-/******
+            console.log("newSegment done");
+
+            /******
             //var me=JSON.parse(json);
             redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS
             redisClient.hmset("mintTable", json.mintTable); //

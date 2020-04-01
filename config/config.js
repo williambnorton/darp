@@ -94,77 +94,80 @@ function getConfiguration() {
             redisClient.hmset("gSRlist", json.gSRlist);
             redisClient.hmset("mint:0", json.mint0);
             redisClient.hmset("mint:1", json.mint1);
+            console.log("mint:1 done");
             redisClient.hmset(json.genesisGroupEntry.geo + ":" + json.genesisGroupEntry.group, json.genesisGroupEntry);
+            console.log("genesis done");
             redisClient.hmset(json.newSegmentEntry.geo + ":" + json.newSegmentEntry.group, json.newSegmentEntry);
+            console.log("newSegment done");
             /******
-                        //var me=JSON.parse(json);
-                        redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS
-                        redisClient.hmset("mintTable", json.mintTable); //
-            
-                        //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
-                            redisClient.hgetall("me",function (err,me) {
-                                if (err) console.log("CONFIG ERROR");
+            //var me=JSON.parse(json);
+            redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS
+            redisClient.hmset("mintTable", json.mintTable); //
+
+            //console.log("CONFIG setMeIP(): setting identity:"+JSON.stringify(json,null,2));
+                redisClient.hgetall("me",function (err,me) {
+                    if (err) console.log("CONFIG ERROR");
+                    else {
+                        //
+                        //  Create Genesis Mint -
+                        //              DEVOPS:DEVOP.1
+                        //
+
+                        //console.log("ME **********"+dump(me));
+                        var ary=me.pulseGroups.split(",");
+                        for (var group in ary) {
+                            //console.log("group="+group+" ary[]="+ary[group]);
+                            //create me.geo:me.pulseGroups
+                            var nodeEntry=me.geo+":"+ary[group];
+                            //console.log("setMe() creating "+nodeEntry);
+                            
+                            redisClient.hmset(nodeEntry,json);  //save <me>:<myGroup>.1
+                            //eventually, on pulse? we need to add own mint to MAZORE.1
+
+                             //Assigned MINT TABLE - needed info to connect to remote
+                            var newMintEntry={
+                                "mint" : json.mint,
+                                "geo" : json.geo,
+                                "ipaddr" : json.ipaddr,
+                                "port" : ""+json.port,
+                                "publickey" : ""+json.publickey,
+                                "wallet" : ""+json.wallet
+                            }
+                            //console.log("newMintEntry="+dump(newMintEntry));
+                            redisClient.hmset("mint:"+json.mint, newMintEntry);
+
+                            //if we haven't installed out genesis node, install it in the mint table now
+                            var genesisMint={
+                                "mint" : "1",
+                                "geo" : json.group.split(".")[0],
+                                "ipaddr" : json.genesisIP,
+                                "port" : ""+json.genesisPort,
+                                "publickey" : ""+json.genesisPublickey,
+                                "wallet" : ""
+                            }
+                            //console.log("genesisMint="+dump(genesisMint));
+                            redisClient.hmset("mint:1",genesisMint);
+
+                            redisClient.hgetall(nodeEntry, function(err,json) {
+                                if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
                                 else {
-                                    //
-                                    //  Create Genesis Mint -
-                                    //              DEVOPS:DEVOP.1
-                                    //
-            
-                                    //console.log("ME **********"+dump(me));
-                                    var ary=me.pulseGroups.split(",");
-                                    for (var group in ary) {
-                                        //console.log("group="+group+" ary[]="+ary[group]);
-                                        //create me.geo:me.pulseGroups
-                                        var nodeEntry=me.geo+":"+ary[group];
-                                        //console.log("setMe() creating "+nodeEntry);
-                                        
-                                        redisClient.hmset(nodeEntry,json);  //save <me>:<myGroup>.1
-                                        //eventually, on pulse? we need to add own mint to MAZORE.1
-            
-                                         //Assigned MINT TABLE - needed info to connect to remote
-                                        var newMintEntry={
-                                            "mint" : json.mint,
-                                            "geo" : json.geo,
-                                            "ipaddr" : json.ipaddr,
-                                            "port" : ""+json.port,
-                                            "publickey" : ""+json.publickey,
-                                            "wallet" : ""+json.wallet
-                                        }
-                                        //console.log("newMintEntry="+dump(newMintEntry));
-                                        redisClient.hmset("mint:"+json.mint, newMintEntry);
-            
-                                        //if we haven't installed out genesis node, install it in the mint table now
-                                        var genesisMint={
-                                            "mint" : "1",
-                                            "geo" : json.group.split(".")[0],
-                                            "ipaddr" : json.genesisIP,
-                                            "port" : ""+json.genesisPort,
-                                            "publickey" : ""+json.genesisPublickey,
-                                            "wallet" : ""
-                                        }
-                                        //console.log("genesisMint="+dump(genesisMint));
-                                        redisClient.hmset("mint:1",genesisMint);
-            
-                                        redisClient.hgetall(nodeEntry, function(err,json) {
-                                            if (err) console.log("hgetall nodeEntry="+nodeEntry+" failed");
-                                            else {
-                                               console.log("CONFIG nodeFactory sent us our config json="+dump(json));
-                                               //res.setHeader('Content-Type', 'application/json');
-                                               //res.end(JSON.stringify(json));
-                                               console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                                            }
-                                         });
-            
-                                         //make sure there is a genesis group node MAZORE:MAZORE:1
-            
-                                        //reinit wireguard
-            
-                                    }
+                                   console.log("CONFIG nodeFactory sent us our config json="+dump(json));
+                                   //res.setHeader('Content-Type', 'application/json');
+                                   //res.end(JSON.stringify(json));
+                                   console.log("Node is connected - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                                 }
-                            });
-            
-                        });
-                        *****/
+                             });
+
+                             //make sure there is a genesis group node MAZORE:MAZORE:1
+
+                            //reinit wireguard
+
+                        }
+                    }
+                });
+
+            });
+            *****/
         });
     });
 }
