@@ -111,8 +111,7 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet,
-                "owl": "" + OWL //how long it took this node's last record to reach me
+                "wallet": wallet
             };
             expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             // Now for a record of this newNode in the Genesis group
