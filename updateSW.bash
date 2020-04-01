@@ -33,7 +33,6 @@ do
         echo 'CLONED INTO /tmp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
         echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
 
-
         #killList=`cat $DARPDIR/*.pid`
         killlist=`ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
         if [ "$killList" != "" ]; then
