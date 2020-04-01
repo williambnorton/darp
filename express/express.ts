@@ -90,6 +90,7 @@ app.get('/nodefactory', function (req, res) {
          var mint0={
             "mint" : "0",      //overwrite initial mint0 record - we are genesis
             "geo" : geo,
+            "group" : geo+".1",  //assigning nodes in this group now
             // wireguard configuration details
             "port" : ""+port,
             "ipaddr" : incomingIP,   //set by genesis node on connection
@@ -112,6 +113,7 @@ app.get('/nodefactory', function (req, res) {
          var newMintRecord={
             "mint" : ""+newMint,      //set by genesis node
             "geo" : geo,
+            "group" : genesis.group,
             // wireguard configuration details
             "port" : ""+port,
             "ipaddr" : incomingIP,   //set by genesis node on connection
@@ -126,10 +128,10 @@ app.get('/nodefactory', function (req, res) {
 
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
-         mintList(expressRedisClient, genesis, function(err,owls){
+         mintList(expressRedisClient, genesis.group, function(err,owls){
             var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
                "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
-               "group": genesis.geo+".1",      //add all nodes to genesis group
+               "group": genesis.group,      //assigning nodes in this group now
                   "seq" : "0",         //last sequence number heard
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : "1",      //claimed mint # for this node
@@ -150,7 +152,7 @@ app.get('/nodefactory', function (req, res) {
          if ( newMint != 1 ) {
                newSegmentEntry={  //one record per pulse - index = <geo>:<group>
                   "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
-                  "group": genesis.geo+".1",      //add all nodes to genesis group
+                  "group": genesis.group,      //add all nodes to genesis group
                   "seq" : "0",         //last sequence number heard
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : ""+newMint,      //claimed mint # for this node
@@ -166,17 +168,17 @@ app.get('/nodefactory', function (req, res) {
                   "pktDrops": "0",     //as detected by missed seq#
                   "remoteState": "0"   //and there are mints : owls for received pulses 
                };
-               gSRlist=","+geo+":"+genesis.geo+".1";
+               gSRlist=","+geo+":"+genesis.group;
             }
-            expressRedisClient.hmset( "gSRlist", geo+":"+genesis.geo+".1", ""+newMint );
-            expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.geo+".1", "1" );
+            expressRedisClient.hmset( "gSRlist", geo+":"+genesis.group, ""+newMint );
+            expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
 
             var node={
                mint0 : newMintRecord,     //YOU
                mint1 : genesis,           //GENESIS NODE
                genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
                newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
-               gSRlist : genesis.geo+":"+genesis.geo+".1"+gSRlist
+               gSRlist : genesis.geo+":"+genesis.group+gSRlist
             }
 
             //console.log("EXPRESS nodeFactory about to send json="+dump(node));

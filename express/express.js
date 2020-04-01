@@ -84,6 +84,7 @@ app.get('/nodefactory', function (req, res) {
             var mint0 = {
                 "mint": "0",
                 "geo": geo,
+                "group": geo + ".1",
                 // wireguard configuration details
                 "port": "" + port,
                 "ipaddr": incomingIP,
@@ -106,6 +107,7 @@ app.get('/nodefactory', function (req, res) {
             var newMintRecord = {
                 "mint": "" + newMint,
                 "geo": geo,
+                "group": genesis.group,
                 // wireguard configuration details
                 "port": "" + port,
                 "ipaddr": incomingIP,
@@ -119,10 +121,10 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
-            lib_1.mintList(expressRedisClient, genesis, function (err, owls) {
+            lib_1.mintList(expressRedisClient, genesis.group, function (err, owls) {
                 var genesisGroupEntry = {
                     "geo": genesis.geo,
-                    "group": genesis.geo + ".1",
+                    "group": genesis.group,
                     "seq": "0",
                     "pulseTimestamp": "0",
                     "srcMint": "1",
@@ -142,7 +144,7 @@ app.get('/nodefactory', function (req, res) {
                 if (newMint != 1) {
                     newSegmentEntry = {
                         "geo": geo,
-                        "group": genesis.geo + ".1",
+                        "group": genesis.group,
                         "seq": "0",
                         "pulseTimestamp": "0",
                         "srcMint": "" + newMint,
@@ -158,16 +160,16 @@ app.get('/nodefactory', function (req, res) {
                         "pktDrops": "0",
                         "remoteState": "0" //and there are mints : owls for received pulses 
                     };
-                    gSRlist = "," + geo + ":" + genesis.geo + ".1";
+                    gSRlist = "," + geo + ":" + genesis.group;
                 }
-                expressRedisClient.hmset("gSRlist", geo + ":" + genesis.geo + ".1", "" + newMint);
-                expressRedisClient.hmset("gSRlist", genesis.geo + ":" + genesis.geo + ".1", "1");
+                expressRedisClient.hmset("gSRlist", geo + ":" + genesis.group, "" + newMint);
+                expressRedisClient.hmset("gSRlist", genesis.geo + ":" + genesis.group, "1");
                 var node = {
                     mint0: newMintRecord,
                     mint1: genesis,
                     genesisGroupEntry: genesisGroupEntry,
                     newSegmentEntry: newSegmentEntry,
-                    gSRlist: genesis.geo + ":" + genesis.geo + ".1" + gSRlist
+                    gSRlist: genesis.geo + ":" + genesis.group + gSRlist
                 };
                 //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                 res.setHeader('Content-Type', 'application/json');
