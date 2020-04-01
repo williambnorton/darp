@@ -62,7 +62,7 @@ app.get('/', function (req, res) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-   console.log('****EXPRESS; config requested with params: '+dump(req.query));
+   //onsole.log('****EXPRESS; config requested with params: '+dump(req.query));
 
    //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
    var geo=req.query.geo;
@@ -78,7 +78,7 @@ app.get('/nodefactory', function (req, res) {
    var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
    //console.log("req="+dump(req));
    var version=req.query.version;
-   console.log("EXPRESS /nodefactory clientIncomingIP="+clientIncomingIP+" geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
+   //console.log("EXPRESS /nodefactory clientIncomingIP="+clientIncomingIP+" geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
    //console.log("req="+dump(req.connection));
 //
 //    Admission control goies here - test wallet, stop accepting nodeFactory requests
@@ -178,12 +178,12 @@ app.get('/nodefactory', function (req, res) {
             gSRlist : genesis.geo+":"+genesis.geo+".1"+gSRlist
          }
 
-         console.log("EXPRESS nodeFactory about to send json="+dump(node));
+         //console.log("EXPRESS nodeFactory about to send json="+dump(node));
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify(node));
          //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
 
-         console.log("EXPRESS nodeFactory done");
+         //console.log("EXPRESS nodeFactory done");
       });
 
 
