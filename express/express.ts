@@ -186,7 +186,7 @@ app.get('/nodefactory', function (req, res) {
             res.end(JSON.stringify(node));
             //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
 
-            //console.log("EXPRESS nodeFactory done");
+            console.log("EXPRESS nodeFactory done");
          });
       });
 
