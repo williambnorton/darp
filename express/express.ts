@@ -125,6 +125,7 @@ app.get('/nodefactory', function (req, res) {
 
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
+         
          var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
             "group": genesis.geo+".1",      //add all nodes to genesis group
@@ -143,7 +144,9 @@ app.get('/nodefactory', function (req, res) {
                "pktDrops": "0",     //as detected by missed seq#
                "remoteState": "0"   //and there are mints : owls for received pulses 
          };
-         var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+         var newSegmentEntry={}
+         if (newMint!=1)
+            newSegmentEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
             "group": genesis.geo+".1",      //add all nodes to genesis group
                "seq" : "0",         //last sequence number heard

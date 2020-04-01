@@ -136,24 +136,26 @@ app.get('/nodefactory', function (req, res) {
                 "pktDrops": "0",
                 "remoteState": "0" //and there are mints : owls for received pulses 
             };
-            var newSegmentEntry = {
-                "geo": geo,
-                "group": genesis.geo + ".1",
-                "seq": "0",
-                "pulseTimestamp": "0",
-                "srcMint": "" + newMint,
-                // =
-                "owls": "1," + newMint + "=" + OWL,
-                //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                //node statistics - we measure these ourselves
-                "owl": "" + OWL,
-                "inOctets": "0",
-                "outOctets": "0",
-                "inMsgs": "0",
-                "outMsgs": "0",
-                "pktDrops": "0",
-                "remoteState": "0" //and there are mints : owls for received pulses 
-            };
+            var newSegmentEntry = {};
+            if (newMint != 1)
+                newSegmentEntry = {
+                    "geo": geo,
+                    "group": genesis.geo + ".1",
+                    "seq": "0",
+                    "pulseTimestamp": "0",
+                    "srcMint": "" + newMint,
+                    // =
+                    "owls": "1," + newMint + "=" + OWL,
+                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                    //node statistics - we measure these ourselves
+                    "owl": "" + OWL,
+                    "inOctets": "0",
+                    "outOctets": "0",
+                    "inMsgs": "0",
+                    "outMsgs": "0",
+                    "pktDrops": "0",
+                    "remoteState": "0" //and there are mints : owls for received pulses 
+                };
             var node = {
                 mint0: newMintRecord,
                 mint1: genesis,
