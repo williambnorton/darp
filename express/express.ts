@@ -167,8 +167,8 @@ app.get('/nodefactory', function (req, res) {
             };
             gSRlist=","+geo+":"+genesis.geo+".1";
          }
-         expressRedisClient.hmset( "gSRlist", newMint, geo+":"+genesis.geo+".1" );
-         expressRedisClient.hmset( "gSRlist", 1, genesis.geo+":"+genesis.geo+".1" );
+         expressRedisClient.hmset( "gSRlist", ""+newMint, geo+":"+genesis.geo+".1" );
+         expressRedisClient.hmset( "gSRlist", "1", genesis.geo+":"+genesis.geo+".1" );
 
          var node={
             mint0 : newMintRecord,     //YOU
