@@ -99,7 +99,7 @@ app.get('/nodefactory', function (req, res) {
             mint0.owl = "0";
             expressRedisClient.hmset("mint:1", mint0);
         }
-        // CONFIG for NODE
+        // CONFIG for GENESIS NODE
         var newMintRecord = {};
         expressRedisClient.hgetall("mint:1", function (err, genesis) {
             // Use the genesis node info to create the config
@@ -119,7 +119,7 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
-            lib_1.mintList(expressRedisClient, genesis.group, function (err, owls) {
+            lib_1.mintList(expressRedisClient, genesis, function (err, owls) {
                 var genesisGroupEntry = {
                     "geo": genesis.geo,
                     "group": genesis.geo + ".1",
