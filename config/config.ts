@@ -34,6 +34,7 @@ if (! process.env.MYIP) {
 //
 import { dump, now } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
+import { getUnpackedSettings } from "http2";
 //import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
 
@@ -102,7 +103,12 @@ function getConfiguration() {
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:"+JSON.stringify(json,null,2));
 
+            redisClient.hmset("gSRlist",json.gSRlist);
+            redisClient.hmset("mint:0",json.mint0);
+            redisClient.hmset("mint:1",json.mint1);
 
+            redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
+            redisClient.hmset( json.newSegmentEntry.geo+":"+json.newSegmentEntry.group , json.newSegmentEntry );    
 /******
             //var me=JSON.parse(json);
             redisClient.hmset("gSRlist", json.gSRlist);     //A list of entries with OWLS
