@@ -98,13 +98,13 @@ function getConfiguration() {
             console.log("CONFIG from node factory:"+JSON.stringify(json,null,2));
 
             redisClient.hmset("gSRlist",json.gSRlist);
-            redisClient.hmset("mint:0",json.mint0);
-            redisClient.hmset("mint:1",json.mint1);
-            //console.log("mint:1 done entryKey="+json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group);
-            redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
+            //redisClient.hmset("mint:0",json.mint0);
+            //redisClient.hmset("mint:1",json.mint1);
+            console.log("mint:1 done entryKey="+json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group);
+            //redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
             if (json.mint0.mint!=json.mint1.mint) {
                 console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
-                redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
+            //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
             }
             console.log("newSegment done");
 
