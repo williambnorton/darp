@@ -86,7 +86,7 @@ function getConfiguration() {
             var json = JSON.parse(data);
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:" + JSON.stringify(json, null, 2));
-            redisClient.hmset("gSRlist", json.gSRlist);
+            //redisClient.hmset("gSRlist",json.gSRlist);
             //redisClient.hmset("mint:0",json.mint0);
             //redisClient.hmset("mint:1",json.mint1);
             console.log("mint:1 done entryKey=" + json.genesisGroupEntry.geo + ":" + json.genesisGroupEntry.group);
