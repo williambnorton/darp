@@ -98,7 +98,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl": ""+OWL   //how long it took this node's last record to reach me
+            //"owl": ""+OWL   //
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
@@ -145,7 +145,7 @@ app.get('/nodefactory', function (req, res) {
                "remoteState": "0"   //and there are mints : owls for received pulses 
          };
          var newSegmentEntry={}, gSRlist="";
-         if (newMint!=1) {
+         if ( newMint != 1 ) {
             newSegmentEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
             "group": genesis.geo+".1",      //add all nodes to genesis group
@@ -164,7 +164,7 @@ app.get('/nodefactory', function (req, res) {
                "pktDrops": "0",     //as detected by missed seq#
                "remoteState": "0"   //and there are mints : owls for received pulses 
             };
-             gSRlist=","+geo+":"+genesis.geo+".1";
+            gSRlist=","+geo+":"+genesis.geo+".1";
          }
          var node={
             mint0 : newMintRecord,     //YOU
