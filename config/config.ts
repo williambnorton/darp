@@ -34,7 +34,7 @@ if (! process.env.MYIP) {
 //
 import { dump, now } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
-import { getUnpackedSettings } from "http2";
+//import { getUnpackedSettings } from "http2";
 //import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
 

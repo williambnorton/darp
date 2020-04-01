@@ -1,5 +1,5 @@
 import { dump, getGenesis, now, mintList } from "../lib/lib";
-import { builtinModules } from "module";
+//import { builtinModules } from "module";
 
 //
 //  pulse - send my owl measurements to my pulseGroups
@@ -51,7 +51,7 @@ function pulse() {
             var pulseMessage="OWL,"+me.mint+"."+me.geo+":"+pulseGroup+","+me.lastSeq+","+now()+",";  //MAZORE:MAZJAP.1
             //get mintTable to get credentials   
             var owls=""
-            mintList(ownerPulseLabel, function(err,mints) {
+            mintList(redisClient,ownerPulseLabel, function(err,mints) {
               // get nodes' list of mints to send pulse to
               // and send pulse
               console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs

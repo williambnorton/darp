@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var lib_1 = require("../lib/lib");
+//import { builtinModules } from "module";
 //
 //  pulse - send my owl measurements to my pulseGroups
 //
@@ -46,7 +47,7 @@ function pulse() {
                     var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.lastSeq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
                     //get mintTable to get credentials   
                     var owls = "";
-                    lib_1.mintList(ownerPulseLabel, function (err, mints) {
+                    lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
                         // get nodes' list of mints to send pulse to
                         // and send pulse
                         console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
