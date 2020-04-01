@@ -146,7 +146,7 @@ app.get('/nodefactory', function (req, res) {
                     "pulseTimestamp": "0",
                     "srcMint": "" + newMint,
                     // =
-                    "owls": "1," + newMint + "=" + OWL,
+                    "owls": "1=" + OWL,
                     //"owls" : getOWLs(me.group),  //owls other guy is reporting
                     //node statistics - we measure these ourselves
                     //"owl": ""+OWL,   //how long it took this node's last record to reach me
