@@ -10,7 +10,7 @@
 //    PUBLICKEY - Public key 
 //
 
-import { dump, now } from '../lib/lib';
+import { dump, now, getMints } from '../lib/lib';
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -126,64 +126,66 @@ app.get('/nodefactory', function (req, res) {
 
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
-         
-         var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
-            "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
-            "group": genesis.geo+".1",      //add all nodes to genesis group
-               "seq" : "0",         //last sequence number heard
-               "pulseTimestamp": "0", //last pulseTimestamp received from this node
-               "srcMint" : "1",      //claimed mint # for this node
-              // =
-               "owls" : genesis.owls,  //owls other guy is reporting
-               //"owls" : getOWLs(me.group),  //owls other guy is reporting
-               //node statistics - we measure these ourselves
-               "owl": ""+OWL,   //how long it took this node's last record to reach me
-               "inOctets": "0",
-               "outOctets": "0",
-               "inMsgs": "0",
-               "outMsgs": "0",
-               "pktDrops": "0",     //as detected by missed seq#
-               "remoteState": "0"   //and there are mints : owls for received pulses 
-         };
+         getMints(expressRedisClient,genesis.group, function(err,owls){
+            var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
+               "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
+               "group": genesis.geo+".1",      //add all nodes to genesis group
+                  "seq" : "0",         //last sequence number heard
+                  "pulseTimestamp": "0", //last pulseTimestamp received from this node
+                  "srcMint" : "1",      //claimed mint # for this node
+                 // =
+                  "owls" : owls,  //owls other guy is reporting
+                  //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                  //node statistics - we measure these ourselves
+                  "owl": ""+OWL,   //how long it took this node's last record to reach me
+                  "inOctets": "0",
+                  "outOctets": "0",
+                  "inMsgs": "0",
+                  "outMsgs": "0",
+                  "pktDrops": "0",     //as detected by missed seq#
+                  "remoteState": "0"   //and there are mints : owls for received pulses 
+            };
+
          var newSegmentEntry={}, gSRlist="";
          if ( newMint != 1 ) {
-            newSegmentEntry={  //one record per pulse - index = <geo>:<group>
-            "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
-            "group": genesis.geo+".1",      //add all nodes to genesis group
-               "seq" : "0",         //last sequence number heard
-               "pulseTimestamp": "0", //last pulseTimestamp received from this node
-               "srcMint" : ""+newMint,      //claimed mint # for this node
-               // =
-               "owls" : "1="+OWL,  //owls other guy is reporting
-               //"owls" : getOWLs(me.group),  //owls other guy is reporting
-               //node statistics - we measure these ourselves
-               //"owl": ""+OWL,   //how long it took this node's last record to reach me
-               "inOctets": "0",
-               "outOctets": "0",
-               "inMsgs": "0",
-               "outMsgs": "0",
-               "pktDrops": "0",     //as detected by missed seq#
-               "remoteState": "0"   //and there are mints : owls for received pulses 
-            };
-            gSRlist=","+geo+":"+genesis.geo+".1";
-         }
-         expressRedisClient.hmset( "gSRlist", geo+":"+genesis.geo+".1", ""+newMint );
-         expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.geo+".1", "1" );
+               newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+                  "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+                  "group": genesis.geo+".1",      //add all nodes to genesis group
+                  "seq" : "0",         //last sequence number heard
+                  "pulseTimestamp": "0", //last pulseTimestamp received from this node
+                  "srcMint" : ""+newMint,      //claimed mint # for this node
+                  // =
+                  "owls" : owls,  //owls other guy is reporting
+                  //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                  //node statistics - we measure these ourselves
+                  //"owl": ""+OWL,   //how long it took this node's last record to reach me
+                  "inOctets": "0",
+                  "outOctets": "0",
+                  "inMsgs": "0",
+                  "outMsgs": "0",
+                  "pktDrops": "0",     //as detected by missed seq#
+                  "remoteState": "0"   //and there are mints : owls for received pulses 
+               };
+               gSRlist=","+geo+":"+genesis.geo+".1";
+            }
+            expressRedisClient.hmset( "gSRlist", geo+":"+genesis.geo+".1", ""+newMint );
+            expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.geo+".1", "1" );
 
-         var node={
-            mint0 : newMintRecord,     //YOU
-            mint1 : genesis,           //GENESIS NODE
-            genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
-            newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
-            gSRlist : genesis.geo+":"+genesis.geo+".1"+gSRlist
-         }
+            var node={
+               mint0 : newMintRecord,     //YOU
+               mint1 : genesis,           //GENESIS NODE
+               genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
+               newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
+               gSRlist : genesis.geo+":"+genesis.geo+".1"+gSRlist
+            }
 
-         //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-         res.setHeader('Content-Type', 'application/json');   
-         res.end(JSON.stringify(node));
-         //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+            //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+            res.setHeader('Content-Type', 'application/json');   
+            res.end(JSON.stringify(node));
+            //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
 
-         //console.log("EXPRESS nodeFactory done");
+            //console.log("EXPRESS nodeFactory done");
+         });
       });
 
 
