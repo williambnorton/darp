@@ -136,8 +136,8 @@ app.get('/nodefactory', function (req, res) {
                 "pktDrops": "0",
                 "remoteState": "0" //and there are mints : owls for received pulses 
             };
-            var newSegmentEntry = {};
-            if (newMint != 1)
+            var newSegmentEntry = {}, gSRlist = {};
+            if (newMint != 1) {
                 newSegmentEntry = {
                     "geo": geo,
                     "group": genesis.geo + ".1",
@@ -156,12 +156,14 @@ app.get('/nodefactory', function (req, res) {
                     "pktDrops": "0",
                     "remoteState": "0" //and there are mints : owls for received pulses 
                 };
+                gSRlist = "," + geo + ":" + genesis.geo + ".1";
+            }
             var node = {
                 mint0: newMintRecord,
                 mint1: genesis,
                 genesisGroupEntry: genesisGroupEntry,
                 newSegmentEntry: newSegmentEntry,
-                gSRlist: genesis.geo + ":" + genesis.geo + ".1," + geo + ":" + genesis.geo + ".1"
+                gSRlist: genesis.geo + ":" + genesis.geo + ".1" + gSRlist
             };
             console.log("EXPRESS nodeFactory about to send json=" + lib_1.dump(node));
             res.setHeader('Content-Type', 'application/json');
