@@ -125,7 +125,7 @@ app.get('/nodefactory', function (req, res) {
                 "pulseTimestamp": "0",
                 "srcMint": "1",
                 // =
-                "owls": "1," + newMint,
+                "owls": genesis.owls,
                 //"owls" : getOWLs(me.group),  //owls other guy is reporting
                 //node statistics - we measure these ourselves
                 "owl": "" + OWL,
