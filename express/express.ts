@@ -98,7 +98,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            //"owl": ""+OWL   //
+            //"owl": "   //
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
