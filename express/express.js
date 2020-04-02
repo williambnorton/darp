@@ -124,10 +124,12 @@ app.get('/nodefactory', function (req, res) {
             console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
             return;
         }
-        /* NON-GENESIS NODE - this config is sent to remote node */
+        /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
         // Genesis Node as mint:1
         expressRedisClient.hgetall("mint:1", function (err, genesis) {
+            console.log("--------------- Non-GENESIS CONFIGURATION COMPLETE ------------------");
             expressRedisClient.hmset("mint:1", "owls", genesis.owls + "," + newMint + "=" + OWL);
+            console.log("working on genesis.geo");
             // Use the genesis node info to create the config
             var mint0 = {
                 "mint": "" + newMint,
@@ -168,6 +170,7 @@ app.get('/nodefactory', function (req, res) {
                 "version": version,
                 "wallet": wallet
             };
+            console.log("newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1));
             //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS

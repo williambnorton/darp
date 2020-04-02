@@ -132,11 +132,12 @@ app.get('/nodefactory', function (req, res) {
 
          return;
       } 
-                  /* NON-GENESIS NODE - this config is sent to remote node */
-
+      /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
+         console.log("--------------- Non-GENESIS CONFIGURATION COMPLETE ------------------");
          expressRedisClient.hmset("mint:1", "owls", genesis.owls+","+newMint+"="+OWL); 
+         console.log("working on genesis.geo");
 
          // Use the genesis node info to create the config
          var mint0={                //mint:0 is me - who (remote Node) has as 'me'
@@ -180,7 +181,7 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : wallet,
             //"owl" : "0"   //do not measure OWL to self - maybe delete this field to catch err?
          };
-
+         console.log("newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1));
          //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
 
          // Now for a record of this newNode in the Genesis group

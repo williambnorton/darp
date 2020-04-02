@@ -100,6 +100,8 @@ function getConfiguration() {
             if ( json.node == "GENESIS") {
                 console.log(" GENESIS NODE Instantiated itself");
             } else {
+                console.log(" -----------------------------------------NON-Genesis configuration");
+
                 /*var node={
                     mint0 : newMintRecord,     //YOU
                     mint1 : genesis,           //GENESIS NODE
