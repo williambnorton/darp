@@ -119,13 +119,13 @@ function getConfiguration() {
                 redisClient.hmset( groupEntry , json.genesisGroupEntry );
 
                 var nodeEntry=json.mint0.geo+":"+json.genesisGroupEntry.group;
-                console.log("setting node entry nodeEntry="+nodeEntry+" entry="+json.newNodeEntry);
-                redisClient.hmset( nodeEntry , json.newNodeEntry );
+                console.log("setting node entry nodeEntry="+nodeEntry+" entry="+json.newSegmentEntry);
+                redisClient.hmset( nodeEntry , json.newSegmentEntry );
 
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
 
-                    console.log("newSegment done");
+                console.log("newSegment done");
             }
 
 
