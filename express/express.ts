@@ -83,7 +83,7 @@ app.get('/nodefactory', function (req, res) {
 //
 //    Admission control goies here - test wallet, stop accepting nodeFactory requests
 //
-
+                  /********** GENESIS NODE **********/
    expressRedisClient.incr("mintStack", (err, newMint) => {   //me and genesis node objects
       if (newMint==1) {    //I AM GENESIS NODE - set my records
          console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
@@ -99,11 +99,10 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl": ""   //
+            //"owl": ""   //
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
-         mint0.owl="0"
          expressRedisClient.hmset("mint:1",mint0);
          var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
@@ -130,14 +129,14 @@ app.get('/nodefactory', function (req, res) {
          res.end(JSON.stringify( { "node" : "GENESIS" } ));
          return;
       } 
-                           /* NON-GENESIS NODE - this config is sent to remote node */
+                  /* NON-GENESIS NODE - this config is sent to remote node */
 
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
          expressRedisClient.hmset("mint:1", "owls", genesis.owls+","+newMint+"="+OWL); 
 
          // Use the genesis node info to create the config
-         var mint0={                //mint:0 is me - who I am
+         var mint0={                //mint:0 is me - who (remote Node) has as 'me'
             "mint" : ""+newMint,      //overwrite initial mint0 record - we are genesis
             "geo" : geo,
             "group" : genesis.group,  //assigning nodes in this group now
@@ -162,7 +161,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
-            "owl" : "0"          //we will get measures from genesis node
+            "owl" : ""+OWL          //we will get measures from genesis node
          }
          var newMintRecord={        //my mint entry
             "mint" : ""+newMint,      //set by genesis node
@@ -176,7 +175,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl" : "0"   //do not measure OWL to self - maybe delete this field to catch err?
+            //"owl" : "0"   //do not measure OWL to self - maybe delete this field to catch err?
          };
 
          //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
@@ -185,7 +184,7 @@ app.get('/nodefactory', function (req, res) {
          //get group owner (genesis group) OWLS
          mintList(expressRedisClient, genesis.group, function(err,owls){
             
-            var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
+            var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
                "group": genesis.group,      //assigning nodes in this group now
                   "seq" : "0",         //last sequence number heard
@@ -204,8 +203,7 @@ app.get('/nodefactory', function (req, res) {
                   "remoteState": "0"   //and there are mints : owls for received pulses 
             };
 
-            var newSegmentEntry={}, gSRlist="";
-            newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+            var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
                   "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
                   "group": genesis.group,      //add all nodes to genesis group
                   "seq" : "0",         //last sequence number heard

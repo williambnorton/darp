@@ -78,6 +78,7 @@ app.get('/nodefactory', function (req, res) {
     //
     //    Admission control goies here - test wallet, stop accepting nodeFactory requests
     //
+    /********** GENESIS NODE **********/
     expressRedisClient.incr("mintStack", function (err, newMint) {
         if (newMint == 1) { //I AM GENESIS NODE - set my records
             console.log("* * * * * * * I AM GENESIS NODE * * * * * *");
@@ -92,12 +93,10 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet,
-                "owl": "" //
+                "wallet": wallet
             };
             expressRedisClient.hmset("mint:0", mint0);
             mint0.mint = "1";
-            mint0.owl = "0";
             expressRedisClient.hmset("mint:1", mint0);
             var newSegmentEntry = {
                 "geo": geo,
@@ -154,7 +153,7 @@ app.get('/nodefactory', function (req, res) {
                 "bootTime": "" + lib_1.now(),
                 "version": genesis.version,
                 "wallet": genesis.wallet,
-                "owl": "0" //we will get measures from genesis node
+                "owl": "" + OWL //we will get measures from genesis node
             };
             var newMintRecord = {
                 "mint": "" + newMint,
@@ -167,8 +166,7 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet,
-                "owl": "0" //do not measure OWL to self - maybe delete this field to catch err?
+                "wallet": wallet
             };
             //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
             // Now for a record of this newNode in the Genesis group
@@ -192,8 +190,7 @@ app.get('/nodefactory', function (req, res) {
                     "pktDrops": "0",
                     "remoteState": "0" //and there are mints : owls for received pulses 
                 };
-                var newSegmentEntry = {}, gSRlist = "";
-                newSegmentEntry = {
+                var newSegmentEntry = {
                     "geo": geo,
                     "group": genesis.group,
                     "seq": "0",
