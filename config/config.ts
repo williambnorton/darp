@@ -97,17 +97,32 @@ function getConfiguration() {
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:"+JSON.stringify(json,null,2));
 
-            redisClient.hmset("gSRlist",json.gSRlist);
-            console.log("json.mint0="+dump(json.mint0));
-            redisClient.hmset("mint:0",json.mint0);
-            redisClient.hmset("mint:1",json.mint1);
-            console.log("mint:1 done entryKey="+json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group);
-            redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
-            if (json.mint0.mint!=json.mint1.mint) {
-                console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
-            //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
+            if ( json.node == "GENESIS") {
+                console.log(" GENESIS NODE Instantiated itself");
+            } else {
+                /*var node={
+                    mint0 : newMintRecord,     //YOU
+                    mint1 : genesis,           //GENESIS NODE
+                    newNodeMint : newMintRecord,
+                    genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
+                    newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
+                    gSRlist : gSRlist
+                 }*/
+
+                redisClient.hmset("gSRlist",json.gSRlist);
+                console.log("json.mint0="+dump(json.mint0));
+                redisClient.hmset("mint:0",json.mint0);
+                console.log("json.mint1="+dump(json.mint1));
+                redisClient.hmset("mint:1",json.mint1);
+                console.log("genesisGroupEntry="+json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group);
+                redisClient.hmset( json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group , json.genesisGroupEntry );
+                if (json.mint0.mint!=json.mint1.mint) {
+                    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
+                    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
+                }
+                console.log("newSegment done");
             }
-            console.log("newSegment done");
+
 
             /******
             //var me=JSON.parse(json);
