@@ -121,6 +121,9 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset("gSRlist", entryLabel, "1");
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ "node": "GENESIS" }));
+            lib_1.SRList(expressRedisClient, function (err, mygSRlist) {
+                console.log("mygSRlist=" + mygSRlist);
+            });
             return;
         }
         /* NON-GENESIS NODE - this config is sent to remote node */

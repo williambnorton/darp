@@ -10,7 +10,7 @@
 //    PUBLICKEY - Public key 
 //
 
-import { dump, now, mintList } from '../lib/lib';
+import { dump, now, mintList, SRList } from '../lib/lib';
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -127,6 +127,11 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hmset("gSRlist", entryLabel, "1"); 
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS" } ));
+
+         SRList(expressRedisClient, function (err,mygSRlist) {
+            console.log("mygSRlist="+mygSRlist);
+         });
+
          return;
       } 
                   /* NON-GENESIS NODE - this config is sent to remote node */
