@@ -131,6 +131,7 @@ app.get('/nodefactory', function (req, res) {
          SRList(expressRedisClient, function (err,mygSRlist) {
             console.log("callback - mygSRlist="+mygSRlist);
          });
+         console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
 
          return;
       } 
