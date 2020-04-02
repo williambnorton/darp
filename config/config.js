@@ -92,14 +92,6 @@ function getConfiguration() {
             }
             else {
                 console.log(" -----------------------------------------NON-Genesis configuration");
-                /*var node={
-                    mint0 : newMintRecord,     //YOU
-                    mint1 : genesis,           //GENESIS NODE
-                    newNodeMint : newMintRecord,
-                    genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
-                    newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
-                    gSRlist : gSRlist
-                 }*/
                 redisClient.hmset("gSRlist", json.gSRlist);
                 console.log("json.mint0=" + lib_1.dump(json.mint0));
                 redisClient.hmset("mint:0", json.mint0);
