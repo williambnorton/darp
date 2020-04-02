@@ -122,7 +122,7 @@ app.get('/nodefactory', function (req, res) {
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ "node": "GENESIS" }));
             lib_1.SRList(expressRedisClient, function (err, mygSRlist) {
-                console.log("callback - mygSRlist=" + mygSRlist);
+                console.log("********** callback - mygSRlist=" + lib_1.dump(mygSRlist));
             });
             console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
             return;
