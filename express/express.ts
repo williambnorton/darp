@@ -161,7 +161,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
-            "owl" : ""+OWL          //we will get measures from genesis node
+            //"owl" : ""+OWL          //we will get measures from genesis node
          }
          var newMintRecord={        //my mint entry
             "mint" : ""+newMint,      //set by genesis node

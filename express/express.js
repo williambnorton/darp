@@ -152,8 +152,7 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": genesis.version,
-                "wallet": genesis.wallet,
-                "owl": "" + OWL //we will get measures from genesis node
+                "wallet": genesis.wallet
             };
             var newMintRecord = {
                 "mint": "" + newMint,
