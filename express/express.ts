@@ -135,7 +135,7 @@ app.get('/nodefactory', function (req, res) {
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
-         console.log("--------------- Non-GENESIS CONFIGURATION COMPLETE ------------------");
+         console.log("--------------- EXPRESS() Non-GENESIS CONFIGURATION  ------------------");
          expressRedisClient.hmset("mint:1", "owls", genesis.owls+","+newMint+"="+OWL); 
          console.log("working on genesis.geo");
 
@@ -181,7 +181,6 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : wallet,
             //"owl" : "0"   //do not measure OWL to self - maybe delete this field to catch err?
          };
-         console.log("newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1));
          //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
 
          // Now for a record of this newNode in the Genesis group
@@ -225,16 +224,20 @@ app.get('/nodefactory', function (req, res) {
                   "pktDrops": "0",     //as detected by missed seq#
                   "remoteState": "0"   //and there are mints : owls for received pulses 
             };
-            
+            console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+newSegmentEntry);
+
             SRList(expressRedisClient, function (err,mygSRlist,myOwlList) {
                console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList);
-               expressRedisClient.hmset( "gSRlist", geo+":"+genesis.group, ""+newMint );
-               var gSRlist="";
-               expressRedisClient.hscan( "gSRlist", 0, "MATCH", "*:"+genesis.group, function( err, mygSRlist, myowls){
-                  gSRlist=mygSRlist;
-                  var gSRlistOwls=myowls
-                  console.log("EXPRESS: gSRlist="+gSRlist+" gSRlistOwls="+gSRlistOwls);
-               })
+               //we now have updated gSRlist and updated owls               
+               expressRedisClient.hmset( "gSRlist", geo+":"+genesis.group, ""+newMint );  //add node:grp to gSRlist
+               // install owls into genesisGroup
+               
+               //var gSRlist="";
+               //expressRedisClient.hscan( "gSRlist", 0, "MATCH", "*:"+genesis.group, function( err, mygSRlist, myowls){
+               //   gSRlist=mygSRlist;
+               //   var gSRlistOwls=myowls
+               ///   console.log("EXPRESS: gSRlist="+gSRlist+" gSRlistOwls="+gSRlistOwls);
+               //})
 
                //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
 
@@ -244,8 +247,10 @@ app.get('/nodefactory', function (req, res) {
                   newNodeMint : newMintRecord,
                   genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
                   newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
-                  gSRlist : gSRlist
+                  gSRlist : mygSRlist
                }
+
+               
 
                //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                res.setHeader('Content-Type', 'application/json');   
