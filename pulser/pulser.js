@@ -68,6 +68,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
     if (sendToAry == null)
         sendToAry = new Array();
     console.log("buildPulsePkt(): mints=" + mints);
+    if (typeof mints == "undefined" || !mints)
+        return;
     var mint = mints.pop(); //get our mint to add to the msg
     console.log("buildPulsePkt() mint=" + mint + " mints=" + mints + " pulseMsg=" + pulseMsg);
     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
