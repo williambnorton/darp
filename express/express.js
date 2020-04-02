@@ -118,12 +118,9 @@ app.get('/nodefactory', function (req, res) {
             };
             var entryLabel = geo + ":" + geo + ".1";
             expressRedisClient.hmset(entryLabel, newSegmentEntry);
+            expressRedisClient.hmset("gSRlist", entryLabel, "1");
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ "node": "GENESIS" }));
-            lib_1.SRList(expressRedisClient, function (err, mygSRlist) {
-                console.log("********** callback - mygSRlist=" + mygSRlist);
-                expressRedisClient.hmset("gSRlist", mygSRlist, "1");
-            });
             console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
             return;
         }
@@ -211,26 +208,29 @@ app.get('/nodefactory', function (req, res) {
                     "pktDrops": "0",
                     "remoteState": "0" //and there are mints : owls for received pulses 
                 };
-                expressRedisClient.hmset("gSRlist", geo + ":" + genesis.group, "" + newMint);
-                var gSRlist = "";
-                expressRedisClient.hscan("gSRlist", 0, "MATCH", "*:" + genesis.group, function (err, entry) {
-                    gSRlist += entry;
-                    console.log("EXPRESS: entry=" + lib_1.dump(entry));
+                lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
+                    console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList);
+                    expressRedisClient.hmset("gSRlist", geo + ":" + genesis.group, "" + newMint);
+                    var gSRlist = "";
+                    expressRedisClient.hscan("gSRlist", 0, "MATCH", "*:" + genesis.group, function (err, entry) {
+                        gSRlist += entry;
+                        console.log("EXPRESS: entry=" + lib_1.dump(entry));
+                    });
+                    //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
+                    var node = {
+                        mint0: newMintRecord,
+                        mint1: genesis,
+                        newNodeMint: newMintRecord,
+                        genesisGroupEntry: genesisGroupEntry,
+                        newSegmentEntry: newSegmentEntry,
+                        gSRlist: gSRlist
+                    };
+                    //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(node));
+                    //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                    console.log("EXPRESS nodeFactory done");
                 });
-                //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
-                var node = {
-                    mint0: newMintRecord,
-                    mint1: genesis,
-                    newNodeMint: newMintRecord,
-                    genesisGroupEntry: genesisGroupEntry,
-                    newSegmentEntry: newSegmentEntry,
-                    gSRlist: gSRlist
-                };
-                //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify(node));
-                //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                console.log("EXPRESS nodeFactory done");
             }); //mintList
         });
     });
