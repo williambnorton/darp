@@ -212,9 +212,10 @@ app.get('/nodefactory', function (req, res) {
                     console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList);
                     expressRedisClient.hmset("gSRlist", geo + ":" + genesis.group, "" + newMint);
                     var gSRlist = "";
-                    expressRedisClient.hscan("gSRlist", 0, "MATCH", "*:" + genesis.group, function (err, entry) {
-                        gSRlist += entry;
-                        console.log("EXPRESS: entry=" + lib_1.dump(entry));
+                    expressRedisClient.hscan("gSRlist", 0, "MATCH", "*:" + genesis.group, function (err, mygSRlist, myowls) {
+                        gSRlist = mygSRlist;
+                        var gSRlistOwls = myowls;
+                        console.log("EXPRESS: gSRlist=" + gSRlist + " gSRlistOwls=" + gSRlistOwls);
                     });
                     //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
                     var node = {
