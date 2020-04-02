@@ -124,12 +124,13 @@ app.get('/nodefactory', function (req, res) {
          };
          var entryLabel=geo+":"+geo+".1";
          expressRedisClient.hmset(entryLabel, newSegmentEntry); 
-         expressRedisClient.hmset("gSRlist", entryLabel, "1"); 
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS" } ));
 
          SRList(expressRedisClient, function (err,mygSRlist) {
-            console.log("********** callback - mygSRlist="+dump(mygSRlist));
+            console.log("********** callback - mygSRlist="+mygSRlist);
+            expressRedisClient.hmset("gSRlist", mygSRlist, "1"); 
+
          });
          console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
 
