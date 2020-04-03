@@ -35,12 +35,8 @@ do
         echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
 
         #killList=`cat $DARPDIR/*.pid`
-        killlist=`ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
-       echo "killlist=$killlist"
-        if [ "$killList" != "" ]; then
-            echo `date` Killing handlePulse to start software reload. Killing pid: $killList
-            kill $killList
-        fi
+        kill `ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
+       
         cd /tmp
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
         mv darp $HOME
