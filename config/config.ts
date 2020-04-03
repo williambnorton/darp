@@ -115,7 +115,7 @@ function getConfiguration() {
                 redisClient.hmset("mint:"+json.newNodeMint.mint,json.newNodeMint);
 
                 var groupEntry=json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group;
-                console.log("setting group entry genesisGroupEntry="+dump(groupEntry));
+                console.log("setting group entry genesisGroupEntry="+dump(json.genesisGroupEntry));
                 redisClient.hmset( groupEntry , json.genesisGroupEntry );
 
                 var nodeEntry=json.mint0.geo+":"+json.genesisGroupEntry.group;
