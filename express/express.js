@@ -230,8 +230,8 @@ app.get('/nodefactory', function (req, res) {
                     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                         console.log("gSRlist=" + lib_1.dump(gSRlist));
                         var node = {
-                            mint0: newMintRecord,
-                            mint1: genesis,
+                            mint0: mint0,
+                            mint1: mint1,
                             newNodeMint: newMintRecord,
                             genesisGroupEntry: genesisGroupEntry,
                             newSegmentEntry: newSegmentEntry,

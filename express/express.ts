@@ -246,8 +246,8 @@ app.get('/nodefactory', function (req, res) {
                expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
                   console.log("gSRlist="+dump(gSRlist));
                   var node={
-                     mint0 : newMintRecord,     //YOU
-                     mint1 : genesis,           //GENESIS NODE
+                     mint0 : mint0,     //YOU
+                     mint1 : mint1,           //GENESIS NODE
                      newNodeMint : newMintRecord,
                      genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
                      newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
