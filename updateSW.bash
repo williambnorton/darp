@@ -35,6 +35,7 @@ do
 
         #killList=`cat $DARPDIR/*.pid`
         killlist=`ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
+       echo "killlist=$killlist"
         if [ "$killList" != "" ]; then
             echo `date` Killing handlePulse to start software reload. Killing pid: $killList
             kill $killList
