@@ -214,18 +214,18 @@ app.get('/nodefactory', function (req, res) {
                     "pktDrops": "0",
                     "remoteState": "0" //and there are mints : owls for received pulses 
                 };
-                console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + newSegmentEntry);
                 lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
                     console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList);
                     //we now have updated gSRlist and updated owls               
                     expressRedisClient.hmset("gSRlist", geo + ":" + genesis.group, "" + newMint); //add node:grp to gSRlist
                     // install owls into genesisGroup
+                    console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + newSegmentEntry);
                     //var gSRlist="";
-                    //expressRedisClient.hscan( "gSRlist", 0, "MATCH", "*:"+genesis.group, function( err, mygSRlist, myowls){
-                    //   gSRlist=mygSRlist;
-                    //   var gSRlistOwls=myowls
-                    ///   console.log("EXPRESS: gSRlist="+gSRlist+" gSRlistOwls="+gSRlistOwls);
-                    //})
+                    expressRedisClient.hscan("gSRlist", 0, "MATCH", "*:" + genesis.group, function (err, mygSRlist, myowls) {
+                        //   gSRlist=mygSRlist;
+                        //   var gSRlistOwls=myowls
+                        console.log("EXPRESS: mygSRlist=" + mygSRlist);
+                    });
                     //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
                     var node = {
                         mint0: newMintRecord,
