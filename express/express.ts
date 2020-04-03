@@ -132,6 +132,8 @@ app.get('/nodefactory', function (req, res) {
 
          return;
       } 
+
+      
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
