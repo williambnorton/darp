@@ -119,8 +119,8 @@ function getConfiguration() {
                 console.log("setting node entry nodeEntry="+nodeEntry+" entry="+dump(json.newSegmentEntry));
                 redisClient.hmset( nodeEntry , json.newSegmentEntry );
 
-                console.log("setting gSRlist="+json.gSRlist);
-                redisClient.hmset("gSRlist",json.gSRlist, json.mint0.mint);
+                console.log("setting gSRlist="+dump(json.gSRlist));
+                redisClient.hmset("gSRlist", json.gSRlist );
 
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
