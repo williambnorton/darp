@@ -210,8 +210,8 @@ app.get('/nodefactory', function (req, res) {
             };
 
             var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
-                  "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
-                  "group": genesis.group,      //add all nodes to genesis group
+               "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+               "group": genesis.group,      //add all nodes to genesis group
                   "seq" : "0",         //last sequence number heard
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : ""+newMint,      //claimed mint # for this node

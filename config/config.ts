@@ -101,9 +101,6 @@ function getConfiguration() {
                 console.log(" GENESIS NODE Instantiated itself");
             } else {
                 console.log(" -----------------------------------------NON-Genesis configuration");
-
-                console.log("setting gSRlist="+json.gSRlist);
-                redisClient.hmset("gSRlist",json.gSRlist);
                 
                 console.log("setting mint0 to json.mint0="+dump(json.mint0));
                 redisClient.hmset("mint:0",json.mint0);
@@ -121,6 +118,9 @@ function getConfiguration() {
                 var nodeEntry=json.mint0.geo+":"+json.genesisGroupEntry.group;
                 console.log("setting node entry nodeEntry="+nodeEntry+" entry="+dump(json.newSegmentEntry));
                 redisClient.hmset( nodeEntry , json.newSegmentEntry );
+
+                console.log("setting gSRlist="+json.gSRlist);
+                redisClient.hmset("gSRlist",json.gSRlist, json.mint0.mint);
 
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
