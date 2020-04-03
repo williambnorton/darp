@@ -22,7 +22,7 @@ function pulse() {
   var datagramClient=dgram.createSocket('udp4');
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
-    redisClient.incr("mint:0","lastSeq",function(){});
+    redisClient.incr("mint:0","seq",function(){});
 
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
     redisClient.scan(cursor, 'MATCH', me.geo+":*", 'COUNT', '100', function(err, reply){
@@ -48,7 +48,7 @@ function pulse() {
             console.log("pulse(): Make a pulse Message, pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
 
-            var pulseMessage="OWL,"+me.mint+"."+me.geo+":"+pulseGroup+","+me.lastSeq+","+now()+",";  //MAZORE:MAZJAP.1
+            var pulseMessage="OWL,"+me.mint+"."+me.geo+":"+pulseGroup+","+me.seq+","+now()+",";  //MAZORE:MAZJAP.1
             //get mintTable to get credentials   
             var owls=""
             mintList(redisClient,ownerPulseLabel, function(err,mints) {

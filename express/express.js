@@ -93,7 +93,8 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet
+                "wallet": wallet,
+                "owl": "0" //
             };
             expressRedisClient.hmset("mint:0", mint0);
             mint0.mint = "1";
@@ -142,7 +143,8 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet
+                "wallet": wallet,
+                "owl": "" + OWL //we will get measures from genesis node
             };
             var mint1 = {
                 "mint": "1",
@@ -155,7 +157,8 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": genesis.version,
-                "wallet": genesis.wallet
+                "wallet": genesis.wallet,
+                "owl": "" + OWL //we will get measures from genesis node
             };
             var newMintRecord = {
                 "mint": "" + newMint,
@@ -168,7 +171,8 @@ app.get('/nodefactory', function (req, res) {
                 //
                 "bootTime": "" + lib_1.now(),
                 "version": version,
-                "wallet": wallet
+                "wallet": wallet,
+                "owl": "0" //do not measure OWL to self - maybe delete this field to catch err?
             };
             //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
             // Now for a record of this newNode in the Genesis group
