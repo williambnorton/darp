@@ -219,7 +219,7 @@ app.get('/nodefactory', function (req, res) {
                     //we now have updated gSRlist and updated owls               
                     expressRedisClient.hmset("gSRlist", geo + ":" + genesis.group, "" + newMint); //add node:grp to gSRlist
                     // install owls into genesisGroup
-                    console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + newSegmentEntry);
+                    console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + lib_1.dump(newSegmentEntry));
                     //var gSRlist="";
                     //expressRedisClient.hscan( "gSRlist", 0, "MATCH", "*:"+genesis.group, function( err, mygSRlist, myowls){
                     //   gSRlist=mygSRlist;
@@ -235,6 +235,9 @@ app.get('/nodefactory', function (req, res) {
                         newSegmentEntry: newSegmentEntry,
                         gSRlist: mygSRlist
                     };
+                    expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+                        console.log("gSRlist=" + lib_1.dump(gSRlist));
+                    });
                     //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(node));
