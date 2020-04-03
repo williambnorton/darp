@@ -105,21 +105,21 @@ function getConfiguration() {
                 console.log("setting gSRlist="+json.gSRlist);
                 redisClient.hmset("gSRlist",json.gSRlist);
                 
-                console.log("setting mint0 to json.mint0="+json.mint0);
+                console.log("setting mint0 to json.mint0="+dump(json.mint0));
                 redisClient.hmset("mint:0",json.mint0);
                 
-                console.log("setting mint1 to json.mint1="+json.mint1);
+                console.log("setting mint1 to json.mint1="+dump(json.mint1));
                 redisClient.hmset("mint:1",json.mint1);
 
                 console.log("setting mint:"+json.newNodeMint.mint+" to json.newNodeMint="+json.newNodeMint);
                 redisClient.hmset("mint:"+json.newNodeMint.mint,json.newNodeMint);
 
                 var groupEntry=json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group;
-                console.log("setting group entry genesisGroupEntry="+groupEntry);
+                console.log("setting group entry genesisGroupEntry="+dump(groupEntry));
                 redisClient.hmset( groupEntry , json.genesisGroupEntry );
 
                 var nodeEntry=json.mint0.geo+":"+json.genesisGroupEntry.group;
-                console.log("setting node entry nodeEntry="+nodeEntry+" entry="+json.newSegmentEntry);
+                console.log("setting node entry nodeEntry="+nodeEntry+" entry="+dump(json.newSegmentEntry));
                 redisClient.hmset( nodeEntry , json.newSegmentEntry );
 
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
