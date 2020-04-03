@@ -124,7 +124,7 @@ do
         ls -l
         sleep 5 
     else 
-        echo `handlePulse finished -restarting all`
+        echo "handlePulse finished -restarting darp by exitting bootdarp"
         exit -1
     fi
 
