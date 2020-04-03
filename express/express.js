@@ -227,22 +227,22 @@ app.get('/nodefactory', function (req, res) {
                     //   console.log("EXPRESS: mygSRlist="+mygSRlist);
                     //})
                     //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
-                    var node = {
-                        mint0: newMintRecord,
-                        mint1: genesis,
-                        newNodeMint: newMintRecord,
-                        genesisGroupEntry: genesisGroupEntry,
-                        newSegmentEntry: newSegmentEntry,
-                        gSRlist: mygSRlist
-                    };
                     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                         console.log("gSRlist=" + lib_1.dump(gSRlist));
+                        var node = {
+                            mint0: newMintRecord,
+                            mint1: genesis,
+                            newNodeMint: newMintRecord,
+                            genesisGroupEntry: genesisGroupEntry,
+                            newSegmentEntry: newSegmentEntry,
+                            gSRlist: gSRlist
+                        };
+                        //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify(node));
+                        //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                        console.log("EXPRESS nodeFactory done");
                     });
-                    //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-                    res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify(node));
-                    //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                    console.log("EXPRESS nodeFactory done");
                 });
             }); //mintList
         });

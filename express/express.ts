@@ -243,26 +243,25 @@ app.get('/nodefactory', function (req, res) {
                //})
 
                //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
-
-               var node={
-                  mint0 : newMintRecord,     //YOU
-                  mint1 : genesis,           //GENESIS NODE
-                  newNodeMint : newMintRecord,
-                  genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
-                  newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
-                  gSRlist : mygSRlist
-               }
-
                expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
                   console.log("gSRlist="+dump(gSRlist));
+                  var node={
+                     mint0 : newMintRecord,     //YOU
+                     mint1 : genesis,           //GENESIS NODE
+                     newNodeMint : newMintRecord,
+                     genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
+                     newSegmentEntry : newSegmentEntry,  //your pulseGroup entry for your participation in pulseGroup
+                     gSRlist : gSRlist
+                  }
+
+                  //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+                  res.setHeader('Content-Type', 'application/json');   
+                  res.end(JSON.stringify(node));
+                  //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+
+                  console.log("EXPRESS nodeFactory done");
                });
 
-               //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-               res.setHeader('Content-Type', 'application/json');   
-               res.end(JSON.stringify(node));
-               //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-
-               console.log("EXPRESS nodeFactory done");
             });
          });   //mintList
       });
