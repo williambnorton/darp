@@ -6,6 +6,7 @@ if [ $# -ne 0 ]; then
     DAEMON="YES"
 fi
 
+
 echo `date` updateSW.bash
 while :
 do
