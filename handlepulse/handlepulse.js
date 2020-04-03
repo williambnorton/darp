@@ -64,7 +64,8 @@ server.on('message', function (message, remote) {
     }
     catch (err) {
         console.log("ERROR - BAD PULSE from " + remote.address + ':' + remote.port + ' - ' + message);
-        process.exit(127);
+        return;
+        //process.exit(127);
     }
     console.log("HANDLEPULSE pulseType=" + pulseType + " seqNum=" + seqNum + " pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
     console.log("HANDLEPULSE pulseLabel=" + pulseLabel + " OWL=" + OWL + " ms from " + incomingIP + " owls=" + owls);
