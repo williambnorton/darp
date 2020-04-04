@@ -67,7 +67,7 @@ function pulse() {
     });
   });
   datagramClient.close();
-  //setTimeout(pulse,10*1000);
+  setTimeout(pulse,10*1000);
 }
 
 //

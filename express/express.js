@@ -83,7 +83,7 @@ app.get('/nodefactory', function (req, res) {
         if (newMint == 1) { //I AM GENESIS NODE - set my records
             console.log("* * * * * * * I AM GENESIS NODE * * * * * *");
             var mint0 = {
-                "mint": "0",
+                "mint": "1",
                 "geo": geo,
                 "group": geo + ".1",
                 // wireguard configuration details
