@@ -76,19 +76,30 @@ app.get('/', function (req, res) {
             expressRedisClient.hgetall("mint:3", function (err,mint3){
                expressRedisClient.hgetall(mint1.geo+":"+mint1.group, function (err,genesisGroupEntry){     
                   expressRedisClient.hgetall(mint0.geo+":"+mint1.group, function (err,mySRentry){     
-                     var intrumentation={   
-                        mintTable : {
-                           me : mint0,
-                           genesis : mint1,
-                           mint2 : mint2,
-                           mint3 : mint3
-                        },
-                        gSRlist : {
-                           genesisGroup : genesisGroupEntry,
-                           mySRentry : mySRentry
-                        }
-                     }
-                     res.end(JSON.stringify(intrumentation, null, 2));
+                     expressRedisClient.hgetall(mint2.geo+":"+mint1.group, function (err,mint2entry){     
+                        expressRedisClient.hgetall(mint3.geo+":"+mint1.group, function (err,mint3entry){     
+
+                           var instrumentation={   
+                              genesis : {
+                                 genesis : mint1,
+                                 genesisGroup : genesisGroupEntry
+                              },
+                              me : {
+                                 me : mint0,
+                                 entry : mySRentry
+                              },
+                              mint2 : {
+                                 mint : mint2,
+                                 entry : mint2entry
+                              },
+                              mint3 : {
+                                 mint : mint3,
+                                 entry : mint3entry
+                              },
+                           }
+                           res.end(JSON.stringify(instrumentation, null, 2));
+                        });
+                     });
                   });
                });
             });
