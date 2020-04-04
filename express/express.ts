@@ -10,7 +10,7 @@
 //    PUBLICKEY - Public key 
 //
 
-import { dump, now, mintList, SRList } from '../lib/lib';
+import { dump, now, mintList, SRList, ts } from '../lib/lib';
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -42,6 +42,10 @@ app.get('/pulse', function (req, res) {
             expressRedisClient.hmset( "mint:0", {
                state : "PAUSE"
             });
+            console.log(ts()+"PAUSE");
+            break;
+         default:
+            console.log("bad state in redis");
             break;
       }
 

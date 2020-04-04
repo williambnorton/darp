@@ -41,6 +41,10 @@ app.get('/pulse', function (req, res) {
                 expressRedisClient.hmset("mint:0", {
                     state: "PAUSE"
                 });
+                console.log(lib_1.ts() + "PAUSE");
+                break;
+            default:
+                console.log("bad state in redis");
                 break;
         }
     });
