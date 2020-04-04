@@ -45,15 +45,16 @@ function pulse() {
                     console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ownerPulseLabel=" + ownerPulseLabel + " pulseSrc=" + pulseSrc);
                     //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
                     redisClient.incr(me.geo + ":" + pulseGroup, "seq", function (err, reply) {
-                        console.log("***************** pulser reply=" + lib_1.dump(reply));
-                        var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
-                        //get mintTable to get credentials   
-                        var owls = "";
-                        lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
-                            // get nodes' list of mints to send pulse to
-                            // and send pulse
-                            console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
-                            buildPulsePkt(mints, pulseMessage, null);
+                        redisClient.hget(me.geo + ":" + pulseGroup, "seq", function (err, seq) {
+                            var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
+                            //get mintTable to get credentials   
+                            var owls = "";
+                            lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
+                                // get nodes' list of mints to send pulse to
+                                // and send pulse
+                                console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
+                                buildPulsePkt(mints, pulseMessage, null);
+                            });
                         });
                     });
                 }
@@ -75,7 +76,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         sendToAry = new Array();
     console.log("buildPulsePkt(): mints=" + mints);
     if (typeof mints == "undefined" || !mints || mints == "")
-        return console.log("buildPulsePkt(): bad mints parm - ignoring");
+        return console.log("buildPulsePkt(): bad mints parm - ignoring - pulseMsg was to be " + pulseMsg);
     ;
     var mint = mints.pop(); //get our mint to add to the msg
     console.log("buildPulsePkt() mint=" + mint + " mints=" + mints + " pulseMsg=" + pulseMsg);
