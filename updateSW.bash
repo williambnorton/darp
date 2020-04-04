@@ -55,5 +55,5 @@ do
     #echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
     #sleep 1
     #echo `date` Waiting 
-    sleep POLLFREQ
+    sleep $POLLFREQ
 done
