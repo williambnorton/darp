@@ -76,8 +76,8 @@ app.get('/', function (req, res) {
             expressRedisClient.hgetall("mint:3", function (err,mint3){
                expressRedisClient.hgetall(mint1.geo+":"+mint1.group, function (err,genesisGroupEntry){     
                   expressRedisClient.hgetall(mint0.geo+":"+mint1.group, function (err,mySRentry){     
-                     expressRedisClient.hgetall(mint2.geo+":"+mint1.group, function (err,mint2entry){     
-                        expressRedisClient.hgetall(mint3.geo+":"+mint1.group, function (err,mint3entry){     
+                     //expressRedisClient.hgetall(mint2.geo+":"+mint1.group, function (err,mint2entry){     
+                        //expressRedisClient.hgetall(mint3.geo+":"+mint1.group, function (err,mint3entry){     
 
                            var instrumentation={   
                               genesis : {
@@ -90,16 +90,16 @@ app.get('/', function (req, res) {
                               },
                               mint2 : {
                                  mint : mint2,
-                                 entry : mint2entry
+                                 //entry : mint2entry
                               },
                               mint3 : {
                                  mint : mint3,
-                                 entry : mint3entry
+                                 //entry : mint3entry
                               },
                            }
                            res.end(JSON.stringify(instrumentation, null, 2));
-                        });
-                     });
+                        //});
+                     //});
                   });
                });
             });
