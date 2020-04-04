@@ -45,8 +45,30 @@ app.get('/', function (req, res) {
     //res.send('express root dir');
     res.setHeader('Content-Type', 'text/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    expressRedisClient.hgetall("mint:0", function (err, me) {
-        res.end(JSON.stringify(me, null, 2));
+    expressRedisClient.hgetall("mint:0", function (err, mint0) {
+        expressRedisClient.hgetall("mint:1", function (err, mint1) {
+            expressRedisClient.hgetall("mint:2", function (err, mint2) {
+                expressRedisClient.hgetall("mint:3", function (err, mint3) {
+                    expressRedisClient.hgetall(mint1.geo + ":" + mint1.group, function (err, genesisGroupEntry) {
+                        expressRedisClient.hgetall(mint0.geo + ":" + mint1.group, function (err, mySRentry) {
+                            var intrumentation = {
+                                mintTable: {
+                                    me: mint0,
+                                    genesis: mint1,
+                                    mint2: mint2,
+                                    mint3: mint3
+                                },
+                                gSRlist: {
+                                    genesisGroup: genesisGroupEntry,
+                                    mySRentry: mySRentry
+                                }
+                            };
+                            res.end(JSON.stringify(intrumentation, null, 2));
+                        });
+                    });
+                });
+            });
+        });
     });
     //var html=htmlPulseGroups();
     //res.end(html);
