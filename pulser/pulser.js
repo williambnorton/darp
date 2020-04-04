@@ -18,6 +18,8 @@ setTimeout(pulse, 1 * 1000);
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
+    if (PAUSE)
+        return setTimeout(pulse, 1 * 1000);
     var datagramClient = dgram.createSocket('udp4');
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {

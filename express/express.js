@@ -28,6 +28,23 @@ app.get('/me', function (req, res) {
     });
     return;
 });
+app.get('/pulse', function (req, res) {
+    console.log("Flipping PAUSE state - ");
+    expressRedisClient.hget("mint:0", "state", function (err, state) {
+        switch (state) {
+            case "PAUSE":
+                expressRedisClient.hmset("mint:0", {
+                    state: "RUNNING"
+                });
+                break;
+            case "RUNNING":
+                expressRedisClient.hmset("mint:0", {
+                    state: "PAUSE"
+                });
+                break;
+        }
+    });
+});
 //
 //    htmlPulseGroups() - 
 //
