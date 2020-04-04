@@ -44,7 +44,7 @@ function pulse() {
                     console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ownerPulseLabel=" + ownerPulseLabel + " pulseSrc=" + pulseSrc);
                     //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
                     redisClient.incr(me.geo + ":" + pulseGroup, "seq", function (err, reply) {
-                        console.log("reply=" + lib_1.dump(reply));
+                        console.log("***************** pulser reply=" + lib_1.dump(reply));
                         var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
                         //get mintTable to get credentials   
                         var owls = "";

@@ -15,9 +15,9 @@ do
 	echo `date` Starting NOIA docker
 	docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e "HOSTNAME="`hostname` -e "WALLET=3BjDVN35cZdsRzyo4Q9VY3LFy1RteNBxPz" -it williambnorton/darp:latest /bin/bash
 	rc=$?
-	echo `date` $0 Restarting after docker exit with rc=$rc waiting 15 seconds...
+	echo `date` Exitting docker - rc=$rc
+	echo `date` $0 Restarting after 15 seconds...
 	sleep 15
-	 
 #Delete these lines after development is done - do not delete other system dockers - be specific
 
 done
