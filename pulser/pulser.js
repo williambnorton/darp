@@ -20,16 +20,15 @@ function pulse() {
     var datagramClient = dgram.createSocket('udp4');
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
-        redisClient.incr("mint:0", "seq", function () { });
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
         redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, reply) {
             if (err) {
                 throw err;
             }
-            console.log("myPulseGroups=" + lib_1.dump(reply));
+            console.log("pulser(): myPulseGroups=" + lib_1.dump(reply));
             cursor = reply[0];
             if (cursor === '0') {
-                console.log('Scan Complete ');
+                //console.log('Scan Complete ');
                 // do your processing
                 // reply[1] is an array of matched keys: me.geo:*
                 var SRs = reply[1];
@@ -44,14 +43,17 @@ function pulse() {
                     //make a pulse message
                     console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ownerPulseLabel=" + ownerPulseLabel + " pulseSrc=" + pulseSrc);
                     //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-                    var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
-                    //get mintTable to get credentials   
-                    var owls = "";
-                    lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
-                        // get nodes' list of mints to send pulse to
-                        // and send pulse
-                        console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
-                        buildPulsePkt(mints, pulseMessage, null);
+                    redisClient.incr(me.geo + ":" + pulseGroup, "seq", function (err, reply) {
+                        console.log("reply=" + lib_1.dump(reply));
+                        var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + me.seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
+                        //get mintTable to get credentials   
+                        var owls = "";
+                        lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
+                            // get nodes' list of mints to send pulse to
+                            // and send pulse
+                            console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
+                            buildPulsePkt(mints, pulseMessage, null);
+                        });
                     });
                 }
             }

@@ -48,12 +48,12 @@ do
     #echo `date` $0 : killing old processes to be restarted
     #kill `cat $DARPDIR/*.pid`
     #sleep 1
-    ./updateSW.bash #>/dev/null
+    ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
     sleep 2
-    ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null &
+    ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
 
     #npm update
     #npm i @types/node
