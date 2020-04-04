@@ -22,17 +22,17 @@ function pulse() {
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
-        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, reply) {
+        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {
             if (err) {
                 throw err;
             }
-            console.log("pulser(): myPulseGroups=" + lib_1.dump(reply));
-            cursor = reply[0];
+            console.log("pulser(): myPulseGroups=" + lib_1.dump(pulseGroups));
+            cursor = pulseGroups[0];
             if (cursor === '0') {
                 //console.log('Scan Complete ');
                 // do your processing
                 // reply[1] is an array of matched keys: me.geo:*
-                var SRs = reply[1];
+                var SRs = pulseGroups[1]; //[0] is the cursor returned
                 console.log("We need to pulse each of these SRs=" + SRs);
                 for (var i in SRs) {
                     console.log(" i=" + i + " SR[i]=" + SRs[i]);
