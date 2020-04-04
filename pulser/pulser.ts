@@ -5,7 +5,7 @@ import { dump, getGenesis, now, mintList } from "../lib/lib";
 //  pulse - send my owl measurements to my pulseGroups
 //
 //var HOST='127.0.0.1';
-
+var PAUSE=true;   //after next pulse, stop pulsing
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
@@ -67,7 +67,9 @@ function pulse() {
     });
   });
   datagramClient.close();
-  setTimeout(pulse,10*1000);
+  
+  if (!PAUSE) setTimeout(pulse,10*1000);
+  else console.log("PAUSING");
 }
 
 //
