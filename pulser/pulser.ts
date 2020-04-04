@@ -71,7 +71,7 @@ function pulse() {
   datagramClient.close();
   
   if (!PAUSE) setTimeout(pulse,10*1000);
-  else console.log("PAUSING");
+  else console.log("PAUSE");
 }
 
 //
@@ -117,9 +117,9 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             //sending msg
               console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
               networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
-                if(error){
+                if(error) {
                   networkClient.close();
-                }else{
+                }else {
                   console.log("sent dump node="+dump(node));
                   
                   console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port);

@@ -65,7 +65,7 @@ function pulse() {
     if (!PAUSE)
         setTimeout(pulse, 10 * 1000);
     else
-        console.log("PAUSING");
+        console.log("PAUSE");
 }
 //
 //  buildPulsePkt() - build and send pulse
