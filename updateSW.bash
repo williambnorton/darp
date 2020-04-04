@@ -5,7 +5,7 @@ if [ $# -ne 0 ]; then
     echo `date` Running $0 in DAEMON mode. $#
     DAEMON="YES"
 fi
-
+POLLFREQ=30
 
 echo `date` updateSW.bash
 while :
@@ -52,8 +52,8 @@ do
 #   We are in the moved old DARP directory (if things changed)
 #
 
-    echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
-    sleep 1
- 
-    sleep 10
+    #echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
+    #sleep 1
+    #echo `date` Waiting 
+    sleep POLLFREQ
 done
