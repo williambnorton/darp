@@ -89,6 +89,7 @@ function getConfiguration() {
             console.log("CONFIG from node factory:" + JSON.stringify(json, null, 2));
             if (json.node == "GENESIS") {
                 console.log(" GENESIS NODE Instantiated itself");
+                redisClient.hset("mint:0", "state", "RUNNING");
             }
             else {
                 console.log(" -----------------------------------------NON-Genesis configuration");
