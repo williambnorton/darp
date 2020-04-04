@@ -142,7 +142,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                "state": "BOOTING",
+                "state": "READY",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,

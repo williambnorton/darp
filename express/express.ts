@@ -152,7 +152,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
-            "state" : "BOOTING",
+            "state" : "READY",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
