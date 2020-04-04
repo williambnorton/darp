@@ -125,8 +125,11 @@ do
         sleep 5 
     else 
         echo `date` "RELOADING SOFTWARE"
+        echo  ""
         echo `date` "RELOADING SOFTWARE"
+        echo ""
         echo `date` "RELOADING SOFTWARE"
+        echo ""
         exit -1
     fi
 
