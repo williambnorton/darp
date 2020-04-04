@@ -130,7 +130,7 @@ do
         echo ""
         echo `date` "RELOADING SOFTWARE"
         echo ""
-        exit -1
+        exit 2
     fi
 
 done
