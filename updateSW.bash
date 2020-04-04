@@ -18,7 +18,7 @@ do
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
     #3echo `date` Cloning new darp code from github
-    git clone https://github.com/williambnorton/darp.git    /tmp/darp    >/dev/null 
+    ( git clone https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) >/dev/null 
     cd /tmp/darp
     NEW=`ls Build*`
 
