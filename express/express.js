@@ -28,7 +28,7 @@ app.get('/me', function (req, res) {
     });
     return;
 });
-app.get('/pulse', function (req, res) {
+app.get('/pause', function (req, res) {
     console.log("Flipping PAUSE state - ");
     expressRedisClient.hget("mint:0", "state", function (err, state) {
         switch (state) {
@@ -142,6 +142,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
+                "state": "BOOTING",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -192,6 +193,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
+                "state": "BOOTING",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -206,6 +208,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": genesis.ipaddr,
                 "publickey": genesis.publickey,
                 //
+                "state": "UP",
                 "bootTime": "" + lib_1.now(),
                 "version": genesis.version,
                 "wallet": genesis.wallet,
@@ -220,6 +223,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
+                "state": "BOOTING",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,

@@ -29,7 +29,7 @@ app.get('/me', function (req, res) {
    return;
 })
 
-app.get('/pulse', function (req, res) {
+app.get('/pause', function (req, res) {
    console.log("Flipping PAUSE state - ");
    expressRedisClient.hget( "mint:0", "state", function (err,state) {
       switch (state) {
@@ -152,6 +152,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
+            "state" : "BOOTING",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
@@ -207,6 +208,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
+            "state" : "BOOTING",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
@@ -221,6 +223,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : genesis.ipaddr,   //set by genesis node on connection
             "publickey" : genesis.publickey,
             //
+            "state" : "UP",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
@@ -235,6 +238,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
+            "state" : "BOOTING",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
