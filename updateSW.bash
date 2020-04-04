@@ -13,7 +13,7 @@ do
     DARPDIR=~/darp
     cd $DARPDIR
     CURRENT=`ls Build*`
-    echo `date` Current SW is `ls Build*`
+    #echo `date` Current SW is `ls Build*`
     cd /tmp
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
@@ -23,7 +23,7 @@ do
     NEW=`ls Build*`
 
    if [ "$CURRENT" == "$NEW" ]; then
-	    echo `date` No Change DAEMON=$DAEMON
+	    #echo `date` No Change DAEMON=$DAEMON
         if [ "$DAEMON" != "YES" ]; then
             echo "Exitting $0";
 	        exit 0
