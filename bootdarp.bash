@@ -120,6 +120,10 @@ do
 
     if [ -f $DARPDIR/forever ]; then
         echo `date` handlepulse exitted with rc=$rc
+        echo `date` handlepulse exitted with rc=$rc
+        echo `date` handlepulse exitted with rc=$rc
+        echo `date` handlepulse exitted with rc=$rc
+        echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
         ls -l
         sleep 5 
@@ -130,7 +134,9 @@ do
         echo ""
         echo `date` "RELOADING SOFTWARE"
         echo ""
-        exit 2
+        echo "rc=120 means PAUSE Message"
+        echo "rc=36 Software Reload"
+        exit 36
     fi
 
 done
