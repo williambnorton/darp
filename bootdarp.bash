@@ -124,7 +124,9 @@ do
         ls -l
         sleep 5 
     else 
-        echo "handlePulse finished -restarting darp by exitting bootdarp"
+        echo `date` "RELOADING SOFTWARE"
+        echo `date` "RELOADING SOFTWARE"
+        echo `date` "RELOADING SOFTWARE"
         exit -1
     fi
 
