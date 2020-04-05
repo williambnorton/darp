@@ -96,14 +96,33 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         
         if (mint!=null) {
           console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
-          buildPulsePkt(mints,pulseMsg,sendToAry);
-          console.log("after call");
+          if (mints!="") buildPulsePkt(mints,pulseMsg,sendToAry);
+          else {
+            //message ready - pulse
+            console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
+            for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
+              if (typeof node != "undefined" && node != null) {
+              //sending msg
+                console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+                  if(error) {
+                    networkClient.close();
+                  }else {
+                    console.log("sent dump node="+dump(node));
+                    
+                    console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port);
+                  }
+                });
+              }
+            }
+  
+          }
           return;
         } else {
           console.log("Complete - now invoke sendTo for each of my mints pulseMsg="+pulseMsg);
           console.log("NOT GETTING HERE EEVR PULSER sendToAry="+dump(sendToAry)); 
         }
-      } else {
+      } /**** else {
         if (typeof mint != "undefined") {
           console.log("mintEntry is null - Can't find mint="+mint);
           pulseMsg+=mint+",";
@@ -130,7 +149,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
           //pulseMsg+=mint+",";
           //buildPulsePkt(mints,pulseMsg,sendToAry);
         }
-      }
+      } ****/
 
     }
   });

@@ -92,46 +92,64 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port });
                 if (mint != null) {
                     console.log("mint popped=" + mint + " mints=" + mints + " sendToAry=" + sendToAry + " pulseMsg=" + pulseMsg);
-                    buildPulsePkt(mints, pulseMsg, sendToAry);
-                    console.log("after call");
+                    if (mints != "")
+                        buildPulsePkt(mints, pulseMsg, sendToAry);
+                    else {
+                        //message ready - pulse
+                        console.log("PULSING " + pulseMsg + " to  sendToAry=" + lib_1.dump(sendToAry));
+                        var _loop_1 = function (node) {
+                            if (typeof node != "undefined" && node != null) {
+                                //sending msg
+                                console.log("networkClient.send(pulseMsg=" + pulseMsg + " node.port=" + node.port + " node.ipaddr=" + node.ipaddr);
+                                networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
+                                    if (error) {
+                                        networkClient.close();
+                                    }
+                                    else {
+                                        console.log("sent dump node=" + lib_1.dump(node));
+                                        console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
+                                    }
+                                });
+                            }
+                        };
+                        for (var node = sendToAry.pop(); node != null; node = sendToAry.pop()) {
+                            _loop_1(node);
+                        }
+                    }
                     return;
                 }
                 else {
                     console.log("Complete - now invoke sendTo for each of my mints pulseMsg=" + pulseMsg);
                     console.log("NOT GETTING HERE EEVR PULSER sendToAry=" + lib_1.dump(sendToAry));
                 }
-            }
-            else {
-                if (typeof mint != "undefined") {
-                    console.log("mintEntry is null - Can't find mint=" + mint);
-                    pulseMsg += mint + ",";
-                    buildPulsePkt(mints, pulseMsg, sendToAry);
+            } /**** else {
+              if (typeof mint != "undefined") {
+                console.log("mintEntry is null - Can't find mint="+mint);
+                pulseMsg+=mint+",";
+                buildPulsePkt(mints,pulseMsg,sendToAry);
+              } else {
+                console.log("MUST BE END OF PULSEGROUP LIST : mintEntry is undefined Can't find mint="+mint);
+                console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry));
+                for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
+                  if (typeof node != "undefined" && node != null) {
+                  //sending msg
+                    console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                    networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+                      if(error) {
+                        networkClient.close();
+                      }else {
+                        console.log("sent dump node="+dump(node));
+                        
+                        console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port);
+                      }
+                    });
+                  }
                 }
-                else {
-                    console.log("MUST BE END OF PULSEGROUP LIST : mintEntry is undefined Can't find mint=" + mint);
-                    console.log("PULSING " + pulseMsg + " to  sendToAry=" + lib_1.dump(sendToAry));
-                    var _loop_1 = function (node) {
-                        if (typeof node != "undefined" && node != null) {
-                            //sending msg
-                            console.log("networkClient.send(pulseMsg=" + pulseMsg + " node.port=" + node.port + " node.ipaddr=" + node.ipaddr);
-                            networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
-                                if (error) {
-                                    networkClient.close();
-                                }
-                                else {
-                                    console.log("sent dump node=" + lib_1.dump(node));
-                                    console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
-                                }
-                            });
-                        }
-                    };
-                    for (var node = sendToAry.pop(); node != null; node = sendToAry.pop()) {
-                        _loop_1(node);
-                    }
-                    //pulseMsg+=mint+",";
-                    //buildPulsePkt(mints,pulseMsg,sendToAry);
-                }
-            }
+      
+                //pulseMsg+=mint+",";
+                //buildPulsePkt(mints,pulseMsg,sendToAry);
+              }
+            } ****/
         }
     });
 }

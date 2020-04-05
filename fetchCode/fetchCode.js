@@ -1,3 +1,4 @@
+"use strict";
 var Git = require("nodegit");
 // Clone a given repository into the `./tmp` folder.
 Git.Clone("https://github.com/nodegit/nodegit", "./tmp")
@@ -26,4 +27,5 @@ Git.Clone("https://github.com/nodegit/nodegit", "./tmp")
     console.log(Array(72).join("=") + "\n\n");
     // Show the entire file.
     console.log(String(blob));
-})["catch"](function (err) { console.log(err); });
+})
+    .catch(function (err) { console.log(err); });

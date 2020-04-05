@@ -1,6 +1,11 @@
+"use strict";
 //
-//	portcheck.js - send a pulse and ensure we get a response to demonstrate a working port 65013
+//	portcheck.js - send a message with and ensure we get a response to demonstrate a working port 65013
 //
+//	maybe add a module to curl the codeNconfig?
+//	make module that does tests the connectPort UDP config
+Object.defineProperty(exports, "__esModule", { value: true });
+var lib_js_1 = require("../lib/lib.js");
 var PORT = 65013;
 var HOST = '127.0.0.1';
 var HOST = '104.42.192.234'; //MAZORE for now
@@ -14,9 +19,10 @@ console.log("Starting " + process.argv[0]);
 var RUNFOREVER = 1;
 var dgram = require('dgram');
 var message = new Buffer('OWL:MAZORE:MAZORE.1:1:2-1=23,3-1=46');
+//var message = new Buffer('OWL:MAZORE:MAZORE.1:1:2-1=23,3-1=46');
 //var message = new Buffer('PING');
 var latencyStats = {
-    timeSent: now(),
+    timeSent: lib_js_1.now(),
     min: 5555,
     max: -1,
     measurements: [],
@@ -29,11 +35,11 @@ var latencyStats = {
 };
 function poll() {
     var client = dgram.createSocket('udp4');
-    latencyStats.timeSent = now();
+    latencyStats.timeSent = lib_js_1.now();
     client.send(message, 0, message.length, PORT, HOST, function (err, bytes) {
         if (err)
             throw err;
-        console.log(ts() + 'UDP message sent to ' + HOST + ':' + PORT);
+        console.log(lib_js_1.ts() + 'UDP message sent to ' + HOST + ':' + PORT);
         client.close();
     });
     if (RUNFOREVER)
@@ -57,20 +63,13 @@ server.on('listening', function () {
     console.log('UDP Server listening on ' + address.address + ':' + address.port);
 });
 server.on('message', function (message, remote) {
-    var latency = now() - latencyStats.timeSent;
+    var latency = lib_js_1.now() - latencyStats.timeSent;
     if (latency < latencyStats.min)
         latencyStats.min = latency;
     if (latency > latencyStats.max)
         latencyStats.max = latency;
     latencyStats.measurements.push(latency);
-    console.log(ts() + " UDP pkt received. Sent by " + remote.address + ':' + remote.port + ' - ' + message + " latency=" + latency + " ms" + " (min/max/avg=" + latencyStats.min + "/" + latencyStats.max + "/" + latencyStats.avg() + ")");
+    console.log(lib_js_1.ts() + " UDP pkt received. Sent by " + remote.address + ':' + remote.port + ' - ' + message + " latency=" + latency + " ms" + " (min/max/avg=" + latencyStats.min + "/" + latencyStats.max + "/" + latencyStats.avg() + ")");
     if (!RUNFOREVER)
         process.exit(0);
 });
-function now() {
-    var d = new Date();
-    return d.getTime();
-}
-function ts() {
-    return new Date().toLocaleTimeString() + " ";
-}
