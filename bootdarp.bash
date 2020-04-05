@@ -128,14 +128,15 @@ do
         ls -l
         sleep 5 
     else 
+        echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
+        echo ""
         echo `date` "RELOADING SOFTWARE"
         echo  ""
         echo `date` "RELOADING SOFTWARE"
         echo ""
         echo `date` "RELOADING SOFTWARE"
         echo ""
-        echo "rc=120 means PAUSE Message"
-        echo "rc=36 Software Reload"
+        #echo "rc=120 means PAUSE Message"
         exit 36
     fi
 
