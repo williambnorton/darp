@@ -68,8 +68,8 @@ server.on('message', function (message, remote) {
             owls: owls,
             owl: lib_js_1.now() - pulseTimestamp,
             msg: msg,
-            inOctets: inOctets + message.length,
-            inMsgs: ++inMsgs
+            inOctets: "" + (parseInt(inOctets) + message.length),
+            inMsgs: "" + parseInt(inMsgs) + 1
         };
         console.log("HANDLEPULSE pulse=" + lib_js_1.dump(pulse));
         redisClient.hmset(pulseLabel, pulse);
