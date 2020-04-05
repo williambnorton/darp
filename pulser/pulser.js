@@ -91,7 +91,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     pulseMsg += mint + "=" + mintEntry.owl + ",";
                 sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port });
                 if (mint != null) {
-                    console.log("mint popped=" + mint);
+                    console.log("mint popped=" + mint + " mints=" + mints + " sendToAry=" + sendToAry + " pulseMsg=" + pulseMsg);
                     buildPulsePkt(mints, pulseMsg, sendToAry);
                     console.log("after call");
                     return;
