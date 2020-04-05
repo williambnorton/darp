@@ -54,9 +54,9 @@ server.on('message', function (message, remote) {
     //try {
     var pulseTimestamp = ary[4]; //1583783486546
     var pulseLabel = ary[1] + ":" + ary[2];
-    var owls = new Array();
+    var owls = "";
     for (var i = 6; i < ary.length; i++)
-        owls[i - 6] = ary[i];
+        owls += ary[i] + ",";
     console.log("owls=" + owls);
     redisClient.hmget(pulseLabel, "inOctets", "inMsgs", function (err, inOctets, inMsgs) {
         var pulse = {
