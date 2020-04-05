@@ -19,7 +19,7 @@ setTimeout(pulse,1*1000);
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
-  if (PAUSE) return setTimeout(pulse,1*1000);
+  if (PAUSE) return setTimeout(pulse,1*1000); //if PAUSE - ignore pulsing for now
   var datagramClient=dgram.createSocket('udp4');
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
@@ -40,7 +40,7 @@ function pulse() {
           console.log( "We need to pulse each of these SRs="+SRs); 
 
           for (var i in SRs) {
-            console.log(" i="+i+" SR[i]="+SRs[i]);
+            console.log("PULSER(): i="+i+" SR[i]="+SRs[i]);
             var pulseLabel=SRs[i];
             var pulseSrc=pulseLabel.split(":")[0];
             var pulseGroup=pulseLabel.split(":")[1];

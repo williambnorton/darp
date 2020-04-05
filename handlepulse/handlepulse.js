@@ -47,26 +47,25 @@ server.on('listening', function () {
 server.on('message', function (message, remote) {
     console.log("HANDLEPULSE: received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
     var ary = message.toString().split(",");
-    try {
-        var incomingIP = remote.address;
-        var pulseType = ary[0];
-        var seqNum = ary[1]; //56
-        var pulseTimestamp = ary[2]; //1583783486546
-        var pulseLabel = ary[3]; //MAZORE:MAZORE.1     //MAZORE:MAZORE.1
-        var pulseSource = ary[3].split(":")[0]; //MAZORE
-        var pulseGroup = ary[3].split(":")[1]; //MAZORE.1
-        var pulseGroupOwner = pulseGroup.split(".")[0]; //MAZORE
-        var receiveTimestamp = lib_js_1.now();
-        var OWL = receiveTimestamp - pulseTimestamp;
-        var owls = new Array();
-        for (var i = 4; i < ary.length; i++)
-            owls[i - 4] = ary[i];
-    }
-    catch (err) {
-        console.log("ERROR - BAD PULSE from " + remote.address + ':' + remote.port + ' - ' + message);
-        return;
-        //process.exit(127);
-    }
+    //try {
+    var incomingIP = remote.address;
+    var pulseType = ary[0];
+    var seqNum = ary[1]; //56
+    var pulseTimestamp = ary[2]; //1583783486546
+    var pulseLabel = ary[3]; //MAZORE:MAZORE.1     //MAZORE:MAZORE.1
+    var pulseSource = ary[3].split(":")[0]; //MAZORE
+    var pulseGroup = ary[3].split(":")[1]; //MAZORE.1
+    var pulseGroupOwner = pulseGroup.split(".")[0]; //MAZORE
+    var receiveTimestamp = lib_js_1.now();
+    var OWL = receiveTimestamp - pulseTimestamp;
+    var owls = new Array();
+    for (var i = 4; i < ary.length; i++)
+        owls[i - 4] = ary[i];
+    //} catch(err) {
+    //  console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
+    //  return;
+    //process.exit(127);
+    //}
     console.log("HANDLEPULSE pulseType=" + pulseType + " seqNum=" + seqNum + " pulseTimestamp " + pulseTimestamp + " remote.port=" + remote.port);
     console.log("HANDLEPULSE pulseLabel=" + pulseLabel + " OWL=" + OWL + " ms from " + incomingIP + " owls=" + owls);
     console.log("HANDLEPULSE pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " receiveTimestamp= " + receiveTimestamp + " owls=" + owls);

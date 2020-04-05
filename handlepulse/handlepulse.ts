@@ -50,7 +50,7 @@ server.on('listening', function() {
 server.on('message', function(message, remote) {
 console.log("HANDLEPULSE: received pulse from "+remote.address + ':' + remote.port +' - ' + message);
 var ary=message.toString().split(",");
-try {
+//try {
   var incomingIP=remote.address;
   var pulseType=ary[0];
   var seqNum=ary[1];                            //56
@@ -64,11 +64,11 @@ try {
   var owls=new Array();
   for (var i=4; i<ary.length; i++)
     owls[i-4]=ary[i];
-} catch(err) {
-  console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
-  return;
+//} catch(err) {
+//  console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
+//  return;
   //process.exit(127);
-}
+//}
 console.log("HANDLEPULSE pulseType="+pulseType+" seqNum="+seqNum+" pulseTimestamp "+pulseTimestamp+" remote.port="+remote.port);
 console.log("HANDLEPULSE pulseLabel="+pulseLabel+" OWL="+OWL+" ms from "+incomingIP+" owls="+owls);
 console.log("HANDLEPULSE pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" receiveTimestamp= "+receiveTimestamp+" owls="+owls);
