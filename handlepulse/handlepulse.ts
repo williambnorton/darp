@@ -62,7 +62,7 @@ server.on('message', function(message, remote) {
   console.log("owlsStart="+owlsStart);
   var owls=msg.substring(owlsStart+1,msg.length-1);
   console.log("owls="+owls);
-  redisClient.hmget(pulseLabel,"inOctets","inMsgs", function(err,inOctets,inMsgs) {
+  redisClient.hmgetall(pulseLabel, function(err, oldPulse) {
 
     var pulse={
       geo : ary[1],
@@ -73,8 +73,8 @@ server.on('message', function(message, remote) {
       owls : owls,
       owl : now()-pulseTimestamp,
       msg : msg,
-      inOctets : ""+(parseInt(inOctets)+message.length),
-      inMsgs : ""+parseInt(inMsgs)+1
+      inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
+      inMsgs : ""+parseInt(oldPulse.inMsgs)+1
     };
     console.log("HANDLEPULSE pulse="+dump(pulse));
     redisClient.hmset(pulseLabel,pulse);
