@@ -52,7 +52,8 @@ server.on('listening', function() {
 //
 server.on('message', function(message, remote) {
   console.log("HANDLEPULSE: received pulse from "+remote.address + ':' + remote.port +' - ' + message);
-  var ary=message.toString().split(",");
+  var msg=message.toString();
+  var ary=msg.split(",");
   //try {
   var pulseTimestamp=ary[4];                  //1583783486546
   var pulseLabel=ary[1]+":"+ary[2];
@@ -71,7 +72,7 @@ server.on('message', function(message, remote) {
       srcMint : ary[5],
       owls : owls,
       owl : now()-pulseTimestamp,
-      msg : message,
+      msg : msg,
       inOctets : inOctets+message.length,
       inMsgs : ++inMsgs
     };
