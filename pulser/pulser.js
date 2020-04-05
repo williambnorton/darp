@@ -48,7 +48,7 @@ function pulse() {
                     //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
                     redisClient.incr(me.geo + ":" + pulseGroup, "seq", function (err, reply) {
                         redisClient.hget(me.geo + ":" + pulseGroup, "seq", function (err, seq) {
-                            var pulseMessage = "OWL," + me.mint + "." + me.geo + ":" + pulseGroup + "," + seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
+                            var pulseMessage = "OWL," + me.mint + "," + me.geo + ":" + pulseGroup + "," + seq + "," + lib_1.now() + ","; //MAZORE:MAZJAP.1
                             //get mintTable to get credentials   
                             var owls = "";
                             lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
@@ -64,10 +64,6 @@ function pulse() {
         });
     });
     datagramClient.close();
-    if (!PAUSE)
-        setTimeout(pulse, 10 * 1000);
-    else
-        console.log("PAUSE");
 }
 //
 //  buildPulsePkt() - build and send pulse
