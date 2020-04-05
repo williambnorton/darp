@@ -61,7 +61,7 @@ server.on('message', function(message, remote) {
   var owls=new Array();
   for (var i=6; i<ary.length; i++)
     owls[i-6]=ary[i];
-
+  console.log("owls="+owls);
   redisClient.hmget(pulseLabel,"inOctets","inMsgs", function(err,inOctets,inMsgs) {
 
     var pulse={
