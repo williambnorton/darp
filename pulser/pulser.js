@@ -61,6 +61,9 @@ function pulse() {
                     });
                 }
             }
+            else {
+                console.log(lib_1.ts() + "WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
+            }
         });
     });
     datagramClient.close();

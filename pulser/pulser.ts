@@ -1,4 +1,4 @@
-import { dump, getGenesis, now, mintList } from "../lib/lib";
+import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
 //import { builtinModules } from "module";
 
 //
@@ -59,13 +59,15 @@ function pulse() {
                   // and send pulse
                   console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
                   buildPulsePkt(mints,pulseMessage,null);
-                
+                  
                 });
               });
 
             });
 
           }
+      } else {
+        console.log(ts()+"WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
       }
     });
   });
