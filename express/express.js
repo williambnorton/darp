@@ -208,7 +208,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": genesis.ipaddr,
                 "publickey": genesis.publickey,
                 //
-                "state": "GENESIS",
+                "state": "RUNNING",
                 "bootTime": "" + lib_1.now(),
                 "version": genesis.version,
                 "wallet": genesis.wallet,
