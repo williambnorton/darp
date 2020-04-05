@@ -88,8 +88,9 @@ app.get('/', function (req, res) {
                                  mint : mint0,
                                  entry : mint1entry
                               },
-                              nodes : {}
-                           }
+                              nodes : {},
+                              gSRlist : []
+                             }
 
                            //Scan for all groups
                            var cursor="0";
@@ -101,7 +102,9 @@ app.get('/', function (req, res) {
                               console.log("pulser(): myPulseGroups="+dump(pulseGroupNodes));
                               instrumentation.nodes=pulseGroupNodes;
                               for (var node in pulseGroupNodes) {
-                                 expressRedisClient.hgetall(pulseGroupNodes[node], function (err,pulseGroup){     
+                                 expressRedisClient.hgetall(pulseGroupNodes[node], function (err,pulseGroup) {
+                                    var entry=pulseGroupNodes[node];
+                                    //instrumentation.gSRlist[pulseGroupNodes[node]]=pulseGroup;
                                     console.log("EXPRESS pulseGroup="+dump(pulseGroup));
                                  });
                               }
