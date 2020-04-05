@@ -83,14 +83,18 @@ app.get('/', function (req, res) {
                                     mint: mint0,
                                     entry: mint1entry
                                 },
-                                mint2: {
-                                    mint: mint2
-                                },
-                                mint3: {
-                                    mint: mint3
-                                }
+                                nodes: {}
                             };
-                            res.end(JSON.stringify(instrumentation, null, 2));
+                            //Scan for all groups
+                            var cursor = "0";
+                            expressRedisClient.scan(cursor, 'MATCH', "*:" + mint1.group, 'COUNT', '100', function (err, pulseGroupNodes) {
+                                if (err) {
+                                    throw err;
+                                }
+                                console.log("pulser(): myPulseGroups=" + lib_1.dump(pulseGroupNodes));
+                                instrumentation.nodes = pulseGroupNodes;
+                                res.end(JSON.stringify(instrumentation, null, 2));
+                            });
                             //});
                             //});
                         });
@@ -142,7 +146,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                "state": "GENESIS",
+                "state": "RUNNING",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
