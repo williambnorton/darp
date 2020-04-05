@@ -58,9 +58,9 @@ server.on('message', function(message, remote) {
   var pulseTimestamp=ary[4];                  //1583783486546
   var pulseLabel=ary[1]+":"+ary[2];
 
-  var owls="";
-  for (var i=6; i<ary.length; i++)
-    owls+=ary[i]+",";
+  var owlsStart=nth_occurrence (msg, ',', 6);
+  console.log("owlsStart="+owlsStart);
+  var owls=msg.substring(owlsStart+1);
   console.log("owls="+owls);
   redisClient.hmget(pulseLabel,"inOctets","inMsgs", function(err,inOctets,inMsgs) {
 
@@ -81,6 +81,28 @@ server.on('message', function(message, remote) {
 
   });
 });
+
+function nth_occurrence (string, char, nth) {
+  var first_index = string.indexOf(char);
+  var length_up_to_first_index = first_index + 1;
+
+  if (nth == 1) {
+      return first_index;
+  } else {
+      var string_after_first_occurrence = string.slice(length_up_to_first_index);
+      var next_occurrence = nth_occurrence(string_after_first_occurrence, char, nth - 1);
+
+      if (next_occurrence === -1) {
+          return -1;
+      } else {
+          return length_up_to_first_index + next_occurrence;  
+      }
+  }
+}
+
+// Returns 16. The index of the third 'c' character.
+//nth_occurrence('aaaaacabkhjecdddchjke', 'c', 3);
+
 
 //} catch(err) {
 //  console.log("ERROR - BAD PULSE from "+remote.address + ':' + remote.port +' - ' + message);
