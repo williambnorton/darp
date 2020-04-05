@@ -56,7 +56,7 @@ server.on('message', function (message, remote) {
     var pulseLabel = ary[1] + ":" + ary[2];
     var owlsStart = nth_occurrence(msg, ',', 6);
     console.log("owlsStart=" + owlsStart);
-    var owls = msg.substring(owlsStart + 1);
+    var owls = msg.substring(owlsStart + 1, msg.length - 1);
     console.log("owls=" + owls);
     redisClient.hmget(pulseLabel, "inOctets", "inMsgs", function (err, inOctets, inMsgs) {
         var pulse = {

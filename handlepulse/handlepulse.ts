@@ -60,7 +60,7 @@ server.on('message', function(message, remote) {
 
   var owlsStart=nth_occurrence (msg, ',', 6);
   console.log("owlsStart="+owlsStart);
-  var owls=msg.substring(owlsStart+1);
+  var owls=msg.substring(owlsStart+1,msg.length-1);
   console.log("owls="+owls);
   redisClient.hmget(pulseLabel,"inOctets","inMsgs", function(err,inOctets,inMsgs) {
 
