@@ -208,7 +208,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
-            "state" : "BOOTING",
+            "state" : "UP",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
@@ -238,7 +238,7 @@ app.get('/nodefactory', function (req, res) {
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
             //
-            "state" : "BOOTING",
+            "state" : "UP",
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
@@ -287,8 +287,8 @@ app.get('/nodefactory', function (req, res) {
                   "pktDrops": "0",     //as detected by missed seq#
                   "remoteState": "0"   //and there are mints : owls for received pulses 
             };
-
-            SRList(expressRedisClient, function (err,mygSRlist,myOwlList) {
+            expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );   
+            SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
                console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
                //we now have updated gSRlist and updated owls               
                expressRedisClient.hmset( "gSRlist", geo+":"+genesis.group, ""+newMint );  //add node:grp to gSRlist

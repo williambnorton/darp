@@ -193,7 +193,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                "state": "BOOTING",
+                "state": "UP",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -223,7 +223,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                "state": "BOOTING",
+                "state": "UP",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -269,6 +269,7 @@ app.get('/nodefactory', function (req, res) {
                     "pktDrops": "0",
                     "remoteState": "0" //and there are mints : owls for received pulses 
                 };
+                expressRedisClient.hmset(geo + ":" + genesis.group, newSegmentEntry);
                 lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
                     console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList) + " newMint=" + newMint + " geo=" + geo + " genesis.group=" + genesis.group;
                     //we now have updated gSRlist and updated owls               
