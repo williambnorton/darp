@@ -97,8 +97,16 @@ app.get('/', function (req, res) {
                               if (err){
                                   throw err;
                               }
+                              pulseGroupNodes=pulseGroupNodes[1];
                               console.log("pulser(): myPulseGroups="+dump(pulseGroupNodes));
                               instrumentation.nodes=pulseGroupNodes;
+                              for (var node in pulseGroupNodes) {
+                                 expressRedisClient.hgetall(pulseGroupNodes[node], function (err,pulseGroup){     
+                                    console.log("pulseGroup="+pulseGroup);
+                                 });
+                              }
+
+
                               res.end(JSON.stringify(instrumentation, null, 2));
                            });
 
