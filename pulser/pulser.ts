@@ -40,8 +40,9 @@ function pulse() {
           console.log( "We need to pulse each of these SRs="+SRs); 
 
           for (var i in SRs) {
-            console.log("PULSER(): i="+i+" SR[i]="+SRs[i]);
+            console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
             var pulseLabel=SRs[i];
+            //chop into named pieces for debugging
             var pulseSrc=pulseLabel.split(":")[0];
             var pulseGroup=pulseLabel.split(":")[1];
             var pulseGroupOwner=pulseGroup.split(".")[0];
@@ -51,7 +52,11 @@ function pulse() {
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
             redisClient.incr(me.geo+":"+pulseGroup,"seq",function(err,reply){
               redisClient.hget(me.geo+":"+pulseGroup,"seq",function(err,seq){
-                var pulseMessage="OWL,"+me.mint+","+me.geo+":"+pulseGroup+","+seq+","+now()+",";  //MAZORE:MAZJAP.1
+
+
+                var pulseMessage="0,"+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
+
+                
                 //get mintTable to get credentials   
                 var owls=""
                 mintList(redisClient,ownerPulseLabel, function(err,mints) {
