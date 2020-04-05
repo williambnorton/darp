@@ -96,7 +96,7 @@ app.get('/', function (req, res) {
                                 instrumentation.nodes = pulseGroupNodes;
                                 for (var node in pulseGroupNodes) {
                                     expressRedisClient.hgetall(pulseGroupNodes[node], function (err, pulseGroup) {
-                                        console.log("pulseGroup=" + pulseGroup);
+                                        console.log("EXPRESS pulseGroup=" + lib_1.dump(pulseGroup));
                                     });
                                 }
                                 res.end(JSON.stringify(instrumentation, null, 2));
