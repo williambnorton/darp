@@ -12,14 +12,16 @@ var networkClient = dgram.createSocket('udp4');
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-//pulse();
-setTimeout(pulse,1*1000);
 
+setInterval(
+  () => pulse,
+  10000
+);
 //
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
-  if (PAUSE) return setTimeout(pulse,1*1000); //if PAUSE - ignore pulsing for now
+  if (PAUSE) return;
   var datagramClient=dgram.createSocket('udp4');
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
