@@ -305,8 +305,11 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );   
             SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
                console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
-               //we now have updated gSRlist and updated owls               
-               expressRedisClient.hmset( "gSRlist", geo+":"+genesis.group, ""+newMint );  //add node:grp to gSRlist
+               //we now have updated gSRlist and updated owls   
+               
+               expressRedisClient.hmset( "gSRlist", {
+                  [""+geo+":"+genesis.group] : ""+newMint 
+               });  //add node:grp to gSRlist
                // install owls into genesisGroup
 
                console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
