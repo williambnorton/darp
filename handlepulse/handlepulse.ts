@@ -75,7 +75,7 @@ server.on('message', function(message, remote) {
       owl : now()-pulseTimestamp,
       msg : msg,
       inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
-      inMsgs : ""+parseInt(oldPulse.inMsgs)+1
+      inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
     console.log("HANDLEPULSE pulse="+dump(pulse));
     redisClient.hmset(pulseLabel,pulse);
