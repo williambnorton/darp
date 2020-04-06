@@ -205,7 +205,7 @@ app.get('/nodefactory', function (req, res) {
          console.log("entryLabel="+entryLabel);
          expressRedisClient.hmset(entryLabel, newSegmentEntry); 
          expressRedisClient.hmset("gSRlist", {
-            entryLabel : "1"
+            [entryLabel] : "1"
          }); 
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS" } ));
@@ -318,7 +318,7 @@ app.get('/nodefactory', function (req, res) {
                //we now have updated gSRlist and updated owls   
                var entryLabel=""+geo+":"+genesis.group;
                expressRedisClient.hmset( "gSRlist", {
-                  [entryLabel] : ""+newMint 
+                  [ entryLabel ] : ""+newMint 
                });  //add node:grp to gSRlist
                // install owls into genesisGroup
 

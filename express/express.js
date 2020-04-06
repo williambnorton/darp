@@ -149,6 +149,7 @@ app.get('/nodefactory', function (req, res) {
     //
     /********** GENESIS NODE **********/
     expressRedisClient.incr("mintStack", function (err, newMint) {
+        var _a;
         if (newMint == 1) { //I AM GENESIS NODE - set my records
             console.log("* * * * * * * I AM GENESIS NODE * * * * * *");
             var mint0 = {
@@ -190,9 +191,9 @@ app.get('/nodefactory', function (req, res) {
             var entryLabel = geo + ":" + geo + ".1";
             console.log("entryLabel=" + entryLabel);
             expressRedisClient.hmset(entryLabel, newSegmentEntry);
-            expressRedisClient.hmset("gSRlist", {
-                entryLabel: "1"
-            });
+            expressRedisClient.hmset("gSRlist", (_a = {},
+                _a[entryLabel] = "1",
+                _a));
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ "node": "GENESIS" }));
             console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
