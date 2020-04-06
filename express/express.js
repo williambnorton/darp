@@ -28,6 +28,9 @@ app.get('/me', function (req, res) {
     });
     return;
 });
+//
+//
+//
 app.get('/pause', function (req, res) {
     console.log("Flipping PAUSE state - ");
     expressRedisClient.hget("mint:0", "state", function (err, state) {
@@ -83,8 +86,7 @@ app.get('/', function (req, res) {
                                     mint: mint0,
                                     entry: mint1entry
                                 },
-                                nodes: {},
-                                gSRlist: []
+                                gSRlist: {}
                             };
                             //Scan for all groups
                             var cursor = "0";
@@ -94,7 +96,7 @@ app.get('/', function (req, res) {
                                 }
                                 pulseGroupNodes = pulseGroupNodes[1];
                                 console.log("pulser(): myPulseGroups=" + lib_1.dump(pulseGroupNodes));
-                                instrumentation.nodes = pulseGroupNodes;
+                                instrumentation.gSRlist = pulseGroupNodes;
                                 for (var node in pulseGroupNodes) {
                                     expressRedisClient.hgetall(pulseGroupNodes[node], function (err, pulseGroup) {
                                         var entry = pulseGroupNodes[node];
