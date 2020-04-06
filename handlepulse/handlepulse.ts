@@ -62,7 +62,7 @@ server.on('message', function(message, remote) {
   console.log("owlsStart="+owlsStart);
   var owls=msg.substring(owlsStart+1,msg.length-1);
   console.log("owls="+owls);
-  redisClient.hmgetall(pulseLabel, function(err, oldPulse) {
+  redisClient.hgetall(pulseLabel, function(err, oldPulse) {
 
     var pulse={
       geo : ary[1],
