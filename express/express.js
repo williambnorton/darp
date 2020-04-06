@@ -310,20 +310,40 @@ app.get('/nodefactory', function (req, res) {
                     //})
                     //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
                     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-                        console.log("gSRlist=" + lib_1.dump(gSRlist));
-                        for (var index in gSRlist) {
-                            console.log("index=" + index + " gSRlist[index]=" + gSRlist[index]);
-                        }
                         var config = {
                             gSRlist: gSRlist,
-                            // mintTable : mintTable,
+                            mintTable: [],
+                            pulses: []
                             // pulses : pulseTable
-                            mint0: mint0,
-                            mint1: mint1,
-                            newNodeMint: newMintRecord,
-                            genesisGroupEntry: genesisGroupEntry,
-                            newSegmentEntry: newSegmentEntry //your pulseGroup entry for your participation in pulseGroup
+                            /*
+                                                 mint0 : mint0,     //YOU
+                                                 mint1 : mint1,           //GENESIS NODE
+                                                 newNodeMint : newMintRecord,
+                                                 genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
+                                                 newSegmentEntry : newSegmentEntry  //your pulseGroup entry for your participation in pulseGroup
+                            */
                         };
+                        console.log("gSRlist=" + lib_1.dump(gSRlist));
+                        //find the last index
+                        var lastIndex = "";
+                        gSRlist.forEach(function (err, entry) {
+                            lastIndex = entry;
+                        });
+                        console.log("lastIndex=" + lastIndex);
+                        for (var index in gSRlist) {
+                            var entryLabel = index;
+                            var mint = gSRlist[index];
+                            console.log("mint=" + mint + " entryLabel=" + entryLabel);
+                            //                              "1"    
+                            expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+                                config.mintTable[mint] = mintEntry; //set the pulseEntries
+                                //             MAZORE:DEVOPS.1
+                                expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
+                                    config.pulses[pulseEntry.geo + ":" + pulseEntry.group] = pulseEntry; //set the corresponding mintTable
+                                    //config.pulses is done
+                                });
+                            });
+                        }
                         //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(config));
@@ -335,6 +355,11 @@ app.get('/nodefactory', function (req, res) {
         });
     });
 });
+function getMintTable(mint, callback) {
+    expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+        callback(err, mintEntry);
+    });
+}
 function popMint() {
     var mint = 0;
     expressRedisClient.incr("mintStack", function (err, newMint) {
