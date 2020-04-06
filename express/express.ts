@@ -103,6 +103,11 @@ app.get('/', function (req, res) {
                               pulseGroupNodes=pulseGroupNodes[1];
                               console.log("pulser(): myPulseGroups="+dump(pulseGroupNodes));
                               instrumentation.gSRlist=pulseGroupNodes;
+
+                              pulseGroupNodes.forEach(function(key,i) {
+                                 console.log("key="+key+" i="+i);
+                              })
+
                               for (var node in pulseGroupNodes) {
                                  expressRedisClient.hgetall(pulseGroupNodes[node], function (err,pulseGroup) {
                                     var entry=pulseGroupNodes[node];
