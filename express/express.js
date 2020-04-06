@@ -311,6 +311,9 @@ app.get('/nodefactory', function (req, res) {
                     //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
                     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                         console.log("gSRlist=" + lib_1.dump(gSRlist));
+                        for (var index in gSRlist) {
+                            console.log("index=" + index + " gSRlist[index]=" + gSRlist[index]);
+                        }
                         var config = {
                             gSRlist: gSRlist,
                             // mintTable : mintTable,
