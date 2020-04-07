@@ -16,6 +16,62 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
+
+//
+//
+//
+app.get('/', function (req, res) {
+   console.log("fetching '/' state");
+   getConfig(function(err,config) {
+      res.end(JSON.stringify(config, null, 2));
+   })
+});
+
+//
+//
+//
+function getConfig(callback) {
+   console.log("getConfig()");
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
+      var config={
+         gSRlist : gSRlist,
+         mintTable : [],
+         pulses : []              
+      }
+      console.log("gSRlist="+dump(gSRlist));
+      //find the last index
+      var lastIndex="";
+      for (var index in gSRlist)
+         lastIndex=index; //get last index
+
+      console.log("************************************** lastIndex="+lastIndex);
+      for (var index in gSRlist) {
+         var entryLabel=index;
+         var mint=gSRlist[index];
+         console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
+         //                              "1"    
+         expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
+            config.mintTable[mint]=mintEntry;  //set the pulseEntries
+            console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" mintTable="+dump(config));
+            
+            //             MAZORE:DEVOPS.1
+            expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
+               console.log("EXPRESS() pulseEntry="+dump(pulseEntry));
+
+               config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
+               //config.pulses is done
+               if (entryLabel == lastIndex) {
+                  console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
+                  console.log("WOULD SET CONFIG HERE: config="+dump(config));
+                  callback(config);
+               }
+            });             
+         });
+      }
+   });
+}
+
+
 //
 // 
 //
@@ -66,12 +122,6 @@ function htmlPulseGroups() {
    //});
 }
 
-app.get('/', function (req, res) {
-   console.log("fetching '/' state");
-   getConfig(function(err,config) {
-      res.end(JSON.stringify(config, null, 2));
-   })
-});
 
 app.get('/old', function (req, res) {
    console.log("fetching '/old' state");
@@ -228,7 +278,7 @@ app.get('/nodefactory', function (req, res) {
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
          console.log("--------------- EXPRESS() Non-GENESIS CONFIGURATION  ------------------");
          expressRedisClient.hmset("mint:1", "owls", genesis.owls+","+newMint+"="+OWL); 
-         console.log("working on genesis.geo");
+         console.log("working on NON-GENESIS Config");
 
          // Use the genesis node info to create the config
          var mint0={                //mint:0 is me - who (remote Node) has as 'me'
@@ -352,47 +402,6 @@ app.get('/nodefactory', function (req, res) {
       });
    });
 });
-
-function getConfig(callback) {
-   console.log("getConfig()");
-   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
-      var config={
-         gSRlist : gSRlist,
-         mintTable : [],
-         pulses : []              
-      }
-      console.log("gSRlist="+dump(gSRlist));
-      //find the last index
-      var lastIndex="";
-      for (var index in gSRlist)
-         lastIndex=index; //get last index
-
-      console.log("************************************** lastIndex="+lastIndex);
-      for (var index in gSRlist) {
-         var entryLabel=index;
-         var mint=gSRlist[index];
-         console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
-         //                              "1"    
-         expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
-            config.mintTable[mint]=mintEntry;  //set the pulseEntries
-            console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" mintTable="+dump(config));
-            
-            //             MAZORE:DEVOPS.1
-            expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
-               console.log("EXPRESS() pulseEntry="+dump(pulseEntry));
-
-               config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
-               //config.pulses is done
-               if (entryLabel == lastIndex) {
-                  console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
-                  console.log("WOULD SET CONFIG HERE: config="+dump(config));
-                  callback(config);
-               }
-            });             
-         });
-      }
-   });
-}
 
 function getMintTable(mint,callback) {
    expressRedisClient.hgetall("mint:"+mint, function(err,mintEntry) {
