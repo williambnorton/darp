@@ -54,7 +54,7 @@ server.on('message', function (message, remote) {
     //try {
     var pulseTimestamp = ary[4]; //1583783486546
     var pulseLabel = ary[1] + ":" + ary[2];
-    var owlsStart = nth_occurrence(msg, ',', 6);
+    var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
     console.log("owlsStart=" + owlsStart);
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
     console.log("owls=" + owls);
@@ -62,10 +62,11 @@ server.on('message', function (message, remote) {
         console.log("oldPulse.inMsgs=" + oldPulse.inMsgs + " oldPulse.inOctets" + oldPulse.inOctets);
         var pulse = {
             geo: ary[1],
-            group: ary[2],
-            seq: ary[3],
+            version: ary[2],
+            group: ary[3],
+            seq: ary[4],
             pulseTimestamp: pulseTimestamp,
-            srcMint: ary[5],
+            srcMint: ary[6],
             owls: owls,
             owl: lib_js_1.now() - pulseTimestamp,
             msg: msg,

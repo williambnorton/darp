@@ -56,7 +56,7 @@ function pulse() {
               redisClient.hget(me.geo+":"+pulseGroup,"seq",function(err,seq){
 
 
-                var pulseMessage="0,"+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
+                var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 
                 
                 //get mintTable to get credentials   
