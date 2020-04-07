@@ -385,7 +385,7 @@ function getConfig(callback) {
                //config.pulses is done
                if (entryLabel == lastIndex) {
                   console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
-                  console.log("WOULD SET CONFIG HERE: config="+config);
+                  console.log("WOULD SET CONFIG HERE: config="+dump(config));
                   callback(config);
                }
             }); 
