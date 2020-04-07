@@ -32,42 +32,44 @@ function getConfig(callback) {
     console.log("getConfig()");
     //expressRedisClient.scan("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
     //get all groups - later - split by groups
-    expressRedisClient.scan("0", 'MATCH', "*:" + "*", 'COUNT', '100', function (err, scanResults) {
-        //later - deal with large multi-cursor callbacks
-        console.log("scanResaults=" + lib_1.dump(scanResults));
-        var gSRlist = scanResults[1];
-        var config = {
-            gSRlist: gSRlist,
-            mintTable: {},
-            pulses: {}
-        };
-        console.log("gSRlist=" + lib_1.dump(gSRlist));
-        //find the last index
-        var lastIndex = "";
-        for (var index in gSRlist)
-            lastIndex = index; //get last index
-        console.log("EXPRESS() lastIndex=" + lastIndex);
-        for (var index in gSRlist) {
-            var entryLabel = index;
-            var mint = gSRlist[index];
-            console.log("EXPRESS(): mint=" + mint + " entryLabel=" + entryLabel);
-            //                              "1"    
-            expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                config.mintTable[mint] = mintEntry; //set the pulseEntries
-                console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config));
-                //                       MAZORE:DEVOPS.1
-                expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
-                    console.log("EXPRESS() pulseEntry=" + lib_1.dump(pulseEntry));
-                    config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
-                    //config.pulses is done
-                    if (entryLabel == lastIndex) {
-                        console.log("entryLabel=" + entryLabel + " lastIndex=" + lastIndex + " **************************************** config=" + lib_1.dump(config));
-                        console.log("WOULD SET CONFIG HERE: config=" + lib_1.dump(config));
-                        callback(config);
-                    }
+    expressRedisClient.hgetall("mint:0", function (err, me) {
+        expressRedisClient.scan("0", 'MATCH', "*:" + me.group, 'COUNT', '100', function (err, scanResults) {
+            //later - deal with large multi-cursor callbacks
+            console.log("scanResults=" + lib_1.dump(scanResults));
+            var gSRlist = scanResults[1];
+            var config = {
+                gSRlist: gSRlist,
+                mintTable: {},
+                pulses: {}
+            };
+            console.log("gSRlist=" + lib_1.dump(gSRlist));
+            //find the last index
+            var lastIndex = "";
+            for (var index in gSRlist)
+                lastIndex = index; //get last index
+            console.log("EXPRESS() lastIndex=" + lastIndex);
+            for (var index in gSRlist) {
+                var entryLabel = index;
+                var mint = gSRlist[index];
+                console.log("EXPRESS(): mint=" + mint + " entryLabel=" + entryLabel);
+                //                              "1"    
+                expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+                    config.mintTable[mint] = mintEntry; //set the pulseEntries
+                    console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config));
+                    //                       MAZORE:DEVOPS.1
+                    expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
+                        console.log("EXPRESS() pulseEntry=" + lib_1.dump(pulseEntry));
+                        config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
+                        //config.pulses is done
+                        if (entryLabel == lastIndex) {
+                            console.log("entryLabel=" + entryLabel + " lastIndex=" + lastIndex + " **************************************** config=" + lib_1.dump(config));
+                            console.log("WOULD SET CONFIG HERE: config=" + lib_1.dump(config));
+                            callback(config);
+                        }
+                    });
                 });
-            });
-        }
+            }
+        });
     });
 }
 //
