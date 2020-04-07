@@ -358,8 +358,9 @@ app.get('/nodefactory', function (req, res) {
                      console.log("mint="+mint+" entryLabel="+entryLabel);
                      //                              "1"    
                      expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
-                        console.log("mintEntry="+dump(mintEntry));
                         config.mintTable[mint]=mintEntry;  //set the pulseEntries
+                        console.log("mint="+mint+" mintEntry="+dump(mintEntry)+" mintTable="+dump(config.mintTable));
+                        
                         //             MAZORE:DEVOPS.1
                         expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
                            console.log("pulseEntry="+dump(pulseEntry));
