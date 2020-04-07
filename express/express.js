@@ -33,16 +33,18 @@ function getConfig(callback) {
     //expressRedisClient.scan("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
     //get all groups - later - split by groups
     expressRedisClient.hgetall("mint:0", function (err, me) {
-        expressRedisClient.scan("0", 'MATCH', "*:" + me.group, 'COUNT', '100', function (err, scanResults) {
+        //expressRedisClient.scan("0", 'MATCH', "*:"+me.geo.*", 'COUNT', '100', function(err, scanResults){
+        expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+            console.log("gSRlist=" + gSRlist);
             //later - deal with large multi-cursor callbacks
-            console.log("scanResults=" + lib_1.dump(scanResults));
-            var gSRlist = scanResults[1];
+            //console.log("scanResults="+dump(scanResults));
+            //var myGroups=scanResults[1];
             var config = {
                 gSRlist: gSRlist,
                 mintTable: {},
                 pulses: {}
             };
-            console.log("gSRlist=" + lib_1.dump(gSRlist));
+            console.log("gSRlist=" + gSRlist);
             //find the last index
             var lastIndex = "";
             for (var index in gSRlist)

@@ -35,24 +35,28 @@ function getConfig(callback) {
    //expressRedisClient.scan("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
    //get all groups - later - split by groups
    expressRedisClient.hgetall("mint:0", function(err, me) {
+      //expressRedisClient.scan("0", 'MATCH', "*:"+me.geo.*", 'COUNT', '100', function(err, scanResults){
+      expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
+         console.log("gSRlist="+gSRlist);
+      
 
-      expressRedisClient.scan("0", 'MATCH', "*:"+me.group, 'COUNT', '100', function(err, scanResults){
       //later - deal with large multi-cursor callbacks
-      console.log("scanResults="+dump(scanResults));
-      var gSRlist=scanResults[1];
+      //console.log("scanResults="+dump(scanResults));
+      //var myGroups=scanResults[1];
 
       var config={
          gSRlist : gSRlist,
          mintTable : {},
          pulses : {}              
       }
-      console.log("gSRlist="+dump(gSRlist));
+      console.log("gSRlist="+gSRlist);
+
       //find the last index
       var lastIndex="";
       for (var index in gSRlist)
          lastIndex=index; //get last index
 
-         console.log("EXPRESS() lastIndex="+lastIndex);
+      console.log("EXPRESS() lastIndex="+lastIndex);
          for (var index in gSRlist) {
             var entryLabel=index;
             var mint=gSRlist[index];
@@ -62,7 +66,7 @@ function getConfig(callback) {
             expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
                config.mintTable[mint]=mintEntry;  //set the pulseEntries
                console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config));
-            
+               
                //                       MAZORE:DEVOPS.1
                expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
                   console.log("EXPRESS() pulseEntry="+dump(pulseEntry));
