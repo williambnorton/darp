@@ -102,7 +102,7 @@ function getConfiguration() {
                 redisClient.hset( "mint:0" , "state", "RUNNING" );
             } else {
                 console.log(" -----------------------------------------NON-Genesis configuration");
-                
+/*
                 console.log("setting mint0 to json.mint0="+dump(json.mint0));
                 redisClient.hmset("mint:0",json.mint0);
                 
@@ -122,7 +122,7 @@ function getConfiguration() {
 
                 console.log("setting gSRlist="+dump(json.gSRlist));
                 redisClient.hmset("gSRlist", json.gSRlist );
-
+*/
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
 
