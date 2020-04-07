@@ -33,8 +33,8 @@ function getConfig(callback) {
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         var config = {
             gSRlist: gSRlist,
-            mintTable: [],
-            pulses: []
+            mintTable: {},
+            pulses: {}
         };
         console.log("gSRlist=" + lib_1.dump(gSRlist));
         //find the last index
@@ -49,11 +49,11 @@ function getConfig(callback) {
             //                              "1"    
             expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                 config.mintTable[mint] = mintEntry; //set the pulseEntries
-                console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " mintTable=" + lib_1.dump(config));
+                console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config));
                 //             MAZORE:DEVOPS.1
                 expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
                     console.log("EXPRESS() pulseEntry=" + lib_1.dump(pulseEntry));
-                    config.pulses[pulseEntry.geo + ":" + pulseEntry.group] = pulseEntry; //set the corresponding mintTable
+                    config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
                     //config.pulses is done
                     if (entryLabel == lastIndex) {
                         console.log("entryLabel=" + entryLabel + " lastIndex=" + lastIndex + " **************************************** config=" + lib_1.dump(config));
