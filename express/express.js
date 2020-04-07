@@ -48,28 +48,33 @@ function getConfig(callback) {
             var lastIndex = "";
             for (var index in gSRlist)
                 lastIndex = index; //get last index
+            var entryStack = [];
             console.log("EXPRESS() lastIndex=" + lastIndex);
             for (var index in gSRlist) {
-                var entryLabel = index;
-                var mint = gSRlist[index];
-                console.log("EXPRESS(): mint=" + mint + " entryLabel=" + entryLabel);
-                //                              "1"    
-                expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                    config.mintTable[mint] = mintEntry; //set the pulseEntries
-                    console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config));
-                    //                       MAZORE:DEVOPS.1
-                    expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
-                        console.log("EXPRESS() pulseEntry=" + lib_1.dump(pulseEntry));
-                        config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
+                entryStack.push({ entryLabel: index, mint: gSRlist[index] });
+            }
+            console.log("entryStack=" + entryStack);
+            /*
+               console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
+               //                              "1"
+               expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {
+                  config.mintTable[mint] = mintEntry;  //set the pulseEntries
+                  console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config));
+                     
+                  //                       MAZORE:DEVOPS.1
+                  expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
+                        console.log("EXPRESS() pulseEntry="+dump(pulseEntry));
+      
+                        config.pulses[entryLabel] = pulseEntry;  //set the corresponding mintTable
                         //config.pulses is done
                         if (entryLabel == lastIndex) {
-                            console.log("entryLabel=" + entryLabel + " lastIndex=" + lastIndex + " **************************************** config=" + lib_1.dump(config));
-                            console.log("WOULD SET CONFIG HERE: config=" + lib_1.dump(config));
-                            callback(config);
+                           console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
+                           console.log("WOULD SET CONFIG HERE: config="+dump(config));
+                           callback(config);
                         }
-                    });
-                });
-            }
+                     });
+                  });
+               }*/
         });
     });
 }

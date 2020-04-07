@@ -54,11 +54,14 @@ function getConfig(callback) {
       for (var index in gSRlist)
          lastIndex=index; //get last index
 
+      var entryStack=[];
       console.log("EXPRESS() lastIndex="+lastIndex);
       for (var index in gSRlist) {
-         var entryLabel=index;
-         var mint=gSRlist[index];
+         entryStack.push({ entryLabel:index, mint:gSRlist[index]})
+      }
+      console.log("entryStack="+entryStack);
 
+      /*
          console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
          //                              "1"    
          expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
@@ -78,7 +81,7 @@ function getConfig(callback) {
                   }
                });             
             });
-         }
+         }*/
       });
    });
 }
