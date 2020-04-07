@@ -354,19 +354,12 @@ app.get('/nodefactory', function (req, res) {
 });
 
 function getConfig(callback) {
+   console.log("getConfig()");
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
       var config={
          gSRlist : gSRlist,
          mintTable : [],
-         pulses : []
-        // pulses : pulseTable
-/*
-         mint0 : mint0,     //YOU
-         mint1 : mint1,           //GENESIS NODE
-         newNodeMint : newMintRecord,
-         genesisGroupEntry : genesisGroupEntry, //your new genesis groupNode - group stats
-         newSegmentEntry : newSegmentEntry  //your pulseGroup entry for your participation in pulseGroup
-*/                   
+         pulses : []              
       }
       console.log("gSRlist="+dump(gSRlist));
       //find the last index
@@ -392,7 +385,8 @@ function getConfig(callback) {
                //config.pulses is done
                if (entryLabel == lastIndex) {
                   console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
-                  console.log("WOULD SET CONFIG HERE");
+                  console.log("WOULD SET CONFIG HERE: config="+config);
+                  callback(config);
                }
             }); 
             
