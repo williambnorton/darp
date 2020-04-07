@@ -355,20 +355,21 @@ app.get('/nodefactory', function (req, res) {
                   for (var index in gSRlist) {
                      var entryLabel=index;
                      var mint=gSRlist[index];
-                     console.log("mint="+mint+" entryLabel="+entryLabel);
+                     console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
                      //                              "1"    
                      expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
                         config.mintTable[mint]=mintEntry;  //set the pulseEntries
-                        console.log("mint="+mint+" mintEntry="+dump(mintEntry)+" mintTable="+dump(config.mintTable));
+                        console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" mintTable="+dump(config));
                         
                         //             MAZORE:DEVOPS.1
                         expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
-                           console.log("pulseEntry="+dump(pulseEntry));
+                           console.log("EXPRESS() pulseEntry="+dump(pulseEntry));
 
                            config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
                            //config.pulses is done
                            if (entryLabel == lastIndex) {
-                              console.log("**************************************** config="+dump(config));
+                              console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
+                              console.log("WOULD SET CONFIG HERE");
                            }
                         }); 
                         

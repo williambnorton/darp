@@ -332,18 +332,19 @@ app.get('/nodefactory', function (req, res) {
                         for (var index in gSRlist) {
                             var entryLabel = index;
                             var mint = gSRlist[index];
-                            console.log("mint=" + mint + " entryLabel=" + entryLabel);
+                            console.log("EXPRESS(): mint=" + mint + " entryLabel=" + entryLabel);
                             //                              "1"    
                             expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                                 config.mintTable[mint] = mintEntry; //set the pulseEntries
-                                console.log("mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " mintTable=" + lib_1.dump(config.mintTable));
+                                console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " mintTable=" + lib_1.dump(config));
                                 //             MAZORE:DEVOPS.1
                                 expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
-                                    console.log("pulseEntry=" + lib_1.dump(pulseEntry));
+                                    console.log("EXPRESS() pulseEntry=" + lib_1.dump(pulseEntry));
                                     config.pulses[pulseEntry.geo + ":" + pulseEntry.group] = pulseEntry; //set the corresponding mintTable
                                     //config.pulses is done
                                     if (entryLabel == lastIndex) {
-                                        console.log("**************************************** config=" + lib_1.dump(config));
+                                        console.log("entryLabel=" + entryLabel + " lastIndex=" + lastIndex + " **************************************** config=" + lib_1.dump(config));
+                                        console.log("WOULD SET CONFIG HERE");
                                     }
                                 });
                             });
