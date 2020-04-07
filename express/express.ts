@@ -348,9 +348,8 @@ app.get('/nodefactory', function (req, res) {
                   console.log("gSRlist="+dump(gSRlist));
                   //find the last index
                   var lastIndex="";
-                  gSRlist.forEach(function (err,entry) {
-                     lastIndex=entry;
-                  });
+                  for (var index in gSRlist)
+                     lastIndex=index; //get last index
 
                   console.log("lastIndex="+lastIndex);
                   for (var index in gSRlist) {
