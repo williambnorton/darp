@@ -34,6 +34,7 @@ function getConfig(callback) {
     //get all groups - later - split by groups
     expressRedisClient.scan("0", 'MATCH', "*:" + "*", 'COUNT', '100', function (err, scanResults) {
         //later - deal with large multi-cursor callbacks
+        console.log("scanResaults=" + lib_1.dump(scanResults));
         var gSRlist = scanResults[1];
         var config = {
             gSRlist: gSRlist,
