@@ -351,7 +351,7 @@ app.get('/nodefactory', function (req, res) {
                   for (var index in gSRlist)
                      lastIndex=index; //get last index
 
-                  console.log("lastIndex="+lastIndex);
+                  console.log("************************************** lastIndex="+lastIndex);
                   for (var index in gSRlist) {
                      var entryLabel=index;
                      var mint=gSRlist[index];
@@ -364,7 +364,9 @@ app.get('/nodefactory', function (req, res) {
                         expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
                            config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
                            //config.pulses is done
-
+                           if (entryLabel == lastIndex) {
+                              console.log("**************************************** config="+dump(config));
+                           }
                         }); 
                         
                      });
