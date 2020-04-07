@@ -388,14 +388,10 @@ function getConfig(callback) {
                   console.log("WOULD SET CONFIG HERE: config="+dump(config));
                   callback(config);
                }
-            }); 
-            
+            });             
          });
-
       }
-
    });
-
 }
 
 function getMintTable(mint,callback) {
