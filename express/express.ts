@@ -37,7 +37,7 @@ function getConfig(callback) {
    expressRedisClient.hgetall("mint:0", function(err, me) {
       //expressRedisClient.scan("0", 'MATCH', "*:"+me.geo.*", 'COUNT', '100', function(err, scanResults){
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
-         console.log("gSRlist="+gSRlist);
+         console.log("gSRlist="+dump(gSRlist));
       //later - deal with large multi-cursor callbacks
       //console.log("scanResults="+dump(scanResults));
       //var myGroups=scanResults[1];
@@ -47,7 +47,7 @@ function getConfig(callback) {
          mintTable : {},
          pulses : {}              
       }
-      console.log("gSRlist="+gSRlist);
+      
 
       //find the last index
       var lastIndex="";
