@@ -59,7 +59,7 @@ function getConfig(callback) {
       for (var index in gSRlist) {
          entryStack.push({ entryLabel:index, mint:gSRlist[index]})
       }
-      console.log("entryStack="+entryStack);
+      console.log("entryStack="+dump(entryStack));
 
       /*
          console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
