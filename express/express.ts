@@ -51,7 +51,7 @@ function fetchConfig(gSRlist, config, callback) {
       var entryLabel=entry.entryLabel;
       expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
          if (err) console.log("ERROR: mintEntry="+mintEntry)                     
-         if (mintEntry) config.mintTable[mint] = mintEntry;  //set the pulseEntries
+         if (mintEntry) config.mintTable["mint:"+mint] = mintEntry;  //set the pulseEntries
          console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
          //                       MAZORE:DEVOPS.1
          expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
