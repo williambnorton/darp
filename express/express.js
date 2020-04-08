@@ -27,15 +27,15 @@ app.get('/', function (req, res) {
 });
 function fetchConfig(gSRlist, config, callback) {
     if (typeof config == "undefined" || config == null) {
-        console.log("fetchConfig(): gSRlist=" + lib_1.dump(gSRlist) + " config=" + lib_1.dump(config) + " ");
+        console.log(lib_1.ts() + "fetchConfig(): STARTING ECHO: gSRlist=" + lib_1.dump(gSRlist) + " config=" + lib_1.dump(config) + " ");
         config = {
             gSRlist: gSRlist,
             mintTable: {},
-            pulses: [],
+            pulses: {},
             entryStack: new Array()
         };
         for (var index in gSRlist) {
-            console.log("pushing " + index);
+            //console.log("pushing "+index);
             config.entryStack.push({ entryLabel: index, mint: gSRlist[index] });
         }
         console.log("entryStack=" + lib_1.dump(config.entryStack));
@@ -51,9 +51,9 @@ function fetchConfig(gSRlist, config, callback) {
             console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config) + " entryLabel=" + entryLabel);
             //                       MAZORE:DEVOPS.1
             expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
-                console.log("EXPRESS() entryLabel=" + entryLabel + " pulseEntry=" + lib_1.dump(pulseEntry) + " config=" + lib_1.dump(config));
                 config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
-                fetchConfig(gSRlist, callback, config); //recurse until we hit bottom
+                console.log("EXPRESS() RECURSING entryLabel=" + entryLabel + " pulseEntry=" + lib_1.dump(pulseEntry) + " config=" + lib_1.dump(config));
+                fetchConfig(gSRlist, config, callback); //recurse until we hit bottom
             });
         });
     }
