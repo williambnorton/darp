@@ -298,7 +298,7 @@ app.get('/nodefactory', function (req, res) {
                         _a[entryLabel] = "" + newMint,
                         _a)); //add node:grp to gSRlist
                     // install owls into genesisGroup
-                    getConfig(function (err, config) {
+                    getConfig(function (config) {
                         //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(config));
