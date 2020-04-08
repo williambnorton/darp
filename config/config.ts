@@ -93,7 +93,7 @@ function getConfiguration() {
         });
         res.on('end', function () {
             //console.log("CONFIG data="+data);
-            var config = JSON.parse(config);
+            var config = JSON.parse(data);
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
