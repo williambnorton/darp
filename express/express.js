@@ -33,9 +33,9 @@ function getConfig(callback) {
     console.log("getConfig() ");
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            console.log("gSRlist=" + lib_1.dump(gSRlist));
+            //console.log("gSRlist="+dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
-                console.log("getConfig(): callback config=" + lib_1.dump(config));
+                //console.log("getConfig(): callback config="+dump(config));
                 callback(config); //call sender
             });
         });
@@ -57,11 +57,11 @@ function fetchConfig(gSRlist, config, callback) {
             //console.log("pushing "+index);
             config.entryStack.push({ entryLabel: index, mint: gSRlist[index] });
         }
-        console.log("entryStack=" + lib_1.dump(config.entryStack));
+        //onsole.log("entryStack="+dump(config.entryStack));
     }
     //Whether first call or susequent, pop entries until pop fails
     var entry = config.entryStack.pop();
-    console.log("EXPRESS() popped entry=" + lib_1.dump(entry));
+    //console.log("EXPRESS() popped entry="+dump(entry));
     if (entry) {
         var mint = entry.mint;
         var entryLabel = entry.entryLabel;
@@ -70,11 +70,11 @@ function fetchConfig(gSRlist, config, callback) {
                 console.log("ERROR: mintEntry=" + mintEntry);
             if (mintEntry)
                 config.mintTable["mint:" + mint] = mintEntry; //set the pulseEntries
-            console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config) + " entryLabel=" + entryLabel);
+            //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
             //                       MAZORE:DEVOPS.1
             expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
                 config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
-                console.log("EXPRESS() RECURSING entryLabel=" + entryLabel + " pulseEntry=" + lib_1.dump(pulseEntry) + " config=" + lib_1.dump(config));
+                //console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
                 fetchConfig(gSRlist, config, callback); //recurse until we hit bottom
             });
         });
