@@ -131,6 +131,11 @@ function getConfiguration() {
                     console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));
                 }
 
+                for (var pulse in config.pulses) {
+                    var pulseEntry=config.pulseTable[pulse];
+                    console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
+                }
+
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
 
