@@ -119,7 +119,7 @@ function getConfiguration() {
                     console.log("add mint:" + mint + " mintEntry=" + lib_1.dump(mintEntry));
                 }
                 for (var pulse in config.pulses) {
-                    var pulseEntry = config.pulseTable[pulse];
+                    var pulseEntry = config.pulses[pulse];
                     console.log("add pulse:" + pulse + " pulseEntry=" + lib_1.dump(pulseEntry));
                 }
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );

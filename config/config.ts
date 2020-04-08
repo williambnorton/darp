@@ -132,7 +132,7 @@ function getConfiguration() {
                 }
 
                 for (var pulse in config.pulses) {
-                    var pulseEntry=config.pulseTable[pulse];
+                    var pulseEntry=config.pulses[pulse];
                     console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
                 }
 
