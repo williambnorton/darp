@@ -29,6 +29,7 @@ app.get('/', function (req, res) {
 
 function fetchConfig(gSRlist, config, callback) {
    if (typeof config == "undefined" || config==null) {
+      console.log("fetchConfig(): gSRlist="+gSRlist+" config="+config+" ");
       config={
          gSRlist : gSRlist,
          mintTable : {},
