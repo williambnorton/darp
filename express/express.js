@@ -31,7 +31,7 @@ function fetchConfig(gSRlist, config, callback) {
         config = {
             gSRlist: gSRlist,
             mintTable: {},
-            pulses: {},
+            pulses: [],
             entryStack: new Array()
         };
         for (var index in gSRlist) {
@@ -51,7 +51,7 @@ function fetchConfig(gSRlist, config, callback) {
             console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config) + " entryLabel=" + entryLabel);
             //                       MAZORE:DEVOPS.1
             expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
-                console.log("EXPRESS() entryLabel=" + entryLabel + " pulseEntry=" + lib_1.dump(pulseEntry) + " config=" + lib_1.dump(config) + " gSRlist=" + lib_1.dump(gSRlist));
+                console.log("EXPRESS() entryLabel=" + entryLabel + " pulseEntry=" + lib_1.dump(pulseEntry) + " config=" + lib_1.dump(config));
                 config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
                 fetchConfig(gSRlist, callback, config); //recurse until we hit bottom
             });
