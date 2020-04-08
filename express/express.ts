@@ -36,6 +36,7 @@ function fetchConfig(gSRlist, config, callback) {
          entryStack : new Array()             
       }
       for (var index in gSRlist) {
+         console.log("pushing "+index);
          config.entryStack.push({ entryLabel:index, mint:gSRlist[index]})
       }
       console.log("entryStack="+dump(config.entryStack));
