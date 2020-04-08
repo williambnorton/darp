@@ -9,6 +9,8 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
+var MYBUILD="";
+
 redisClient.hgetall("mint:0", function (err,me) {
   if (err) {
     console.log("hgetall me failed");
@@ -18,6 +20,7 @@ redisClient.hgetall("mint:0", function (err,me) {
       process.exit(127);
     }
     console.log("handlePulse(): me="+dump(me));
+    MYBUILD=me.version;
     server.bind(me.port, "0.0.0.0");
   }
 });
@@ -61,7 +64,7 @@ server.on('listening', function() {
 //  message format: 0,56,1583783486546,MAZORE,MAZORE.1,1>1=0,2>1=0
 //
 //    from pulser.ts:
-//                      var pulseMessage="0,"+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+","+;  //MAZORE:MAZJAP.1
+//var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
   console.log("HANDLEPULSE: received pulse from "+remote.address + ':' + remote.port +' - ' + message);

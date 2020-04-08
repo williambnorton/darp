@@ -7,7 +7,7 @@
 #           
 #       Optional parms:
 #           WALLET - a wallet to hold credits and debits for use
-#           GENESIS - a starting point for connection into the mesh
+#           GENESIS - a STOPPING point for connection into the mesh
 # 
 #       We create
 #           GENESIS - if it isn't passed in , we find one from DrPeering
@@ -28,7 +28,7 @@ fi
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-echo `date` "$0 Starting loop. GENESIS=$GENESIS MYIP=$MYIP"
+echo `date` "$0 STOPPING loop. GENESIS=$GENESIS MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
@@ -36,17 +36,17 @@ do
 
     cd $DARPDIR
     VERSION=`ls Build*`
-    echo `date` Starting $VERSION
+    echo `date` STOPPING $VERSION
     export VERSION=$VERSION
         echo ""
-        echo `date` "Starting $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE"
         echo  ""
-        echo `date` "Starting $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE"
         echo ""
-        echo `date` "Starting $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE"
         echo ""
     sleep 2
-    echo `date` Starting redis
+    echo `date` STOPPING redis
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
     ( redis-server --save "" --appendonly no 2>&1 ) >/dev/null &  #store nothing
     echo `date`" redis started"
@@ -78,7 +78,7 @@ do
     #   need express (TCP/65013) before config
     #
     cd $DARPDIR
-    echo `date` Starting express for nodeFactory and externalize stats
+    echo `date` STOPPING express for nodeFactory and externalize stats
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
@@ -112,7 +112,7 @@ do
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
     fi
-    echo `date` Starting handlepulse
+    echo `date` STOPPING handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
 
@@ -137,11 +137,11 @@ do
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
         echo ""
-        echo `date` "Starting $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE"
         echo  ""
-        echo `date` "Starting $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE"
         echo ""
-        echo `date` "Starting $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE"
         echo ""
         #echo "rc=120 means PAUSE Message"
         exit 36

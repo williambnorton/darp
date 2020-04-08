@@ -94,26 +94,9 @@ function getConfiguration() {
             else {
                 console.log(" -----------------------------------------NON-Genesis configuration");
                 console.log("CONFIG(): json=" + lib_1.dump(config));
-                /*
-                                console.log("setting mint0 to json.mint0="+dump(json.mint0));
-                                redisClient.hmset("mint:0",json.mint0);
-                                
-                                console.log("setting mint1 to json.mint1="+dump(json.mint1));
-                                redisClient.hmset("mint:1",json.mint1);
-                
-                                console.log("setting mint:"+json.newNodeMint.mint+" to json.newNodeMint="+json.newNodeMint);
-                                redisClient.hmset("mint:"+json.newNodeMint.mint,json.newNodeMint);
-                
-                                var groupEntry=json.genesisGroupEntry.geo+":"+json.genesisGroupEntry.group;
-                                console.log("setting group entry genesisGroupEntry="+dump(json.genesisGroupEntry));
-                                redisClient.hmset( groupEntry , json.genesisGroupEntry );
-                
-                                var nodeEntry=json.mint0.geo+":"+json.genesisGroupEntry.group;
-                                console.log("setting node entry nodeEntry="+nodeEntry+" entry="+dump(json.newSegmentEntry));
-                                redisClient.hmset( nodeEntry , json.newSegmentEntry );
-                */
                 console.log("setting gSRlist=" + lib_1.dump(config.gSRlist));
                 redisClient.hmset("gSRlist", config.gSRlist);
+                //install config
                 for (var mint in config.mintTable) {
                     var mintEntry = config.mintTable[mint];
                     console.log("add mint:" + mint + " mintEntry=" + lib_1.dump(mintEntry));
