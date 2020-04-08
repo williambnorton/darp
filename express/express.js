@@ -25,56 +25,50 @@ app.get('/', function (req, res) {
         res.end(JSON.stringify(config, null, 2));
     });
 });
+function fetchConfig(gSRlist, config, callback) {
+    if (typeof config == "undefined") {
+        config = {
+            gSRlist: gSRlist,
+            mintTable: {},
+            pulses: {},
+            entryStack: new Array()
+        };
+        for (var index in gSRlist) {
+            config.entryStack.push({ entryLabel: index, mint: gSRlist[index] });
+        }
+        console.log("entryStack=" + lib_1.dump(config.entryStack));
+    }
+    //Whether first call or susequent, pop entries until pop fails
+    var entry = config.entryStack.pop();
+    if (entry) {
+        var mint = entry.mint;
+        var entryLabel = entry.entryLabel;
+        expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+            config.mintTable[mint] = mintEntry; //set the pulseEntries
+            console.log("EXPRESS() mint=" + mint + " mintEntry=" + lib_1.dump(mintEntry) + " config=" + lib_1.dump(config));
+            //                       MAZORE:DEVOPS.1
+            expressRedisClient.hgetall(entryLabel, function (err, pulseEntry) {
+                console.log("EXPRESS() pulseEntry=" + lib_1.dump(pulseEntry));
+                config.pulses[entryLabel] = pulseEntry; //set the corresponding mintTable
+                fetchConfig(gSRlist, callback, config); //recurse until we hit bottom
+            });
+        });
+    }
+    else
+        callback(config); //send the config atructure back
+}
 //
 //
 //
 function getConfig(callback) {
     console.log("getConfig()");
-    //expressRedisClient.scan("gSRlist", function (err,gSRlist) {  //get GENESIS mint entry
-    //get all groups - later - split by groups
     expressRedisClient.hgetall("mint:0", function (err, me) {
-        //expressRedisClient.scan("0", 'MATCH', "*:"+me.geo.*", 'COUNT', '100', function(err, scanResults){
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             console.log("gSRlist=" + lib_1.dump(gSRlist));
-            //later - deal with large multi-cursor callbacks
-            //console.log("scanResults="+dump(scanResults));
-            //var myGroups=scanResults[1];
-            var config = {
-                gSRlist: gSRlist,
-                mintTable: {},
-                pulses: {}
-            };
-            //find the last index
-            var lastIndex = "";
-            for (var index in gSRlist)
-                lastIndex = index; //get last index
-            var entryStack = [];
-            console.log("EXPRESS() lastIndex=" + lastIndex);
-            for (var index in gSRlist) {
-                entryStack.push({ entryLabel: index, mint: gSRlist[index] });
-            }
-            console.log("entryStack=" + lib_1.dump(entryStack));
-            /*
-               console.log("EXPRESS(): mint="+mint+" entryLabel="+entryLabel);
-               //                              "1"
-               expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {
-                  config.mintTable[mint] = mintEntry;  //set the pulseEntries
-                  console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config));
-                     
-                  //                       MAZORE:DEVOPS.1
-                  expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
-                        console.log("EXPRESS() pulseEntry="+dump(pulseEntry));
-      
-                        config.pulses[entryLabel] = pulseEntry;  //set the corresponding mintTable
-                        //config.pulses is done
-                        if (entryLabel == lastIndex) {
-                           console.log("entryLabel="+entryLabel+" lastIndex="+lastIndex+" **************************************** config="+dump(config));
-                           console.log("WOULD SET CONFIG HERE: config="+dump(config));
-                           callback(config);
-                        }
-                     });
-                  });
-               }*/
+            fetchConfig(gSRlist, null, function (err, config) {
+                console.log("getConfig(): config=" + config);
+                callback(err, config);
+            });
         });
     });
 }
