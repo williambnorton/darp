@@ -300,6 +300,7 @@ app.get('/nodefactory', function (req, res) {
                     // install owls into genesisGroup
                     getConfig(function (config) {
                         //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+                        config.mintTable["0"] = mint0; //tell remote their config
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(config));
                         //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
