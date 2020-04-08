@@ -44,7 +44,7 @@ function fetchConfig(gSRlist, config, callback) {
    }
    //Whether first call or susequent, pop entries until pop fails
    var entry=config.entryStack.pop();
-   console.log("popped entry="+dump(entry));
+   console.log("EXPRESS() popped entry="+dump(entry));
    if (entry) {
       var mint=entry.mint;
       var entryLabel=entry.entryLabel;
@@ -72,7 +72,7 @@ function getConfig(callback) {
          console.log("gSRlist="+dump(gSRlist));
          fetchConfig(gSRlist, null, function(err,config) {
             console.log("getConfig(): config="+config);
-            callback(err,config);
+            callback(config);
          });
       });
    });
