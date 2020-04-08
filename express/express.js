@@ -314,6 +314,7 @@ app.get('/nodefactory', function (req, res) {
                 "wallet": wallet,
                 "owl": "0" //do not measure OWL to self - maybe delete this field to catch err?
             };
+            expressRedisClient.hmset("mint:" + newMint, newMintRecord);
             //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
