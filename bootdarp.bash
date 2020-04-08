@@ -107,12 +107,12 @@ do
     echo $$ > $DARPDIR/pulser.pid
     #echo `date` '------------> Please start pulser'
 
-    cd $DARPDIR
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
     fi
     echo `date` Starting handlepulse
+    sleep 1
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
 
