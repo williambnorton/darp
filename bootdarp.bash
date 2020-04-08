@@ -38,6 +38,13 @@ do
     VERSION=`ls Build*`
     echo `date` Starting $VERSION
     export VERSION=$VERSION
+        echo ""
+        echo `date` "STARTING $VERSION SOFTWARE"
+        echo  ""
+        echo `date` "STARTING $VERSION SOFTWARE"
+        echo ""
+        echo `date` "STARTING $VERSION SOFTWARE"
+        echo ""
     sleep 2
     echo `date` Starting redis
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
@@ -130,11 +137,11 @@ do
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
         echo ""
-        echo `date` "RELOADING SOFTWARE"
+        echo `date` "STARTING $VERSION SOFTWARE"
         echo  ""
-        echo `date` "RELOADING SOFTWARE"
+        echo `date` "STARTING $VERSION SOFTWARE"
         echo ""
-        echo `date` "RELOADING SOFTWARE"
+        echo `date` "STARTING $VERSION SOFTWARE"
         echo ""
         #echo "rc=120 means PAUSE Message"
         exit 36
