@@ -28,6 +28,26 @@ app.get('/', function (req, res) {
    })
 });
 
+//
+//
+//
+function getConfig(callback) {
+   console.log("getConfig() ");
+
+   expressRedisClient.hgetall("mint:0", function(err, me) {
+      expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
+         console.log("gSRlist="+dump(gSRlist));
+         fetchConfig(gSRlist, null, function(config) {
+            console.log("getConfig(): callback config="+dump(config));
+            callback(config); //call sender
+         });
+      });
+   });
+}
+
+//
+//
+//
 function fetchConfig(gSRlist, config, callback) {
    if (typeof config == "undefined" || config==null) {
       console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
@@ -63,22 +83,7 @@ function fetchConfig(gSRlist, config, callback) {
    } else callback(config);  //send the config atructure back
 }
 
-//
-//
-//
-function getConfig(callback) {
-   console.log("getConfig() ");
 
-   expressRedisClient.hgetall("mint:0", function(err, me) {
-      expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
-         console.log("gSRlist="+dump(gSRlist));
-         fetchConfig(gSRlist, null, function(config) {
-            console.log("getConfig(): callback config="+dump(config));
-            callback(config); //call sender
-         });
-      });
-   });
-}
 
 
 //
@@ -315,7 +320,8 @@ app.get('/nodefactory', function (req, res) {
                // install owls into genesisGroup
                getConfig(function(config) {
                   //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-                  config.mintTable["0"]=mint0;   //tell remote their config
+                  config.mintTable["mint:0"]=mint0;   //tell remote their config
+                  console.log("config="+dump(config));
                   res.setHeader('Content-Type', 'application/json');   
                   res.end(JSON.stringify(config));
                   //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");

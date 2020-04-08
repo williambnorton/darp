@@ -93,16 +93,16 @@ function getConfiguration() {
         });
         res.on('end', function () {
             //console.log("CONFIG data="+data);
-            var json = JSON.parse(data);
+            var config = JSON.parse(config);
             //gME=json;  //set my global variable  for convenience
-            console.log("CONFIG from node factory:"+JSON.stringify(json,null,2));
+            console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
-            if ( json.node == "GENESIS") {
+            if ( config.node == "GENESIS") {
                 console.log(" GENESIS NODE Instantiated itself");
                 redisClient.hset( "mint:0" , "state", "RUNNING" );
             } else {
                 console.log(" -----------------------------------------NON-Genesis configuration");
-                console.log("CONFIG(): json="+dump(json));
+                console.log("CONFIG(): json="+dump(config));
 
 
 /*
@@ -123,8 +123,13 @@ function getConfiguration() {
                 console.log("setting node entry nodeEntry="+nodeEntry+" entry="+dump(json.newSegmentEntry));
                 redisClient.hmset( nodeEntry , json.newSegmentEntry );
 */
-                console.log("setting gSRlist="+dump(json.gSRlist));
-                redisClient.hmset("gSRlist", json.gSRlist );
+                console.log("setting gSRlist="+dump(config.gSRlist));
+                redisClient.hmset("gSRlist", config.gSRlist );
+
+                for (var mint in config.mintTable) {
+                    var mintEntry=config.mintTable[mint];
+                    console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));
+                }
 
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
