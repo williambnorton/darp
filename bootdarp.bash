@@ -39,11 +39,11 @@ do
     echo `date` Starting $VERSION
     export VERSION=$VERSION
         echo ""
-        echo `date` "STARTING $VERSION SOFTWARE"
+        echo `date` "Starting $VERSION SOFTWARE"
         echo  ""
-        echo `date` "STARTING $VERSION SOFTWARE"
+        echo `date` "Starting $VERSION SOFTWARE"
         echo ""
-        echo `date` "STARTING $VERSION SOFTWARE"
+        echo `date` "Starting $VERSION SOFTWARE"
         echo ""
     sleep 2
     echo `date` Starting redis
@@ -55,12 +55,12 @@ do
     #echo `date` $0 : killing old processes to be restarted
     #kill `cat $DARPDIR/*.pid`
     #sleep 1
-    ./updateSW.bash >/dev/null - we want to start with the newest software
+    ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
     sleep 2
-    ( ./updateSW.bash -deamon 2>&1 ) >/dev/null & #keep it checking every 30 seconds
+    ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
 
     #npm update
     #npm i @types/node
@@ -107,12 +107,12 @@ do
     echo $$ > $DARPDIR/pulser.pid
     #echo `date` '------------> Please start pulser'
 
+    cd $DARPDIR
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
     fi
     echo `date` Starting handlepulse
-    sleep 1
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
 
@@ -137,11 +137,11 @@ do
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
         echo ""
-        echo `date` "STARTING $VERSION SOFTWARE"
+        echo `date` "Starting $VERSION SOFTWARE"
         echo  ""
-        echo `date` "STARTING $VERSION SOFTWARE"
+        echo `date` "Starting $VERSION SOFTWARE"
         echo ""
-        echo `date` "STARTING $VERSION SOFTWARE"
+        echo `date` "Starting $VERSION SOFTWARE"
         echo ""
         #echo "rc=120 means PAUSE Message"
         exit 36
