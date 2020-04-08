@@ -120,86 +120,7 @@ app.get('/pause', function (req, res) {
    });
 
 });
-//
-//    htmlPulseGroups() - 
-//
-function htmlPulseGroups() {
-   console.log("htmlPulseGroups(): ");
-   //forEachPulseGroupMint(function (pulseGroup, mintTable){
-     // console.log("htmlPulseGroups(): pulseGroup="+pulseGroup+" mintTable="+dump(mintTable));
-      //console.log("str="+str);
-   //});
-}
 
-
-app.get('/old', function (req, res) {
-   console.log("fetching '/old' state");
-   //list(req,res);
-   //return;
-   //res.send('express root dir');
-   res.setHeader('Content-Type', 'text/json');
-   res.setHeader("Access-Control-Allow-Origin", "*");
-   expressRedisClient.hgetall("mint:0", function (err,mint0){
-      expressRedisClient.hgetall("mint:1", function (err,mint1){
-         expressRedisClient.hgetall("mint:2", function (err,mint2){
-            expressRedisClient.hgetall("mint:3", function (err,mint3){
-               expressRedisClient.hgetall(mint1.geo+":"+mint1.group, function (err,genesisGroupEntry){     
-                  expressRedisClient.hgetall(mint0.geo+":"+mint1.group, function (err,mint1entry){     
-                     //expressRedisClient.hgetall(mint2.geo+":"+mint1.group, function (err,mint2entry){     
-                        //expressRedisClient.hgetall(mint3.geo+":"+mint1.group, function (err,mint3entry){     
-
-                           var instrumentation={   
-                              genesis : {
-                                 mint : mint1,
-                                 genesisGroup : genesisGroupEntry
-                              },
-                              me : {
-                                 mint : mint0,
-                                 entry : mint1entry
-                              },
-                              gSRlist : {}
-                             }
-
-                           //Scan for all groups
-                           var cursor="0";
-                           expressRedisClient.scan(cursor, 'MATCH', "*:"+mint1.group, 'COUNT', '100', function(err, pulseGroupNodes){
-                              if (err){
-                                  throw err;
-                              }
-                              pulseGroupNodes=pulseGroupNodes[1];
-                              console.log("pulser(): myPulseGroups="+dump(pulseGroupNodes));
-                              instrumentation.gSRlist=pulseGroupNodes;
-
-                              pulseGroupNodes.forEach(function(key,i) {
-                                 console.log("key="+key+" i="+i);
-                              })
-
-                              for (var node in pulseGroupNodes) {
-                                 expressRedisClient.hgetall(pulseGroupNodes[node], function (err,pulseGroup) {
-                                    var entry=pulseGroupNodes[node];
-                                    //instrumentation.gSRlist[pulseGroupNodes[node]]=pulseGroup;
-                                    console.log("EXPRESS pulseGroup="+dump(pulseGroup));
-                                 });
-                              }
-
-
-                              res.end(JSON.stringify(instrumentation, null, 2));
-                           });
-
-                        //});
-                     //});
-                  });
-               });
-            });
-         });
-      });
-   });
-   //var html=htmlPulseGroups();
-   //res.end(html);
-   //
-    return;
-
-});
 
 //
 // nodeFactory
@@ -276,6 +197,9 @@ app.get('/nodefactory', function (req, res) {
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS" } ));
 
+         getConfig(function(err,config) {
+            console.log("Genesis config="+JSON.stringify(config, null, 2));
+         })
          console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
 
          return;
