@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
     });
 });
 function fetchConfig(gSRlist, config, callback) {
-    if (typeof config == "undefined") {
+    if (typeof config == "undefined" || config == null) {
         config = {
             gSRlist: gSRlist,
             mintTable: {},
