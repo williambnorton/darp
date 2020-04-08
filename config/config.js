@@ -117,10 +117,12 @@ function getConfiguration() {
                 for (var mint in config.mintTable) {
                     var mintEntry = config.mintTable[mint];
                     console.log("add mint:" + mint + " mintEntry=" + lib_1.dump(mintEntry));
+                    redisClient.hmset(mint, mintEntry);
                 }
                 for (var pulse in config.pulses) {
                     var pulseEntry = config.pulses[pulse];
                     console.log("add pulse:" + pulse + " pulseEntry=" + lib_1.dump(pulseEntry));
+                    redisClient.hmset(pulse, pulseEntry);
                 }
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
                 //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
