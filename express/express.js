@@ -40,6 +40,7 @@ function fetchConfig(gSRlist, config, callback) {
     }
     //Whether first call or susequent, pop entries until pop fails
     var entry = config.entryStack.pop();
+    console.log("entry=" + lib_1.dump(entry));
     if (entry) {
         var mint = entry.mint;
         var entryLabel = entry.entryLabel;
