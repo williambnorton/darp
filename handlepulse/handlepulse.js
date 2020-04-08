@@ -40,6 +40,18 @@ redisClient.hgetall("mint:1", function (err, genesis) {
 server.on('listening', function () {
     var address = server.address();
     console.log('UDP Server listening on ' + address.address + ':' + address.port);
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
 });
 //
 //  message format: 0,56,1583783486546,MAZORE,MAZORE.1,1>1=0,2>1=0
