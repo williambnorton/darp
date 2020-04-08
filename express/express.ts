@@ -23,6 +23,7 @@ var app = express();
 app.get('/', function (req, res) {
    console.log("fetching '/' state");
    getConfig(function(err,config) {
+      console.log("app.get('/' callback config="+config);
       res.end(JSON.stringify(config, null, 2));
    })
 });
@@ -48,8 +49,9 @@ function fetchConfig(gSRlist, config, callback) {
    if (entry) {
       var mint=entry.mint;
       var entryLabel=entry.entryLabel;
-      expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {                        
-         config.mintTable[mint] = mintEntry;  //set the pulseEntries
+      expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
+         if (err) console.log("ERROR: mintEntry="+mintEntry)                     
+         if (mintEntry) config.mintTable[mint] = mintEntry;  //set the pulseEntries
          console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
          //                       MAZORE:DEVOPS.1
          expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
@@ -65,14 +67,14 @@ function fetchConfig(gSRlist, config, callback) {
 //
 //
 function getConfig(callback) {
-   console.log("getConfig()");
+   console.log("getConfig() ");
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
          console.log("gSRlist="+dump(gSRlist));
-         fetchConfig(gSRlist, null, function(err,config) {
-            console.log("getConfig(): config="+config);
-            callback(config);
+         fetchConfig(gSRlist, null, function(config) {
+            console.log("getConfig(): callback config="+config);
+            callback(config); //call sender
          });
       });
    });
