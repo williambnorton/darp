@@ -236,6 +236,7 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : wallet,
             "owl" : ""+OWL          //we will get measures from genesis node
          }
+         /*** **/
          var mint1={          //mine:1 is GENESIS NODE
             "mint" : "1",      //overwrite initial mint0 record - we are genesis
             "geo" : genesis.geo,
@@ -251,6 +252,7 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : genesis.wallet,
             "owl" : ""+OWL          //we will get measures from genesis node
          }
+         /*(******/
          var newMintRecord={        //my mint entry
             "mint" : ""+newMint,      //set by genesis node
             "geo" : geo,
@@ -281,7 +283,7 @@ app.get('/nodefactory', function (req, res) {
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : "1",      //claimed mint # for this node
                  // =
-                  "owls" : "1="+OWL+","+newMint,  //owls other guy is reporting
+                  "owls" : ""+genesis.owls+","+newMint+",",  //owls other guy is reporting
                   //"owls" : getOWLs(me.group),  //owls other guy is reporting
                   //node statistics - we measure these ourselves
                   "owl": ""+OWL,   //how long it took this node's last record to reach me
@@ -292,7 +294,7 @@ app.get('/nodefactory', function (req, res) {
                   "pktDrops": "0"     //as detected by missed seq#
                   //"remoteState": "0"   //and there are mints : owls for received pulses 
             };
-
+            console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
             var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
                "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
                "group": genesis.group,      //add all nodes to genesis group

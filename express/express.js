@@ -222,6 +222,7 @@ app.get('/nodefactory', function (req, res) {
                 "wallet": wallet,
                 "owl": "" + OWL //we will get measures from genesis node
             };
+            /*** **/
             var mint1 = {
                 "mint": "1",
                 "geo": genesis.geo,
@@ -237,6 +238,7 @@ app.get('/nodefactory', function (req, res) {
                 "wallet": genesis.wallet,
                 "owl": "" + OWL //we will get measures from genesis node
             };
+            /*(******/
             var newMintRecord = {
                 "mint": "" + newMint,
                 "geo": geo,
@@ -264,7 +266,7 @@ app.get('/nodefactory', function (req, res) {
                     "pulseTimestamp": "0",
                     "srcMint": "1",
                     // =
-                    "owls": "1=" + OWL + "," + newMint,
+                    "owls": "" + genesis.owls + "," + newMint + ",",
                     //"owls" : getOWLs(me.group),  //owls other guy is reporting
                     //node statistics - we measure these ourselves
                     "owl": "" + OWL,
@@ -275,6 +277,7 @@ app.get('/nodefactory', function (req, res) {
                     "pktDrops": "0" //as detected by missed seq#
                     //"remoteState": "0"   //and there are mints : owls for received pulses 
                 };
+                console.log(lib_1.ts() + "EXPRESS: non-genesis config genesisGroupEntry.owls=" + genesisGroupEntry.owls);
                 var newSegmentEntry = {
                     "geo": geo,
                     "group": genesis.group,
