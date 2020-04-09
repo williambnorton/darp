@@ -80,7 +80,10 @@ function fetchConfig(gSRlist, config, callback) {
             fetchConfig(gSRlist,config,callback);  //recurse until we hit bottom
          });
       });
-   } else callback(config);  //send the config atructure back
+   } else {
+      delete config.entryStack;
+      callback(config);  //send the config atructure back
+   }
 }
 
 

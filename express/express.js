@@ -79,8 +79,10 @@ function fetchConfig(gSRlist, config, callback) {
             });
         });
     }
-    else
+    else {
+        delete config.entryStack;
         callback(config); //send the config atructure back
+    }
 }
 //
 // 
