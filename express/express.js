@@ -309,7 +309,7 @@ app.get('/nodefactory', function (req, res) {
                     getConfig(function (config) {
                         //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                         config.mintTable["mint:0"] = mint0; //tell remote their config
-                        console.log("EXPRESS(): sending config=" + lib_1.dump(config));
+                        console.log("EXPRESS(): sending new node its config=" + lib_1.dump(config));
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(config));
                         //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
