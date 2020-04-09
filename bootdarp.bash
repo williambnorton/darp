@@ -133,7 +133,7 @@ do
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
         echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE to LOAD "`cd /tmp/darp;ls Build*` 
         echo  ""
         echo `date` "STOPPING $VERSION SOFTWARE"
         echo ""
