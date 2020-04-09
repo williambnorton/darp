@@ -40,10 +40,10 @@ function pulse() {
           // do your processing
           // reply[1] is an array of matched keys: me.geo:*
           var SRs=pulseGroups[1]; //[0] is the cursor returned
-          console.log( "We need to pulse each of these SRs="+SRs); 
+          //console.log( "We need to pulse each of these SRs="+SRs); 
 
           for (var i in SRs) {
-            console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
+            //console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
             var pulseLabel=SRs[i];
             //chop into named pieces for debugging
             var pulseSrc=pulseLabel.split(":")[0];
@@ -51,7 +51,7 @@ function pulse() {
             var pulseGroupOwner=pulseGroup.split(".")[0];
             var ownerPulseLabel=pulseGroupOwner+":"+pulseGroupOwner+".1";
             //make a pulse message
-            console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
+            //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
             redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
               //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
