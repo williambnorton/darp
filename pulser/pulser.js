@@ -108,8 +108,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     if (mints != "")
                         buildPulsePkt(mints, pulseMsg, sendToAry);
                     else {
-                        //message ready - pulse
-                        console.log("PULSING " + pulseMsg + " to  sendToAry=" + lib_1.dump(sendToAry));
                         var _loop_1 = function (node) {
                             if (typeof node != "undefined" && node != null) {
                                 //sending msg
@@ -134,6 +132,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                 });
                             }
                         };
+                        //message ready - pulse
+                        //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
                         for (var node = sendToAry.pop(); node != null; node = sendToAry.pop()) {
                             _loop_1(node);
                         }

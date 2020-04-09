@@ -114,7 +114,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
           if (mints!="") buildPulsePkt(mints,pulseMsg,sendToAry);
           else {
             //message ready - pulse
-            console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
+            //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
             for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
               if (typeof node != "undefined" && node != null) {
               //sending msg
