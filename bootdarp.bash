@@ -39,12 +39,8 @@ do
     echo `date` STOPPING $VERSION
     export VERSION=$VERSION
         echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
+        echo `date` " - - - - - - - - - - - - - - - - - - - - - - -     CURRENT $VERSION SOFTWARE        - - - - - - - - - - - - - - - - - - - - - "
         echo  ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
-        echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
-        echo ""
     sleep 2
     echo `date` STOPPING redis
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung

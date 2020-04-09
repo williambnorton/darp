@@ -31,7 +31,7 @@ function pulse() {
             if (err) {
                 throw err;
             }
-            console.log("pulser(): myPulseGroups=" + lib_1.dump(pulseGroups));
+            //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
             cursor = pulseGroups[0];
             if (cursor === '0') {
                 //console.log('Scan Complete ');
@@ -113,13 +113,13 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                         var _loop_1 = function (node) {
                             if (typeof node != "undefined" && node != null) {
                                 //sending msg
-                                console.log("networkClient.send(pulseMsg=" + pulseMsg + " node.port=" + node.port + " node.ipaddr=" + node.ipaddr);
+                                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                                 networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
                                     if (error) {
                                         networkClient.close();
                                     }
                                     else {
-                                        //console.log("sent dump node="+dump(node));
+                                        //console.log("sent dump node="+dump(node))
                                         console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
                                     }
                                     //update out stats on this pulse record
