@@ -119,9 +119,18 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         networkClient.close();
                                     }
                                     else {
-                                        console.log("sent dump node=" + lib_1.dump(node));
+                                        //console.log("sent dump node="+dump(node));
                                         console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
                                     }
+                                    //update out stats on this pulse record
+                                    var pulseLabel = mintEntry.geo + ":" + mintEntry.group;
+                                    redisClient.hgetall(pulseLabel, function (err, oldPulse) {
+                                        var pulse = {
+                                            outOctets: "" + (parseInt(oldPulse.outOctets) + message.length),
+                                            outMsgs: "" + (parseInt(oldPulse.outMsgs) + 1)
+                                        };
+                                        redisClient.hmset(pulseLabel, pulse); //update stats
+                                    });
                                 });
                             }
                         };
@@ -135,66 +144,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     console.log("Complete - now invoke sendTo for each of my mints pulseMsg=" + pulseMsg);
                     console.log("NOT GETTING HERE EEVR PULSER sendToAry=" + lib_1.dump(sendToAry));
                 }
-            } /**** else {
-              if (typeof mint != "undefined") {
-                console.log("mintEntry is null - Can't find mint="+mint);
-                pulseMsg+=mint+",";
-                buildPulsePkt(mints,pulseMsg,sendToAry);
-              } else {
-                console.log("MUST BE END OF PULSEGROUP LIST : mintEntry is undefined Can't find mint="+mint);
-                console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry));
-                for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
-                  if (typeof node != "undefined" && node != null) {
-                  //sending msg
-                    console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
-                    networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
-                      if(error) {
-                        networkClient.close();
-                      }else {
-                        console.log("sent dump node="+dump(node));
-                        
-                        console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port);
-                      }
-                    });
-                  }
-                }
-      
-                //pulseMsg+=mint+",";
-                //buildPulsePkt(mints,pulseMsg,sendToAry);
-              }
-            } ****/
+            }
         }
     });
 }
-/****
-//  iterator through each mint of a pulseGroup
-//
-function forEachMint(SR,callback) {
-  console.log("forEachMint() : SR="+SR);
-  //fetch the group mints mint:2 : 2  mint:5 : 5   ....
-  redisClient.hgetall(SR, function(err, SR) {
-    //console.log("insideIterator");
-    if (err) {
-            console.log("forEachMint(): hgetall pulseGroup mints "+SR+" failed");
-    } else {
-      //console.log("forEachMint(): *** ** ** pulseGroupNodes="+dump(SR));
-      var mints=SR.owls.split(",");
-      console.log("mints="+mints+" len="+mints.length);
-      for (var mint in mints) {   //mint:1  mint:2  mint:3
-        console.log("forEachMint: pulser mint="+mint);
-        redisClient.hgetall("mint:"+mint, function(err, mintEntry) {
-          if (err) {
-            console.log("forEachMint(): hgetall mintKey "+mint+" failed");
-          } else {
-            if (mintEntry) {
-              //console.log("callback mintEntry="+dump(mintEntry));
-              callback(err,mintEntry);  //callback may fetch mint table
-            }
-          }
-        });
-      }
-    }
-  });
-  //setTimeout(pulse,3000); //pulse again in 3 seconds
-}
-**/ 
