@@ -88,15 +88,16 @@ server.on('message', function (message, remote) {
             inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
             inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
         };
-        redisClient.hmset(pulseLabel, pulse);
-        redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
-            console.log("HANDLEPULSE Final pulseRecord=" + lib_js_1.dump(pulseRecord));
+        redisClient.hmset(pulseLabel, pulse, function (err, reply) {
+            redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
+                console.log("HANDLEPULSE Final pulseRecord=" + lib_js_1.dump(pulseRecord));
+            });
+            console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + pulse.version + " vs. " + MYBUILD);
+            if (pulse.version != MYBUILD) {
+                console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                process.exit(36); //SOFTWARE RELOAD
+            }
         });
-        console.log(lib_js_1.ts() + " HANDLEPULSE(): " + pulse.version + " vs. " + MYBUILD);
-        if (pulse.version != MYBUILD) {
-            console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-            process.exit(36); //SOFTWARE RELOAD
-        }
     });
 });
 function nth_occurrence(string, char, nth) {

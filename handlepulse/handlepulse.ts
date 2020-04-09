@@ -93,17 +93,19 @@ server.on('message', function(message, remote) {
       inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
       inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
-    redisClient.hmset(pulseLabel,pulse);
+    redisClient.hmset(pulseLabel,pulse, function (err,reply) {
+      redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
+        console.log("HANDLEPULSE Final pulseRecord="+dump(pulseRecord));
+      });
 
-    redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
-      console.log("HANDLEPULSE Final pulseRecord="+dump(pulseRecord));
+      console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
+      if (pulse.version!=MYBUILD) {
+        console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
+        process.exit(36);  //SOFTWARE RELOAD
+      }
     });
-    console.log(ts()+" HANDLEPULSE(): "+pulse.version+" vs. "+MYBUILD);
 
-    if (pulse.version!=MYBUILD) {
-      console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
-      process.exit(36);  //SOFTWARE RELOAD
-    }
+
 
   });
 });

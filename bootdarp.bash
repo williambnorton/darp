@@ -21,6 +21,7 @@ export MYIP=$MYIP
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" == "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
+   GENESISIP=`echo $GENESIS|awk -F, '{ print $0 }'`
    #echo `date` Genesis node: $GENESIS
 fi
 
@@ -28,7 +29,7 @@ fi
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-echo `date` "$0 STARTING loop. GENESIS=$GENESIS MYIP=$MYIP"
+echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
@@ -55,8 +56,12 @@ do
     cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
-    sleep 1
-    # TURN ON TO CONSTANTLY CHECK ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
+    if [ "$GENESISIP" == "$MYIP"]; then
+        console.log("I AM GENESIS NODE");
+        sleep 1
+        ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
+    fi
+
 
     #npm update
     #npm i @types/node
