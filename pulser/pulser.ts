@@ -54,7 +54,7 @@ function pulse() {
             console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
             redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
-              console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry));
+              console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
               pulseLabelEntry.seq=pulseLabelEntry.seq+1;
               redisClient.hset(pulseLabel, "seq", pulseLabelEntry.seq, function(err,seq) {
                 console.log("setting sequence # err="+err+"seq="+dump(seq));
