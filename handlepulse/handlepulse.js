@@ -92,6 +92,7 @@ server.on('message', function (message, remote) {
         redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
             console.log("HANDLEPULSE Final pulseRecord=" + lib_js_1.dump(pulseRecord));
         });
+        console.log(lib_js_1.ts() + " HANDLEPULSE(): " + pulse.version + " vs. " + MYBUILD);
         if (pulse.version != MYBUILD) {
             console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
             process.exit(36); //SOFTWARE RELOAD
