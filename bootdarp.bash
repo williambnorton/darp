@@ -33,7 +33,7 @@ echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
-    rm $DARPDIR/forever  #comment this to rerun forever
+    rm $DARPDIR/forever  #comment this to re-run forever
 
     cd $DARPDIR
     VERSION=`ls Build*`
