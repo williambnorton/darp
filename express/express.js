@@ -313,13 +313,6 @@ app.get('/nodefactory', function (req, res) {
                         console.log("EXPRESS nodeFactory done");
                     });
                     console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + lib_1.dump(newSegmentEntry));
-                    //var gSRlist="";
-                    //expressRedisClient.hscan( "gSRlist", 0, "MATCH", "*:"+genesis.group, function( err, mygSRlist, myowls){
-                    //   gSRlist=mygSRlist;
-                    //   var gSRlistOwls=myowls
-                    //   console.log("EXPRESS: mygSRlist="+mygSRlist);
-                    //})
-                    //expressRedisClient.hmset( "gSRlist", genesis.geo+":"+genesis.group, "1" );
                 });
             }); //mintList
         });
