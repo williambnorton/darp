@@ -28,7 +28,7 @@ fi
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-echo `date` "$0 STOPPING loop. GENESIS=$GENESIS MYIP=$MYIP"
+echo `date` "$0 STARTING loop. GENESIS=$GENESIS MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
@@ -36,13 +36,13 @@ do
 
     cd $DARPDIR
     VERSION=`ls Build*`
-    echo `date` STOPPING $VERSION
+    echo `date` RUNNING $VERSION
     export VERSION=$VERSION
         echo ""
         echo `date` " - - - - - - - - - - - - - - - - - - - - - - -     CURRENT $VERSION SOFTWARE        - - - - - - - - - - - - - - - - - - - - - "
         echo  ""
     sleep 2
-    echo `date` STOPPING redis
+    echo `date` STARTING redis
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
     ( redis-server --save "" --appendonly no 2>&1 ) >/dev/null &  #store nothing
     echo `date`" redis started"
@@ -55,8 +55,8 @@ do
     cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
-    sleep 2
-    ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
+    sleep 1
+    # TURN ON TO CONSTANTLY CHECK ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
 
     #npm update
     #npm i @types/node
@@ -74,7 +74,7 @@ do
     #   need express (TCP/65013) before config
     #
     cd $DARPDIR
-    echo `date` STOPPING express for nodeFactory and externalize stats
+    echo `date` Starting express for nodeFactory and externalize stats
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
@@ -108,7 +108,7 @@ do
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
     fi
-    echo `date` STOPPING handlepulse
+    echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
 
