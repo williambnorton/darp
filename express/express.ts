@@ -16,7 +16,6 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
-
 //
 //
 //

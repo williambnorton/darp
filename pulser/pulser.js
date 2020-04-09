@@ -12,7 +12,11 @@ var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-setInterval(function () { return pulse; }, 10000);
+/*setInterval(
+  () => pulse,
+  10000
+);*/
+pulse();
 //
 //  pulse - pulser for each me.pulseGroups
 //
@@ -67,6 +71,7 @@ function pulse() {
         });
     });
     datagramClient.close();
+    setTimeout(pulse, 5000);
 }
 //
 //  buildPulsePkt() - build and send pulse
