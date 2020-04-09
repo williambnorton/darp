@@ -183,8 +183,8 @@ app.get('/nodefactory', function (req, res) {
                 "outOctets": "0",
                 "inMsgs": "0",
                 "outMsgs": "0",
-                "pktDrops": "0",
-                "remoteState": "0" //and there are mints : owls for received pulses 
+                "pktDrops": "0" //as detected by missed seq#
+                //"remoteState": "0"   //and there are mints : owls for received pulses 
             };
             var entryLabel = geo + ":" + geo + ".1";
             console.log("entryLabel=" + entryLabel);
@@ -272,8 +272,8 @@ app.get('/nodefactory', function (req, res) {
                     "outOctets": "0",
                     "inMsgs": "0",
                     "outMsgs": "0",
-                    "pktDrops": "0",
-                    "remoteState": "0" //and there are mints : owls for received pulses 
+                    "pktDrops": "0" //as detected by missed seq#
+                    //"remoteState": "0"   //and there are mints : owls for received pulses 
                 };
                 var newSegmentEntry = {
                     "geo": geo,
@@ -290,8 +290,8 @@ app.get('/nodefactory', function (req, res) {
                     "outOctets": "0",
                     "inMsgs": "0",
                     "outMsgs": "0",
-                    "pktDrops": "0",
-                    "remoteState": "0" //and there are mints : owls for received pulses 
+                    "pktDrops": "0" //as detected by missed seq#
+                    //"remoteState": "0"   //and there are mints : owls for received pulses 
                 };
                 expressRedisClient.hmset(geo + ":" + genesis.group, newSegmentEntry);
                 lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
