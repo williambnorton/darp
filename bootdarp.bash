@@ -55,8 +55,15 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * *"
+    echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
     if [ "$GENESISIP" == "$MYIP"]; then
+        console.log("I AM GENESIS NODE");
+        console.log("I AM GENESIS NODE");
+        console.log("I AM GENESIS NODE");
+        console.log("I AM GENESIS NODE");
+        console.log("I AM GENESIS NODE");
+        console.log("I AM GENESIS NODE");
+        console.log("I AM GENESIS NODE");
         console.log("I AM GENESIS NODE");
         sleep 1
         ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
