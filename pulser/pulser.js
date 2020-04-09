@@ -50,9 +50,10 @@ function pulse() {
                     //make a pulse message
                     console.log("pulse(): Make a pulse Message, pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ownerPulseLabel=" + ownerPulseLabel + " pulseSrc=" + pulseSrc);
                     //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-                    redisClient.incr(pulseLabel, "seq", function (err, reply) {
-                        console.log("err=" + err + "reply=" + lib_1.dump(reply));
-                        redisClient.hget(pulseLabel, "seq", function (err, seq) {
+                    redisClient.hget(pulseLabel, "seq", function (err, seq) {
+                        console.log("err=" + err + "seq=" + lib_1.dump(seq));
+                        seq = seq + 1;
+                        redisClient.hset(pulseLabel, "seq", function (err, seq) {
                             console.log("err=" + err + "seq=" + lib_1.dump(seq));
                             var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + seq + "," + lib_1.now() + "," + me.mint + ","; //MAZORE:MAZJAP.1
                             //get mintTable to get credentials   

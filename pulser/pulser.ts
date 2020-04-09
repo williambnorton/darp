@@ -53,9 +53,10 @@ function pulse() {
             //make a pulse message
             console.log("pulse(): Make a pulse Message, pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-            redisClient.incr(pulseLabel,"seq",function(err,reply){
-              console.log("err="+err+"reply="+dump(reply));
-              redisClient.hget(pulseLabel,"seq",function(err,seq){
+            redisClient.hget(pulseLabel,"seq",function(err,seq){
+              console.log("err="+err+"seq="+dump(seq));
+              seq=seq+1;
+              redisClient.hset(pulseLabel,"seq",function(err,seq){
                 console.log("err="+err+"seq="+dump(seq));
 
 
