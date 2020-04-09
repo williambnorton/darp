@@ -57,12 +57,14 @@ function pulse() {
               console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
               pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
               console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
-              redisClient.hset(pulseLabel, "seq", pulseLabelEntry.seq, function(err,seq) {
+              redisClient.hmset(pulseLabel, {
+                  "seq" : pulseLabelEntry.seq
+              }, function(err,reply) {
 
-                console.log("setting sequence complete # err="+err+"seq="+dump(seq)+" err="+err);
+                console.log("setting sequence complete # err="+err+"seq="+dump(reply)+" err="+err);
 
 
-                var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
+                var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 
                 
                 //get mintTable to get credentials   

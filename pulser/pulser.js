@@ -54,9 +54,11 @@ function pulse() {
                         console.log("***********************     PULSER()getting pulseLabelEntrty err=" + err + " pulseLabelEntry=" + lib_1.dump(pulseLabelEntry) + " seq=" + pulseLabelEntry.seq);
                         pulseLabelEntry.seq = "" + (parseInt(pulseLabelEntry.seq) + 1);
                         console.log("-------------------------------------------->    pulseLabelEntry.seq=" + pulseLabelEntry.seq);
-                        redisClient.hset(pulseLabel, "seq", pulseLabelEntry.seq, function (err, seq) {
-                            console.log("setting sequence complete # err=" + err + "seq=" + lib_1.dump(seq) + " err=" + err);
-                            var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + seq + "," + lib_1.now() + "," + me.mint + ","; //MAZORE:MAZJAP.1
+                        redisClient.hmset(pulseLabel, {
+                            "seq": pulseLabelEntry.seq
+                        }, function (err, reply) {
+                            console.log("setting sequence complete # err=" + err + "seq=" + lib_1.dump(reply) + " err=" + err);
+                            var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + pulseLabelEntry.seq + "," + lib_1.now() + "," + me.mint + ","; //MAZORE:MAZJAP.1
                             //get mintTable to get credentials   
                             var owls = "";
                             lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
