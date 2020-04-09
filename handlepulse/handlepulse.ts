@@ -93,7 +93,7 @@ server.on('message', function(message, remote) {
       inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
       inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
-    console.log("HANDLEPULSE pulse="+dump(pulse));
+    console.log("HANDLEPULSE oldPulse="+dump(oldPulse));
     redisClient.hmset(pulseLabel,pulse);
 
     if (pulse.version!=MYBUILD) {
