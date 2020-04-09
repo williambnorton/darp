@@ -53,8 +53,9 @@ function pulse() {
             //make a pulse message
             console.log("pulse(): Make a pulse Message, pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-            redisClient.incr(me.geo+":"+pulseGroup,"seq",function(err,reply){
-              redisClient.hget(me.geo+":"+pulseGroup,"seq",function(err,seq){
+            redisClient.incr(pulseLabel,"seq",function(err,reply){
+              
+              redisClient.hget(pulseLabel,"seq",function(err,seq){
 
 
                 var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
