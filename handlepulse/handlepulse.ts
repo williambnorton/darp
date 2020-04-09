@@ -71,15 +71,13 @@ server.on('message', function(message, remote) {
   var msg=message.toString();
   var ary=msg.split(",");
   //try {
-  var pulseTimestamp=ary[4];                  //1583783486546
+  var pulseTimestamp=ary[5];                  //1583783486546
   var pulseLabel=ary[2]+":"+ary[3];
 
   var owlsStart=nth_occurrence (msg, ',', 7);   //owls start after the 7th comma
-  console.log("owlsStart="+owlsStart);
   var owls=msg.substring(owlsStart+1,msg.length-1);
-  console.log("owls="+owls);
   redisClient.hgetall(pulseLabel, function(err, oldPulse) {
-    console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
+    //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
     if (err) {console.log("ERROR in on.message handling");}
     var pulse={
       version : ary[1],
