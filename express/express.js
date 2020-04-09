@@ -22,7 +22,7 @@ var app = express();
 app.get('/', function (req, res) {
     console.log("fetching '/' state");
     getConfig(function (config) {
-        console.log("app.get('/' callback config=" + config);
+        console.log("app.get('/' callback config=" + lib_1.dump(config));
         res.end(JSON.stringify(config, null, 2));
     });
 });
