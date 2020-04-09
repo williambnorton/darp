@@ -72,6 +72,9 @@ server.on('message', function (message, remote) {
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
+        if (oldPulse == null) {
+            oldPulse = { "inOctets": "0", "inMsgs": "0" };
+        }
         if (err) {
             console.log("ERROR in on.message handling");
         }

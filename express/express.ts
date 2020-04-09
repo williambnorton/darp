@@ -300,7 +300,7 @@ app.get('/nodefactory', function (req, res) {
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : ""+newMint,      //claimed mint # for this node
                   // =
-                  "owls" : "",  //owls other guy (this is ME so 0!) is reporting
+                  "owls" : "1,"+newMint+",",  //owls other guy (this is ME so 0!) is reporting
                   //"owls" : getOWLs(me.group),  //owls other guy is reporting
                   //node statistics - we measure these ourselves
                   //"owl": ""+OWL,   //how long it took this node's last record to reach me
