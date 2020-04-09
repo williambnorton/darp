@@ -56,6 +56,7 @@ function pulse() {
             redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
               console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
               pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
+              console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
               redisClient.hset(pulseLabel, "seq", pulseLabelEntry.seq, function(err,seq) {
                 console.log("setting sequence complete # err="+err+"seq="+dump(seq));
 

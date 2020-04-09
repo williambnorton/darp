@@ -53,6 +53,7 @@ function pulse() {
                     redisClient.hgetall(pulseLabel, function (err, pulseLabelEntry) {
                         console.log("***********************     PULSER()getting pulseLabelEntrty err=" + err + " pulseLabelEntry=" + lib_1.dump(pulseLabelEntry) + " seq=" + pulseLabelEntry.seq);
                         pulseLabelEntry.seq = "" + (parseInt(pulseLabelEntry.seq) + 1);
+                        console.log("-------------------------------------------->    pulseLabelEntry.seq=" + pulseLabelEntry.seq);
                         redisClient.hset(pulseLabel, "seq", pulseLabelEntry.seq, function (err, seq) {
                             console.log("setting sequence complete # err=" + err + "seq=" + lib_1.dump(seq));
                             var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + seq + "," + lib_1.now() + "," + me.mint + ","; //MAZORE:MAZJAP.1
