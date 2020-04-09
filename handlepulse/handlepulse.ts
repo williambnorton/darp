@@ -93,8 +93,11 @@ server.on('message', function(message, remote) {
       inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
       inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
-    console.log("HANDLEPULSE oldPulse="+dump(oldPulse));
     redisClient.hmset(pulseLabel,pulse);
+
+    redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
+      console.log("HANDLEPULSE Final pulseRecord="+dump(pulseRecord));
+    });
 
     if (pulse.version!=MYBUILD) {
       console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
