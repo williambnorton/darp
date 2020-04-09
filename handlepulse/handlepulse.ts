@@ -97,7 +97,7 @@ server.on('message', function(message, remote) {
     redisClient.hmset(pulseLabel,pulse);
 
     if (pulse.version!=MYBUILD) {
-      console.log(ts()+" NEW SOFTWARE AVAILABLE - process exitting");
+      console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
       process.exit(36);  //SOFTWARE RELOAD
     }
 
