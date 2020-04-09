@@ -82,8 +82,8 @@ server.on('message', function(message, remote) {
     console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
 
     var pulse={
-      geo : ary[1],
-      version : ary[2],
+      version : ary[1],
+      geo : ary[2],
       group : ary[3],
       seq : ary[4],
       pulseTimestamp : pulseTimestamp,
