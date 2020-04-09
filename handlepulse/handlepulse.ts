@@ -50,6 +50,7 @@ server.on('listening', function() {
  console.log(ts()+"");
  console.log(ts()+"");
  console.log(ts()+"");
+
  console.log(ts()+"");
  console.log(ts()+"");
  console.log(ts()+"");
@@ -94,6 +95,11 @@ server.on('message', function(message, remote) {
     };
     console.log("HANDLEPULSE pulse="+dump(pulse));
     redisClient.hmset(pulseLabel,pulse);
+
+    if (pulse.version!=MYBUILD) {
+      console.log(ts()+" NEW SOFTWARE AVAILABLE - process exitting");
+      process.exit(36);  //SOFTWARE RELOAD
+    }
 
   });
 });

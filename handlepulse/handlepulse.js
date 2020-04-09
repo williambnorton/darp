@@ -90,6 +90,10 @@ server.on('message', function (message, remote) {
         };
         console.log("HANDLEPULSE pulse=" + lib_js_1.dump(pulse));
         redisClient.hmset(pulseLabel, pulse);
+        if (pulse.version != MYBUILD) {
+            console.log(lib_js_1.ts() + " NEW SOFTWARE AVAILABLE - process exitting");
+            process.exit(36); //SOFTWARE RELOAD
+        }
     });
 });
 function nth_occurrence(string, char, nth) {
