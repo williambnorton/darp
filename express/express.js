@@ -278,6 +278,7 @@ app.get('/nodefactory', function (req, res) {
                 console.log(lib_1.ts() + "Genesis.group=" + lib_1.dump(genesisGroup) + " newOwlList=" + newOwlList);
                 expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err, reply) {
                     var justMints = lib_1.getMints(genesisGroup);
+                    console.log(lib_1.ts() + "justMints=" + justMints);
                     var genesisGroupEntry = {
                         "geo": genesis.geo,
                         "group": genesis.group,

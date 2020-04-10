@@ -297,6 +297,7 @@ app.get('/nodefactory', function (req, res) {
 
                expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
                  var justMints=getMints(genesisGroup);
+                 console.log(ts()+"justMints="+justMints);
 
                var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                   "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
@@ -336,7 +337,8 @@ app.get('/nodefactory', function (req, res) {
                      "pktDrops": "0"     //as detected by missed seq#
                      //"remoteState": "0"   //and there are mints : owls for received pulses 
                };
-               expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );   
+               expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );  
+
                SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
                   console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
                   //we now have updated gSRlist and updated owls   
