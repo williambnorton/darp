@@ -104,10 +104,10 @@ function getConfiguration() {
                 }
                 for (var pulse in config.pulses) {
                     var pulseEntry = config.pulses[pulse];
-                    if (pulseEntry.geo == GEO) { //is this us? Provide a started OWL
-                        pulseEntry.owl = lib_1.now() - pulseEntry.bootTime;
-                        console.log("EXPRESS() Set OWL=" + pulseEntry.owl + " pulseEntry.bootTime=" + pulseEntry.bootTime);
-                    }
+                    //if (pulseEntry.geo==GEO) { //is this us? Provide a started OWL
+                    //    pulseEntry.owl=now()-pulseEntry.bootTime;
+                    //    console.log("CONFIG() Set OWL="+pulseEntry.owl+" pulseEntry.bootTime="+pulseEntry.bootTime);
+                    //}  NOT ONE WAY MEASURE - DOES NOT BELONG HERE
                     console.log("add pulse:" + pulse + " pulseEntry=" + lib_1.dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
                 }
