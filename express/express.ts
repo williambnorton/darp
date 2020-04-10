@@ -207,7 +207,6 @@ app.get('/nodefactory', function (req, res) {
             //"remoteState": "0"   //and there are mints : owls for received pulses 
          };
          var genesisGroupLabel=geo+":"+geo+".1";
-         console.log("entryLabel="+genesisGroupLabel);
          expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry); 
          expressRedisClient.hmset("gSRlist", {
             [genesisGroupLabel] : "1"
@@ -228,10 +227,11 @@ app.get('/nodefactory', function (req, res) {
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
          console.log("--------------- EXPRESS() Non-GENESIS CONFIGURATION  ------------------");
-         expressRedisClient.hgetall(genesis.geo+":"+genesis.group, function (err,genesisGroup) {  //get 
+         var genesisGroupLabel=genesis.geo+":"+genesis.group;
+         expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
 
             console.log(ts()+"genesis.owls="+genesisGroup.owls);
-            expressRedisClient.hmset(genesisGroup.geo+":"+genesisGroup.group, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
+            expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
             console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config
@@ -288,7 +288,8 @@ app.get('/nodefactory', function (req, res) {
 
             // Now for a record of this newNode in the Genesis group
             //get group owner (genesis group) OWLS
-            mintList(expressRedisClient, genesis.group, function(err,owls){
+            //mintList(expressRedisClient, genesis.group, function(err,owls){
+            //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
                //var genesisGroup=genesis.geo+":"+genesis.group;
                var newOwlList=genesisGroup.owls+","+newMint+"="+OWL;
 
@@ -358,7 +359,7 @@ app.get('/nodefactory', function (req, res) {
                   console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
 
                });
-            });   //mintList
+            //});   //mintList
          });
       });
    });
