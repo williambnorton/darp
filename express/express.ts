@@ -277,6 +277,8 @@ app.get('/nodefactory', function (req, res) {
          mintList(expressRedisClient, genesis.group, function(err,owls){
             var genesisGroup=genesis.geo+":"+genesis.group;
             var newOwlList=genesis.owls+","+newMint;
+            console.log(ts()+"Genesis.group="+genesisGroup+" newOwlList="+newOwlList);
+
             expressRedisClient.hset(genesisGroup, "owls", newOwlList, function (err,reply){
             });
 
