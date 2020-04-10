@@ -54,6 +54,9 @@ function pulse() {
             var ownerPulseLabel=pulseGroupOwner+":"+pulseGroupOwner+".1";
 
             console.log("ownerPulseLabel="+ownerPulseLabel);
+            redisClient.hgetall(ownerPulseLabel,function(err,pulseGroupOwner) {
+              console.log(ts()+"pulseGroupOwner record="+pulseGroupOwner);
+            })
             //make a pulse message
             //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
