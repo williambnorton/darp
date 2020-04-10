@@ -318,7 +318,7 @@ app.get('/nodefactory', function (req, res) {
                      //"remoteState": "0"   //and there are mints : owls for received pulses 
                };
 
-               console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
+               //console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
                var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
                   "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
                   "group": genesis.group,      //add all nodes to genesis group
@@ -337,7 +337,7 @@ app.get('/nodefactory', function (req, res) {
                      "pktDrops": "0"     //as detected by missed seq#
                      //"remoteState": "0"   //and there are mints : owls for received pulses 
                };
-               console.log(ts()+"newSegmentEntry="+dump(newSegmentEntry));
+               //console.log(ts()+"newSegmentEntry="+dump(newSegmentEntry));
                expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );  
 
                SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
