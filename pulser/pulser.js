@@ -6,7 +6,7 @@ var lib_1 = require("../lib/lib");
 //  pulse - send my owl measurements to my pulseGroups
 //
 //var HOST='127.0.0.1';
-var PAUSE = false; //after next pulse, stop pulsing
+var PAUSE = true; //after next pulse, stop pulsing
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
@@ -23,11 +23,11 @@ pulse();
 //
 function pulse() {
     setTimeout(pulse, 10 * 1000);
-    if (PAUSE)
-        return;
     var datagramClient = dgram.createSocket('udp4');
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
+        if (me.state == "PAUSE")
+            return;
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
         redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {
