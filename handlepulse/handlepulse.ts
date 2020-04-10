@@ -102,6 +102,7 @@ server.on('message', function(message, remote) {
     redisClient.hmset(pulseLabel,pulse, function (err,reply) {
       redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
         console.log("HANDLEPULSE Final pulseRecord="+dump(pulseRecord));
+        redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);
       });
 
       console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
