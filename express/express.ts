@@ -337,6 +337,7 @@ app.get('/nodefactory', function (req, res) {
                      "pktDrops": "0"     //as detected by missed seq#
                      //"remoteState": "0"   //and there are mints : owls for received pulses 
                };
+               console.log(ts()+"newSegmentEntry="+dump(newSegmentEntry));
                expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );  
 
                SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
