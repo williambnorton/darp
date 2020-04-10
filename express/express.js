@@ -233,7 +233,7 @@ app.get('/nodefactory', function (req, res) {
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
-                    "owl": "" + OWL //we will get measures from genesis node
+                    "owl": "" //we will get measures from genesis node
                 };
                 /*** **/
                 var mint1 = {
@@ -249,7 +249,7 @@ app.get('/nodefactory', function (req, res) {
                     "bootTime": "" + lib_1.now(),
                     "version": genesis.version,
                     "wallet": genesis.wallet,
-                    "owl": "" + OWL //we will get measures from genesis node
+                    "owl": "" //we will get measures from genesis node
                 };
                 /*(******/
                 var newMintRecord = {
@@ -265,7 +265,7 @@ app.get('/nodefactory', function (req, res) {
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
-                    "owl": "0" //do not measure OWL to self - maybe delete this field to catch err?
+                    "owl": "" //do not measure OWL to self - maybe delete this field to catch err?
                 };
                 expressRedisClient.hmset("mint:" + newMint, newMintRecord);
                 //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
@@ -289,7 +289,7 @@ app.get('/nodefactory', function (req, res) {
                         "owls": newOwlList,
                         //"owls" : getOWLs(me.group),  //owls other guy is reporting
                         //node statistics - we measure these ourselves
-                        "owl": "" + OWL,
+                        "owl": "",
                         "inOctets": "0",
                         "outOctets": "0",
                         "inMsgs": "0",

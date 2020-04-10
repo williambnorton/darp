@@ -248,7 +248,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl" : ""+OWL          //we will get measures from genesis node
+            "owl" : ""          //we will get measures from genesis node
             }
             /*** **/
             var mint1={          //mine:1 is GENESIS NODE
@@ -264,7 +264,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
-            "owl" : ""+OWL          //we will get measures from genesis node
+            "owl" : "" //we will get measures from genesis node
             }
             /*(******/
             var newMintRecord={        //my mint entry
@@ -280,7 +280,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl" : "0"   //do not measure OWL to self - maybe delete this field to catch err?
+            "owl" : ""   //do not measure OWL to self - maybe delete this field to catch err?
             };
 
             expressRedisClient.hmset("mint:"+newMint,newMintRecord);
@@ -309,7 +309,7 @@ app.get('/nodefactory', function (req, res) {
                   "owls" : newOwlList,  //owls other guy is reporting
                   //"owls" : getOWLs(me.group),  //owls other guy is reporting
                   //node statistics - we measure these ourselves
-                  "owl": ""+OWL,   //how long it took this node's last record to reach me
+                  "owl": "",   //NO OWL MEASUREMENT HERE (YET)
                      "inOctets": "0",
                      "outOctets": "0",
                      "inMsgs": "0",

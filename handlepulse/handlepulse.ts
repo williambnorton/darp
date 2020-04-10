@@ -95,7 +95,7 @@ server.on('message', function(message, remote) {
       srcMint : ary[6],
       owls : owls,
       owl : now()-pulseTimestamp,
-      msg : msg,
+      lastMsg : msg,
       inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
       inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
