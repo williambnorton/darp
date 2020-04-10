@@ -21,6 +21,7 @@ pulse();
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
+    setTimeout(pulse, 10 * 1000);
     if (PAUSE)
         return;
     var datagramClient = dgram.createSocket('udp4');
@@ -76,7 +77,6 @@ function pulse() {
         });
     });
     datagramClient.close();
-    setTimeout(pulse, 10 * 1000);
 }
 //
 //  buildPulsePkt() - build and send pulse
