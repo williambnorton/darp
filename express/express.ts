@@ -220,7 +220,7 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hgetall(genesis.geo+":"+genesis.group, function (err,genesisGroup) {  //get 
 
             console.log(ts()+"genesis.owls="+genesis.owls);
-            expressRedisClient.hmset("mint:1", "owls", genesis.owls+","+newMint+"="+OWL); 
+            expressRedisClient.hmset(genesisGroup.geo+":"+genesisGroup.group, "owls", genesis.owls+","+newMint+"="+OWL); 
             console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config
