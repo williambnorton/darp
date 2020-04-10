@@ -168,11 +168,11 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.hmset("mint:0", mint0);
             mint0.mint = "1";
             expressRedisClient.hmset("mint:1", mint0);
-            var newSegmentEntry = {
+            var genesisGroupEntry = {
                 "geo": geo,
                 "group": geo + ".1",
                 "seq": "0",
-                "pulseTimestamp": "0",
+                "pulseTimestamp": "" + lib_1.now(),
                 "srcMint": "1",
                 // =
                 "owls": "1",
@@ -188,7 +188,7 @@ app.get('/nodefactory', function (req, res) {
             };
             var entryLabel = geo + ":" + geo + ".1";
             console.log("entryLabel=" + entryLabel);
-            expressRedisClient.hmset(entryLabel, newSegmentEntry);
+            expressRedisClient.hmset(entryLabel, genesisGroupEntry);
             expressRedisClient.hmset("gSRlist", (_a = {},
                 _a[entryLabel] = "1",
                 _a));
@@ -285,7 +285,7 @@ app.get('/nodefactory', function (req, res) {
                     "pulseTimestamp": "0",
                     "srcMint": "" + newMint,
                     // =
-                    "owls": "1," + newMint + ",",
+                    "owls": "" + genesis.owls + "," + newMint + ",",
                     //"owls" : getOWLs(me.group),  //owls other guy is reporting
                     //node statistics - we measure these ourselves
                     //"owl": ""+OWL,   //how long it took this node's last record to reach me

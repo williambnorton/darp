@@ -177,11 +177,11 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
          expressRedisClient.hmset("mint:1",mint0);
-         var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+         var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
             "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
             "group": geo+".1",      //DEVPOS:DEVOP.1 for genesis node start
             "seq" : "0",         //last sequence number heard
-            "pulseTimestamp": "0", //last pulseTimestamp received from this node
+            "pulseTimestamp": ""+now(), //last pulseTimestamp received from this node
             "srcMint" : "1",      //Genesis node would send this 
             // =
             "owls" : "1",  //owls other guy is reporting
@@ -197,7 +197,7 @@ app.get('/nodefactory', function (req, res) {
          };
          var entryLabel=geo+":"+geo+".1";
          console.log("entryLabel="+entryLabel);
-         expressRedisClient.hmset(entryLabel, newSegmentEntry); 
+         expressRedisClient.hmset(entryLabel, genesisGroupEntry); 
          expressRedisClient.hmset("gSRlist", {
             [entryLabel] : "1"
          }); 
@@ -302,7 +302,7 @@ app.get('/nodefactory', function (req, res) {
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : ""+newMint,      //claimed mint # for this node
                   // =
-                  "owls" : "1,"+newMint+",",  //owls other guy (this is ME so 0!) is reporting
+                  "owls" : ""+genesis.owls+","+newMint+",",  //owls other guy (this is ME so 0!) is reporting
                   //"owls" : getOWLs(me.group),  //owls other guy is reporting
                   //node statistics - we measure these ourselves
                   //"owl": ""+OWL,   //how long it took this node's last record to reach me
