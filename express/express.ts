@@ -25,8 +25,19 @@ app.get('/', function (req, res) {
       console.log("app.get('/' callback config="+dump(config));
       res.end(JSON.stringify(config, null, 2));
    })
+   return
 });
 
+app.get('/state', function (req, res) {
+   console.log("fetching '/state' state");
+   getConfig(function(config) {
+      console.log("app.get('/state' callback config="+dump(config));
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.end(JSON.stringify(config, null, 2));
+   })
+   return;
+});
 //
 //
 //
