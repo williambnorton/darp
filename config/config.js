@@ -104,6 +104,9 @@ function getConfiguration() {
                 }
                 for (var pulse in config.pulses) {
                     var pulseEntry = config.pulses[pulse];
+                    if (pulse.split(":")[0] == GEO) { //is this us? Provide a started OWL
+                        pulseEntry.owl = lib_1.now() - pulseEntry.bootTime;
+                    }
                     console.log("add pulse:" + pulse + " pulseEntry=" + lib_1.dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
                 }

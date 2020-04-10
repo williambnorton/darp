@@ -34,6 +34,7 @@ if (! process.env.MYIP) {
 //
 import { dump, now } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
+import { generateKeyPairSync } from "crypto";
 //import { getUnpackedSettings } from "http2";
 //import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
@@ -115,6 +116,9 @@ function getConfiguration() {
 
                 for (var pulse in config.pulses) {
                     var pulseEntry=config.pulses[pulse];
+                    if (pulse.split(":")[0]==GEO) { //is this us? Provide a started OWL
+                        pulseEntry.owl=now()-pulseEntry.bootTime;
+                    }
                     console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
                 }
