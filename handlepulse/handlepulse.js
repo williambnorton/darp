@@ -18,7 +18,7 @@ redisClient.hgetall("mint:0", function (err, me) {
             console.log("handlePulse() - can't find me entry...exitting");
             process.exit(127);
         }
-        console.log("handlePulse(): me=" + lib_js_1.dump(me));
+        console.log("handlePulse(): Configuration  me=" + lib_js_1.dump(me));
         MYBUILD = me.version;
         server.bind(me.port, "0.0.0.0");
     }
@@ -70,6 +70,7 @@ server.on('message', function (message, remote) {
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
+    console.log(lib_js_1.ts() + "handlepulse(): owls=" + owls);
     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         if (oldPulse == null) {
