@@ -56,7 +56,7 @@ do
     cd $DARPDIR
     export VERSION=`ls Build*`
     echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
-    if [ "$GENESISIP" = "$MYIP"]; then
+    if [ "$GENESISIP" = "$MYIP" ]; then
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE"
