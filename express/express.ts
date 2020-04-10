@@ -275,7 +275,11 @@ app.get('/nodefactory', function (req, res) {
          // Now for a record of this newNode in the Genesis group
          //get group owner (genesis group) OWLS
          mintList(expressRedisClient, genesis.group, function(err,owls){
-            
+            var genesisGroup=genesis.geo+":"+genesis.group;
+            var newOwlList=genesis.owls+","+newMint;
+            expressRedisClient.hset(genesisGroup, "owls", newOwlList, function (err,reply){
+            });
+
             var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
                "group": genesis.group,      //assigning nodes in this group now
@@ -283,7 +287,7 @@ app.get('/nodefactory', function (req, res) {
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : "1",      //claimed mint # for this node
                  // =
-                  "owls" : ""+genesis.owls+","+newMint+",",  //owls other guy is reporting
+                  "owls" : newOwlList,  //owls other guy is reporting
                   //"owls" : getOWLs(me.group),  //owls other guy is reporting
                   //node statistics - we measure these ourselves
                   "owl": ""+OWL,   //how long it took this node's last record to reach me
@@ -294,6 +298,7 @@ app.get('/nodefactory', function (req, res) {
                   "pktDrops": "0"     //as detected by missed seq#
                   //"remoteState": "0"   //and there are mints : owls for received pulses 
             };
+
             console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
             var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
                "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
@@ -302,7 +307,7 @@ app.get('/nodefactory', function (req, res) {
                   "pulseTimestamp": "0", //last pulseTimestamp received from this node
                   "srcMint" : ""+newMint,      //claimed mint # for this node
                   // =
-                  "owls" : ""+genesis.owls+","+newMint+",",  //owls other guy (this is ME so 0!) is reporting
+                  "owls" : newOwlList,  //owls other guy (this is ME so 0!) is reporting
                   //"owls" : getOWLs(me.group),  //owls other guy is reporting
                   //node statistics - we measure these ourselves
                   //"owl": ""+OWL,   //how long it took this node's last record to reach me
