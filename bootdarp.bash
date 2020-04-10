@@ -21,7 +21,7 @@ export MYIP=$MYIP
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" = "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
-   GENESISIP=`echo $GENESIS | awk -F, '{ print $0 }'`
+   GENESISIP=$GENESIS  #`echo $GENESIS | awk -F, '{ print $1 }'`
    #echo `date` Genesis node: $GENESIS
 fi
 
