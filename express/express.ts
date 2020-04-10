@@ -42,7 +42,7 @@ app.get('/state', function (req, res) {
 //
 //
 function getConfig(callback) {
-   console.log("getConfig() ");
+   //console.log("getConfig() ");
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
@@ -60,7 +60,7 @@ function getConfig(callback) {
 //
 function fetchConfig(gSRlist, config, callback) {
    if (typeof config == "undefined" || config==null) {
-      console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
+      //console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
       config={
          gSRlist : gSRlist,
          mintTable : {},
