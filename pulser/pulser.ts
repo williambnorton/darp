@@ -116,7 +116,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
     } else {
       if (mintEntry!=null) {
         //console.log("get my measurement from mintEntry="+dump(mintEntry));
-        if (mintEntry.owl==0) pulseMsg+=mint+",";
+        if (mintEntry.owl=="") pulseMsg+=mint+",";
         else pulseMsg+=mint+"="+mintEntry.owl+",";
         sendToAry.push({"ipaddr":mintEntry.ipaddr,"port":mintEntry.port});
         var pulseLabel=GEO+":"+mintEntry.group;   //all of my state announcements are marked from me
@@ -125,7 +125,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
           //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
           if (mints!="") buildPulsePkt(mints,pulseMsg,sendToAry);
           else {
-            //message ready - pulse
+            //
+            //      message ready - pulse
             //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
             for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
               if (typeof node != "undefined" && node != null) {

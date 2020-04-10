@@ -107,7 +107,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         else {
             if (mintEntry != null) {
                 //console.log("get my measurement from mintEntry="+dump(mintEntry));
-                if (mintEntry.owl == 0)
+                if (mintEntry.owl == "")
                     pulseMsg += mint + ",";
                 else
                     pulseMsg += mint + "=" + mintEntry.owl + ",";
@@ -144,7 +144,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                 });
                             }
                         };
-                        //message ready - pulse
+                        //
+                        //      message ready - pulse
                         //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
                         for (var node = sendToAry.pop(); node != null; node = sendToAry.pop()) {
                             _loop_1(node);
