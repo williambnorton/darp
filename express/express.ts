@@ -297,7 +297,7 @@ app.get('/nodefactory', function (req, res) {
 
                expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
                  var justMints=getMints(genesisGroup);
-                 console.log(ts()+"justMints="+justMints);
+                 console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
 
                var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                   "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
