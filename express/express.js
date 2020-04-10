@@ -261,8 +261,8 @@ app.get('/nodefactory', function (req, res) {
                 // Now for a record of this newNode in the Genesis group
                 //get group owner (genesis group) OWLS
                 lib_1.mintList(expressRedisClient, genesis.group, function (err, owls) {
-                    var genesisGroup = genesis.geo + ":" + genesis.group;
-                    var newOwlList = genesis.owls + "," + newMint;
+                    //var genesisGroup=genesis.geo+":"+genesis.group;
+                    var newOwlList = genesisGroup.owls + "," + newMint;
                     console.log(lib_1.ts() + "Genesis.group=" + genesisGroup + " newOwlList=" + newOwlList);
                     expressRedisClient.hset(genesisGroup, "owls", newOwlList, function (err, reply) {
                     });
