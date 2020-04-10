@@ -206,11 +206,11 @@ app.get('/nodefactory', function (req, res) {
             "pktDrops": "0"     //as detected by missed seq#
             //"remoteState": "0"   //and there are mints : owls for received pulses 
          };
-         var entryLabel=geo+":"+geo+".1";
-         console.log("entryLabel="+entryLabel);
-         expressRedisClient.hmset(entryLabel, genesisGroupEntry); 
+         var genesisGroupLabel=geo+":"+geo+".1";
+         console.log("entryLabel="+genesisGroupLabel);
+         expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry); 
          expressRedisClient.hmset("gSRlist", {
-            [entryLabel] : "1"
+            [genesisGroupLabel] : "1"
          }); 
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS" } ));
@@ -291,9 +291,10 @@ app.get('/nodefactory', function (req, res) {
             mintList(expressRedisClient, genesis.group, function(err,owls){
                //var genesisGroup=genesis.geo+":"+genesis.group;
                var newOwlList=genesisGroup.owls+","+newMint+"="+OWL;
+
                console.log(ts()+"Genesis.group="+genesisGroup+" newOwlList="+newOwlList);
 
-               expressRedisClient.hset(genesisGroup, "owls", newOwlList, function (err,reply){
+               expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
                });
                var justMints=getMints(genesisGroup);
 
