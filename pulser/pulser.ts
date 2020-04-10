@@ -55,7 +55,12 @@ function pulse() {
 
             console.log("ownerPulseLabel="+ownerPulseLabel);
             redisClient.hgetall(ownerPulseLabel,function(err,pulseGroupOwner) {
-              console.log(ts()+"pulseGroupOwner record="+pulseGroupOwner);
+              console.log(ts()+"pulseGroupOwner record="+dump(pulseGroupOwner));
+              console.log(ts()+"pulseGroupOwner owls="+pulseGroupOwner.owls);
+              var emptyOwls=pulseGroupOwner.owls.replace(/=[0-9]*/g,'').split(",");
+              console.log("emptyOwls="+emptyOwls);
+
+
             })
             //make a pulse message
             //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
