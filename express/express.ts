@@ -29,9 +29,9 @@ app.get('/', function (req, res) {
 });
 
 app.get('/state', function (req, res) {
-   console.log("fetching '/state' state");
+   console.log("EXPRess fetching '/state' state");
    getConfig(function(config) {
-      console.log("app.get('/state' callback config="+dump(config));
+      //console.log("app.get('/state' callback config="+dump(config));
       res.setHeader('Content-Type', 'application/json');
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.end(JSON.stringify(config, null, 2));
@@ -183,7 +183,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl": "0"   //
+            "owl": ""   //
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
