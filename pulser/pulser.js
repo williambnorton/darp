@@ -12,6 +12,7 @@ var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+var GEO = ""; //global variable for marking source of pulse
 /*setInterval(
   () => pulse,
   10000
@@ -27,6 +28,7 @@ function pulse() {
     var datagramClient = dgram.createSocket('udp4');
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
+        GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
         redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {
             if (err) {
@@ -110,6 +112,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 else
                     pulseMsg += mint + "=" + mintEntry.owl + ",";
                 sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port });
+                var pulseLabel = GEO + ":" + mintEntry.group; //all of my state announcements are marked from me
                 if (mint != null) {
                     //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
                     if (mints != "")
@@ -128,7 +131,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port);
                                     }
                                     //update out stats on this pulse record
-                                    var pulseLabel = mintEntry.geo + ":" + mintEntry.group;
+                                    //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                                     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
                                         if (oldPulse == null)
                                             oldPulse = { outOctets: "0", outMsgs: "0" };
