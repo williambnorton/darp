@@ -140,6 +140,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                   //update out stats on this pulse record
                   var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                   redisClient.hgetall(pulseLabel, function(err, oldPulse) {
+                    if (oldPulse==null) oldPulse={outOctets : "0",outMsgs : "0"};
                     var pulse={
                       outOctets : ""+(parseInt(oldPulse.outOctets)+message.length),
                       outMsgs : ""+(parseInt(oldPulse.outMsgs)+1)
