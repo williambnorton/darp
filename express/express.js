@@ -275,69 +275,68 @@ app.get('/nodefactory', function (req, res) {
                 //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
                 //var genesisGroup=genesis.geo+":"+genesis.group;
                 var newOwlList = genesisGroup.owls + "," + newMint + "=" + OWL;
-                console.log(lib_1.ts() + "Genesis.group=" + genesisGroup + " newOwlList=" + newOwlList);
+                console.log(lib_1.ts() + "Genesis.group=" + lib_1.dump(genesisGroup) + " newOwlList=" + newOwlList);
                 expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err, reply) {
-                });
-                var justMints = lib_1.getMints(genesisGroup);
-                var genesisGroupEntry = {
-                    "geo": genesis.geo,
-                    "group": genesis.group,
-                    "seq": "0",
-                    "pulseTimestamp": "0",
-                    "srcMint": "1",
-                    // =
-                    "owls": newOwlList,
-                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                    //node statistics - we measure these ourselves
-                    "owl": "" + OWL,
-                    "inOctets": "0",
-                    "outOctets": "0",
-                    "inMsgs": "0",
-                    "outMsgs": "0",
-                    "pktDrops": "0" //as detected by missed seq#
-                    //"remoteState": "0"   //and there are mints : owls for received pulses 
-                };
-                console.log(lib_1.ts() + "EXPRESS: non-genesis config genesisGroupEntry.owls=" + genesisGroupEntry.owls);
-                var newSegmentEntry = {
-                    "geo": geo,
-                    "group": genesis.group,
-                    "seq": "0",
-                    "pulseTimestamp": "0",
-                    "srcMint": "" + newMint,
-                    // =
-                    "owls": justMints,
-                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                    //node statistics - we measure these ourselves
-                    //"owl": ""+OWL,   //how long it took this node's last record to reach me
-                    "inOctets": "0",
-                    "outOctets": "0",
-                    "inMsgs": "0",
-                    "outMsgs": "0",
-                    "pktDrops": "0" //as detected by missed seq#
-                    //"remoteState": "0"   //and there are mints : owls for received pulses 
-                };
-                expressRedisClient.hmset(geo + ":" + genesis.group, newSegmentEntry);
-                lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
-                    var _a;
-                    console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList) + " newMint=" + newMint + " geo=" + geo + " genesis.group=" + genesis.group;
-                    //we now have updated gSRlist and updated owls   
-                    var entryLabel = "" + geo + ":" + genesis.group;
-                    expressRedisClient.hmset("gSRlist", (_a = {},
-                        _a[entryLabel] = "" + newMint,
-                        _a)); //add node:grp to gSRlist
-                    // install owls into genesisGroup
-                    getConfig(function (config) {
-                        //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-                        config.mintTable["mint:0"] = mint0; //tell remote their config
-                        console.log("EXPRESS(): sending new node its config=" + lib_1.dump(config));
-                        res.setHeader('Content-Type', 'application/json');
-                        res.end(JSON.stringify(config));
-                        //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                        console.log("EXPRESS nodeFactory done");
+                    var justMints = lib_1.getMints(genesisGroup);
+                    var genesisGroupEntry = {
+                        "geo": genesis.geo,
+                        "group": genesis.group,
+                        "seq": "0",
+                        "pulseTimestamp": "0",
+                        "srcMint": "1",
+                        // =
+                        "owls": newOwlList,
+                        //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                        //node statistics - we measure these ourselves
+                        "owl": "" + OWL,
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "pktDrops": "0" //as detected by missed seq#
+                        //"remoteState": "0"   //and there are mints : owls for received pulses 
+                    };
+                    console.log(lib_1.ts() + "EXPRESS: non-genesis config genesisGroupEntry.owls=" + genesisGroupEntry.owls);
+                    var newSegmentEntry = {
+                        "geo": geo,
+                        "group": genesis.group,
+                        "seq": "0",
+                        "pulseTimestamp": "0",
+                        "srcMint": "" + newMint,
+                        // =
+                        "owls": justMints,
+                        //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                        //node statistics - we measure these ourselves
+                        //"owl": ""+OWL,   //how long it took this node's last record to reach me
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "pktDrops": "0" //as detected by missed seq#
+                        //"remoteState": "0"   //and there are mints : owls for received pulses 
+                    };
+                    expressRedisClient.hmset(geo + ":" + genesis.group, newSegmentEntry);
+                    lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
+                        var _a;
+                        console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList) + " newMint=" + newMint + " geo=" + geo + " genesis.group=" + genesis.group;
+                        //we now have updated gSRlist and updated owls   
+                        var entryLabel = "" + geo + ":" + genesis.group;
+                        expressRedisClient.hmset("gSRlist", (_a = {},
+                            _a[entryLabel] = "" + newMint,
+                            _a)); //add node:grp to gSRlist
+                        // install owls into genesisGroup
+                        getConfig(function (config) {
+                            //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+                            config.mintTable["mint:0"] = mint0; //tell remote their config
+                            console.log("EXPRESS(): sending new node its config=" + lib_1.dump(config));
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify(config));
+                            //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                            console.log("EXPRESS nodeFactory done");
+                        });
+                        console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + lib_1.dump(newSegmentEntry));
                     });
-                    console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + lib_1.dump(newSegmentEntry));
                 });
-                //});   //mintList
             });
         });
     });

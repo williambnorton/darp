@@ -293,11 +293,10 @@ app.get('/nodefactory', function (req, res) {
                //var genesisGroup=genesis.geo+":"+genesis.group;
                var newOwlList=genesisGroup.owls+","+newMint+"="+OWL;
 
-               console.log(ts()+"Genesis.group="+genesisGroup+" newOwlList="+newOwlList);
+               console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
 
                expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
-               });
-               var justMints=getMints(genesisGroup);
+                 var justMints=getMints(genesisGroup);
 
                var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                   "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
@@ -359,7 +358,7 @@ app.get('/nodefactory', function (req, res) {
                   console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
 
                });
-            //});   //mintList
+            });   
          });
       });
    });
