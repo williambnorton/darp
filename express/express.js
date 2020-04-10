@@ -216,9 +216,9 @@ app.get('/nodefactory', function (req, res) {
             console.log("--------------- EXPRESS() Non-GENESIS CONFIGURATION  ------------------");
             var genesisGroupLabel = genesis.geo + ":" + genesis.group;
             expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
-                console.log(lib_1.ts() + "genesis.owls=" + genesisGroup.owls);
+                //console.log(ts()+"genesis.owls="+genesisGroup.owls);
                 expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls + "," + newMint + "=" + OWL);
-                console.log("working on NON-GENESIS Config");
+                //console.log("working on NON-GENESIS Config");
                 // Use the genesis node info to create the config
                 var mint0 = {
                     "mint": "" + newMint,
@@ -274,7 +274,7 @@ app.get('/nodefactory', function (req, res) {
                 //mintList(expressRedisClient, genesis.group, function(err,owls){
                 //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
                 //var genesisGroup=genesis.geo+":"+genesis.group;
-                var newOwlList = genesisGroup.owls + "," + newMint + "=" + OWL;
+                var newOwlList = genesisGroup.owls + "," + newMint;
                 console.log(lib_1.ts() + "Genesis.group=" + lib_1.dump(genesisGroup) + " newOwlList=" + newOwlList);
                 expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err, reply) {
                     var justMints = lib_1.getMints(genesisGroup);
@@ -308,7 +308,7 @@ app.get('/nodefactory', function (req, res) {
                         "owls": justMints,
                         //"owls" : getOWLs(me.group),  //owls other guy is reporting
                         //node statistics - we measure these ourselves
-                        //"owl": ""+OWL,   //how long it took this node's last record to reach me
+                        "owl": "",
                         "inOctets": "0",
                         "outOctets": "0",
                         "inMsgs": "0",

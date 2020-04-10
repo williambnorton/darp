@@ -230,9 +230,9 @@ app.get('/nodefactory', function (req, res) {
          var genesisGroupLabel=genesis.geo+":"+genesis.group;
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
 
-            console.log(ts()+"genesis.owls="+genesisGroup.owls);
+            //console.log(ts()+"genesis.owls="+genesisGroup.owls);
             expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
-            console.log("working on NON-GENESIS Config");
+            //console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config
             var mint0={                //mint:0 is me - who (remote Node) has as 'me'
@@ -291,7 +291,7 @@ app.get('/nodefactory', function (req, res) {
             //mintList(expressRedisClient, genesis.group, function(err,owls){
             //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
                //var genesisGroup=genesis.geo+":"+genesis.group;
-               var newOwlList=genesisGroup.owls+","+newMint+"="+OWL;
+               var newOwlList=genesisGroup.owls+","+newMint;
 
                console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
 
@@ -299,29 +299,29 @@ app.get('/nodefactory', function (req, res) {
                  var justMints=getMints(genesisGroup);
                  console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
 
-               var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
-                  "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
-                  "group": genesis.group,      //assigning nodes in this group now
-                  "seq" : "0",         //last sequence number heard
-                  "pulseTimestamp": "0", //last pulseTimestamp received from this node
-                  "srcMint" : "1",      //claimed mint # for this node
-                 // =
-                  "owls" : newOwlList,  //owls other guy is reporting
-                  //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                  //node statistics - we measure these ourselves
-                  "owl": "",   //NO OWL MEASUREMENT HERE (YET)
+                  var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
+                     "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
+                     "group": genesis.group,      //assigning nodes in this group now
+                     "seq" : "0",         //last sequence number heard
+                     "pulseTimestamp": "0", //last pulseTimestamp received from this node
+                     "srcMint" : "1",      //claimed mint # for this node
+                     // =
+                     "owls" : newOwlList,  //owls other guy is reporting
+                     //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                     //node statistics - we measure these ourselves
+                     "owl": "",   //NO OWL MEASUREMENT HERE (YET)
                      "inOctets": "0",
                      "outOctets": "0",
                      "inMsgs": "0",
                      "outMsgs": "0",
                      "pktDrops": "0"     //as detected by missed seq#
                      //"remoteState": "0"   //and there are mints : owls for received pulses 
-               };
+                  };
 
-               //console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
-               var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
-                  "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
-                  "group": genesis.group,      //add all nodes to genesis group
+                  //console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
+                  var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+                     "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+                     "group": genesis.group,      //add all nodes to genesis group
                      "seq" : "0",         //last sequence number heard
                      "pulseTimestamp": "0", //last pulseTimestamp received from this node
                      "srcMint" : ""+newMint,      //claimed mint # for this node
@@ -329,7 +329,7 @@ app.get('/nodefactory', function (req, res) {
                      "owls" : justMints,  //owls other guy (this is ME so 0!) is reporting
                      //"owls" : getOWLs(me.group),  //owls other guy is reporting
                      //node statistics - we measure these ourselves
-                     //"owl": ""+OWL,   //how long it took this node's last record to reach me
+                     "owl": "",   //NO OWL MEASUREMENT HERE (YET)
                      "inOctets": "0",
                      "outOctets": "0",
                      "inMsgs": "0",
