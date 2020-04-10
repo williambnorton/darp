@@ -273,10 +273,11 @@ app.get('/nodefactory', function (req, res) {
                 //get group owner (genesis group) OWLS
                 lib_1.mintList(expressRedisClient, genesis.group, function (err, owls) {
                     //var genesisGroup=genesis.geo+":"+genesis.group;
-                    var newOwlList = genesisGroup.owls + "," + newMint;
+                    var newOwlList = genesisGroup.owls + "," + newMint + "=" + OWL;
                     console.log(lib_1.ts() + "Genesis.group=" + genesisGroup + " newOwlList=" + newOwlList);
                     expressRedisClient.hset(genesisGroup, "owls", newOwlList, function (err, reply) {
                     });
+                    var justMints = lib_1.getMints(genesisGroup);
                     var genesisGroupEntry = {
                         "geo": genesis.geo,
                         "group": genesis.group,
@@ -303,7 +304,7 @@ app.get('/nodefactory', function (req, res) {
                         "pulseTimestamp": "0",
                         "srcMint": "" + newMint,
                         // =
-                        "owls": newOwlList,
+                        "owls": justMints,
                         //"owls" : getOWLs(me.group),  //owls other guy is reporting
                         //node statistics - we measure these ourselves
                         //"owl": ""+OWL,   //how long it took this node's last record to reach me

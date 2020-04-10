@@ -10,7 +10,7 @@
 //    PUBLICKEY - Public key 
 //
 
-import { dump, now, mintList, SRList, ts } from '../lib/lib';
+import { dump, now, mintList, SRList, ts, getMints, getOwls } from '../lib/lib';
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -195,7 +195,7 @@ app.get('/nodefactory', function (req, res) {
             "pulseTimestamp": ""+now(), //last pulseTimestamp received from this node
             "srcMint" : "1",      //Genesis node would send this 
             // =
-            "owls" : "1",  //owls other guy is reporting
+            "owls" : "1",        //Startup - I am the only one here
             //"owls" : getOWLs(me.group),  //owls other guy is reporting
             //node statistics - we measure these ourselves
             //"owl": ""+OWL,   //how long it took this node's last record to reach me
@@ -290,11 +290,12 @@ app.get('/nodefactory', function (req, res) {
             //get group owner (genesis group) OWLS
             mintList(expressRedisClient, genesis.group, function(err,owls){
                //var genesisGroup=genesis.geo+":"+genesis.group;
-               var newOwlList=genesisGroup.owls+","+newMint;
+               var newOwlList=genesisGroup.owls+","+newMint+"="+OWL;
                console.log(ts()+"Genesis.group="+genesisGroup+" newOwlList="+newOwlList);
 
                expressRedisClient.hset(genesisGroup, "owls", newOwlList, function (err,reply){
                });
+               var justMints=getMints(genesisGroup);
 
                var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                   "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
@@ -323,7 +324,7 @@ app.get('/nodefactory', function (req, res) {
                      "pulseTimestamp": "0", //last pulseTimestamp received from this node
                      "srcMint" : ""+newMint,      //claimed mint # for this node
                      // =
-                     "owls" : newOwlList,  //owls other guy (this is ME so 0!) is reporting
+                     "owls" : justMints,  //owls other guy (this is ME so 0!) is reporting
                      //"owls" : getOWLs(me.group),  //owls other guy is reporting
                      //node statistics - we measure these ourselves
                      //"owl": ""+OWL,   //how long it took this node's last record to reach me
