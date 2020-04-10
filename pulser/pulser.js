@@ -50,12 +50,12 @@ function pulse() {
                     var pulseGroup = pulseLabel.split(":")[1];
                     var pulseGroupOwner = pulseGroup.split(".")[0];
                     var ownerPulseLabel = pulseGroupOwner + ":" + pulseGroupOwner + ".1";
-                    console.log("ownerPulseLabel=" + ownerPulseLabel);
+                    //console.log("ownerPulseLabel="+ownerPulseLabel);
                     redisClient.hgetall(ownerPulseLabel, function (err, pulseGroupOwner) {
-                        console.log(lib_1.ts() + "pulseGroupOwner record=" + lib_1.dump(pulseGroupOwner));
-                        console.log(lib_1.ts() + "pulseGroupOwner.owls=" + pulseGroupOwner.owls);
+                        //console.log(ts()+"pulseGroupOwner record="+dump(pulseGroupOwner));
+                        //console.log(ts()+"pulseGroupOwner.owls="+pulseGroupOwner.owls);
                         var emptyOwls = pulseGroupOwner.owls.replace(/=[0-9]*/g, '').split(",");
-                        console.log("emptyOwls=" + emptyOwls);
+                        //console.log("emptyOwls="+emptyOwls);
                         //make a pulse message
                         //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
                         //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46

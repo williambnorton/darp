@@ -18,7 +18,7 @@ redisClient.hgetall("mint:0", function (err, me) {
             console.log("handlePulse() - can't find me entry...exitting");
             process.exit(127);
         }
-        console.log("handlePulse(): Configuration  me=" + lib_js_1.dump(me));
+        //console.log("handlePulse(): Configuration  me="+dump(me));
         MYBUILD = me.version;
         server.bind(me.port, "0.0.0.0");
     }
@@ -32,7 +32,7 @@ redisClient.hgetall("mint:1", function (err, genesis) {
             console.log("handlePulse() - can't find genesis entry...exitting");
             process.exit(127);
         }
-        console.log("handlePulse(): genesis=" + lib_js_1.dump(genesis));
+        //console.log("handlePulse(): genesis="+dump(genesis));
         //server.bind(me.port, "0.0.0.0");
     }
 });
@@ -70,7 +70,7 @@ server.on('message', function (message, remote) {
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
-    console.log(lib_js_1.ts() + "handlepulse(): owls=" + owls);
+    //console.log(ts()+"handlepulse(): owls="+owls);
     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         if (oldPulse == null) {
@@ -94,7 +94,7 @@ server.on('message', function (message, remote) {
         };
         redisClient.hmset(pulseLabel, pulse, function (err, reply) {
             redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
-                console.log("HANDLEPULSE Final pulseRecord=" + lib_js_1.dump(pulseRecord));
+                console.log("HANDLEPULSE STOWING pulseRecord=" + lib_js_1.dump(pulseRecord));
                 redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl);
             });
             console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + pulse.version + " vs. " + MYBUILD);
