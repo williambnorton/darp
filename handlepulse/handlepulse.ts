@@ -108,6 +108,8 @@ server.on('message', function(message, remote) {
     //
     //  if groupOwner pulsed this - make sure we have the credentials for each node
     //
+    console.log("pulse="+dump(pulse));
+
     if (pulse.srcMint==1) {
         console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
