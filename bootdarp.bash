@@ -17,14 +17,17 @@ export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 export MYIP=$MYIP
 #echo `date` MYIP=$MYIP
+echo `date` HERE YOU REALLY SHOULD COMPLAIN IF NO GENESIS WAS SET
 
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" = "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
 fi
-echo `date` Genesis node: $GENESIS  "<--- Set this environmental variable to launch your own pulseGroup"
-GENESISIP=$GENESIS  #`echo $GENESIS | awk -F, '{ print $1 }'`
 
+echo `date` Genesis node: $GENESIS  "<--- Set this environmental variable to launch your own pulseGroup"
+GENESISIP=`echo $GENESIS | awk -F, '{ print $1 }'`
+echo GENESISIP=$GENESISIP
+sleep 3
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
 #
