@@ -22,8 +22,8 @@ export MYIP=$MYIP
 if [ "$GENESIS" = "" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
    GENESISIP=$GENESIS  #`echo $GENESIS | awk -F, '{ print $1 }'`
-   #echo `date` Genesis node: $GENESIS
 fi
+echo `date` Genesis node: $GENESIS  "<--- Set this environmental variable to launch your own pulseGroup"
 
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
