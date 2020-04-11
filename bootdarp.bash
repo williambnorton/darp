@@ -60,7 +60,7 @@ do
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE"
-        echo `date` "I AM GENESIS NODE"
+        echo `date` "I AM GENESIS NODE - Starting up auto-updater"
         sleep 1
         ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
     fi
