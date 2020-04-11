@@ -100,22 +100,25 @@ server.on('message', function (message, remote) {
         //  if groupOwner pulsed this - make sure we have the credentials for each node
         //
         console.log("pulse=" + lib_js_1.dump(pulse));
-        if (pulse.srcMint == "1") {
+        if (pulse.srcMint == "1") { ///Believe the group Owner wrt population
             console.log("HANDLEPULSE() pulse from Genesis node");
             var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
             console.log("HANDLEPULSE() mints=" + mints);
-            for (var mint in mints) {
+            var _loop_1 = function () {
                 var mintLabel = mints[mint];
                 console.log("HANDLEPULSE mint=" + mint + " mints=" + mints + " mintLabel=" + lib_js_1.dump(mintLabel));
                 redisClient.exists("mint:" + mintLabel, function (err, exists) {
                     if (err)
                         console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                    console.log("HANDLEPULSE " + mints[mint] + " exists=" + exists);
+                    console.log("HANDLEPULSE " + mintLabel + " exists=" + exists);
                     if (exists != "1") {
-                        console.log("Fetching mint=" + mints[mint] + " from genesis Node");
-                        lib_js_1.fetchMint(mints[mint]);
+                        console.log("Fetching mint=" + mintLabel + " from genesis Node");
+                        lib_js_1.fetchMint(mintLabel);
                     }
                 });
+            };
+            for (var mint in mints) {
+                _loop_1();
             }
         }
         redisClient.hmset(pulseLabel, pulse, function (err, reply) {

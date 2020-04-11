@@ -110,20 +110,20 @@ server.on('message', function(message, remote) {
     //
     console.log("pulse="+dump(pulse));
 
-    if (pulse.srcMint=="1") {
+    if (pulse.srcMint=="1") {   ///Believe the group Owner wrt population
         console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
         console.log("HANDLEPULSE() mints="+mints);
 
         for (var mint in mints) {
-          var mintLabel=mints[mint];
+          let mintLabel=mints[mint];
           console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
           redisClient.exists("mint:"+mintLabel, function (err,exists) {
             if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-            console.log("HANDLEPULSE "+mints[mint]+" exists="+exists)
+            console.log("HANDLEPULSE "+mintLabel+" exists="+exists)
             if (exists != "1" ) {
-              console.log("Fetching mint="+mints[mint]+" from genesis Node");
-              fetchMint(mints[mint]);
+              console.log("Fetching mint="+mintLabel+" from genesis Node");
+              fetchMint(mintLabel);
             }
 
           });
