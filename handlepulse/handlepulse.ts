@@ -116,14 +116,14 @@ server.on('message', function(message, remote) {
         console.log("HANDLEPULSE() mints="+mints);
 
         for (var mint in mints) {
-          var mintEntry=mints[mint];
-          console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintEntry="+dump(mintEntry))
-          redisClient.exists("mint:"+mint, function (err,exists) {
+          var mintLabel=mints[mint];
+          console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
+          redisClient.exists("mint:"+mintLabel, function (err,exists) {
             if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
             console.log("HANDLEPULSE exists="+exists)
             if (exists != "1" ) {
-              console.log("Fetching mint="+mint+" from genesis Node");
-              fetchMint(mint);
+              console.log("Fetching mint="+mintLabel+" from genesis Node");
+              fetchMint(mintLabel);
             }
 
           });
