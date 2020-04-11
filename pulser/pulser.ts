@@ -19,7 +19,7 @@ var GEO="";  //global variable for marking source of pulse
   () => pulse,
   10000
 );*/
-pulse();
+setTimeout(pulse,1000);
 //
 //  pulse - pulser for each me.pulseGroups
 //
