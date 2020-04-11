@@ -105,9 +105,12 @@ server.on('message', function (message, remote) {
             var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
             console.log("HANDLEPULSE() mints=" + mints);
             for (var mint in mints) {
+                var mintEntry = mints[mint];
+                console.log("HANDLEPULSE mint=" + mint + " mints=" + mints + " mintEntry=" + lib_js_1.dump(mintEntry));
                 redisClient.exists("mint:" + mint, function (err, exists) {
                     if (err)
                         console.log("handlePulse - error checking mint exists. ERROR - should not happen");
+                    console.log("HANDLEPULSE exists=" + exists);
                     if (exists != "1") {
                         console.log("Fetching mint=" + mint + " from genesis Node");
                         lib_js_1.fetchMint(mint);
