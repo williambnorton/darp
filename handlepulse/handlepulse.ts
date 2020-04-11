@@ -1,7 +1,7 @@
 //
 //  handlePulse - receive incoming pulses and store in redis
 //
-import { now, ts ,dump } from '../lib/lib.js';
+import { now, ts ,dump, fetchMint } from '../lib/lib.js';
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
@@ -104,6 +104,22 @@ server.on('message', function(message, remote) {
       inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
       inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
+    //
+    //  if groupOwner pulsed this - make sure we have the credentials for each node
+    //
+    if (pulse.srcMint==1) {
+        var mints=pulse.owls.owls.replace(/=[0-9]*/g,'');
+        for (var mint in mints) {
+          redisClient.exists("mint:"+mint, function (err,exists) {
+            if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
+            if (parseInt(exists.toString('utf-8')) != 1 ) {
+              console.log("Fetching mint="+mint);
+              fetchMint(mint);
+            }
+
+          });
+        }
+    }
     redisClient.hmset(pulseLabel,pulse, function (err,reply) {
       redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
         console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
