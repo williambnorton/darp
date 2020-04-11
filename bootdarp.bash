@@ -55,16 +55,19 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * * * * * * * Running DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
     if [ "$GENESISIP" = "$MYIP" ]; then
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE"
         echo `date` "I AM GENESIS NODE - Starting up auto-updater"
-        sleep 1
         ( ./updateSW.bash -deamon 2>&1 ) & ####>/dev/null & #keep it checking every 30 seconds
     fi
-
+    sleep 1
 
     #npm update
     #npm i @types/node
