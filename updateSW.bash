@@ -22,8 +22,10 @@ do
     cd /tmp/darp
     NEW=`ls Build*`
 
+   echo UPDATESW.BASH "$CURRENT" "$NEW" 
+
    if [ "$CURRENT" == "$NEW" ]; then
-	    #echo `date` No Change DAEMON=$DAEMON
+	    echo `date` No Change DAEMON=$DAEMON
         if [ "$DAEMON" != "YES" ]; then
             echo "Exitting $0";
 	        exit 0
