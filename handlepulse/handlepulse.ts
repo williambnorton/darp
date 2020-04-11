@@ -110,7 +110,7 @@ server.on('message', function(message, remote) {
     //
     console.log("pulse="+dump(pulse));
 
-    if (pulse.srcMint==1) {
+    if (pulse.srcMint=="1") {
         console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
         console.log("HANDLEPULSE() mints="+mints);
