@@ -23,7 +23,10 @@ app.get('/', function (req, res) {
     console.log("fetching '/' state");
     getConfig(function (config) {
         console.log("app.get('/' callback config=" + lib_1.dump(config));
-        res.end(JSON.stringify(config, null, 2));
+        expressRedisClient.hgetall("mint:0", function (err, me) {
+            config.mintTable["mint:0"] = me;
+            res.end(JSON.stringify(config, null, 2));
+        });
     });
     return;
 });
