@@ -27,6 +27,7 @@ redisClient.hgetall("mint:0", function (err,me) {
       if (err) {
         console.log("hgetall genesis failed");
       } else {
+        console.log("HANDLEPULSE(): genesis="+dump(genesis));
         if ( genesis.publickey == me.publickey)
           isGenesisNode=true;
         if (genesis==null) {
