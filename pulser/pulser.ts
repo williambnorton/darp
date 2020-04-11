@@ -20,12 +20,13 @@ var GEO="";  //global variable for marking source of pulse
   10000
 );*/
 setTimeout(pulse,1000);
+var datagramClient=dgram.createSocket('udp4');
+
 //
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
   setTimeout(pulse,10 * 1000);
-  var datagramClient=dgram.createSocket('udp4');
 
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
@@ -99,7 +100,7 @@ function pulse() {
       }
     });
   });
-  datagramClient.close();
+  //datagramClient.close();
 }
 
 //
