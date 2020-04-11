@@ -28,7 +28,7 @@ app.get('/', function (req, res) {
     return;
 });
 app.get('/state', function (req, res) {
-    console.log("EXPRess fetching '/state' state");
+    //console.log("EXPRess fetching '/state' state");
     getConfig(function (config) {
         //console.log("app.get('/state' callback config="+dump(config));
         res.setHeader('Content-Type', 'application/json');
