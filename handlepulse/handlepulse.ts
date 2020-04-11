@@ -28,12 +28,12 @@ redisClient.hgetall("mint:0", function (err,me) {
         console.log("hgetall genesis failed");
       } else {
         console.log("HANDLEPULSE(): genesis="+dump(genesis));
-        if ( genesis.publickey == me.publickey)
+        if ( genesis && (genesis.publickey == me.publickey))
           isGenesisNode=true;
-        if (genesis==null) {
-          console.log("handlePulse() - can't find genesis entry...exitting");
-          process.exit(127);
-        }
+        //if (genesis==null) {
+        //  console.log("handlePulse() - can't find genesis entry...exitting");
+        //  process.exit(127);
+        //}
         //console.log("handlePulse(): genesis="+dump(genesis));
         //server.bind(me.port, "0.0.0.0");
       }
