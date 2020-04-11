@@ -99,7 +99,7 @@ server.on('message', function (message, remote) {
         //  if groupOwner pulsed this - make sure we have the credentials for each node
         //
         if (pulse.srcMint == 1) {
-            var mints = pulse.owls.owls.replace(/=[0-9]*/g, '');
+            var mints = pulse.owls.replace(/=[0-9]*/g, '');
             for (var mint in mints) {
                 redisClient.exists("mint:" + mint, function (err, exists) {
                     if (err)
