@@ -118,7 +118,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
       console.log("buildPulsePkt(): ERROR - ");
     } else {
       if (mintEntry!=null) {
-        console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
+        //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
         if (mintEntry.owl=="") pulseMsg+=mint+",";
         else pulseMsg+=mint+"="+mintEntry.owl+",";
         sendToAry.push({"ipaddr":mintEntry.ipaddr,"port":mintEntry.port});

@@ -106,7 +106,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         }
         else {
             if (mintEntry != null) {
-                console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry=" + lib_1.dump(mintEntry));
+                //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
                 if (mintEntry.owl == "")
                     pulseMsg += mint + ",";
                 else
