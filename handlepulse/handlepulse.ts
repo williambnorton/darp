@@ -109,12 +109,15 @@ server.on('message', function(message, remote) {
     //  if groupOwner pulsed this - make sure we have the credentials for each node
     //
     if (pulse.srcMint==1) {
-        var mints=pulse.owls.replace(/=[0-9]*/g,'');
+        console.log("HANDLEPULSE() pulse from Genesis node");
+        var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
+        console.log("HANDLEPULSE() mints="+mints);
+
         for (var mint in mints) {
           redisClient.exists("mint:"+mint, function (err,exists) {
             if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
             if (exists != "1" ) {
-              console.log("Fetching mint="+mint);
+              console.log("Fetching mint="+mint+" from genesis Node");
               fetchMint(mint);
             }
 
