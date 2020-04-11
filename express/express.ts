@@ -31,6 +31,17 @@ app.get('/', function (req, res) {
    })
    return
 });
+//
+//
+//
+app.get('/mint/:mint', function (req, res) {
+   console.log("fetching '/mint' state");
+
+   expressRedisClient.hgetall("mint:"+req.params.mint, function(err, mintEntry) {
+      res.end(JSON.stringify(mintEntry, null, 2));
+      return;
+   });
+});
 
 app.get('/state', function (req, res) {
    //console.log("EXPRess fetching '/state' state");

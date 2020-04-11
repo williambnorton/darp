@@ -40,6 +40,8 @@ do
         kill `ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
        
         cd /tmp
+
+
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
         mv darp $HOME
         echo `date` New Code installed:
@@ -47,15 +49,7 @@ do
 	    exit 1
     fi
 
-    #npm update
-    #npm i @types/node
-    #npm install redis express
-#
-#   We are in the moved old DARP directory (if things changed)
-#
+    echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
 
-    #echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
-    #sleep 1
-    #echo `date` Waiting 
     sleep $POLLFREQ
 done
