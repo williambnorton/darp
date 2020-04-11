@@ -11,6 +11,8 @@ var server = dgram.createSocket('udp4');
 
 var MYBUILD="";
 
+var isGenesisNode=false;
+
 redisClient.hgetall("mint:0", function (err,me) {
   if (err) {
     console.log("hgetall me failed");
@@ -21,22 +23,25 @@ redisClient.hgetall("mint:0", function (err,me) {
     }
     //console.log("handlePulse(): Configuration  me="+dump(me));
     MYBUILD=me.version;
+    redisClient.hgetall("mint:1", function (err,genesis) {
+      if (err) {
+        console.log("hgetall genesis failed");
+      } else {
+        if ( genesis.publickey == me.publickey)
+          isGenesisNode=true;
+        if (genesis==null) {
+          console.log("handlePulse() - can't find genesis entry...exitting");
+          process.exit(127);
+        }
+        //console.log("handlePulse(): genesis="+dump(genesis));
+        //server.bind(me.port, "0.0.0.0");
+      }
+    });
     server.bind(me.port, "0.0.0.0");
   }
 });
 
-redisClient.hgetall("mint:1", function (err,genesis) {
-  if (err) {
-    console.log("hgetall genesis failed");
-  } else {
-    if (genesis==null) {
-      console.log("handlePulse() - can't find genesis entry...exitting");
-      process.exit(127);
-    }
-    //console.log("handlePulse(): genesis="+dump(genesis));
-    //server.bind(me.port, "0.0.0.0");
-  }
-});
+
 
 
 //
@@ -106,7 +111,7 @@ server.on('message', function(message, remote) {
       });
 
       console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
-      if (pulse.version!=MYBUILD) {
+      if ( pulse.version != MYBUILD && !isGenesisNode ) {
         console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
         process.exit(36);  //SOFTWARE RELOAD
       }
