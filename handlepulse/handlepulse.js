@@ -110,10 +110,10 @@ server.on('message', function (message, remote) {
                 redisClient.exists("mint:" + mintLabel, function (err, exists) {
                     if (err)
                         console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                    console.log("HANDLEPULSE exists=" + exists);
+                    console.log("HANDLEPULSE " + mints[mint] + " exists=" + exists);
                     if (exists != "1") {
-                        console.log("Fetching mint=" + mintLabel + " from genesis Node");
-                        lib_js_1.fetchMint(mintLabel);
+                        console.log("Fetching mint=" + mints[mint] + " from genesis Node");
+                        lib_js_1.fetchMint(mints[mint]);
                     }
                 });
             }
