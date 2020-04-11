@@ -47,7 +47,7 @@ do
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
     ( redis-server --save "" --appendonly no 2>&1 ) >/dev/null &  #store nothing
     echo `date`" redis started"
-    sleep 1
+    sleep 2
 
     #echo `date` $0 : killing old processes to be restarted
     #kill `cat $DARPDIR/*.pid`
@@ -126,6 +126,7 @@ do
     echo `date` DARP Finished rc=$rc
     echo `date` DARP Finished rc=$rc
     echo `date` DARP Finished rc=$rc
+    sleep 5
     #
     #   Finished DARP - exit
     #
