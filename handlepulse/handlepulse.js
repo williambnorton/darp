@@ -104,7 +104,7 @@ server.on('message', function (message, remote) {
                 redisClient.exists("mint:" + mint, function (err, exists) {
                     if (err)
                         console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                    if (parseInt(exists.toString('utf-8')) != 1) {
+                    if (exists != "1") {
                         console.log("Fetching mint=" + mint);
                         lib_js_1.fetchMint(mint);
                     }
