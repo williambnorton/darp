@@ -178,10 +178,13 @@ function newMint(mint) {
           });
           res.on("end", () => {
               var mintEntry = JSON.parse(body);
-              //console.log("mint:"+mint+"="+dump(mintEntry));
-              redisClient.hmset("mint:"+mint, mintEntry );
-              console.log("mint:"+mint+"="+dump(mintEntry)+" WRITTEN TO REDIS");
-              var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+              if (mintEntry==null) {
+                console.log("Genesis node says no such mint: "+mint+" why are you asking. Should return BS record to upset discovery algorithms");
+              } else {
+                //console.log("mint:"+mint+"="+dump(mintEntry));
+                redisClient.hmset("mint:"+mint, mintEntry );
+                console.log("mint:"+mint+"="+dump(mintEntry)+" WRITTEN TO REDIS");
+                var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
                   "geo" : mintEntry.geo,            //record index (key) is <geo>:<genesisGroup>
                   "group": mintEntry.group,      //add all nodes to genesis group
                   "seq" : "0",         //last sequence number heard
@@ -198,17 +201,18 @@ function newMint(mint) {
                   "outMsgs": "0",
                   "pktDrops": "0"     //as detected by missed seq#
                   //"remoteState": "0"   //and there are mints : owls for received pulses 
-            };
-            redisClient.hmset(mintEntry.geo+":"+mintEntry.group, newSegmentEntry);
-            redisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,newSegment) {
-              console.log("FETCHED MINT - NOW MAKE AN ENTRY "+mintEntry.geo+":"+mintEntry.group+" -----> ADDED New Segment: "+dump(newSegment));
-              redisClient.hmset("gSRlist", {
-                  [mintEntry.geo+":"+mintEntry.group] : mint
-              });
-              redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
-          })
-          });
-      });
-  })
+                };
+                redisClient.hmset(mintEntry.geo+":"+mintEntry.group, newSegmentEntry);
+                redisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,newSegment) {
+                  console.log("FETCHED MINT - NOW MAKE AN ENTRY "+mintEntry.geo+":"+mintEntry.group+" -----> ADDED New Segment: "+dump(newSegment));
+                  redisClient.hmset("gSRlist", {
+                    [mintEntry.geo+":"+mintEntry.group] : mint
+                  });
+                  redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
+                });
+              }
+            });
+          });  //res.on end
+    })
   
   }

@@ -169,37 +169,42 @@ function newMint(mint) {
             });
             res.on("end", function () {
                 var mintEntry = JSON.parse(body);
-                //console.log("mint:"+mint+"="+dump(mintEntry));
-                redisClient.hmset("mint:" + mint, mintEntry);
-                console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
-                var newSegmentEntry = {
-                    "geo": mintEntry.geo,
-                    "group": mintEntry.group,
-                    "seq": "0",
-                    "pulseTimestamp": "0",
-                    "srcMint": "" + mint,
-                    // =
-                    "owls": "",
-                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                    //node statistics - we measure these ourselves
-                    "owl": "",
-                    "inOctets": "0",
-                    "outOctets": "0",
-                    "inMsgs": "0",
-                    "outMsgs": "0",
-                    "pktDrops": "0" //as detected by missed seq#
-                    //"remoteState": "0"   //and there are mints : owls for received pulses 
-                };
-                redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
-                redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
-                    var _a;
-                    console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
-                    redisClient.hmset("gSRlist", (_a = {},
-                        _a[mintEntry.geo + ":" + mintEntry.group] = mint,
-                        _a));
-                    redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
-                });
+                if (mintEntry == null) {
+                    console.log("Genesis node says no such mint: " + mint + " why are you asking. Should return BS record to upset discovery algorithms");
+                }
+                else {
+                    //console.log("mint:"+mint+"="+dump(mintEntry));
+                    redisClient.hmset("mint:" + mint, mintEntry);
+                    console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
+                    var newSegmentEntry = {
+                        "geo": mintEntry.geo,
+                        "group": mintEntry.group,
+                        "seq": "0",
+                        "pulseTimestamp": "0",
+                        "srcMint": "" + mint,
+                        // =
+                        "owls": "",
+                        //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                        //node statistics - we measure these ourselves
+                        "owl": "",
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "pktDrops": "0" //as detected by missed seq#
+                        //"remoteState": "0"   //and there are mints : owls for received pulses 
+                    };
+                    redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
+                    redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
+                        var _a;
+                        console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
+                        redisClient.hmset("gSRlist", (_a = {},
+                            _a[mintEntry.geo + ":" + mintEntry.group] = mint,
+                            _a));
+                        redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
+                    });
+                }
             });
-        });
+        }); //res.on end
     });
 }
