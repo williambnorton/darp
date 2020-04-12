@@ -25,9 +25,9 @@ do
    echo UPDATESW.BASH "$CURRENT" "$NEW" 
 
    if [ "$CURRENT" == "$NEW" ]; then
-	    echo `date` No Change DAEMON=$DAEMON
+	    #echo `date` No Change DAEMON=$DAEMON
         if [ "$DAEMON" != "YES" ]; then
-            echo "Exitting $0";
+            echo "updateSW.bash DONE WITH SINGLE STARTUP RUN....Exitting $0";
 	        exit 0
         fi
     else

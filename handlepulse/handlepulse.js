@@ -96,6 +96,7 @@ server.on('message', function (message, remote) {
             inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
             inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
         };
+        redisClient.publish("pulse", JSON.stringify(pulse));
         //
         //  if groupOwner pulsed this - make sure we have the credentials for each node
         //
@@ -112,7 +113,7 @@ server.on('message', function (message, remote) {
                     //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
                     if (!mintValue) {
                         //console.log("Fetching mint="+mintLabel+" from genesis Node");
-                        lib_js_1.fetchMint(mintLabel);
+                        newMint(mintLabel); //new Mint
                     }
                 });
             };
@@ -150,4 +151,53 @@ function nth_occurrence(string, char, nth) {
             return length_up_to_first_index + next_occurrence;
         }
     }
+}
+//
+//  newMint() - fetch the mintEntry from the group Owner and create a pulseGroup node entry
+//
+function newMint(mint) {
+    var http = require("http");
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/mint/" + mint;
+        console.log("FETCHMINT              fetchMint(): url=" + url);
+        http.get(url, function (res) {
+            res.setEncoding("utf8");
+            var body = "";
+            res.on("data", function (data) {
+                body += data;
+            });
+            res.on("end", function () {
+                var mintEntry = JSON.parse(body);
+                //console.log("mint:"+mint+"="+dump(mintEntry));
+                redisClient.hmset("mint:" + mint, mintEntry);
+                console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
+                var newSegmentEntry = {
+                    "geo": mintEntry.geo,
+                    "group": mintEntry.group,
+                    "seq": "0",
+                    "pulseTimestamp": "0",
+                    "srcMint": "" + mint,
+                    // =
+                    "owls": "",
+                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                    //node statistics - we measure these ourselves
+                    "owl": "",
+                    "inOctets": "0",
+                    "outOctets": "0",
+                    "inMsgs": "0",
+                    "outMsgs": "0",
+                    "pktDrops": "0" //as detected by missed seq#
+                    //"remoteState": "0"   //and there are mints : owls for received pulses 
+                };
+                redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
+                redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
+                    var _a;
+                    console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
+                    redisClient.hmset("gSRlist", (_a = {},
+                        _a[mintEntry.geo + ":" + mintEntry.group] = mint,
+                        _a));
+                });
+            });
+        });
+    });
 }
