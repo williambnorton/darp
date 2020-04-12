@@ -134,6 +134,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
             for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
               if (typeof node != "undefined" && node != null) {
+
               //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
@@ -141,7 +142,10 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     networkClient.close();
                   } else {
                     //console.log("sent dump node="+dump(node))
-                    console.log(pulseMsg+" sent to "+node.ipaddr+":"+node.port+" ");
+                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
+                    console.log(message);
+                    redisClient.publish("pulses.out",message)
+
                   }
                   //update out stats on this pulse record
                   //var pulseLabel=mintEntry.geo+":"+mintEntry.group;

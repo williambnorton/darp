@@ -128,7 +128,9 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                     }
                                     else {
                                         //console.log("sent dump node="+dump(node))
-                                        console.log(pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " ");
+                                        var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " ";
+                                        console.log(message);
+                                        redisClient.publish("pulses.out", message);
                                     }
                                     //update out stats on this pulse record
                                     //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
