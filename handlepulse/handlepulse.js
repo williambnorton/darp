@@ -96,7 +96,7 @@ server.on('message', function (message, remote) {
             inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
             inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
         };
-        redisClient.publish("pulse", JSON.stringify(pulse));
+        redisClient.publish("pulses", JSON.stringify(pulse));
         //
         //  if groupOwner pulsed this - make sure we have the credentials for each node
         //
