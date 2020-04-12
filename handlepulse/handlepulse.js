@@ -99,31 +99,31 @@ server.on('message', function (message, remote) {
         //
         //  if groupOwner pulsed this - make sure we have the credentials for each node
         //
-        console.log("pulse=" + lib_js_1.dump(pulse));
+        //console.log("pulse="+dump(pulse));
         if (pulse.srcMint == "1") { ///Believe the group Owner wrt population
-            console.log("HANDLEPULSE() pulse from Genesis node");
+            //console.log("HANDLEPULSE() pulse from Genesis node");
             var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
-            console.log("HANDLEPULSE() mints=" + mints);
             var _loop_1 = function () {
                 var mintLabel = mints[mint];
-                console.log("HANDLEPULSE mint=" + mint + " mints=" + mints + " mintLabel=" + lib_js_1.dump(mintLabel));
+                //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
                 redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
                     if (err)
                         console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                    console.log("HANDLEPULSE " + mintLabel + " mintValue=" + mintValue);
+                    //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
                     if (!mintValue) {
-                        console.log("Fetching mint=" + mintLabel + " from genesis Node");
+                        //console.log("Fetching mint="+mintLabel+" from genesis Node");
                         lib_js_1.fetchMint(mintLabel);
                     }
                 });
             };
+            //console.log("HANDLEPULSE() mints="+mints);
             for (var mint in mints) {
                 _loop_1();
             }
         }
         redisClient.hmset(pulseLabel, pulse, function (err, reply) {
             redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
-                console.log("HANDLEPULSE STOWING pulseRecord=" + lib_js_1.dump(pulseRecord));
+                //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
                 redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl);
             });
             console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + pulse.version + " vs. " + MYBUILD);
