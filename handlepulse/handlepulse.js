@@ -169,8 +169,8 @@ function newMint(mint) {
             });
             res.on("end", function () {
                 var mintEntry = JSON.parse(body);
-                if (mintEntry == null) {
-                    console.log("Genesis node says no such mint: " + mint + " why are you asking. Should return BS record to upset discovery algorithms");
+                if (mintEntry == null || typeof mintEntry.geo == "undefined") {
+                    console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
                 }
                 else {
                     console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry));
@@ -203,6 +203,17 @@ function newMint(mint) {
                             redisClient.hmset("gSRlist", (_a = {},
                                 _a[mintEntry.geo + ":" + mintEntry.group] = mint,
                                 _a));
+                            //
+                            //  if Genesis node, expire in 1 minute before removing it
+                            //  else 5 minutes
+                            if (mintEntry.geo == mintEntry.group.split(".")[0]) {
+                                //GENESIS NODE RECORD
+                                redisClient.expire(mintEntry.geo + ":" + mintEntry.group, 2); //expire genesis record 
+                                //by removing this entry, the owls don't exist, noone will get pulsed
+                            }
+                            else {
+                                redisClient.expire(mintEntry.geo + ":" + mintEntry.group, 5); //expire non-genesis record 
+                            }
                             redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
                         });
                     });
