@@ -160,7 +160,7 @@ function newMint(mint) {
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/mint/" + mint;
-        console.log("FETCHMINT              fetchMint(): url=" + url);
+        //console.log("FETCHMINT              fetchMint(): url="+url);
         http.get(url, function (res) {
             res.setEncoding("utf8");
             var body = "";
@@ -173,7 +173,7 @@ function newMint(mint) {
                     console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
                 }
                 else {
-                    console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry));
+                    //console.log("mint:"+mint+"="+dump(mintEntry));
                     redisClient.hmset("mint:" + mint, mintEntry, function (err, reply) {
                         console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
                         var newSegmentEntry = {
@@ -196,7 +196,7 @@ function newMint(mint) {
                         };
                         console.log("newSegmentEntry=" + lib_js_1.dump(newSegmentEntry));
                         redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
-                        console.log("Past first set");
+                        //console.log("Past first set");
                         redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
                             var _a;
                             console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
