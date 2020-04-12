@@ -40,6 +40,16 @@ app.get('/mint/:mint', function (req, res) {
         return;
     });
 });
+app.get('/version', function (req, res) {
+    console.log("EXPRESS fetching '/version'");
+    expressRedisClient.hget("mint:0", "version", function (err, version) {
+        console.log("version=" + version);
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify(version));
+        return;
+    });
+});
 app.get('/state', function (req, res) {
     //console.log("EXPRess fetching '/state' state");
     getConfig(function (config) {
