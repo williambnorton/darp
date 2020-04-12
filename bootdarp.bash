@@ -21,16 +21,16 @@ echo `date` HERE YOU REALLY SHOULD COMPLAIN IF NO GENESIS WAS SET
 
 if [ "$GENESIS" == "" ]; then
     echo `date` You must specify a genesis node 
-    echo `date` Add -e"<ipaddr>" into the docker run command
+    echo `date` Add -e"GENESIS=<ipaddr>" into the docker run command
     exit -1
 fi
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
-if [ "$GENESIS" = "WBN" ]; then
+if [ "$GENESIS" = "public" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
 fi
 
 echo `date` Genesis node: $GENESIS  "<--- Set this environmental variable to launch your own pulseGroup"
-GENESISIP=`echo $GENESIS | awk -F, '{ print $1 }'`
+GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
 echo GENESISIP=$GENESISIP
 sleep 3
 #update SW is destructive - should be done after run in docker loop
