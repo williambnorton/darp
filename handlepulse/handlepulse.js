@@ -173,7 +173,7 @@ function newMint(mint) {
                     console.log("Genesis node says no such mint: " + mint + " why are you asking. Should return BS record to upset discovery algorithms");
                 }
                 else {
-                    //console.log("mint:"+mint+"="+dump(mintEntry));
+                    console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry));
                     redisClient.hmset("mint:" + mint, mintEntry);
                     console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
                     var newSegmentEntry = {
@@ -194,7 +194,9 @@ function newMint(mint) {
                         "pktDrops": "0" //as detected by missed seq#
                         //"remoteState": "0"   //and there are mints : owls for received pulses 
                     };
+                    console.log("newSegmentEntry=" + lib_js_1.dump(newSegmentEntry));
                     redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
+                    console.log("Past first set");
                     redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
                         var _a;
                         console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
