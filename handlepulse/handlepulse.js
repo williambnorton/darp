@@ -101,7 +101,7 @@ server.on('message', function (message, remote) {
         //  if groupOwner pulsed this - make sure we have the credentials for each node
         //
         //console.log("pulse="+dump(pulse));
-        if (pulse.srcMint == "1") { ///Believe the group Owner wrt population
+        if (pulse.srcMint == "1" || pulse.srcMint != "1") { ///Believe the group Owner wrt population
             //console.log("HANDLEPULSE() pulse from Genesis node");
             var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
             var _loop_1 = function () {
@@ -121,6 +121,9 @@ server.on('message', function (message, remote) {
             for (var mint in mints) {
                 _loop_1();
             }
+        }
+        else {
+            //pulse from non-genesis node
         }
         redisClient.hmset(pulseLabel, pulse, function (err, reply) {
             redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
@@ -197,7 +200,7 @@ function newMint(mint) {
                     redisClient.hmset("gSRlist", (_a = {},
                         _a[mintEntry.geo + ":" + mintEntry.group] = mint,
                         _a));
-                    redisClient.publish("members", "ADDING pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
+                    redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
                 });
             });
         });

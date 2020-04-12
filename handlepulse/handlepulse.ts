@@ -108,7 +108,7 @@ server.on('message', function(message, remote) {
     //
     //console.log("pulse="+dump(pulse));
 
-    if (pulse.srcMint=="1") {   ///Believe the group Owner wrt population
+    if (pulse.srcMint=="1" || pulse.srcMint!="1" ) {   ///Believe the group Owner wrt population
         //console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
         //console.log("HANDLEPULSE() mints="+mints);
@@ -126,6 +126,10 @@ server.on('message', function(message, remote) {
 
           });
         }
+    } else {
+      //pulse from non-genesis node
+
+
     }
     redisClient.hmset(pulseLabel,pulse, function (err,reply) {
       redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
@@ -205,7 +209,7 @@ function newMint(mint) {
               redisClient.hmset("gSRlist", {
                   [mintEntry.geo+":"+mintEntry.group] : mint
               });
-              redisClient.publish("members","ADDING pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
+              redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
           })
           });
       });
