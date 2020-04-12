@@ -19,6 +19,11 @@ export MYIP=$MYIP
 #echo `date` MYIP=$MYIP
 echo `date` HERE YOU REALLY SHOULD COMPLAIN IF NO GENESIS WAS SET
 
+if [ "$GENESIS" == "" ]; then
+    echo `date` You must specify a genesis node 
+    echo `date` Add -e"<ipaddr>" into the docker run command
+    exit -1
+fi
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node
 if [ "$GENESIS" = "WBN" ]; then
    GENESIS=`curl http://drpeering.com/genesisnodes`
