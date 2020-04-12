@@ -122,6 +122,7 @@ function getConfiguration() {
                     //}  NOT ONE WAY MEASURE - DOES NOT BELONG HERE
                     console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
+                    redisClient.publish("members","ADDED "+pulseEntry.geo)
                 }
 
                 //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );

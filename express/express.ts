@@ -233,6 +233,7 @@ app.get('/nodefactory', function (req, res) {
             console.log("Genesis config="+JSON.stringify(config, null, 2));
          })
          console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
+         expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
 
          return;
       } 
@@ -372,6 +373,7 @@ app.get('/nodefactory', function (req, res) {
                      //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
                      console.log("EXPRESS nodeFactory done");
                   });
+                  expressRedisClient.publish("members","Genesis ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
 
                   console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
 
