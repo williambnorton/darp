@@ -141,9 +141,9 @@ do
     kill `cat $DARPDIR/*.pid`    #kill all processes
     rm $DARPDIR/*.pid
 
-//
-//  
-//
+##
+##
+##
     case $rc in
 
   99)
