@@ -41,9 +41,9 @@ app.get('/mint/:mint', function (req, res) {
     });
 });
 app.get('/version', function (req, res) {
-    console.log("EXPRESS fetching '/version'");
+    //console.log("EXPRESS fetching '/version'");
     expressRedisClient.hget("mint:0", "version", function (err, version) {
-        console.log("version=" + version);
+        //console.log("version="+version);
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.end(JSON.stringify(version));
