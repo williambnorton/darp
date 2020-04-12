@@ -161,7 +161,8 @@ function nth_occurrence (string, char, nth) {
 }
 
 //
-//  newMint() - fetch the mintEntry from the group Owner and create a pulseGroup node entry
+//  newMint() - We received a new Mint in an announcement
+//              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
   const http = require("http");
@@ -204,6 +205,7 @@ function newMint(mint) {
               redisClient.hmset("gSRlist", {
                   [mintEntry.geo+":"+mintEntry.group] : mint
               });
+              redisClient.publish("members","ADDING pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
           })
           });
       });
