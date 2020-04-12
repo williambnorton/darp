@@ -120,17 +120,13 @@ server.on('message', function(message, remote) {
             if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
             //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
             if (!mintValue ) {
-              //console.log("Fetching mint="+mintLabel+" from genesis Node");
+              console.log("Fetching mint="+mintLabel+" from genesis Node");
               newMint(mintLabel);  //new Mint
             }
 
           });
         }
-    } else {
-      //pulse from non-genesis node
-
-
-    }
+    } 
     redisClient.hmset(pulseLabel,pulse, function (err,reply) {
       redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
         //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
