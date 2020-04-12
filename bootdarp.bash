@@ -141,7 +141,21 @@ do
     kill `cat $DARPDIR/*.pid`    #kill all processes
     rm $DARPDIR/*.pid
 
-    if [ -f $DARPDIR/forever ]; then
+//
+//  
+//
+    case $rc in
+
+  99)
+    sudo reboot
+    ;;
+
+  PATTERN_2)
+    
+    ;;
+
+  36)
+        if [ -f $DARPDIR/forever ]; then
         echo `date` handlepulse exitted with rc=$rc
         echo `date` handlepulse exitted with rc=$rc
         echo `date` handlepulse exitted with rc=$rc
@@ -162,5 +176,16 @@ do
         #echo "rc=120 means PAUSE Message"
         exit 36
     fi
+    ;;
+
+  *)
+    echo `date` unexpected rc out of handlepulse rc=$rc
+    ;;
+esac
+echo Sleeping...
+sleep 2
+sleep 5
+
+
 
 done

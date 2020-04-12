@@ -135,7 +135,7 @@ server.on('message', function(message, remote) {
         redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);
       });
 
-      console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
+      //console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
       if ( pulse.version != MYBUILD && !isGenesisNode ) {
         console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
         process.exit(36);  //SOFTWARE RELOAD
