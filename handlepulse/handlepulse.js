@@ -222,16 +222,19 @@ function newMint(mint) {
         }); //res.on end
     });
 }
+//
+//  checkSEversion() - reload SW if there is new code to be had
+//
 setTimeout(checkSWversion, 5 * 1000);
 ;
 function checkSWversion() {
     setTimeout(checkSWversion, 5 * 1000);
     ;
-    console.log("checkSWversion() - currentSW=" + MYBUILD);
+    //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
-        console.log("checkSWversion(): url=" + url);
+        //console.log("checkSWversion(): url="+url);
         http.get(url, function (res) {
             res.setEncoding("utf8");
             var body = "";
@@ -240,6 +243,7 @@ function checkSWversion() {
             });
             res.on("end", function () {
                 var mintEntry = JSON.parse(body);
+                //console.log("mintEntry="+dump(mintEntry));
                 if (mintEntry.version != MYBUILD && !isGenesisNode) {
                     console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + mintEntry.version + " we are running " + MYBUILD + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD
