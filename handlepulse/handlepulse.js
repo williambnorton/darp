@@ -222,3 +222,29 @@ function newMint(mint) {
         }); //res.on end
     });
 }
+setTimeout(checkSWversion, 5 * 1000);
+;
+function checkSWversion() {
+    setTimeout(checkSWversion, 5 * 1000);
+    ;
+    console.log("checkSWversion() - currentSW=" + MYBUILD);
+    var http = require("http");
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+        console.log("checkSWversion(): url=" + url);
+        http.get(url, function (res) {
+            res.setEncoding("utf8");
+            var body = "";
+            res.on("data", function (data) {
+                body += data;
+            });
+            res.on("end", function () {
+                var mintEntry = JSON.parse(body);
+                if (mintEntry.version != MYBUILD && !isGenesisNode) {
+                    console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + mintEntry.version + " we are running " + MYBUILD + " .......process exitting");
+                    process.exit(36); //SOFTWARE RELOAD
+                }
+            });
+        });
+    });
+}

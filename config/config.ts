@@ -102,9 +102,8 @@ function getConfiguration() {
                 console.log(" GENESIS NODE Instantiated itself");
                 redisClient.hset( "mint:0" , "state", "RUNNING" );
             } else {
-                console.log(" -----------------------------------------NON-Genesis configuration");
+                console.log(" ------------------------ " +GEO+" ---------NON-Genesis configuration");
                 console.log("CONFIG(): json="+dump(config));
-
                 console.log("setting gSRlist="+dump(config.gSRlist));
                 redisClient.hmset("gSRlist", config.gSRlist );
                 //install config
@@ -122,6 +121,14 @@ function getConfiguration() {
                     //}  NOT ONE WAY MEASURE - DOES NOT BELONG HERE
                     console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
+                    if (pulseEntry.geo==pulseEntry.group.split(".")[0]) {
+                        //GENESIS NODE RECORD
+                        redisClient.expire(pulse,2)  //expire groupOwner record after 2 minutes
+                        //by removing this entry, the owls don't exist, noone will get pulsed
+                    } else {
+                        redisClient.expire(pulse,5)  //expire groupOwner record after 2 minutes
+
+                    }
                     redisClient.publish("members","ADDED "+pulseEntry.geo)
                 }
 

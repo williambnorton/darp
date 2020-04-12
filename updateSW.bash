@@ -30,6 +30,7 @@ do
             echo "updateSW.bash DONE WITH SINGLE STARTUP RUN....Exitting $0";
 	        exit 0
         fi
+        
     else
 	    echo `date` Software changed. Was $CURRENT Now is $NEW
         cd /tmp/darp
@@ -40,7 +41,6 @@ do
         kill `ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
        
         cd /tmp
-
 
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
         mv darp $HOME

@@ -233,3 +233,34 @@ function newMint(mint) {
     });  //res.on end
   })
 }
+
+setTimeout(checkSWversion,5*1000);;
+
+function checkSWversion() {
+  setTimeout(checkSWversion,5*1000);;
+
+  console.log("checkSWversion() - currentSW="+MYBUILD);
+  const http = require("http");
+  redisClient.hgetall("mint:1",function (err,genesis) {
+    const url = "http://"+genesis.ipaddr+":"+genesis.port+"/version";
+    console.log("checkSWversion(): url="+url);
+    http.get(url, res => {
+      res.setEncoding("utf8");
+      let body = "";
+  
+      res.on("data", data => {
+        body += data;
+      });
+  
+      res.on("end", () => {
+        var mintEntry = JSON.parse(body);
+
+        if ( mintEntry.version != MYBUILD && !isGenesisNode ) {
+          console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+mintEntry.version+" we are running "+MYBUILD+" .......process exitting");
+          process.exit(36);  //SOFTWARE RELOAD
+        }
+      });
+
+    });
+  });
+}
