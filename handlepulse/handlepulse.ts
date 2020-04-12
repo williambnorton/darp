@@ -168,54 +168,56 @@ function newMint(mint) {
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {
   
-      const url = "http://"+genesis.ipaddr+":"+genesis.port+"/mint/"+mint;
-      console.log("FETCHMINT              fetchMint(): url="+url);
-      http.get(url, res => {
-          res.setEncoding("utf8");
-          let body = "";
-          res.on("data", data => {
-              body += data;
-          });
-          res.on("end", () => {
-              var mintEntry = JSON.parse(body);
-              if (mintEntry==null) {
-                console.log("Genesis node says no such mint: "+mint+" why are you asking. Should return BS record to upset discovery algorithms");
-              } else {
-                console.log("mint:"+mint+"="+dump(mintEntry));
-                redisClient.hmset("mint:"+mint, mintEntry );
-                console.log("mint:"+mint+"="+dump(mintEntry)+" WRITTEN TO REDIS");
-                var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
-                  "geo" : mintEntry.geo,            //record index (key) is <geo>:<genesisGroup>
-                  "group": mintEntry.group,      //add all nodes to genesis group
-                  "seq" : "0",         //last sequence number heard
-                  "pulseTimestamp": "0", //last pulseTimestamp received from this node
-                  "srcMint" : ""+mint,      //claimed mint # for this node
-                  // =
-                  "owls" : "",  //owls other guy (this is ME so 0!) is reporting
-                  //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                  //node statistics - we measure these ourselves
-                  "owl": "",   //NO OWL MEASUREMENT HERE (YET)
-                  "inOctets": "0",
-                  "outOctets": "0",
-                  "inMsgs": "0",
-                  "outMsgs": "0",
-                  "pktDrops": "0"     //as detected by missed seq#
-                  //"remoteState": "0"   //and there are mints : owls for received pulses 
-                };
-                console.log("newSegmentEntry="+dump(newSegmentEntry));
+    const url = "http://"+genesis.ipaddr+":"+genesis.port+"/mint/"+mint;
+    console.log("FETCHMINT              fetchMint(): url="+url);
+    http.get(url, res => {
+      res.setEncoding("utf8");
+      let body = "";
+    
+      res.on("data", data => {
+        body += data;
+      });
+    
+      res.on("end", () => {
+        var mintEntry = JSON.parse(body);
+        if (mintEntry==null) {
+          console.log("Genesis node says no such mint: "+mint+" why are you asking. Should return BS record to upset discovery algorithms");
+        } else {
+          console.log("mint:"+mint+"="+dump(mintEntry));
+          redisClient.hmset("mint:"+mint, mintEntry, function (err,reply) {
+            console.log("mint:"+mint+"="+dump(mintEntry)+" WRITTEN TO REDIS");
+            var newSegmentEntry={  //one record per pulse - index = <geo>:<group>
+              "geo" : mintEntry.geo,            //record index (key) is <geo>:<genesisGroup>
+              "group": mintEntry.group,      //add all nodes to genesis group
+              "seq" : "0",         //last sequence number heard
+              "pulseTimestamp": "0", //last pulseTimestamp received from this node
+              "srcMint" : ""+mint,      //claimed mint # for this node
+              // =
+              "owls" : "",  //owls other guy (this is ME so 0!) is reporting
+              //"owls" : getOWLs(me.group),  //owls other guy is reporting
+              //node statistics - we measure these ourselves
+              "owl": "",   //NO OWL MEASUREMENT HERE (YET)
+              "inOctets": "0",
+              "outOctets": "0",
+              "inMsgs": "0",
+              "outMsgs": "0",
+              "pktDrops": "0"     //as detected by missed seq#
+              //"remoteState": "0"   //and there are mints : owls for received pulses 
+            };
+            console.log("newSegmentEntry="+dump(newSegmentEntry));
 
-                redisClient.hmset(mintEntry.geo+":"+mintEntry.group, newSegmentEntry);
-                console.log("Past first set");
-                redisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,newSegment) {
-                  console.log("FETCHED MINT - NOW MAKE AN ENTRY "+mintEntry.geo+":"+mintEntry.group+" -----> ADDED New Segment: "+dump(newSegment));
-                  redisClient.hmset("gSRlist", {
-                    [mintEntry.geo+":"+mintEntry.group] : mint
-                  });
-                  redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
-                });
-              }
+            redisClient.hmset(mintEntry.geo+":"+mintEntry.group, newSegmentEntry);
+            console.log("Past first set");
+            redisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,newSegment) {
+              console.log("FETCHED MINT - NOW MAKE AN ENTRY "+mintEntry.geo+":"+mintEntry.group+" -----> ADDED New Segment: "+dump(newSegment));
+              redisClient.hmset("gSRlist", {
+                [mintEntry.geo+":"+mintEntry.group] : mint
+              });
+              redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
             });
-          });  //res.on end
-    })
-  
-  }
+          });
+        }
+      });
+    });  //res.on end
+  })
+}
