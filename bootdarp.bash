@@ -15,7 +15,7 @@
 #
 #trap "exit" INT
 
-trap no_ctrlc INT
+trap "exit" INT
 ctrlc_count=0
 
 function no_ctrlc()
