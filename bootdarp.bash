@@ -193,9 +193,10 @@ echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP"
             echo `date` "GENESIS NODE EXITTING"
             exit -1
         fi
-echo `date` Sleeping 10 seconds
-sleep 2
-sleep 5
-
+        if [ "$GENESISIP" != "$MYIP" ]; then
+            echo `date` "NON-GENESIS NODE EXITTING"
+            exit -2
+        fi
+echo `date` "...................BOTTOM OF LOOP..................." 
 
 done
