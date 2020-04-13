@@ -168,11 +168,8 @@ do
         echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
         ls -l
-        if [ "$GENESISIP" = "$MYIP" ]; then
-            echo `date` "GENESIS NODE EXITTING"
-            exit -1
-        fi
-        sleep 5 
+
+        #sleep 5 
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
         echo ""
@@ -191,6 +188,10 @@ do
     echo `date` unexpected rc out of handlepulse rc=$rc
     ;;
 esac
+        if [ "$GENESISIP" = "$MYIP" ]; then
+            echo `date` "GENESIS NODE EXITTING"
+            exit -1
+        fi
 echo `date` Sleeping 10 seconds
 sleep 2
 sleep 5
