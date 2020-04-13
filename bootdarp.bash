@@ -188,6 +188,7 @@ do
     echo `date` unexpected rc out of handlepulse rc=$rc
     ;;
 esac
+echo `date` "$GENESISIP" = "$MYIP" 
         if [ "$GENESISIP" = "$MYIP" ]; then
             echo `date` "GENESIS NODE EXITTING"
             exit -1
