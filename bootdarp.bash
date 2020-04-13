@@ -13,24 +13,6 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-#trap "exit" INT
-
-trap "exit" INT
-ctrlc_count=0
-
-function no_ctrlc()
-{
-    let ctrlc_count++
-    echo
-    if [[ $ctrlc_count == 1 ]]; then
-        echo "Stop that."
-    elif [[ $ctrlc_count == 2 ]]; then
-        echo "Once more and I quit."
-    else
-        echo "That's it.  I quit."
-        exit
-    fi
-}
 
 export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
@@ -59,7 +41,7 @@ echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
-    #rm $DARPDIR/forever  #comment this to re-run forever
+    rm $DARPDIR/forever  #comment this to re-run forever
 
     cd $DARPDIR
     VERSION=`ls Build*`
