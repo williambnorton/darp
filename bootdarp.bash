@@ -17,7 +17,6 @@ export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 export MYIP=$MYIP
 #echo `date` MYIP=$MYIP
-echo `date` HERE YOU REALLY SHOULD COMPLAIN IF NO GENESIS WAS SET
 
 if [ "$GENESIS" == "" ]; then
     echo `date` You must specify a genesis node 
@@ -170,7 +169,7 @@ do
         echo ""
         echo `date` "STOPPING $VERSION SOFTWARE " 
         echo  ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
+        echo `date` "STOPPING $VERSION SOFTWARE" on $GEO
         echo ""
         echo `date` "STOPPING $VERSION SOFTWARE"
         echo ""

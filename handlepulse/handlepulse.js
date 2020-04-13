@@ -206,6 +206,9 @@ function newMint(mint) {
                             //
                             //  if Genesis node, expire in 1 minute before removing it
                             //  else 5 minutes
+                            redisClient.ttl(mintEntry.geo + ":" + mintEntry.group, function (err, ttl) {
+                                console.log("ttl=" + ttl);
+                            });
                             if (mintEntry.geo == mintEntry.group.split(".")[0]) {
                                 //GENESIS NODE RECORD
                                 redisClient.expire(mintEntry.geo + ":" + mintEntry.group, 60 * 3); //expire genesis record 
