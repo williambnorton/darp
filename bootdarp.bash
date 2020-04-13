@@ -32,7 +32,8 @@ fi
 echo `date` Genesis node: $GENESIS  "<--- Set GENESIS environmental variable to launch your own pulseGroup"
 GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
 echo GENESISIP=$GENESISIP
-sleep 3
+
+
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
 #
@@ -41,7 +42,7 @@ echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
-    rm $DARPDIR/forever  #comment this to re-run forever
+    #rm $DARPDIR/forever  #comment this to re-run forever
 
     cd $DARPDIR
     VERSION=`ls Build*`
@@ -108,6 +109,7 @@ do
     cd $DARPDIR/config
     if [ -f  $DARPDIR/config.pid ]; then
         kill `cat $DARPDIR/config.pid`
+        sleep 1
     fi
     node config &
     echo $$ > $DARPDIR/config.pid
@@ -118,6 +120,7 @@ do
     cd $DARPDIR/pulser
     if [ -f  $DARPDIR/pulser.pid ]; then
         kill `cat $DARPDIR/pulser.pid`
+        sleep 1
     fi
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
@@ -127,6 +130,7 @@ do
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
+        sleep 1
     fi
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
@@ -156,7 +160,7 @@ do
     ;;
 
   36)
-        if [ -f $DARPDIR/forever ]; then
+    if [ -f $DARPDIR/forever ]; then
         echo `date` handlepulse exitted with rc=$rc
         echo `date` handlepulse exitted with rc=$rc
         echo `date` handlepulse exitted with rc=$rc
@@ -164,6 +168,10 @@ do
         echo `date` handlepulse exitted with rc=$rc
         cd $DARPDIR
         ls -l
+        if [ "$GENESISIP" = "$MYIP" ]; then
+            echo `date` "GENESIS NODE EXITTING"
+            exit -1
+        fi
         sleep 5 
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
@@ -183,10 +191,9 @@ do
     echo `date` unexpected rc out of handlepulse rc=$rc
     ;;
 esac
-echo Sleeping...
+echo `date` Sleeping 10 seconds
 sleep 2
 sleep 5
-
 
 
 done
