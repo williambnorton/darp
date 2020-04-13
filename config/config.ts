@@ -123,10 +123,10 @@ function getConfiguration() {
                     redisClient.hmset(pulse, pulseEntry);
                     if (pulseEntry.geo==pulseEntry.group.split(".")[0]) {
                         //GENESIS NODE RECORD
-                        redisClient.expire(pulse,2)  //expire groupOwner record after 2 minutes
+                        //redisClient.expire(pulse,2)  //expire groupOwner record after 2 minutes
                         //by removing this entry, the owls don't exist, noone will get pulsed
                     } else {
-                        redisClient.expire(pulse,5)  //expire groupOwner record after 2 minutes
+                        //redisClient.expire(pulse,5)  //expire groupOwner record after 2 minutes
 
                     }
                     redisClient.publish("members","ADDED "+pulseEntry.geo)
