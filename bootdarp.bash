@@ -13,6 +13,8 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
+trap "exit" INT
+
 export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 export MYIP=$MYIP
