@@ -13,6 +13,9 @@ var MYBUILD="";
 
 var isGenesisNode=false;
 
+//
+//  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
+//
 redisClient.hgetall("mint:0", function (err,me) {
   if (err) {
     console.log("hgetall me failed");
@@ -30,12 +33,6 @@ redisClient.hgetall("mint:0", function (err,me) {
         console.log("HANDLEPULSE(): genesis="+dump(genesis));
         if ( genesis && (genesis.publickey == me.publickey))
           isGenesisNode=true;
-        //if (genesis==null) {
-        //  console.log("handlePulse() - can't find genesis entry...exitting");
-        //  process.exit(127);
-        //}
-        //console.log("handlePulse(): genesis="+dump(genesis));
-        //server.bind(me.port, "0.0.0.0");
       }
     });
     server.bind(me.port, "0.0.0.0");
