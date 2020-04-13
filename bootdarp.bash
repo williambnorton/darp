@@ -69,11 +69,12 @@ do
     echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
     echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
     if [ "$GENESISIP" = "$MYIP" ]; then
-        echo `date` "I AM GENESIS NODE"
-        echo `date` "I AM GENESIS NODE"
-        echo `date` "I AM GENESIS NODE"
+
         echo `date` "I AM GENESIS NODE - Starting up auto-updater"
         ( ./updateSW.bash -deamon 2>&1 ) >/dev/null & #keep it checking every 30 seconds
+        echo `date` "I AM GENESIS NODE"
+        echo `date` "I AM GENESIS NODE ----->  Get others to join GENESIS="$GENESIS
+        echo `date` "I AM GENESIS NODE"
     fi
     sleep 1
 
