@@ -188,7 +188,7 @@ do
     echo `date` unexpected rc out of handlepulse rc=$rc
     ;;
 esac
-echo `date` "$GENESISIP" = "$MYIP" 
+echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP" 
         if [ "$GENESISIP" = "$MYIP" ]; then
             echo `date` "GENESIS NODE EXITTING"
             exit -1
