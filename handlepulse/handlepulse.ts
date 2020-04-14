@@ -123,7 +123,7 @@ server.on('message', function(message, remote) {
 
     authenticatedMessage(pulse, function(err,authenticated) {
 
-      console.log("pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+      console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ( pulse.version != MYBUILD ) {
         if (!isGenesisNode) {
           console.log(ts()+" ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode="+isGenesisNode+" - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
