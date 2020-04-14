@@ -154,10 +154,10 @@ server.on('message', function(message, remote) {
         redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
           //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
           redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);
-
-          console.log(ts()+" HANDLEPULSE(): Checking version "+dump(pulse)+"-->"+pulse.version+" vs. "+MYBUILD);
-          if (( pulse.version != MYBUILD) && (!isGenesisNode) ) {
-            console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
+          let v=pulse.version;
+          console.log(ts()+" HANDLEPULSE(): Checking version "+v+" vs. "+MYBUILD);
+          if ((v != MYBUILD) && (!isGenesisNode) ) {
+            console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+v+" we are running "+MYBUILD+" .......process exitting");
             process.exit(36);  //SOFTWARE RELOAD
           }
         });
