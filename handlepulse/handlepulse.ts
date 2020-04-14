@@ -123,7 +123,7 @@ server.on('message', function(message, remote) {
 
     authenticatedMessage(pulse, function(err,authenticated) {
 
-      console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+      //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ( pulse.version != MYBUILD ) {
         if (!isGenesisNode) {
           console.log(ts()+" ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode="+isGenesisNode+" - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
@@ -138,7 +138,7 @@ server.on('message', function(message, remote) {
      
 
 
-      redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
+      //redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
 
       //
       //  if groupOwner pulsed this - make sure we have the credentials for each node
@@ -252,7 +252,7 @@ function newMint(mint) {
                 //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*3)  //expire genesis record 
                 //by removing this entry, the owls don't exist, noone will get pulsed
             } else {
-                redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
+                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
             }
               redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
             });
@@ -273,7 +273,7 @@ function checkSWversion() {
   //console.log("checkSWversion() - currentSW="+MYBUILD);
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {
-    if (err || genesis==null) {return console.log("EARLY pulse")}
+    if (err || genesis==null) {return console.log("NO Genesis Node mint:1 pulse error="+err)}
     const url = "http://"+genesis.ipaddr+":"+genesis.port+"/version";
     //console.log("checkSWversion(): url="+url);
     http.get(url, res => {
