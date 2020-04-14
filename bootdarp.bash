@@ -155,7 +155,8 @@ do
     sudo reboot
     ;;
 
-  PATTERN_2)
+  0)
+    exit 0
     
     ;;
 
@@ -194,8 +195,8 @@ echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP"
             exit -1
         fi
         if [ "$GENESISIP" != "$MYIP" ]; then
-            echo `date` "NON-GENESIS NODE EXITTING"
-            exit -2
+            #echo `date` "NON-GENESIS NODE EXITTING"
+            #exit -2
         fi
 echo `date` "...................BOTTOM OF LOOP..................." 
 
