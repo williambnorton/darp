@@ -123,6 +123,13 @@ server.on('message', function(message, remote) {
         return;
       }
       redisClient.publish("pulses",msg)
+      redisClient.hmset(pulseLabel, pulse);
+     
+      console.log("pulse.version="+pulse.version);
+      if ((pulse.version!=MYBUILD) && (!isGenesisNode) ) {
+        console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
+        process.exit(36);  //SOFTWARE RELOAD
+      };
 
       redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
 
@@ -135,6 +142,7 @@ server.on('message', function(message, remote) {
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
         //console.log("HANDLEPULSE() mints="+mints);
 
+        // if we get a mint from the groupOwner that we don't know about, fetch it
         for (var mint in mints) {
           let mintLabel=mints[mint];
           //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
@@ -148,18 +156,7 @@ server.on('message', function(message, remote) {
 
           });
         }
-        let v=pulse.version;
-      redisClient.hmset(pulseLabel, pulse, function (err,reply) {             //set MAZORE:MAZORE.1
-        redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
-            //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
-            redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);           //set mint:
-            console.log(ts()+" HANDLEPULSE(): Checking version "+v+" vs. "+MYBUILD);
-          if ((v!=MYBUILD) && (!isGenesisNode) ) {
-              console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+v+" we are running "+MYBUILD+" .......process exitting");
-              process.exit(36);  //SOFTWARE RELOAD
-          }
-        });
-      });
+ 
     });
   });
 });

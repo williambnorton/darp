@@ -114,6 +114,13 @@ server.on('message', function (message, remote) {
                 return;
             }
             redisClient.publish("pulses", msg);
+            redisClient.hmset(pulseLabel, pulse);
+            console.log("pulse.version=" + pulse.version);
+            if ((pulse.version != MYBUILD) && (!isGenesisNode)) {
+                console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                process.exit(36); //SOFTWARE RELOAD
+            }
+            ;
             redisClient.expire(pulse.geo + ":" + pulse.group, 2 * 60); //expire non-genesis record after 2 minutes
             //
             //  if groupOwner pulsed this - make sure we have the credentials for each node
@@ -135,21 +142,10 @@ server.on('message', function (message, remote) {
                 });
             };
             //console.log("HANDLEPULSE() mints="+mints);
+            // if we get a mint from the groupOwner that we don't know about, fetch it
             for (var mint in mints) {
                 _loop_1();
             }
-            var v = pulse.version;
-            redisClient.hmset(pulseLabel, pulse, function (err, reply) {
-                redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
-                    //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
-                    redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl); //set mint:
-                    console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + v + " vs. " + MYBUILD);
-                    if ((v != MYBUILD) && (!isGenesisNode)) {
-                        console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + v + " we are running " + MYBUILD + " .......process exitting");
-                        process.exit(36); //SOFTWARE RELOAD
-                    }
-                });
-            });
         });
     });
 });
