@@ -56,6 +56,32 @@ server.on('listening', function () {
     console.log(lib_js_1.ts() + "");
     console.log(lib_js_1.ts() + "");
 });
+function authenticateMessage(pulse, callback) {
+    redisClient.hgetall("mint:" + pulse.srcMint, function (err, senderMintEntry) {
+        if (senderMintEntry == null)
+            callback(null, false);
+        //simple authentication matches mint to other resources
+        if (senderMintEntry.geo == pulse.geo)
+            callback(null, true);
+        else
+            callback(null, false);
+        /*
+      var pulse={
+      version : ary[1],
+      geo : ary[2], CHECKED against my mint
+      group : ary[3],
+      seq : ary[4],
+      pulseTimestamp : pulseTimestamp,
+      srcMint : ary[6],  CHECKED
+      owls : owls,
+      owl : now()-pulseTimestamp,
+      lastMsg : msg,
+      inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
+      inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
+    };
+    */
+    });
+}
 //
 //  message format: 0,56,1583783486546,MAZORE,MAZORE.1,1>1=0,2>1=0
 //
@@ -93,42 +119,46 @@ server.on('message', function (message, remote) {
             inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
             inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
         };
-        redisClient.publish("pulses", msg);
-        //
-        //  if groupOwner pulsed this - make sure we have the credentials for each node
-        //
-        //console.log("pulse="+dump(pulse));
-        if (pulse.srcMint == "1" || pulse.srcMint != "1") { ///Believe the group Owner wrt population
-            //console.log("HANDLEPULSE() pulse from Genesis node");
-            var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
-            var _loop_1 = function () {
-                var mintLabel = mints[mint];
-                //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
-                redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
-                    if (err)
-                        console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                    //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
-                    if (!mintValue) {
-                        console.log("Fetching mint=" + mintLabel + " from genesis Node");
-                        newMint(mintLabel); //new Mint
-                    }
+        authenticateMessage(pulse, function (err, authenticated) {
+            console.log("authenticated=" + authenticated);
+            redisClient.publish("pulses", msg);
+            redisClient.expire(pulse.geo + ":" + pulse.group, 2 * 60); //expire non-genesis record after 2 minutes
+            //
+            //  if groupOwner pulsed this - make sure we have the credentials for each node
+            //
+            //console.log("pulse="+dump(pulse));
+            if (pulse.srcMint == "1" || pulse.srcMint != "1") { ///Believe the group Owner wrt population
+                //console.log("HANDLEPULSE() pulse from Genesis node");
+                var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
+                var _loop_1 = function () {
+                    var mintLabel = mints[mint];
+                    //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
+                    redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
+                        if (err)
+                            console.log("handlePulse - error checking mint exists. ERROR - should not happen");
+                        //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
+                        if (!mintValue) {
+                            console.log("Fetching mint=" + mintLabel + " from genesis Node");
+                            newMint(mintLabel); //new Mint
+                        }
+                    });
+                };
+                //console.log("HANDLEPULSE() mints="+mints);
+                for (var mint in mints) {
+                    _loop_1();
+                }
+            }
+            redisClient.hmset(pulseLabel, pulse, function (err, reply) {
+                redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
+                    //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
+                    redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl);
                 });
-            };
-            //console.log("HANDLEPULSE() mints="+mints);
-            for (var mint in mints) {
-                _loop_1();
-            }
-        }
-        redisClient.hmset(pulseLabel, pulse, function (err, reply) {
-            redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
-                //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
-                redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl);
+                //console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
+                if (pulse.version != MYBUILD && !isGenesisNode) {
+                    console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                    process.exit(36); //SOFTWARE RELOAD
+                }
             });
-            //console.log(ts()+" HANDLEPULSE(): Checking version "+pulse.version+" vs. "+MYBUILD);
-            if (pulse.version != MYBUILD && !isGenesisNode) {
-                console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                process.exit(36); //SOFTWARE RELOAD
-            }
         });
     });
 });
@@ -212,7 +242,7 @@ function newMint(mint) {
                                 //by removing this entry, the owls don't exist, noone will get pulsed
                             }
                             else {
-                                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*1)  //expire non-genesis record 
+                                redisClient.expire(mintEntry.geo + ":" + mintEntry.group, 2 * 60); //expire non-genesis record 
                             }
                             redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
                         });
@@ -225,7 +255,7 @@ function newMint(mint) {
 //
 //  checkSEversion() - reload SW if there is new code to be had
 //
-setTimeout(checkSWversion, 5 * 1000);
+setTimeout(checkSWversion, 15 * 1000);
 ;
 function checkSWversion() {
     setTimeout(checkSWversion, 5 * 1000);
