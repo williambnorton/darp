@@ -12,8 +12,9 @@ ls -l "Build."`date +%y%m%d.%H%M`
 for file in config express pulser handlepulse
 do
 	if [ $file/$file.ts -nt $file/$file.js ]; then
-		cd $file/$file
-		tsc $file.ts
+		cd $file
+		tsc $file
+		cd ..
 	fi
 done
 git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push

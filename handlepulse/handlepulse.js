@@ -253,6 +253,9 @@ function checkSWversion() {
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
+        if (err || genesis == null) {
+            return console.log("EARLY pulse");
+        }
         var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
         //console.log("checkSWversion(): url="+url);
         http.get(url, function (res) {
