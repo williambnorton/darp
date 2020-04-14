@@ -103,7 +103,7 @@ server.on('message', function(message, remote) {
       oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
     }
     if (err) {console.log("ERROR in on.message handling");}
-    var pulse={
+    let pulse={
       version : ary[1],
       geo : ary[2],
       group : ary[3],
@@ -156,7 +156,7 @@ server.on('message', function(message, remote) {
           redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);
         });
 
-        console.log(ts()+" HANDLEPULSE(): Checking version "+dump(pulse)+" vs. "+MYBUILD);
+        console.log(ts()+" HANDLEPULSE(): Checking version "+dump(pulse)+"-->"+pulse.version+" vs. "+MYBUILD);
         if ( pulse.version != MYBUILD && !isGenesisNode ) {
           console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
           process.exit(36);  //SOFTWARE RELOAD

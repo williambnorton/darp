@@ -145,7 +145,7 @@ server.on('message', function (message, remote) {
                     //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
                     redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl);
                 });
-                console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + lib_js_1.dump(pulse) + " vs. " + MYBUILD);
+                console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + lib_js_1.dump(pulse) + "-->" + pulse.version + " vs. " + MYBUILD);
                 if (pulse.version != MYBUILD && !isGenesisNode) {
                     console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD
