@@ -65,6 +65,7 @@ function authenticatedMessage(pulse, callback) {
             console.log("authenticateMessage(): We don't have that mint:" + lib_js_1.dump(pulse));
             //callback(null,false);
         }
+        else 
         //simple authentication matches mint to other resources
         if (senderMintEntry.geo == pulse.geo)
             callback(null, true);
@@ -247,7 +248,7 @@ function newMint(mint) {
 setTimeout(checkSWversion, 15 * 1000);
 ;
 function checkSWversion() {
-    setTimeout(checkSWversion, 5 * 1000);
+    setTimeout(checkSWversion, 15 * 1000);
     ;
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
