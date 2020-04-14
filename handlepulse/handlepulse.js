@@ -261,10 +261,10 @@ function checkSWversion() {
                 body += data;
             });
             res.on("end", function () {
-                var mintEntry = JSON.parse(body);
+                var version = JSON.parse(body);
                 //console.log("mintEntry="+dump(mintEntry));
-                if (mintEntry.version != MYBUILD && !isGenesisNode) {
-                    console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + mintEntry.version + " we are running " + MYBUILD + " .......process exitting");
+                if (version != MYBUILD && !isGenesisNode) {
+                    console.log(lib_js_1.ts() + " handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD
                 }
             });
