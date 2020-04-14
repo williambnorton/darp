@@ -109,35 +109,37 @@ server.on('message', function (message, remote) {
             inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
         };
         authenticateMessage(pulse, function (err, authenticated) {
-            if (!authenticated)
-                console.log("Received unauthenticated packet - did not match our mint table" + lib_js_1.dump(pulse));
+            if (!authenticated) {
+                console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping " + lib_js_1.dump(pulse));
+                return;
+            }
             redisClient.publish("pulses", msg);
             redisClient.expire(pulse.geo + ":" + pulse.group, 2 * 60); //expire non-genesis record after 2 minutes
             //
             //  if groupOwner pulsed this - make sure we have the credentials for each node
             //
             //console.log("pulse="+dump(pulse));
-            if (pulse.srcMint == "1" || pulse.srcMint != "1") { ///Believe the group Owner wrt population
-                //console.log("HANDLEPULSE() pulse from Genesis node");
-                var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
-                var _loop_1 = function () {
-                    var mintLabel = mints[mint];
-                    //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
-                    redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
-                        if (err)
-                            console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                        //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
-                        if (!mintValue) {
-                            console.log("Fetching mint=" + mintLabel + " from genesis Node");
-                            newMint(mintLabel); //new Mint
-                        }
-                    });
-                };
-                //console.log("HANDLEPULSE() mints="+mints);
-                for (var mint in mints) {
-                    _loop_1();
-                }
+            //      if (pulse.srcMint=="1" || pulse.srcMint!="1" ) {   ///Believe the group Owner wrt population
+            //console.log("HANDLEPULSE() pulse from Genesis node");
+            var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
+            var _loop_1 = function () {
+                var mintLabel = mints[mint];
+                //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
+                redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
+                    if (err)
+                        console.log("handlePulse - error checking mint exists. ERROR - should not happen");
+                    //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
+                    if (!mintValue) {
+                        console.log("Fetching mint=" + mintLabel + " from genesis Node");
+                        newMint(mintLabel); //new Mint
+                    }
+                });
+            };
+            //console.log("HANDLEPULSE() mints="+mints);
+            for (var mint in mints) {
+                _loop_1();
             }
+            //      }  
             redisClient.hmset(pulseLabel, pulse, function (err, reply) {
                 redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
                     //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));

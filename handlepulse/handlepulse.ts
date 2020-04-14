@@ -118,9 +118,11 @@ server.on('message', function(message, remote) {
     };
 
     authenticateMessage(pulse, function(err,authenticated) {
-      if (!authenticated)
-        console.log("Received unauthenticated packet - did not match our mint table"+dump(pulse));
-      redisClient.publish("pulses",msg)
+      if (!authenticated) {
+        console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping "+dump(pulse));
+        return;
+      }
+        redisClient.publish("pulses",msg)
 
      redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
 
@@ -129,7 +131,7 @@ server.on('message', function(message, remote) {
       //
       //console.log("pulse="+dump(pulse));
 
-      if (pulse.srcMint=="1" || pulse.srcMint!="1" ) {   ///Believe the group Owner wrt population
+//      if (pulse.srcMint=="1" || pulse.srcMint!="1" ) {   ///Believe the group Owner wrt population
         //console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
         //console.log("HANDLEPULSE() mints="+mints);
@@ -147,7 +149,7 @@ server.on('message', function(message, remote) {
 
           });
         }
-      }  
+//      }  
       redisClient.hmset(pulseLabel, pulse, function (err,reply) {
         redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
           //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
