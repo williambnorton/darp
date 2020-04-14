@@ -116,9 +116,11 @@ server.on('message', function (message, remote) {
             redisClient.publish("pulses", msg);
             redisClient.hmset(pulseLabel, pulse);
             console.log("pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
-            if ((pulse.version != MYBUILD) && (!isGenesisNode)) {
-                console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                process.exit(36); //SOFTWARE RELOAD
+            if (pulse.version != MYBUILD) {
+                if (!isGenesisNode) {
+                    console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                    process.exit(36); //SOFTWARE RELOAD
+                }
             }
             ;
             redisClient.expire(pulse.geo + ":" + pulse.group, 2 * 60); //expire non-genesis record after 2 minutes
