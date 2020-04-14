@@ -119,7 +119,6 @@ server.on('message', function (message, remote) {
             //  if groupOwner pulsed this - make sure we have the credentials for each node
             //
             //console.log("pulse="+dump(pulse));
-            //      if (pulse.srcMint=="1" || pulse.srcMint!="1" ) {   ///Believe the group Owner wrt population
             //console.log("HANDLEPULSE() pulse from Genesis node");
             var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
             var _loop_1 = function () {
@@ -139,12 +138,11 @@ server.on('message', function (message, remote) {
             for (var mint in mints) {
                 _loop_1();
             }
-            //      }  
+            var v = pulse.version;
             redisClient.hmset(pulseLabel, pulse, function (err, reply) {
                 redisClient.hgetall(pulseLabel, function (err, pulseRecord) {
                     //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
-                    redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl);
-                    var v = pulse.version;
+                    redisClient.hmset("mint:" + pulse.srcMint, "owl", pulse.owl); //set mint:
                     console.log(lib_js_1.ts() + " HANDLEPULSE(): Checking version " + v + " vs. " + MYBUILD);
                     if ((v != MYBUILD) && (!isGenesisNode)) {
                         console.log(lib_js_1.ts() + " HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said " + v + " we are running " + MYBUILD + " .......process exitting");

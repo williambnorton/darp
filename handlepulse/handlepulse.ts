@@ -122,16 +122,15 @@ server.on('message', function(message, remote) {
         console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping "+dump(pulse));
         return;
       }
-        redisClient.publish("pulses",msg)
+      redisClient.publish("pulses",msg)
 
-     redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
+      redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
 
       //
       //  if groupOwner pulsed this - make sure we have the credentials for each node
       //
       //console.log("pulse="+dump(pulse));
 
-//      if (pulse.srcMint=="1" || pulse.srcMint!="1" ) {   ///Believe the group Owner wrt population
         //console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
         //console.log("HANDLEPULSE() mints="+mints);
@@ -149,16 +148,15 @@ server.on('message', function(message, remote) {
 
           });
         }
-//      }  
-      redisClient.hmset(pulseLabel, pulse, function (err,reply) {
+        let v=pulse.version;
+      redisClient.hmset(pulseLabel, pulse, function (err,reply) {             //set MAZORE:MAZORE.1
         redisClient.hgetall(pulseLabel, function (err,pulseRecord) {
-          //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
-          redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);
-          let v=pulse.version;
-          console.log(ts()+" HANDLEPULSE(): Checking version "+v+" vs. "+MYBUILD);
-          if ((v != MYBUILD) && (!isGenesisNode) ) {
-            console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+v+" we are running "+MYBUILD+" .......process exitting");
-            process.exit(36);  //SOFTWARE RELOAD
+            //console.log("HANDLEPULSE STOWING pulseRecord="+dump(pulseRecord));
+            redisClient.hmset("mint:"+pulse.srcMint,"owl",pulse.owl);           //set mint:
+            console.log(ts()+" HANDLEPULSE(): Checking version "+v+" vs. "+MYBUILD);
+          if ((v!=MYBUILD) && (!isGenesisNode) ) {
+              console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+v+" we are running "+MYBUILD+" .......process exitting");
+              process.exit(36);  //SOFTWARE RELOAD
           }
         });
       });
