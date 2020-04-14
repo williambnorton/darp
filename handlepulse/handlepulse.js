@@ -56,18 +56,21 @@ server.on('listening', function () {
     console.log(lib_js_1.ts() + "");
     console.log(lib_js_1.ts() + "");
 });
-function authenticateMessage(pulse, callback) {
+//
+//  only callback if authenticated
+//
+function authenticatedMessage(pulse, callback) {
     redisClient.hgetall("mint:" + pulse.srcMint, function (err, senderMintEntry) {
         if (senderMintEntry == null) {
             console.log("authenticateMessage(): We don't have that mint:" + lib_js_1.dump(pulse));
-            callback(null, false);
+            //callback(null,false);
         }
         //simple authentication matches mint to other resources
         if (senderMintEntry.geo == pulse.geo)
             callback(null, true);
         else {
             console.log("authenticateMessage: unauthenticated packet - geo " + pulse.geo + " did not match our mint table" + lib_js_1.dump(pulse) + lib_js_1.dump(senderMintEntry.geo));
-            callback(null, false);
+            //callback(null,false)
         }
     });
 }
@@ -108,11 +111,7 @@ server.on('message', function (message, remote) {
             inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
             inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
         };
-        authenticateMessage(pulse, function (err, authenticated) {
-            if (!authenticated) {
-                console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping " + lib_js_1.dump(pulse));
-                return;
-            }
+        authenticatedMessage(pulse, function (err, authenticated) {
             console.log("pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
             if (pulse.version != MYBUILD) {
                 if (!isGenesisNode) {
