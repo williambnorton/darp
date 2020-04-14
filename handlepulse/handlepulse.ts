@@ -117,18 +117,19 @@ server.on('message', function(message, remote) {
     inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
     inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
-    
+
     authenticateMessage(pulse, function(err,authenticated) {
       if (!authenticated) {
         console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping "+dump(pulse));
         return;
       }
 
-
       console.log("pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ( pulse.version != MYBUILD ) {
         if (!isGenesisNode) {
           console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode="+isGenesisNode+" - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
+          console.log("INSIDE test pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+
           process.exit(36);  //SOFTWARE RELOAD
         }
       };
