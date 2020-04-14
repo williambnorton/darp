@@ -125,7 +125,7 @@ server.on('message', function(message, remote) {
       redisClient.publish("pulses",msg)
       redisClient.hmset(pulseLabel, pulse);
      
-      console.log("pulse.version="+pulse.version+" MYBUILD="+MYBUILD);
+      console.log("pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ((pulse.version!=MYBUILD) && (!isGenesisNode) ) {
         console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
         process.exit(36);  //SOFTWARE RELOAD
