@@ -20,8 +20,10 @@ export MYIP=$MYIP
 #echo `date` MYIP=$MYIP
 
 if [ "$GENESIS" == "" ]; then
-    echo `date` You must specify a genesis node 
-    echo `date` Add -e"GENESIS=<ipaddr>" into the docker run command
+    echo `date` $0 You must specify a genesis node 
+    echo `date` $0 Add -e"GENESIS=<ipaddr>" into the docker run command
+    echo
+    env
     exit -1
 fi
 #If the GENESIS variable ENV VAR does not exist then assume we are genesis node

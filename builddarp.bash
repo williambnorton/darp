@@ -1,4 +1,5 @@
 #!/bin/bash
+#Note that you must run this build from the darp directory
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
