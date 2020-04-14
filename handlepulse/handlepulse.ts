@@ -251,9 +251,9 @@ function newMint(mint) {
                 //GENESIS NODE RECORD
                 //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*3)  //expire genesis record 
                 //by removing this entry, the owls don't exist, noone will get pulsed
-            } else {
+              } else {
                 //redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
-            }
+              }
               redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
             });
           });
