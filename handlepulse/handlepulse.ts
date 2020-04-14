@@ -99,39 +99,44 @@ server.on('message', function(message, remote) {
 
   redisClient.hgetall(pulseLabel, function(err, oldPulse) {
     //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-    if (oldPulse==null) {
+
+    if (oldPulse==null) {     //first time we see this entry, include stats to increment
       oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
     }
     if (err) {console.log("ERROR in on.message handling");}
-    let pulse={
-      version : ary[1],
-      geo : ary[2],
-      group : ary[3],
-      seq : ary[4],
-      pulseTimestamp : pulseTimestamp,
-      srcMint : ary[6],
-      owls : owls,
-      owl : now()-pulseTimestamp,
-      lastMsg : msg,
-      inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
-      inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
+    var pulse={
+    version : ary[1],
+    geo : ary[2],
+    group : ary[3],
+    seq : ary[4],
+    pulseTimestamp : pulseTimestamp,
+    srcMint : ary[6],
+    owls : owls,
+    owl : now()-pulseTimestamp,
+    lastMsg : msg,
+    inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
+    inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
-
+    
     authenticateMessage(pulse, function(err,authenticated) {
       if (!authenticated) {
         console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping "+dump(pulse));
         return;
       }
-      redisClient.publish("pulses",msg)
-      redisClient.hmset(pulseLabel, pulse);
-     
+
+
       console.log("pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-      if (pulse.version!=MYBUILD ) {
+      if ( pulse.version != MYBUILD ) {
         if (!isGenesisNode) {
           console.log(ts()+" HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode="+isGenesisNode+" - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
           process.exit(36);  //SOFTWARE RELOAD
         }
       };
+
+      redisClient.publish("pulses",msg)
+      redisClient.hmset(pulseLabel, pulse);
+     
+
 
       redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
 

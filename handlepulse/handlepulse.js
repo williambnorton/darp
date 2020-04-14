@@ -89,7 +89,7 @@ server.on('message', function (message, remote) {
     //console.log(ts()+"handlepulse(): owls="+owls);
     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-        if (oldPulse == null) {
+        if (oldPulse == null) { //first time we see this entry, include stats to increment
             oldPulse = { "inOctets": "0", "inMsgs": "0" };
         }
         if (err) {
@@ -113,8 +113,6 @@ server.on('message', function (message, remote) {
                 console.log("***************** Received unauthenticated packet - did not match our mint table. Dropping " + lib_js_1.dump(pulse));
                 return;
             }
-            redisClient.publish("pulses", msg);
-            redisClient.hmset(pulseLabel, pulse);
             console.log("pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
             if (pulse.version != MYBUILD) {
                 if (!isGenesisNode) {
@@ -123,6 +121,8 @@ server.on('message', function (message, remote) {
                 }
             }
             ;
+            redisClient.publish("pulses", msg);
+            redisClient.hmset(pulseLabel, pulse);
             redisClient.expire(pulse.geo + ":" + pulse.group, 2 * 60); //expire non-genesis record after 2 minutes
             //
             //  if groupOwner pulsed this - make sure we have the credentials for each node
