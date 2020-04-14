@@ -64,25 +64,17 @@ server.on('listening', function() {
 
 function  authenticateMessage(pulse, callback) {
   redisClient.hgetall("mint:"+pulse.srcMint, function (err,senderMintEntry) {
-    if (senderMintEntry==null) callback(null,false);
+
+    if (senderMintEntry==null) {
+      console.log("authenticateMessage(): We don't have that mint:"+dump(pulse));
+      callback(null,false);
+    }
       //simple authentication matches mint to other resources
     if (senderMintEntry.geo==pulse.geo ) callback(null, true)
-    else callback(null,false)
-    /*
-  var pulse={
-  version : ary[1],
-  geo : ary[2], CHECKED against my mint
-  group : ary[3],
-  seq : ary[4],
-  pulseTimestamp : pulseTimestamp,
-  srcMint : ary[6],  CHECKED
-  owls : owls,
-  owl : now()-pulseTimestamp,
-  lastMsg : msg,
-  inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
-  inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
-};
-*/
+    else {
+      console.log("authenticateMessage: unauthenticated packet - geo "+pulse.geo+" did not match our mint table"+dump(pulse)+dump(senderMintEntry.geo));
+      callback(null,false)
+    }
   });
 }
 
@@ -126,7 +118,8 @@ server.on('message', function(message, remote) {
     };
 
     authenticateMessage(pulse, function(err,authenticated) {
-      console.log("authenticated="+authenticated);
+      if (!authenticated)
+        console.log("Received unauthenticated packet - did not match our mint table"+dump(pulse));
       redisClient.publish("pulses",msg)
 
      redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
