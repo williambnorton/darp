@@ -4,7 +4,7 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
-var SHOWPULSES = false;
+var SHOWPULSES = true;
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
@@ -37,25 +37,6 @@ redisClient.hgetall("mint:0", function (err, me) {
         });
         server.bind(me.port, "0.0.0.0");
     }
-});
-//
-// listen for incoming pulses and convert into redis commands
-//
-server.on('listening', function () {
-    var address = server.address();
-    console.log('UDP Server listening on ' + address.address + ':' + address.port);
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
 });
 //
 //  only callback if authenticated
@@ -126,7 +107,6 @@ server.on('message', function (message, remote) {
             ;
             redisClient.publish("pulses", msg);
             redisClient.hmset(pulseLabel, pulse);
-            //redisClient.expire(pulse.geo+":"+pulse.group,2*60)  //expire non-genesis record after 2 minutes
             //
             //  if groupOwner pulsed this - make sure we have the credentials for each node
             //
@@ -176,6 +156,7 @@ function nth_occurrence(string, char, nth) {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
+    console.log("newMint(): mint=" + mint);
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/mint/" + mint;
@@ -256,7 +237,8 @@ function checkSWversion() {
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         if (err || genesis == null) {
-            return console.log("NO Genesis Node mint:1 pulse error=" + err);
+            console.log("NO Genesis Node mint:1 pulse error=" + err);
+            return;
         }
         var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
         //console.log("checkSWversion(): url="+url);
@@ -277,3 +259,22 @@ function checkSWversion() {
         });
     });
 }
+//
+// listen for incoming pulses and convert into redis commands
+//
+server.on('listening', function () {
+    var address = server.address();
+    console.log('UDP Server listening on ' + address.address + ':' + address.port);
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+});
