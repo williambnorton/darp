@@ -141,7 +141,7 @@ do
     echo `date` DARP Finished rc=$rc
     echo `date` DARP Finished rc=$rc
     echo `date` DARP Finished rc=$rc
-    sleep 5
+    sleep 1
     #
     #   Finished DARP - exit
     #
