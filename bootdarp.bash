@@ -149,66 +149,33 @@ do
     rm $DARPDIR/*.pid
 
 ##
-##
+##  DARP EXITTED - 
 ##
     case $rc in
-
-  99)
-    echo `date` REBOOT COMMAND REQUESTED
-    sudo reboot
-    exit 0
-    ;;
-
-  0)
-    echo `date` $0 HandlePulse STOP command 
-    echo `date` $0 HandlePulse STOP 
-    echo `date` $0 HandlePulse STOP
-    exit 0
-    
+  86)
+    echo `date` "$0 HandlePulse STOP command - exitting docker and stop"
+    exit 86
     ;;
 
   36)
-    if [ -f $DARPDIR/forever ]; then
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        cd $DARPDIR
-        ls -l
+        echo `date` handlepulse exitted with software reload message rc=$rc
 
-        #sleep 5 
     else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
-        echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE " 
-        echo  ""
-        echo `date` "STOPPING $VERSION SOFTWARE" on $GEO
-        echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
-        echo ""
-        #echo "rc=120 means PAUSE Message"
-        exit 36
-    fi
     ;;
 
   *)
     echo `date` $0 rc=$rc ... updateSW.bash detected NEW SOFTWARE and killed handlepulse processes
     echo `date` $0 result: unexpected rc out of handlepulse rc=$rc
-    echo `date` Reloading Software
-    exit 36
+    if [ "$GENESISIP" = "$MYIP" ]; then
+        echo `date` "GENESIS NODE can Ctrl-C"
+        exit -1
+    fi
+    echo `date` Ctrl-C detected --OR-- Genesis node needs updated code
     
     ;;
 esac
-echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP" 
-if [ "$GENESISIP" = "$MYIP" ]; then
-    echo `date` "GENESIS NODE EXITTING"
-    exit -1
-fi
-if [ "$GENESISIP" != "$MYIP" ]; then
-    echo `date` "NON-GENESIS Proceediong to bottom of loop"
-    #exit -2
-fi
+
 echo `date` "...................BOTTOM OF LOOP..................." 
 
 done

@@ -38,7 +38,7 @@ do
         echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
 
         #killList=`cat $DARPDIR/*.pid`
-        kill `ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
+        kill -36 `ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`
        
         cd /tmp
 

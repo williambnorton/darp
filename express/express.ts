@@ -53,15 +53,15 @@ app.get('/version', function (req, res) {
       return;
    })
 });
-app.get('/reboot', function (req, res) {
+app.get('/stop', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
-console.log("EXITTING and reload per reboot connect INSECURE");
-   process.exit(99);
+console.log("EXITTING and Stopping the node");
+   process.exit(86);
 });
 
 app.get('/reload', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
-console.log("EXITTING per reload connect INSECURE");
+console.log("EXITTING to reload the system")
    process.exit(36);
 });
 
