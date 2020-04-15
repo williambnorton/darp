@@ -160,9 +160,9 @@ do
     ;;
 
   0)
-    echo `date` $0 STOPPING $0
-    echo `date` $0 STOPPING $0
-    echo `date` $0 STOPPING $0
+    echo `date` $0 HandlePulse STOP command 
+    echo `date` $0 HandlePulse STOP 
+    echo `date` $0 HandlePulse STOP
     exit 0
     
     ;;
