@@ -163,6 +163,7 @@ do
         ;;
 
     *)
+        echo "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
         echo `date` $0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes
         echo `date` $0 result: unexpected rc out of handlepulse rc=$rc
         #//if [ "$GENESISIP" = "$MYIP" ]; then
