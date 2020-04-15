@@ -159,8 +159,6 @@ do
 
   36)
         echo `date` handlepulse exitted with software reload message rc=$rc
-
-    else 
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
     ;;
 
