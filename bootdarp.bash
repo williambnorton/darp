@@ -165,15 +165,15 @@ do
   *)
     echo `date` $0 rc=$rc ... updateSW.bash detected NEW SOFTWARE and killed handlepulse processes
     echo `date` $0 result: unexpected rc out of handlepulse rc=$rc
-    //if [ "$GENESISIP" = "$MYIP" ]; then
+    #//if [ "$GENESISIP" = "$MYIP" ]; then
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         exit -1
-    //fi
-    //echo `date` Ctrl-C detected --OR-- Genesis node needs updated code
+    #//fi
+    #//echo `date` Ctrl-C detected --OR-- Genesis node needs updated code
     
     ;;
 esac
