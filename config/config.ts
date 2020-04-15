@@ -92,6 +92,11 @@ function getConfiguration() {
         res.on('data', function (stream) {
             data += stream;
         });
+        res.on('error', function(err) {
+            // Handle error
+            console.log("Fetch config from groupOwner failed");
+            
+        });
         res.on('end', function () {
             //console.log("CONFIG data="+data);
             var config = JSON.parse(data);
