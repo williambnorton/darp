@@ -24,13 +24,13 @@ redisClient.hgetall("mint:0", function (err,me) {
   } else {
     if (me==null) {
       console.log("handlePulse() - can't find me entry...exitting");
-      process.exit(127);
+      process.exit(50);  //no mint:0
     }
     //console.log("handlePulse(): Configuration  me="+dump(me));
     MYBUILD=me.version;
     redisClient.hgetall("mint:1", function (err,genesis) {
       if (err) {
-        console.log("hgetall genesis failed");
+        console.log("HANDLEPULSE(): hgetall genesis failed");
       } else {
         console.log("HANDLEPULSE(): genesis="+dump(genesis));
         if ( genesis && (genesis.publickey == me.publickey))
@@ -221,9 +221,9 @@ function newMint(mint) {
               //
               //  if Genesis node, expire in 1 minute before removing it
               //  else 5 minutes
-              redisClient.ttl(mintEntry.geo+":"+mintEntry.group, function(err,ttl) {
-                console.log("ttl="+ttl);
-              });
+              //redisClient.ttl(mintEntry.geo+":"+mintEntry.group, function(err,ttl) {
+              //  console.log("ttl="+ttl);
+              //});
 
               if (mintEntry.geo==mintEntry.group.split(".")[0]) {
                 //GENESIS NODE RECORD
@@ -252,7 +252,7 @@ function checkSWversion() {
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {
     if (err || genesis==null) {
-      console.log("NO Genesis Node mint:1 pulse error="+err);
+      console.log("checkSWversion(): NO Genesis Node mint:1 pulse error="+err);
       return;
     }
     const url = "http://"+genesis.ipaddr+":"+genesis.port+"/version";
@@ -269,8 +269,8 @@ function checkSWversion() {
         var version = JSON.parse(body);
         //console.log("mintEntry="+dump(mintEntry));
         if ( version != MYBUILD && !isGenesisNode ) {
-          console.log(ts()+" handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said "+version+" we are running "+MYBUILD+" .......process exitting");
-          process.exit(36);  //SOFTWARE RELOAD
+           console.log(ts()+" handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said "+version+" we are running "+MYBUILD+" .......process exitting");
+           process.exit(36);  //SOFTWARE RELOAD
         }
       });
 
@@ -299,6 +299,7 @@ server.on('listening', function() {
  console.log(ts()+"");
  
 });
+
 process.on('SIGTERM', () => {
   console.info('handlePulse SIGTERM signal received.');
   process.exit(36);
