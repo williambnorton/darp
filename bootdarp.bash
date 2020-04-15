@@ -177,11 +177,12 @@ do
     
     ;;
 esac
-echo `date` "...................BOTTOM OF LOOP..................." 
 echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
 kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
 kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
 
 ps aux
+echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
+
 sleep 5
 done
