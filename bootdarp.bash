@@ -193,32 +193,10 @@ do
     ;;
 
   *)
-    echo `date` $0 STOPPING $0
-    echo `date` $0 STOPPING $0
-    echo `date` $0 STOPPING $0
+    echo `date` $0 updateSW detected NEW SOFTWARE and killed handlepulse processes
     echo `date` unexpected rc out of handlepulse rc=$rc
-    if [ -f $DARPDIR/forever ]; then
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        echo `date` handlepulse exitted with rc=$rc
-        cd $DARPDIR
-        ls -l
-
-        #sleep 5 
-    else 
-        echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
-        echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE " 
-        echo  ""
-        echo `date` "STOPPING $VERSION SOFTWARE" on $GEO
-        echo ""
-        echo `date` "STOPPING $VERSION SOFTWARE"
-        echo ""
-        #echo "rc=120 means PAUSE Message"
-        exit 36
-    fi
+    exit 36
+    
     ;;
 esac
 echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP" 
