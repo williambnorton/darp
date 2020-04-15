@@ -193,8 +193,9 @@ do
     ;;
 
   *)
-    echo `date` $0 updateSW detected NEW SOFTWARE and killed handlepulse processes
-    echo `date` unexpected rc out of handlepulse rc=$rc
+    echo `date` $0 rc=$rc ... updateSW.bash detected NEW SOFTWARE and killed handlepulse processes
+    echo `date` $0 result: unexpected rc out of handlepulse rc=$rc
+    echo `date` Reloading Software
     exit 36
     
     ;;
