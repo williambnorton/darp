@@ -5,7 +5,7 @@ if [ $# -ne 0 ]; then
     echo `date` Running $0 in DAEMON mode. $#
     DAEMON="YES"
 fi
-POLLFREQ=30
+POLLFREQ=15
 
 echo `date` updateSW.bash
 while :
