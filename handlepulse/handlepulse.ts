@@ -299,3 +299,7 @@ server.on('listening', function() {
  console.log(ts()+"");
  
 });
+process.on('SIGTERM', () => {
+  console.info('handlePulse SIGTERM signal received.');
+  process.exit(36);
+});

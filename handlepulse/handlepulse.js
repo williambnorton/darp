@@ -278,3 +278,7 @@ server.on('listening', function () {
     console.log(lib_js_1.ts() + "");
     console.log(lib_js_1.ts() + "");
 });
+process.on('SIGTERM', function () {
+    console.info('handlePulse SIGTERM signal received.');
+    process.exit(36);
+});

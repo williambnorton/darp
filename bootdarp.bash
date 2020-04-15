@@ -149,7 +149,7 @@ do
     rm $DARPDIR/*.pid
 
 ##
-##  DARP EXITTED - 
+##  DARP handlepulse EXITTED - 
 ##
     case $rc in
   86)
