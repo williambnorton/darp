@@ -30,7 +30,7 @@ function pulse() {
 
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
-    if (me.state=="PAUSE") return;
+    if (me==null || me.state=="PAUSE") return console.log("(nomint)PAUSED ");
 
     GEO=me.geo;
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
