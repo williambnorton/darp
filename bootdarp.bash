@@ -204,8 +204,8 @@ if [ "$GENESISIP" = "$MYIP" ]; then
     exit -1
 fi
 if [ "$GENESISIP" != "$MYIP" ]; then
-    echo `date` "NON-GENESIS NODE EXITTING"
-    exit -2
+    echo `date` "NON-GENESIS Proceediong to bottom of loop"
+    #exit -2
 fi
 echo `date` "...................BOTTOM OF LOOP..................." 
 
