@@ -237,8 +237,8 @@ function checkSWversion() {
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         if (err || genesis == null) {
-            console.log("checkSWversion(): NO Genesis Node mint:1 pulse error=" + err);
-            return;
+            console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
+            process.exit(36);
         }
         var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
         //console.log("checkSWversion(): url="+url);
