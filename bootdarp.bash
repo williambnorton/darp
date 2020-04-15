@@ -199,14 +199,14 @@ do
     ;;
 esac
 echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP" 
-#        if [ "$GENESISIP" = "$MYIP" ]; then
-#            echo `date` "GENESIS NODE EXITTING"
-#            exit -1
-#        fi
-#        if [ "$GENESISIP" != "$MYIP" ]; then
-#            #echo `date` "NON-GENESIS NODE EXITTING"
-#            exit -2
-#        fi
+if [ "$GENESISIP" = "$MYIP" ]; then
+    echo `date` "GENESIS NODE EXITTING"
+    exit -1
+fi
+if [ "$GENESISIP" != "$MYIP" ]; then
+    echo `date` "NON-GENESIS NODE EXITTING"
+    exit -2
+fi
 echo `date` "...................BOTTOM OF LOOP..................." 
 
 done
