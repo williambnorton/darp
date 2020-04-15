@@ -142,6 +142,26 @@ do
     echo `date` **DARP Finished handlepulse rc=$rc
     echo `date` **DARP Finished handlepulse rc=$rc
     sleep 1
+
+    if [ $rc -eq 86 ]; then exit 86; fi
+
+    if [ $rc -ne 36 ]; then
+        echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+        echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
+        echo `date` "$0 result: unexpected rc out of handlepulse rc=$rc"
+        if [ "$GENESISIP" = "$MYIP" ]; then
+        echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+        echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+        echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+        echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+        echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+        echo `date` "Ctrl-C detected --OR-- Genesis node needs updated code  "
+        exit -1
+        else
+            echo `date` "Ctrl-C detected for non-genesis node"
+        fi
+
+    fi
     #
     #   Finished DARP - exit
     #
@@ -152,10 +172,6 @@ do
 ##  DARP handlepulse EXITTED - 
 ##
     case $rc in
-    86)
-        echo `date` "$0 HandlePulse STOP command - exitting docker and stop"
-        exit 86
-        ;;
 
     36)
         echo `date` handlepulse exitted with software reload message rc=$rc
