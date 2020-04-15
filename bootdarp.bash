@@ -158,6 +158,9 @@ do
     ;;
 
   0)
+    echo `date` $0 STOPPING $0
+    echo `date` $0 STOPPING $0
+    echo `date` $0 STOPPING $0
     exit 0
     
     ;;
@@ -188,7 +191,11 @@ do
     ;;
 
   *)
+    echo `date` $0 STOPPING $0
+    echo `date` $0 STOPPING $0
+    echo `date` $0 STOPPING $0
     echo `date` unexpected rc out of handlepulse rc=$rc
+    exit 0
     ;;
 esac
 echo `date` "BOTTOM OF LOOP      $GENESISIP" = "$MYIP     BOTTOM OF LOOP" 
