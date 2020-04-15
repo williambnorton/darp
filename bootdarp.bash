@@ -138,9 +138,9 @@ do
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
 
-    echo `date` DARP Finished rc=$rc
-    echo `date` DARP Finished rc=$rc
-    echo `date` DARP Finished rc=$rc
+    echo `date` **DARP Finished handlepulse rc=$rc
+    echo `date` **DARP Finished handlepulse rc=$rc
+    echo `date` **DARP Finished handlepulse rc=$rc
     sleep 1
     #
     #   Finished DARP - exit
@@ -152,37 +152,37 @@ do
 ##  DARP handlepulse EXITTED - 
 ##
     case $rc in
-  86)
-    echo `date` "$0 HandlePulse STOP command - exitting docker and stop"
-    exit 86
-    ;;
+    86)
+        echo `date` "$0 HandlePulse STOP command - exitting docker and stop"
+        exit 86
+        ;;
 
-  36)
+    36)
         echo `date` handlepulse exitted with software reload message rc=$rc
         echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
-    ;;
+        ;;
 
-  *)
-    echo `date` $0 rc=$rc ... updateSW.bash detected NEW SOFTWARE and killed handlepulse processes
-    echo `date` $0 result: unexpected rc out of handlepulse rc=$rc
-    #//if [ "$GENESISIP" = "$MYIP" ]; then
+    *)
+        echo `date` $0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes
+        echo `date` $0 result: unexpected rc out of handlepulse rc=$rc
+        #//if [ "$GENESISIP" = "$MYIP" ]; then
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
         exit -1
-    #//fi
-    #//echo `date` Ctrl-C detected --OR-- Genesis node needs updated code
-    
-    ;;
-esac
-echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
-kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
-kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
+        #//fi
+        #//echo `date` Ctrl-C detected --OR-- Genesis node needs updated code  
+        ;;
+    esac
 
-ps aux
-echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
+    echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
+    kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
+    kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
 
-sleep 5
+    ps aux
+    echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
+
+    sleep 5
 done
