@@ -145,8 +145,8 @@ do
     #
     #   Finished DARP - exit
     #
-    kill `cat $DARPDIR/*.pid`    #kill all processes
-    rm $DARPDIR/*.pid
+    #kill `cat $DARPDIR/*.pid`    #kill all processes <-- doesn't work since stuff moved
+    #rm $DARPDIR/*.pid
 
 ##
 ##  DARP handlepulse EXITTED - 
@@ -178,8 +178,8 @@ do
     ;;
 esac
 echo `date` "...................BOTTOM OF LOOP..................." 
-kill `ps aux |grep -v grep | grep node | awk '{ print $2}'`
-kill `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
+kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
+kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
 
 ps aux
 sleep 5
