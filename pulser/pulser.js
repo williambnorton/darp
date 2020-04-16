@@ -138,14 +138,27 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                     }
                                     //update out stats on this pulse record
                                     //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
-                                    redisClient.hgetall(pulseLabel, function (err, oldPulse) {
-                                        if (oldPulse == null)
-                                            oldPulse = { outOctets: "0", outMsgs: "0" };
+                                    redisClient.hgetall(pulseLabel, function (err, groupEntry) {
+                                        if (groupEntry == null)
+                                            groupEntry = { outOctets: "0", outMsgs: "0" };
                                         var pulse = {
-                                            outOctets: "" + (parseInt(oldPulse.outOctets) + pulseMsg.length),
-                                            outMsgs: "" + (parseInt(oldPulse.outMsgs) + 1)
+                                            outOctets: "" + (parseInt(groupEntry.outOctets) + pulseMsg.length),
+                                            outMsgs: "" + (parseInt(groupEntry.outMsgs) + 1)
                                         };
                                         redisClient.hmset(pulseLabel, pulse); //update stats
+                                        //
+                                        //  Do the same for the out counters for the node I am sending to
+                                        //
+                                        var pulseEntryLabel = node.geo + ":" + groupEntry.group;
+                                        redisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
+                                            if (pulseEntry == null)
+                                                pulseEntry = { outOctets: "0", outMsgs: "0" };
+                                            var pulse = {
+                                                outOctets: "" + (parseInt(pulseEntry.outOctets) + pulseMsg.length),
+                                                outMsgs: "" + (parseInt(pulseEntry.outMsgs) + 1)
+                                            };
+                                            redisClient.hmset(pulseEntryLabel, pulse); //update stats
+                                        });
                                     });
                                 });
                             }
