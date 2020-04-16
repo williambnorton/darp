@@ -34,8 +34,11 @@ function handleShowState(req, res) {
 
    txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
    txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>'
+   
+   txt += '<body>';
    var insert="";
       expressRedisClient.hgetall("mint:0", function (err,me) {
+   /*
 
       if (me.isGenesisNode) {
            //console.log(ts()+"handleShowState() ***** GENESIS");
@@ -80,8 +83,8 @@ function handleShowState(req, res) {
          res.setHeader('Content-Type', 'text/html');
          res.end(txt);
       });
-
-   })
+/*
+   })*/
 
 }
 
