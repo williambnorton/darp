@@ -108,7 +108,7 @@ function handleShowState(req, res) {
                             txt += "</tr>";
                             if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                                 txt += "</table>";
-                                console.log(lib_1.ts() + "READY TO DUMP HTML: " + txt);
+                                //console.log(ts()+"READY TO DUMP HTML: "+txt);
                                 txt += "<H2>Polling every=" + POLLFREQ / 1000 + " seconds</H2>";
                                 txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
                                 //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';

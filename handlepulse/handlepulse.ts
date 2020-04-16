@@ -83,7 +83,8 @@ server.on('message', function(message, remote) {
 
   redisClient.hgetall(pulseLabel, function(err, oldPulse) {
     //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-
+    redisClient.hgetall("mint:0", function(err, me) {
+      if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
     if (oldPulse==null) {     //first time we see this entry, include stats to increment
       oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
     }
@@ -142,6 +143,7 @@ server.on('message', function(message, remote) {
         }
  
     });
+  });
   });
 });
 

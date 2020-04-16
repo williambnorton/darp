@@ -76,61 +76,65 @@ server.on('message', function (message, remote) {
     //console.log(ts()+"handlepulse(): owls="+owls);
     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-        if (oldPulse == null) { //first time we see this entry, include stats to increment
-            oldPulse = { "inOctets": "0", "inMsgs": "0" };
-        }
-        if (err) {
-            console.log("ERROR in on.message handling");
-        }
-        var pulse = {
-            version: ary[1],
-            geo: ary[2],
-            group: ary[3],
-            seq: ary[4],
-            pulseTimestamp: pulseTimestamp,
-            srcMint: ary[6],
-            owls: owls,
-            owl: lib_js_1.now() - pulseTimestamp,
-            lastMsg: msg,
-            inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
-            inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
-        };
-        authenticatedMessage(pulse, function (err, authenticated) {
-            //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-            if (pulse.version != MYBUILD) {
-                if (!isGenesisNode) {
-                    console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                    console.log("INSIDE test pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
-                    process.exit(36); //SOFTWARE RELOAD
-                }
+        redisClient.hgetall("mint:0", function (err, me) {
+            if (me.state == "RELOAD")
+                process.exit(36); //this is set when reload button is pressed in express
+            if (oldPulse == null) { //first time we see this entry, include stats to increment
+                oldPulse = { "inOctets": "0", "inMsgs": "0" };
             }
-            ;
-            redisClient.publish("pulses", msg);
-            redisClient.hmset(pulseLabel, pulse);
-            //
-            //  if groupOwner pulsed this - make sure we have the credentials for each node
-            //
-            //console.log("pulse="+dump(pulse));
-            //console.log("HANDLEPULSE() pulse from Genesis node");
-            var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
-            var _loop_1 = function () {
-                var mintLabel = mints[mint];
-                //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
-                redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
-                    if (err)
-                        console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-                    //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
-                    if (!mintValue) {
-                        console.log("Fetching mint=" + mintLabel + " from genesis Node");
-                        newMint(mintLabel); //new Mint
-                    }
-                });
+            if (err) {
+                console.log("ERROR in on.message handling");
+            }
+            var pulse = {
+                version: ary[1],
+                geo: ary[2],
+                group: ary[3],
+                seq: ary[4],
+                pulseTimestamp: pulseTimestamp,
+                srcMint: ary[6],
+                owls: owls,
+                owl: lib_js_1.now() - pulseTimestamp,
+                lastMsg: msg,
+                inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
+                inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
             };
-            //console.log("HANDLEPULSE() mints="+mints);
-            // if we get a mint from the groupOwner that we don't know about, fetch it
-            for (var mint in mints) {
-                _loop_1();
-            }
+            authenticatedMessage(pulse, function (err, authenticated) {
+                //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+                if (pulse.version != MYBUILD) {
+                    if (!isGenesisNode) {
+                        console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                        console.log("INSIDE test pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
+                        process.exit(36); //SOFTWARE RELOAD
+                    }
+                }
+                ;
+                redisClient.publish("pulses", msg);
+                redisClient.hmset(pulseLabel, pulse);
+                //
+                //  if groupOwner pulsed this - make sure we have the credentials for each node
+                //
+                //console.log("pulse="+dump(pulse));
+                //console.log("HANDLEPULSE() pulse from Genesis node");
+                var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
+                var _loop_1 = function () {
+                    var mintLabel = mints[mint];
+                    //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
+                    redisClient.hget("mint:" + mintLabel, "mint", function (err, mintValue) {
+                        if (err)
+                            console.log("handlePulse - error checking mint exists. ERROR - should not happen");
+                        //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
+                        if (!mintValue) {
+                            console.log("Fetching mint=" + mintLabel + " from genesis Node");
+                            newMint(mintLabel); //new Mint
+                        }
+                    });
+                };
+                //console.log("HANDLEPULSE() mints="+mints);
+                // if we get a mint from the groupOwner that we don't know about, fetch it
+                for (var mint in mints) {
+                    _loop_1();
+                }
+            });
         });
     });
 });
