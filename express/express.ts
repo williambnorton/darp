@@ -19,7 +19,6 @@ var app = express();
 const CYCLETIME=5;              //Seconds between system poll
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
 const REFRESHPAGETIME = CYCLETIME;      //how often to refresh instrumentation web page
-var HOLD = 0;
 
 //
 //      handleShowState(req,res) - show the node state
@@ -28,15 +27,16 @@ function handleShowState(req, res) {
    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
    if (CYCLETIME<5) txt = '<meta http-equiv="refresh" content="' + 5 + '">';
-   if (HOLD==1) txt = '<meta http-equiv="refresh" content="' + 15 + '">';
-   txt += '<html><head>';
 
-   txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
-   txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>'
-   
-   txt += '<body>';
-   var insert="";
    expressRedisClient.hgetall("mint:0", function (err,me) {
+      if (me.state=="PAUSE") txt = '<meta http-equiv="refresh" content="' + 15 + '">';
+      txt += '<html><head>';
+   
+      txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
+      txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>'
+      
+      txt += '<body>';
+      var insert="";
 
       expressRedisClient.hgetall("mint:1", function (err,genesis) {
          
@@ -132,7 +132,7 @@ function handleShowState(req, res) {
                   //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
                   //else txt+='<H2>*** NOT JOINOK ***</H2>';
                   txt+='<H2> STATE: '+me.state+' </H2>';
-                  if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+                  if (me.state=="PAUSE") txt += "<p>Hit %R to RELOAD PAGE DURING PAUSE MODE</p>";
                   txt += "</body></html>";
    
                   res.setHeader('Content-Type', 'text/html');

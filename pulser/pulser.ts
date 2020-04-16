@@ -26,11 +26,12 @@ var datagramClient=dgram.createSocket('udp4');
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
-  setTimeout(pulse,10 * 1000);
+  setTimeout(pulse,10 * 1000);  //10 second pollingfrequency
 
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
     if (me==null || me.state=="PAUSE") return console.log("(nomint)PAUSED ");
+    setTimeout(pulse,me.POLLFREQ * 1000);
 
     GEO=me.geo;
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
