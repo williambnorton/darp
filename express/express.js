@@ -80,7 +80,7 @@ function handleShowState(req, res) {
                             txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
                             txt += "<td>" + mintEntry.ipaddr + "</td>";
                             txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
-                            txt += "<td>" + mintEntry.publickey + "</td>";
+                            txt += "<td>" + mintEntry.publickey.substring(0, 4) + "..." + mintEntry.publickey.substring(-4) + "</td>";
                             txt += "<td>" + pulseEntry.seq + "</td>";
                             txt += "<td>" + pulseEntry.inMsgs + "</td>";
                             txt += "<td>" + pulseEntry.inOctets + "</td>";
