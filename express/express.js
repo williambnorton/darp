@@ -58,18 +58,58 @@ function handleShowState(req, res) {
                 for (var entry in gSRlist)
                     lastEntry = entry;
                 //console.log("lastEntry="+lastEntry);
+                txt += "<table>";
                 for (var entry in gSRlist) {
                     console.log("gSRlist entry=" + lib_1.dump(entry));
                     expressRedisClient.hgetall(entry, function (err, pulseEntry) {
+                        txt += "<tr>";
                         //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
                         console.log("pulseEntry=" + lib_1.dump(pulseEntry));
-                        txt += "<H2>Polling every=" + POLLFREQ / 1000 + " seconds</H2>";
-                        txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
-                        //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
-                        //else txt+='<H2>*** NOT JOINOK ***</H2>';
-                        txt += '<H2> STATE: ' + me.state + ' </H2>';
+                        txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
+                        txt += '<td>' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" target="_blank">' + pulseEntry.geo + '</a></td>';
+                        txt += '<td><a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
+                        txt += "<td>" + pulseEntry.ipaddr + "</td>";
+                        txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" target="_blank">' + pulseEntry.port + "</a></td>";
+                        txt += "<td>" + pulseEntry.lastSeq + "</td>";
+                        txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                        txt += "<td>" + pulseEntry.inOctets + "</td>";
+                        var pulseGroupOwner = pulseEntry.group.split(".")[0];
+                        //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
+                        txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
+                        txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                        txt += "<td>" + pulseEntry.outOctets + "</td>";
+                        txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                        var stopButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/stop";
+                        var rebootButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/reboot";
+                        var reloadButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/reload";
+                        var holdButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/hold";
+                        var pulseMsgButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/pulseMsg";
+                        txt += "<td>" + '<FORM>';
+                        txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+                        txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+                        txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
+                        txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+                        txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+                        txt += '<FORM>' + "</td>";
+                        var delta = Math.round((lib_1.now() - pulseEntry.bootTime) / 1000) + " secs ago";
+                        if (pulseEntry.bootTime == 0)
+                            delta = "";
+                        txt += "<td>" + delta + "</td>";
+                        //txt += "<td>" + entry.bootTime+ "</td>";
+                        var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+                        if (pulseEntry.pulseTimestamp == 0)
+                            deltaSeconds = "";
+                        //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                        txt += "<td>" + deltaSeconds + "</td>";
+                        txt += "</tr>";
                         if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                            console.log(lib_1.ts() + "READY TO DUMP HTML");
+                            txt += "</table>";
+                            console.log(lib_1.ts() + "READY TO DUMP HTML: " + txt);
+                            txt += "<H2>Polling every=" + POLLFREQ / 1000 + " seconds</H2>";
+                            txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
+                            //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
+                            //else txt+='<H2>*** NOT JOINOK ***</H2>';
+                            txt += '<H2> STATE: ' + me.state + ' </H2>';
                             if (HOLD)
                                 txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
                             txt += "</body></html>";
