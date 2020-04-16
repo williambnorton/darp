@@ -145,7 +145,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                   if(error) {
                     networkClient.close();
                   } else {
-                    redisClient.hset("")
+                    //redisClient.hset("")
                     //console.log("sent dump node="+dump(node))
                     var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
                     //console.log(message);
