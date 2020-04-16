@@ -37,13 +37,13 @@ function handleShowState(req, res) {
    
    txt += '<body>';
    var insert="";
-      expressRedisClient.hgetall("mint:0", function (err,me) {
-   /*
+   expressRedisClient.hgetall("mint:0", function (err,me) {
 
       if (me.isGenesisNode) {
            //console.log(ts()+"handleShowState() ***** GENESIS");
            insert = 'style="background-color: beige;"';
       }
+
       txt += '<body onload="startTime()" '+insert+'>'
       if (me.isGenesisNode) txt+='<H2>GENESIS NODE : '+me.geo+'</H2><BR>';
       txt += '<H2 class="title">';
@@ -54,10 +54,9 @@ function handleShowState(req, res) {
       txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
 
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+         if (err) console.log("gSRlist error")
          txt+=dump(gSRlist);
-         //
-         //      externalize groups one at a time  WBNWBNWBN
-         //
+         
 /*         gSRlist.forEachGroup(function (groupEntry) {
            //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
            if (groupEntry.owner!="GENESIS")
