@@ -62,7 +62,7 @@ function handleShowState(req, res) {
             for (var entry in gSRlist) lastEntry=entry;
             //console.log("lastEntry="+lastEntry);
             txt += '<table class="gSRlist" border="1">';
-            txt += "<th>srcMint</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th>";
+            txt += "<th>srcMint</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th>";
             for (var entry in gSRlist) {
                console.log("gSRlist entry="+dump(entry));
                expressRedisClient.hgetall(entry, function (err,pulseEntry) {
@@ -79,6 +79,7 @@ function handleShowState(req, res) {
                   txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
                   txt += "<td>" + mintEntry.ipaddr + "</td>";
                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
+                  txt += "<td>" + mintEntry.publickey + "</td>";
 
                   txt += "<td>" + pulseEntry.seq + "</td>";
                   txt += "<td>" + pulseEntry.inMsgs + "</td>";
