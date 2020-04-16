@@ -119,6 +119,7 @@ function handleShowState(req, res) {
                                     txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
                                 txt += "</body></html>";
                                 res.setHeader('Content-Type', 'text/html');
+                                res.setHeader("Access-Control-Allow-Origin", "*");
                                 res.end(txt);
                             }
                             //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
@@ -155,6 +156,8 @@ app.get('/state', function (req, res) {
         expressRedisClient.hgetall("mint:0", function (err, me) {
             config.mintTable["mint:0"] = me;
             //var html="<html>"
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader("Access-Control-Allow-Origin", "*");
             res.end(JSON.stringify(config, null, 2));
             return;
         });
