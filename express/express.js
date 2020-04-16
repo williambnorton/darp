@@ -114,7 +114,7 @@ function handleShowState(req, res) {
                                 deltaSeconds = "";
                             //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                             txt += "<td>" + deltaSeconds + "</td>";
-                            txt += "<td>" + pulseEntry.lastMsg + "</td>";
+                            txt += "<td>" + "" + pulseEntry.lastMsg.length + " bytes: " + pulseEntry.lastMsg + "</td>";
                             txt += "<td>" + pulseEntry.version + "</td>";
                             txt += "</tr>";
                             if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
