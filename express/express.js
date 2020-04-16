@@ -54,7 +54,10 @@ function handleShowState(req, res) {
                 console.log("gSRlist error");
             txt += lib_1.dump(gSRlist);
             for (var entry in gSRlist) {
-                console.log("gSRlist entry=" + entry);
+                console.log("gSRlist entry=" + lib_1.dump(entry));
+                expressRedisClient.hgetall("mint:" + gSRlist[entry], function (err, mintEntry) {
+                    console.log("mintEntry=" + lib_1.dump(mintEntry));
+                });
             }
             /*         gSRlist.forEachGroup(function (groupEntry) {
                        //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
@@ -85,7 +88,7 @@ function handleShowState(req, res) {
 //
 //
 app.get('/state', function (req, res) {
-    console.log("fetching '/' state");
+    console.log("fetching '/state'");
     handleShowState(req, res);
     getConfig(function (config) {
         console.log("app.get('/' callback config=" + lib_1.dump(config));
@@ -93,15 +96,15 @@ app.get('/state', function (req, res) {
             config.mintTable["mint:0"] = me;
             //var html="<html>"
             res.end(JSON.stringify(config, null, 2));
+            return;
         });
     });
-    return;
 });
 //
 //
 //
 app.get('/', function (req, res) {
-    console.log("fetching '/' state");
+    console.log("fetching '/' ");
     handleShowState(req, res);
     //   getConfig(function(config) {
     //      console.log("app.get('/' callback config="+dump(config));
