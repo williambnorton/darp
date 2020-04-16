@@ -133,7 +133,12 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
             for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
               if (typeof node != "undefined" && node != null) {
-                redisClient.hset("mint:0","statsPulseMessageLength",""+message.length);
+                console.log("About to set statsPulseMessageLength");
+
+                redisClient.hmset("mint:0",{
+                  "statsPulseMessageLength" : ""+message.length
+                });
+                console.log("Done setting statsPulseMessageLength");
               //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
