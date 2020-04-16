@@ -57,7 +57,7 @@ function handleShowState(req, res) {
                 for (var entry in gSRlist) {
                     console.log("gSRlist entry=" + lib_1.dump(entry));
                     expressRedisClient.hgetall("mint:" + gSRlist[entry], function (err, mintEntry) {
-                        txt += mintEntry.mint + ":" + mintEntry.geo + ":" + mintEntry.group;
+                        txt += "<p>" + mintEntry.mint + ":" + mintEntry.geo + ":" + mintEntry.group + "</p>";
                         console.log("mintEntry=" + lib_1.dump(mintEntry));
                         //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
                         // txt+=pulseEntry.geo+":"+pulseEntry.group;
