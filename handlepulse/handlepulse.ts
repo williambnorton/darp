@@ -69,7 +69,7 @@ function  authenticatedMessage(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
-  if (SHOWPULSES) console.log("HANDLEPULSE: received pulse from "+remote.address + ':' + remote.port +' - ' + message);
+  if (SHOWPULSES) console.log(ts()+"HANDLEPULSE: received pulse from "+remote.address + ':' + remote.port +' - ' + message);
   var msg=message.toString();
   var ary=msg.split(",");
   //try {
