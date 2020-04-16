@@ -104,6 +104,7 @@ function getConfiguration() {
             if ( config.node == "GENESIS") {
                 console.log(" GENESIS NODE Instantiated itself");
                 redisClient.hset( "mint:0" , "state", "RUNNING" );
+                redisClient.hset( "mint:0" , "isGenesisNode", "1" );
             } else {
                 console.log(" ------------------------ " +GEO+" ---------NON-Genesis configuration");
                 console.log("CONFIG(): json="+dump(config));
