@@ -158,17 +158,20 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                       outMsgs : ""+(parseInt(groupEntry.outMsgs)+1)
                     };
                     redisClient.hmset(pulseLabel, pulse);  //update stats
-                                      //
-                      //  Do the same for the out counters for the node I am sending to
-                      //
-                      var pulseEntryLabel=node.geo+":"+groupEntry.group
-                      redisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
+                    //
+                    //  Do the same for the out counters for the node I am sending to
+                    //
+                    var pulseEntryLabel=node.geo+":"+groupEntry.group
+                    console.log(ts()+"pulseEntryLabel="+pulseEntryLabel);
+                    redisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
                         if (pulseEntry==null) pulseEntry={outOctets : "0",outMsgs : "0"};
                         var pulse={
                           outOctets : ""+(parseInt(pulseEntry.outOctets)+pulseMsg.length),
                           outMsgs : ""+(parseInt(pulseEntry.outMsgs)+1)
                         };
                         redisClient.hmset(pulseEntryLabel, pulse);  //update stats
+                        console.log(ts()+"updating pulseRecord:="+dump(pulseEntry);
+
                       });
                   });
 

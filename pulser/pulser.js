@@ -150,6 +150,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         //  Do the same for the out counters for the node I am sending to
                                         //
                                         var pulseEntryLabel = node.geo + ":" + groupEntry.group;
+                                        console.log(lib_1.ts() + "pulseEntryLabel=" + pulseEntryLabel);
                                         redisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
                                             if (pulseEntry == null)
                                                 pulseEntry = { outOctets: "0", outMsgs: "0" };
@@ -158,6 +159,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                                 outMsgs: "" + (parseInt(pulseEntry.outMsgs) + 1)
                                             };
                                             redisClient.hmset(pulseEntryLabel, pulse); //update stats
+                                            console.log(lib_1.ts() + "updating pulseRecord:=" + lib_1.dump(pulseEntry));
                                         });
                                     });
                                 });
