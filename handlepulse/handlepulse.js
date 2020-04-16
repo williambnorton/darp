@@ -227,11 +227,12 @@ function newMint(mint) {
 }
 //
 //  checkSEversion() - reload SW if there is new code to be had
+//this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
 //
-setTimeout(checkSWversion, 15 * 1000);
-;
+setTimeout(checkSWversion, 120 * 1000);
+; //every 2 mimiutes see if we need new SW
 function checkSWversion() {
-    setTimeout(checkSWversion, 15 * 1000);
+    setTimeout(checkSWversion, 120 * 1000);
     ;
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
