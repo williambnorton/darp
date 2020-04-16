@@ -70,15 +70,16 @@ function handleShowState(req, res) {
                //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
                console.log("pulseEntry="+dump(pulseEntry));
 
-
+               expressRedisClient.hgetall("mint:"+pulseEntry.srcMint, function (err,mintEntry) {
+                  console.log("mintEntry="+dump(mintEntry));
 
                txt += '<tr class="color'+pulseEntry.group+ " "+ pulseEntry.geo + ' ' + "INIT" + '">';
-               txt += '<td>' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" target="_blank">' + pulseEntry.geo + '</a></td>';
-               txt += '<td><a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
-               txt += "<td>" + pulseEntry.ipaddr + "</td>";
-               txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" target="_blank">' + pulseEntry.port + "</a></td>";
+               txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
+               txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
+               txt += "<td>" + mintEntry.ipaddr + "</td>";
+               txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
 
-               txt += "<td>" + pulseEntry.lastSeq + "</td>";
+               txt += "<td>" + pulseEntry.seq + "</td>";
                txt += "<td>" + pulseEntry.inMsgs + "</td>";
                txt += "<td>" + pulseEntry.inOctets + "</td>";
                var pulseGroupOwner=pulseEntry.group.split(".")[0];
@@ -91,11 +92,11 @@ function handleShowState(req, res) {
                txt += "<td>" + pulseEntry.outOctets + "</td>";
                txt += "<td>" + pulseEntry.pktDrops + "</td>";
 
-               var stopButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/stop";
-               var rebootButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/reboot";
-               var reloadButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/reload";
-               var holdButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/hold";
-               var pulseMsgButtonURL = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port + "/pulseMsg";
+               var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+               var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+               var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+               var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
+               var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
 
                txt += "<td>" + '<FORM>';
                txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
@@ -140,6 +141,7 @@ function handleShowState(req, res) {
 
                   //console.log("mintEntry="+dump(mintEntry));
                //});
+               });
             });
          }
 /*         gSRlist.forEachGroup(function (groupEntry) {
