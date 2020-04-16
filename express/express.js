@@ -16,11 +16,11 @@ var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
+var CYCLETIME = 5; //Seconds between system poll
 var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
 var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
 var HOLD = 0;
 var statsPulseMessageLength = 0;
-var CYCLETIME = 5; //Seconds between system poll
 //
 //      handleShowState(req,res) - show the node state
 //
