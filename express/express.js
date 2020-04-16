@@ -55,13 +55,14 @@ function handleShowState(req, res) {
                     console.log("gSRlist error");
                 txt += lib_1.dump(gSRlist);
                 for (var entry in gSRlist) {
-                    //console.log("gSRlist entry="+dump(entry));
+                    console.log("gSRlist entry=" + lib_1.dump(entry));
                     expressRedisClient.hgetall("mint:" + gSRlist[entry], function (err, mintEntry) {
-                        expressRedisClient.hgetall(entry, function (err, pulseEntry) {
-                            txt += pulseEntry.geo + ":" + pulseEntry.group;
-                            txt += mintEntry.mint + ":" + mintEntry.geo + ":" + mintEntry.group;
-                            //console.log("mintEntry="+dump(mintEntry));
-                        });
+                        txt += mintEntry.mint + ":" + mintEntry.geo + ":" + mintEntry.group;
+                        console.log("mintEntry=" + lib_1.dump(mintEntry));
+                        //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
+                        // txt+=pulseEntry.geo+":"+pulseEntry.group;
+                        //console.log("mintEntry="+dump(mintEntry));
+                        //});
                     });
                 }
                 /*         gSRlist.forEachGroup(function (groupEntry) {
