@@ -64,6 +64,17 @@ function handleShowState(req, res) {
                txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
                console.log("mintEntry="+dump(mintEntry));
 
+               txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
+               txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
+               //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
+               //else txt+='<H2>*** NOT JOINOK ***</H2>';
+               txt+='<H2> STATE: '+me.state+' </H2>';
+   
+               if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+               txt += "</body></html>";
+   
+               res.setHeader('Content-Type', 'text/html');
+               res.end(txt);
                //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
                  // txt+=pulseEntry.geo+":"+pulseEntry.group;
 
@@ -83,17 +94,7 @@ function handleShowState(req, res) {
            txt+=externalizeGroupState(genesisGroupEntry);
          });
          */
-            txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
-            txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
-            //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
-            //else txt+='<H2>*** NOT JOINOK ***</H2>';
-            txt+='<H2> STATE: '+me.state+' </H2>';
 
-            if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
-            txt += "</body></html>";
-
-            res.setHeader('Content-Type', 'text/html');
-            res.end(txt);
          });
       });
    })
