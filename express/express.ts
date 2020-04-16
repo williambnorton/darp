@@ -51,6 +51,12 @@ function handleShowState(req, res) {
          txt += 'Layer #'+me.layer+' : </h2><h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
          if (!me.isGenesisNode)
            txt += ' under Genesis Node: <a href="http://'+genesis.geo+":"+genesis.group+'">'+genesis.geo+":"+genesis.group+"</a>";
+           txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
+           txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
+           //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
+           //else txt+='<H2>*** NOT JOINOK ***</H2>';
+           txt+='<H2> STATE: '+me.state+' </H2>';
+           if (me.state=="HOLD") txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
            //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
 
          txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
@@ -128,12 +134,7 @@ function handleShowState(req, res) {
                      txt+="</table>";
                      //console.log(ts()+"READY TO DUMP HTML: "+txt);
 
-                     txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
-                     txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
-                     //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
-                     //else txt+='<H2>*** NOT JOINOK ***</H2>';
-                     txt+='<H2> STATE: '+me.state+' </H2>';
-                     if (me.state=="HOLD") txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+
                      txt += "</body></html>";
                      
                      res.setHeader('Content-Type', 'text/html');
