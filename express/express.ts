@@ -58,23 +58,29 @@ function handleShowState(req, res) {
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
          if (err) console.log("gSRlist error")
          txt+=dump(gSRlist);
+         var lastEntryGeo="";
+         for (var entry in gSRlist) lastEntryGeo=entry;
+         console.log("lastEntryGeo="+lastEntryGeo);
+
          for (var entry in gSRlist) {
             console.log("gSRlist entry="+dump(entry));
-            expressRedisClient.hgetall("mint:"+gSRlist[entry], function (err,mintEntry) {
-               txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-               console.log("mintEntry="+dump(mintEntry));
+            expressRedisClient.hgetall(entry, function (err,entry) {
+
+               //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
+               console.log("entry="+dump(entry));
 
                txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
                txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
                //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
                //else txt+='<H2>*** NOT JOINOK ***</H2>';
                txt+='<H2> STATE: '+me.state+' </H2>';
+               if (entry.geo==lastEntryGeo) {
+                  if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+                  txt += "</body></html>";
    
-               if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
-               txt += "</body></html>";
-   
-               res.setHeader('Content-Type', 'text/html');
-               res.end(txt);
+                  res.setHeader('Content-Type', 'text/html');
+                  res.end(txt);
+               }
                //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
                  // txt+=pulseEntry.geo+":"+pulseEntry.group;
 
