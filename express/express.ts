@@ -75,6 +75,7 @@ function handleShowState(req, res) {
                //else txt+='<H2>*** NOT JOINOK ***</H2>';
                txt+='<H2> STATE: '+me.state+' </H2>';
                if (entry.geo==lastEntryGeo) {
+                  console.log(ts()+"READY TO DUMP HTML");
                   if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
                   txt += "</body></html>";
    
