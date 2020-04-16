@@ -39,7 +39,9 @@ function handleShowState(req, res) {
    var insert="";
    expressRedisClient.hgetall("mint:0", function (err,me) {
 
-      if (me.isGenesisNode) {
+      expressRedisClient.hgetall("mint:1", function (err,genesis) {
+         
+         if (me.isGenesisNode) {
            //console.log(ts()+"handleShowState() ***** GENESIS");
            insert = 'style="background-color: beige;"';
       }
@@ -49,7 +51,8 @@ function handleShowState(req, res) {
       txt += '<H2 class="title">';
       txt += 'Layer #'+me.layer+' : </h2><h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
       if (!me.isGenesisNode)
-           txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
+           txt += ' under Genesis Node: <a href="http://'+genesis.geo+":"+genesis.group+'">'+genesis.geo+":"+genesis.group+"</a>";
+           //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
 
       txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
 
@@ -99,7 +102,7 @@ app.get('/state', function (req, res) {
    console.log("fetching '/state'");
    handleShowState(req, res);
    getConfig(function(config) {
-      console.log("app.get('/' callback config="+dump(config));
+      console.log("app.get('/state' callback config="+dump(config));
       expressRedisClient.hgetall("mint:0", function(err, me) {
          config.mintTable["mint:0"]=me;
          //var html="<html>"
