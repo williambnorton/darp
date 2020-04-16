@@ -58,7 +58,7 @@ function handleShowState(req, res) {
                 for (var entry in gSRlist)
                     lastEntry = entry;
                 //console.log("lastEntry="+lastEntry);
-                txt += "<table>";
+                txt += '<table class="gSRlist" border="1">';
                 for (var entry in gSRlist) {
                     console.log("gSRlist entry=" + lib_1.dump(entry));
                     expressRedisClient.hgetall(entry, function (err, pulseEntry) {
