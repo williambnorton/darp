@@ -93,15 +93,16 @@ function handleShowState(req, res) {
 //
 app.get('/', function (req, res) {
    console.log("fetching '/' state");
-   getConfig(function(config) {
-      console.log("app.get('/' callback config="+dump(config));
-      expressRedisClient.hgetall("mint:0", function(err, me) {
-         config.mintTable["mint:0"]=me;
-         var html="<html><"
-         //res.end(JSON.stringify(config, null, 2));
-      });
+   handleShowState(req, res);
+//   getConfig(function(config) {
+//      console.log("app.get('/' callback config="+dump(config));
+//      expressRedisClient.hgetall("mint:0", function(err, me) {
+//         config.mintTable["mint:0"]=me;
+//         var html="<html>"
+//         //res.end(JSON.stringify(config, null, 2));
+//      });
 
-   })
+ //  })
    return
 });
 //
