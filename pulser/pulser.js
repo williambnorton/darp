@@ -122,7 +122,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                             if (typeof node != "undefined" && node != null) {
                                 console.log("About to set statsPulseMessageLength");
                                 redisClient.hmset("mint:0", {
-                                    "statsPulseMessageLength": "" + message.length
+                                    "statsPulseMessageLength": "" + pulseMsg.length
                                 });
                                 console.log("Done setting statsPulseMessageLength");
                                 //sending msg
