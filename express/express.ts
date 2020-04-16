@@ -172,10 +172,10 @@ function handleShowState(req, res) {
 //
 //
 app.get('/state', function (req, res) {
-   console.log("fetching '/state'");
+   //console.log("fetching '/state'");
    //handleShowState(req, res);
    getConfig(function(config) {
-      console.log("app.get('/state' callback config="+dump(config));
+      //console.log("app.get('/state' callback config="+dump(config));
       expressRedisClient.hgetall("mint:0", function(err, me) {
          config.mintTable["mint:0"]=me;
          //var html="<html>"
@@ -328,7 +328,11 @@ app.get('/me', function (req, res) {
 //
 //
 app.get('/hold', function (req, res) {
-   console.log("Flipping HOLD state - ");
+   console.log(ts()+"Flipping HOLD state - ");
+   console.log(ts()+"Flipping HOLD state - ");
+   console.log(ts()+"Flipping HOLD state - ");
+   console.log(ts()+"Flipping HOLD state - ");
+   console.log(ts()+"Flipping HOLD state - ");
    expressRedisClient.hget( "mint:0", "state", function (err,state) {
       switch (state) {
          case "HOLD": 
