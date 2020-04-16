@@ -42,12 +42,12 @@ function handleShowState(req, res) {
             }
             txt += '<body onload="startTime()" ' + insert + '>';
             if (me.isGenesisNode)
-                txt += '<H2>GENESIS NODE : ' + me.geo + '</H2><BR>';
+                txt += '<H2>DARP GENESIS NODE : ' + me.geo + '</H2><BR>';
             txt += '<H2 class="title">';
             txt += 'Layer #' + me.layer + ' : </h2><h1> ' + me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
             if (!me.isGenesisNode)
                 txt += ' under Genesis Node: <a href="http://' + genesis.geo + ":" + genesis.group + '">' + genesis.geo + ":" + genesis.group + "</a>";
-            txt += "<H2>Polling every=" + POLLFREQ / 1000 + " seconds</H2>";
+            txt += "<H2> Refresh every=" + POLLFREQ / 1000 + " seconds</H2>";
             txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
             //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
             //else txt+='<H2>*** NOT JOINOK ***</H2>';
@@ -65,7 +65,7 @@ function handleShowState(req, res) {
                     lastEntry = entry;
                 //console.log("lastEntry="+lastEntry);
                 txt += '<table class="gSRlist" border="1">';
-                txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th>";
+                txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th><th>owls</th>";
                 for (var entry in gSRlist) {
                     console.log("gSRlist entry=" + lib_1.dump(entry));
                     expressRedisClient.hgetall(entry, function (err, pulseEntry) {
@@ -114,6 +114,7 @@ function handleShowState(req, res) {
                                 deltaSeconds = "";
                             //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                             txt += "<td>" + deltaSeconds + "</td>";
+                            txt += "<td>" + pulseEntry.owls + "</td>";
                             txt += "</tr>";
                             if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                                 txt += "</table>";
@@ -329,7 +330,14 @@ app.get('/nodefactory', function (req, res) {
     //   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     //   var incomingIP=req.connection.remoteAddress;
     var incomingIP = req.query.myip; /// for now we believe the node's IP
-    var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var octetCount = incomingIP.split(".").length;
+    if (octetCount != 4) {
+        console.log("nodefactory called with bad IP address:" + incomingIP);
+        res.status(500);
+        res.render('error', { error: "BAD IP Address coming into node factory" });
+        return;
+    }
+    //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     //console.log("req="+dump(req));
     var version = req.query.version;
     //console.log("EXPRESS /nodefactory clientIncomingIP="+clientIncomingIP+" geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
