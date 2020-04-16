@@ -129,7 +129,7 @@ server.on('message', function(message, remote) {
 
         //console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
-        //console.log("HANDLEPULSE() mints="+mints);
+        console.log("HANDLEPULSE() mints="+mints+" pulse.owls="+pulse.owls);
 
         // if we get a mint from the groupOwner that we don't know about, fetch it
         for (var mint in mints) {

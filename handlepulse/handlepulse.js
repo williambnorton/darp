@@ -119,6 +119,7 @@ server.on('message', function (message, remote) {
                 //console.log("pulse="+dump(pulse));
                 //console.log("HANDLEPULSE() pulse from Genesis node");
                 var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
+                console.log("HANDLEPULSE() mints=" + mints + " pulse.owls=" + pulse.owls);
                 var _loop_1 = function () {
                     var mintLabel = mints[mint];
                     //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
@@ -132,7 +133,6 @@ server.on('message', function (message, remote) {
                         }
                     });
                 };
-                //console.log("HANDLEPULSE() mints="+mints);
                 // if we get a mint from the groupOwner that we don't know about, fetch it
                 for (var mint in mints) {
                     _loop_1();
