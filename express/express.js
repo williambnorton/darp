@@ -53,6 +53,9 @@ function handleShowState(req, res) {
             if (err)
                 console.log("gSRlist error");
             txt += lib_1.dump(gSRlist);
+            for (var entry in gSRlist) {
+                console.log("gSRlist entry=" + entry);
+            }
             /*         gSRlist.forEachGroup(function (groupEntry) {
                        //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
                        if (groupEntry.owner!="GENESIS")
@@ -78,6 +81,22 @@ function handleShowState(req, res) {
         });
     });
 }
+//
+//
+//
+app.get('/state', function (req, res) {
+    console.log("fetching '/' state");
+    handleShowState(req, res);
+    getConfig(function (config) {
+        console.log("app.get('/' callback config=" + lib_1.dump(config));
+        expressRedisClient.hgetall("mint:0", function (err, me) {
+            config.mintTable["mint:0"] = me;
+            //var html="<html>"
+            res.end(JSON.stringify(config, null, 2));
+        });
+    });
+    return;
+});
 //
 //
 //
