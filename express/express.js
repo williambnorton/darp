@@ -293,29 +293,23 @@ app.get('/me', function (req, res) {
 //
 //
 app.get('/hold', function (req, res) {
-    console.log(lib_1.ts() + "Flipping HOLD state - ");
-    console.log(lib_1.ts() + "Flipping HOLD state - ");
-    console.log(lib_1.ts() + "Flipping HOLD state - ");
-    console.log(lib_1.ts() + "Flipping HOLD state - ");
-    console.log(lib_1.ts() + "Flipping HOLD state - ");
-    expressRedisClient.hget("mint:0", "state", function (err, state) {
-        switch (state) {
-            case "HOLD":
-                expressRedisClient.hmset("mint:0", {
-                    state: "RUNNING"
-                });
-                break;
-            case "RUNNING":
-                expressRedisClient.hmset("mint:0", {
-                    state: "HOLD"
-                });
-                console.log(lib_1.ts() + "HOLD");
-                break;
-            default:
-                console.log("bad state in redis");
-                break;
-        }
+    expressRedisClient.hmset("mint:0", {
+        state: "HOLD"
     });
+    console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
+    console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
+    console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
+    console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
+    console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
+});
+//
+//
+//
+app.get('/pulseMsg', function (req, res) {
+    expressRedisClient.hmset("mint:0", {
+        state: "RUNNING"
+    });
+    console.log(lib_1.ts() + "pulsed - Now in RUNNING state");
 });
 //
 // nodeFactory

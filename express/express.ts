@@ -328,33 +328,25 @@ app.get('/me', function (req, res) {
 //
 //
 app.get('/hold', function (req, res) {
-   console.log(ts()+"Flipping HOLD state - ");
-   console.log(ts()+"Flipping HOLD state - ");
-   console.log(ts()+"Flipping HOLD state - ");
-   console.log(ts()+"Flipping HOLD state - ");
-   console.log(ts()+"Flipping HOLD state - ");
-   expressRedisClient.hget( "mint:0", "state", function (err,state) {
-      switch (state) {
-         case "HOLD": 
-            expressRedisClient.hmset( "mint:0", {
-               state : "RUNNING"
-            });
-            break;
-         case "RUNNING":
             expressRedisClient.hmset( "mint:0", {
                state : "HOLD"
             });
-            console.log(ts()+"HOLD");
-            break;
-         default:
-            console.log("bad state in redis");
-            break;
-      }
-
+            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+});
+//
+//
+//
+app.get('/pulseMsg', function (req, res) {
+   expressRedisClient.hmset( "mint:0", {
+      state : "RUNNING"
    });
+   console.log(ts()+"pulsed - Now in RUNNING state");
 
 });
-
 
 //
 // nodeFactory
