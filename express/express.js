@@ -20,7 +20,6 @@ var CYCLETIME = 5; //Seconds between system poll
 var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
 var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
 var HOLD = 0;
-var statsPulseMessageLength = 0;
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -78,7 +77,7 @@ function handleShowState(req, res) {
                          });
                          */
                 txt += "<H2>Polling every=" + POLLFREQ / 1000 + " seconds</H2>";
-                txt += "<H2> with pulseMsgSize=" + statsPulseMessageLength + "</H2>";
+                txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
                 //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
                 //else txt+='<H2>*** NOT JOINOK ***</H2>';
                 txt += '<H2> STATE: ' + me.state + ' </H2>';

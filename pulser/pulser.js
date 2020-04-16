@@ -120,6 +120,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     else {
                         var _loop_1 = function (node) {
                             if (typeof node != "undefined" && node != null) {
+                                redisClient.hset("mint:0", "statsPulseMessageLength", "" + message.length);
                                 //sending msg
                                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                                 networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
@@ -127,6 +128,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         networkClient.close();
                                     }
                                     else {
+                                        redisClient.hset("");
                                         //console.log("sent dump node="+dump(node))
                                         var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " ";
                                         //console.log(message);
