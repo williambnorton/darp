@@ -28,7 +28,7 @@ function handleShowState(req, res) {
     if (CYCLETIME < 5)
         txt = '<meta http-equiv="refresh" content="' + 5 + '">';
     expressRedisClient.hgetall("mint:0", function (err, me) {
-        if (me.state == "PAUSE")
+        if (me.state == "HOLD")
             txt = '<meta http-equiv="refresh" content="' + 15 + '">';
         txt += '<html><head>';
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
@@ -114,8 +114,8 @@ function handleShowState(req, res) {
                                 //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
                                 //else txt+='<H2>*** NOT JOINOK ***</H2>';
                                 txt += '<H2> STATE: ' + me.state + ' </H2>';
-                                if (me.state == "PAUSE")
-                                    txt += "<p>Hit %R to RELOAD PAGE DURING PAUSE MODE</p>";
+                                if (me.state == "HOLD")
+                                    txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
                                 txt += "</body></html>";
                                 res.setHeader('Content-Type', 'text/html');
                                 res.setHeader("Access-Control-Allow-Origin", "*");
@@ -291,20 +291,20 @@ app.get('/me', function (req, res) {
 //
 //
 //
-app.get('/pause', function (req, res) {
-    console.log("Flipping PAUSE state - ");
+app.get('/hold', function (req, res) {
+    console.log("Flipping HOLD state - ");
     expressRedisClient.hget("mint:0", "state", function (err, state) {
         switch (state) {
-            case "PAUSE":
+            case "HOLD":
                 expressRedisClient.hmset("mint:0", {
                     state: "RUNNING"
                 });
                 break;
             case "RUNNING":
                 expressRedisClient.hmset("mint:0", {
-                    state: "PAUSE"
+                    state: "HOLD"
                 });
-                console.log(lib_1.ts() + "PAUSE");
+                console.log(lib_1.ts() + "HOLD");
                 break;
             default:
                 console.log("bad state in redis");

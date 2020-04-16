@@ -29,7 +29,7 @@ function handleShowState(req, res) {
    if (CYCLETIME<5) txt = '<meta http-equiv="refresh" content="' + 5 + '">';
 
    expressRedisClient.hgetall("mint:0", function (err,me) {
-      if (me.state=="PAUSE") txt = '<meta http-equiv="refresh" content="' + 15 + '">';
+      if (me.state=="HOLD") txt = '<meta http-equiv="refresh" content="' + 15 + '">';
       txt += '<html><head>';
    
       txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
@@ -45,105 +45,105 @@ function handleShowState(req, res) {
            insert = 'style="background-color: beige;"';
          }
 
-      txt += '<body onload="startTime()" '+insert+'>'
-      if (me.isGenesisNode) txt+='<H2>GENESIS NODE : '+me.geo+'</H2><BR>';
-      txt += '<H2 class="title">';
-      txt += 'Layer #'+me.layer+' : </h2><h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
-      if (!me.isGenesisNode)
+         txt += '<body onload="startTime()" '+insert+'>'
+         if (me.isGenesisNode) txt+='<H2>GENESIS NODE : '+me.geo+'</H2><BR>';
+         txt += '<H2 class="title">';
+         txt += 'Layer #'+me.layer+' : </h2><h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
+         if (!me.isGenesisNode)
            txt += ' under Genesis Node: <a href="http://'+genesis.geo+":"+genesis.group+'">'+genesis.geo+":"+genesis.group+"</a>";
            //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
 
-      txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
+         txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
 
-      expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
-         if (err) console.log("gSRlist error")
-         txt+=dump(gSRlist);
-         var lastEntry="";
-         for (var entry in gSRlist) lastEntry=entry;
-         //console.log("lastEntry="+lastEntry);
-         txt += '<table class="gSRlist" border="1">';
-         txt += "<th>srcMint</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th>";
-         for (var entry in gSRlist) {
-            console.log("gSRlist entry="+dump(entry));
-            expressRedisClient.hgetall(entry, function (err,pulseEntry) {
-               txt+="<tr>"
-               //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-               console.log("pulseEntry="+dump(pulseEntry));
+         expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+            if (err) console.log("gSRlist error")
+            txt+=dump(gSRlist);
+            var lastEntry="";
+            for (var entry in gSRlist) lastEntry=entry;
+            //console.log("lastEntry="+lastEntry);
+            txt += '<table class="gSRlist" border="1">';
+            txt += "<th>srcMint</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th>";
+            for (var entry in gSRlist) {
+               console.log("gSRlist entry="+dump(entry));
+               expressRedisClient.hgetall(entry, function (err,pulseEntry) {
+                  txt+="<tr>"
+                  //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
+                  console.log("pulseEntry="+dump(pulseEntry));
 
                expressRedisClient.hgetall("mint:"+pulseEntry.srcMint, function (err,mintEntry) {
                   console.log("mintEntry="+dump(mintEntry));
 
-               txt += '<tr class="color'+pulseEntry.group+ " "+ pulseEntry.geo + ' ' + "INIT" + '">';
-               txt += "<td>" + mintEntry.mint + "</td>";
-               txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
-               txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
-               txt += "<td>" + mintEntry.ipaddr + "</td>";
-               txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
+                  txt += '<tr class="color'+pulseEntry.group+ " "+ pulseEntry.geo + ' ' + "INIT" + '">';
+                  txt += "<td>" + mintEntry.mint + "</td>";
+                  txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
+                  txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
+                  txt += "<td>" + mintEntry.ipaddr + "</td>";
+                  txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
 
-               txt += "<td>" + pulseEntry.seq + "</td>";
-               txt += "<td>" + pulseEntry.inMsgs + "</td>";
-               txt += "<td>" + pulseEntry.inOctets + "</td>";
-               var pulseGroupOwner=pulseEntry.group.split(".")[0];
-
-
-               //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
-               txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
-
-               txt += "<td>" + pulseEntry.outMsgs + "</td>";
-               txt += "<td>" + pulseEntry.outOctets + "</td>";
-               txt += "<td>" + pulseEntry.pktDrops + "</td>";
-
-               var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
-               var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
-               var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-               var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
-               var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
-
-               txt += "<td>" + '<FORM>';
-               txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-               txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-               txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
-               txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-               txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-               txt += '<FORM>' + "</td>";
-
-               console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
-               var delta=Math.round((now()-mintEntry.bootTime)/1000)+" secs ago";
-               if (mintEntry.bootTime==0)delta="";
-               txt += "<td>" + delta + "</td>";
-               //txt += "<td>" + entry.bootTime+ "</td>";
-
-               var deltaSeconds=Math.round((now()-pulseEntry.pulseTimestamp)/1000)+" secs ago";
-               if (pulseEntry.pulseTimestamp==0) deltaSeconds="";
-               //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-               txt += "<td>" + deltaSeconds + "</td>";
-
-               txt+="</tr>"
+                  txt += "<td>" + pulseEntry.seq + "</td>";
+                  txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                  txt += "<td>" + pulseEntry.inOctets + "</td>";
+                  var pulseGroupOwner=pulseEntry.group.split(".")[0];
 
 
+                  //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
+                  txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
+
+                  txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                  txt += "<td>" + pulseEntry.outOctets + "</td>";
+                  txt += "<td>" + pulseEntry.pktDrops + "</td>";
+
+                  var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+                  var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+                  var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+                  var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
+                  var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+
+                  txt += "<td>" + '<FORM>';
+                  txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+                  txt += '<FORM>' + "</td>";
+
+                  console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
+                  var delta=Math.round((now()-mintEntry.bootTime)/1000)+" secs ago";
+                  if (mintEntry.bootTime==0)delta="";
+                  txt += "<td>" + delta + "</td>";
+                  //txt += "<td>" + entry.bootTime+ "</td>";
+
+                  var deltaSeconds=Math.round((now()-pulseEntry.pulseTimestamp)/1000)+" secs ago";
+                  if (pulseEntry.pulseTimestamp==0) deltaSeconds="";
+                  //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                  txt += "<td>" + deltaSeconds + "</td>";
+
+                  txt+="</tr>"
 
 
-               if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
-                  txt+="</table>";
-                  console.log(ts()+"READY TO DUMP HTML: "+txt);
 
-                  txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
-                  txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
-                  //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
-                  //else txt+='<H2>*** NOT JOINOK ***</H2>';
-                  txt+='<H2> STATE: '+me.state+' </H2>';
-                  if (me.state=="PAUSE") txt += "<p>Hit %R to RELOAD PAGE DURING PAUSE MODE</p>";
-                  txt += "</body></html>";
-   
-                  res.setHeader('Content-Type', 'text/html');
-                  res.setHeader("Access-Control-Allow-Origin", "*");
-                  res.end(txt);
-               }
-               //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
-                 // txt+=pulseEntry.geo+":"+pulseEntry.group;
+
+                  if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
+                     txt+="</table>";
+                     console.log(ts()+"READY TO DUMP HTML: "+txt);
+
+                     txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
+                     txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
+                     //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
+                     //else txt+='<H2>*** NOT JOINOK ***</H2>';
+                     txt+='<H2> STATE: '+me.state+' </H2>';
+                     if (me.state=="HOLD") txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+                     txt += "</body></html>";
+                     
+                     res.setHeader('Content-Type', 'text/html');
+                     res.setHeader("Access-Control-Allow-Origin", "*");
+                     res.end(txt);
+                  }
+                  //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
+                    // txt+=pulseEntry.geo+":"+pulseEntry.group;
 
                   //console.log("mintEntry="+dump(mintEntry));
-               //});
+                  //});
                });
             });
          }
@@ -325,20 +325,20 @@ app.get('/me', function (req, res) {
 //
 //
 //
-app.get('/pause', function (req, res) {
-   console.log("Flipping PAUSE state - ");
+app.get('/hold', function (req, res) {
+   console.log("Flipping HOLD state - ");
    expressRedisClient.hget( "mint:0", "state", function (err,state) {
       switch (state) {
-         case "PAUSE": 
+         case "HOLD": 
             expressRedisClient.hmset( "mint:0", {
                state : "RUNNING"
             });
             break;
          case "RUNNING":
             expressRedisClient.hmset( "mint:0", {
-               state : "PAUSE"
+               state : "HOLD"
             });
-            console.log(ts()+"PAUSE");
+            console.log(ts()+"HOLD");
             break;
          default:
             console.log("bad state in redis");
