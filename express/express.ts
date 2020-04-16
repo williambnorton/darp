@@ -60,21 +60,21 @@ function handleShowState(req, res) {
          txt+=dump(gSRlist);
          var lastEntry="";
          for (var entry in gSRlist) lastEntry=entry;
-         console.log("lastEntry="+lastEntry);
+         //console.log("lastEntry="+lastEntry);
 
          for (var entry in gSRlist) {
             console.log("gSRlist entry="+dump(entry));
-            expressRedisClient.hgetall(entry, function (err,entry) {
+            expressRedisClient.hgetall(entry, function (err,pulseEntry) {
 
                //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-               console.log("entry="+entry+" gSRlist[entry]="+ gSRlist[entry]);
+               console.log("pulseEntry="+dump(pulseEntry));
 
                txt += "<H2>Polling every=" + POLLFREQ/1000 + " seconds</H2>";
                txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
                //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
                //else txt+='<H2>*** NOT JOINOK ***</H2>';
                txt+='<H2> STATE: '+me.state+' </H2>';
-               if (entry.geo+":"+entry.group==lastEntry) {
+               if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
                   console.log(ts()+"READY TO DUMP HTML");
                   if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
                   txt += "</body></html>";
