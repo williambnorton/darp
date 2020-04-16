@@ -16,6 +16,68 @@ var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
+var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
+var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
+var HOLD = 0;
+var statsPulseMessageLength = 0;
+var CYCLETIME = 5; //Seconds between system poll
+//
+//      handleShowState(req,res) - show the node state
+//
+function handleShowState(req, res) {
+    var dateTime = new Date();
+    var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
+    if (CYCLETIME < 5)
+        txt = '<meta http-equiv="refresh" content="' + 5 + '">';
+    if (HOLD == 1)
+        txt = '<meta http-equiv="refresh" content="' + 15 + '">';
+    txt += '<html><head>';
+    txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
+    txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>';
+    var insert = "";
+    expressRedisClient.hgetall("mint:0", function (err, me) {
+        if (me.isGenesisNode) {
+            //console.log(ts()+"handleShowState() ***** GENESIS");
+            insert = 'style="background-color: beige;"';
+        }
+        txt += '<body onload="startTime()" ' + insert + '>';
+        if (me.isGenesisNode)
+            txt += '<H2>GENESIS NODE : ' + me.geo + '</H2><BR>';
+        txt += '<H2 class="title">';
+        txt += 'Layer #' + me.layer + ' : </h2><h1> ' + me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
+        if (!me.isGenesisNode)
+            txt += ' under Genesis Node: <a href="http://' + me.Genesis.split(":")[0] + ":" + me.Genesis.split(":")[1] + '">' + me.Genesis.split(":")[0] + ":" + me.Genesis.split(":")[1] + "</a>";
+        txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
+        expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+            txt += lib_1.dump(gSRlist);
+            //
+            //      externalize groups one at a time  WBNWBNWBN
+            //
+            /*         gSRlist.forEachGroup(function (groupEntry) {
+                       //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
+                       if (groupEntry.owner!="GENESIS")
+                               txt+=externalizeGroup(groupEntry);
+                     });
+            
+                     gSRlist.forEachGenesisGroup(function (genesisGroupEntry) {
+                       //console.log(ts()+"handleShowState(): Genesis Group owner="+genesisGroupEntry.owner);
+                       //console.log(ts()+"handleShowState(): genesisGroupEntry="+dump(genesisGroupEntry));
+                       txt+=externalizeGroupState(genesisGroupEntry);
+                     });
+                     */
+            txt += "<H2>Polling every=" + POLLFREQ / 1000 + " seconds</H2>";
+            txt += "<H2> with pulseMsgSize=" + statsPulseMessageLength + "</H2>";
+            //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
+            //else txt+='<H2>*** NOT JOINOK ***</H2>';
+            txt += '<H2> STATE: ' + me.state + ' </H2>';
+            if (HOLD)
+                txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+            txt += "</body></html>";
+            res.setHeader('Content-Type', 'text/html');
+            res.end(txt);
+        });
+    });
+}
 //
 //
 //
@@ -25,7 +87,8 @@ app.get('/', function (req, res) {
         console.log("app.get('/' callback config=" + lib_1.dump(config));
         expressRedisClient.hgetall("mint:0", function (err, me) {
             config.mintTable["mint:0"] = me;
-            res.end(JSON.stringify(config, null, 2));
+            var html = "<html><";
+            //res.end(JSON.stringify(config, null, 2));
         });
     });
     return;
