@@ -95,8 +95,9 @@ function handleShowState(req, res) {
                             txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
                             txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
                             txt += '<FORM>' + "</td>";
-                            var delta = Math.round((lib_1.now() - pulseEntry.bootTime) / 1000) + " secs ago";
-                            if (pulseEntry.bootTime == 0)
+                            console.log(lib_1.ts() + "mintEntry.bootTime=" + mintEntry.bootTime);
+                            var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
+                            if (mintEntry.bootTime == 0)
                                 delta = "";
                             txt += "<td>" + delta + "</td>";
                             //txt += "<td>" + entry.bootTime+ "</td>";
