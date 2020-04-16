@@ -90,17 +90,17 @@ server.on('message', function(message, remote) {
     }
     if (err) {console.log("ERROR in on.message handling");}
     var pulse={
-    version : ary[1],
-    geo : ary[2],
-    group : ary[3],
-    seq : ary[4],
-    pulseTimestamp : pulseTimestamp,
-    srcMint : ary[6],
-    owls : owls,
-    owl : now()-pulseTimestamp,
-    lastMsg : msg,
-    inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
-    inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
+      version : ary[1],
+      geo : ary[2],
+      group : ary[3],
+      seq : ary[4],
+      pulseTimestamp : pulseTimestamp,
+      srcMint : ary[6],
+      owls : owls,
+      owl : now()-pulseTimestamp,
+      lastMsg : msg,
+      inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
+      inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
     };
 
     authenticatedMessage(pulse, function(err,authenticated) {
@@ -117,6 +117,10 @@ server.on('message', function(message, remote) {
 
       redisClient.publish("pulses",msg)
       redisClient.hmset(pulseLabel, pulse);
+
+      redisClient.hmset("mint:"+pulse.srcMint, {
+        "owl" : pulse.owl
+      });
 
       //
       //  if groupOwner pulsed this - make sure we have the credentials for each node

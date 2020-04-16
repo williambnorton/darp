@@ -110,6 +110,9 @@ server.on('message', function (message, remote) {
                 ;
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse);
+                redisClient.hmset("mint:" + pulse.srcMint, {
+                    "owl": pulse.owl
+                });
                 //
                 //  if groupOwner pulsed this - make sure we have the credentials for each node
                 //
