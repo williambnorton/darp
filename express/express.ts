@@ -57,7 +57,7 @@ function handleShowState(req, res) {
 
          expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
             if (err) console.log("gSRlist error")
-            txt+=dump(gSRlist);
+            //txt+=dump(gSRlist);
             var lastEntry="";
             for (var entry in gSRlist) lastEntry=entry;
             //console.log("lastEntry="+lastEntry);

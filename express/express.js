@@ -52,7 +52,7 @@ function handleShowState(req, res) {
             expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                 if (err)
                     console.log("gSRlist error");
-                txt += lib_1.dump(gSRlist);
+                //txt+=dump(gSRlist);
                 var lastEntry = "";
                 for (var entry in gSRlist)
                     lastEntry = entry;
