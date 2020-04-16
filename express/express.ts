@@ -44,7 +44,7 @@ function handleShowState(req, res) {
          if (me.isGenesisNode) {
            //console.log(ts()+"handleShowState() ***** GENESIS");
            insert = 'style="background-color: beige;"';
-      }
+         }
 
       txt += '<body onload="startTime()" '+insert+'>'
       if (me.isGenesisNode) txt+='<H2>GENESIS NODE : '+me.geo+'</H2><BR>';
@@ -88,8 +88,9 @@ function handleShowState(req, res) {
          if (HOLD) txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
          txt += "</body></html>";
 
-         res.setHeader('Content-Type', 'text/html');
-         res.end(txt);
+            res.setHeader('Content-Type', 'text/html');
+            res.end(txt);
+         });
       });
    })
 }
