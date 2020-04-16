@@ -234,8 +234,8 @@ console.log("EXITTING and Stopping the node");
 
 app.get('/reload', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
-console.log("EXITTING to reload the system")
-   process.exit(36);
+   console.log("EXITTING to reload the system")
+   expressRedisClient.hset("mint:0","state","RELOAD");
 });
 
 app.get('/state', function (req, res) {

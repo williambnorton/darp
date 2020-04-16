@@ -142,7 +142,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         if (oldPulse == null)
                                             oldPulse = { outOctets: "0", outMsgs: "0" };
                                         var pulse = {
-                                            outOctets: "" + (parseInt(oldPulse.outOctets) + message.length),
+                                            outOctets: "" + (parseInt(oldPulse.outOctets) + pulseMsg.length),
                                             outMsgs: "" + (parseInt(oldPulse.outMsgs) + 1)
                                         };
                                         redisClient.hmset(pulseLabel, pulse); //update stats
