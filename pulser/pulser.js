@@ -148,7 +148,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         //
                                         //  Do the same for the out counters for the node I am sending to
                                         //
-                                        var pulseEntryLabel = node.geo + ":" + groupEntry.group;
+                                        var pulseEntryLabel = mintEntry.geo + ":" + groupEntry.group;
                                         console.log(lib_1.ts() + "pulseEntryLabel=" + pulseEntryLabel);
                                         redisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
                                             if (pulseEntry == null)
