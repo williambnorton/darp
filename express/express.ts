@@ -56,7 +56,7 @@ function handleShowState(req, res) {
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
          if (err) console.log("gSRlist error")
          txt+=dump(gSRlist);
-         
+
 /*         gSRlist.forEachGroup(function (groupEntry) {
            //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
            if (groupEntry.owner!="GENESIS")
@@ -82,9 +82,7 @@ function handleShowState(req, res) {
          res.setHeader('Content-Type', 'text/html');
          res.end(txt);
       });
-/*
-   })*/
-
+   })
 }
 
 //

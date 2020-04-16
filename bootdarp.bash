@@ -97,7 +97,7 @@ do
     #   need express (TCP/65013) before config
     #
     cd $DARPDIR
-    echo `date` Starting express for nodeFactory and externalize stats
+    echo `date` "Starting express for nodeFactory and externalize stats"
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
@@ -160,41 +160,8 @@ do
         else
             echo `date` "Ctrl-C detected for non-genesis node"
         fi
-
     fi
-    #
-    #   Finished DARP - exit
-    #
-    #kill `cat $DARPDIR/*.pid`    #kill all processes <-- doesn't work since stuff moved
-    #rm $DARPDIR/*.pid
-
-##
-##  DARP handlepulse EXITTED - 
-##
-    case $rc in
-
-    36)
-        echo `date` handlepulse exitted with software reload message rc=$rc
-        echo "* * * * * * Software Reload  ------ rc=36 ------ Software Reload * * * * * *"
-        ;;
-
-    *)
-        echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-        echo `date` "$0 result: unexpected rc out of handlepulse rc=$rc"
-        if [ "$GENESISIP" = "$MYIP" ]; then
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            exit -1
-        fi
-
-        echo `date` "Ctrl-C detected --OR-- Genesis node needs updated code  "
-        ;;
-    esac
-
+ 
     echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
