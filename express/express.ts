@@ -59,9 +59,10 @@ function handleShowState(req, res) {
            if (me.state=="HOLD") txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
            //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
 
-         txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
+            txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
 
-         expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+            expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+
             if (err) console.log("gSRlist error")
             //txt+=dump(gSRlist);
             var lastEntry="";
@@ -364,7 +365,7 @@ app.get('/nodefactory', function (req, res) {
    var port=req.query.port||65013;
    var wallet=req.query.wallet||"";
    var incomingTimestamp=req.query.ts||now();
-   var OWL=Math.round(now()-incomingTimestamp);
+//   var OWL=Math.round(now()-incomingTimestamp);
    // store incoming public key, ipaddr, port, geo, etc.
 //   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 //   var incomingIP=req.connection.remoteAddress;
@@ -450,7 +451,8 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
 
             //console.log(ts()+"genesis.owls="+genesisGroup.owls);
-            expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
+            //expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
+            expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint); 
             //console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config

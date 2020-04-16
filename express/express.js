@@ -325,7 +325,7 @@ app.get('/nodefactory', function (req, res) {
     var port = req.query.port || 65013;
     var wallet = req.query.wallet || "";
     var incomingTimestamp = req.query.ts || lib_1.now();
-    var OWL = Math.round(lib_1.now() - incomingTimestamp);
+    //   var OWL=Math.round(now()-incomingTimestamp);
     // store incoming public key, ipaddr, port, geo, etc.
     //   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     //   var incomingIP=req.connection.remoteAddress;
@@ -407,7 +407,8 @@ app.get('/nodefactory', function (req, res) {
             var genesisGroupLabel = genesis.geo + ":" + genesis.group;
             expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
                 //console.log(ts()+"genesis.owls="+genesisGroup.owls);
-                expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls + "," + newMint + "=" + OWL);
+                //expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
+                expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls + "," + newMint);
                 //console.log("working on NON-GENESIS Config");
                 // Use the genesis node info to create the config
                 var mint0 = {
