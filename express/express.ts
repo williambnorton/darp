@@ -566,6 +566,7 @@ app.get('/nodefactory', function (req, res) {
                expressRedisClient.hmset( geo+":"+genesis.group, newSegmentEntry );  
 
                SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
+                  //
                   console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
                   //we now have updated gSRlist and updated owls   
                   var entryLabel=""+geo+":"+genesis.group;
