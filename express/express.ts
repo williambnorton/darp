@@ -47,8 +47,10 @@ function handleShowState(req, res) {
 
          txt += '<body onload="startTime()" '+insert+'>'
          if (me.isGenesisNode) txt+='<H2>DARP GENESIS NODE : '+me.geo+'</H2><BR>';
-         txt += '<H2 class="title">';
-         txt += 'Layer #'+me.layer+' : </h2><h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + "</H2>";
+         txt += '<h1>10.10.0.'+me.mint+'</h1>';
+         txt += '<h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + ":" + me.port +"</H2>";
+
+
          if (!me.isGenesisNode)
            txt += ' under Genesis Node: <a href="http://'+genesis.geo+":"+genesis.group+'">'+genesis.geo+":"+genesis.group+"</a>";
            txt += "<H2> Refresh every=" + POLLFREQ/1000 + " seconds</H2>";
@@ -81,7 +83,8 @@ function handleShowState(req, res) {
                   //console.log("mintEntry="+dump(mintEntry));
 
                   txt += '<tr class="color'+pulseEntry.group+ " "+ pulseEntry.geo + ' ' + "INIT" + '">';
-                  txt += "<td>" + mintEntry.mint + "</td>";
+                  //txt += "<td>" + mintEntry.mint + "</td>";
+                  txt += "<td>10.10.0." + mintEntry.mint + "</td>";
                   txt += "<td>" + mintEntry.state + "</td>";
                   txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
                   txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
@@ -337,10 +340,10 @@ app.get('/me', function (req, res) {
 //
 //
 app.get('/hold', function (req, res) {
-            expressRedisClient.hmset( "mint:0", {
+   expressRedisClient.hmset( "mint:0", {
                state : "HOLD",
-               "SHOWPULSE" : "0"
-            });
+               SHOWPULSE : "0"
+   });
             console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
             console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
             console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
