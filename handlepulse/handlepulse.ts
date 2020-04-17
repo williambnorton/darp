@@ -33,6 +33,10 @@ redisClient.hgetall("mint:0", function (err,me) {
         console.log("HANDLEPULSE(): hgetall genesis failed");
       } else {
         console.log("HANDLEPULSE(): genesis="+dump(genesis));
+        if (genesis==null) {
+          console.log(ts()+"HANDLEPULSE(): Weird - genesis iis null - exitting");
+          process.exit(36);  //RELOAD
+        }
         if ( genesis && (genesis.publickey == me.publickey))
           isGenesisNode=true;
       }
