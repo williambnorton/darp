@@ -408,6 +408,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
+            "SHOWPULSES" : "0",
             "owl": ""   //
          }
          expressRedisClient.hmset("mint:0",mint0); 
@@ -475,6 +476,7 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
+            "SHOWPULSES" : "0",
             "owl" : ""          //we will get measures from genesis node
             }
             /*** **/

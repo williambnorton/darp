@@ -370,6 +370,7 @@ app.get('/nodefactory', function (req, res) {
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
+                "SHOWPULSES": "0",
                 "owl": "" //
             };
             expressRedisClient.hmset("mint:0", mint0);
@@ -431,6 +432,7 @@ app.get('/nodefactory', function (req, res) {
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
+                    "SHOWPULSES": "0",
                     "owl": "" //we will get measures from genesis node
                 };
                 /*** **/
