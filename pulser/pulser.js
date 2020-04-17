@@ -21,7 +21,7 @@ setTimeout(pulse, 1000);
 var datagramClient = dgram.createSocket('udp4');
 function publishMatrix() {
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        console.log(lib_1.ts() + "publicMatrix(): gSRlist=" + gSRlist);
+        console.log(lib_1.ts() + "publicMatrix(): gSRlist=" + lib_1.dump(gSRlist));
         var lastEntry = "", count = 0;
         var stack = new Array();
         var geoList = "", owlList = "";

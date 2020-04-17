@@ -24,7 +24,7 @@ var datagramClient=dgram.createSocket('udp4');
 
 function publishMatrix() {
    redisClient.hgetall("gSRlist", function(err,gSRlist) {
-    console.log(ts()+"publicMatrix(): gSRlist="+gSRlist);
+    console.log(ts()+"publicMatrix(): gSRlist="+dump(gSRlist));
     var lastEntry="",count=0;
     var stack=new Array();
     var geoList="",owlList="";
