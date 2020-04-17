@@ -346,13 +346,10 @@ app.get('/hold', function (req, res) {
          state : "HOLD",
          SHOWPULSE : "0"
       });
+      console.log(ts()+"pulsed - Now in HOLD state - no pulsing and show no one's pulses");
+      console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
    });
-   console.log(ts()+"pulsed - Now in HOLD state - no pulsing and show no one's pulses");
-            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
-            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
-            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
-            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
-            console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
 });
 //
 //
@@ -363,9 +360,11 @@ app.get('/pulseMsg', function (req, res) {
          state : "RUNNING",
          SHOWPULSE : "1"
       });
+      console.log(ts()+"pulsed - Now in RUNNING state");
+      console.log(ts()+"PULSE SENT");
+      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
    });
-   console.log(ts()+"pulsed - Now in RUNNING state");
-   console.log(ts()+"PULSE SENT");
+
 
 });
 
