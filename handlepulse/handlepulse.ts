@@ -57,7 +57,7 @@ function  authenticatedMessage(pulse, callback) {
   redisClient.hgetall("mint:"+pulse.srcMint, function (err,senderMintEntry) {
 
     if (senderMintEntry==null) {
-      console.log("authenticateMessage(): We don't have that mint:"+dump(pulse));
+      console.log("authenticateMessage(): DROPPING We don't have a mint entry for this pulse:"+dump(pulse));
       //callback(null,false);
     } else
       //simple authentication matches mint to other resources
