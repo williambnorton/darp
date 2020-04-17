@@ -140,7 +140,7 @@ server.on('message', function(message, remote) {
       //console.log("pulse="+dump(pulse));
 
         //console.log("HANDLEPULSE() pulse from Genesis node");
-        var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
+        var mints=pulse.owls.replace(/=-?[0-9]*/g,'').split(",");
         //console.log("HANDLEPULSE() mints="+mints+" pulse.owls="+pulse.owls);
 
         // if we get a mint from the groupOwner that we don't know about, fetch it
@@ -186,7 +186,7 @@ function nth_occurrence (string, char, nth) {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-  console.log("newMint(): mint="+mint+"isNaN(x)="+isNaN(mint));
+  console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
   if (isNaN(mint)) {return console.log("newMint("+mint+"): bad mint: "+mint);}
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {

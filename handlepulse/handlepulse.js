@@ -135,7 +135,7 @@ server.on('message', function (message, remote) {
                 //
                 //console.log("pulse="+dump(pulse));
                 //console.log("HANDLEPULSE() pulse from Genesis node");
-                var mints = pulse.owls.replace(/=[0-9]*/g, '').split(",");
+                var mints = pulse.owls.replace(/=-?[0-9]*/g, '').split(",");
                 var _loop_1 = function () {
                     var mintLabel = mints[mint];
                     //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
@@ -180,7 +180,7 @@ function nth_occurrence(string, char, nth) {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-    console.log("newMint(): mint=" + mint + "isNaN(x)=" + isNaN(mint));
+    console.log("newMint(): mint=" + mint + " isNaN(x)=" + isNaN(mint));
     if (isNaN(mint)) {
         return console.log("newMint(" + mint + "): bad mint: " + mint);
     }
