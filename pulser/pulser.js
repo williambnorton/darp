@@ -32,9 +32,9 @@ function publishMatrix() {
         for (var entry in gSRlist) {
             console.log(lib_1.ts() + "publicMatrix(): entry=" + lib_1.dump(entry));
             redisClient.hgetall(entry, function (err, pulseEntry) {
-                geoList += pulseEntry.geo + ":" + pulseEntry.mint + ",";
+                geoList += pulseEntry.geo + ":" + pulseEntry.srcMint + ",";
                 owlList += pulseEntry.owls + ",";
-                console.log(lib_1.ts() + "publicMatrix(): geoList=" + geoList + " owlList=" + owlList);
+                console.log(lib_1.ts() + "publicMatrix(): geoList=" + geoList + " owlList=" + owlList + " pulseEntry=" + lib_1.dump(pulseEntry));
                 stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
                 if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                     var txt = count + "," + geoList + owlList;

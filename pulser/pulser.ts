@@ -34,9 +34,10 @@ function publishMatrix() {
       console.log(ts()+"publicMatrix(): entry="+dump(entry));
 
         redisClient.hgetall(entry,function (err,pulseEntry) {
-          geoList+=pulseEntry.geo+":"+pulseEntry.mint+",";
+
+          geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
           owlList+=pulseEntry.owls+",";
-          console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList);
+          console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
 
           stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
           if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
