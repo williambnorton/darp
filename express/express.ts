@@ -455,7 +455,7 @@ app.get('/nodefactory', function (req, res) {
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
-         console.log("--------------- EXPRESS() Non-GENESIS CONFIGURATION  ------------------");
+         //console.log("--------------- EXPRESS() Non-GENESIS CONFIGURATION  ------------------");
          var genesisGroupLabel=genesis.geo+":"+genesis.group;
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
 
@@ -524,11 +524,11 @@ app.get('/nodefactory', function (req, res) {
                //var genesisGroup=genesis.geo+":"+genesis.group;
                var newOwlList=genesisGroup.owls+","+newMint;
 
-               console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
+               //console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
 
                expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
                  var justMints=getMints(genesisGroup);
-                 console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
+                 //console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
 
                   var genesisGroupEntry={  //one record per pulse - index = <genesis.geo>:<genesis.group>
                      "geo" : genesis.geo,            //record index (key) is <geo>:<genesisGroup>
@@ -584,7 +584,7 @@ app.get('/nodefactory', function (req, res) {
                      //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                      config.mintTable["mint:0"]=mint0;   //tell remote their config
                      config.rc="0";
-                     console.log("EXPRESS(): sending new node its config="+dump(config));
+                     //console.log("EXPRESS(): sending new node its config="+dump(config));
                      res.setHeader('Content-Type', 'application/json');   
                      res.end(JSON.stringify(config));
                      //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
@@ -592,7 +592,7 @@ app.get('/nodefactory', function (req, res) {
                   });
                   expressRedisClient.publish("members","Genesis ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
 
-                  console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
+                  //console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
 
                });
             });   
