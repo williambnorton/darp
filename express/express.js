@@ -48,7 +48,7 @@ function handleShowState(req, res) {
             txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=71.202.2.184 -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>";
         });
         if (!me.isGenesisNode)
-            txt += ' under Genesis Node: <a href="http://' + genesis.geo + ":" + genesis.group + '">' + genesis.geo + ":" + genesis.group + "</a>";
+            txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
         txt += "<H2> Refresh every=" + POLLFREQ / 1000 + " seconds</H2>";
         txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
         //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
@@ -69,7 +69,7 @@ function handleShowState(req, res) {
             txt += '<table class="gSRlist" border="1">';
             txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
             for (var entry in gSRlist) {
-                console.log("gSRlist entry=" + lib_1.dump(entry));
+                //console.log("gSRlist entry="+dump(entry));
                 expressRedisClient.hgetall(entry, function (err, pulseEntry) {
                     txt += "<tr>";
                     //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
