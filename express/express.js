@@ -90,7 +90,8 @@ function handleShowState(req, res) {
                             txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
                             txt += "<td>" + pulseEntry.outMsgs + "</td>";
                             txt += "<td>" + pulseEntry.outOctets + "</td>";
-                            txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                            //txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                            txt += "<td>" + (pulseEntry.seq - pulseEntry.inMsgs) + "</td>";
                             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
                             var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
                             var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
@@ -336,7 +337,7 @@ app.get('/nodefactory', function (req, res) {
     var incomingIP = req.query.myip; /// for now we believe the node's IP
     var octetCount = incomingIP.split(".").length;
     if (octetCount != 4) {
-        console.log("nodefactory called with bad IP address:" + incomingIP);
+        console.log("HANDLEPULSE(): nodefactory called with bad IP address:" + incomingIP);
         res.status(500);
         res.render('error', { error: "BAD IP Address coming into node factory" });
         return;

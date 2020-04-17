@@ -85,6 +85,11 @@ function getConfiguration() {
         res.on('data', function (stream) {
             data += stream;
         });
+        res.on('error', function () {
+            console.log(ts() + "CONFIG: received error from " + URL);
+            console.log(ts() + "CONFIG: received error from " + URL);
+            console.log(ts() + "CONFIG: received error from " + URL);
+        });
         res.on('end', function () {
             //console.log("CONFIG data="+data);
             var config = JSON.parse(data);
