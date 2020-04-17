@@ -2,7 +2,6 @@
 //  handlePulse - receive incoming pulses and store in redis
 //
 import { now, ts ,dump, newMint } from '../lib/lib.js';
-import { callbackify } from 'util';
 
 const SHOWPULSES=true;
 const pulseRedis = require('redis');

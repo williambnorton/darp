@@ -1,11 +1,12 @@
 "use strict";
+exports.__esModule = true;
 //
 //  config.ts - initialize the redis database with envirnmental variables:
 //          HOSTNAME - human readable text name
 //          GENESIS - IPaddr or ipaddr:port
 //          PUBLICKEY - Public key 
 //
-exports.__esModule = true;
+var lib_js_1 = require("../lib/lib.js");
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (!process.env.HOSTNAME) {
     console.log("No HOSTNAME enviropnmental variable specified ");
@@ -29,9 +30,6 @@ if (!process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
     process.env.MYIP = "noMYIP";
 }
-//  me - my internal state and pointer to genesis
-//
-var lib_1 = require("../lib/lib");
 //import { getUnpackedSettings } from "http2";
 //import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
@@ -67,7 +65,7 @@ redisClient.hmset("mint:0", {
     "ipaddr": process.env.MYIP,
     "publickey": PUBLICKEY,
     //
-    "bootTime": "" + lib_1.now(),
+    "bootTime": "" + lib_js_1.now(),
     "version": process.env.VERSION,
     "wallet": WALLET,
     "owl": "" //how long it took this node's last record to reach me
@@ -77,7 +75,7 @@ process.on('uncaughtException', function (err) {
     console.log("uncaughtException trap: " + err);
 });
 function getConfiguration() {
-    var URL = "http://" + process.env.GENESIS + ":" + "65013" + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_1.now();
+    var URL = "http://" + process.env.GENESIS + ":" + "65013" + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now();
     console.log("CONFIG: getConfiguration()  Fetching URL for config: " + URL);
     //FETCH CONFIG
     var req = http.get(URL, function (res) {
@@ -86,9 +84,9 @@ function getConfiguration() {
             data += stream;
         });
         res.on('error', function () {
-            console.log(ts() + "CONFIG: received error from " + URL);
-            console.log(ts() + "CONFIG: received error from " + URL);
-            console.log(ts() + "CONFIG: received error from " + URL);
+            console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
+            console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
+            console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
         });
         res.on('end', function () {
             //console.log("CONFIG data="+data);
@@ -102,13 +100,13 @@ function getConfiguration() {
             }
             else {
                 console.log(" ------------------------ " + GEO + " ---------NON-Genesis configuration");
-                console.log("CONFIG(): json=" + lib_1.dump(config));
-                console.log("setting gSRlist=" + lib_1.dump(config.gSRlist));
+                console.log("CONFIG(): json=" + lib_js_1.dump(config));
+                console.log("setting gSRlist=" + lib_js_1.dump(config.gSRlist));
                 redisClient.hmset("gSRlist", config.gSRlist);
                 //install config
                 for (var mint in config.mintTable) {
                     var mintEntry = config.mintTable[mint];
-                    console.log("add mint:" + mint + " mintEntry=" + lib_1.dump(mintEntry));
+                    console.log("add mint:" + mint + " mintEntry=" + lib_js_1.dump(mintEntry));
                     redisClient.hmset(mint, mintEntry);
                 }
                 for (var pulse in config.pulses) {
@@ -117,7 +115,7 @@ function getConfiguration() {
                     //    pulseEntry.owl=now()-pulseEntry.bootTime;
                     //    console.log("CONFIG() Set OWL="+pulseEntry.owl+" pulseEntry.bootTime="+pulseEntry.bootTime);
                     //}  NOT ONE WAY MEASURE - DOES NOT BELONG HERE
-                    console.log("add pulse:" + pulse + " pulseEntry=" + lib_1.dump(pulseEntry));
+                    console.log("add pulse:" + pulse + " pulseEntry=" + lib_js_1.dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
                     if (pulseEntry.geo == pulseEntry.group.split(".")[0]) {
                         //GENESIS NODE RECORD

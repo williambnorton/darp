@@ -4,6 +4,7 @@
 //          GENESIS - IPaddr or ipaddr:port
 //          PUBLICKEY - Public key 
 //
+import { now, ts ,dump } from '../lib/lib.js';
 
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (! process.env.HOSTNAME  ) {
