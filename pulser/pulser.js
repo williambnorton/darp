@@ -34,11 +34,12 @@ function publishMatrix() {
             redisClient.hgetall(entry, function (err, pulseEntry) {
                 geoList += pulseEntry.geo + ":" + pulseEntry.mint + ",";
                 owlList += pulseEntry.owls + ",";
+                console.log(lib_1.ts() + "publicMatrix(): geoList=" + geoList + " owlList=" + owlList);
                 stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
-                if (pulseEntry.geo == lastEntry) {
+                if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                     var txt = count + "," + geoList + owlList;
                     console.log("publishMatrix Pop off the matrix");
-                    console.log("publishMatrix we would publish txt=" + txt);
+                    console.log("publishMatrix we would                publish txt=" + txt);
                 }
             });
         }
