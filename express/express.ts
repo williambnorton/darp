@@ -16,7 +16,7 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
-const CYCLETIME=5;              //Seconds between system poll
+const CYCLETIME=5;                     //Seconds between pulses
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
 const REFRESHPAGETIME = CYCLETIME;      //how often to refresh instrumentation web page
 

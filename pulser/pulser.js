@@ -19,11 +19,37 @@ var GEO = ""; //global variable for marking source of pulse
 );*/
 setTimeout(pulse, 1000);
 var datagramClient = dgram.createSocket('udp4');
+function publishMatrix() {
+    console.log(lib_1.ts() + "publicMatrix(): ");
+    redisClient.hgetall("gSRlist", function (err, gSRlist) {
+        var lastEntry = "", count = 0;
+        var stack = new Array();
+        var geoList = "", owlList = "";
+        for (var entry in gSRlist) {
+            count++;
+            lastEntry = entry;
+        }
+        for (var entry in gSRlist) {
+            redisClient.hgetall(entry, function (err, pulseEntry) {
+                geoList += pulseEntry.geo + ":" + pulseEntry.mint + ",";
+                owlList += pulseEntry.owls + ",";
+                stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
+                if (pulseEntry.geo == lastEntry) {
+                    var txt = count + "," + geoList + owlList;
+                    console.log("Pop off the matrix");
+                    console.log("we would publish txt=" + txt);
+                }
+            });
+        }
+    });
+    redisClient.publish("matrix", "Matrix goes here");
+}
 //
 //  pulse - pulser for each me.pulseGroups
 //
 function pulse() {
     setTimeout(pulse, 10 * 1000); //10 second pollingfrequency
+    setTimeout(publishMatrix, 5 * 1000); // In 5 seconds call it
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
         if (me == null || me.state == "HOLD")
