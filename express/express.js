@@ -301,7 +301,8 @@ app.get('/me', function (req, res) {
 //
 app.get('/hold', function (req, res) {
     expressRedisClient.hmset("mint:0", {
-        state: "HOLD"
+        state: "HOLD",
+        "SHOWPULSE": "0"
     });
     console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
     console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
@@ -314,7 +315,8 @@ app.get('/hold', function (req, res) {
 //
 app.get('/pulseMsg', function (req, res) {
     expressRedisClient.hmset("mint:0", {
-        state: "RUNNING"
+        state: "RUNNING",
+        "SHOWPULSE": "1"
     });
     console.log(lib_1.ts() + "pulsed - Now in RUNNING state");
 });

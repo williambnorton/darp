@@ -42,7 +42,7 @@ function publishMatrix() {
           stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
           if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
             var txt=count+","+geoList+owlList;
-            //console.log("publishMatrix we   publish matrix="+txt);
+            console.log("publishMatrix we   publish matrix="+txt);
             redisClient.publish("matrix",txt)
           }
 
