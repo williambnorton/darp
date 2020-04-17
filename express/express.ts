@@ -456,7 +456,7 @@ app.get('/nodefactory', function (req, res) {
 
             //console.log(ts()+"genesis.owls="+genesisGroup.owls);
             //expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
-            expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint); 
+            //expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint); 
             //console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config
@@ -551,7 +551,7 @@ app.get('/nodefactory', function (req, res) {
                      "pulseTimestamp": "0", //last pulseTimestamp received from this node
                      "srcMint" : ""+newMint,      //claimed mint # for this node
                      // =
-                     "owls" : justMints,  //owls other guy (this is ME so 0!) is reporting
+                     "owls" : "", //justMints,  //owls other guy (this is ME so 0!) is reporting
                      //"owls" : getOWLs(me.group),  //owls other guy is reporting
                      //node statistics - we measure these ourselves
                      "owl": "",   //NO OWL MEASUREMENT HERE (YET)
