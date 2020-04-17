@@ -376,7 +376,7 @@ app.get('/nodefactory', function (req, res) {
    var incomingIP=req.query.myip;  /// for now we believe the node's IP
    var octetCount=incomingIP.split(".").length;
    if (octetCount!=4) {
-      console.log("HANDLEPULSE(): nodefactory called with bad IP address:"+incomingIP);
+      console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config");
 //      res.status(500)
 //      res.render('error', { error: "BAD IP Address coming into node factory" })
       res.setHeader('Content-Type', 'application/json');   
