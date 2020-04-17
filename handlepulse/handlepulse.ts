@@ -184,6 +184,7 @@ function nth_occurrence (string, char, nth) {
 //
 function newMint(mint) {
   console.log("newMint(): mint="+mint+"isNaN(x)="+isNaN(mint));
+  if (isNaN(mint)) {return console.log("newMint("+mint+")"): bad mint: "+mint);}
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {
   
