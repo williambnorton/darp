@@ -91,6 +91,7 @@ function getConfiguration() {
         res.on('end', function () {
             //console.log("CONFIG data="+data);
             var config = JSON.parse(data);
+            console.log("CONFIG(): rc=" + config.rc);
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:" + JSON.stringify(config, null, 2));
             if (config.node == "GENESIS") {

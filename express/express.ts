@@ -377,8 +377,10 @@ app.get('/nodefactory', function (req, res) {
    var octetCount=incomingIP.split(".").length;
    if (octetCount!=4) {
       console.log("HANDLEPULSE(): nodefactory called with bad IP address:"+incomingIP);
-      res.status(500)
-      res.render('error', { error: "BAD IP Address coming into node factory" })
+//      res.status(500)
+//      res.render('error', { error: "BAD IP Address coming into node factory" })
+      res.setHeader('Content-Type', 'application/json');   
+      res.end(JSON.stringify({ "rc" : "-1" }));
       return;
    }
    //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -435,7 +437,7 @@ app.get('/nodefactory', function (req, res) {
             [genesisGroupLabel] : "1"
          }); 
          res.setHeader('Content-Type', 'application/json');   
-         res.end(JSON.stringify( { "node" : "GENESIS" } ));
+         res.end(JSON.stringify( { "node" : "GENESIS", "rc" : "0" } ));
 
          getConfig(function(err,config) {
             console.log("Genesis config="+JSON.stringify(config, null, 2));
@@ -577,6 +579,7 @@ app.get('/nodefactory', function (req, res) {
                   getConfig(function(config) {
                      //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                      config.mintTable["mint:0"]=mint0;   //tell remote their config
+                     config.rc="0";
                      console.log("EXPRESS(): sending new node its config="+dump(config));
                      res.setHeader('Content-Type', 'application/json');   
                      res.end(JSON.stringify(config));
