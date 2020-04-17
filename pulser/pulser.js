@@ -20,8 +20,8 @@ var GEO = ""; //global variable for marking source of pulse
 setTimeout(pulse, 1000);
 var datagramClient = dgram.createSocket('udp4');
 function publishMatrix() {
-    console.log(lib_1.ts() + "publicMatrix(): ");
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
+        console.log(lib_1.ts() + "publicMatrix(): gSRlist=" + gSRlist);
         var lastEntry = "", count = 0;
         var stack = new Array();
         var geoList = "", owlList = "";
@@ -30,14 +30,15 @@ function publishMatrix() {
             lastEntry = entry;
         }
         for (var entry in gSRlist) {
+            console.log(lib_1.ts() + "publicMatrix(): entry=" + lib_1.dump(entry));
             redisClient.hgetall(entry, function (err, pulseEntry) {
                 geoList += pulseEntry.geo + ":" + pulseEntry.mint + ",";
                 owlList += pulseEntry.owls + ",";
                 stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
                 if (pulseEntry.geo == lastEntry) {
                     var txt = count + "," + geoList + owlList;
-                    console.log("Pop off the matrix");
-                    console.log("we would publish txt=" + txt);
+                    console.log("publishMatrix Pop off the matrix");
+                    console.log("publishMatrix we would publish txt=" + txt);
                 }
             });
         }
