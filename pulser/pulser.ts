@@ -25,7 +25,7 @@ var datagramClient=dgram.createSocket('udp4');
 //
 //  publish the one-way latecy matrix
 //
-function publishMatrix(callback) {
+function publishMatrix() {
    redisClient.hgetall("gSRlist", function(err,gSRlist) {
     //console.log(ts()+"publicMatrix(): gSRlist="+dump(gSRlist));
     var lastEntry="",count=0;
@@ -45,17 +45,16 @@ function publishMatrix(callback) {
             stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
             if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
               var txt=count+","+geoList+owlList;
-              console.log("publishMatrix(): publishing matrix="+txt);
-              if (typeof callback == "undefined") 
-                redisClient.publish("matrix",txt)
-              else
-                callback(txt)
+              //console.log("publishMatrix(): publishing matrix="+txt);
+              redisClient.publish("matrix",txt);
             }
           }
         });
       }
    })
 }
+
+
 
 //
 //  pulse - pulser for each me.pulseGroups
