@@ -4,7 +4,7 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
-var SHOWPULSES = false;
+var SHOWPULSES = "0";
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
@@ -88,7 +88,7 @@ server.on('message', function (message, remote) {
             if (me.SHOWPULSES)
                 SHOWPULSES = me.SHOWPULSES;
             else
-                SHOWPULSES = 0;
+                SHOWPULSES = "0";
             if (me.state == "RELOAD")
                 process.exit(36); //this is set when reload button is pressed in express
             if (oldPulse == null) { //first time we see this entry, include stats to increment
