@@ -46,111 +46,111 @@ function handleShowState(req, res) {
             txt += '<h1>10.10.0.' + me.mint + '</h1>';
             txt += '<h1>You are ' + me.geo + "(10.10.0." + me.mint + ")</h1>   <h2> : " + me.ipaddr + ":" + me.port + "</H2>";
             txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=71.202.2.184 -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>";
-        });
-        if (!me.isGenesisNode)
-            txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
-        txt += "<H2> Refresh every=" + POLLFREQ / 1000 + " seconds</H2>";
-        txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
-        //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
-        //else txt+='<H2>*** NOT JOINOK ***</H2>';
-        txt += '<H2> STATE: ' + me.state + ' </H2>';
-        if (me.state == "HOLD")
-            txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
-        //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
-        txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
-        expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            if (err)
-                console.log("gSRlist error");
-            //txt+=dump(gSRlist);
-            var lastEntry = "";
-            for (var entry in gSRlist)
-                lastEntry = entry;
-            //console.log("lastEntry="+lastEntry);
-            txt += '<table class="gSRlist" border="1">';
-            txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
-            for (var entry in gSRlist) {
-                //console.log("gSRlist entry="+dump(entry));
-                expressRedisClient.hgetall(entry, function (err, pulseEntry) {
-                    txt += "<tr>";
-                    //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-                    //console.log(ts()+"handlepulse(): pulseEntry="+dump(pulseEntry));
-                    expressRedisClient.hgetall("mint:" + pulseEntry.srcMint, function (err, mintEntry) {
-                        //console.log("mintEntry="+dump(mintEntry));
-                        txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
-                        //txt += "<td>" + mintEntry.mint + "</td>";
-                        txt += "<td>10.10.0." + mintEntry.mint + "</td>";
-                        txt += "<td>" + mintEntry.state + "</td>";
-                        txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
-                        txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
-                        txt += "<td>" + mintEntry.ipaddr + "</td>";
-                        txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
-                        txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(mintEntry.publickey.length - 4) + "</td>";
-                        txt += "<td>" + pulseEntry.seq + "</td>";
-                        txt += "<td>" + pulseEntry.inMsgs + "</td>";
-                        txt += "<td>" + pulseEntry.inOctets + "</td>";
-                        var pulseGroupOwner = pulseEntry.group.split(".")[0];
-                        //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
-                        txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
-                        txt += "<td>" + pulseEntry.outMsgs + "</td>";
-                        txt += "<td>" + pulseEntry.outOctets + "</td>";
-                        //txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                        txt += "<td>" + (pulseEntry.seq - pulseEntry.inMsgs) + "</td>";
-                        var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
-                        var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
-                        var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-                        var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
-                        var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
-                        txt += "<td>" + '<FORM>';
-                        txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-                        txt += '<FORM>' + "</td>";
-                        //console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
-                        var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
-                        if (mintEntry.bootTime == 0)
-                            delta = "";
-                        txt += "<td>" + delta + "</td>";
-                        //txt += "<td>" + entry.bootTime+ "</td>";
-                        var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
-                        if (pulseEntry.pulseTimestamp == 0)
-                            deltaSeconds = "";
-                        //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                        txt += "<td>" + deltaSeconds + "</td>";
-                        if (pulseEntry.lastMsg)
-                            txt += "<td>" + "" + pulseEntry.lastMsg.length + " bytes: " + pulseEntry.lastMsg + "</td>";
-                        else
-                            txt += "<td>" + "<undefined>" + "</td>";
-                        txt += "<td>" + pulseEntry.version + "</td>";
-                        txt += "</tr>";
-                        if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                            txt += "</table>";
-                            //console.log(ts()+"READY TO DUMP HTML: "+txt);
-                            txt += "</body></html>";
-                            res.setHeader('Content-Type', 'text/html');
-                            res.setHeader("Access-Control-Allow-Origin", "*");
-                            res.end(txt);
-                        }
-                        //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
-                        // txt+=pulseEntry.geo+":"+pulseEntry.group;
-                        //console.log("mintEntry="+dump(mintEntry));
-                        //});
+            if (!me.isGenesisNode)
+                txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
+            txt += "<H2> Refresh every=" + POLLFREQ / 1000 + " seconds</H2>";
+            txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
+            //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
+            //else txt+='<H2>*** NOT JOINOK ***</H2>';
+            txt += '<H2> STATE: ' + me.state + ' </H2>';
+            if (me.state == "HOLD")
+                txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+            //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
+            txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
+            expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+                if (err)
+                    console.log("gSRlist error");
+                //txt+=dump(gSRlist);
+                var lastEntry = "";
+                for (var entry in gSRlist)
+                    lastEntry = entry;
+                //console.log("lastEntry="+lastEntry);
+                txt += '<table class="gSRlist" border="1">';
+                txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
+                for (var entry in gSRlist) {
+                    //console.log("gSRlist entry="+dump(entry));
+                    expressRedisClient.hgetall(entry, function (err, pulseEntry) {
+                        txt += "<tr>";
+                        //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
+                        //console.log(ts()+"handlepulse(): pulseEntry="+dump(pulseEntry));
+                        expressRedisClient.hgetall("mint:" + pulseEntry.srcMint, function (err, mintEntry) {
+                            //console.log("mintEntry="+dump(mintEntry));
+                            txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
+                            //txt += "<td>" + mintEntry.mint + "</td>";
+                            txt += "<td>10.10.0." + mintEntry.mint + "</td>";
+                            txt += "<td>" + mintEntry.state + "</td>";
+                            txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
+                            txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
+                            txt += "<td>" + mintEntry.ipaddr + "</td>";
+                            txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
+                            txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(mintEntry.publickey.length - 4) + "</td>";
+                            txt += "<td>" + pulseEntry.seq + "</td>";
+                            txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                            txt += "<td>" + pulseEntry.inOctets + "</td>";
+                            var pulseGroupOwner = pulseEntry.group.split(".")[0];
+                            //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
+                            txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
+                            txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                            txt += "<td>" + pulseEntry.outOctets + "</td>";
+                            //txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                            txt += "<td>" + (pulseEntry.seq - pulseEntry.inMsgs) + "</td>";
+                            var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+                            var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+                            var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+                            var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
+                            var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+                            txt += "<td>" + '<FORM>';
+                            txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+                            txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+                            txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
+                            txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+                            txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+                            txt += '<FORM>' + "</td>";
+                            //console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
+                            var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
+                            if (mintEntry.bootTime == 0)
+                                delta = "";
+                            txt += "<td>" + delta + "</td>";
+                            //txt += "<td>" + entry.bootTime+ "</td>";
+                            var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+                            if (pulseEntry.pulseTimestamp == 0)
+                                deltaSeconds = "";
+                            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                            txt += "<td>" + deltaSeconds + "</td>";
+                            if (pulseEntry.lastMsg)
+                                txt += "<td>" + "" + pulseEntry.lastMsg.length + " bytes: " + pulseEntry.lastMsg + "</td>";
+                            else
+                                txt += "<td>" + "<undefined>" + "</td>";
+                            txt += "<td>" + pulseEntry.version + "</td>";
+                            txt += "</tr>";
+                            if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
+                                txt += "</table>";
+                                //console.log(ts()+"READY TO DUMP HTML: "+txt);
+                                txt += "</body></html>";
+                                res.setHeader('Content-Type', 'text/html');
+                                res.setHeader("Access-Control-Allow-Origin", "*");
+                                res.end(txt);
+                            }
+                            //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
+                            // txt+=pulseEntry.geo+":"+pulseEntry.group;
+                            //console.log("mintEntry="+dump(mintEntry));
+                            //});
+                        });
                     });
-                });
-            }
-            /*         gSRlist.forEachGroup(function (groupEntry) {
-                       //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
-                       if (groupEntry.owner!="GENESIS")
-                               txt+=externalizeGroup(groupEntry);
-                     });
-            
-                     gSRlist.forEachGenesisGroup(function (genesisGroupEntry) {
-                       //console.log(ts()+"handleShowState(): Genesis Group owner="+genesisGroupEntry.owner);
-                       //console.log(ts()+"handleShowState(): genesisGroupEntry="+dump(genesisGroupEntry));
-                       txt+=externalizeGroupState(genesisGroupEntry);
-                     });
-                     */
+                }
+                /*         gSRlist.forEachGroup(function (groupEntry) {
+                           //console.log(ts()+"handleShowState(): groupEntry.group="+groupEntry.group);
+                           if (groupEntry.owner!="GENESIS")
+                                   txt+=externalizeGroup(groupEntry);
+                         });
+                
+                         gSRlist.forEachGenesisGroup(function (genesisGroupEntry) {
+                           //console.log(ts()+"handleShowState(): Genesis Group owner="+genesisGroupEntry.owner);
+                           //console.log(ts()+"handleShowState(): genesisGroupEntry="+dump(genesisGroupEntry));
+                           txt+=externalizeGroupState(genesisGroupEntry);
+                         });
+                         */
+            });
         });
     });
 }
