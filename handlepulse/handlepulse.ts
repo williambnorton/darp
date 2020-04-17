@@ -3,7 +3,7 @@
 //
 import { now, ts ,dump, newMint } from '../lib/lib.js';
 
-const SHOWPULSES=true;
+const SHOWPULSES=false;
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 

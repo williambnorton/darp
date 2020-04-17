@@ -190,7 +190,7 @@ app.get('/', function (req, res) {
 //
 //
 app.get('/mint/:mint', function (req, res) {
-    console.log("fetching '/mint' state");
+    //console.log("fetching '/mint' state");
     expressRedisClient.hgetall("mint:" + req.params.mint, function (err, mintEntry) {
         res.end(JSON.stringify(mintEntry, null, 2));
         return;
