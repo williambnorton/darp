@@ -78,6 +78,11 @@ server.on('message', function (message, remote) {
     var ary = msg.split(",");
     //try {
     var pulseTimestamp = ary[5]; //1583783486546
+    var OWL = lib_js_1.now() - pulseTimestamp;
+    if (OWL <= -999)
+        OWL = -99999; //we can filter out clocks greater than +/- 99 seconds off
+    if (OWL >= 999)
+        OWL = 99999; //bad clocks lead to really large OWL pulses 
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
@@ -105,7 +110,7 @@ server.on('message', function (message, remote) {
                 pulseTimestamp: pulseTimestamp,
                 srcMint: ary[6],
                 owls: owls,
-                owl: lib_js_1.now() - pulseTimestamp,
+                owl: "" + OWL,
                 lastMsg: msg,
                 inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
                 inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
