@@ -145,6 +145,9 @@ do
 
     if [ $rc -eq 86 ]; then exit 86; fi
 
+    if [ $rc -eq 1 ]; then
+        echo "rc=1"
+    else
     if [ $rc -ne 36 ]; then
         echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
         echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
@@ -161,7 +164,7 @@ do
             echo `date` "Ctrl-C detected for non-genesis node"
         fi
     fi
- 
+    fi
     echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
