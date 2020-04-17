@@ -136,7 +136,7 @@ server.on('message', function(message, remote) {
 
         //console.log("HANDLEPULSE() pulse from Genesis node");
         var mints=pulse.owls.replace(/=[0-9]*/g,'').split(",");
-        console.log("HANDLEPULSE() mints="+mints+" pulse.owls="+pulse.owls);
+        //console.log("HANDLEPULSE() mints="+mints+" pulse.owls="+pulse.owls);
 
         // if we get a mint from the groupOwner that we don't know about, fetch it
         for (var mint in mints) {
@@ -146,7 +146,7 @@ server.on('message', function(message, remote) {
             if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
             //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
             if (!mintValue ) {
-              console.log("Fetching mint="+mintLabel+" from genesis Node");
+              console.log("Fetching mint="+mintLabel+" for "+pulse.geo+" from genesis Node");
               newMint(mintLabel);  //new Mint
             }
 
