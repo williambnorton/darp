@@ -517,7 +517,7 @@ app.get('/nodefactory', function (req, res) {
                     lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
                         var _a;
                         //
-                        console.log("EXPRESS: ********** SRList callback - mygSRlist=" + mygSRlist + " myOwlList=" + myOwlList) + " newMint=" + newMint + " geo=" + geo + " genesis.group=" + genesis.group;
+                        //console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
                         //we now have updated gSRlist and updated owls   
                         var entryLabel = "" + geo + ":" + genesis.group;
                         expressRedisClient.hmset("gSRlist", (_a = {},
@@ -531,7 +531,7 @@ app.get('/nodefactory', function (req, res) {
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify(config));
                             //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                            console.log("EXPRESS nodeFactory done");
+                            //console.log("EXPRESS nodeFactory done");
                         });
                         expressRedisClient.publish("members", "Genesis ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
                         console.log("EXPRESS(): Non-Genesis config: newMintRecord=" + lib_1.dump(newMintRecord) + " mint0=" + lib_1.dump(mint0) + " mint1=" + lib_1.dump(mint1) + " genesisGroupEntry=" + lib_1.dump(genesisGroupEntry) + " newSegmentEntry=" + lib_1.dump(newSegmentEntry));
