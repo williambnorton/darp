@@ -73,7 +73,7 @@ function handleShowState(req, res) {
                         //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
                         console.log("pulseEntry=" + lib_1.dump(pulseEntry));
                         expressRedisClient.hgetall("mint:" + pulseEntry.srcMint, function (err, mintEntry) {
-                            console.log("mintEntry=" + lib_1.dump(mintEntry));
+                            //console.log("mintEntry="+dump(mintEntry));
                             txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
                             txt += "<td>" + mintEntry.mint + "</td>";
                             txt += "<td>" + mintEntry.state + "</td>";
@@ -104,7 +104,7 @@ function handleShowState(req, res) {
                             txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
                             txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
                             txt += '<FORM>' + "</td>";
-                            console.log(lib_1.ts() + "mintEntry.bootTime=" + mintEntry.bootTime);
+                            //console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
                             var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
                             if (mintEntry.bootTime == 0)
                                 delta = "";
