@@ -376,11 +376,11 @@ app.get('/nodefactory', function (req, res) {
    var incomingIP=req.query.myip;  /// for now we believe the node's IP
    var octetCount=incomingIP.split(".").length;
    if (octetCount!=4) {
-      console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
+      //console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
 //      res.status(500)
 //      res.render('error', { error: "BAD IP Address coming into node factory" })
       res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify({ "rc" : "-1" }));
+      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with BAD IP addr" }));
       return;
    }
    //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
