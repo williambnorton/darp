@@ -175,7 +175,7 @@ app.get('/state', function (req, res) {
 //
 //
 app.get('/', function (req, res) {
-    console.log("fetching '/' ");
+    //console.log("fetching '/' ");
     handleShowState(req, res);
     //   getConfig(function(config) {
     //      console.log("app.get('/' callback config="+dump(config));
@@ -305,10 +305,13 @@ app.get('/me', function (req, res) {
 //
 //
 app.get('/hold', function (req, res) {
-    expressRedisClient.hmset("mint:0", {
-        state: "HOLD",
-        SHOWPULSE: "0"
+    expressRedisClient.hgetall("mint:0", function (err, me) {
+        expressRedisClient.hmset("mint:" + me.mint, {
+            state: "HOLD",
+            SHOWPULSE: "0"
+        });
     });
+    console.log(lib_1.ts() + "pulsed - Now in HOLD state - no pulsing and show no one's pulses");
     console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
     console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
     console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
@@ -319,11 +322,14 @@ app.get('/hold', function (req, res) {
 //
 //
 app.get('/pulseMsg', function (req, res) {
-    expressRedisClient.hmset("mint:0", {
-        state: "RUNNING",
-        SHOWPULSE: "1"
+    expressRedisClient.hgetall("mint:0", function (err, me) {
+        expressRedisClient.hmset("mint:" + me.mint, {
+            state: "RUNNING",
+            SHOWPULSE: "1"
+        });
     });
     console.log(lib_1.ts() + "pulsed - Now in RUNNING state");
+    console.log(lib_1.ts() + "PULSE SENT");
 });
 //
 // nodeFactory
