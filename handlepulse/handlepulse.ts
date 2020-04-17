@@ -177,7 +177,7 @@ function nth_occurrence (string, char, nth) {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-  console.log("newMint(): mint="+mint);
+  console.log("newMint(): mint="+mint+"isNaN(x)="+isNaN(mint));
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {
   
