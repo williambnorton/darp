@@ -226,6 +226,10 @@ app.get('/mint/:mint', function (req, res) {
    });
 });
 
+//
+// used by members to see if SW needs updating -
+// This also serves to retrieve members that we lost from reboot
+//
 app.get('/version', function (req, res) {
    //console.log("EXPRESS fetching '/version'");
    expressRedisClient.hget("mint:0","version",function(err,version){
@@ -245,7 +249,7 @@ console.log("EXITTING and Stopping the node");
 app.get('/reload', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("EXITTING to reload the system")
-   expressRedisClient.hset("mint:0","state","RELOAD");
+   expressRedisClient.hset("mint:0","state","RELOAD");  //handlepulse will exit 36
 });
 
 app.get('/state', function (req, res) {
@@ -316,9 +320,6 @@ function fetchConfig(gSRlist, config, callback) {
    }
 }
 
-
-
-
 //
 // 
 //
@@ -352,7 +353,7 @@ app.get('/hold', function (req, res) {
 app.get('/pulseMsg', function (req, res) {
    expressRedisClient.hmset( "mint:0", {
       state : "RUNNING",
-      "SHOWPULSE" : "1"
+      SHOWPULSE : "1"
    });
    console.log(ts()+"pulsed - Now in RUNNING state");
 
