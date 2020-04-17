@@ -177,133 +177,131 @@ function nth_occurrence(string, char, nth) {
 function newMint(mint) {
     console.log("newMint(): mint=" + mint + "isNaN(x)=" + isNaN(mint));
     if (isNaN(mint)) {
-        return console.log("newMint(" + mint + ")");
-        bad;
-        mint: "+mint);};
-        var http_1 = require("http");
-        redisClient.hgetall("mint:1", function (err, genesis) {
-            var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/mint/" + mint;
-            //console.log("FETCHMINT              fetchMint(): url="+url);
-            http_1.get(url, function (res) {
-                res.setEncoding("utf8");
-                var body = "";
-                res.on("data", function (data) {
-                    body += data;
-                });
-                res.on("end", function () {
-                    var mintEntry = JSON.parse(body);
-                    if (mintEntry == null || typeof mintEntry.geo == "undefined") {
-                        console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
-                    }
-                    else {
-                        //console.log("mint:"+mint+"="+dump(mintEntry));
-                        redisClient.hmset("mint:" + mint, mintEntry, function (err, reply) {
-                            console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
-                            var newSegmentEntry = {
-                                "geo": mintEntry.geo,
-                                "group": mintEntry.group,
-                                "seq": "0",
-                                "pulseTimestamp": "0",
-                                "srcMint": "" + mint,
-                                // =
-                                "owls": "",
-                                //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                                //node statistics - we measure these ourselves
-                                "owl": "",
-                                "inOctets": "0",
-                                "outOctets": "0",
-                                "inMsgs": "0",
-                                "outMsgs": "0",
-                                "pktDrops": "0" //as detected by missed seq#
-                                //"remoteState": "0"   //and there are mints : owls for received pulses 
-                            };
-                            console.log("newSegmentEntry=" + lib_js_1.dump(newSegmentEntry));
-                            redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
-                            //console.log("Past first set");
-                            redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
-                                var _a;
-                                console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
-                                redisClient.hmset("gSRlist", (_a = {},
-                                    _a[mintEntry.geo + ":" + mintEntry.group] = mint,
-                                    _a));
-                                //
-                                //  if Genesis node, expire in 1 minute before removing it
-                                //  else 5 minutes
-                                //redisClient.ttl(mintEntry.geo+":"+mintEntry.group, function(err,ttl) {
-                                //  console.log("ttl="+ttl);
-                                //});
-                                if (mintEntry.geo == mintEntry.group.split(".")[0]) {
-                                    //GENESIS NODE RECORD
-                                    //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*3)  //expire genesis record 
-                                    //by removing this entry, the owls don't exist, noone will get pulsed
-                                }
-                                else {
-                                    //redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
-                                }
-                                redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
-                            });
-                        });
-                    }
-                });
-            }); //res.on end
-        });
+        return console.log("newMint(" + mint + "): bad mint: " + mint);
     }
-    //
-    //  checkSEversion() - reload SW if there is new code to be had
-    //this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
-    //
-    setTimeout(checkSWversion, 120 * 1000);
-    ; //every 2 mimiutes see if we need new SW
-    function checkSWversion() {
-        setTimeout(checkSWversion, 120 * 1000);
-        ;
-        //console.log("checkSWversion() - currentSW="+MYBUILD);
-        var http = require("http");
-        redisClient.hgetall("mint:1", function (err, genesis) {
-            if (err || genesis == null) {
-                console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
-                process.exit(36);
-            }
-            var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
-            //console.log("checkSWversion(): url="+url);
-            http.get(url, function (res) {
-                res.setEncoding("utf8");
-                var body = "";
-                res.on("data", function (data) {
-                    body += data;
-                });
-                res.on("end", function () {
-                    var version = JSON.parse(body);
-                    //console.log("mintEntry="+dump(mintEntry));
-                    if (version != MYBUILD && !isGenesisNode) {
-                        console.log(lib_js_1.ts() + " handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
-                        process.exit(36); //SOFTWARE RELOAD
-                    }
-                });
+    var http = require("http");
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/mint/" + mint;
+        //console.log("FETCHMINT              fetchMint(): url="+url);
+        http.get(url, function (res) {
+            res.setEncoding("utf8");
+            var body = "";
+            res.on("data", function (data) {
+                body += data;
             });
-        });
-    }
-    //
-    // listen for incoming pulses and convert into redis commands
-    //
-    server.on('listening', function () {
-        var address = server.address();
-        console.log('UDP Server listening on ' + address.address + ':' + address.port);
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-        console.log(lib_js_1.ts() + "");
-    });
-    process.on('SIGTERM', function () {
-        console.info('handlePulse SIGTERM signal received.');
-        process.exit(36);
+            res.on("end", function () {
+                var mintEntry = JSON.parse(body);
+                if (mintEntry == null || typeof mintEntry.geo == "undefined") {
+                    console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
+                }
+                else {
+                    //console.log("mint:"+mint+"="+dump(mintEntry));
+                    redisClient.hmset("mint:" + mint, mintEntry, function (err, reply) {
+                        console.log("mint:" + mint + "=" + lib_js_1.dump(mintEntry) + " WRITTEN TO REDIS");
+                        var newSegmentEntry = {
+                            "geo": mintEntry.geo,
+                            "group": mintEntry.group,
+                            "seq": "0",
+                            "pulseTimestamp": "0",
+                            "srcMint": "" + mint,
+                            // =
+                            "owls": "",
+                            //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                            //node statistics - we measure these ourselves
+                            "owl": "",
+                            "inOctets": "0",
+                            "outOctets": "0",
+                            "inMsgs": "0",
+                            "outMsgs": "0",
+                            "pktDrops": "0" //as detected by missed seq#
+                            //"remoteState": "0"   //and there are mints : owls for received pulses 
+                        };
+                        console.log("newSegmentEntry=" + lib_js_1.dump(newSegmentEntry));
+                        redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
+                        //console.log("Past first set");
+                        redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
+                            var _a;
+                            console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_js_1.dump(newSegment));
+                            redisClient.hmset("gSRlist", (_a = {},
+                                _a[mintEntry.geo + ":" + mintEntry.group] = mint,
+                                _a));
+                            //
+                            //  if Genesis node, expire in 1 minute before removing it
+                            //  else 5 minutes
+                            //redisClient.ttl(mintEntry.geo+":"+mintEntry.group, function(err,ttl) {
+                            //  console.log("ttl="+ttl);
+                            //});
+                            if (mintEntry.geo == mintEntry.group.split(".")[0]) {
+                                //GENESIS NODE RECORD
+                                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*3)  //expire genesis record 
+                                //by removing this entry, the owls don't exist, noone will get pulsed
+                            }
+                            else {
+                                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
+                            }
+                            redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
+                        });
+                    });
+                }
+            });
+        }); //res.on end
     });
 }
+//
+//  checkSEversion() - reload SW if there is new code to be had
+//this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
+//
+setTimeout(checkSWversion, 120 * 1000);
+; //every 2 mimiutes see if we need new SW
+function checkSWversion() {
+    setTimeout(checkSWversion, 120 * 1000);
+    ;
+    //console.log("checkSWversion() - currentSW="+MYBUILD);
+    var http = require("http");
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        if (err || genesis == null) {
+            console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
+            process.exit(36);
+        }
+        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+        //console.log("checkSWversion(): url="+url);
+        http.get(url, function (res) {
+            res.setEncoding("utf8");
+            var body = "";
+            res.on("data", function (data) {
+                body += data;
+            });
+            res.on("end", function () {
+                var version = JSON.parse(body);
+                //console.log("mintEntry="+dump(mintEntry));
+                if (version != MYBUILD && !isGenesisNode) {
+                    console.log(lib_js_1.ts() + " handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
+                    process.exit(36); //SOFTWARE RELOAD
+                }
+            });
+        });
+    });
+}
+//
+// listen for incoming pulses and convert into redis commands
+//
+server.on('listening', function () {
+    var address = server.address();
+    console.log('UDP Server listening on ' + address.address + ':' + address.port);
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + "");
+});
+process.on('SIGTERM', function () {
+    console.info('handlePulse SIGTERM signal received.');
+    process.exit(36);
+});
