@@ -34,16 +34,17 @@ function publishMatrix() {
       //console.log(ts()+"publicMatrix(): entry="+dump(entry));
 
         redisClient.hgetall(entry,function (err,pulseEntry) {
+          if (pulseEntry) {
+            geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
+            owlList+=pulseEntry.owls+",";
+            //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
 
-          geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
-          owlList+=pulseEntry.owls+",";
-          //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
-
-          stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
-          if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
-            var txt=count+","+geoList+owlList;
-            console.log("publishMatrix we   publish matrix="+txt);
-            redisClient.publish("matrix",txt)
+            stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
+            if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
+              var txt=count+","+geoList+owlList;
+              console.log("publishMatrix we   publish matrix="+txt);
+              redisClient.publish("matrix",txt)
+            }
           }
 
         });
