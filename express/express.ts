@@ -48,7 +48,8 @@ function handleShowState(req, res) {
          txt += '<body onload="startTime()" '+insert+'>'
          if (me.isGenesisNode) txt+='<H2>DARP GENESIS NODE : '+me.geo+'</H2><BR>';
          txt += '<h1>10.10.0.'+me.mint+'</h1>';
-         txt += '<h1> '+ me.geo + " </h1><h2> : " + me.ipaddr + ":" + me.port +"</H2>";
+         txt += '<h1>You are '+ me.geo + "(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>";
+         txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=71.202.2.184 -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>");
 
 
          if (!me.isGenesisNode)
@@ -77,7 +78,7 @@ function handleShowState(req, res) {
                expressRedisClient.hgetall(entry, function (err,pulseEntry) {
                   txt+="<tr>"
                   //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-                  console.log("pulseEntry="+dump(pulseEntry));
+                  //console.log(ts()+"handlepulse(): pulseEntry="+dump(pulseEntry));
 
                expressRedisClient.hgetall("mint:"+pulseEntry.srcMint, function (err,mintEntry) {
                   //console.log("mintEntry="+dump(mintEntry));
