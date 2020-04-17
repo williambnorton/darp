@@ -21,7 +21,7 @@ setTimeout(pulse, 1000);
 var datagramClient = dgram.createSocket('udp4');
 function publishMatrix() {
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        console.log(lib_1.ts() + "publicMatrix(): gSRlist=" + lib_1.dump(gSRlist));
+        //console.log(ts()+"publicMatrix(): gSRlist="+dump(gSRlist));
         var lastEntry = "", count = 0;
         var stack = new Array();
         var geoList = "", owlList = "";
@@ -30,21 +30,20 @@ function publishMatrix() {
             lastEntry = entry;
         }
         for (var entry in gSRlist) {
-            console.log(lib_1.ts() + "publicMatrix(): entry=" + lib_1.dump(entry));
+            //console.log(ts()+"publicMatrix(): entry="+dump(entry));
             redisClient.hgetall(entry, function (err, pulseEntry) {
                 geoList += pulseEntry.geo + ":" + pulseEntry.srcMint + ",";
                 owlList += pulseEntry.owls + ",";
-                console.log(lib_1.ts() + "publicMatrix(): geoList=" + geoList + " owlList=" + owlList + " pulseEntry=" + lib_1.dump(pulseEntry));
+                //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
                 stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
                 if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                     var txt = count + "," + geoList + owlList;
-                    console.log("publishMatrix Pop off the matrix");
-                    console.log("publishMatrix we would                publish txt=" + txt);
+                    console.log("publishMatrix we   publish matrix=" + txt);
+                    redisClient.publish("matrix", txt);
                 }
             });
         }
     });
-    redisClient.publish("matrix", "Matrix goes here");
 }
 //
 //  pulse - pulser for each me.pulseGroups
