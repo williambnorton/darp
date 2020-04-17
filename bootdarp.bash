@@ -143,7 +143,7 @@ do
     echo `date` **DARP Finished handlepulse rc=$rc
     sleep 1
 
-    if [ $rc -eq 86 ]; then exit 86; fi
+    if [ $rc -eq 86 ]; then exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 1 ]; then
         echo "rc=1"

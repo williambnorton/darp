@@ -245,8 +245,8 @@ app.get('/version', function (req, res) {
 });
 app.get('/stop', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
-console.log("EXITTING and Stopping the node");
-   process.exit(86);
+   console.log("EXITTING and Stopping the node");
+   expressRedisClient.hset("mint:0","state","STOP");  //handlepulse will exit 36
 });
 
 app.get('/reload', function (req, res) {
