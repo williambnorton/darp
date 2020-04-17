@@ -97,7 +97,9 @@ server.on('message', function(message, remote) {
       if (me.SHOWPULSES) SHOWPULSES=me.SHOWPULSES
       else SHOWPULSES="0";
       if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
-    if (oldPulse==null) {     //first time we see this entry, include stats to increment
+      if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
+
+      if (oldPulse==null) {     //first time we see this entry, include stats to increment
       oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
     }
     if (err) {console.log("ERROR in on.message handling");}
