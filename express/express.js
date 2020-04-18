@@ -47,7 +47,7 @@ function getOWL(srcMint, destMint, callback) {
                                 srcMint: srcMint,
                                 dstMint: destMint
                             };
-                            console.log(lib_1.ts() + "OWL+" + lib_1.dump(owlRecord));
+                            //console.log(ts()+"OWL+"+dump(owlRecord));
                             callback(owlRecord);
                         }
                     }
@@ -56,13 +56,20 @@ function getOWL(srcMint, destMint, callback) {
         }
     });
 }
+function getMatrix() {
+    expressRedisClient.subscribe("pulses", function (matrix) {
+        console.log(lib_1.ts() + "matrix=" + lib_1.dump(matrix));
+    });
+}
+getMatrix();
 //
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-    getOWL(1, 2, function (owlRecord) {
-        console.log(lib_1.ts() + "getOWL() returns:" + lib_1.dump(owlRecord));
-    });
+    if (false)
+        getOWL(1, 2, function (owlRecord) {
+            console.log(lib_1.ts() + "getOWL() returns:" + lib_1.dump(owlRecord));
+        });
     var dateTime = new Date();
     var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
     if (CYCLETIME < 5)

@@ -49,7 +49,7 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
                        srcMint : srcMint,
                        dstMint : destMint,
                      }
-                     console.log(ts()+"OWL+"+dump(owlRecord));
+                     //console.log(ts()+"OWL+"+dump(owlRecord));
                      callback(owlRecord);
                   }
                }
@@ -59,12 +59,22 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
       }
    });
 }
+
+function getMatrix() {
+   expressRedisClient.subscribe("pulses", function (matrix) {
+      console.log(ts()+"matrix="+dump(matrix));
+   });
+
+}
+
+getMatrix();
+
 //
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
 
-   getOWL(1,2,function(owlRecord) {
+   if (false) getOWL(1,2,function(owlRecord) {
       console.log(ts()+"getOWL() returns:"+dump(owlRecord));
    })
 
