@@ -362,16 +362,15 @@ app.get('/hold', function (req, res) {
 app.get('/pulseMsg', function (req, res) {
    expressRedisClient.hgetall( "mint:0", function (err,me) {
       expressRedisClient.hmset( "mint:"+me.mint, {
-         state : "RUNNING",
+         //state : "RUNNING",
          SHOWPULSE : "1"
       });
       expressRedisClient.hmset( "mint:0", {
-         state : "RUNNING",
+         //state : "RUNNING",
          SHOWPULSE : "1"
       });
       pulse(1);
 
-      console.log(ts()+"pulsed - Now in RUNNING state");
       console.log(ts()+"One time PULSE SENT");
       res.redirect('http://'+me.ipaddr+":"+me.port+"/");
    });
