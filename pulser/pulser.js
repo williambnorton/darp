@@ -126,6 +126,7 @@ function pulse(flag) {
     });
     //datagramClient.close();
 }
+exports.pulse = pulse;
 //
 //  buildPulsePkt() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
@@ -220,4 +221,3 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         }
     });
 }
-module.exports = { pulse: pulse };

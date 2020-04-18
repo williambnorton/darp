@@ -58,7 +58,7 @@ function publishMatrix() {
 //
 //  pulse - pulser for each me.pulseGroups
 //
-function pulse(flag) {
+export function pulse(flag) {
   if (typeof flag == "undefined") {
     setTimeout(pulse,10 * 1000);  //10 second pollingfrequency
     setTimeout(publishMatrix,5 * 1000);  // In 5 seconds call it
@@ -230,4 +230,3 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
   });
 }
 
-module.exports = { pulse };
