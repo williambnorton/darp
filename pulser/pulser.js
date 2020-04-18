@@ -52,19 +52,19 @@ function publishMatrix() {
                                 //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
                                 if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                                     console.log(lib_1.ts() + "READY TO ROCK. matrix=" + lib_1.dump(matrix));
-                                    /*
-                                                      for (var node=matrix.stack.pop(); node!=null; node=matrix.stack.pop()) {
-                                                        matrix.geoList.push(node.geo+":"+node.mint);
-                                                        var owlsAry=node.owls.split(",");
-                                                        for (var i in owlsAry) {
-                                                          var fromMint=owlsAry[i].split("=")[0];
-                                                          var owl=owlsAry[i].split("=")[1];
-                                                          var index=""+fromMint+">"+pulseEntry.srcMint;
-                                                          console.log("fromMint="+fromMint+" toMint="+toMint);
-                                                          matrix.owl[index]=owl;
-                                                        }
-                                                      }
-                                                                      */
+                                    for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
+                                        matrix.geoList.push(node.geo + ":" + node.mint);
+                                        var owlsAry = node.owls.split(",");
+                                        //array of      3=34, 5=12, 6, 7, 8=23
+                                        for (var i in owlsAry) {
+                                            var fromMint = owlsAry[i].split("=")[0];
+                                            var owl = owlsAry[i].split("=")[1];
+                                            console.log("owlsAry[i]=" + owlsAry[i] + " fromMint=" + fromMint + " owl=" + owl);
+                                            var index = "" + fromMint + ">" + pulseEntry.srcMint;
+                                            console.log(lib_1.ts() + "index=" + index + " owl=" + owl);
+                                            matrix.owl[index] = owl;
+                                        }
+                                    }
                                     //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
                                     //console.log("publishMatrix(): publishing matrix="+txt);
                                     redisClient.publish("matrix", JSON.stringify(matrix));
