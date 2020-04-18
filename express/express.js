@@ -41,8 +41,9 @@ function getOWL(srcMint, destMint, callback) {
                         console.log(lib_1.ts() + "myOwl=" + myOwl);
                         if (myOwl != null) {
                             console.log(lib_1.ts() + "myOwl=" + lib_1.dump(myOwl));
+                            var OWL = myOwl[0].split("=")[1];
                             var owlRecord = {
-                                OWL: myOwl.split("=")[1],
+                                OWL: OWL,
                                 srcMint: srcMint,
                                 dstMint: destMint
                             };

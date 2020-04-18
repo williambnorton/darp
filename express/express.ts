@@ -43,8 +43,9 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
                   console.log(ts()+"myOwl="+myOwl);
                   if (myOwl!=null) {
                      console.log(ts()+"myOwl="+dump(myOwl));
+                     var OWL=myOwl[0].split("=")[1]
                      var owlRecord={
-                       OWL : myOwl.split("=")[1],
+                       OWL : OWL,
                        srcMint : srcMint,
                        dstMint : destMint,
                      }
