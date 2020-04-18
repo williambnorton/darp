@@ -138,6 +138,7 @@ do
         kill `cat $DARPDIR/handlepulse.pid`
         sleep 1
     fi
+    sleep 1
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
