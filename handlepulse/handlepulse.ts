@@ -101,24 +101,24 @@ server.on('message', function(message, remote) {
       if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
 
       if (oldPulse==null) {     //first time we see this entry, include stats to increment
-      oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
-    }
-    if (err) {console.log("ERROR in on.message handling");}
-    var pulse={
-      version : ary[1],
-      geo : ary[2],
-      group : ary[3],
-      seq : ary[4],
-      pulseTimestamp : pulseTimestamp,
-      srcMint : ary[6],
-      owls : owls,
-      owl : ""+OWL,
-      lastMsg : msg,
-      inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
-      inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
-    };
+        oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
+      }
+      if (err) {console.log("ERROR in on.message handling");}
+      var pulse={
+        version : ary[1],
+        geo : ary[2],
+        group : ary[3],
+        seq : ary[4],
+        pulseTimestamp : pulseTimestamp,
+        srcMint : ary[6],
+        owls : owls,
+        owl : ""+OWL,
+        lastMsg : msg,
+        inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
+        inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
+      };
 
-    authenticatedMessage(pulse, function(err,authenticated) {
+      authenticatedMessage(pulse, function(err,authenticated) {
 
       //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ( pulse.version != MYBUILD ) {
@@ -270,7 +270,7 @@ function newMint(mint) {
 setTimeout(checkSWversion,20*1000);; // see if we need new SW
 
 function checkSWversion() {
-  setTimeout(checkSWversion,120*1000);;
+  setTimeout(checkSWversion,20*1000);;
 
   //console.log("checkSWversion() - currentSW="+MYBUILD);
   const http = require("http");
@@ -307,18 +307,10 @@ function checkSWversion() {
 //
 server.on('listening', function() {
   var address = server.address();
- console.log('UDP Server listening on ' + address.address + ':' + address.port);
- console.log(ts()+"");
- console.log(ts()+"");
- console.log(ts()+"");
- console.log(ts()+"");
- console.log(ts()+"");
 
  console.log(ts()+"");
  console.log(ts()+"");
- console.log(ts()+"");
- console.log(ts()+"");
- console.log(ts()+"");
+ console.log(ts()+'UDP Server listening for pulses on ' + address.address + ':' + address.port);
  console.log(ts()+"");
  console.log(ts()+"");
  

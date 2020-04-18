@@ -258,7 +258,7 @@ function newMint(mint) {
 setTimeout(checkSWversion, 20 * 1000);
 ; // see if we need new SW
 function checkSWversion() {
-    setTimeout(checkSWversion, 120 * 1000);
+    setTimeout(checkSWversion, 20 * 1000);
     ;
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
@@ -291,17 +291,9 @@ function checkSWversion() {
 //
 server.on('listening', function () {
     var address = server.address();
-    console.log('UDP Server listening on ' + address.address + ':' + address.port);
     console.log(lib_js_1.ts() + "");
     console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
+    console.log(lib_js_1.ts() + 'UDP Server listening for pulses on ' + address.address + ':' + address.port);
     console.log(lib_js_1.ts() + "");
     console.log(lib_js_1.ts() + "");
 });
