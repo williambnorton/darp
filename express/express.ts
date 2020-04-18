@@ -408,8 +408,11 @@ app.get('/nodefactory', function (req, res) {
    console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
    //console.log("req="+dump(req.connection));
 
-                  /********** GENESIS NODE **********/
+
    expressRedisClient.incr("mintStack", (err, newMint) => {   //me and genesis node objects
+                        /********** GENESIS NODE **********/
+      console.log("EXPRESS: newMint="+newMint)
+
       if (newMint==1) {    //I AM GENESIS NODE - set my records
          console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
          var mint0={
