@@ -185,7 +185,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     //redisClient.hset("")
                     //console.log("sent dump node="+dump(node))
                     var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" ->"+node.pulseLabel
-                    console.log(message);
+                    //console.log(message);
                     redisClient.publish("pulses",message);
                     //console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
 

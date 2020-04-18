@@ -21,6 +21,9 @@ var app = express();
 var CYCLETIME = 5; //Seconds between pulses
 var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
 var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
+expressRedisClient.subscribe("matrix", function (err, message) {
+    console.log(lib_1.ts() + " matrix=" + lib_1.dump(message));
+});
 //
 //      handleShowState(req,res) - show the node state
 //
