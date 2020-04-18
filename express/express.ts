@@ -11,6 +11,7 @@
 //
 
 import { dump, now, mintList, SRList, ts, getMints, getOwls } from '../lib/lib';
+import { pulse } from '../pulser/pulser'
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -370,6 +371,7 @@ app.get('/pulseMsg', function (req, res) {
       });
       console.log(ts()+"pulsed - Now in RUNNING state");
       console.log(ts()+"PULSE SENT");
+      pulse();
       res.redirect('http://'+me.ipaddr+":"+me.port+"/");
    });
 

@@ -12,6 +12,7 @@
 //
 exports.__esModule = true;
 var lib_1 = require("../lib/lib");
+var pulser_1 = require("../pulser/pulser");
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -335,6 +336,7 @@ app.get('/pulseMsg', function (req, res) {
         });
         console.log(lib_1.ts() + "pulsed - Now in RUNNING state");
         console.log(lib_1.ts() + "PULSE SENT");
+        pulser_1.pulse();
         res.redirect('http://' + me.ipaddr + ":" + me.port + "/");
     });
 });
