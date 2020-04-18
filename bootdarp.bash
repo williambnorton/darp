@@ -115,14 +115,13 @@ do
     fi
     node config &
     echo $$ > $DARPDIR/config.pid
-    echo `date` Waiting for config to connect
-    sleep 1
+    echo `date` Starting config to fetch config and code from genesis node
+    sleep 2
 
     cd $DARPDIR
     cd $DARPDIR/pulser
     if [ -f  $DARPDIR/pulser.pid ]; then
         kill `cat $DARPDIR/pulser.pid`
-        sleep 1
     fi
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
