@@ -35,6 +35,7 @@ function publishMatrix() {
 
     for (var entry in gSRlist) {
       //console.log(ts()+"publicMatrix(): entry="+dump(entry));
+      redisClient.hgetall("mint:0",function (err,me) {
 
         redisClient.hgetall(entry,function (err,pulseEntry) {
           if (pulseEntry) {
@@ -44,13 +45,14 @@ function publishMatrix() {
 
             stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
             if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
-              var txt=""+now()+","+count+","+geoList+owlList;
+              var txt=""+me.seq+","+count+","+geoList+owlList;
               //console.log("publishMatrix(): publishing matrix="+txt);
               redisClient.publish("matrix",txt);
             }
           }
         });
-      }
+      })
+    }
    })
 }
 

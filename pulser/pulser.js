@@ -34,18 +34,20 @@ function publishMatrix() {
         }
         for (var entry in gSRlist) {
             //console.log(ts()+"publicMatrix(): entry="+dump(entry));
-            redisClient.hgetall(entry, function (err, pulseEntry) {
-                if (pulseEntry) {
-                    geoList += pulseEntry.geo + ":" + pulseEntry.srcMint + ",";
-                    owlList += pulseEntry.owls + ",";
-                    //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
-                    stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
-                    if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                        var txt = "" + lib_1.now() + "," + count + "," + geoList + owlList;
-                        //console.log("publishMatrix(): publishing matrix="+txt);
-                        redisClient.publish("matrix", txt);
+            redisClient.hgetall("mint:0", function (err, me) {
+                redisClient.hgetall(entry, function (err, pulseEntry) {
+                    if (pulseEntry) {
+                        geoList += pulseEntry.geo + ":" + pulseEntry.srcMint + ",";
+                        owlList += pulseEntry.owls + ",";
+                        //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
+                        stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
+                        if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
+                            var txt = "" + me.seq + "," + count + "," + geoList + owlList;
+                            //console.log("publishMatrix(): publishing matrix="+txt);
+                            redisClient.publish("matrix", txt);
+                        }
                     }
-                }
+                });
             });
         }
     });
