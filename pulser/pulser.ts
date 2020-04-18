@@ -184,7 +184,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                   } else {
                     //redisClient.hset("")
                     //console.log("sent dump node="+dump(node))
-                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "+dump(node)
+                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" ->"+node.pulseLabel
                     console.log(message);
                     redisClient.publish("pulses",message);
                     //console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
@@ -203,7 +203,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     //  Do the same for the out counters for the node I am sending to
                     //
                     var pulseEntryLabel=node.pulseLabel
-                    console.log(ts()+"PULSER(): pulseEntryLabel="+pulseEntryLabel);
+                    //console.log(ts()+"PULSER(): pulseEntryLabel="+pulseEntryLabel);
                     redisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
                         if (pulseEntry==null) pulseEntry={outOctets : "0",outMsgs : "0"};
                         var pulse={

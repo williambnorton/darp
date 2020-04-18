@@ -1,4 +1,5 @@
 "use strict";
+exports.__esModule = true;
 //
 // express.ts - set up the "me" and connect to the network by getting config from the genesis node
 //
@@ -10,7 +11,7 @@
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-exports.__esModule = true;
+var DEFAULT_START_STATE = "RUNNING";
 var lib_1 = require("../lib/lib");
 var pulser_1 = require("../pulser/pulser");
 var expressRedis = require('redis');
@@ -216,7 +217,7 @@ app.get('/version', function (req, res) {
 app.get('/stop', function (req, res) {
     //console.log("EXPRess fetching '/state' state");
     console.log("EXITTING and Stopping the node");
-    expressRedisClient.hset("mint:0", "state", "STOP"); //handlepulse will exit 36
+    expressRedisClient.hset("mint:0", "state", "STOP"); //handlepulse will exit 86
     res.redirect(req.get('referer'));
 });
 app.get('/reload', function (req, res) {
@@ -391,8 +392,7 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                "state": "RUNNING",
-                //"state" : "HOLD",
+                "state": DEFAULT_START_STATE,
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -456,8 +456,7 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": incomingIP,
                     "publickey": publickey,
                     //
-                    "state": "RUNNING",
-                    //"state" : "HOLD",
+                    "state": DEFAULT_START_STATE,
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
@@ -474,8 +473,7 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": genesis.ipaddr,
                     "publickey": genesis.publickey,
                     //
-                    "state": "RUNNING",
-                    //"state" : "HOLD",
+                    "state": DEFAULT_START_STATE,
                     "bootTime": "" + lib_1.now(),
                     "version": genesis.version,
                     "wallet": genesis.wallet,
@@ -491,8 +489,7 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": incomingIP,
                     "publickey": publickey,
                     //
-                    "state": "RUNNING",
-                    //"state" : "HOLD",
+                    "state": DEFAULT_START_STATE,
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
