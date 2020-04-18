@@ -58,10 +58,11 @@ function publishMatrix() {
 //
 //  pulse - pulser for each me.pulseGroups
 //
-function pulse() {
-  setTimeout(pulse,10 * 1000);  //10 second pollingfrequency
-  setTimeout(publishMatrix,5 * 1000);  // In 5 seconds call it
-
+function pulse(flag) {
+  if (typeof flag == "undefined") {
+    setTimeout(pulse,10 * 1000);  //10 second pollingfrequency
+    setTimeout(publishMatrix,5 * 1000);  // In 5 seconds call it
+  }
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
     if (me==null || me.state=="HOLD") return console.log(ts()+"no mint:0 or HOLD ");
