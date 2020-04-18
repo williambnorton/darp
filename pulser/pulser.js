@@ -175,7 +175,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " " + lib_1.dump(node);
                                         console.log(message);
                                         redisClient.publish("pulses", message);
-                                        console.log(lib_1.ts() + "PULSER LOOP: pulseLabel=" + pulseLabel + " node=" + lib_1.dump(node));
+                                        //console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
                                         //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                                         //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                                         redisClient.hgetall(pulseLabel, function (err, groupEntry) {
@@ -185,7 +185,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                                 outOctets: "" + (parseInt(groupEntry.outOctets) + pulseMsg.length),
                                                 outMsgs: "" + (parseInt(groupEntry.outMsgs) + 1)
                                             };
-                                            console.log(lib_1.ts() + "setting stats for node= " + lib_1.dump(node) + " groupEntry Record: " + pulseLabel);
+                                            //console.log(ts()+"setting stats for node= "+dump(node)+" groupEntry Record: "+pulseLabel);
                                             redisClient.hmset(pulseLabel, pulse); //update stats
                                             //
                                             //  Do the same for the out counters for the node I am sending to
@@ -199,7 +199,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                                     outOctets: "" + (parseInt(pulseEntry.outOctets) + pulseMsg.length),
                                                     outMsgs: "" + (parseInt(pulseEntry.outMsgs) + 1)
                                                 };
-                                                console.log(lib_1.ts() + "setting stats for target Record: " + pulseEntryLabel);
+                                                //console.log(ts()+"setting stats for target Record: "+pulseEntryLabel);
                                                 redisClient.hmset(pulseEntryLabel, pulse); //update stats
                                                 //console.log(ts()+"updating pulseRecord:="+dump(pulseEntry));
                                             });
