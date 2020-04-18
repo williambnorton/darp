@@ -74,7 +74,8 @@ function publishMatrix() {
                     }
                   }
                   //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
-                  console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
+                  //console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
+                  delete matrix.stack;
                   redisClient.publish("matrix",JSON.stringify(matrix));
 
                 }
