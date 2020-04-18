@@ -36,7 +36,7 @@ function publishMatrix() {
     for (var entry in gSRlist) {
       //console.log(ts()+"publicMatrix(): entry="+dump(entry));
       redisClient.hgetall("mint:0",function (err,me) {
-
+        console.log(ts()+"publishMatrix(): me="+dump(me));
         redisClient.hgetall(entry,function (err,pulseEntry) {
           if (pulseEntry) {
             geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
@@ -58,7 +58,7 @@ function publishMatrix() {
 
 
 //
-//  pulse - pulser for each me.pulseGroups
+//  pulse - pulser for each me.pulseGroup
 //
 export function pulse(flag) {
   if (typeof flag == "undefined") {
