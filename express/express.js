@@ -33,8 +33,8 @@ function getOWL(srcMint, destMint) {
                     console.log(lib_1.ts() + "getOWL(): destMint=" + destMint + " mint=" + mint + " geo=" + geo + " pulseEntryLabel=" + pulseEntryLabel + "owls=" + pulseEntry.owls);
                     if (pulseEntry != null) {
                         console.log(lib_1.ts() + "getOWL(); Looking for mint=" + srcMint + " geo=" + geo + " in " + lib_1.dump(pulseEntryLabel));
-                        console.log(lib_1.ts() + "Looking for " + srcMint + "=" + "#" + " in owls=" + pulseEntry.owls);
-                        var regEx = pulseEntry.srcMint + "/=-?[0-9]*/g";
+                        console.log(lib_1.ts() + "Looking for " + srcMint + "=" + "#" + " in " + geo + "(+", destMint + ") owls=" + pulseEntry.owls);
+                        var regEx = "/" + pulseEntry.srcMint + "=-?[0-9]*/g";
                         console.log(lib_1.ts() + "regEx=" + regEx);
                         var myOwl = pulseEntry.owls.match(regEx);
                         console.log(lib_1.ts() + "myOwl=" + myOwl);
@@ -48,7 +48,7 @@ function getOWL(srcMint, destMint) {
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-    console.log(lib_1.ts() + "getOWL(1,2(=" + getOWL(1, 2));
+    console.log(lib_1.ts() + "getOWL(1,2)=" + getOWL(1, 2));
     var dateTime = new Date();
     var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
     if (CYCLETIME < 5)
