@@ -55,7 +55,6 @@ function publishMatrix() {
 }
 
 
-
 //
 //  pulse - pulser for each me.pulseGroups
 //
@@ -226,3 +225,4 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
   });
 }
 
+module.exports = { pulse };

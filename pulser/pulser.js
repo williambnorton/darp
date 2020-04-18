@@ -213,3 +213,4 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         }
     });
 }
+module.exports = { pulse: pulse };
