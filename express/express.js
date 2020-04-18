@@ -24,13 +24,13 @@ var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
 function getOWL(srcMint, destMint) {
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulseEntryLabel in gSRlist) {
-            var mint = pulseEntryLabel.split(":")[0];
+            var mint = gSRlist[pulseEntryLabel];
             var geo = pulseEntryLabel.split(":")[0];
-            console.log(lib_1.ts() + "mint=" + mint + " geo=" + geo);
+            console.log(lib_1.ts() + "getOWL(): mint=" + mint + " geo=" + geo);
             if (mint == destMint) {
                 expressRedisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
                     if (pulseEntry != null) {
-                        console.log(lib_1.ts() + "Looking for mint=" + mint + " geo=" + geo + " in " + lib_1.dump(pulseEntryLabel));
+                        console.log(lib_1.ts() + "getOWL(); Looking for mint=" + mint + " geo=" + geo + " in " + lib_1.dump(pulseEntryLabel));
                     }
                 });
             }
