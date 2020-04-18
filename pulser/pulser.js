@@ -166,6 +166,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                                 networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
                                     if (error) {
+                                        console.log(lib_1.ts() + "pulser NetSend error");
                                         networkClient.close();
                                     }
                                     else {
