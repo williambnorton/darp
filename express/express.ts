@@ -49,7 +49,7 @@ function handleShowState(req, res) {
          txt += '<body onload="startTime()" '+insert+'>'
          if (me.isGenesisNode) txt+='<H2>DARP GENESIS NODE : '+me.geo+'</H2><BR>';
          //txt += '<h1>10.10.0.'+me.mint+'</h1>';
-         txt += '<h1>You are '+ me.geo + "(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>";
+         txt += '<h1>You are '+ me.geo + "(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>"+"<p>//"+me.version+"//</p>";
          txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=71.202.2.184 -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>";
 
 
@@ -98,7 +98,6 @@ function handleShowState(req, res) {
                   txt += "<td>" + pulseEntry.inMsgs + "</td>";
                   txt += "<td>" + pulseEntry.inOctets + "</td>";
                   var pulseGroupOwner=pulseEntry.group.split(".")[0];
-
 
                   //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
                   txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
@@ -249,12 +248,16 @@ app.get('/stop', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("EXITTING and Stopping the node");
    expressRedisClient.hset("mint:0","state","STOP");  //handlepulse will exit 36
+   res.redirect(req.get('referer'));
+
 });
 
 app.get('/reload', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("EXITTING to reload the system")
    expressRedisClient.hset("mint:0","state","RELOAD");  //handlepulse will exit 36
+   res.redirect(req.get('referer'));
+
 });
 
 app.get('/state', function (req, res) {
@@ -267,6 +270,63 @@ app.get('/state', function (req, res) {
    })
    return;
 });
+//
+// 
+//
+app.get('/me', function (req, res) {
+   //res.send('express root dir');
+   res.setHeader('Content-Type', 'application/json');
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   expressRedisClient.hgetall("mint:0", function (err,me){
+      res.end(JSON.stringify(me, null, 3));
+   });
+   return;
+})
+
+//
+//
+//
+app.get('/hold', function (req, res) {
+   expressRedisClient.hgetall( "mint:0", function (err,me) {
+      expressRedisClient.hmset( "mint:"+me.mint, {
+         state : "HOLD",
+         SHOWPULSE : "0"
+      });
+      expressRedisClient.hmset( "mint:0", {
+         state : "HOLD",
+         SHOWPULSE : "0"
+      });
+      console.log(ts()+"pulsed - Now in HOLD state - no pulsing and show no one's pulses");
+      console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
+//      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
+      res.redirect(req.get('referer'));
+
+   });
+});
+//
+//
+//
+app.get('/pulseMsg', function (req, res) {
+   expressRedisClient.hgetall( "mint:0", function (err,me) {
+      expressRedisClient.hmset( "mint:"+me.mint, {
+         //state : "RUNNING",
+         SHOWPULSE : "1"
+      });
+      expressRedisClient.hmset( "mint:0", {
+         //state : "RUNNING",
+         SHOWPULSE : "1"
+      });
+      pulse(1);
+
+      console.log(ts()+"One time PULSE SENT");
+//      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
+      res.redirect(req.get('referer'));
+
+   });
+
+
+});
+
 //
 //
 //
@@ -325,58 +385,7 @@ function fetchConfig(gSRlist, config, callback) {
    }
 }
 
-//
-// 
-//
-app.get('/me', function (req, res) {
-   //res.send('express root dir');
-   res.setHeader('Content-Type', 'application/json');
-   res.setHeader("Access-Control-Allow-Origin", "*");
-   expressRedisClient.hgetall("mint:0", function (err,me){
-      res.end(JSON.stringify(me, null, 3));
-   });
-   return;
-})
 
-//
-//
-//
-app.get('/hold', function (req, res) {
-   expressRedisClient.hgetall( "mint:0", function (err,me) {
-      expressRedisClient.hmset( "mint:"+me.mint, {
-         state : "HOLD",
-         SHOWPULSE : "0"
-      });
-      expressRedisClient.hmset( "mint:0", {
-         state : "HOLD",
-         SHOWPULSE : "0"
-      });
-      console.log(ts()+"pulsed - Now in HOLD state - no pulsing and show no one's pulses");
-      console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
-      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
-   });
-});
-//
-//
-//
-app.get('/pulseMsg', function (req, res) {
-   expressRedisClient.hgetall( "mint:0", function (err,me) {
-      expressRedisClient.hmset( "mint:"+me.mint, {
-         //state : "RUNNING",
-         SHOWPULSE : "1"
-      });
-      expressRedisClient.hmset( "mint:0", {
-         //state : "RUNNING",
-         SHOWPULSE : "1"
-      });
-      pulse(1);
-
-      console.log(ts()+"One time PULSE SENT");
-      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
-   });
-
-
-});
 
 //
 // nodeFactory
