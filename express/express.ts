@@ -27,11 +27,12 @@ function getOWL(srcMint,destMint) {
       for (var pulseEntryLabel in gSRlist) {
          var mint=gSRlist[pulseEntryLabel];
          var geo=pulseEntryLabel.split(":")[0];
-         console.log(ts()+"getOWL(): mint="+mint+" geo="+geo);
+         console.log(ts()+"getOWL(): mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
          if (mint==destMint) {
             expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
                if (pulseEntry!=null) {
-                  console.log(ts()+"getOWL(); Looking for mint="+mint+" geo="+geo+" in "+dump(pulseEntryLabel));
+                  console.log(ts()+"getOWL(); Looking for mint="+srcMint+" geo="+geo+" in "+dump(pulseEntryLabel));
+                  console.log(ts()+"Looking for "+srcMint+"="+"#");
 
                }
             });
