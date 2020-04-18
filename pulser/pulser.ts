@@ -160,7 +160,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
         if (mintEntry.owl=="") pulseMsg+=mint+",";
         else pulseMsg+=mint+"="+mintEntry.owl+",";
-        sendToAry.push({"ipaddr":mintEntry.ipaddr,"port":mintEntry.port});
+        sendToAry.push({"ipaddr":mintEntry.ipaddr,"port":mintEntry.port,"pulseLabel":mint.geo+":"+mint.group});
         var pulseLabel=GEO+":"+mintEntry.group;   //all of my state announcements are marked from me
 
         if (mint!=null) {
@@ -171,16 +171,14 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             //      message ready - pulse
             //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
             for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
+              console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
+
               if (typeof node != "undefined" && node != null) {
                 redisClient.hmset("mint:0",{
                   "statsPulseMessageLength" : ""+pulseMsg.length
                 });
 
-
-
-
-
-              //sending msg
+                //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
                   if(error) {
@@ -189,10 +187,12 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                   } else {
                     //redisClient.hset("")
                     //console.log("sent dump node="+dump(node))
-                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
+                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "+dump(node)
                     console.log(message);
                     redisClient.publish("pulses",message);
-                                      //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
+
+
+                  //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                   //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                   redisClient.hgetall(pulseLabel, function(err, groupEntry) {
                     if (groupEntry==null) groupEntry={outOctets : "0",outMsgs : "0"};
@@ -205,7 +205,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     //
                     //  Do the same for the out counters for the node I am sending to
                     //
-                    var pulseEntryLabel=mintEntry.geo+":"+groupEntry.group
+                    var pulseEntryLabel=node.pulseLabel
                     //console.log(ts()+"PULSER(): SENDING: pulseEntryLabel="+pulseEntryLabel);
                     redisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
                         if (pulseEntry==null) pulseEntry={outOctets : "0",outMsgs : "0"};

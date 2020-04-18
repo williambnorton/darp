@@ -150,7 +150,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     pulseMsg += mint + ",";
                 else
                     pulseMsg += mint + "=" + mintEntry.owl + ",";
-                sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port });
+                sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port, "pulseLabel": mint.geo + ":" + mint.group });
                 var pulseLabel = GEO + ":" + mintEntry.group; //all of my state announcements are marked from me
                 if (mint != null) {
                     //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
@@ -158,6 +158,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                         buildPulsePkt(mints, pulseMsg, sendToAry);
                     else {
                         var _loop_1 = function (node) {
+                            console.log(lib_1.ts() + "PULSER LOOP: pulseLabel=" + pulseLabel + " node=" + lib_1.dump(node));
                             if (typeof node != "undefined" && node != null) {
                                 redisClient.hmset("mint:0", {
                                     "statsPulseMessageLength": "" + pulseMsg.length
@@ -172,7 +173,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                     else {
                                         //redisClient.hset("")
                                         //console.log("sent dump node="+dump(node))
-                                        var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " ";
+                                        var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " " + lib_1.dump(node);
                                         console.log(message);
                                         redisClient.publish("pulses", message);
                                         //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
@@ -189,7 +190,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                             //
                                             //  Do the same for the out counters for the node I am sending to
                                             //
-                                            var pulseEntryLabel = mintEntry.geo + ":" + groupEntry.group;
+                                            var pulseEntryLabel = node.pulseLabel;
                                             //console.log(ts()+"PULSER(): SENDING: pulseEntryLabel="+pulseEntryLabel);
                                             redisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
                                                 if (pulseEntry == null)
