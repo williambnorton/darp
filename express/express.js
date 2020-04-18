@@ -353,7 +353,7 @@ app.get('/nodefactory', function (req, res) {
         //      res.status(500)
         //      res.render('error', { error: "BAD IP Address coming into node factory" })
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ "rc": "-1 nodeFactory called with BAD IP addr" }));
+        res.end(JSON.stringify({ "rc": "-1 nodeFactory called with BAD IP addr: " + incomingIP }));
         return;
     }
     //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -378,7 +378,8 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                "state": "RUNNING",
+                //"state" : "RUNNING",
+                "state": "HOLD",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -442,7 +443,8 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": incomingIP,
                     "publickey": publickey,
                     //
-                    "state": "RUNNING",
+                    //"state" : "RUNNING",
+                    "state": "HOLD",
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
