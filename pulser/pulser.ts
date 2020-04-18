@@ -160,7 +160,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
         //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
         if (mintEntry.owl=="") pulseMsg+=mint+",";
         else pulseMsg+=mint+"="+mintEntry.owl+",";
-        sendToAry.push({"ipaddr":mintEntry.ipaddr,"port":mintEntry.port,"pulseLabel":mint.geo+":"+mint.group});
+        sendToAry.push({"ipaddr":mintEntry.ipaddr,"port":mintEntry.port,"pulseLabel":mintEntry.geo+":"+mintEntry.group});
         var pulseLabel=GEO+":"+mintEntry.group;   //all of my state announcements are marked from me
 
         if (mint!=null) {

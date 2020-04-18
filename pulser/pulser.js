@@ -150,7 +150,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     pulseMsg += mint + ",";
                 else
                     pulseMsg += mint + "=" + mintEntry.owl + ",";
-                sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port, "pulseLabel": mint.geo + ":" + mint.group });
+                sendToAry.push({ "ipaddr": mintEntry.ipaddr, "port": mintEntry.port, "pulseLabel": mintEntry.geo + ":" + mintEntry.group });
                 var pulseLabel = GEO + ":" + mintEntry.group; //all of my state announcements are marked from me
                 if (mint != null) {
                     //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
