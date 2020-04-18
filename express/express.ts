@@ -62,12 +62,12 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
 
 function getMatrix() {
    expressRedisClient.subscribe("pulses", function (matrix) {
-      console.log(ts()+"matrix="+dump(matrix));
+      console.log(ts()+"getMatrix(): matrix="+dump(matrix));
    });
 
 }
 
-//getMatrix();
+getMatrix();
 
 //
 //      handleShowState(req,res) - show the node state
