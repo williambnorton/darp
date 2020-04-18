@@ -46,7 +46,7 @@ function publishMatrix() {
           if (me!=null && groupPulseEntry!=null) {
             redisClient.hgetall(entry,function (err,pulseEntry) {
               if (pulseEntry) {
-                console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
+                //console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
                 matrix.stack.push({"geo":pulseEntry.geo, "mint":pulseEntry.srcMint, "owls":pulseEntry.owls});
                 //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
                 //matrix.owlList+=pulseEntry.owls+",";
@@ -55,7 +55,7 @@ function publishMatrix() {
                 //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
 
                 if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
-                  console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
+                  //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
                   for (var node=matrix.stack.pop(); node!=null; node=matrix.stack.pop()) {
                     matrix.geoList.push(node.geo+":"+node.mint);
                     var owlsAry=node.owls.split(",");
@@ -66,17 +66,17 @@ function publishMatrix() {
                       var fromMint=owlsAry[i].split("=")[0];
                       var owl=owlsAry[i].split("=")[1];
                       if (typeof owl == "undefined") owl="";
-                      console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
+                      //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
 
                       var index=""+fromMint+">"+toMint;
-                      console.log(ts()+"index="+index+" owl="+owl);
+                      //console.log(ts()+"index="+index+" owl="+owl);
                       matrix.owl[index]=owl;
                     }
                   }
-
                   //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
-                  //console.log("publishMatrix(): publishing matrix="+txt);
+                  console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
                   redisClient.publish("matrix",JSON.stringify(matrix));
+
                 }
               }
             });
