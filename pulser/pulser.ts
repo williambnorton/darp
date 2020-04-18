@@ -171,7 +171,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             //      message ready - pulse
             //console.log("PULSING "+pulseMsg+" to  sendToAry="+dump(sendToAry)); 
             for (let node=sendToAry.pop(); node != null; node=sendToAry.pop()) {
-              console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
 
               if (typeof node != "undefined" && node != null) {
                 redisClient.hmset("mint:0",{
@@ -181,6 +180,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+
                   if(error) {
                     console.log(ts()+"pulser NetSend error");
                     networkClient.close();
@@ -190,7 +190,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "+dump(node)
                     console.log(message);
                     redisClient.publish("pulses",message);
-
+                    console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
 
                   //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                   //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
@@ -206,7 +206,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     //  Do the same for the out counters for the node I am sending to
                     //
                     var pulseEntryLabel=node.pulseLabel
-                    //console.log(ts()+"PULSER(): SENDING: pulseEntryLabel="+pulseEntryLabel);
+                    console.log(ts()+"PULSER(): pulseEntryLabel="+pulseEntryLabel);
                     redisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
                         if (pulseEntry==null) pulseEntry={outOctets : "0",outMsgs : "0"};
                         var pulse={

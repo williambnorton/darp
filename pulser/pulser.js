@@ -158,7 +158,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                         buildPulsePkt(mints, pulseMsg, sendToAry);
                     else {
                         var _loop_1 = function (node) {
-                            console.log(lib_1.ts() + "PULSER LOOP: pulseLabel=" + pulseLabel + " node=" + lib_1.dump(node));
                             if (typeof node != "undefined" && node != null) {
                                 redisClient.hmset("mint:0", {
                                     "statsPulseMessageLength": "" + pulseMsg.length
@@ -176,6 +175,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " " + lib_1.dump(node);
                                         console.log(message);
                                         redisClient.publish("pulses", message);
+                                        console.log(lib_1.ts() + "PULSER LOOP: pulseLabel=" + pulseLabel + " node=" + lib_1.dump(node));
                                         //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                                         //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                                         redisClient.hgetall(pulseLabel, function (err, groupEntry) {
@@ -191,7 +191,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                             //  Do the same for the out counters for the node I am sending to
                                             //
                                             var pulseEntryLabel = node.pulseLabel;
-                                            //console.log(ts()+"PULSER(): SENDING: pulseEntryLabel="+pulseEntryLabel);
+                                            console.log(lib_1.ts() + "PULSER(): pulseEntryLabel=" + pulseEntryLabel);
                                             redisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
                                                 if (pulseEntry == null)
                                                     pulseEntry = { outOctets: "0", outMsgs: "0" };
