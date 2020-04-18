@@ -20,39 +20,61 @@ var GEO = ""; //global variable for marking source of pulse
 setTimeout(pulse, 1000);
 var datagramClient = dgram.createSocket('udp4');
 //
-//  publish the one-way latecy matrix
+//  publish the one-way latecy matrix - make a object: indexes, followed by owl[srcGeo:srcMint-destGeo:destMint]
 //
 function publishMatrix() {
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         //console.log(ts()+"publicMatrix(): gSRlist="+dump(gSRlist));
         var lastEntry = "", count = 0;
-        var stack = new Array();
-        var geoList = "", owlList = "";
+        //var stack=new Array();
+        //var geoList="",owlList="";
         for (var entry in gSRlist) {
             count++;
             lastEntry = entry;
         }
-        for (var entry in gSRlist) {
-            //console.log(ts()+"publicMatrix(): entry="+dump(entry));
-            redisClient.hgetall("mint:0", function (err, me) {
-                redisClient.hgetall(me.geo + ":" + me.group, function (err, groupPulseEntry) {
-                    console.log(lib_1.ts() + "publishMatrix(): me=" + lib_1.dump(me));
-                    redisClient.hgetall(entry, function (err, pulseEntry) {
-                        if (pulseEntry) {
-                            geoList += pulseEntry.geo + ":" + pulseEntry.srcMint + ",";
-                            owlList += pulseEntry.owls + ",";
-                            //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
-                            stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
-                            if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                                var txt = "" + groupPulseEntry.seq + "," + count + "," + geoList + owlList;
-                                //console.log("publishMatrix(): publishing matrix="+txt);
-                                redisClient.publish("matrix", txt);
+        var matrix = {
+            geoList: new Array(),
+            owl: new Array(),
+            stack: new Array()
+        };
+        redisClient.hgetall("mint:0", function (err, me) {
+            redisClient.hgetall(me.geo + ":" + me.group, function (err, groupPulseEntry) {
+                for (var entry in gSRlist) {
+                    //console.log(ts()+"publicMatrix(): entry="+dump(entry));
+                    if (me != null && groupPulseEntry != null) {
+                        redisClient.hgetall(entry, function (err, pulseEntry) {
+                            if (pulseEntry) {
+                                console.log(lib_1.ts() + "publishMatrix(): entry=" + lib_1.dump(pulseEntry) + " me=" + lib_1.dump(me));
+                                matrix.stack.push({ "geo": pulseEntry.geo, "mint": pulseEntry.srcMint, "owls": pulseEntry.owls });
+                                //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
+                                //matrix.owlList+=pulseEntry.owls+",";
+                                //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
+                                //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
+                                if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
+                                    console.log(lib_1.ts() + "READY TO ROCK. matrix=" + lib_1.dump(matrix));
+                                    /*
+                                                      for (var node=matrix.stack.pop(); node!=null; node=matrix.stack.pop()) {
+                                                        matrix.geoList.push(node.geo+":"+node.mint);
+                                                        var owlsAry=node.owls.split(",");
+                                                        for (var i in owlsAry) {
+                                                          var fromMint=owlsAry[i].split("=")[0];
+                                                          var owl=owlsAry[i].split("=")[1];
+                                                          var index=""+fromMint+">"+pulseEntry.srcMint;
+                                                          console.log("fromMint="+fromMint+" toMint="+toMint);
+                                                          matrix.owl[index]=owl;
+                                                        }
+                                                      }
+                                                                      */
+                                    //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
+                                    //console.log("publishMatrix(): publishing matrix="+txt);
+                                    redisClient.publish("matrix", JSON.stringify(matrix));
+                                }
                             }
-                        }
-                    });
-                });
+                        });
+                    }
+                }
             });
-        }
+        });
     });
 }
 //
