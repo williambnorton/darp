@@ -17,7 +17,7 @@
 export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 export MYIP=$MYIP
-#echo `date` MYIP=$MYIP
+echo `date` MYIP=$MYIP
 
 if [ "$GENESIS" == "" ]; then
     echo `date` $0 You must specify a genesis node 

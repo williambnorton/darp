@@ -89,7 +89,7 @@ function getConfiguration() {
             console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
         });
         res.on('end', function () {
-            //console.log("CONFIG data="+data);
+            console.log("CONFIG data=" + data);
             var config = JSON.parse(data);
             console.log("CONFIG(): rc=" + config.rc);
             console.log("CONFIG(): rc=" + config.rc);
@@ -100,7 +100,7 @@ function getConfiguration() {
             console.log("CONFIG from node factory:" + JSON.stringify(config, null, 2));
             if (config.node == "GENESIS") {
                 console.log(" GENESIS NODE Instantiated itself");
-                //redisClient.hset("mint:0", "state", "RUNNING");
+                redisClient.hset("mint:0", "state", "RUNNING");
                 redisClient.hset("mint:0", "isGenesisNode", "1");
             }
             else {

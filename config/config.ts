@@ -102,7 +102,7 @@ function getConfiguration() {
         })
 
         res.on('end', function () {
-            //console.log("CONFIG data="+data);
+            console.log("CONFIG data="+data);
             var config = JSON.parse(data);
             console.log("CONFIG(): rc="+config.rc  );
             console.log("CONFIG(): rc="+config.rc  );

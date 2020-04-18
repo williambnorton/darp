@@ -61,7 +61,7 @@ function getMatrix() {
         console.log(lib_1.ts() + "matrix=" + lib_1.dump(matrix));
     });
 }
-getMatrix();
+//getMatrix();
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -605,7 +605,7 @@ app.get('/nodefactory', function (req, res) {
                             //console.log("EXPRESS nodeFactory about to send json="+dump(node));
                             config.mintTable["mint:0"] = mint0; //tell remote their config
                             config.rc = "0";
-                            //console.log("EXPRESS(): sending new node its config="+dump(config));
+                            console.log("EXPRESS(): sending new node its config=" + lib_1.dump(config));
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify(config));
                             //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
