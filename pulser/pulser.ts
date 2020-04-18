@@ -175,7 +175,24 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 redisClient.hmset("mint:0",{
                   "statsPulseMessageLength" : ""+pulseMsg.length
                 });
-                  //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
+
+
+
+
+
+              //sending msg
+                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+                  if(error) {
+                    console.log(ts()+"pulser NetSend error");
+                    networkClient.close();
+                  } else {
+                    //redisClient.hset("")
+                    //console.log("sent dump node="+dump(node))
+                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
+                    console.log(message);
+                    redisClient.publish("pulses",message);
+                                      //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                   //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                   redisClient.hgetall(pulseLabel, function(err, groupEntry) {
                     if (groupEntry==null) groupEntry={outOctets : "0",outMsgs : "0"};
@@ -183,7 +200,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                       outOctets : ""+(parseInt(groupEntry.outOctets)+pulseMsg.length),
                       outMsgs : ""+(parseInt(groupEntry.outMsgs)+1)
                     };
-                    console.log(ts()+"setting stats for owner's groupEntry Record: "+pulseLabel);
+                    console.log(ts()+"setting stats for node.ipaddr "+node.ipaddr+" groupEntry Record: "+pulseLabel);
                     redisClient.hmset(pulseLabel, pulse);  //update stats
                     //
                     //  Do the same for the out counters for the node I am sending to
@@ -202,18 +219,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
 
                     });
                   });
-              //sending msg
-                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
-                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
-                  if(error) {
-                    console.log(ts()+"pulser NetSend error");
-                    networkClient.close();
-                  } else {
-                    //redisClient.hset("")
-                    //console.log("sent dump node="+dump(node))
-                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
-                    console.log(message);
-                    redisClient.publish("pulses",message)
                   }
 
 
