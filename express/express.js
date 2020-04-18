@@ -21,9 +21,6 @@ var app = express();
 var CYCLETIME = 5; //Seconds between pulses
 var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
 var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
-expressRedisClient.subscribe("matrix", function (err, message) {
-    console.log(lib_1.ts() + " matrix=" + lib_1.dump(message));
-});
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -33,8 +30,6 @@ function handleShowState(req, res) {
     if (CYCLETIME < 5)
         txt = '<meta http-equiv="refresh" content="' + 5 + '">';
     expressRedisClient.hgetall("mint:0", function (err, me) {
-        if (me == null)
-            return console.log("EXPRESS: handleShowState called before mint:0 has state set");
         if (me.state == "HOLD")
             txt = '<meta http-equiv="refresh" content="' + 15 + '">';
         txt += '<html><head>';
