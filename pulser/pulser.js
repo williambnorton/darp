@@ -57,11 +57,16 @@ function pulse(flag) {
     if (typeof flag == "undefined") {
         setTimeout(pulse, 10 * 1000); //10 second pollingfrequency
         setTimeout(publishMatrix, 5 * 1000); // In 5 seconds call it
+        flag = "periodicPoll";
+    }
+    else {
+        flag = "oneTime";
+        console.log(lib_1.ts() + "one-time pulseGroup pulse");
     }
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
-        if (me == null || me.state == "HOLD")
-            return console.log(lib_1.ts() + "no mint:0 or HOLD ");
+        if ((me == null) || (me.state == "HOLD" && flag != "oneTime"))
+            return console.log(lib_1.ts() + " pulse(): no mint:0 or HOLD ");
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
         redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {

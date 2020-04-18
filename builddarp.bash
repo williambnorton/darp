@@ -3,7 +3,7 @@
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="Simulator stable Redis-based nodes"
+MESSAGE="Delivers OWL matrix via pub/sub"
 date>"Build."`date +%y%m%d.%H%M`
 ls -l "Build."`date +%y%m%d.%H%M`
 
@@ -18,4 +18,4 @@ do
 	fi
 done
 git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
-echo `date` Completed compiles and git push for `ls Build*`
+echo `date` Completed compiles + git push for `ls Build*`
