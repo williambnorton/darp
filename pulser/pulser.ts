@@ -175,19 +175,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 redisClient.hmset("mint:0",{
                   "statsPulseMessageLength" : ""+pulseMsg.length
                 });
-              //sending msg
-                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
-                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
-                  if(error) {
-                    console.log(ts()+"pulser NetSend error");
-                    networkClient.close();
-                  } else {
-                    //redisClient.hset("")
-                    //console.log("sent dump node="+dump(node))
-                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
-                    console.log(message);
-                    redisClient.publish("pulses",message)
-                  }
                   //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                   //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
                   redisClient.hgetall(pulseLabel, function(err, groupEntry) {
@@ -215,6 +202,20 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
 
                     });
                   });
+              //sending msg
+                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+                  if(error) {
+                    console.log(ts()+"pulser NetSend error");
+                    networkClient.close();
+                  } else {
+                    //redisClient.hset("")
+                    //console.log("sent dump node="+dump(node))
+                    var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" "
+                    console.log(message);
+                    redisClient.publish("pulses",message)
+                  }
+
 
                 });
               }
