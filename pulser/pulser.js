@@ -59,7 +59,7 @@ function pulse() {
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
         if (me == null || me.state == "HOLD")
-            return console.log("no mint:0 or HOLD ");
+            return console.log(lib_1.ts() + "no mint:0 or HOLD ");
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
         redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {
