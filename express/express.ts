@@ -346,6 +346,10 @@ app.get('/hold', function (req, res) {
          state : "HOLD",
          SHOWPULSE : "0"
       });
+      expressRedisClient.hmset( "mint:0", {
+         state : "HOLD",
+         SHOWPULSE : "0"
+      });
       console.log(ts()+"pulsed - Now in HOLD state - no pulsing and show no one's pulses");
       console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
       res.redirect('http://'+me.ipaddr+":"+me.port+"/");
@@ -357,6 +361,10 @@ app.get('/hold', function (req, res) {
 app.get('/pulseMsg', function (req, res) {
    expressRedisClient.hgetall( "mint:0", function (err,me) {
       expressRedisClient.hmset( "mint:"+me.mint, {
+         state : "RUNNING",
+         SHOWPULSE : "1"
+      });
+      expressRedisClient.hmset( "mint:0", {
          state : "RUNNING",
          SHOWPULSE : "1"
       });
