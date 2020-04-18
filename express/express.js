@@ -33,7 +33,7 @@ function getOWL(srcMint, destMint) {
                     console.log(lib_1.ts() + "getOWL(): destMint=" + destMint + " mint=" + mint + " geo=" + geo + " pulseEntryLabel=" + pulseEntryLabel + "owls=" + pulseEntry.owls);
                     if (pulseEntry != null) {
                         console.log(lib_1.ts() + "getOWL(); Looking for mint=" + srcMint + " geo=" + geo + " in " + lib_1.dump(pulseEntryLabel));
-                        console.log(lib_1.ts() + "Looking for " + srcMint + "=" + "#");
+                        console.log(lib_1.ts() + "Looking for " + srcMint + "=" + "#" + " in owls=" + pulseEntry.owls);
                         var regEx = pulseEntry.srcMint + "/=-?[0-9]*/g";
                         console.log(lib_1.ts() + "regEx=" + regEx);
                         var myOwl = pulseEntry.owls.match(regEx);
