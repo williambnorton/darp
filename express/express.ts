@@ -42,6 +42,7 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
                   var myOwl=pulseEntry.owls.match(regEx);
                   console.log(ts()+"myOwl="+myOwl);
                   if (myOwl!=null) {
+                     console.log(ts()+"myOwl="+dump(myOwl));
                      var owlRecord={
                        OWL : myOwl.split("=")[1],
                        srcMint : srcMint,
