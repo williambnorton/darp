@@ -391,8 +391,8 @@ app.get('/nodefactory', function (req, res) {
                 "ipaddr": incomingIP,
                 "publickey": publickey,
                 //
-                //"state" : "RUNNING",
-                "state": "HOLD",
+                "state": "RUNNING",
+                //"state" : "HOLD",
                 "bootTime": "" + lib_1.now(),
                 "version": version,
                 "wallet": wallet,
@@ -456,8 +456,8 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": incomingIP,
                     "publickey": publickey,
                     //
-                    //"state" : "RUNNING",
-                    "state": "HOLD",
+                    "state": "RUNNING",
+                    //"state" : "HOLD",
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
@@ -474,8 +474,8 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": genesis.ipaddr,
                     "publickey": genesis.publickey,
                     //
-                    //            "state" : "RUNNING",
-                    "state": "HOLD",
+                    "state": "RUNNING",
+                    //"state" : "HOLD",
                     "bootTime": "" + lib_1.now(),
                     "version": genesis.version,
                     "wallet": genesis.wallet,
@@ -491,8 +491,8 @@ app.get('/nodefactory', function (req, res) {
                     "ipaddr": incomingIP,
                     "publickey": publickey,
                     //
-                    //"state" : "RUNNING",
-                    "state": "HOLD",
+                    "state": "RUNNING",
+                    //"state" : "HOLD",
                     "bootTime": "" + lib_1.now(),
                     "version": version,
                     "wallet": wallet,
