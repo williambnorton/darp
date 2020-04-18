@@ -21,10 +21,32 @@ const CYCLETIME=5;                     //Seconds between pulses
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
 const REFRESHPAGETIME = CYCLETIME;      //how often to refresh instrumentation web page
 
+
+function getOWL(srcMint,destMint) {
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+      for (var pulseEntryLabel in gSRlist) {
+         var mint=pulseEntryLabel.split(":")[0];
+         var geo=pulseEntryLabel.split(":")[0];
+         console.log(ts()+"mint="+mint+" geo="+geo);
+         if (mint==destMint) {
+            expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
+               if (pulseEntry!=null) {
+                  console.log(ts()+"Looking for mint="+mint+" geo="+geo+" in "+dump(pulseEntryLabel));
+
+               }
+            });
+
+         }
+      }
+   });
+}
 //
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
+
+   console.log(ts()+"getOWL(1,2(="+getOWL(1,2))
+
    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
    if (CYCLETIME<5) txt = '<meta http-equiv="refresh" content="' + 5 + '">';
