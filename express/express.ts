@@ -31,25 +31,25 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
          //console.log(ts()+"getOWL(): mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
          if (mint==destMint) {
             expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
-               console.log(ts()+"getOWL(): destMint="+destMint+" mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel+"owls="+pulseEntry.owls);
+               //console.log(ts()+"getOWL(): destMint="+destMint+" mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel+"owls="+pulseEntry.owls);
                if (pulseEntry!=null) {
-                  console.log(ts()+"getOWL(); Looking for mint="+srcMint+" geo="+geo+" in "+dump(pulseEntryLabel));
-                  console.log(ts()+"Looking for "+srcMint+"="+"#"+" in "+geo+"("+destMint+") owls="+pulseEntry.owls);
+                  //console.log(ts()+"getOWL(); Looking for mint="+srcMint+" geo="+geo+" in "+dump(pulseEntryLabel));
+                  //console.log(ts()+"Looking for "+srcMint+"="+"#"+" in "+geo+"("+destMint+") owls="+pulseEntry.owls);
                   //var regEx="/"+pulseEntry.srcMint+"=-?[0-9]*/g";
                   var regEx=new RegExp(pulseEntry.srcMint+"=-?[0-9]*");
 
-                  console.log(ts()+"regEx="+regEx+" owls="+pulseEntry.owls);
+                  //console.log(ts()+"regEx="+regEx+" owls="+pulseEntry.owls);
                   var myOwl=pulseEntry.owls.match(regEx);
-                  console.log(ts()+"myOwl="+myOwl);
+                  //console.log(ts()+"myOwl="+myOwl);
                   if (myOwl!=null) {
-                     console.log(ts()+"myOwl="+dump(myOwl));
+                     //console.log(ts()+"myOwl="+dump(myOwl));
                      var OWL=myOwl[0].split("=")[1]
                      var owlRecord={
                        OWL : OWL,
                        srcMint : srcMint,
                        dstMint : destMint,
                      }
-                     console.log(ts()+"OWL+"+owlRecord);
+                     console.log(ts()+"OWL+"+dump(owlRecord));
                      callback(owlRecord);
                   }
                }
@@ -65,7 +65,7 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
 function handleShowState(req, res) {
 
    getOWL(1,2,function(owlRecord) {
-      console.log(ts()+"getOWL() returns:"+owlRecord);
+      console.log(ts()+"getOWL() returns:"+dump(owlRecord));
    })
 
    var dateTime = new Date();

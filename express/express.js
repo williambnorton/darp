@@ -30,24 +30,24 @@ function getOWL(srcMint, destMint, callback) {
             //console.log(ts()+"getOWL(): mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
             if (mint == destMint) {
                 expressRedisClient.hgetall(pulseEntryLabel, function (err, pulseEntry) {
-                    console.log(lib_1.ts() + "getOWL(): destMint=" + destMint + " mint=" + mint + " geo=" + geo + " pulseEntryLabel=" + pulseEntryLabel + "owls=" + pulseEntry.owls);
+                    //console.log(ts()+"getOWL(): destMint="+destMint+" mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel+"owls="+pulseEntry.owls);
                     if (pulseEntry != null) {
-                        console.log(lib_1.ts() + "getOWL(); Looking for mint=" + srcMint + " geo=" + geo + " in " + lib_1.dump(pulseEntryLabel));
-                        console.log(lib_1.ts() + "Looking for " + srcMint + "=" + "#" + " in " + geo + "(" + destMint + ") owls=" + pulseEntry.owls);
+                        //console.log(ts()+"getOWL(); Looking for mint="+srcMint+" geo="+geo+" in "+dump(pulseEntryLabel));
+                        //console.log(ts()+"Looking for "+srcMint+"="+"#"+" in "+geo+"("+destMint+") owls="+pulseEntry.owls);
                         //var regEx="/"+pulseEntry.srcMint+"=-?[0-9]*/g";
                         var regEx = new RegExp(pulseEntry.srcMint + "=-?[0-9]*");
-                        console.log(lib_1.ts() + "regEx=" + regEx + " owls=" + pulseEntry.owls);
+                        //console.log(ts()+"regEx="+regEx+" owls="+pulseEntry.owls);
                         var myOwl = pulseEntry.owls.match(regEx);
-                        console.log(lib_1.ts() + "myOwl=" + myOwl);
+                        //console.log(ts()+"myOwl="+myOwl);
                         if (myOwl != null) {
-                            console.log(lib_1.ts() + "myOwl=" + lib_1.dump(myOwl));
+                            //console.log(ts()+"myOwl="+dump(myOwl));
                             var OWL = myOwl[0].split("=")[1];
                             var owlRecord = {
                                 OWL: OWL,
                                 srcMint: srcMint,
                                 dstMint: destMint
                             };
-                            console.log(lib_1.ts() + "OWL+" + owlRecord);
+                            console.log(lib_1.ts() + "OWL+" + lib_1.dump(owlRecord));
                             callback(owlRecord);
                         }
                     }
@@ -61,7 +61,7 @@ function getOWL(srcMint, destMint, callback) {
 //
 function handleShowState(req, res) {
     getOWL(1, 2, function (owlRecord) {
-        console.log(lib_1.ts() + "getOWL() returns:" + owlRecord);
+        console.log(lib_1.ts() + "getOWL() returns:" + lib_1.dump(owlRecord));
     });
     var dateTime = new Date();
     var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
