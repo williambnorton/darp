@@ -35,7 +35,7 @@ function publishMatrix() {
 
     var matrix={
       geoList : new Array(),  //use for matrix labels
-      owl : new Array(),
+      owl : [],
       stack : new Array()
     };
 
@@ -67,10 +67,10 @@ function publishMatrix() {
                       var owl=owlsAry[i].split("=")[1];
                       if (typeof owl == "undefined") owl="";
                       //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
-
-                      var index=""+fromMint+":"+toMint;
-                      console.log(ts()+"index="+index+" owl="+owl);
-                      matrix.owl[index]=owl;
+            
+                      var owlMeasure=""+fromMint+":"+toMint+":"+owl;
+                      console.log(ts()+"owlMeasure="+owlMeasure);
+                      matrix.owl.unshift(owlMeasure);
                     }
                   }
                   //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;

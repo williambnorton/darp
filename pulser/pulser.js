@@ -34,7 +34,7 @@ function publishMatrix() {
         }
         var matrix = {
             geoList: new Array(),
-            owl: new Array(),
+            owl: [],
             stack: new Array()
         };
         redisClient.hgetall("mint:0", function (err, me) {
@@ -63,9 +63,9 @@ function publishMatrix() {
                                             if (typeof owl == "undefined")
                                                 owl = "";
                                             //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
-                                            var index = "" + fromMint + ":" + toMint;
-                                            console.log(lib_1.ts() + "index=" + index + " owl=" + owl);
-                                            matrix.owl[index] = owl;
+                                            var owlMeasure = "" + fromMint + ":" + toMint + ":" + owl;
+                                            console.log(lib_1.ts() + "owlMeasure=" + owlMeasure);
+                                            matrix.owl.unshift(owlMeasure);
                                         }
                                     }
                                     //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
