@@ -72,8 +72,8 @@ function authenticatedMessage(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function (message, remote) {
-    if (SHOWPULSES != "0")
-        console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
+    //if (SHOWPULSES!="0") 
+    console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse from " + remote.address + ':' + remote.port + ' - ' + message);
     var msg = message.toString();
     var ary = msg.split(",");
     //try {
@@ -90,10 +90,6 @@ server.on('message', function (message, remote) {
     redisClient.hgetall(pulseLabel, function (err, oldPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         redisClient.hgetall("mint:0", function (err, me) {
-            if (me.SHOWPULSES)
-                SHOWPULSES = me.SHOWPULSES;
-            else
-                SHOWPULSES = "0";
             if (me.state == "RELOAD")
                 process.exit(36); //this is set when reload button is pressed in express
             if (me.state == "STOP")
