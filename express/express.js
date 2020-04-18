@@ -21,7 +21,7 @@ var app = express();
 var CYCLETIME = 5; //Seconds between pulses
 var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
 var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
-function getOWL(srcMint, destMint) {
+function getOWL(srcMint, destMint, callback) {
     console.log(lib_1.ts() + "getOWL(srcMint=" + srcMint + ",destMint=" + destMint + ")");
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulseEntryLabel in gSRlist) {
@@ -36,9 +36,18 @@ function getOWL(srcMint, destMint) {
                         console.log(lib_1.ts() + "Looking for " + srcMint + "=" + "#" + " in " + geo + "(" + destMint + ") owls=" + pulseEntry.owls);
                         //var regEx="/"+pulseEntry.srcMint+"=-?[0-9]*/g";
                         var regEx = new RegExp(pulseEntry.srcMint + "=-?[0-9]*");
-                        console.log(lib_1.ts() + "regEx=" + regEx);
+                        console.log(lib_1.ts() + "regEx=" + regEx + " owls=" + pulseEntry.owls);
                         var myOwl = pulseEntry.owls.match(regEx);
                         console.log(lib_1.ts() + "myOwl=" + myOwl);
+                        if (myOwl != null) {
+                            var owlRecord = {
+                                OWL: myOwl.split("=")[1],
+                                srcMint: srcMint,
+                                dstMint: destMint
+                            };
+                            console.log(lib_1.ts() + "OWL+" + owlRecord);
+                            callback(owlRecord);
+                        }
                     }
                 });
             }
@@ -49,7 +58,9 @@ function getOWL(srcMint, destMint) {
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-    console.log(lib_1.ts() + "getOWL(1,2)=" + getOWL(1, 2));
+    getOWL(1, 2, function (owlRecord) {
+        console.log(lib_1.ts() + "getOWL() returns:" + owlRecord);
+    });
     var dateTime = new Date();
     var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
     if (CYCLETIME < 5)

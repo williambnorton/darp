@@ -22,7 +22,7 @@ const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
 const REFRESHPAGETIME = CYCLETIME;      //how often to refresh instrumentation web page
 
 
-function getOWL(srcMint,destMint) {
+function getOWL(srcMint,destMint,callback) {
 console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
       for (var pulseEntryLabel in gSRlist) {
@@ -38,9 +38,18 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
                   //var regEx="/"+pulseEntry.srcMint+"=-?[0-9]*/g";
                   var regEx=new RegExp(pulseEntry.srcMint+"=-?[0-9]*");
 
-                  console.log(ts()+"regEx="+regEx);
+                  console.log(ts()+"regEx="+regEx+" owls="+pulseEntry.owls);
                   var myOwl=pulseEntry.owls.match(regEx);
                   console.log(ts()+"myOwl="+myOwl);
+                  if (myOwl!=null) {
+                     var owlRecord={
+                       OWL : myOwl.split("=")[1],
+                       srcMint : srcMint,
+                       dstMint : destMint,
+                     }
+                     console.log(ts()+"OWL+"+owlRecord);
+                     callback(owlRecord);
+                  }
                }
             });
 
@@ -53,7 +62,9 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
 //
 function handleShowState(req, res) {
 
-   console.log(ts()+"getOWL(1,2)="+getOWL(1,2))
+   getOWL(1,2,function(owlRecord) {
+      console.log(ts()+"getOWL() returns:"+owlRecord);
+   })
 
    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
