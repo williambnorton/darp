@@ -59,14 +59,16 @@ function publishMatrix() {
                   for (var node=matrix.stack.pop(); node!=null; node=matrix.stack.pop()) {
                     matrix.geoList.push(node.geo+":"+node.mint);
                     var owlsAry=node.owls.split(",");
-
+                    var toMint=node.mint;
                     //array of      3=34, 5=12, 6, 7, 8=23
                     for (var i in owlsAry) {
+
                       var fromMint=owlsAry[i].split("=")[0];
                       var owl=owlsAry[i].split("=")[1];
-                      console.log("owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
+                      if (typeof owl == "undefined") owl="";
+                      console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
 
-                      var index=""+fromMint+">"+pulseEntry.srcMint;
+                      var index=""+fromMint+">"+toMint;
                       console.log(ts()+"index="+index+" owl="+owl);
                       matrix.owl[index]=owl;
                     }
