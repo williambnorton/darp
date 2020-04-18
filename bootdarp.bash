@@ -62,7 +62,7 @@ do
     ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
     ( redis-server --save "" --appendonly no 2>&1 ) >/dev/null &  #store nothing
     echo `date`" redis started"
-    sleep 2
+    sleep 1
 
     #echo `date` $0 : killing old processes to be restarted
     #kill `cat $DARPDIR/*.pid`
