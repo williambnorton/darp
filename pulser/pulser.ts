@@ -200,7 +200,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                       outOctets : ""+(parseInt(groupEntry.outOctets)+pulseMsg.length),
                       outMsgs : ""+(parseInt(groupEntry.outMsgs)+1)
                     };
-                    console.log(ts()+"setting stats for node.ipaddr "+node.ipaddr+" groupEntry Record: "+pulseLabel);
+                    console.log(ts()+"setting stats for node= "+dump(node)+" groupEntry Record: "+pulseLabel);
                     redisClient.hmset(pulseLabel, pulse);  //update stats
                     //
                     //  Do the same for the out counters for the node I am sending to
