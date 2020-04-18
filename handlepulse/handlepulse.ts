@@ -77,7 +77,7 @@ function  authenticatedMessage(pulse, callback) {
 //
 server.on('message', function(message, remote) {
   //if (SHOWPULSES!="0") 
-    console.log(ts()+"HANDLEPULSE: received pulse from "+remote.address + ':' + remote.port +' - ' + message);
+    console.log(ts()+"HANDLEPULSE: received pulse "+message.length+" bytes from "+remote.address + ':' + remote.port +' - ' + message);
   var msg=message.toString();
   var ary=msg.split(",");
   //try {
