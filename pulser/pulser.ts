@@ -68,7 +68,7 @@ function publishMatrix() {
                       if (typeof owl == "undefined") owl="";
                       //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
             
-                      var owlMeasure=""+fromMint+":"+toMint+":"+owl;
+                      var owlMeasure=""+fromMint+">"+toMint+"="+owl;
                       console.log(ts()+"owlMeasure="+owlMeasure);
                       matrix.owl.unshift(owlMeasure);
                     }
