@@ -172,7 +172,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                                         //redisClient.hset("")
                                         //console.log("sent dump node="+dump(node))
                                         var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " ";
-                                        //console.log(message);
+                                        console.log(message);
                                         redisClient.publish("pulses", message);
                                     }
                                     //update out stats on this pulse record
