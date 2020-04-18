@@ -126,7 +126,8 @@ do
     fi
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
-    #echo `date` '------------> Please start pulser'
+    echo `date` 'Starting pulser...'
+    sleep 1
 
     cd $DARPDIR
     cd $DARPDIR/handlepulse

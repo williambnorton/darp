@@ -41,7 +41,7 @@ function publishMatrix() {
                     //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
                     stack.push({ "mint": pulseEntry.mint, "geo": pulseEntry.geo, "owls": pulseEntry.owls });
                     if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                        var txt = count + "," + geoList + owlList;
+                        var txt = "" + lib_1.now() + "," + count + "," + geoList + owlList;
                         //console.log("publishMatrix(): publishing matrix="+txt);
                         redisClient.publish("matrix", txt);
                     }

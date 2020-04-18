@@ -37,7 +37,8 @@ redisClient.hgetall("mint:0", function (err, me) {
                     console.log(lib_js_1.ts() + "HANDLEPULSE(): Weird - genesis iis null - exitting");
                     console.log(lib_js_1.ts() + "HANDLEPULSE(): Weird - genesis iis null - exitting");
                     console.log(lib_js_1.ts() + "HANDLEPULSE(): Weird - genesis iis null - exitting");
-                    process.exit(36); //RELOAD
+                    console.log(lib_js_1.ts() + "IGNORING");
+                    //process.exit(36);  //RELOAD
                 }
                 if (genesis && (genesis.publickey == me.publickey))
                     isGenesisNode = true;
