@@ -334,9 +334,9 @@ app.get('/pulseMsg', function (req, res) {
             state: "RUNNING",
             SHOWPULSE: "1"
         });
+        pulser_1.pulse(1);
         console.log(lib_1.ts() + "pulsed - Now in RUNNING state");
-        console.log(lib_1.ts() + "PULSE SENT");
-        pulser_1.pulse();
+        console.log(lib_1.ts() + "One time PULSE SENT");
         res.redirect('http://' + me.ipaddr + ":" + me.port + "/");
     });
 });
