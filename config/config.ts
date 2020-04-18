@@ -33,9 +33,8 @@ if (! process.env.MYIP) {
 
 //  me - my internal state and pointer to genesis
 //
-import { dump, now } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
-import { generateKeyPairSync } from "crypto";
+//import { generateKeyPairSync } from "crypto";
 //import { getUnpackedSettings } from "http2";
 //import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');

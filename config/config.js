@@ -30,6 +30,7 @@ if (!process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
     process.env.MYIP = "noMYIP";
 }
+//import { generateKeyPairSync } from "crypto";
 //import { getUnpackedSettings } from "http2";
 //import { Z_VERSION_ERROR } from "zlib";
 var http = require('http');
