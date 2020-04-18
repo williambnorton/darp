@@ -22,7 +22,7 @@ const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
 const REFRESHPAGETIME = CYCLETIME;      //how often to refresh instrumentation web page
 
 
-function getOWL(srcMint,destMint) {'
+function getOWL(srcMint,destMint) {
 console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
       for (var pulseEntryLabel in gSRlist) {
