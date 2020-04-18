@@ -28,15 +28,14 @@ console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
       for (var pulseEntryLabel in gSRlist) {
          var mint=gSRlist[pulseEntryLabel];
          var geo=pulseEntryLabel.split(":")[0];
-         console.log(ts()+"getOWL(): mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
+         //console.log(ts()+"getOWL(): mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
          if (mint==destMint) {
-            console.log(ts()+"getOWL(): destMint="+destMint+" mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
-
             expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
+               console.log(ts()+"getOWL(): destMint="+destMint+" mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel+"owls="+pulseEntry.owls);
                if (pulseEntry!=null) {
                   console.log(ts()+"getOWL(); Looking for mint="+srcMint+" geo="+geo+" in "+dump(pulseEntryLabel));
                   console.log(ts()+"Looking for "+srcMint+"="+"#");
-                  var regEx=pulseEntry.srcMint+"=-?[0-9]*";
+                  var regEx=pulseEntry.srcMint+"/=-?[0-9]*/g";
                   console.log(ts()+"regEx="+regEx);
                   var myOwl=pulseEntry.owls.match(regEx);
                   console.log(ts()+"myOwl="+myOwl);
