@@ -33,6 +33,8 @@ function handleShowState(req, res) {
     if (CYCLETIME < 5)
         txt = '<meta http-equiv="refresh" content="' + 5 + '">';
     expressRedisClient.hgetall("mint:0", function (err, me) {
+        if (me == null)
+            return console.log("EXPRESS: handleShowState called before mint:0 has state set");
         if (me.state == "HOLD")
             txt = '<meta http-equiv="refresh" content="' + 15 + '">';
         txt += '<html><head>';
