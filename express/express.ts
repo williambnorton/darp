@@ -432,7 +432,7 @@ app.get('/nodefactory', function (req, res) {
             "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
             "group": geo+".1",      //DEVPOS:DEVOP.1 for genesis node start
             "seq" : "0",         //last sequence number heard
-            "pulseTimestamp": ""+now(), //last pulseTimestamp received from this node
+            "pulseTimestamp": "0", //last pulseTimestamp received from this node
             "srcMint" : "1",      //Genesis node would send this 
             // =
             "owls" : "1",        //Startup - I am the only one here

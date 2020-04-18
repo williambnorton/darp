@@ -393,7 +393,7 @@ app.get('/nodefactory', function (req, res) {
                 "geo": geo,
                 "group": geo + ".1",
                 "seq": "0",
-                "pulseTimestamp": "" + lib_1.now(),
+                "pulseTimestamp": "0",
                 "srcMint": "1",
                 // =
                 "owls": "1",
