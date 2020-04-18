@@ -47,7 +47,7 @@ function publishMatrix() {
             redisClient.hgetall(entry,function (err,pulseEntry) {
               if (pulseEntry) {
                 //console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
-                matrix.stack.push({"geo":pulseEntry.geo, "mint":pulseEntry.srcMint, "owls":pulseEntry.owls});
+                matrix.stack.unshift({"geo":pulseEntry.geo, "mint":pulseEntry.srcMint, "owls":pulseEntry.owls});
                 //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
                 //matrix.owlList+=pulseEntry.owls+",";
                 //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
@@ -69,7 +69,7 @@ function publishMatrix() {
                       //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
 
                       var index=""+fromMint+">"+toMint;
-                      //console.log(ts()+"index="+index+" owl="+owl);
+                      console.log(ts()+"index="+index+" owl="+owl);
                       matrix.owl[index]=owl;
                     }
                   }
