@@ -38,10 +38,6 @@ function getMatrix() {
 //
 function handleShowState(req, res) {
 
-   if (false) getOWL(1,2,function(owlRecord) {
-      console.log(ts()+"getOWL() returns:"+dump(owlRecord));
-   })
-
    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
    if (CYCLETIME<5) txt = '<meta http-equiv="refresh" content="' + 5 + '">';
@@ -488,20 +484,24 @@ app.get('/nodefactory', function (req, res) {
          
          console.log(ts()+"EXPRESS GENESIS CONFIG: "+dump(mint0)+dump(genesisGroupEntry));
          expressRedisClient.hgetall("mint:0",function(err,me) {
-            console.log(ts()+"me="+dump(me));
+            console.log(ts()+"mint:0 = me="+dump(me));
          })
          expressRedisClient.hgetall("mint:1",function(err,genesis) {
-            console.log(ts()+"EXPRESS genesis="+dump(genesis));
+            console.log(ts()+"EXPRESS mint:1 = genesis="+dump(genesis));
          })
+         expressRedisClient.hgetall(genesisGroupLabel,function(err,genesisGroup) {
+            console.log(ts()+"EXPRESS "+genesisGroup+"="+dump(genesisGroup));
+         })
+
 
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS", "rc" : "0" } ));
 
          getConfig(function(config) {
             console.log("Genesis config="+JSON.stringify(config, null, 2));
+            console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
+            expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
          })
-         console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
-         expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
 
          return;
       } 
@@ -692,43 +692,3 @@ expressRedisClient.hget("me","port",function (err,port){
 
 });
 
-//
-// do not need this
-//
-function getOWL(srcMint,destMint,callback) {
-   console.log(ts()+"getOWL(srcMint="+srcMint+",destMint="+destMint+")");
-      expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
-         for (var pulseEntryLabel in gSRlist) {
-            var mint=gSRlist[pulseEntryLabel];
-            var geo=pulseEntryLabel.split(":")[0];
-            //console.log(ts()+"getOWL(): mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel);
-            if (mint==destMint) {
-               expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
-                  //console.log(ts()+"getOWL(): destMint="+destMint+" mint="+mint+" geo="+geo+" pulseEntryLabel="+pulseEntryLabel+"owls="+pulseEntry.owls);
-                  if (pulseEntry!=null) {
-                     //console.log(ts()+"getOWL(); Looking for mint="+srcMint+" geo="+geo+" in "+dump(pulseEntryLabel));
-                     //console.log(ts()+"Looking for "+srcMint+"="+"#"+" in "+geo+"("+destMint+") owls="+pulseEntry.owls);
-                     //var regEx="/"+pulseEntry.srcMint+"=-?[0-9]*/g";
-                     var regEx=new RegExp(pulseEntry.srcMint+"=-?[0-9]*");
-   
-                     //console.log(ts()+"regEx="+regEx+" owls="+pulseEntry.owls);
-                     var myOwl=pulseEntry.owls.match(regEx);
-                     //console.log(ts()+"myOwl="+myOwl);
-                     if (myOwl!=null) {
-                        //console.log(ts()+"myOwl="+dump(myOwl));
-                        var OWL=myOwl[0].split("=")[1]
-                        var owlRecord={
-                          OWL : OWL,
-                          srcMint : srcMint,
-                          dstMint : destMint,
-                        }
-                        //console.log(ts()+"OWL+"+dump(owlRecord));
-                        callback(owlRecord);
-                     }
-                  }
-               });
-   
-            }
-         }
-      });
-   }
