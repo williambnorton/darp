@@ -106,13 +106,12 @@ function handleShowState(req, res) {
                   if (pulseEntry.inMsgs<=1 || pulseEntry.pulseTimestamp==0) {
                      mintEntry.state="OFF-LINE"
                   } else {
-                     if (now()-pulseEntry.pulseTimestamp>30) {
+                     if (now()-pulseEntry.pulseTimestamp>(30*1000)) {
                         var timeNow=now();
-                        var latency=timeNow-pulseEntry.pulseTimestamp
-                        var pulseSkew=timeNow-pulseEntry.pulseTimestamp;
+                        var lastPulse=timeNow-pulseEntry.pulseTimestamp
                         var bootSkew=timeNow-mintEntry.bootTime
-                        console.log("latency="+latency+" pulseSkew="+pulseSkew+" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
-                        mintEntry.state=""+(pulseSkew-bootSkew)
+                        console.log(" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
+                        mintEntry.state="NO_PULSE"
                      }
                   } 
                   txt += "<td>" + mintEntry.state + "</td>";
@@ -401,10 +400,16 @@ app.get('/nodefactory', function (req, res) {
    var publickey=req.query.publickey;
    var port=req.query.port||65013;
    var wallet=req.query.wallet||"";
-   var incomingTimestamp=req.query.ts||now();
+   var incomingTimestamp=req.query.ts;
    var incomingIP=req.query.myip;  /// for now we believe the node's IP
    var octetCount=incomingIP.split(".").length;
 
+   if (typeof incomingTimestamp == "undefined") {
+      console.log("/nodeFactory called with no timestamp");
+      res.setHeader('Content-Type', 'application/json');   
+      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with no timestamp. "}));
+      return;
+   }
    if (octetCount!=4) {
       console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
       res.setHeader('Content-Type', 'application/json');   
@@ -534,7 +539,8 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
-            "owl" : ""   //do not measure OWL to self - maybe delete this field to catch err?
+            "owl" : "",   //do not measure OWL to self - maybe delete this field to catch err?
+            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
          };
 
          expressRedisClient.hmset("mint:"+newMint,newMintRecord);
