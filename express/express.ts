@@ -442,7 +442,7 @@ app.get('/nodefactory', function (req, res) {
    //console.log("req="+dump(req.connection));
 
    var newMint=++mintStack;
-   console.log("EXPRESS: newMint="+newMint)
+   console.log("EXPRESS: Creating a newly minted node: newMint="+newMint)
 
    if (newMint==1) {    //I AM GENESIS NODE - set my records
       //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
@@ -465,7 +465,7 @@ app.get('/nodefactory', function (req, res) {
          "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
       }
       expressRedisClient.hmset("mint:0",mint0); 
-      mint0.mint="1";
+      //mint0.mint="1";
       expressRedisClient.hmset("mint:1",mint0);
       var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
          "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
@@ -482,7 +482,7 @@ app.get('/nodefactory', function (req, res) {
          "outOctets": "0",
          "inMsgs": "0",
          "outMsgs": "0",
-         "pktDrops": "0"//,     //as detected by missed seq#
+         "pktDrops": "0"   //,     //as detected by missed seq#
          //"clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
       };
       var genesisGroupLabel=geo+":"+geo+".1";
@@ -511,20 +511,24 @@ app.get('/nodefactory', function (req, res) {
          console.log("Genesis config="+JSON.stringify(config, null, 2));
          console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");            
          expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
+         console.log(ts()+"EXPRESS: AFTER GENESIS CONFIG: ");      dumpState();
+         return;
       })
-      console.log(ts()+"EXPRESS: AFTER GENESIS CONFIG: "+dumpState());
 
-      return;
 
    }
 
-   console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: "+dumpState());
+   console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+   dumpState();
 
    //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
    expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
-         if ( genesis==null) return {"msg":"NON-GENESIS Calling before genesis node set up...ignoring pulse", "rc":"-1"}
+      if ( genesis==null)  {
+            console.log(ts()+"EXPRESS NON-GENESIS Calling before genesis node set up...ignoring pulse dumping state:")
+            dumpState(); //go see what we have
+      } else {
          var genesisGroupLabel=genesis.geo+":"+genesis.group;
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
          console.log("working on NON-GENESIS Config");
@@ -669,6 +673,7 @@ app.get('/nodefactory', function (req, res) {
                });
             });   
          });
+      }
    });
 });
 

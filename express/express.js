@@ -400,7 +400,7 @@ app.get('/nodefactory', function (req, res) {
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
     //console.log("req="+dump(req.connection));
     var newMint = ++mintStack;
-    console.log("EXPRESS: newMint=" + newMint);
+    console.log("EXPRESS: Creating a newly minted node: newMint=" + newMint);
     if (newMint == 1) { //I AM GENESIS NODE - set my records
         //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
         //console.log("EXPRESS: newMint="+newMint)
@@ -422,7 +422,7 @@ app.get('/nodefactory', function (req, res) {
             "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
         };
         expressRedisClient.hmset("mint:0", mint0);
-        mint0.mint = "1";
+        //mint0.mint="1";
         expressRedisClient.hmset("mint:1", mint0);
         var genesisGroupEntry = {
             "geo": geo,
@@ -465,148 +465,154 @@ app.get('/nodefactory', function (req, res) {
             console.log("Genesis config=" + JSON.stringify(config, null, 2));
             console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
             expressRedisClient.publish("members", "Genesis Started pulseGroup mint:" + genesisGroupEntry.srcMint + " " + genesisGroupEntry.geo + ":" + genesisGroupEntry.group);
+            console.log(lib_1.ts() + "EXPRESS: AFTER GENESIS CONFIG: ");
+            dumpState();
+            return;
         });
-        console.log(lib_1.ts() + "EXPRESS: AFTER GENESIS CONFIG: " + dumpState());
-        return;
     }
-    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: " + dumpState());
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    dumpState();
     //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
     /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
     // Genesis Node as mint:1
     expressRedisClient.hgetall("mint:1", function (err, genesis) {
-        if (genesis == null)
-            return { "msg": "NON-GENESIS Calling before genesis node set up...ignoring pulse", "rc": "-1" };
-        var genesisGroupLabel = genesis.geo + ":" + genesis.group;
-        expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
-            console.log("working on NON-GENESIS Config");
-            // Use the genesis node info to create the config
-            var mint0 = {
-                "mint": "" + newMint,
-                "geo": geo,
-                "group": genesis.group,
-                // wireguard configuration details
-                "port": "" + port,
-                "ipaddr": incomingIP,
-                "publickey": publickey,
-                //
-                "state": DEFAULT_START_STATE,
-                "bootTime": "" + lib_1.now(),
-                "version": version,
-                "wallet": wallet,
-                "SHOWPULSES": "1",
-                "owl": "",
-                "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
-            };
-            /*** **/
-            var mint1 = {
-                "mint": "1",
-                "geo": genesis.geo,
-                "group": genesis.group,
-                // wireguard configuration details
-                "port": "" + genesis.port,
-                "ipaddr": genesis.ipaddr,
-                "publickey": genesis.publickey,
-                //
-                "state": DEFAULT_START_STATE,
-                "bootTime": "" + lib_1.now(),
-                "version": genesis.version,
-                "wallet": genesis.wallet,
-                "owl": "",
-                "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
-            };
-            /*(******/
-            var newMintRecord = {
-                "mint": "" + newMint,
-                "geo": geo,
-                "group": genesis.group,
-                // wireguard configuration details
-                "port": "" + port,
-                "ipaddr": incomingIP,
-                "publickey": publickey,
-                //
-                "state": DEFAULT_START_STATE,
-                "bootTime": "" + lib_1.now(),
-                "version": version,
-                "wallet": wallet,
-                "owl": "",
-                "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
-            };
-            expressRedisClient.hmset("mint:" + newMint, newMintRecord);
-            //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
-            // Now for a record of this newNode in the Genesis group
-            //get group owner (genesis group) OWLS
-            //mintList(expressRedisClient, genesis.group, function(err,owls){
-            //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
-            //var genesisGroup=genesis.geo+":"+genesis.group;
-            var newOwlList = genesisGroup.owls + "," + newMint;
-            //console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
-            expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err, reply) {
-                var justMints = lib_1.getMints(genesisGroup);
-                //console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
-                var genesisGroupEntry = {
-                    "geo": genesis.geo,
-                    "group": genesis.group,
-                    "seq": "0",
-                    "pulseTimestamp": "0",
-                    "srcMint": "1",
-                    // =
-                    "owls": newOwlList,
-                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                    //node statistics - we measure these ourselves
-                    "owl": "",
-                    "inOctets": "0",
-                    "outOctets": "0",
-                    "inMsgs": "0",
-                    "outMsgs": "0",
-                    "pktDrops": "0" //as detected by missed seq#
-                    //"remoteState": "0"   //and there are mints : owls for received pulses 
-                };
-                //console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
-                var newSegmentEntry = {
+        if (genesis == null) {
+            console.log(lib_1.ts() + "EXPRESS NON-GENESIS Calling before genesis node set up...ignoring pulse dumping state:");
+            dumpState(); //go see what we have
+        }
+        else {
+            var genesisGroupLabel = genesis.geo + ":" + genesis.group;
+            expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
+                console.log("working on NON-GENESIS Config");
+                // Use the genesis node info to create the config
+                var mint0 = {
+                    "mint": "" + newMint,
                     "geo": geo,
                     "group": genesis.group,
-                    "seq": "0",
-                    "pulseTimestamp": "0",
-                    "srcMint": "" + newMint,
-                    // =
-                    "owls": "",
-                    //"owls" : getOWLs(me.group),  //owls other guy is reporting
-                    //node statistics - we measure these ourselves
-                    "owl": "",
-                    "inOctets": "0",
-                    "outOctets": "0",
-                    "inMsgs": "0",
-                    "outMsgs": "0",
-                    "pktDrops": "0" //as detected by missed seq#
-                    //"remoteState": "0"   //and there are mints : owls for received pulses 
-                };
-                //console.log(ts()+"newSegmentEntry="+dump(newSegmentEntry));
-                expressRedisClient.hmset(geo + ":" + genesis.group, newSegmentEntry);
-                lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
-                    var _a;
+                    // wireguard configuration details
+                    "port": "" + port,
+                    "ipaddr": incomingIP,
+                    "publickey": publickey,
                     //
-                    //console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
-                    //we now have updated gSRlist and updated owls   
-                    var entryLabel = "" + geo + ":" + genesis.group;
-                    expressRedisClient.hmset("gSRlist", (_a = {},
-                        _a[entryLabel] = "" + newMint,
-                        _a)); //add node:grp to gSRlist
-                    // install owls into genesisGroup
-                    getConfig(function (config) {
-                        //console.log("EXPRESS nodeFactory about to send json="+dump(node));
-                        config.mintTable["mint:0"] = mint0; //tell remote their config
-                        config.rc = "0";
-                        //console.log("EXPRESS(): sending new node its config="+dump(config));
-                        res.setHeader('Content-Type', 'application/json');
-                        res.end(JSON.stringify(config));
-                        //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
-                        //console.log("EXPRESS nodeFactory done");
+                    "state": DEFAULT_START_STATE,
+                    "bootTime": "" + lib_1.now(),
+                    "version": version,
+                    "wallet": wallet,
+                    "SHOWPULSES": "1",
+                    "owl": "",
+                    "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
+                };
+                /*** **/
+                var mint1 = {
+                    "mint": "1",
+                    "geo": genesis.geo,
+                    "group": genesis.group,
+                    // wireguard configuration details
+                    "port": "" + genesis.port,
+                    "ipaddr": genesis.ipaddr,
+                    "publickey": genesis.publickey,
+                    //
+                    "state": DEFAULT_START_STATE,
+                    "bootTime": "" + lib_1.now(),
+                    "version": genesis.version,
+                    "wallet": genesis.wallet,
+                    "owl": "",
+                    "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
+                };
+                /*(******/
+                var newMintRecord = {
+                    "mint": "" + newMint,
+                    "geo": geo,
+                    "group": genesis.group,
+                    // wireguard configuration details
+                    "port": "" + port,
+                    "ipaddr": incomingIP,
+                    "publickey": publickey,
+                    //
+                    "state": DEFAULT_START_STATE,
+                    "bootTime": "" + lib_1.now(),
+                    "version": version,
+                    "wallet": wallet,
+                    "owl": "",
+                    "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
+                };
+                expressRedisClient.hmset("mint:" + newMint, newMintRecord);
+                //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
+                // Now for a record of this newNode in the Genesis group
+                //get group owner (genesis group) OWLS
+                //mintList(expressRedisClient, genesis.group, function(err,owls){
+                //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
+                //var genesisGroup=genesis.geo+":"+genesis.group;
+                var newOwlList = genesisGroup.owls + "," + newMint;
+                //console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
+                expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err, reply) {
+                    var justMints = lib_1.getMints(genesisGroup);
+                    //console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
+                    var genesisGroupEntry = {
+                        "geo": genesis.geo,
+                        "group": genesis.group,
+                        "seq": "0",
+                        "pulseTimestamp": "0",
+                        "srcMint": "1",
+                        // =
+                        "owls": newOwlList,
+                        //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                        //node statistics - we measure these ourselves
+                        "owl": "",
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "pktDrops": "0" //as detected by missed seq#
+                        //"remoteState": "0"   //and there are mints : owls for received pulses 
+                    };
+                    //console.log(ts()+"EXPRESS: non-genesis config genesisGroupEntry.owls="+genesisGroupEntry.owls);
+                    var newSegmentEntry = {
+                        "geo": geo,
+                        "group": genesis.group,
+                        "seq": "0",
+                        "pulseTimestamp": "0",
+                        "srcMint": "" + newMint,
+                        // =
+                        "owls": "",
+                        //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                        //node statistics - we measure these ourselves
+                        "owl": "",
+                        "inOctets": "0",
+                        "outOctets": "0",
+                        "inMsgs": "0",
+                        "outMsgs": "0",
+                        "pktDrops": "0" //as detected by missed seq#
+                        //"remoteState": "0"   //and there are mints : owls for received pulses 
+                    };
+                    //console.log(ts()+"newSegmentEntry="+dump(newSegmentEntry));
+                    expressRedisClient.hmset(geo + ":" + genesis.group, newSegmentEntry);
+                    lib_1.SRList(expressRedisClient, function (err, mygSRlist, myOwlList) {
+                        var _a;
+                        //
+                        //console.log("EXPRESS: ********** SRList callback - mygSRlist="+mygSRlist+" myOwlList="+myOwlList)+" newMint="+newMint+" geo="+geo+" genesis.group="+genesis.group;
+                        //we now have updated gSRlist and updated owls   
+                        var entryLabel = "" + geo + ":" + genesis.group;
+                        expressRedisClient.hmset("gSRlist", (_a = {},
+                            _a[entryLabel] = "" + newMint,
+                            _a)); //add node:grp to gSRlist
+                        // install owls into genesisGroup
+                        getConfig(function (config) {
+                            //console.log("EXPRESS nodeFactory about to send json="+dump(node));
+                            config.mintTable["mint:0"] = mint0; //tell remote their config
+                            config.rc = "0";
+                            //console.log("EXPRESS(): sending new node its config="+dump(config));
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify(config));
+                            //console.log("EXPRESS: Node connection established - now rebuild new configuration for witreguard configuration file to allow genesis to sendus stuff");
+                            //console.log("EXPRESS nodeFactory done");
+                        });
+                        expressRedisClient.publish("members", "Genesis ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
+                        //console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
                     });
-                    expressRedisClient.publish("members", "Genesis ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
-                    //console.log("EXPRESS(): Non-Genesis config: newMintRecord="+dump(newMintRecord)+" mint0="+dump(mint0)+" mint1="+dump(mint1)+" genesisGroupEntry="+dump(genesisGroupEntry)+" newSegmentEntry="+dump(newSegmentEntry));
                 });
             });
-        });
+        }
     });
 });
 function getMintTable(mint, callback) {
