@@ -395,6 +395,7 @@ function fetchConfig(gSRlist, config, callback) {
       });
    } else {
       delete config.entryStack;
+      console.log(ts()+"fetchConfig(): returning "+dump(config));
       callback(config);  //send the config atructure back
    }
 }
