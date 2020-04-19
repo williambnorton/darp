@@ -500,7 +500,7 @@ app.get('/nodefactory', function (req, res) {
          [genesisGroupLabel] : "1"
       }); 
       
-      /*
+      
       console.log(ts()+"EXPRESS GENESIS CONFIG: "+dump(mint0)+dump(genesisGroupEntry));
       expressRedisClient.hgetall("mint:0",function(err,me) {
          console.log(ts()+"mint:0 = me="+dump(me));
@@ -511,7 +511,7 @@ app.get('/nodefactory', function (req, res) {
       expressRedisClient.hgetall(genesisGroupLabel,function(err,genesisGroup) {
          console.log(ts()+"EXPRESS "+genesisGroup+"="+dump(genesisGroup));
       })
-      */
+      
 
       res.setHeader('Content-Type', 'application/json');   
       res.end(JSON.stringify( { "node" : "GENESIS", "rc" : "0" } ));
@@ -521,10 +521,10 @@ app.get('/nodefactory', function (req, res) {
          console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");            
          expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
          console.log(ts()+"EXPRESS: AFTER GENESIS CONFIG: ");      dumpState();
-         return;
+         ;
       })
 
-
+      return
    }
 
    console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
