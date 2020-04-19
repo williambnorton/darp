@@ -439,16 +439,16 @@ app.get('/nodefactory', function (req, res) {
         expressRedisClient.hmset("gSRlist", (_a = {},
             _a[genesisGroupLabel] = "1",
             _a));
-        console.log(lib_1.ts() + "SENDING GENESIS CONFIG: " + lib_1.dump(mint0) + lib_1.dump(genesisGroupEntry));
+        console.log(lib_1.ts() + "EXPRESS GENESIS CONFIG: " + lib_1.dump(mint0) + lib_1.dump(genesisGroupEntry));
         expressRedisClient.hgetall("mint:0", function (err, me) {
             console.log(lib_1.ts() + "me=" + lib_1.dump(me));
         });
         expressRedisClient.hgetall("mint:1", function (err, genesis) {
-            console.log(lib_1.ts() + "genesis=" + lib_1.dump(genesis));
+            console.log(lib_1.ts() + "EXPRESS genesis=" + lib_1.dump(genesis));
         });
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ "node": "GENESIS", "rc": "0" }));
-        getConfig(function (err, config) {
+        getConfig(function (config) {
             console.log("Genesis config=" + JSON.stringify(config, null, 2));
         });
         console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
