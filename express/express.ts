@@ -17,6 +17,10 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
+var mintStack=0;
+
+expressRedisClient.hset
+
 const CYCLETIME=5;                     //Seconds between pulses
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
 const REFRESHPAGETIME = CYCLETIME;      //how often to refresh instrumentation web page
@@ -395,7 +399,7 @@ app.get('/nodefactory', function (req, res) {
    var incomingIP=req.query.myip;  /// for now we believe the node's IP
    var octetCount=incomingIP.split(".").length;
    if (octetCount!=4) {
-      //console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
+      console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
 //      res.status(500)
 //      res.render('error', { error: "BAD IP Address coming into node factory" })
       res.setHeader('Content-Type', 'application/json');   
@@ -408,8 +412,7 @@ app.get('/nodefactory', function (req, res) {
    console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
    //console.log("req="+dump(req.connection));
 
-
-   expressRedisClient.incr("mintStack", (err, newMint) => {   //me and genesis node objects
+   var newMint=++mintStack;
                         /********** GENESIS NODE **********/
       console.log("EXPRESS: newMint="+newMint)
 
@@ -621,7 +624,7 @@ app.get('/nodefactory', function (req, res) {
             });   
          });
       });
-   });
+   //});
 });
 
 function getMintTable(mint,callback) {
@@ -630,6 +633,7 @@ function getMintTable(mint,callback) {
    });
 }
 
+/*
 function popMint() {
 var mint=0;
    expressRedisClient.incr("mintStack", (err, newMint) => {
@@ -641,6 +645,7 @@ var mint=0;
       }
      });
 }
+*/
 
 //
 // bind the TCP port for externalizing 
