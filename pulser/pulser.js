@@ -6,12 +6,12 @@ var config_1 = require("../config/config");
 //  pulse - send my owl measurements to my pulseGroups
 //
 //var HOST='127.0.0.1';
-var PAUSE = true; //after next pulse, stop pulsing
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+console.log("PULSER: CYCLETIME=" + config_1.CYCLETIME);
 var GEO = ""; //global variable for marking source of pulse
 /*setInterval(
   () => pulse,

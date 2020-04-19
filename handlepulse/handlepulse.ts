@@ -2,6 +2,7 @@
 //  handlePulse - receive incoming pulses and store in redis
 //
 import { now, ts ,dump, newMint, makeYYMMDD } from '../lib/lib.js';
+import { CYCLETIME } from '../config/config'
 
 var SHOWPULSES="0";
 const pulseRedis = require('redis');

@@ -17,6 +17,8 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
+console.log("EXPRESS: CYCLETIME="+CYCLETIME);
+
 var mintStack=0;
 const DEFAULT_START_STATE="RUNNING";
 //expressRedisClient.hset

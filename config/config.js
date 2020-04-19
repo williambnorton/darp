@@ -7,7 +7,9 @@ exports.__esModule = true;
 //          PUBLICKEY - Public key 
 //
 var lib_js_1 = require("../lib/lib.js");
+//      Configuration parameters - agreed to by all in the pulseGroup
 exports.CYCLETIME = 5; //seconds between polls
+//      Environment is way for environment to control the code
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (!process.env.HOSTNAME) {
     console.log("No HOSTNAME enviropnmental variable specified ");

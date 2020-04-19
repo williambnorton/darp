@@ -18,6 +18,7 @@ var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
+console.log("EXPRESS: CYCLETIME=" + config_1.CYCLETIME);
 var mintStack = 0;
 var DEFAULT_START_STATE = "RUNNING";
 //expressRedisClient.hset
