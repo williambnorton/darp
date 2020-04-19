@@ -382,7 +382,7 @@ function fetchConfig(gSRlist, config, callback) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-   console.log('****EXPRESS; config requested with params: '+dump(req.query));
+   //console.log('****EXPRESS; config requested with params: '+dump(req.query));
    //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
    var geo=req.query.geo;
    var publickey=req.query.publickey;
@@ -406,9 +406,9 @@ app.get('/nodefactory', function (req, res) {
 
    var newMint=++mintStack;
    if (newMint==1) {    //I AM GENESIS NODE - set my records
-         console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
-         console.log("EXPRESS: newMint="+newMint)
-         console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
+         //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
+         //console.log("EXPRESS: newMint="+newMint)
+         //console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
          var mint0={
             "mint" : "1",      //overwrite initial mint0 record - we are genesis
             "geo" : geo,
@@ -462,7 +462,7 @@ app.get('/nodefactory', function (req, res) {
          return;
       } 
 
-      console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
+      //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry

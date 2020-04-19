@@ -1,7 +1,7 @@
 //
 //  handlePulse - receive incoming pulses and store in redis
 //
-import { now, ts ,dump, newMint } from '../lib/lib.js';
+import { now, ts ,dump, newMint, makeYYMMDD } from '../lib/lib.js';
 
 var SHOWPULSES="0";
 const pulseRedis = require('redis');
@@ -131,11 +131,14 @@ server.on('message', function(message, remote) {
       };
 
       redisClient.publish("pulses",msg)
-      redisClient.hmset(pulseLabel, pulse);
+      redisClient.hmset(pulseLabel, pulse);  //store the pulse
+      
 
       redisClient.hmset("mint:"+pulse.srcMint, {
         "owl" : pulse.owl
       });
+
+      storeOWL(pulse.geo,me.geo,OWL);
 
       //
       //  if groupOwner pulsed this - make sure we have the credentials for each node
@@ -165,6 +168,29 @@ server.on('message', function(message, remote) {
   });
   });
 });
+
+//
+//      storeOWL() - store one way latency to file or graphing & history
+//
+function storeOWL(src, dst, owl) {
+  var fs = require('fs');
+  var d = new Date();
+  var YYMMDD = makeYYMMDD();
+  var filename = src + '-' + dst + '.' + YYMMDD + '.txt';
+  var logMsg = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
+  //console.log("About to file("+filename+") log message:"+logMsg);
+
+  //if (owl > 2000 || owl < 0) {
+          //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+//
+          //owl = 0;
+  //}
+  //var logMsg = "{y:" + owl + "},\n";
+  fs.appendFile(filename, logMsg, function(err) {
+          if (err) throw err;
+          //console.log('Saved!');
+  });
+}
 
 function nth_occurrence (string, char, nth) {
   var first_index = string.indexOf(char);
