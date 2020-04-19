@@ -13,6 +13,7 @@ import { dump, now, mintList, SRList, ts, getMints, getOwls } from '../lib/lib';
 import { pulse } from '../pulser/pulser'
 import { CYCLETIME } from '../config/config'
 const expressRedis = require('redis');
+
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
@@ -20,7 +21,7 @@ var app = express();
 console.log(ts()+ "EXPRESS starting: CYCLETIME="+CYCLETIME);
 
 var mintStack=0;
-const DEFAULT_START_STATE="RUNNING";
+const DEFAULT_START_STATE="HOLD";
 //expressRedisClient.hset
 
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse

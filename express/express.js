@@ -20,7 +20,7 @@ var express = require('express');
 var app = express();
 console.log(lib_1.ts() + "EXPRESS starting: CYCLETIME=" + config_1.CYCLETIME);
 var mintStack = 0;
-var DEFAULT_START_STATE = "RUNNING";
+var DEFAULT_START_STATE = "HOLD";
 //expressRedisClient.hset
 var POLLFREQ = config_1.CYCLETIME * 1000; //how often to send pulse
 var REFRESHPAGETIME = config_1.CYCLETIME; //how often to refresh instrumentation web page
