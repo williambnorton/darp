@@ -61,7 +61,7 @@ function handleShowState(req, res) {
                 txt += '<H2>DARP GENESIS NODE : ' + me.geo + '</H2><BR>';
             //txt += '<h1>10.10.0.'+me.mint+'</h1>';
             txt += '<h1>You are ' + me.geo + "(10.10.0." + me.mint + ")</h1>   <h2> : " + me.ipaddr + ":" + me.port + "</H2>" + "<p>//" + me.version + "//</p>";
-            txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=71.202.2.184 -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>";
+            txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + genesis.ip + " -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>";
             if (!me.isGenesisNode)
                 txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
             txt += "<H2> Refresh every=" + POLLFREQ / 1000 + " seconds</H2>";
