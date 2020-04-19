@@ -176,7 +176,7 @@ function storeOWL(src, dst, owl) {
   var fs = require('fs');
   var d = new Date();
   var YYMMDD = makeYYMMDD();
-  var filename = src + '-' + dst + '.' + YYMMDD + '.txt';
+  var filename = process.env.DARPDIR+"/"+src + '-' + dst + '.' + YYMMDD + '.txt';
   var logMsg = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
   //console.log("About to file("+filename+") log message:"+logMsg);
 
