@@ -94,10 +94,10 @@ function handleShowState(req, res) {
                             txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
                             //txt += "<td>" + mintEntry.mint + "</td>";
                             txt += "<td>10.10.0." + mintEntry.mint + "</td>";
-                            if (pulseEntry.inMsgs <= 1) {
+                            if (pulseEntry.inMsgs <= 1 || pulseEntry.pulseTimestamp == 0) {
                                 mintEntry.state = "OFF-LINE";
                             }
-                            if (pulseEntry.pulseTimestamp != 0) {
+                            else {
                                 if (lib_1.now() - pulseEntry.pulseTimestamp > 30) {
                                     var timeNow = lib_1.now();
                                     var latency = timeNow - pulseEntry.pulseTimestamp;

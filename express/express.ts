@@ -103,10 +103,9 @@ function handleShowState(req, res) {
                   //txt += "<td>" + mintEntry.mint + "</td>";
                   txt += "<td>10.10.0." + mintEntry.mint + "</td>";
 
-                  if (pulseEntry.inMsgs<=1) {
+                  if (pulseEntry.inMsgs<=1 || pulseEntry.pulseTimestamp==0) {
                      mintEntry.state="OFF-LINE"
-                  }
-                  if (pulseEntry.pulseTimestamp!=0) {
+                  } else {
                      if (now()-pulseEntry.pulseTimestamp>30) {
                         var timeNow=now();
                         var latency=timeNow-pulseEntry.pulseTimestamp
@@ -115,7 +114,7 @@ function handleShowState(req, res) {
                         console.log("latency="+latency+" pulseSkew="+pulseSkew+" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
                         mintEntry.state=""+(pulseSkew-bootSkew)
                      }
-                  }
+                  } 
                   txt += "<td>" + mintEntry.state + "</td>";
                   txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
                   txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
