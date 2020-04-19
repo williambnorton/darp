@@ -107,7 +107,7 @@ function handleShowState(req, res) {
                      mintEntry.state="STALLED"
                   }
                   if (pulseEntry.pulseTimestamp-mintEntry.bootTime>30) {
-                     mintEntry.state="STALLED"
+                     mintEntry.state="AWOL"
                   }
                   txt += "<td>" + mintEntry.state + "</td>";
                   txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
