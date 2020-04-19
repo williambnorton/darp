@@ -94,6 +94,12 @@ function handleShowState(req, res) {
                             txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
                             //txt += "<td>" + mintEntry.mint + "</td>";
                             txt += "<td>10.10.0." + mintEntry.mint + "</td>";
+                            if (pulseEntry.inMsgs <= 1) {
+                                mintEntry.state = "STALLED";
+                            }
+                            if (pulseEntry.pulseTimestamp - mintEntry.bootTime > 30) {
+                                mintEntry.state = "STALLED";
+                            }
                             txt += "<td>" + mintEntry.state + "</td>";
                             txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
                             txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
