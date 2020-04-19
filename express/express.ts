@@ -104,10 +104,14 @@ function handleShowState(req, res) {
                   txt += "<td>10.10.0." + mintEntry.mint + "</td>";
 
                   if (pulseEntry.inMsgs<=1) {
-                     mintEntry.state="STALLED"
+                     mintEntry.state="OFF-LINE"
                   }
-                  if (pulseEntry.pulseTimestamp!="" && pulseEntry.pulseTimestamp-mintEntry.bootTime>30) {
-                     mintEntry.state="AWOL"
+                  if (pulseEntry.pulseTimestamp) {
+                     if (now()-pulseEntry.pulseTimestamp>30) {
+                        var pulseSkew=now()-pulseEntry.pulseTimestamp;
+                        var bootSkew=now()-mintEntry.bootTime
+                        mintEntry.state=""+(pulseSkew-bootSkew)
+                     }
                   }
                   txt += "<td>" + mintEntry.state + "</td>";
                   txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
