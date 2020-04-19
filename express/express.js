@@ -82,7 +82,7 @@ function handleShowState(req, res) {
                     lastEntry = entry;
                 //console.log("lastEntry="+lastEntry);
                 txt += '<table class="gSRlist" border="1">';
-                txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
+                txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>ClockSkew</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
                 for (var entry in gSRlist) {
                     //console.log("gSRlist entry="+dump(entry));
                     expressRedisClient.hgetall(entry, function (err, pulseEntry) {
@@ -140,6 +140,10 @@ function handleShowState(req, res) {
                                 delta = "";
                             txt += "<td>" + delta + "</td>";
                             //txt += "<td>" + entry.bootTime+ "</td>";
+                            if (mintEntry.clockSkew > 1000)
+                                txt += "<td>" + mintEntry.clockSkew / 1000 + " sec</td>";
+                            else
+                                txt += "<td>" + mintEntry.clockSkew + " ms</td>";
                             var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                             if (pulseEntry.pulseTimestamp == 0)
                                 deltaSeconds = "";
