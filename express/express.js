@@ -142,9 +142,9 @@ function handleShowState(req, res) {
                             //txt += "<td>" + entry.bootTime+ "</td>";
                             if (Math.abs(mintEntry.clockSkew) > 1000)
                                 if (Math.abs(mintEntry.clockSkew) > 60000)
-                                    txt += "<td>" + mintEntry.clockSkew / 60000 + " min</td>";
+                                    txt += "<td>" + Math.round(mintEntry.clockSkew / 60000) + " min</td>";
                                 else
-                                    txt += "<td>" + mintEntry.clockSkew / 1000 + " sec</td>";
+                                    txt += "<td>" + Math.round(mintEntry.clockSkew / 1000) + " sec</td>";
                             else
                                 txt += "<td>" + mintEntry.clockSkew + " ms</td>";
                             var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
