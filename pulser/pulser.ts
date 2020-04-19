@@ -1,5 +1,5 @@
 import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
-//import { builtinModules } from "module";
+import { CYCLETIME } from "../config/config";
 
 //
 //  pulse - send my owl measurements to my pulseGroups
@@ -24,7 +24,8 @@ var datagramClient=dgram.createSocket('udp4');
 
 //
 //  publish the one-way latecy matrix - make a object: indexes, followed by owl[srcGeo:srcMint-destGeo:destMint]
-//
+//  --> Move this to the matrix display application so the handlePulse is lightweight glue
+//  we don't even know if anyone will be subscribed to this-do not take the perf hit
 function publishMatrix() {
    redisClient.hgetall("gSRlist", function(err,gSRlist) {
     //console.log(ts()+"publicMatrix(): gSRlist="+dump(gSRlist));
@@ -94,8 +95,8 @@ function publishMatrix() {
 //
 export function pulse(flag) {
   if (typeof flag == "undefined") {
-    setTimeout(pulse,10 * 1000);  //10 second pollingfrequency
-    setTimeout(publishMatrix,5 * 1000);  // In 5 seconds call it
+    setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
+    setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
     flag="periodicPoll"
   } else {
     flag="oneTime"

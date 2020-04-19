@@ -6,6 +6,8 @@
 //
 import { now, ts ,dump } from '../lib/lib.js';
 
+export const CYCLETIME=5;  //seconds between polls
+
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (! process.env.HOSTNAME  ) {
     console.log("No HOSTNAME enviropnmental variable specified ");

@@ -7,6 +7,7 @@ exports.__esModule = true;
 //          PUBLICKEY - Public key 
 //
 var lib_js_1 = require("../lib/lib.js");
+exports.CYCLETIME = 5; //seconds between polls
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (!process.env.HOSTNAME) {
     console.log("No HOSTNAME enviropnmental variable specified ");

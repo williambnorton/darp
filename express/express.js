@@ -13,6 +13,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var pulser_1 = require("../pulser/pulser");
+var config_1 = require("../config/config");
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
@@ -20,9 +21,8 @@ var app = express();
 var mintStack = 0;
 var DEFAULT_START_STATE = "RUNNING";
 //expressRedisClient.hset
-var CYCLETIME = 5; //Seconds between pulses
-var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
-var REFRESHPAGETIME = CYCLETIME; //how often to refresh instrumentation web page
+var POLLFREQ = config_1.CYCLETIME * 1000; //how often to send pulse
+var REFRESHPAGETIME = config_1.CYCLETIME; //how often to refresh instrumentation web page
 function getMatrix() {
     expressRedisClient.subscribe("pulses", function (matrix) {
         console.log(lib_1.ts() + "getMatrix(): matrix=" + lib_1.dump(matrix));
@@ -39,7 +39,7 @@ function handleShowState(req, res) {
         });
     var dateTime = new Date();
     var txt = '<meta http-equiv="refresh" content="' + REFRESHPAGETIME + '">';
-    if (CYCLETIME < 5)
+    if (config_1.CYCLETIME < 5)
         txt = '<meta http-equiv="refresh" content="' + 5 + '">';
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me == null)
