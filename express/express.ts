@@ -30,7 +30,7 @@ function getMatrix() {
       console.log(ts()+"getMatrix(): matrix="+dump(matrix));
    });
 }
-getMatrix();
+//getMatrix();
 
 //
 //      handleShowState(req,res) - show the node state
@@ -384,24 +384,18 @@ function fetchConfig(gSRlist, config, callback) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-   //onsole.log('****EXPRESS; config requested with params: '+dump(req.query));
-
+   console.log('****EXPRESS; config requested with params: '+dump(req.query));
    //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
    var geo=req.query.geo;
    var publickey=req.query.publickey;
    var port=req.query.port||65013;
    var wallet=req.query.wallet||"";
    var incomingTimestamp=req.query.ts||now();
-//   var OWL=Math.round(now()-incomingTimestamp);
-   // store incoming public key, ipaddr, port, geo, etc.
-//   var incomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-//   var incomingIP=req.connection.remoteAddress;
    var incomingIP=req.query.myip;  /// for now we believe the node's IP
    var octetCount=incomingIP.split(".").length;
+
    if (octetCount!=4) {
       console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
-//      res.status(500)
-//      res.render('error', { error: "BAD IP Address coming into node factory" })
       res.setHeader('Content-Type', 'application/json');   
       res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with BAD IP addr: "+incomingIP }));
       return;
@@ -413,10 +407,9 @@ app.get('/nodefactory', function (req, res) {
    //console.log("req="+dump(req.connection));
 
    var newMint=++mintStack;
-                        /********** GENESIS NODE **********/
-      console.log("EXPRESS: newMint="+newMint)
-
-      if (newMint==1) {    //I AM GENESIS NODE - set my records
+   if (newMint==1) {    //I AM GENESIS NODE - set my records
+         console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
+         console.log("EXPRESS: newMint="+newMint)
          console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
          var mint0={
             "mint" : "1",      //overwrite initial mint0 record - we are genesis
@@ -426,9 +419,7 @@ app.get('/nodefactory', function (req, res) {
             "port" : ""+port,
             "ipaddr" : incomingIP,   //set by genesis node on connection
             "publickey" : publickey,
-            //
             "state" : DEFAULT_START_STATE,
-
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : version,  //software version
             "wallet" : wallet,
@@ -473,22 +464,17 @@ app.get('/nodefactory', function (req, res) {
          return;
       } 
 
-
+      console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
       expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
-         console.log("--------------- EXPRESS() request for Non-GENESIS CONFIGURATION  ------------------");
          if ( genesis==null) return console.log("NON-GENESIS Calling before genesis node set up...ignoring pulse");
          var genesisGroupLabel=genesis.geo+":"+genesis.group;
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
-
-            //console.log(ts()+"genesis.owls="+genesisGroup.owls);
-            //expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint+"="+OWL); 
-            //expressRedisClient.hmset(genesisGroupLabel, "owls", genesisGroup.owls+","+newMint); 
-            //console.log("working on NON-GENESIS Config");
+         console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config
-            var mint0={                //mint:0 is me - who (remote Node) has as 'me'
+         var mint0={                //mint:0 is me - who (remote Node) has as 'me'
             "mint" : ""+newMint,      //overwrite initial mint0 record - we are genesis
             "geo" : geo,
             "group" : genesis.group,  //assigning nodes in this group now
@@ -504,9 +490,9 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : wallet,
             "SHOWPULSES" : "1",
             "owl" : ""          //we will get measures from genesis node
-            }
+         }
             /*** **/
-            var mint1={          //mine:1 is GENESIS NODE
+         var mint1={          //mine:1 is GENESIS NODE
             "mint" : "1",      //overwrite initial mint0 record - we are genesis
             "geo" : genesis.geo,
             "group" : genesis.group,  //assigning nodes in this group now
@@ -521,9 +507,9 @@ app.get('/nodefactory', function (req, res) {
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
             "owl" : "" //we will get measures from genesis node
-            }
+         }
             /*(******/
-            var newMintRecord={        //my mint entry
+         var newMintRecord={        //my mint entry
             "mint" : ""+newMint,      //set by genesis node
             "geo" : geo,
             "group" : genesis.group,
@@ -538,9 +524,9 @@ app.get('/nodefactory', function (req, res) {
             "version" : version,  //software version
             "wallet" : wallet,
             "owl" : ""   //do not measure OWL to self - maybe delete this field to catch err?
-            };
+         };
 
-            expressRedisClient.hmset("mint:"+newMint,newMintRecord);
+         expressRedisClient.hmset("mint:"+newMint,newMintRecord);
             //expressRedisClient.hmset("mint:"+newMint,newMintRecord);
 
             // Now for a record of this newNode in the Genesis group
@@ -548,11 +534,11 @@ app.get('/nodefactory', function (req, res) {
             //mintList(expressRedisClient, genesis.group, function(err,owls){
             //expressRedisClient.hgetall(genesisGroupLabel, function(err,genesisGroup))   
                //var genesisGroup=genesis.geo+":"+genesis.group;
-               var newOwlList=genesisGroup.owls+","+newMint;
+         var newOwlList=genesisGroup.owls+","+newMint;
 
                //console.log(ts()+"Genesis.group="+dump(genesisGroup)+" newOwlList="+newOwlList);
 
-               expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
+         expressRedisClient.hset(genesisGroupLabel, "owls", newOwlList, function (err,reply){
                  var justMints=getMints(genesisGroup);
                  //console.log(ts()+"err="+err+" justMints="+justMints+" genesisGroup="+dump(genesisGroup));
 
