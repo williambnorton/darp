@@ -356,6 +356,17 @@ function fetchConfig(gSRlist, config, callback) {
         callback(config); //send the config atructure back
     }
 }
+function dumpState() {
+    expressRedisClient.hgetall("mint:0", function (err, me) {
+        console.log(lib_1.ts() + "mint:0 = me=" + lib_1.dump(me));
+    });
+    expressRedisClient.hgetall("mint:1", function (err, genesis) {
+        console.log(lib_1.ts() + "dumpState mint:1 = genesis=" + lib_1.dump(genesis));
+    });
+    expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function (err, genesisGroup) {
+        console.log(lib_1.ts() + "dumpState genesisGroupPulseLabel " + genesisGroup + "=" + lib_1.dump(genesisGroup));
+    });
+}
 //
 // nodeFactory
 //       Configuration for node - allocate a mint
@@ -455,8 +466,10 @@ app.get('/nodefactory', function (req, res) {
             console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
             expressRedisClient.publish("members", "Genesis Started pulseGroup mint:" + genesisGroupEntry.srcMint + " " + genesisGroupEntry.geo + ":" + genesisGroupEntry.group);
         });
+        console.log(lib_1.ts() + "EXPRESS: AFTER GENESIS CONFIG: " + dumpState());
         return;
     }
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: " + dumpState());
     //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
     /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
     // Genesis Node as mint:1
