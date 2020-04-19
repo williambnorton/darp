@@ -97,7 +97,7 @@ function handleShowState(req, res) {
                             if (pulseEntry.inMsgs <= 1) {
                                 mintEntry.state = "STALLED";
                             }
-                            if (pulseEntry.pulseTimestamp - mintEntry.bootTime > 30) {
+                            if (pulseEntry.pulseTimestamp != "" && pulseEntry.pulseTimestamp - mintEntry.bootTime > 30) {
                                 mintEntry.state = "AWOL";
                             }
                             txt += "<td>" + mintEntry.state + "</td>";
