@@ -22,6 +22,12 @@ console.log(ts()+ "EXPRESS starting: CYCLETIME="+CYCLETIME);
 
 var mintStack=0;
 const DEFAULT_START_STATE="HOLD";
+if (DEFAULT_START_STATE=="HOLD") {
+console.log(ts()+"STARTING IN SINGLE STEP (HOLD) MODE");
+console.log(ts()+"STARTING IN SINGLE STEP (HOLD) MODE");
+console.log(ts()+"STARTING IN SINGLE STEP (HOLD) MODE");
+console.log(ts()+"STARTING IN SINGLE STEP (HOLD) MODE");
+}
 //expressRedisClient.hset
 
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
