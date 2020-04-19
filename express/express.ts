@@ -154,7 +154,10 @@ function handleShowState(req, res) {
                   txt += "<td>" + delta + "</td>";
                   //txt += "<td>" + entry.bootTime+ "</td>";
                   if (Math.abs(mintEntry.clockSkew)>1000)
-                     txt += "<td>" + mintEntry.clockSkew/1000 + " sec</td>";                  
+                     if (Math.abs(mintEntry.clockSkew)>60000)
+                        txt += "<td>" + mintEntry.clockSkew/60000 + " min</td>";                  
+                     else
+                        txt += "<td>" + mintEntry.clockSkew/1000 + " sec</td>";                  
                   else
                      txt += "<td>" + mintEntry.clockSkew + " ms</td>";                  
 
