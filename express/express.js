@@ -99,10 +99,10 @@ function handleShowState(req, res) {
                             }
                             else {
                                 if (lib_1.now() - pulseEntry.pulseTimestamp > (30 * 1000)) {
-                                    var timeNow = lib_1.now();
-                                    var lastPulse = timeNow - pulseEntry.pulseTimestamp;
-                                    var bootSkew = timeNow - mintEntry.bootTime;
-                                    console.log(" bootSkew=" + bootSkew + "   timeNow=" + timeNow + " pulseEntry.pulseTimestamp=" + pulseEntry.pulseTimestamp + " " + "mintEntry.bootTime=" + mintEntry.bootTime);
+                                    //var timeNow=now();
+                                    //var lastPulse=timeNow-pulseEntry.pulseTimestamp
+                                    //var bootSkew=timeNow-mintEntry.bootTime
+                                    //console.log(" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
                                     mintEntry.state = "NO_PULSE";
                                 }
                             }
@@ -140,6 +140,7 @@ function handleShowState(req, res) {
                                 delta = "";
                             txt += "<td>" + delta + "</td>";
                             //txt += "<td>" + entry.bootTime+ "</td>";
+                            console.log(lib_1.ts() + "clockSkew=" + mintEntry.clockSkew);
                             if (Math.abs(mintEntry.clockSkew) > 1000)
                                 if (Math.abs(mintEntry.clockSkew) > 60000)
                                     txt += "<td>" + Math.round(mintEntry.clockSkew / 60000) + " min</td>";
