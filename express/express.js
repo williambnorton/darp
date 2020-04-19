@@ -427,7 +427,7 @@ app.get('/nodefactory', function (req, res) {
             return console.log("NON-GENESIS Calling before genesis node set up...ignoring pulse");
         var genesisGroupLabel = genesis.geo + ":" + genesis.group;
         expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
-            console.log("working on NON-GENESIS Config");
+            //console.log("working on NON-GENESIS Config");
             // Use the genesis node info to create the config
             var mint0 = {
                 "mint": "" + newMint,

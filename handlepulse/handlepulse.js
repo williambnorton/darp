@@ -179,7 +179,7 @@ function nth_occurrence(string, char, nth) {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-    console.log("newMint(): mint=" + mint + " isNaN(x)=" + isNaN(mint));
+    //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
     if (isNaN(mint)) {
         return console.log("newMint(" + mint + "): bad mint: " + mint);
     }
@@ -220,7 +220,7 @@ function newMint(mint) {
                             "pktDrops": "0" //as detected by missed seq#
                             //"remoteState": "0"   //and there are mints : owls for received pulses 
                         };
-                        console.log("newSegmentEntry=" + lib_js_1.dump(newSegmentEntry));
+                        //console.log("newSegmentEntry="+dump(newSegmentEntry));
                         redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
                         //console.log("Past first set");
                         redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
