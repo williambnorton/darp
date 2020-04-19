@@ -108,8 +108,10 @@ function handleShowState(req, res) {
                   }
                   if (pulseEntry.pulseTimestamp) {
                      if (now()-pulseEntry.pulseTimestamp>30) {
-                        var pulseSkew=now()-pulseEntry.pulseTimestamp;
-                        var bootSkew=now()-mintEntry.bootTime
+                        var timeNow=now();
+                        var pulseSkew=timeNow-pulseEntry.pulseTimestamp;
+                        var bootSkew=timeNow-mintEntry.bootTime
+                        console.log("pulseSkew="+pulseSkew+" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
                         mintEntry.state=""+(pulseSkew-bootSkew)
                      }
                   }

@@ -99,8 +99,10 @@ function handleShowState(req, res) {
                             }
                             if (pulseEntry.pulseTimestamp) {
                                 if (lib_1.now() - pulseEntry.pulseTimestamp > 30) {
-                                    var pulseSkew = lib_1.now() - pulseEntry.pulseTimestamp;
-                                    var bootSkew = lib_1.now() - mintEntry.bootTime;
+                                    var timeNow = lib_1.now();
+                                    var pulseSkew = timeNow - pulseEntry.pulseTimestamp;
+                                    var bootSkew = timeNow - mintEntry.bootTime;
+                                    console.log("pulseSkew=" + pulseSkew + " bootSkew=" + bootSkew + "   timeNow=" + timeNow + " pulseEntry.pulseTimestamp=" + pulseEntry.pulseTimestamp + " " + "mintEntry.bootTime=" + mintEntry.bootTime);
                                     mintEntry.state = "" + (pulseSkew - bootSkew);
                                 }
                             }
