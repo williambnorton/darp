@@ -18,7 +18,7 @@ var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
-console.log("EXPRESS: CYCLETIME=" + config_1.CYCLETIME);
+console.log(lib_1.ts() + "EXPRESS starting: CYCLETIME=" + config_1.CYCLETIME);
 var mintStack = 0;
 var DEFAULT_START_STATE = "RUNNING";
 //expressRedisClient.hset
@@ -395,7 +395,7 @@ app.get('/nodefactory', function (req, res) {
     if (newMint == 1) { //I AM GENESIS NODE - set my records
         //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
         //console.log("EXPRESS: newMint="+newMint)
-        //console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
+        console.log("* * * * * * * I AM GENESIS NODE * * * * * *");
         var mint0 = {
             "mint": "1",
             "geo": geo,
