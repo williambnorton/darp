@@ -310,7 +310,7 @@ function getConfig(callback) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             //console.log("gSRlist="+dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
-                console.log("getConfig(): callback config=" + lib_1.dump(config));
+                //console.log("getConfig(): callback config="+dump(config));
                 callback(config); //call sender
             });
         });
@@ -356,7 +356,7 @@ function fetchConfig(gSRlist, config, callback) {
     }
     else {
         delete config.entryStack;
-        console.log(lib_1.ts() + "fetchConfig(): returning " + lib_1.dump(config));
+        //console.log(ts()+"fetchConfig(): returning "+dump(config));
         callback(config); //send the config atructure back
     }
 }
@@ -393,6 +393,7 @@ app.get('/nodefactory', function (req, res) {
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
     //console.log("req="+dump(req.connection));
     var newMint = ++mintStack;
+    console.log("EXPRESS: newMint=" + newMint);
     if (newMint == 1) { //I AM GENESIS NODE - set my records
         //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
         //console.log("EXPRESS: newMint="+newMint)
@@ -431,8 +432,8 @@ app.get('/nodefactory', function (req, res) {
             "outOctets": "0",
             "inMsgs": "0",
             "outMsgs": "0",
-            "pktDrops": "0",
-            "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
+            "pktDrops": "0" //,     //as detected by missed seq#
+            //"clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
         };
         var genesisGroupLabel = geo + ":" + geo + ".1";
         expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry);

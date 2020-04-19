@@ -351,7 +351,7 @@ function getConfig(callback) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
          //console.log("gSRlist="+dump(gSRlist));
          fetchConfig(gSRlist, null, function(config) {
-            console.log("getConfig(): callback config="+dump(config));
+            //console.log("getConfig(): callback config="+dump(config));
             callback(config); //call sender
          });
       });
@@ -395,7 +395,7 @@ function fetchConfig(gSRlist, config, callback) {
       });
    } else {
       delete config.entryStack;
-      console.log(ts()+"fetchConfig(): returning "+dump(config));
+      //console.log(ts()+"fetchConfig(): returning "+dump(config));
       callback(config);  //send the config atructure back
    }
 }
@@ -436,6 +436,8 @@ app.get('/nodefactory', function (req, res) {
    //console.log("req="+dump(req.connection));
 
    var newMint=++mintStack;
+   console.log("EXPRESS: newMint="+newMint)
+
    if (newMint==1) {    //I AM GENESIS NODE - set my records
          //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup GENESIS CONFIGURATION  ------------------");
          //console.log("EXPRESS: newMint="+newMint)
@@ -474,8 +476,8 @@ app.get('/nodefactory', function (req, res) {
             "outOctets": "0",
             "inMsgs": "0",
             "outMsgs": "0",
-            "pktDrops": "0",     //as detected by missed seq#
-            "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
+            "pktDrops": "0"//,     //as detected by missed seq#
+            //"clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
          };
          var genesisGroupLabel=geo+":"+geo+".1";
          expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry); 
