@@ -439,6 +439,12 @@ app.get('/nodefactory', function (req, res) {
             _a[genesisGroupLabel] = "1",
             _a));
         console.log(lib_1.ts() + "SENDING GENESIS CONFIG: " + lib_1.dump(mint0) + lib_1.dump(genesisGroupEntry));
+        expressRedisClient.hgetall("mint:0", function (err, me) {
+            console.log(lib_1.ts() + "genesis=" + lib_1.dump(me));
+        });
+        expressRedisClient.hgetall("mint:1", function (err, genesis) {
+            console.log(lib_1.ts() + "genesis=" + lib_1.dump(genesis));
+        });
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ "node": "GENESIS", "rc": "0" }));
         getConfig(function (err, config) {
