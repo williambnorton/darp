@@ -21,11 +21,11 @@ var app = express();
 console.log(lib_1.ts() + "EXPRESS starting: CYCLETIME=" + config_1.CYCLETIME);
 var mintStack = 0;
 var DEFAULT_START_STATE = "HOLD";
+//const DEFAULT_START_STATE="RUNNING";
 if (DEFAULT_START_STATE == "HOLD") {
-    console.log(lib_1.ts() + "STARTING IN SINGLE STEP (HOLD) MODE");
-    console.log(lib_1.ts() + "STARTING IN SINGLE STEP (HOLD) MODE");
-    console.log(lib_1.ts() + "STARTING IN SINGLE STEP (HOLD) MODE");
-    console.log(lib_1.ts() + "STARTING IN SINGLE STEP (HOLD) MODE");
+    console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
+    console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
+    console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
 }
 //expressRedisClient.hset
 var POLLFREQ = config_1.CYCLETIME * 1000; //how often to send pulse
@@ -425,10 +425,11 @@ app.get('/nodefactory', function (req, res) {
             "wallet": wallet,
             "SHOWPULSES": "1",
             "owl": "",
+            "isGenesisNode": "1",
             "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
         };
         expressRedisClient.hmset("mint:0", mint0);
-        //mint0.mint="1";
+        //mint0.mint="1";                redisClient.hset( "mint:0" , "isGenesisNode", "1" );
         expressRedisClient.hmset("mint:1", mint0);
         var genesisGroupEntry = {
             "geo": geo,

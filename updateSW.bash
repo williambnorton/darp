@@ -35,7 +35,7 @@ do
 	    echo `date` Software changed. Was $CURRENT Now is $NEW
         cd /tmp/darp
         echo 'CLONED INTO /tmp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
-        echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
+        #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
 
         #killList=`cat $DARPDIR/*.pid`
         kill `ps aux|grep "node handlepulse" | grep -v grep | awk '{ print $2}'`

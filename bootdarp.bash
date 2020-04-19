@@ -13,11 +13,12 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-echo `date` "-------------------------------- $0 STARTING ----------------------------------" 
-echo `date` "-------------------------------- $0 STARTING ----------------------------------" 
-echo `date` "-------------------------------- $0 STARTING ----------------------------------" 
-echo `date` "-------------------------------- $0 STARTING ----------------------------------" 
-echo `date` "-------------------------------- $0 STARTING ----------------------------------" 
+echo `date` "------------------ $0 STARTING --------------------" 
+echo `date` "------------------ $0 STARTING --------------------" 
+echo `date` "------------------ $0 STARTING --------------------" 
+echo `date` "------------------ $0 STARTING --------------------" 
+echo `date` "------------------ $0 STARTING --------------------" 
+
 export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
 echo `date` "MYIP fetch rc=$? MYIP=$MYIP"
