@@ -9,7 +9,6 @@
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-const DEFAULT_START_STATE="RUNNING";
 import { dump, now, mintList, SRList, ts, getMints, getOwls } from '../lib/lib';
 import { pulse } from '../pulser/pulser'
 const expressRedis = require('redis');
@@ -18,7 +17,7 @@ var express = require('express');
 var app = express();
 
 var mintStack=0;
-
+const DEFAULT_START_STATE="RUNNING";
 //expressRedisClient.hset
 
 const CYCLETIME=5;                     //Seconds between pulses

@@ -11,7 +11,6 @@ exports.__esModule = true;
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-var DEFAULT_START_STATE = "RUNNING";
 var lib_1 = require("../lib/lib");
 var pulser_1 = require("../pulser/pulser");
 var expressRedis = require('redis');
@@ -19,6 +18,7 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 var mintStack = 0;
+var DEFAULT_START_STATE = "RUNNING";
 //expressRedisClient.hset
 var CYCLETIME = 5; //Seconds between pulses
 var POLLFREQ = CYCLETIME * 1000; //how often to send pulse
