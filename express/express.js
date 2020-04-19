@@ -436,16 +436,18 @@ app.get('/nodefactory', function (req, res) {
         expressRedisClient.hmset("gSRlist", (_a = {},
             _a[genesisGroupLabel] = "1",
             _a));
-        console.log(lib_1.ts() + "EXPRESS GENESIS CONFIG: " + lib_1.dump(mint0) + lib_1.dump(genesisGroupEntry));
-        expressRedisClient.hgetall("mint:0", function (err, me) {
-            console.log(lib_1.ts() + "mint:0 = me=" + lib_1.dump(me));
-        });
-        expressRedisClient.hgetall("mint:1", function (err, genesis) {
-            console.log(lib_1.ts() + "EXPRESS mint:1 = genesis=" + lib_1.dump(genesis));
-        });
-        expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
-            console.log(lib_1.ts() + "EXPRESS " + genesisGroup + "=" + lib_1.dump(genesisGroup));
-        });
+        /*
+        console.log(ts()+"EXPRESS GENESIS CONFIG: "+dump(mint0)+dump(genesisGroupEntry));
+        expressRedisClient.hgetall("mint:0",function(err,me) {
+           console.log(ts()+"mint:0 = me="+dump(me));
+        })
+        expressRedisClient.hgetall("mint:1",function(err,genesis) {
+           console.log(ts()+"EXPRESS mint:1 = genesis="+dump(genesis));
+        })
+        expressRedisClient.hgetall(genesisGroupLabel,function(err,genesisGroup) {
+           console.log(ts()+"EXPRESS "+genesisGroup+"="+dump(genesisGroup));
+        })
+        */
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ "node": "GENESIS", "rc": "0" }));
         getConfig(function (config) {
@@ -463,7 +465,7 @@ app.get('/nodefactory', function (req, res) {
             return console.log("NON-GENESIS Calling before genesis node set up...ignoring pulse");
         var genesisGroupLabel = genesis.geo + ":" + genesis.group;
         expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
-            //console.log("working on NON-GENESIS Config");
+            console.log("working on NON-GENESIS Config");
             // Use the genesis node info to create the config
             var mint0 = {
                 "mint": "" + newMint,
@@ -593,7 +595,6 @@ app.get('/nodefactory', function (req, res) {
             });
         });
     });
-    //});
 });
 function getMintTable(mint, callback) {
     expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {

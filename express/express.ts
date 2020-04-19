@@ -481,7 +481,7 @@ app.get('/nodefactory', function (req, res) {
             [genesisGroupLabel] : "1"
          }); 
          
-         
+         /*
          console.log(ts()+"EXPRESS GENESIS CONFIG: "+dump(mint0)+dump(genesisGroupEntry));
          expressRedisClient.hgetall("mint:0",function(err,me) {
             console.log(ts()+"mint:0 = me="+dump(me));
@@ -492,28 +492,28 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hgetall(genesisGroupLabel,function(err,genesisGroup) {
             console.log(ts()+"EXPRESS "+genesisGroup+"="+dump(genesisGroup));
          })
-
+         */
 
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS", "rc" : "0" } ));
 
          getConfig(function(config) {
             console.log("Genesis config="+JSON.stringify(config, null, 2));
-            console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
+            console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");            
             expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
          })
 
          return;
-      } 
 
+   }
       //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
-      expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
+   expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
          if ( genesis==null) return console.log("NON-GENESIS Calling before genesis node set up...ignoring pulse");
          var genesisGroupLabel=genesis.geo+":"+genesis.group;
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
-         //console.log("working on NON-GENESIS Config");
+         console.log("working on NON-GENESIS Config");
 
             // Use the genesis node info to create the config
          var mint0={                //mint:0 is me - who (remote Node) has as 'me'
@@ -655,8 +655,7 @@ app.get('/nodefactory', function (req, res) {
                });
             });   
          });
-      });
-   //});
+   });
 });
 
 function getMintTable(mint,callback) {
