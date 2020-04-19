@@ -408,7 +408,8 @@ app.get('/nodefactory', function (req, res) {
             "version": version,
             "wallet": wallet,
             "SHOWPULSES": "1",
-            "owl": "" //
+            "owl": "",
+            "clockSkew": lib_1.now() - incomingTimestamp //=latency + clock delta between pulser and receiver
         };
         expressRedisClient.hmset("mint:0", mint0);
         mint0.mint = "1";
@@ -469,7 +470,8 @@ app.get('/nodefactory', function (req, res) {
                 "version": version,
                 "wallet": wallet,
                 "SHOWPULSES": "1",
-                "owl": "" //we will get measures from genesis node
+                "owl": "",
+                "clockSkew": lib_1.now() - incomingTimestamp //=latency + clock delta between pulser and receiver
             };
             /*** **/
             var mint1 = {
@@ -485,7 +487,8 @@ app.get('/nodefactory', function (req, res) {
                 "bootTime": "" + lib_1.now(),
                 "version": genesis.version,
                 "wallet": genesis.wallet,
-                "owl": "" //we will get measures from genesis node
+                "owl": "",
+                "clockSkew": lib_1.now() - incomingTimestamp //=latency + clock delta between pulser and receiver
             };
             /*(******/
             var newMintRecord = {

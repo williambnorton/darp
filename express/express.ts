@@ -450,7 +450,8 @@ app.get('/nodefactory', function (req, res) {
             "version" : version,  //software version
             "wallet" : wallet,
             "SHOWPULSES" : "1",
-            "owl": ""   //
+            "owl": "",   //
+            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
@@ -515,7 +516,8 @@ app.get('/nodefactory', function (req, res) {
             "version" : version,  //software version
             "wallet" : wallet,
             "SHOWPULSES" : "1",
-            "owl" : ""          //we will get measures from genesis node
+            "owl" : "",          //we will get measures from genesis node
+            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
          }
             /*** **/
          var mint1={          //mine:1 is GENESIS NODE
@@ -532,7 +534,9 @@ app.get('/nodefactory', function (req, res) {
             "bootTime" : ""+now(),   //So we can detect reboots
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
-            "owl" : "" //we will get measures from genesis node
+            "owl" : "", //we will get measures from genesis node
+            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
+
          }
             /*(******/
          var newMintRecord={        //my mint entry
