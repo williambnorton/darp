@@ -453,7 +453,7 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : wallet,
             "SHOWPULSES" : "1",
             "owl": "",   //
-            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
+            "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
          }
          expressRedisClient.hmset("mint:0",mint0); 
          mint0.mint="1";
@@ -474,7 +474,7 @@ app.get('/nodefactory', function (req, res) {
             "inMsgs": "0",
             "outMsgs": "0",
             "pktDrops": "0",     //as detected by missed seq#
-            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
+            "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
          };
          var genesisGroupLabel=geo+":"+geo+".1";
          expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry); 
@@ -519,7 +519,7 @@ app.get('/nodefactory', function (req, res) {
             "wallet" : wallet,
             "SHOWPULSES" : "1",
             "owl" : "",          //we will get measures from genesis node
-            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
+            "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
          }
             /*** **/
          var mint1={          //mine:1 is GENESIS NODE
@@ -537,7 +537,7 @@ app.get('/nodefactory', function (req, res) {
             "version" : genesis.version,  //software version
             "wallet" : genesis.wallet,
             "owl" : "", //we will get measures from genesis node
-            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
+            "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
 
          }
             /*(******/
@@ -556,7 +556,7 @@ app.get('/nodefactory', function (req, res) {
             "version" : version,  //software version
             "wallet" : wallet,
             "owl" : "",   //do not measure OWL to self - maybe delete this field to catch err?
-            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
+            "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
          };
 
          expressRedisClient.hmset("mint:"+newMint,newMintRecord);
