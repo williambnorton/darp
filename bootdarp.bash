@@ -20,6 +20,7 @@ echo `date` "-------------------------------- $0 STARTING ----------------------
 echo `date` "-------------------------------- $0 STARTING ----------------------------------" 
 export DARPDIR=$HOME/darp
 MYIP=`curl ifconfig.io`
+echo `date` "MYIP fetch rc=$? MYIP=$MYIP"
 export MYIP=$MYIP
 echo `date` MYIP=$MYIP
 
@@ -48,7 +49,7 @@ echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
 echo `date` >$DARPDIR/forever
 while :
 do
-    rm $DARPDIR/forever  #comment this to re-run forever
+    rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
 
     cd $DARPDIR
     VERSION=`ls Build*`
