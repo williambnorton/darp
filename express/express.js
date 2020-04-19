@@ -310,7 +310,7 @@ function getConfig(callback) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             //console.log("gSRlist="+dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
-                //console.log("getConfig(): callback config="+dump(config));
+                console.log("getConfig(): callback config=" + lib_1.dump(config));
                 callback(config); //call sender
             });
         });
@@ -440,7 +440,7 @@ app.get('/nodefactory', function (req, res) {
             _a));
         console.log(lib_1.ts() + "SENDING GENESIS CONFIG: " + lib_1.dump(mint0) + lib_1.dump(genesisGroupEntry));
         expressRedisClient.hgetall("mint:0", function (err, me) {
-            console.log(lib_1.ts() + "genesis=" + lib_1.dump(me));
+            console.log(lib_1.ts() + "me=" + lib_1.dump(me));
         });
         expressRedisClient.hgetall("mint:1", function (err, genesis) {
             console.log(lib_1.ts() + "genesis=" + lib_1.dump(genesis));
