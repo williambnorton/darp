@@ -510,7 +510,7 @@ app.get('/nodefactory', function (req, res) {
       /* ---------------------NON-GENESIS NODE - this config is sent to remote node ------------*/
       // Genesis Node as mint:1
    expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
-         if ( genesis==null) return console.log("NON-GENESIS Calling before genesis node set up...ignoring pulse");
+         if ( genesis==null) return {"msg":"NON-GENESIS Calling before genesis node set up...ignoring pulse", "rc":"-1"}
          var genesisGroupLabel=genesis.geo+":"+genesis.group;
          expressRedisClient.hgetall(genesisGroupLabel, function (err,genesisGroup) {  //get 
          console.log("working on NON-GENESIS Config");
