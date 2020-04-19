@@ -19,7 +19,7 @@ var app = express();
 
 var mintStack=0;
 
-expressRedisClient.hset
+//expressRedisClient.hset
 
 const CYCLETIME=5;                     //Seconds between pulses
 const POLLFREQ = CYCLETIME * 1000;      //how often to send pulse
