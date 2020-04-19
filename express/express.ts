@@ -153,7 +153,7 @@ function handleShowState(req, res) {
                   if (mintEntry.bootTime==0) delta="";
                   txt += "<td>" + delta + "</td>";
                   //txt += "<td>" + entry.bootTime+ "</td>";
-                  if (mintEntry.clockSkew>1000)
+                  if (Math.abs(mintEntry.clockSkew)>1000)
                      txt += "<td>" + mintEntry.clockSkew/1000 + " sec</td>";                  
                   else
                      txt += "<td>" + mintEntry.clockSkew + " ms</td>";                  
@@ -464,8 +464,8 @@ app.get('/nodefactory', function (req, res) {
             "outOctets": "0",
             "inMsgs": "0",
             "outMsgs": "0",
-            "pktDrops": "0"     //as detected by missed seq#
-            //"remoteState": "0"   //and there are mints : owls for received pulses 
+            "pktDrops": "0",     //as detected by missed seq#
+            "clockSkew" : now()-incomingTimestamp //=latency + clock delta between pulser and receiver
          };
          var genesisGroupLabel=geo+":"+geo+".1";
          expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry); 
