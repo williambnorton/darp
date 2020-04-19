@@ -106,12 +106,13 @@ function handleShowState(req, res) {
                   if (pulseEntry.inMsgs<=1) {
                      mintEntry.state="OFF-LINE"
                   }
-                  if (pulseEntry.pulseTimestamp) {
+                  if (pulseEntry.pulseTimestamp!=0) {
                      if (now()-pulseEntry.pulseTimestamp>30) {
                         var timeNow=now();
+                        var latency=timeNow-pulseEntry.pulseTimestamp
                         var pulseSkew=timeNow-pulseEntry.pulseTimestamp;
                         var bootSkew=timeNow-mintEntry.bootTime
-                        console.log("pulseSkew="+pulseSkew+" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
+                        console.log("latency="+latency+" pulseSkew="+pulseSkew+" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
                         mintEntry.state=""+(pulseSkew-bootSkew)
                      }
                   }
