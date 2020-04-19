@@ -481,6 +481,7 @@ app.get('/nodefactory', function (req, res) {
          expressRedisClient.hmset("gSRlist", {
             [genesisGroupLabel] : "1"
          }); 
+         console.log(ts()+"SENDING GENESIS CONFIG: "+dump(mint0)+dump(genesisGroupEntry));
          res.setHeader('Content-Type', 'application/json');   
          res.end(JSON.stringify( { "node" : "GENESIS", "rc" : "0" } ));
 

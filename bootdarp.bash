@@ -106,7 +106,7 @@ do
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
-    sleep 2
+    sleep 1
 
     #echo `date` Launching forever script
     #cd /darp/scripts
@@ -121,7 +121,7 @@ do
     node config &
     echo $$ > $DARPDIR/config.pid
     echo `date` Starting config to fetch config and code from genesis node
-    sleep 2
+    sleep 1
 
     cd $DARPDIR
     cd $DARPDIR/pulser
@@ -139,14 +139,15 @@ do
         kill `cat $DARPDIR/handlepulse.pid`
         sleep 1
     fi
-    sleep 1
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
     rc=$?
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
 
-    echo `date` **DARP Finished handlepulse rc=$rc
-    echo `date` **DARP Finished handlepulse rc=$rc
-    echo `date` **DARP Finished handlepulse rc=$rc
     sleep 1
 
     if [ $rc -eq 86 ]; then exit 86; fi     #STOP COMMAND
