@@ -140,7 +140,7 @@ function handleShowState(req, res) {
                                 delta = "";
                             txt += "<td>" + delta + "</td>";
                             //txt += "<td>" + entry.bootTime+ "</td>";
-                            console.log(lib_1.ts() + "clockSkew=" + mintEntry.clockSkew);
+                            console.log(lib_1.ts() + " clockSkew=" + mintEntry.clockSkew + "mintEntry=" + lib_1.dump(mintEntry));
                             if (Math.abs(mintEntry.clockSkew) > 1000)
                                 if (Math.abs(mintEntry.clockSkew) > 60000)
                                     txt += "<td>" + Math.round(mintEntry.clockSkew / 60000) + " min</td>";
