@@ -566,12 +566,11 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          
       }
       makeConfig(function (config) {
-         console.log(ts()+"EXPRESS:  -------------------------config done:");
          config.mintTable["mint:0"]=mint0;
          config.rc="0";
          config.ts=now();
          config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-         console.log(ts()+"config="+dump(config));         
+         console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
          callback(config);
       })
    })
@@ -838,7 +837,7 @@ expressRedisClient.hget("me","port",function (err,port){
       var host = server.address().address
       var port = server.address().port  
       console.log("Express app listening at http://%s:%s", host, port)
-   })
+   }).on('error', console.log);
 
 });
 

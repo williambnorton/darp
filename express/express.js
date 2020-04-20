@@ -520,12 +520,11 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             expressRedisClient.hmset("gSRlist", (_b = {}, _b[geo + ":" + genesis.group] = newMint, _b));
         }
         makeConfig(function (config) {
-            console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
             config.mintTable["mint:0"] = mint0;
             config.rc = "0";
             config.ts = lib_1.now();
             config.isGenesisNode = (config.mintTable["mint:0"].mint == 1);
-            console.log(lib_1.ts() + "config=" + lib_1.dump(config));
+            console.log(lib_1.ts() + "EXPRESS:  Sending config:" + lib_1.dump(config));
             callback(config);
         });
     });
@@ -791,5 +790,5 @@ expressRedisClient.hget("me", "port", function (err, port) {
         var host = server.address().address;
         var port = server.address().port;
         console.log("Express app listening at http://%s:%s", host, port);
-    });
+    }).on('error', console.log);
 });
