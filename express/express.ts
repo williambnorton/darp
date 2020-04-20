@@ -403,6 +403,160 @@ function fetchConfig(gSRlist, config, callback) {
    }
 }
 
+//
+// nodeFactory
+//       Configuration for node - allocate a mint
+//
+app.get('/nodefactory', function (req, res) {
+   //console.log('****EXPRESS; config requested with params: '+dump(req.query));
+   //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
+   var geo=req.query.geo;
+   var publickey=req.query.publickey;
+   var port=req.query.port||65013;
+   var wallet=req.query.wallet||"";
+   var incomingTimestamp=req.query.ts;
+   var incomingIP=req.query.myip;  /// for now we believe the node's IP
+   var octetCount=incomingIP.split(".").length;
+
+   if (typeof incomingTimestamp == "undefined") {
+      console.log("/nodeFactory called with no timestamp");
+      res.setHeader('Content-Type', 'application/json');   
+      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with no timestamp. "}));
+      return;
+   }
+   if (octetCount!=4) {
+      console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
+      res.setHeader('Content-Type', 'application/json');   
+      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with BAD IP addr: "+incomingIP }));
+      return;
+   }
+   //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+   //console.log("req="+dump(req));
+   var version=req.query.version;
+   console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
+   //console.log("req="+dump(req.connection));
+
+   provisionNode(++mintStack,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
+      console.log(ts()+"provisionGenesisNode gave use config="+dump(config));
+      res.setHeader('Content-Type', 'application/json');   
+      res.end(JSON.stringify( config ));  //send mint:0 mint:1 entry
+   }) 
+/*
+
+   var newMint=++mintStack;
+   console.log("EXPRESS: Creating a newly minted node: newMint="+newMint)
+
+   if (newMint==1)  {   //I AM GENESIS NODE - set my records
+      console.log(ts()+"provisioning Genesis Node");
+      provisionGenesisNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
+         console.log(ts()+"provisionGenesisNode gave use config="+dump(config));
+         res.setHeader('Content-Type', 'application/json');   
+         res.end(JSON.stringify( config ));
+      }) 
+   } else { 
+      provisionMemberNode(newMint, geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
+         console.log(ts()+"provisionMemberNode gave use config="+dump(config));
+         res.setHeader('Content-Type', 'application/json');   
+         res.end(JSON.stringify(config));
+      })
+   }   
+   */
+});
+
+
+function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, callback) {
+      
+   console.log(ts()+"provisionNode(): newMint="+newMint);
+   var mint0={    //mint:0 is always "me"
+      "mint" : ""+newMint,      //mint:1 is always genesis node
+      "geo" : geo,
+      "group" : geo+".1",  //assigning nodes in this group now
+      // wireguard configuration details
+      "port" : ""+port,
+      "ipaddr" : incomingIP,   //set by genesis node on connection
+      "publickey" : publickey,
+      "state" : DEFAULT_START_STATE,
+      "bootTime" : ""+now(),   //So we can detect reboots
+      "version" : version,  //software version
+      "wallet" : wallet,
+      "SHOWPULSES" : "1",
+      "owl" : "",   //
+      "isGenesisNode" : "1",
+      "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
+   }
+   if (newMint==1) expressRedisClient.hmset("mint:0",mint0); //we are GENESIS NODE
+
+   expressRedisClient.hgetall("mint:1", function (err, genesis) {
+      if (genesis==null) {  //WE ARE GENESIS NODE
+         genesis={                  //one record per pulse - index = <geo>:<group>
+            "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+            "group": geo+".1",      //DEVPOS:DEVOP.1 for genesis node start
+            "seq" : "0",         //last sequence number heard
+            "pulseTimestamp": "0", //last pulseTimestamp received from this node
+            "srcMint" : ""+newMint,      //Genesis node would send this 
+            "owls" : "1",        //Startup - I am the only one here
+            //node statistics - we measure these ourselves
+            "inOctets": "0",
+            "outOctets": "0",
+            "inMsgs": "0",
+            "outMsgs": "0",
+            "pktDrops": "0"   //,     //as detected by missed seq#
+         };
+         expressRedisClient.hmset("mint:1",genesis);
+
+         var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
+            "geo" : geo,            //record index (key) is <geo>:<genesisGroup>
+            "group": geo+".1",      //DEVPOS:DEVOP.1 for genesis node start
+            "seq" : "0",         //last sequence number heard
+            "pulseTimestamp": "0", //last pulseTimestamp received from this node
+            "srcMint" : "1",      //Genesis node would send this 
+            "owls" : "1",        //Startup - I am the only one here
+            "inOctets": "0",
+            "outOctets": "0",
+            "inMsgs": "0",
+            "outMsgs": "0",
+            "pktDrops": "0"   //,     //as detected by missed seq#
+            //"clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
+         };
+         var genesisGroupLabel=geo+":"+geo+".1";
+         expressRedisClient.hmset(genesisGroupLabel, genesisGroupEntry); 
+         expressRedisClient.hmset("gSRlist", {
+           [genesisGroupLabel] : "1"
+         });
+      }  //At this point we have genesis node and genesis group entry
+
+      getConfig( function (config) {
+         config.mintTable["mint:0"]=mint0;   //tell remote their config
+         config.rc="0";
+         console.log(ts()+"EXPRESS: GENESIS config done");
+
+      })
+
+      // we have a genesis node
+   })
+   
+   
+   getConfig(function(config) {
+      console.log("Genesis config="+JSON.stringify(config, null, 2));
+      console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");            
+      //expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
+      console.log(ts()+"EXPRESS: AFTER GENESIS CONFIG: ");      
+      dumpState();
+      console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");      
+      console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");      
+      console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");      
+      console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");      
+      console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");      
+      callback({ "node" : "GENESIS", "rc" : "0" });
+   });
+   
+}
+
+
+
+
+
+
 function dumpState() {
    expressRedisClient.hgetall("mint:0",function(err,me) {
       console.log(ts()+"mint:0 = me="+dump(me));
@@ -417,7 +571,7 @@ function dumpState() {
 
 function provisionGenesisNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, callback) {
       
-   console.log("* * * * * * * I AM GENESIS NODE * * * * * *")
+   console.log("* * * * * * * I AM GENESIS NODE * * * * * *");
    var mint0={
       "mint" : "1",      //mint:1 is always genesis node
       "geo" : geo,
@@ -479,6 +633,9 @@ function provisionGenesisNode(newMint,geo,port,incomingIP,publickey,version,wall
    
 }
 
+//
+//
+//
 function provisionMemberNode(newMint, geo, port,incomingIP,publickey,version,wallet, incomingTimestamp, callback) {
    console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
    console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
@@ -486,7 +643,6 @@ function provisionMemberNode(newMint, geo, port,incomingIP,publickey,version,wal
    console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
    console.log(ts()+"EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
    dumpState();
-
 
    // Genesis Node as mint:1
    expressRedisClient.hgetall("mint:1", function (err,genesis) {  //get GENESIS mint entry
@@ -635,78 +791,6 @@ function provisionMemberNode(newMint, geo, port,incomingIP,publickey,version,wal
       }
    });
 }
-//
-// nodeFactory
-//       Configuration for node - allocate a mint
-//
-app.get('/nodefactory', function (req, res) {
-   //console.log('****EXPRESS; config requested with params: '+dump(req.query));
-   //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
-   var geo=req.query.geo;
-   var publickey=req.query.publickey;
-   var port=req.query.port||65013;
-   var wallet=req.query.wallet||"";
-   var incomingTimestamp=req.query.ts;
-   var incomingIP=req.query.myip;  /// for now we believe the node's IP
-   var octetCount=incomingIP.split(".").length;
-
-   if (typeof incomingTimestamp == "undefined") {
-      console.log("/nodeFactory called with no timestamp");
-      res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with no timestamp. "}));
-      return;
-   }
-   if (octetCount!=4) {
-      console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
-      res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with BAD IP addr: "+incomingIP }));
-      return;
-   }
-   //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-   //console.log("req="+dump(req));
-   var version=req.query.version;
-   console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
-   //console.log("req="+dump(req.connection));
-
-   var newMint=++mintStack;
-   console.log("EXPRESS: Creating a newly minted node: newMint="+newMint)
-
-   if (newMint==1)  {   //I AM GENESIS NODE - set my records
-      provisionGenesisNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-         res.setHeader('Content-Type', 'application/json');   
-         res.end(JSON.stringify( config ));
-      }) 
-
-   } else { 
-      provisionMemberNode(newMint, geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-         res.setHeader('Content-Type', 'application/json');   
-         res.end(JSON.stringify(config));
-      })
-   }
-   
-
-   
-});
-
-function getMintTable(mint,callback) {
-   expressRedisClient.hgetall("mint:"+mint, function(err,mintEntry) {
-      callback(err,mintEntry);    
-   });
-}
-
-/*
-function popMint() {
-var mint=0;
-   expressRedisClient.incr("mintStack", (err, newMint) => {
-      if (err) {
-       console.log("err="+err);
-      } else {
-         //debug('Generated incremental id: %s.', newId);
-         mint=newMint;
-      }
-     });
-}
-*/
 
 //
 // bind the TCP port for externalizing 
@@ -714,6 +798,7 @@ var mint=0;
 expressRedisClient.hget("me","port",function (err,port){
    if (!port) port=65013;
       var server = app.listen(port,'0.0.0.0', function () {
+         //TODO: add error handling here
       var host = server.address().address
       var port = server.address().port  
       console.log("Express app listening at http://%s:%s", host, port)
