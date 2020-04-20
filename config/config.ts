@@ -3,7 +3,6 @@
 //
 import { now, ts ,dump, dumpState } from '../lib/lib.js';
 //      Configuration parameters - agreed to by all in the pulseGroup
-export const CYCLETIME=5;  //seconds between polls
 
 /*
 process.on('uncaughtException', function (err) {
