@@ -526,23 +526,26 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
             console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
             console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
+            config.mintTable["mint:0"] = mint0;
             console.log(lib_1.ts() + "config=" + lib_1.dump(config));
             callback(config);
         });
     });
-    makeConfig(function (config) {
-        console.log("Genesis config=" + JSON.stringify(config, null, 2));
-        console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
-        //expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
-        console.log(lib_1.ts() + "EXPRESS: AFTER GENESIS CONFIG: ");
-        dumpState();
-        console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
-        console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
-        console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
-        console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
-        console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
-        callback({ "node": "GENESIS", "rc": "0" });
+    /*
+    makeConfig(function(config) {
+       console.log("Genesis config="+JSON.stringify(config, null, 2));
+       console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");
+       //expressRedisClient.publish("members","Genesis Started pulseGroup mint:"+genesisGroupEntry.srcMint+" "+genesisGroupEntry.geo+":"+genesisGroupEntry.group)
+       console.log(ts()+"EXPRESS: AFTER GENESIS CONFIG: ");
+       dumpState();
+       console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");
+       console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");
+       console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");
+       console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");
+       console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");
+       callback({ "node" : "GENESIS", "rc" : "0" });
     });
+ */
 }
 function dumpState() {
     expressRedisClient.hgetall("mint:0", function (err, me) {

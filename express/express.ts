@@ -572,6 +572,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          console.log(ts()+"EXPRESS:  -------------------------config done:");
          console.log(ts()+"EXPRESS:  -------------------------config done:");
          console.log(ts()+"EXPRESS:  -------------------------config done:");
+         config.mintTable["mint:0"]=mint0;
          console.log(ts()+"config="+dump(config));         
          callback(config);
       })
@@ -579,7 +580,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
       
    })
    
-   
+   /*
    makeConfig(function(config) {
       console.log("Genesis config="+JSON.stringify(config, null, 2));
       console.log("* * * * * * * * * * * * * * GENESIS CONFIGURATION COMPLETE * * * * * * * * * * *");            
@@ -593,7 +594,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
       console.log(ts()+"EXPRESS: GENESIS CONFIG DONE");      
       callback({ "node" : "GENESIS", "rc" : "0" });
    });
-   
+*/   
 }
 
 function dumpState() {
