@@ -482,6 +482,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             config.mintTable["mint:0"] = mint0; //tell remote their config
             config.rc = "0";
             console.log(lib_1.ts() + "EXPRESS: GENESIS config done");
+            callback(config);
         });
         // we have a genesis node
     });
