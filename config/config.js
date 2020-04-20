@@ -9,6 +9,9 @@ exports.__esModule = true;
 var lib_js_1 = require("../lib/lib.js");
 //      Configuration parameters - agreed to by all in the pulseGroup
 exports.CYCLETIME = 5; //seconds between polls
+process.on('uncaughtException', function (err) {
+    console.log("CONFIG: uncaughtException trap: " + err);
+});
 //      Environment is way for environment to control the code
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (!process.env.HOSTNAME) {
@@ -59,25 +62,24 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //GEO=GEO.toString().split('.').split(',');
 console.log("CONFIG GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
-//  mint:0 is me  and  mint:1 is Genesis node 
-redisClient.hmset("mint:0", {
-    "mint": "0",
-    "geo": GEO,
-    "group": GEO + ".1",
+/*
+//  mint:0 is me  and  mint:1 is Genesis node
+redisClient.hmset("mint:0",{
+    "mint" : "0",      //set by genesis node
+    "geo" : GEO,
+    "group": GEO+".1",      //add all nodes to genesis group
     // wireguard configuration details
-    "port": "" + PORT,
-    "ipaddr": process.env.MYIP,
-    "publickey": PUBLICKEY,
+    "port" : ""+PORT,
+    "ipaddr" : process.env.MYIP,   //set by genesis node on connection
+    "publickey" : PUBLICKEY,
     //
-    "bootTime": "" + lib_js_1.now(),
-    "version": process.env.VERSION,
-    "wallet": WALLET,
-    "owl": "" //how long it took this node's last record to reach me
-});
+    "bootTime" : ""+now(),   //So we can detect reboots
+    "version" : process.env.VERSION,  //software version
+    "wallet" : WALLET,
+    "owl": ""   //how long it took this node's last record to reach me
+ });
+*/
 getConfiguration(); //later this should start with just an IP of genesis node 
-process.on('uncaughtException', function (err) {
-    console.log("uncaughtException trap: " + err);
-});
 function getConfiguration() {
     var URL = "http://" + process.env.GENESIS + ":" + "65013" + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now();
     console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
@@ -89,8 +91,7 @@ function getConfiguration() {
         });
         res.on('error', function () {
             console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
-            console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
-            console.log(lib_js_1.ts() + "CONFIG: received error from " + URL);
+            process.exit(36);
         });
         res.on('end', function () {
             console.log("CONFIG data=" + data);

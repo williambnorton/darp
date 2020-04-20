@@ -281,7 +281,7 @@ function newMint(mint) {
 setTimeout(checkSWversion, 20 * 1000);
 ; // see if we need new SW
 function checkSWversion() {
-    setTimeout(checkSWversion, 20 * 1000);
+    setTimeout(checkSWversion, 30 * 1000);
     ;
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");

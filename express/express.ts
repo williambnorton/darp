@@ -573,11 +573,10 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          console.log(ts()+"EXPRESS:  -------------------------config done:");
          console.log(ts()+"EXPRESS:  -------------------------config done:");
          config.mintTable["mint:0"]=mint0;
+         config.rc="0";
          console.log(ts()+"config="+dump(config));         
          callback(config);
       })
-
-      
    })
    
    /*

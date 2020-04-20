@@ -297,8 +297,7 @@ function newMint(mint) {
 setTimeout(checkSWversion,20*1000);; // see if we need new SW
 
 function checkSWversion() {
-  setTimeout(checkSWversion,20*1000);;
-
+  setTimeout(checkSWversion,30*1000);;
   //console.log("checkSWversion() - currentSW="+MYBUILD);
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {

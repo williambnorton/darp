@@ -527,6 +527,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
             console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
             config.mintTable["mint:0"] = mint0;
+            config.rc = "0";
             console.log(lib_1.ts() + "config=" + lib_1.dump(config));
             callback(config);
         });
