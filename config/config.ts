@@ -2,13 +2,13 @@
 //  config.ts - Configure your node to connect to the pulseGroup
 //
 import { now, ts ,dump, dumpState } from '../lib/lib.js';
-
 //      Configuration parameters - agreed to by all in the pulseGroup
 export const CYCLETIME=5;  //seconds between polls
 
 process.on('uncaughtException', function (err) {
     console.log("CONFIG: uncaughtException trap: "+err);
 }); 
+console.log(ts()+"Launching config - should happen once");
 
 //      Environment is way for environment to control the code
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
