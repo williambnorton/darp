@@ -824,7 +824,7 @@ function provisionMemberNode(newMint, geo, port,incomingIP,publickey,version,wal
 //
 expressRedisClient.hget("me","port",function (err,port){
    if (!port) port=65013;
-      var server = app.listen(port,'0.0.0.0', function () {
+   var server = app.listen(port,'0.0.0.0', function () {
          //TODO: add error handling here
       var host = server.address().address
       var port = server.address().port  
