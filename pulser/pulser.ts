@@ -1,5 +1,4 @@
 import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
-import { CYCLETIME } from "../config/config";
 
 //
 //  pulse - send my owl measurements to my pulseGroups
@@ -12,6 +11,8 @@ var networkClient = dgram.createSocket('udp4');
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+
+var CYCLETIME=10
 
 console.log("PULSER: CYCLETIME="+CYCLETIME);
 

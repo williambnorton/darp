@@ -1,7 +1,6 @@
 "use strict";
 exports.__esModule = true;
 var lib_1 = require("../lib/lib");
-var config_1 = require("../config/config");
 //
 //  pulse - send my owl measurements to my pulseGroups
 //
@@ -11,7 +10,8 @@ var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-console.log("PULSER: CYCLETIME=" + config_1.CYCLETIME);
+var CYCLETIME = 10;
+console.log("PULSER: CYCLETIME=" + CYCLETIME);
 var GEO = ""; //global variable for marking source of pulse
 /*setInterval(
   () => pulse,
@@ -87,8 +87,8 @@ function publishMatrix() {
 //
 function pulse(flag) {
     if (typeof flag == "undefined") {
-        setTimeout(pulse, config_1.CYCLETIME * 1000); //10 second pollingfrequency
-        setTimeout(publishMatrix, (config_1.CYCLETIME * 1000) / 2); // In 5 seconds call it
+        setTimeout(pulse, CYCLETIME * 1000); //10 second pollingfrequency
+        setTimeout(publishMatrix, (CYCLETIME * 1000) / 2); // In 5 seconds call it
         flag = "periodicPoll";
     }
     else {
