@@ -9,7 +9,7 @@
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-import { dump, now, mintList, SRList, ts, getMints, getOwls } from '../lib/lib';
+import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState } from '../lib/lib';
 import { pulse } from '../pulser/pulser'
 import { CYCLETIME } from '../config/config'
 const expressRedis = require('redis');
@@ -592,17 +592,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
 */   
 }
 
-function dumpState() {
-   expressRedisClient.hgetall("mint:0",function(err,me) {
-      console.log(ts()+"mint:0 = me="+dump(me));
-      expressRedisClient.hgetall("mint:1",function(err,genesis) {
-         console.log(ts()+"dumpState mint:1 = genesis="+dump(genesis));
-         expressRedisClient.hgetall("DEVOPS:DEVOPS.1",function(err,genesisGroup) {
-            console.log(ts()+"dumpState genesisGroupPulseLabel genesisGroup="+dump(genesisGroup));
-         })
-      })
-   })
-}
+
 /*
 function provisionGenesisNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, callback) {
       

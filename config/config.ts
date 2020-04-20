@@ -1,7 +1,7 @@
 //
 //  config.ts - Configure your node to connect to the pulseGroup
 //
-import { now, ts ,dump } from '../lib/lib.js';
+import { now, ts ,dump, dumpState } from '../lib/lib.js';
 
 //      Configuration parameters - agreed to by all in the pulseGroup
 export const CYCLETIME=5;  //seconds between polls
@@ -122,6 +122,7 @@ function getConfiguration() {
 
             if (config.isGenesisNode==true) {
                 console.log(ts()+"CONFIG GENESIS node already configured");
+                dumpState();
             } else {
                 console.log(ts()+"CONFIG Configuring non-genesis node ... config.isGenesisNode="+config.isGenesisNode);
                 redisClient.hmset("gSRlist", config.gSRlist );

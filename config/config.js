@@ -105,6 +105,7 @@ function getConfiguration() {
             //console.log("setting gSRlist="+dump(config.gSRlist));
             if (config.isGenesisNode == true) {
                 console.log(lib_js_1.ts() + "CONFIG GENESIS node already configured");
+                lib_js_1.dumpState();
             }
             else {
                 console.log(lib_js_1.ts() + "CONFIG Configuring non-genesis node ... config.isGenesisNode=" + config.isGenesisNode);
