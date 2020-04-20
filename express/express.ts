@@ -567,15 +567,10 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
       }
       makeConfig(function (config) {
          console.log(ts()+"EXPRESS:  -------------------------config done:");
-         console.log(ts()+"EXPRESS:  -------------------------config done:");
-         console.log(ts()+"EXPRESS:  -------------------------config done:");
-         console.log(ts()+"EXPRESS:  -------------------------config done:");
-         console.log(ts()+"EXPRESS:  -------------------------config done:");
-         console.log(ts()+"EXPRESS:  -------------------------config done:");
          config.mintTable["mint:0"]=mint0;
          config.rc="0";
          config.ts=now();
-         console.log(ts()+"config="+dump(config));         
+         //console.log(ts()+"config="+dump(config));         
          callback(config);
       })
    })

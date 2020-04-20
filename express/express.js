@@ -521,15 +521,10 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
         }
         makeConfig(function (config) {
             console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
-            console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
-            console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
-            console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
-            console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
-            console.log(lib_1.ts() + "EXPRESS:  -------------------------config done:");
             config.mintTable["mint:0"] = mint0;
             config.rc = "0";
             config.ts = lib_1.now();
-            console.log(lib_1.ts() + "config=" + lib_1.dump(config));
+            //console.log(ts()+"config="+dump(config));         
             callback(config);
         });
     });

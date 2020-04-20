@@ -118,8 +118,8 @@ function getConfiguration() {
             console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
             console.log("COMFIG: --------- " +GEO+" --------- configuration");
-            console.log("CONFIG(): json="+dump(config));
-            console.log("setting gSRlist="+dump(config.gSRlist));
+            //console.log("CONFIG(): json="+dump(config));
+            //console.log("setting gSRlist="+dump(config.gSRlist));
             redisClient.hmset("gSRlist", config.gSRlist );
             //install config
             for (var mint in config.mintTable) {
