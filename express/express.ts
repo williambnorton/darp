@@ -437,7 +437,7 @@ app.get('/nodefactory', function (req, res) {
    //console.log("req="+dump(req.connection));
 
    provisionNode(++mintStack,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-      console.log(ts()+"provisionGenesisNode gave use config="+dump(config));
+      //console.log(ts()+"provisionNode gave use config="+dump(config));
       res.setHeader('Content-Type', 'application/json');   
       res.end(JSON.stringify( config ));  //send mint:0 mint:1 entry
    }) 
@@ -574,6 +574,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          console.log(ts()+"EXPRESS:  -------------------------config done:");
          config.mintTable["mint:0"]=mint0;
          config.rc="0";
+         config.ts=now();
          console.log(ts()+"config="+dump(config));         
          callback(config);
       })
