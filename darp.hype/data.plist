@@ -11,7 +11,7 @@
 	<key>createOfflineApplicationCache</key>
 	<false/>
 	<key>currentSceneContainer</key>
-	<string>14</string>
+	<string>1</string>
 	<key>customExportSlices</key>
 	<array>
 		<dict>
@@ -81,7 +81,7 @@
 	<key>hasManuallyChangedCSSPositioning</key>
 	<false/>
 	<key>lastCheckDate</key>
-	<date>2020-04-19T05:13:50Z</date>
+	<date>2020-04-20T04:43:25Z</date>
 	<key>layout</key>
 	<dict>
 		<key>currentInspectorPane</key>
@@ -311,7 +311,7 @@
 						<integer>60</integer>
 					</dict>
 					<key>canvasSize</key>
-					<string>{819, 597}</string>
+					<string>{798, 582}</string>
 					<key>hypeScene</key>
 					<dict>
 						<key>backgroundColor</key>
@@ -363,7 +363,7 @@
 						<integer>60</integer>
 					</dict>
 					<key>canvasSize</key>
-					<string>{797, 581}</string>
+					<string>{798, 582}</string>
 					<key>hypeScene</key>
 					<dict>
 						<key>backgroundColor</key>
@@ -473,7 +473,9 @@
 			<key>documentIdentifier</key>
 			<string>7FD16F5A-1CE5-4F91-A37A-166773DB25F7-13244-0001BA7B8D69D99B</string>
 			<key>selectedObjects</key>
-			<array/>
+			<array>
+				<string>11</string>
+			</array>
 			<key>symbol</key>
 			<dict>
 				<key>addToNewSceneControllers</key>
@@ -512,6 +514,12 @@
 						</dict>
 						<dict>
 							<key>identifier</key>
+							<string>ExplicitDimensions</string>
+							<key>objectValue</key>
+							<string>YES</string>
+						</dict>
+						<dict>
+							<key>identifier</key>
 							<string>Display</string>
 							<key>objectValue</key>
 							<string>inline</string>
@@ -532,7 +540,7 @@
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>276px</string>
+							<string>299px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -556,19 +564,19 @@
 							<key>identifier</key>
 							<string>Height</string>
 							<key>objectValue</key>
-							<string>108px</string>
+							<string>77px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>21px</string>
+							<string>0px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
 							<string>InnerHTML</string>
 							<key>objectValue</key>
-							<string>Shows docker run command&lt;br&gt;run this docker and point your&lt;br&gt;browser to localhost:65013&lt;br&gt;or darp.bash -g&lt;br&gt;&lt;br&gt;Curl genesis IP | bash # installs and creates docker env and runs node in it&lt;br&gt;</string>
+							<string>Shows docker run command&lt;br&gt;run this docker and point your&lt;br&gt;browser to localhost:65013&lt;br&gt;or darp.bash -g&lt;br&gt;Curl genesis IP | bash # installs and creates docker env and runs node in it&lt;br&gt;</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -580,7 +588,7 @@
 							<key>identifier</key>
 							<string>Width</string>
 							<key>objectValue</key>
-							<string>531px</string>
+							<string>593px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -808,7 +816,7 @@
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>-13px</string>
+							<string>11px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -850,7 +858,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>11px</string>
+							<string>10px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1003,7 +1011,7 @@
 							<key>identifier</key>
 							<string>Top</string>
 							<key>objectValue</key>
-							<string>-7px</string>
+							<string>11px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1045,7 +1053,7 @@
 							<key>identifier</key>
 							<string>Left</string>
 							<key>objectValue</key>
-							<string>322px</string>
+							<string>352px</string>
 						</dict>
 						<dict>
 							<key>identifier</key>
@@ -1224,9 +1232,7 @@
 			<key>documentIdentifier</key>
 			<string>7FD16F5A-1CE5-4F91-A37A-166773DB25F7-13244-0001BA7B8D69D99B</string>
 			<key>selectedObjects</key>
-			<array>
-				<string>19</string>
-			</array>
+			<array/>
 			<key>symbol</key>
 			<dict>
 				<key>addToNewSceneControllers</key>
