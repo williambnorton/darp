@@ -517,6 +517,8 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
            [genesisGroupLabel] : "1"
          });
       }  //At this point we have mint:0 mint:1 and group Entry defined
+      console.log(ts()+"At this point we should have mint:0 mint:1 and group Entry defined... newMint="+newMint);
+      dumpState();
       if (newMint!=1) {
          console.log(ts()+"SETTING UP NON-GENESIS NODE");
          console.log(ts()+"SETTING UP NON-GENESIS NODE");

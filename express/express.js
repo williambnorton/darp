@@ -472,6 +472,8 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                 _a[genesisGroupLabel] = "1",
                 _a));
         } //At this point we have mint:0 mint:1 and group Entry defined
+        console.log(lib_1.ts() + "At this point we should have mint:0 mint:1 and group Entry defined... newMint=" + newMint);
+        lib_1.dumpState();
         if (newMint != 1) {
             console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE");
             console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE");
