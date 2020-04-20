@@ -106,22 +106,28 @@ function getConfiguration() {
             console.log("COMFIG: --------- " + GEO + " --------- configuration");
             //console.log("CONFIG(): json="+dump(config));
             //console.log("setting gSRlist="+dump(config.gSRlist));
-            redisClient.hmset("gSRlist", config.gSRlist);
-            //install config
-            for (var mint in config.mintTable) {
-                var mintEntry = config.mintTable[mint];
-                console.log("add mint:" + mint + " mintEntry=" + lib_js_1.dump(mintEntry));
-                redisClient.hmset(mint, mintEntry);
+            if (config.isGenessisNode) {
+                console.log(lib_js_1.ts() + "CONFIG GENESIS node already configured");
             }
-            for (var pulse in config.pulses) {
-                var pulseEntry = config.pulses[pulse];
-                console.log("add pulse:" + pulse + " pulseEntry=" + lib_js_1.dump(pulseEntry));
-                redisClient.hmset(pulse, pulseEntry);
-                redisClient.publish("members", "ADDED " + pulseEntry.geo);
+            else {
+                console.log(lib_js_1.ts() + "CONFIG Configuring non-genesis node");
+                redisClient.hmset("gSRlist", config.gSRlist);
+                //install config
+                for (var mint in config.mintTable) {
+                    var mintEntry = config.mintTable[mint];
+                    console.log("add mint:" + mint + " mintEntry=" + lib_js_1.dump(mintEntry));
+                    redisClient.hmset(mint, mintEntry);
+                }
+                for (var pulse in config.pulses) {
+                    var pulseEntry = config.pulses[pulse];
+                    console.log("add pulse:" + pulse + " pulseEntry=" + lib_js_1.dump(pulseEntry));
+                    redisClient.hmset(pulse, pulseEntry);
+                    redisClient.publish("members", "ADDED " + pulseEntry.geo);
+                }
+                //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
+                //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
+                console.log("new node config done");
             }
-            //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
-            //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
-            console.log("new node config done");
         });
     });
 }
