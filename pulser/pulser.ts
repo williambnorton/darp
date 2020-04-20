@@ -105,7 +105,7 @@ export function pulse(flag) {
   }
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
-    if ((me==null) || (me.state=="HOLD" && flag!="oneTime")) return //console.log(ts()+" pulse(): no mint:0 or HOLD ");
+    if ((me==null) || (me.state=="HOLD" && flag!="oneTime")) return console.log(ts()+" pulse(): HOLDING ");
 
     GEO=me.geo;
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
@@ -213,7 +213,9 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 });
                 //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
-                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){
+
+                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
+                
                   if(error) {
                     console.log(ts()+"pulser NetSend error");
                     networkClient.close();
