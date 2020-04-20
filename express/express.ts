@@ -408,7 +408,7 @@ function fetchConfig(gSRlist, config, callback) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-   //console.log('****EXPRESS; config requested with params: '+dump(req.query));
+   console.log('****EXPRESS; config requested with params: '+dump(req.query));
    //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
    var geo=req.query.geo;
    var publickey=req.query.publickey;

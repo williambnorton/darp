@@ -1,10 +1,7 @@
 "use strict";
 exports.__esModule = true;
 //
-//  config.ts - initialize the redis database with envirnmental variables:
-//          HOSTNAME - human readable text name
-//          GENESIS - IPaddr or ipaddr:port
-//          PUBLICKEY - Public key 
+//  config.ts - Configure your node to connect to the pulseGroup
 //
 var lib_js_1 = require("../lib/lib.js");
 //      Configuration parameters - agreed to by all in the pulseGroup
@@ -82,6 +79,10 @@ redisClient.hmset("mint:0",{
 getConfiguration(); //later this should start with just an IP of genesis node 
 function getConfiguration() {
     var URL = "http://" + process.env.GENESIS + ":" + "65013" + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now();
+    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
+    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
+    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
+    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
     console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
     //FETCH CONFIG
     var req = http.get(URL, function (res) {
