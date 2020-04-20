@@ -129,9 +129,7 @@ do
     if [ -f  $DARPDIR/pulser.pid ]; then
         kill `cat $DARPDIR/pulser.pid`
     fi
-
-#    node pulser &
-
+    node pulser &
     echo $$ > $DARPDIR/pulser.pid
     echo `date` 'Starting pulser...'
     sleep 1
@@ -143,16 +141,7 @@ do
         sleep 1
     fi
     echo `date` Starting handlepulse
-
-
-
-
-#    node handlepulse #this will stop when handlepulse receives reload msg
-    echo `date` SLEEPING for 6000
-    sleep 6000    
-
-
-
+    node handlepulse #this will stop when handlepulse receives reload msg
 
     rc=$?
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
