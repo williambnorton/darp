@@ -340,13 +340,13 @@ app.get('/pulseMsg', function (req, res) {
 //
 //
 function makeConfig(callback) {
-   //console.log("getConfig() ");
+   console.log("makeConfig() ");
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
-         //console.log("gSRlist="+dump(gSRlist));
+         console.log("gSRlist="+dump(gSRlist));
          fetchConfig(gSRlist, null, function(config) {
-            //console.log("getConfig(): callback config="+dump(config));
+            console.log("getConfig(): callback config="+dump(config));
             callback(config); //call sender
          });
       });
@@ -431,16 +431,16 @@ app.get('/nodefactory', function (req, res) {
    //console.log("req="+dump(req.connection));
 
    provisionNode(++mintStack,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-      console.log(ts()+"provisionNode gave use config="+dump(config));
+      console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
       res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify( config ));  //send mint:0 mint:1 entry
+      res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
    }) 
 
 });
 
 
 function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, callback) {
-      
+      console.log("callback="+callback);
    console.log(ts()+"provisionNode(): newMint="+newMint);
    var mint0={    //mint:0 is always "me"
       "mint" : ""+newMint,      //mint:1 is always genesis node
@@ -461,7 +461,6 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
    }
    if (newMint==1) expressRedisClient.hmset("mint:0",mint0); //we are GENESIS NODE
 
-
    expressRedisClient.hgetall("mint:1", function (err, genesis) {
       var newMintRecord={        //my mint entry
          "mint" : ""+newMint,      //set by genesis node
@@ -479,16 +478,13 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          "owl" : "",   //do not measure OWL to self - maybe delete this field to catch err?
          "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
       };
-      if (genesis==null) {  
+
+      if (genesis==null) {  /*  GENESIS NODE */
          genesis=mint0;
          expressRedisClient.hmset("mint:1",genesis);  //create mint:1 as clone of mint:0
          //WE ARE GENESIS NODE
          console.log(ts()+"SETTING UP GENESIS NODE");
-         console.log(ts()+"SETTING UP GENESIS NODE");
-         console.log(ts()+"SETTING UP GENESIS NODE");
-         console.log(ts()+"SETTING UP GENESIS NODE");
-         console.log(ts()+"SETTING UP GENESIS NODE");
-         genesis=mint0;
+
            //mint0==mint 1 for Genesis node a startup
          //create the group entry while we are at it
          var genesisGroupEntry={  //one record per pulse - index = <geo>:<group>
@@ -525,7 +521,6 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          console.log(ts()+"SETTING UP NON-GENESIS NODE to connect to "+newMintRecord.group);
          console.log(ts()+"SETTING UP NON-GENESIS NODE to connect to "+newMintRecord.group);
          // make entry for geo:genesisGroup  - ALREADY SET!!!!
-
       }
 
       var pulseLabel=geo+":"+genesis.group;
@@ -541,9 +536,13 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
       expressRedisClient.hmset("gSRlist",{ [pulseLabel] : ""+newMint }) //gebnesis has a new entry
       //update owls - we have a new owl
       console.log(ts()+"STUFF");
+      callback({"msg":"CONFIG"});
 
+      console.log(ts()+"STUFF");
+
+      /*
       makeConfig(function (config) {
-         console.log(ts()+"nakeConfig");
+         console.log(ts()+"makeConfig");
          config.mintTable["mint:0"]=mint0;
          config.rc="0";
          config.ts=now();
@@ -551,9 +550,9 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
          callback(config);   //parent routine's callback
       })
+      */
+      //console.log(ts()+"EXPRESS: after makeConfig");
    })
-   
-
 }
 
 function dumpState() {

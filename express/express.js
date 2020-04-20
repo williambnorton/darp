@@ -300,12 +300,12 @@ app.get('/pulseMsg', function (req, res) {
 //
 //
 function makeConfig(callback) {
-    //console.log("getConfig() ");
+    console.log("makeConfig() ");
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            //console.log("gSRlist="+dump(gSRlist));
+            console.log("gSRlist=" + lib_1.dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
-                //console.log("getConfig(): callback config="+dump(config));
+                console.log("getConfig(): callback config=" + lib_1.dump(config));
                 callback(config); //call sender
             });
         });
@@ -389,12 +389,13 @@ app.get('/nodefactory', function (req, res) {
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
     //console.log("req="+dump(req.connection));
     provisionNode(++mintStack, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-        console.log(lib_1.ts() + "provisionNode gave use config=" + lib_1.dump(config));
+        console.log(lib_1.ts() + "provisionNode CALLBACK gave use config=" + lib_1.dump(config));
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(config)); //send mint:0 mint:1 entry
+        res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     });
 });
 function provisionNode(newMint, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, callback) {
+    console.log("callback=" + callback);
     console.log(lib_1.ts() + "provisionNode(): newMint=" + newMint);
     var mint0 = {
         "mint": "" + newMint,
@@ -433,16 +434,11 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             "owl": "",
             "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
         };
-        if (genesis == null) {
+        if (genesis == null) { /*  GENESIS NODE */
             genesis = mint0;
             expressRedisClient.hmset("mint:1", genesis); //create mint:1 as clone of mint:0
             //WE ARE GENESIS NODE
             console.log(lib_1.ts() + "SETTING UP GENESIS NODE");
-            console.log(lib_1.ts() + "SETTING UP GENESIS NODE");
-            console.log(lib_1.ts() + "SETTING UP GENESIS NODE");
-            console.log(lib_1.ts() + "SETTING UP GENESIS NODE");
-            console.log(lib_1.ts() + "SETTING UP GENESIS NODE");
-            genesis = mint0;
             //mint0==mint 1 for Genesis node a startup
             //create the group entry while we are at it
             var genesisGroupEntry = {
@@ -489,15 +485,20 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
         expressRedisClient.hmset("gSRlist", (_a = {}, _a[pulseLabel] = "" + newMint, _a)); //gebnesis has a new entry
         //update owls - we have a new owl
         console.log(lib_1.ts() + "STUFF");
+        callback({ "msg": "CONFIG" });
+        console.log(lib_1.ts() + "STUFF");
+        /*
         makeConfig(function (config) {
-            console.log(lib_1.ts() + "nakeConfig");
-            config.mintTable["mint:0"] = mint0;
-            config.rc = "0";
-            config.ts = lib_1.now();
-            config.isGenesisNode = (config.mintTable["mint:0"].mint == 1);
-            console.log(lib_1.ts() + "EXPRESS:  Sending config:" + lib_1.dump(config));
-            callback(config); //parent routine's callback
-        });
+           console.log(ts()+"makeConfig");
+           config.mintTable["mint:0"]=mint0;
+           config.rc="0";
+           config.ts=now();
+           config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
+           console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+           callback(config);   //parent routine's callback
+        })
+        */
+        //console.log(ts()+"EXPRESS: after makeConfig");
     });
 }
 function dumpState() {
