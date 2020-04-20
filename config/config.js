@@ -6,9 +6,11 @@ exports.__esModule = true;
 var lib_js_1 = require("../lib/lib.js");
 //      Configuration parameters - agreed to by all in the pulseGroup
 exports.CYCLETIME = 5; //seconds between polls
+/*
 process.on('uncaughtException', function (err) {
-    console.log("CONFIG: uncaughtException trap: " + err);
+    console.log("CONFIG: uncaughtException trap: "+err);
 });
+*/
 console.log(lib_js_1.ts() + "Launching config - should happen once");
 //      Environment is way for environment to control the code
 //if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {

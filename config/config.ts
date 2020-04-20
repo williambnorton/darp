@@ -5,9 +5,11 @@ import { now, ts ,dump, dumpState } from '../lib/lib.js';
 //      Configuration parameters - agreed to by all in the pulseGroup
 export const CYCLETIME=5;  //seconds between polls
 
+/*
 process.on('uncaughtException', function (err) {
     console.log("CONFIG: uncaughtException trap: "+err);
 }); 
+*/
 console.log(ts()+"Launching config - should happen once");
 
 //      Environment is way for environment to control the code
@@ -112,7 +114,7 @@ function getConfiguration() {
             console.log("CONFIG(): rc="+config.rc+" isGenesisNode="+config.isGenesisNode  );
             console.log("CONFIG(): rc="+config.rc+" isGenesisNode="+config.isGenesisNode  );
             console.log("CONFIG(): rc="+config.rc+" isGenesisNode="+config.isGenesisNode  );
-   
+            
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
