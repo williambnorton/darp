@@ -83,7 +83,7 @@ getConfiguration(); //later this should start with just an IP of genesis node
 function getConfiguration() {
     var URL = "http://" + process.env.GENESIS + ":" + "65013/";
     URL = URL + encodeURI("nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now());
-    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
+    console.log("****CONFIG: getConfiguration() Fetching config from URL: " + URL);
     //FETCH CONFIG
     var req = http.get(URL, function (res) {
         var data = '', json_data;
