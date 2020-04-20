@@ -57,7 +57,7 @@ do
     echo `date` RUNNING $VERSION
     export VERSION=$VERSION
         echo ""
-        echo `date` " - - - - - - - - - - - - - - - - - - - - - - -     CURRENT $VERSION SOFTWARE        - - - - - - - - - - - - - - - - - - - - - "
+        echo `date` " - - - - - - - - - -     CURRENT $VERSION SOFTWARE        - - - - - - - - - - - - - - "
         echo  ""
     sleep 2
     echo `date` STARTING redis
@@ -72,11 +72,11 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "*  * * * * STARTING DARP $VERSION  * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * *  * * * STARTING DARP $VERSION  * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * ** * * STARTING DARP $VERSION  * * * ** * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * STARTING DARP $VERSION  * * *  * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * $GENESISIP $MYIP"
     if [ "$GENESISIP" = "$MYIP" ]; then
 
         echo `date` "I AM GENESIS NODE - Starting up auto-updater"

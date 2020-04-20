@@ -365,12 +365,12 @@ function fetchConfig(gSRlist, config, callback) {
 function dumpState() {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         console.log(lib_1.ts() + "mint:0 = me=" + lib_1.dump(me));
-    });
-    expressRedisClient.hgetall("mint:1", function (err, genesis) {
-        console.log(lib_1.ts() + "dumpState mint:1 = genesis=" + lib_1.dump(genesis));
-    });
-    expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function (err, genesisGroup) {
-        console.log(lib_1.ts() + "dumpState genesisGroupPulseLabel " + genesisGroup + "=" + lib_1.dump(genesisGroup));
+        expressRedisClient.hgetall("mint:1", function (err, genesis) {
+            console.log(lib_1.ts() + "dumpState mint:1 = genesis=" + lib_1.dump(genesis));
+            expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function (err, genesisGroup) {
+                console.log(lib_1.ts() + "dumpState genesisGroupPulseLabel genesisGroup=" + lib_1.dump(genesisGroup));
+            });
+        });
     });
 }
 //
@@ -454,16 +454,18 @@ app.get('/nodefactory', function (req, res) {
         expressRedisClient.hmset("gSRlist", (_a = {},
             _a[genesisGroupLabel] = "1",
             _a));
-        console.log(lib_1.ts() + "EXPRESS GENESIS CONFIG: " + lib_1.dump(mint0) + lib_1.dump(genesisGroupEntry));
-        expressRedisClient.hgetall("mint:0", function (err, me) {
-            console.log(lib_1.ts() + "mint:0 = me=" + lib_1.dump(me));
-        });
-        expressRedisClient.hgetall("mint:1", function (err, genesis) {
-            console.log(lib_1.ts() + "EXPRESS mint:1 = genesis=" + lib_1.dump(genesis));
-        });
-        expressRedisClient.hgetall(genesisGroupLabel, function (err, genesisGroup) {
-            console.log(lib_1.ts() + "EXPRESS " + genesisGroup + "=" + lib_1.dump(genesisGroup));
-        });
+        /******
+        console.log(ts()+"EXPRESS GENESIS CONFIG: "+dump(mint0)+dump(genesisGroupEntry));
+        expressRedisClient.hgetall("mint:0",function(err,me) {
+           console.log(ts()+"mint:0 = me="+dump(me));
+        })
+        expressRedisClient.hgetall("mint:1",function(err,genesis) {
+           console.log(ts()+"EXPRESS mint:1 = genesis="+dump(genesis));
+        })
+        expressRedisClient.hgetall(genesisGroupLabel,function(err,genesisGroup) {
+           console.log(ts()+"EXPRESS "+genesisGroup+"="+dump(genesisGroup));
+        })
+        ******/
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ "node": "GENESIS", "rc": "0" }));
         getConfig(function (config) {
@@ -472,10 +474,27 @@ app.get('/nodefactory', function (req, res) {
             expressRedisClient.publish("members", "Genesis Started pulseGroup mint:" + genesisGroupEntry.srcMint + " " + genesisGroupEntry.geo + ":" + genesisGroupEntry.group);
             console.log(lib_1.ts() + "EXPRESS: AFTER GENESIS CONFIG: ");
             dumpState();
-            ;
+            console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
+            console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
+            console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
+            console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
+            console.log(lib_1.ts() + "EXPRESS: GENESIS CONFIG DONE");
         });
         return;
     }
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
+    console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
     console.log(lib_1.ts() + "EXPRESS: NON-GENESIS CODE PATH: GENESIS CONFIG: ");
     dumpState();
     //console.log("--------------- EXPRESS() nodeFactory providing pulseGroup member CONFIGURATION  ------------------");
