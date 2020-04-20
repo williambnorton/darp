@@ -80,10 +80,6 @@ getConfiguration(); //later this should start with just an IP of genesis node
 function getConfiguration() {
     var URL = "http://" + process.env.GENESIS + ":" + "65013" + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now();
     console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
-    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
-    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
-    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
-    console.log("CONFIG: getConfiguration() Fetching config from URL: " + URL);
     //FETCH CONFIG
     var req = http.get(URL, function (res) {
         var data = '', json_data;
@@ -95,7 +91,7 @@ function getConfiguration() {
             process.exit(36);
         });
         res.on('end', function () {
-            console.log("CONFIG data=" + data);
+            console.log("CONFIG data from EXPRESS=" + data);
             var config = JSON.parse(data);
             console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
             console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
@@ -107,11 +103,11 @@ function getConfiguration() {
             console.log("COMFIG: --------- " + GEO + " --------- configuration");
             //console.log("CONFIG(): json="+dump(config));
             //console.log("setting gSRlist="+dump(config.gSRlist));
-            if (config.isGenessisNode) {
+            if (config.isGenesisNode == true) {
                 console.log(lib_js_1.ts() + "CONFIG GENESIS node already configured");
             }
             else {
-                console.log(lib_js_1.ts() + "CONFIG Configuring non-genesis node");
+                console.log(lib_js_1.ts() + "CONFIG Configuring non-genesis node ... config.isGenesisNode=" + config.isGenesisNode);
                 redisClient.hmset("gSRlist", config.gSRlist);
                 //install config
                 for (var mint in config.mintTable) {
@@ -131,8 +127,4 @@ function getConfiguration() {
             }
         });
     });
-}
-function Usage() {
-    console.log("usage: node config publickey [geo]");
-    process.exit(127);
 }
