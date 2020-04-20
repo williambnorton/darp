@@ -107,7 +107,7 @@ do
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
-    sleep 1
+    sleep 2
 
     #echo `date` Launching forever script
     #cd /darp/scripts
