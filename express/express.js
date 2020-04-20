@@ -368,6 +368,9 @@ app.get('/nodefactory', function (req, res) {
     var wallet = req.query.wallet || "";
     var incomingTimestamp = req.query.ts;
     var incomingIP = req.query.myip; /// for now we believe the node's IP
+    var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (incomingIP == "noMYIP")
+        incomingIP = clientIncomingIP;
     var octetCount = incomingIP.split(".").length;
     if (typeof incomingTimestamp == "undefined") {
         console.log("/nodeFactory called with no timestamp");
@@ -381,7 +384,6 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify({ "rc": "-1 nodeFactory called with BAD IP addr: " + incomingIP }));
         return;
     }
-    //var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     //console.log("req="+dump(req));
     var version = req.query.version;
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
@@ -391,26 +393,6 @@ app.get('/nodefactory', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(config)); //send mint:0 mint:1 entry
     });
-    /*
-    
-       var newMint=++mintStack;
-       console.log("EXPRESS: Creating a newly minted node: newMint="+newMint)
-    
-       if (newMint==1)  {   //I AM GENESIS NODE - set my records
-          console.log(ts()+"provisioning Genesis Node");
-          provisionGenesisNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-             console.log(ts()+"provisionGenesisNode gave use config="+dump(config));
-             res.setHeader('Content-Type', 'application/json');
-             res.end(JSON.stringify( config ));
-          })
-       } else {
-          provisionMemberNode(newMint, geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-             console.log(ts()+"provisionMemberNode gave use config="+dump(config));
-             res.setHeader('Content-Type', 'application/json');
-             res.end(JSON.stringify(config));
-          })
-       }
-       */
 });
 function provisionNode(newMint, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, callback) {
     console.log(lib_1.ts() + "provisionNode(): newMint=" + newMint);
@@ -491,11 +473,12 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                 "owl": "",
                 "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
             };
-            // add record to system
-            expressRedisClient.hmset(geo + ":" + genesis.group, newMintRecord);
-            // add record to gSRlist
-            expressRedisClient.hmset("gSRlist", (_b = {}, _b[geo + ":" + genesis.group] = newMint, _b));
         }
+        // add record to system
+        expressRedisClient.hmset("mint:" + newMint, newMintRecord); //genesis has a new mint
+        // add record to gSRlist
+        expressRedisClient.hmset("gSRlist", (_b = {}, _b[geo + ":" + genesis.group] = newMint, _b)); //gebnesis has a new entry
+        //update owls - we have a new owl
         makeConfig(function (config) {
             config.mintTable["mint:0"] = mint0;
             config.rc = "0";
