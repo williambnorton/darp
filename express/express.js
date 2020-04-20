@@ -781,5 +781,5 @@ expressRedisClient.hget("me", "port", function (err, port) {
         var host = server.address().address;
         var port = server.address().port;
         console.log("Express app listening at http://%s:%s", host, port);
-    }).on('error', console.log);
+    }); //.on('error', console.log);
 });
