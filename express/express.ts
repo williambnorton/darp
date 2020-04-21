@@ -20,7 +20,7 @@ var app = express();
 var mintStack=0;
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 const DEFAULT_START_STATE="RUNNING";
-if (DEFAULT_START_STATE=="HOLD") {
+if (DEFAULT_START_STATE!="RUNNING") {
    console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
    console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
    console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
@@ -475,10 +475,10 @@ function makePulseEntry(mint,geo,group) {
 
 //
 // For Genesis node, create
-//       mint:0 mint:1 genesisGeo:genesisGroup 
+//       mint:0 mint:1 genesisGeo:genesisGroup & add to gSRlist
 // For Non-Genesis, create
 //
-//       mint:0 mint:1 *mint:N genesisGeo:genesisGroup *geoN:genesisGroup  
+//       mint:0 mint:1 *mint:N genesisGeo:genesisGroup *geoN:genesisGroup and update gSRlist and genesis OWLs
 //                         '*' means for non-Genesis nodes
 //                         
 function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, callback) {
@@ -502,43 +502,43 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
          expressRedisClient.hmset("gSRlist", geo+":"+geo+".1", "1");
       }  //At this point we have mint:0 mint:1 and group Entry defined <-- this is enough for genesi node
       console.log(ts()+"At this point we should have mint:0 mint:1 and group Entry defined... newMint="+newMint);
-      //expressRedisClient.hgetall("mint:0", function(err,mint0) { console.log("mint0="+dump(mint0));});
-      //expressRedisClient.hgetall("mint:1", function(err,mint1) { console.log("mint1="+dump(mint1));});
-      //expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function(err,mint1) { console.log("DEVOPS:DEVOPS.1="+dump(mint1));});
+      expressRedisClient.hgetall("mint:0", function(err,mint0) { console.log("mint0="+dump(mint0));});
+      expressRedisClient.hgetall("mint:1", function(err,mint1) { console.log("mint1="+dump(mint1));});
+      expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function(err,mint1) { console.log("DEVOPS:DEVOPS.1="+dump(mint1));});
       
-      //                      Non-Genesis Node 
+      //                      Non-Genesis Node - create the newGeo:genesisGroup entry and add to gSRlist
+      ////       mint:0 mint:1 *mint:N genesisGeo:genesisGroup *geoN:genesisGroup and update gSRlist and genesis OWLs
+
       if (newMint!=1) {
          console.log(ts()+"SETTING UP NON-GENESIS NODE to connect with Genesis Node: "+mint1.group);
-         mint0.group=mint1.group;  //adjust this node to be part of genesis group
+         mint0.group=mint1.group;  //adjust this node mint:0 to be part of genesis group
          mintN=makeMintEntry( newMint,geo,mint1.group,port,incomingIP,publickey,version,wallet, incomingTimestamp )
+         expressRedisClient.hmset("mint:"+newMint,mintN);
+         expressRedisClient.hmset("gSRlist", mint1.group, ""+newMint);
+         addMintToGenesisOWLsList(newMint, function(newOWLs) {
+            console.log(ts()+"genesis newOWLs="+newOWLs);
+            makeConfig(function (config) {
+               console.log(ts()+"makeConfig");
+               config.mintTable["mint:0"]=mint0;  //nstall this new guy's mint0
+               config.rc="0";
+               config.ts=now();
+               //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
+               console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+               callback(config);   //parent routine's callback
+            })
+         });
       }
-
-      var pulseLabel=geo+":"+mint1.group;
-      console.log(ts()+"BEFORE CALL: newMint="+newMint+" pulseLabel="+pulseLabel+" mint1="+dump(mint1));
-      // add record to system
-      
-      //expressRedisClient.hmset(mintLabel, newMintRecord );  //genesis has a new mint
-      expressRedisClient.hmset("mint:"+newMint,mintN);
-      console.log(ts()+"AFTER CALL");
-
-      // add record to gSRlist
-      expressRedisClient.hmset("gSRlist",{ [pulseLabel] : ""+newMint }) //gebnesis has a new entry
-      //update owls - we have a new owl
-      console.log(ts()+"completed");
-      dumpState();
-      
-      makeConfig(function (config) {
-         console.log(ts()+"makeConfig");
-         config.mintTable["mint:0"]=mint0;  //nstall this new guy's mint0
-         config.rc="0";
-         config.ts=now();
-         //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-         console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
-         callback(config);   //parent routine's callback
-      })
-      
       //console.log(ts()+"EXPRESS: after makeConfig");
    })
+}
+
+function addMintToGenesisOWLsList(newMint, callback) {
+   expressRedisClient.hgetall("mint:0",function(err,me) {
+      var newOWLs=me.owls+","+newMint
+      expressRedisClient.hset("mint:0","owls",newOWLs, function (err,reply) {
+         callback(newOWLs);
+      }); 
+   });
 }
 
 function dumpState() {
