@@ -394,13 +394,11 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     });
 });
-function provisionNode(newMint, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, callback) {
-    console.log("callback=" + callback);
-    console.log(lib_1.ts() + "provisionNode(): newMint=" + newMint);
-    var mint0 = {
-        "mint": "" + newMint,
+function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, wallet, incomingTimestamp) {
+    return {
+        "mint": "" + mint,
         "geo": geo,
-        "group": geo + ".1",
+        "group": group,
         // wireguard configuration details
         "port": "" + port,
         "ipaddr": incomingIP,
@@ -414,79 +412,70 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
         "isGenesisNode": "1",
         "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
     };
-    if (newMint == 1)
-        expressRedisClient.hmset("mint:0", mint0); //we are GENESIS NODE
-    expressRedisClient.hgetall("mint:1", function (err, genesis) {
+}
+function makePulseEntry(mint, geo, group) {
+    return {
+        "geo": geo,
+        "group": group,
+        "seq": "0",
+        "pulseTimestamp": "0",
+        "srcMint": "" + mint,
+        "owls": "1",
+        "inOctets": "0",
+        "outOctets": "0",
+        "inMsgs": "0",
+        "outMsgs": "0",
+        "pktDrops": "0" //,     //as detected by missed seq#
+    };
+}
+//
+// For Genesis node, create
+//       mint:0 mint:1 genesisGeo:genesisGroup 
+// For Non-Genesis, create
+//
+//       mint:0 mint:1 *mint:N genesisGeo:genesisGroup *geoN:genesisGroup  
+//                         '*' means for non-Genesis nodes
+//                         
+function provisionNode(newMint, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, callback) {
+    console.log(lib_1.ts() + "provisionNode(): newMint=" + newMint);
+    expressRedisClient.hgetall("mint:1", function (err, mint1) {
         var _a;
-        var newMintRecord = {
-            "mint": "" + newMint,
-            "geo": geo,
-            "group": geo + ".1",
-            // wireguard configuration details
-            "port": "" + port,
-            "ipaddr": incomingIP,
-            "publickey": publickey,
-            //
-            "state": DEFAULT_START_STATE,
-            "bootTime": "" + incomingTimestamp,
-            "version": version,
-            "wallet": wallet,
-            "owl": "",
-            "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
-        };
-        if (genesis == null) { /*  GENESIS NODE */
-            genesis = mint0;
-            expressRedisClient.hmset("mint:1", genesis); //create mint:1 as clone of mint:0
-            //WE ARE GENESIS NODE
-            console.log(lib_1.ts() + "SETTING UP GENESIS NODE");
-            //mint0==mint 1 for Genesis node a startup
+        var mint0 = makeMintEntry(newMint, geo, geo + ".1", port, incomingIP, publickey, version, wallet, incomingTimestamp);
+        var mintN = makeMintEntry(newMint, geo, geo + ".1", port, incomingIP, publickey, version, wallet, incomingTimestamp);
+        if (newMint == 1)
+            expressRedisClient.hmset("mint:0", mint0); //we are GENESIS NODE
+        if (mint1 == null) { //  GENESIS NODE BEING FORMED - 
+            mint1 = mint0; //Genesis mint:1 is mint:0 (me)
+            expressRedisClient.hmset("mint:1", mint1); //create mint:1 as clone of mint:0
+            console.log(lib_1.ts() + "SETTING OURSELVES UP AS GENESIS NODE");
             //create the group entry while we are at it
-            var genesisGroupEntry = {
-                "geo": geo,
-                "group": geo + ".1",
-                "seq": "0",
-                "pulseTimestamp": "0",
-                "srcMint": "1",
-                "owls": "1",
-                "inOctets": "0",
-                "outOctets": "0",
-                "inMsgs": "0",
-                "outMsgs": "0",
-                "pktDrops": "0" //,     //as detected by missed seq#
-                //"clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
-            };
+            var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1");
             var genesisGroupLabel = geo + ":" + geo + ".1";
-            expressRedisClient.hmset([genesisGroupLabel], genesisGroupEntry);
-            expressRedisClient.hmset("gSRlist", {
-                genesisGroupLabel: "1"
-            });
-        } //At this point we have mint:0 mint:1 and group Entry defined
+            expressRedisClient.hmset([genesisGroupLabel], genesisPulseGroupEntry);
+            expressRedisClient.hmset("gSRlist", genesisGroupLabel, "1");
+        } //At this point we have mint:0 mint:1 and group Entry defined <-- this is enough for genesi node
         console.log(lib_1.ts() + "At this point we should have mint:0 mint:1 and group Entry defined... newMint=" + newMint);
-        dumpState();
-        console.log(lib_1.ts() + "At this point we should have mint:0 mint:1 and group Entry defined... newMint=" + newMint);
+        expressRedisClient.hgetall("mint:0", function (err, mint0) { console.log("mint0=" + lib_1.dump(mint0)); });
+        expressRedisClient.hgetall("mint:1", function (err, mint1) { console.log("mint1e=" + lib_1.dump(mint1)); });
+        expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function (err, mint1) { console.log("mint1e=" + lib_1.dump(mint1)); });
+        //                      Non-Genesis Node 
         if (newMint != 1) {
-            newMintRecord.group = genesis.group; //adjust this node to be part of genesis group
-            mint0.group = genesis.group; // FIX mint0 group to be GENESIS group
-            console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE to connect to " + newMintRecord.group);
-            console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE to connect to " + newMintRecord.group);
-            console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE to connect to " + newMintRecord.group);
-            console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE to connect to " + newMintRecord.group);
-            console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE to connect to " + newMintRecord.group);
-            // make entry for geo:genesisGroup  - ALREADY SET!!!!
+            console.log(lib_1.ts() + "SETTING UP NON-GENESIS NODE");
+            mint0.group = mint1.group; //adjust this node to be part of genesis group
+            mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp);
         }
-        var pulseLabel = geo + ":" + genesis.group;
-        var mintLabel = "mint:" + newMint;
-        console.log(lib_1.ts() + "BEFORE CALL: newMint=" + newMint + " mintLabel=" + mintLabel + " pulseLabel=" + pulseLabel + " newMintRecord=" + lib_1.dump(newMintRecord));
+        var pulseLabel = geo + ":" + mint1.group;
+        console.log(lib_1.ts() + "BEFORE CALL: newMint=" + newMint + " pulseLabel=" + pulseLabel + " mint1=" + lib_1.dump(mint1));
         // add record to system
         //expressRedisClient.hmset(mintLabel, newMintRecord );  //genesis has a new mint
-        expressRedisClient.hmset(mintLabel, newMintRecord);
+        expressRedisClient.hmset("mint:" + newMint, mintN);
         console.log(lib_1.ts() + "AFTER CALL");
         // add record to gSRlist
         expressRedisClient.hmset("gSRlist", (_a = {}, _a[pulseLabel] = "" + newMint, _a)); //gebnesis has a new entry
         //update owls - we have a new owl
-        console.log(lib_1.ts() + "STUFF");
+        console.log(lib_1.ts() + "completed");
+        dumpState();
         callback({ "msg": "CONFIG" });
-        console.log(lib_1.ts() + "STUFF");
         /*
         makeConfig(function (config) {
            console.log(ts()+"makeConfig");
