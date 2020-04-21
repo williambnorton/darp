@@ -441,12 +441,12 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
     expressRedisClient.hgetall("mint:1", function (err, mint1) {
         //create mint and entry as if this was the genesis node
         var mint0 = makeMintEntry(newMint, geo, geo + ".1", port, incomingIP, publickey, version, wallet, incomingTimestamp);
-        var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1");
         if (newMint == 1) {
             expressRedisClient.hmset("mint:0", mint0, function (err, reply) {
                 expressRedisClient.hmset("mint:1", mint0, function (err, reply) {
                     var mint1 = mint0; //make a copy for readaibility
-                    expressRedisClient.hmset(mint1.geo + ":" + mint1.group, mint1, function (err, reply) {
+                    var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1");
+                    expressRedisClient.hmset(mint1.geo + ":" + mint1.group, genesisPulseGroupEntry, function (err, reply) {
                         expressRedisClient.hmset("gSRlist", mint1.geo + ":" + mint1.group, "1", function (err, reply) {
                             makeConfig(function (config) {
                                 console.log(lib_1.ts() + "makeConfig");
@@ -470,40 +470,46 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                             var mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp);
                             expressRedisClient.hmset("mint:" + newMint, mintN, function (err, reply) {
-                                expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function (err, reply) {
-                                    var _a, _b, _c;
-                                    var config = {
-                                        gSRlist: (_a = {},
-                                            _a[mint1.geo + ":" + mint1.group] = "1",
-                                            _a[geo + ":" + mint1.group] = "" + newMint,
-                                            _a),
-                                        mintTable: (_b = {
-                                                "mint:0": mintN,
-                                                "mint:1": mint1
-                                            },
-                                            _b["mint:" + newMint] = mintN,
-                                            _b),
-                                        pulses: (_c = {},
-                                            _c[mint1.geo + ":" + mint1.group] = genesisGroupEntry,
-                                            _c[geo + ":" + mint1.group] = makePulseEntry(newMint, geo, mint1.group),
-                                            _c),
-                                        rc: "0",
-                                        ts: "" + lib_1.now()
-                                    };
-                                    console.log(lib_1.ts() + "newMint=" + newMint + " " + lib_1.dump(config));
-                                    callback(config);
-                                    /*
-                                    makeConfig(function (config) {
-         
-                                       console.log(ts()+"makeConfig");
-                                       config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
-                                       config.rc="0";
-                                       config.ts=now();  //give other side a notion of my clock when I sent this
-                                       //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-                                       console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
-                                       callback(config);   //parent routine's callback
-                                    })
-                                    */
+                                var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group);
+                                expressRedisClient.hmset(geo + ":" + mint1.group, mintN, function (err, reply) {
+                                    expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function (err, reply) {
+                                        var _a, _b, _c;
+                                        genesisGroupEntry.owls = genesisGroupEntry.owls + "," + newMint;
+                                        var config = {
+                                            gSRlist: (_a = {},
+                                                _a[mint1.geo + ":" + mint1.group] = "1",
+                                                _a[geo + ":" + mint1.group] = "" + newMint,
+                                                _a),
+                                            mintTable: (_b = {
+                                                    "mint:0": mintN,
+                                                    "mint:1": mint1
+                                                },
+                                                _b["mint:" + newMint] = mintN,
+                                                _b),
+                                            pulses: (_c = {},
+                                                _c[mint1.geo + ":" + mint1.group] = genesisGroupEntry,
+                                                _c[geo + ":" + mint1.group] = newNodePulseEntry,
+                                                _c),
+                                            rc: "0",
+                                            ts: "" + lib_1.now()
+                                        };
+                                        console.log(lib_1.ts() + "newMint=" + newMint + " " + lib_1.dump(config));
+                                        expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
+                                        //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
+                                        callback(config);
+                                        /*
+                                        makeConfig(function (config) {
+          
+                                           console.log(ts()+"makeConfig");
+                                           config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
+                                           config.rc="0";
+                                           config.ts=now();  //give other side a notion of my clock when I sent this
+                                           //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
+                                           console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+                                           callback(config);   //parent routine's callback
+                                        })
+                                        */
+                                    });
                                 });
                             });
                         });

@@ -488,12 +488,12 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
    expressRedisClient.hgetall("mint:1", function (err, mint1) {
       //create mint and entry as if this was the genesis node
       var mint0=makeMintEntry( newMint,geo,geo+".1",port,incomingIP,publickey,version,wallet, incomingTimestamp )
-      var genesisPulseGroupEntry=makePulseEntry( newMint, geo, geo+".1" );      
       if (newMint==1) {
          expressRedisClient.hmset("mint:0",mint0, function (err,reply){
             expressRedisClient.hmset("mint:1",mint0, function (err,reply){
                var mint1=mint0; //make a copy for readaibility
-               expressRedisClient.hmset(mint1.geo+":"+mint1.group,mint1, function (err,reply){
+               var genesisPulseGroupEntry=makePulseEntry( newMint, geo, geo+".1" );      
+               expressRedisClient.hmset(mint1.geo+":"+mint1.group, genesisPulseGroupEntry, function (err,reply){  // genesisGroupPulseEntry
                   expressRedisClient.hmset("gSRlist",mint1.geo+":"+mint1.group,"1", function (err,reply){ //Add our Genesis Group Entry to the gSRlist
                      makeConfig(function (config) {
                         console.log(ts()+"makeConfig");
@@ -518,39 +518,47 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
  
                      var mintN=makeMintEntry( newMint,geo,mint1.group,port,incomingIP,publickey,version,wallet, incomingTimestamp )
                      expressRedisClient.hmset("mint:"+newMint, mintN, function (err,reply){
-                        expressRedisClient.hmset("gSRlist",geo+":"+mint1.group,""+newMint, function (err,reply){ //Add our Entry to the genesisGroup in gSRlist
-                           var config={
-                              gSRlist : {
-                                 [mint1.geo+":"+mint1.group] : "1",
-                                 [geo+":"+mint1.group] : ""+newMint
-                              },                                 
-                              mintTable : {
-                                 "mint:0" : mintN,
-                                 "mint:1" : mint1,
-                                 ["mint:"+newMint] : mintN
-                              },
-                              pulses : {
-                                 [mint1.geo+":"+mint1.group] : genesisGroupEntry,
-                                 [geo+":"+mint1.group] : makePulseEntry(newMint,geo,mint1.group)
-                              },
-                              rc : "0",
-                              ts : ""+now()
-                           }
-                           console.log(ts()+"newMint="+newMint+" "+dump(config);
+                        var newNodePulseEntry=makePulseEntry(newMint,geo,mint1.group)
+                        expressRedisClient.hmset(geo+":"+mint1.group, mintN, function (err,reply){
+                           expressRedisClient.hmset("gSRlist",geo+":"+mint1.group,""+newMint, function (err,reply){ //Add our Entry to the genesisGroup in gSRlist
+                              genesisGroupEntry.owls=genesisGroupEntry.owls+","+newMint
+                              var config={
+                                 gSRlist : {
+                                    [mint1.geo+":"+mint1.group] : "1",
+                                    [geo+":"+mint1.group] : ""+newMint
+                                 },                                 
+                                 mintTable : {
+                                    "mint:0" : mintN,
+                                    "mint:1" : mint1,
+                                    ["mint:"+newMint] : mintN
+                                 },
+                                 pulses : {
+                                    [mint1.geo+":"+mint1.group] : genesisGroupEntry,
+                                    [geo+":"+mint1.group] : newNodePulseEntry
+                                 },
+                                 rc : "0",
+                                 ts : ""+now()
+                              }
 
-                           callback(config)
-                           /*
-                           makeConfig(function (config) {
+                              console.log(ts()+"newMint="+newMint+" "+dump(config);
+                           
+                              expressRedisClient.hmset(mint1.geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
+                              //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
 
-                              console.log(ts()+"makeConfig");
-                              config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
-                              config.rc="0";
-                              config.ts=now();  //give other side a notion of my clock when I sent this
-                              //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-                              console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
-                              callback(config);   //parent routine's callback
-                           })
-                           */
+                              callback(config)
+                              /*
+                              makeConfig(function (config) {
+
+                                 console.log(ts()+"makeConfig");
+                                 config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
+                                 config.rc="0";
+                                 config.ts=now();  //give other side a notion of my clock when I sent this
+                                 //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
+                                 console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+                                 callback(config);   //parent routine's callback
+                              })
+                              */
+                           });
                         });
                      });
                   });
