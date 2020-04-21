@@ -19,17 +19,6 @@ var app = express();
 
 var mintStack=1;
 
-var MYPUBLICKEY="deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
-expressRedisClient.hgetall("mint:0", function (err,me) {
-    console.log("EXPRESS starting with me="+dump(me));
-   if (me!=null)
-      MYPUBLICKEY=me.publickey;
-    else {
-        console.log(ts()+"NO REDIS");
-        process.exit(36)
-    }
-});
-
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 const DEFAULT_START_STATE="RUNNING";
 if (DEFAULT_START_STATE!="RUNNING") {
@@ -412,45 +401,49 @@ function fetchConfig(gSRlist, config, callback) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-   console.log('****EXPRESS; config requested with params: '+dump(req.query));
-   //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
-   var geo=req.query.geo;
-   var publickey=req.query.publickey;
-   var port=req.query.port||65013;
-   var wallet=req.query.wallet||"";
-   var incomingTimestamp=req.query.ts;
-   var incomingIP=req.query.myip;  /// for now we believe the node's IP
-   var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-   if (incomingIP=="noMYIP") incomingIP=clientIncomingIP;
-   var octetCount=incomingIP.split(".").length;
+   expressRedisClient.hgetall("mint:0", function (err,me) {
+      if (me!=null) {
+         console.log('****EXPRESS; config requested with params: '+dump(req.query));
+         //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
+         var geo=req.query.geo;
+         var publickey=req.query.publickey;
+         var port=req.query.port||65013;
+         var wallet=req.query.wallet||"";
+         var incomingTimestamp=req.query.ts;
+         var incomingIP=req.query.myip;  /// for now we believe the node's IP
+         var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+         if (incomingIP=="noMYIP") incomingIP=clientIncomingIP;
+         var octetCount=incomingIP.split(".").length;
 
-   if (typeof incomingTimestamp == "undefined") {
-      console.log("/nodeFactory called with no timestamp");
-      res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with no timestamp. "}));
-      return;
-   }
-   if (octetCount!=4) {
-      console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
-      res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with BAD IP addr: "+incomingIP }));
-      return;
-   }
+         if (typeof incomingTimestamp == "undefined") {
+            console.log("/nodeFactory called with no timestamp");
+            res.setHeader('Content-Type', 'application/json');   
+            res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with no timestamp. "}));
+            return;
+         }
+         if (octetCount!=4) {
+            console.log("EXPRESS(): nodefactory called with bad IP address:"+incomingIP+" returning rc=-1 to config geo="+geo);
+            res.setHeader('Content-Type', 'application/json');   
+            res.end(JSON.stringify({ "rc" : "-1 nodeFactory called with BAD IP addr: "+incomingIP }));
+            return;
+         }
 
-   //console.log("req="+dump(req));
-   var version=req.query.version;
-   console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
-   //console.log("req="+dump(req.connection));
-   // On Startup, only accept connections from me, and the test is that we have matching publickeys
-   console.log(ts()+"mintStack="+mintStack+" publickey="+publickey+" MYPUBLICKEY="+MYPUBLICKEY);
-   if (  ((mintStack==1) && (publickey==MYPUBLICKEY)) 
-      || (mintStack!=1)) {
-      provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-         console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
-         res.setHeader('Content-Type', 'application/json');   
-         res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
-     }) 
-   } else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
+         //console.log("req="+dump(req));
+         var version=req.query.version;
+         console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
+         //console.log("req="+dump(req.connection));
+         // On Startup, only accept connections from me, and the test is that we have matching publickeys
+         console.log(ts()+"mintStack="+mintStack+" publickey="+publickey);
+         if (  ((mintStack==1) && (me.MYIP==me.GENESIS)) 
+            || (mintStack!=1)) {
+            provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
+               console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
+               res.setHeader('Content-Type', 'application/json');   
+               res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
+         }) 
+         } else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
+      } else console.log("EXPRESS has no me out of redis");
+   });
 });
 
 function makeMintEntry(mint,geo,group,port,incomingIP,publickey,version,wallet, incomingTimestamp) {
