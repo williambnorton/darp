@@ -87,7 +87,7 @@ function handleShowState(req, res) {
             txt += '<table class="gSRlist" border="1">';
             txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>ClockSkew</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
             for (var entry in gSRlist) {
-               //console.log("gSRlist entry="+dump(entry));
+               console.log("gSRlist entry="+dump(entry));
                expressRedisClient.hgetall(entry, function (err,pulseEntry) {
                   txt+="<tr>"
                   //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
