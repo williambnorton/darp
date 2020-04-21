@@ -18,8 +18,8 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 var mintStack = 0;
-var DEFAULT_START_STATE = "HOLD";
-//const DEFAULT_START_STATE="RUNNING";
+//const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
+var DEFAULT_START_STATE = "RUNNING";
 if (DEFAULT_START_STATE == "HOLD") {
     console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
     console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
