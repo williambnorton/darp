@@ -58,6 +58,8 @@ if (!PUBLICKEY)
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0013";
     }
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+//from 
+redisClient.hmset("mint:0", "geo", GEO, "port", PORT, "publickey", PUBLICKEY, "wallet", WALLET, "MYIP", process.env.MYIP, "VERSION", process.env.VERSION, "HOSTNAME", process.env.HOSTNAME, "GENESIS", process.env.GENESIS);
 //GEO=GEO.toString().split('.').split(',');
 console.log("CONFIG GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
@@ -96,11 +98,6 @@ function getConfiguration() {
         res.on('end', function () {
             console.log("CONFIG data from EXPRESS=" + data);
             var config = JSON.parse(data);
-            console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
-            console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
-            console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
-            console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
-            console.log("CONFIG(): rc=" + config.rc + " isGenesisNode=" + config.isGenesisNode);
             //gME=json;  //set my global variable  for convenience
             console.log("CONFIG from node factory:" + JSON.stringify(config, null, 2));
             console.log("COMFIG: --------- " + GEO + " --------- configuration");
