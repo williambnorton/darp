@@ -18,8 +18,11 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 var mintStack = 1;
-var PUBLICKEY = "";
-expressRedisClient.hget("mint:0", "publickey", function (err, publickey) { PUBLICKEY = publickey; });
+var MYPUBLICKEY = "deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
+expressRedisClient.hgetall("mint:0", function (err, me) {
+    if (me != null)
+        MYPUBLICKEY = me.publickey;
+});
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 var DEFAULT_START_STATE = "RUNNING";
 if (DEFAULT_START_STATE != "RUNNING") {
@@ -391,13 +394,13 @@ app.get('/nodefactory', function (req, res) {
     console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
     //console.log("req="+dump(req.connection));
     // On Startup, only accept connections from me, and the test is that we have matching publickeys
-    console.log(lib_1.ts() + "mintStack=" + mintStack + " publickey=" + publickey + " ");
-    if (((mintStack == 1) && (publickey == PUBLICKEY)) || (mintStack != 1)) {
+    console.log(lib_1.ts() + "mintStack=" + mintStack + " publickey=" + publickey + " MYPUBLICKEY=" + MYPUBLICKEY);
+    if (((mintStack == 1) && (publickey == MYPUBLICKEY))
+        || (mintStack != 1)) {
         provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
             console.log(lib_1.ts() + "provisionNode CALLBACK gave use config=" + lib_1.dump(config));
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
-            "";
         });
     }
     else

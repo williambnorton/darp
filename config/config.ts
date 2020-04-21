@@ -61,7 +61,7 @@ try {
     console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
 } catch (err) {
     console.log("PUBLICKEY lookup failed");
-    PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
+    PUBLICKEY="deadbeef00deadbeef00deadbeef0013";
 }
 
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
