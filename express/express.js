@@ -463,11 +463,11 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             }); //mint:0 always is "me" we are GENESIS NODE
         }
         else {
-            expressRedisClient.hmgetall("mint:0", function (err, mint0) {
-                expressRedisClient.hmgetall("mint:1", function (err, mint1) {
+            expressRedisClient.hgetall("mint:0", function (err, mint0) {
+                expressRedisClient.hgetall("mint:1", function (err, mint1) {
                     var mint1 = mint0; //make a copy for readaibility
-                    expressRedisClient.hmgetall(mint1.geo + ":" + mint1.group, function (err, genesisGroupEntry) {
-                        expressRedisClient.hmgetall("gSRlist", function (err, gSRlist) {
+                    expressRedisClient.hgetall(mint1.geo + ":" + mint1.group, function (err, genesisGroupEntry) {
+                        expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                             var mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp);
                             expressRedisClient.hmset("mint:" + newMint, mintN, function (err, reply) {
                                 expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function (err, reply) {
@@ -490,6 +490,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                         rc: "0",
                                         ts: "" + lib_1.now()
                                     };
+                                    console.log(lib_1.ts() + "newMint=" + newMint + " " + lib_1.dump(config));
                                     callback(config);
                                     /*
                                     makeConfig(function (config) {
