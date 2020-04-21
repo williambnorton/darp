@@ -449,7 +449,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             expressRedisClient.hmset("mint:1", mint1); //create mint:1 as clone of mint:0
             //create the group entry while we are at it
             var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1");
-            expressRedisClient.hmset(geo + ":" + geo + ".1", genesisPulseGroupEntry);
+            expressRedisClient.hmset([geo + ":" + geo + ".1"], genesisPulseGroupEntry);
             expressRedisClient.hmset("gSRlist", geo + ":" + geo + ".1", "1");
         } //At this point we have mint:0 mint:1 and group Entry defined <-- this is enough for genesi node
         console.log(lib_1.ts() + "At this point we should have mint:0 mint:1 and group Entry defined... newMint=" + newMint);
@@ -464,6 +464,8 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp);
             expressRedisClient.hmset("mint:" + newMint, mintN);
             expressRedisClient.hmset("gSRlist", mint1.group, "" + newMint);
+            var newMintPulseGroupEntry = makePulseEntry(newMint, geo, mint1.group);
+            expressRedisClient.hmset([geo + ":" + mint1.group], newMintPulseGroupEntry);
             addMintToGenesisOWLsList(newMint, function (newOWLs) {
                 console.log(lib_1.ts() + "genesis newOWLs=" + newOWLs);
                 makeConfig(function (config) {
