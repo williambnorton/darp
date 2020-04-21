@@ -9,10 +9,8 @@ process.on('uncaughtException', function (err) {
     console.log("CONFIG: uncaughtException trap: "+err);
 }); 
 */
-console.log(ts()+"Launching config - should happen once");
 
 //      Environment is way for environment to control the code
-//if (! process.env.HOSTNAME || ! process.env.GENESIS || ! process.env.PUBLICKEY) {
 if (! process.env.HOSTNAME  ) {
     console.log("No HOSTNAME enviropnmental variable specified ");
     process.env.HOSTNAME=require('os').hostname();
@@ -67,7 +65,20 @@ try {
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
 //from 
+console.log(ts()+"setting mint:0 with environmental parms MYPUBLICKEY from redis");
 redisClient.hmset("mint:0","geo",GEO,"port",PORT,"publickey",PUBLICKEY,"wallet",WALLET,"MYIP",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
+console.log(ts()+"checking MYPUBLICKEY from redis");
+
+var MYPUBLICKEY="deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
+redisClient.hgetall("mint:0", function (err,me) {
+    console.log("CONFIG starting with me="+dump(me));
+   if (me!=null)
+      MYPUBLICKEY=me.publickey;
+    else {
+        console.log(ts()+"NO REDIS");
+        process.exit(36)
+    }
+});
 
 //GEO=GEO.toString().split('.').split(',');
 

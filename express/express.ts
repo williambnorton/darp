@@ -18,10 +18,16 @@ var express = require('express');
 var app = express();
 
 var mintStack=1;
+
 var MYPUBLICKEY="deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
 expressRedisClient.hgetall("mint:0", function (err,me) {
+    console.log("EXPRESS starting with me="+dump(me));
    if (me!=null)
-   MYPUBLICKEY=me.publickey;
+      MYPUBLICKEY=me.publickey;
+    else {
+        console.log(ts()+"NO REDIS");
+        process.exit(36)
+    }
 });
 
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code

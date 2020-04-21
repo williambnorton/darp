@@ -11,6 +11,16 @@ var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 var MYBUILD = "";
 var isGenesisNode = false;
+var MYPUBLICKEY = "deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
+redisClient.hgetall("mint:0", function (err, me) {
+    console.log("PULSER starting with me=" + lib_js_1.dump(me));
+    if (me != null)
+        MYPUBLICKEY = me.publickey;
+    else {
+        console.log(lib_js_1.ts() + "NO REDIS");
+        process.exit(36);
+    }
+});
 //
 //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
 //

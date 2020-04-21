@@ -20,8 +20,13 @@ var app = express();
 var mintStack = 1;
 var MYPUBLICKEY = "deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
 expressRedisClient.hgetall("mint:0", function (err, me) {
+    console.log("EXPRESS starting with me=" + lib_1.dump(me));
     if (me != null)
         MYPUBLICKEY = me.publickey;
+    else {
+        console.log(lib_1.ts() + "NO REDIS");
+        process.exit(36);
+    }
 });
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 var DEFAULT_START_STATE = "RUNNING";
