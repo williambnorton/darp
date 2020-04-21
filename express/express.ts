@@ -18,6 +18,8 @@ var express = require('express');
 var app = express();
 
 var mintStack=1;
+var PUBLICKEY="";
+expressRedisClient.hget("mint:0","publickey", function (err,publickey) { PUBLICKEY=publickey });
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 const DEFAULT_START_STATE="RUNNING";
 if (DEFAULT_START_STATE!="RUNNING") {
@@ -429,13 +431,15 @@ app.get('/nodefactory', function (req, res) {
    var version=req.query.version;
    console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
    //console.log("req="+dump(req.connection));
-
-   provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-      console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
-      res.setHeader('Content-Type', 'application/json');   
-      res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
-   }) 
-
+   // On Startup, only accept connections from me, and the test is that we have matching publickeys
+   console.log(ts()+"mintStack="+mintStack+" publickey="+publickey+" ");
+   if (((mintStack==1) && (publickey==PUBLICKEY)) || (mintStack!=1)) {
+      provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
+         console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
+         res.setHeader('Content-Type', 'application/json');   
+         res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
+ ``  }) 
+   } else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
 });
 
 function makeMintEntry(mint,geo,group,port,incomingIP,publickey,version,wallet, incomingTimestamp) {
@@ -540,7 +544,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                                  ts : ""+now()
                               }
 
-                              console.log(ts()+"newMint="+newMint+" "+dump(config);
+                              console.log(ts()+"newMint="+newMint+" "+dump(config));
                            
                               expressRedisClient.hmset(mint1.geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
                               //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);

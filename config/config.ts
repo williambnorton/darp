@@ -1,7 +1,7 @@
 //
 //  config.ts - Configure your node to connect to the pulseGroup
 //
-import { now, ts ,dump } from '../lib/lib.js';
+import { now, ts ,dump} from '../lib/lib.js';
 //      Configuration parameters - agreed to by all in the pulseGroup
 
 /*
