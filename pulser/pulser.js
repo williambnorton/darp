@@ -55,7 +55,7 @@ function publishMatrix() {
                     if (me != null && groupPulseEntry != null) {
                         redisClient.hgetall(entry, function (err, pulseEntry) {
                             if (pulseEntry) {
-                                console.log(lib_1.ts() + "publishMatrix(): entry=" + lib_1.dump(pulseEntry) + " me=" + lib_1.dump(me));
+                                //console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
                                 matrix.stack.unshift({ "geo": pulseEntry.geo, "mint": pulseEntry.srcMint, "owls": pulseEntry.owls });
                                 //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
                                 //matrix.owlList+=pulseEntry.owls+",";
@@ -86,7 +86,7 @@ function publishMatrix() {
                                         }
                                     }
                                     //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
-                                    console.log("publishMatrix(): publishing matrix=" + JSON.stringify(matrix));
+                                    //console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
                                     delete matrix.stack;
                                     redisClient.publish("matrix", JSON.stringify(matrix, null, 2));
                                 }

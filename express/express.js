@@ -450,7 +450,7 @@ function makePulseEntry(mint, geo, group) {
 //                         '*' means for non-Genesis nodes
 //                         
 function provisionNode(newMint, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, callback) {
-    console.log(lib_1.ts() + "provisionNode(): newMint=" + newMint + " geo=" + geo);
+    //console.log(ts()+"provisionNode(): newMint="+newMint+" geo="+geo);
     expressRedisClient.hgetall("mint:1", function (err, mint1) {
         //create mint and entry as if this was the genesis node
         var mint0 = makeMintEntry(newMint, geo, geo + ".1", port, incomingIP, publickey, version, wallet, incomingTimestamp);
@@ -467,7 +467,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                 config.rc = "0";
                                 config.ts = lib_1.now(); //give other side a notion of my clock when I sent this
                                 //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-                                console.log(lib_1.ts() + "EXPRESS:  Sending config:" + lib_1.dump(config));
+                                //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
                                 callback(config); //parent routine's callback
                             });
                         });
