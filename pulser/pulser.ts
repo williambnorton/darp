@@ -72,10 +72,13 @@ function publishMatrix() {
                 if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
                   //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
                   for (var node=matrix.stack.pop(); node!=null; node=matrix.stack.pop()) {
+                    if (typeof node.owls == "undefined") node.owls="";
+                    if (typeof node.mint == "undefined") node.mint="";
+
                     matrix.geoList.push(node.geo+":"+node.mint);
                     //console.log(ts()+"node="+dump(node));
                     if ((typeof node.owls == "undefined") ||
-                    (typeof node.owls == "undefined")) console.log("got apulseEntry w/no mint or owls: node.geo="+node.geo);
+                    (typeof node.mint == "undefined")) console.log("got apulseEntry w/no mint or owls: node.geo="+node.geo);
                     else {
                       var owlsAry=node.owls.split(",");
                       var toMint=node.mint;
