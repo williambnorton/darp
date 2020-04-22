@@ -74,7 +74,7 @@ function publishMatrix() {
                     matrix.geoList.push(node.geo+":"+node.mint);
                     //console.log(ts()+"node="+dump(node));
                     if ((typeof node.owls == "undefined") ||
-                    (typeof node.owls == "undefined")) console.log("got apulseEntry w/no mint or owls");
+                    (typeof node.owls == "undefined")) console.log("got apulseEntry w/no mint or owls: node.geo="+node.geo);
                     else {
                       var owlsAry=node.owls.split(",");
                       var toMint=node.mint;
