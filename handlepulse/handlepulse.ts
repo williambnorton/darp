@@ -13,17 +13,7 @@ var server = dgram.createSocket('udp4');
 var MYBUILD="";
 
 var isGenesisNode=false;
-var MYPUBLICKEY="deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
-redisClient.hgetall("mint:0", function (err,me) {
-  console.log("PULSER starting with me="+dump(me));
- if (me!=null)
-    MYPUBLICKEY=me.publickey;
-  else {
-      console.log(ts()+"NO REDIS");
-      process.exit(36)
-  }
-});
-
+console.log(ts()+"handlePulse: Starting");
 //
 //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
 //
@@ -33,7 +23,7 @@ redisClient.hgetall("mint:0", function (err,me) {
   } else {
     if (me==null) {
       console.log("handlePulse() - can't find me entry...exitting");
-      process.exit(50);  //no mint:0
+      process.exit(36);  //no mint:0
     }
     //console.log("handlePulse(): Configuration  me="+dump(me));
     MYBUILD=me.version;
@@ -70,12 +60,13 @@ function  authenticatedMessage(pulse, callback) {
     if (senderMintEntry==null) {
       console.log("authenticateMessage(): DROPPING We don't have a mint entry for this pulse:"+dump(pulse));
       //callback(null,false);
-    } else
+    } else {
       //simple authentication matches mint to other resources
-    if (senderMintEntry.geo==pulse.geo ) callback(null, true)
-    else {
-      console.log("authenticateMessage: unauthenticated packet - geo "+pulse.geo+" did not match our mint table"+dump(pulse)+dump(senderMintEntry.geo));
-      //callback(null,false)
+      if (senderMintEntry.geo==pulse.geo) callback(null, true)
+       else {
+          console.log("authenticateMessage: unauthenticated packet - geo "+pulse.geo+" did not match our mint table"+dump(pulse)+dump(senderMintEntry.geo));
+          //callback(null,false)
+       }
     }
   });
 }
