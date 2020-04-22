@@ -507,7 +507,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             rc: "0",
                                             ts: "" + lib_1.now()
                                         };
-                                        console.log(lib_1.ts() + "newMint=" + newMint + " " + lib_1.dump(config));
+                                        //console.log(ts()+"newMint="+newMint+" "+dump(config));
                                         expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
                                         //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
                                         callback(config);

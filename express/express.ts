@@ -549,7 +549,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                                  ts : ""+now()
                               }
 
-                              console.log(ts()+"newMint="+newMint+" "+dump(config));
+                              //console.log(ts()+"newMint="+newMint+" "+dump(config));
                            
                               expressRedisClient.hmset(mint1.geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
                               //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
