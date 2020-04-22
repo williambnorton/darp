@@ -62,10 +62,10 @@ function publishMatrix() {
                                 //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
                                 //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
                                 if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                                    console.log(lib_1.ts() + "READY TO ROCK. matrix=" + lib_1.dump(matrix));
+                                    //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
                                     for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
                                         matrix.geoList.push(node.geo + ":" + node.mint);
-                                        console.log(lib_1.ts() + "node=" + lib_1.dump(node));
+                                        //console.log(ts()+"node="+dump(node));
                                         if ((typeof node.owls == "undefined") ||
                                             (typeof node.owls == "undefined"))
                                             console.log("got apulseEntry w/no mint or owls");
