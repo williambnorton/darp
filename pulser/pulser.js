@@ -20,7 +20,7 @@ redisClient.hgetall("mint:0", function (err, me) {
         process.exit(36);
     }
 });
-var CYCLETIME = 10;
+var CYCLETIME = 10; //newMint(mint)
 console.log("PULSER: CYCLETIME=" + CYCLETIME);
 var GEO = ""; //global variable for marking source of pulse
 /*setInterval(
@@ -96,6 +96,83 @@ function publishMatrix() {
                 }
             });
         });
+    });
+}
+//
+//  newMint() - We received a new Mint in an announcement
+//              fetch the mintEntry from the group Owner and create a pulseGroup node entry
+//
+function newMint(mint) {
+    //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
+    if (isNaN(mint)) {
+        return console.log("newMint(" + mint + "): bad mint: " + mint);
+    }
+    var http = require("http");
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/mint/" + mint;
+        //console.log("FETCHMINT              fetchMint(): url="+url);
+        http.get(url, function (res) {
+            res.setEncoding("utf8");
+            var body = "";
+            res.on("data", function (data) {
+                body += data;
+            });
+            res.on("end", function () {
+                var mintEntry = JSON.parse(body);
+                if (mintEntry == null || typeof mintEntry.geo == "undefined") {
+                    console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
+                }
+                else {
+                    //console.log("mint:"+mint+"="+dump(mintEntry));
+                    redisClient.hmset("mint:" + mint, mintEntry, function (err, reply) {
+                        console.log("mint:" + mint + "=" + lib_1.dump(mintEntry) + " WRITTEN TO REDIS");
+                        var newSegmentEntry = {
+                            "geo": mintEntry.geo,
+                            "group": mintEntry.group,
+                            "seq": "0",
+                            "pulseTimestamp": "0",
+                            "srcMint": "" + mint,
+                            // =
+                            "owls": "",
+                            //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                            //node statistics - we measure these ourselves
+                            "owl": "",
+                            "inOctets": "0",
+                            "outOctets": "0",
+                            "inMsgs": "0",
+                            "outMsgs": "0",
+                            "pktDrops": "0" //as detected by missed seq#
+                            //"remoteState": "0"   //and there are mints : owls for received pulses 
+                        };
+                        //console.log("newSegmentEntry="+dump(newSegmentEntry));
+                        redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
+                        //console.log("Past first set");
+                        redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
+                            var _a;
+                            console.log("FETCHED MINT - NOW MAKE AN ENTRY " + mintEntry.geo + ":" + mintEntry.group + " -----> ADDED New Segment: " + lib_1.dump(newSegment));
+                            redisClient.hmset("gSRlist", (_a = {},
+                                _a[mintEntry.geo + ":" + mintEntry.group] = mint,
+                                _a));
+                            //
+                            //  if Genesis node, expire in 1 minute before removing it
+                            //  else 5 minutes
+                            //redisClient.ttl(mintEntry.geo+":"+mintEntry.group, function(err,ttl) {
+                            //  console.log("ttl="+ttl);
+                            //});
+                            if (mintEntry.geo == mintEntry.group.split(".")[0]) {
+                                //GENESIS NODE RECORD
+                                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*3)  //expire genesis record 
+                                //by removing this entry, the owls don't exist, noone will get pulsed
+                            }
+                            else {
+                                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
+                            }
+                            redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);
+                        });
+                    });
+                }
+            });
+        }); //res.on end
     });
 }
 //
@@ -175,7 +252,6 @@ function pulse(flag) {
     });
     //datagramClient.close();
 }
-exports.pulse = pulse;
 //
 //  buildPulsePkt() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
@@ -271,6 +347,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     console.log("NOT GETTING HERE EEVR PULSER sendToAry=" + lib_1.dump(sendToAry));
                 }
             }
+            else
+                newMint(mint); //go fetch the mint from the group owner - the genesis node
         }
     });
 }
