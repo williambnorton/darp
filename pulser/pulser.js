@@ -88,7 +88,7 @@ function publishMatrix() {
                                     //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
                                     console.log("publishMatrix(): publishing matrix=" + JSON.stringify(matrix));
                                     delete matrix.stack;
-                                    redisClient.publish("matrix", matrix);
+                                    redisClient.publish("matrix", JSON.stringify(matrix, null, 2));
                                 }
                             }
                         });
