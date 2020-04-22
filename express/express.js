@@ -306,7 +306,7 @@ function makeConfig(callback) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             console.log("gSRlist=" + lib_1.dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
-                console.log("getConfig(): callback config=" + lib_1.dump(config));
+                //console.log("getConfig(): callback config="+dump(config));
                 callback(config); //call sender
             });
         });
