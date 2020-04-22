@@ -362,7 +362,7 @@ function fetchConfig(gSRlist, config, callback) {
 app.get('/nodefactory', function (req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me != null) {
-            console.log('****EXPRESS; config requested with params: ' + lib_1.dump(req.query));
+            //console.log('****EXPRESS; config requested with params: '+dump(req.query));
             //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
             var geo = req.query.geo;
             var publickey = req.query.publickey;
@@ -388,14 +388,14 @@ app.get('/nodefactory', function (req, res) {
             }
             //console.log("req="+dump(req));
             var version = req.query.version;
-            console.log("EXPRESS /nodefactory geo=" + geo + " publickey=" + publickey + " port=" + port + " wallet=" + wallet + " incomingIP=" + incomingIP + " version=" + version);
+            //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
             //console.log("req="+dump(req.connection));
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
             console.log(lib_1.ts() + "mintStack=" + mintStack + " publickey=" + publickey);
             if (((mintStack == 1) && (me.MYIP == me.GENESIS))
                 || (mintStack != 1)) {
                 provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-                    console.log(lib_1.ts() + "provisionNode CALLBACK gave use config=" + lib_1.dump(config));
+                    //console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
                 });
