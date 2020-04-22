@@ -92,7 +92,7 @@ function handleShowState(req, res) {
                             //txt += "<td>" + mintEntry.mint + "</td>";
                             txt += "<td>10.10.0." + mintEntry.mint + "</td>";
                             if (pulseEntry.inMsgs <= 1 || pulseEntry.pulseTimestamp == 0) {
-                                mintEntry.state = "OFF-LINE";
+                                mintEntry.state = "WAITING";
                             }
                             else {
                                 if (lib_1.now() - pulseEntry.pulseTimestamp > (30 * 1000)) {
@@ -100,7 +100,7 @@ function handleShowState(req, res) {
                                     //var lastPulse=timeNow-pulseEntry.pulseTimestamp
                                     //var bootSkew=timeNow-mintEntry.bootTime
                                     //console.log(" bootSkew="+bootSkew+"   timeNow="+timeNow+" pulseEntry.pulseTimestamp="+pulseEntry.pulseTimestamp+" "+"mintEntry.bootTime="+mintEntry.bootTime);
-                                    mintEntry.state = "NO_PULSE";
+                                    mintEntry.state = "BUSY";
                                 }
                             }
                             txt += "<td>" + mintEntry.state + "</td>";
