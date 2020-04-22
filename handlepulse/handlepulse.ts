@@ -138,29 +138,6 @@ server.on('message', function(message, remote) {
 
       storeOWL(pulse.geo,me.geo,OWL);
 
-      //
-      //  if groupOwner pulsed this - make sure we have the credentials for each node
-      //
-      //console.log("pulse="+dump(pulse));
-
-        //console.log("HANDLEPULSE() pulse from Genesis node");
-        var mints=pulse.owls.replace(/=-?[0-9]*/g,'').split(",");
-        //console.log("HANDLEPULSE() mints="+mints+" pulse.owls="+pulse.owls);
-
-        // if we get a mint from the groupOwner that we don't know about, fetch it
-        for (var mint in mints) {
-          let mintLabel=mints[mint];
-          //console.log("HANDLEPULSE mint="+mint+" mints="+mints+" mintLabel="+dump(mintLabel))
-          redisClient.hget("mint:"+mintLabel, "mint", function (err,mintValue) {
-            if (err) console.log("handlePulse - error checking mint exists. ERROR - should not happen");
-            //console.log("HANDLEPULSE "+mintLabel+" mintValue="+mintValue)
-            if (!mintValue ) {
-              console.log("Fetching mint="+mintLabel+" for "+pulse.geo+" from genesis Node");
-              newMint(mintLabel);  //new Mint
-            }
-
-          });
-        }
  
     });
   });

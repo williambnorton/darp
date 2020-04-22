@@ -102,6 +102,7 @@ redisClient.hmset("mint:0",{
     "owl": ""   //how long it took this node's last record to reach me
  });
 */
+
 getConfiguration();  //later this should start with just an IP of genesis node 
 
 function getConfiguration() {
