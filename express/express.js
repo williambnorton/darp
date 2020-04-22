@@ -18,6 +18,7 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 var mintStack = 1;
+var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 var DEFAULT_START_STATE = "RUNNING";
 if (DEFAULT_START_STATE != "RUNNING") {
@@ -391,7 +392,7 @@ app.get('/nodefactory', function (req, res) {
             //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
             //console.log("req="+dump(req.connection));
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
-            console.log(lib_1.ts() + "mintStack=" + mintStack + " publickey=" + publickey);
+            console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey);
             if (((mintStack == 1) && (me.MYIP == me.GENESIS))
                 || (mintStack != 1)) {
                 provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
@@ -420,7 +421,7 @@ function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, w
         "bootTime": "" + incomingTimestamp,
         "version": version,
         "wallet": wallet,
-        "SHOWPULSES": "1",
+        "SHOWPULSES": DEFAULT_SHOWPULSES,
         "owl": "",
         "isGenesisNode": (mint == 1) ? "1" : "0",
         "clockSkew": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
