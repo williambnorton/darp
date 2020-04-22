@@ -66,18 +66,23 @@ function publishMatrix() {
                                     for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
                                         matrix.geoList.push(node.geo + ":" + node.mint);
                                         console.log(lib_1.ts() + "node=" + lib_1.dump(node));
-                                        var owlsAry = node.owls.split(",");
-                                        var toMint = node.mint;
-                                        //array of      3=34, 5=12, 6, 7, 8=23
-                                        for (var i in owlsAry) {
-                                            var fromMint = owlsAry[i].split("=")[0];
-                                            var owl = owlsAry[i].split("=")[1];
-                                            if (typeof owl == "undefined")
-                                                owl = "";
-                                            //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
-                                            var owlMeasure = "" + fromMint + ">" + toMint + "=" + owl;
-                                            //console.log(ts()+"owlMeasure="+owlMeasure);
-                                            matrix.owl.push(owlMeasure);
+                                        if ((typeof node.owls == "undefined") ||
+                                            (typeof node.owls == "undefined"))
+                                            console.log("got apulseEntry w/no mint or owls");
+                                        else {
+                                            var owlsAry = node.owls.split(",");
+                                            var toMint = node.mint;
+                                            //array of      3=34, 5=12, 6, 7, 8=23
+                                            for (var i in owlsAry) {
+                                                var fromMint = owlsAry[i].split("=")[0];
+                                                var owl = owlsAry[i].split("=")[1];
+                                                if (typeof owl == "undefined")
+                                                    owl = "";
+                                                //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
+                                                var owlMeasure = "" + fromMint + ">" + toMint + "=" + owl;
+                                                //console.log(ts()+"owlMeasure="+owlMeasure);
+                                                matrix.owl.push(owlMeasure);
+                                            }
                                         }
                                     }
                                     //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
