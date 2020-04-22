@@ -55,14 +55,14 @@ function publishMatrix() {
                     if (me != null && groupPulseEntry != null) {
                         redisClient.hgetall(entry, function (err, pulseEntry) {
                             if (pulseEntry) {
-                                //console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
+                                console.log(lib_1.ts() + "publishMatrix(): entry=" + lib_1.dump(pulseEntry) + " me=" + lib_1.dump(me));
                                 matrix.stack.unshift({ "geo": pulseEntry.geo, "mint": pulseEntry.srcMint, "owls": pulseEntry.owls });
                                 //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
                                 //matrix.owlList+=pulseEntry.owls+",";
                                 //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
                                 //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
                                 if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                                    //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
+                                    console.log(lib_1.ts() + "READY TO ROCK. matrix=" + lib_1.dump(matrix));
                                     for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
                                         matrix.geoList.push(node.geo + ":" + node.mint);
                                         console.log(lib_1.ts() + "node=" + lib_1.dump(node));
@@ -81,7 +81,7 @@ function publishMatrix() {
                                         }
                                     }
                                     //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
-                                    //console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
+                                    console.log("publishMatrix(): publishing matrix=" + JSON.stringify(matrix));
                                     delete matrix.stack;
                                     redisClient.publish("matrix", JSON.stringify(matrix));
                                 }
