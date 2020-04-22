@@ -72,6 +72,7 @@ function publishMatrix() {
                   //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
                   for (var node=matrix.stack.pop(); node!=null; node=matrix.stack.pop()) {
                     matrix.geoList.push(node.geo+":"+node.mint);
+                    console.log(ts()+"node="+dump(node));
                     var owlsAry=node.owls.split(",");
                     var toMint=node.mint;
                     //array of      3=34, 5=12, 6, 7, 8=23
