@@ -130,7 +130,7 @@ do
     sleep 1
 
 
-echo `date` SLEEPING 30 seconds; sleep 30
+echo `date` SLEEPING 300 seconds; sleep 300
 
 
     cd $DARPDIR
