@@ -74,10 +74,14 @@ getConfiguration();  //later this should start with just an IP of genesis node
 function getConfiguration() {
     var URL="http://"+process.env.GENESIS+":"+"65013/"
     var hostname=process.env.HOSTNAME||"noHostName"
-    var geo=hostname.split(".")[0]
+    var geo=hostname.split(".")[0].toUpperCase();
     var port=process.env.PORT||"65013"
-    URL=URL+encodeURI("nodefactory?geo="+geo+"&port="+port||"65013"+"&publickey="+process.env.PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+process.env.WALLET+"&myip="+process.env.MYIP+"&ts="+now());
+    URL=URL+encodeURI("nodefactory?geo="+geo+"&port="+port+"&publickey="+process.env.PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+process.env.WALLET+"&myip="+process.env.MYIP+"&ts="+now());
     
+    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
+    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
+    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
+    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
     console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
 
     //FETCH CONFIG
