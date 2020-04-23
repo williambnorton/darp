@@ -21,6 +21,7 @@ echo `date` "------------------ $0 STARTING --------------------"
 
 export DARPDIR=$HOME/darp
 if ["$PORT" = "" ]; then; PORT=65013; fi;
+export PORT
 echo PORT=$PORT
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
@@ -128,6 +129,10 @@ do
     echo $$ > $DARPDIR/config.pid
     echo `date` Starting config to fetch config and code from genesis node
     sleep 1
+
+
+echo `date` SLEEPING 30 seconds; sleep 30
+
 
     cd $DARPDIR
     cd $DARPDIR/pulser
