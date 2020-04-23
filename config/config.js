@@ -51,36 +51,12 @@ redisClient.flushall(); //clean slate
 var GEO = process.env.HOSTNAME; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT = process.env.PORT || "65013"; //passed into docker
-/*
-var PUBLICKEY=process.env.PUBLICKEY;
-if (!PUBLICKEY)
-try {
-    PUBLICKEY=require('fs').readFileSync('../wireguard/publickey', 'utf8');
-    PUBLICKEY=PUBLICKEY.replace(/^\n|\n$/g, '');
-    console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
-} catch (err) {
-    console.log("PUBLICKEY lookup failed");
-    PUBLICKEY="deadbeef00deadbeef00deadbeef0013";
-}
-*/
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //from 
-console.log(lib_js_1.ts() + "setting mint:0 with environmental parms MYPUBLICKEY from redis");
 redisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "MYIP", process.env.MYIP, "VERSION", process.env.VERSION, "HOSTNAME", process.env.HOSTNAME, "GENESIS", process.env.GENESIS);
-console.log(lib_js_1.ts() + "checking MYPUBLICKEY from redis");
-var MYPUBLICKEY = "deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
-redisClient.hgetall("mint:0", function (err, me) {
-    console.log("CONFIG starting with me=" + lib_js_1.dump(me));
-    if (me != null)
-        MYPUBLICKEY = me.publickey;
-    else {
-        console.log(lib_js_1.ts() + "NO REDIS");
-        process.exit(36);
-    }
-});
 //GEO=GEO.toString().split('.').split(',');
 console.log("CONFIG GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
-console.log("CONFIG starting with GEO=" + GEO + " publickey=" + PUBLICKEY + " PORT=" + PORT + " WALLET=" + WALLET + "");
+console.log("CONFIG starting with GEO=" + GEO + " PORT=" + PORT + " WALLET=" + WALLET + "");
 /*
 //  mint:0 is me  and  mint:1 is Genesis node
 redisClient.hmset("mint:0",{
