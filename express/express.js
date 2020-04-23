@@ -392,7 +392,7 @@ app.get('/nodefactory', function (req, res) {
             //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
             //console.log("req="+dump(req.connection));
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
-            console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey);
+            //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey);
             if (((mintStack == 1) && (me.MYIP == me.GENESIS))
                 || (mintStack != 1)) {
                 provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
