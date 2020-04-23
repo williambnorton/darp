@@ -12,9 +12,11 @@ var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
 redisClient.hgetall("mint:0", function (err,me) {
-  if (me==null) {
-    console.log(ts()+"handlePulse(): Started without redis mint:0 configured");
-    process.exit(36)
+  console.log("HANDLEPULSE starting with me="+dump(me));
+  if (me!=null){
+  } else {
+      console.log(ts()+"HANDLEPULSE NO REDIS");
+      process.exit(36)
   }
 });
 
