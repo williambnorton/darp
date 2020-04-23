@@ -50,7 +50,8 @@ function handleShowState(req, res) {
       var insert="";
 
       expressRedisClient.hgetall("mint:1", function (err,genesis) {
-         
+         if (genesis==null) return console.log("handleShowState(): WEIRD: NULL mint:1 genesis");
+
          if (me.isGenesisNode==1) {
            //console.log(ts()+"handleShowState() ***** GENESIS");
            insert = 'style="background-color: beige;"';
@@ -492,6 +493,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                         //console.log(ts()+"makeConfig");
                         config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
                         config.rc="0";
+                        config.isGenesisNode="1";
                         config.ts=now();  //give other side a notion of my clock when I sent this
                         //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
                         //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
@@ -530,6 +532,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                                     [geo+":"+mint1.group] : newNodePulseEntry
                                  },
                                  rc : "0",
+                                 isGenesisNode : "0",
                                  ts : ""+now()
                               }
 
