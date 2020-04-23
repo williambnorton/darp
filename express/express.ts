@@ -73,7 +73,7 @@ GEO=GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT=process.env.PORT||"65013";         //passed into docker
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //from 
-expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"MYIP",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
+expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"myip",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
 expressRedisClient.hmset("mint:0","publickey",PUBLICKEY);//we need this to authenticate self as genesis
 
 expressRedisClient.hgetall("mint:0", function (err,me) {
@@ -460,7 +460,7 @@ app.get('/nodefactory', function (req, res) {
          var wallet=req.query.wallet||"";
          var incomingTimestamp=req.query.ts;
 
-         var incomingIP=req.query.MYIP;  /// for now we believe the node's IP
+         var incomingIP=req.query.myip;  /// for now we believe the node's IP
          var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
          if (incomingIP=="noMYIP") incomingIP=clientIncomingIP;
          if (typeof incomingIP == "undefined") return console.log(ts()+"ERROR: incomingIP unavailable from geo="+geo);;

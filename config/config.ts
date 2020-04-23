@@ -76,7 +76,7 @@ function getConfiguration() {
     var hostname=process.env.HOSTNAME||"noHostName"
     var geo=hostname.split(".")[0].toUpperCase();
     var port=process.env.PORT||"65013"
-    URL=URL+encodeURI("nodefactory?geo="+geo+"&port="+port+"&publickey="+process.env.PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+process.env.WALLET+"&myip="+process.env.MYIP+"&ts="+now());
+    URL=URL+encodeURI("nodefactory?geo="+geo+"&port="+port+"&publickey="+process.env.PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+process.env.WALLET+"&MYIP="+process.env.MYIP+"&ts="+now());
     
     console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
     console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
