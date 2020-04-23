@@ -417,13 +417,15 @@ app.get('/nodefactory', function (req, res) {
          //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
          //console.log("req="+dump(req.connection));
          // On Startup, only accept connections from me, and the test is that we have matching publickeys
-         //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey);
+         console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
          console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
+         if ((mintStack==1 && publickey==me.publickey) || (mintStack!=1)) {   
             provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
                console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
                res.setHeader('Content-Type', 'application/json');   
                res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
             }) 
+         }
          //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
       } else console.log("EXPRESS has no me out of redis");
    });
