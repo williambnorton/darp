@@ -14,6 +14,8 @@ import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimeP
 const expressRedis = require('redis');
 
 var expressRedisClient = expressRedis.createClient(); //creates a new client
+expressRedisClient.flushall();    //clean slate
+
 var express = require('express');
 var app = express();
 

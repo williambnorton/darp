@@ -53,8 +53,10 @@ var http = require('http');
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-redisClient.flushall();    //clean slate
 
+redisClient.hgetall("mint:0", function(err,me) {
+    var PUBLICKEY=me.publickey;
+});//we need this to authenticate self as genesis
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO=process.env.HOSTNAME;   //passed into docker
 GEO=GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
@@ -87,9 +89,7 @@ redisClient.hmset("mint:0",{
     "owl": ""   //how long it took this node's last record to reach me
  });
 */
-redisClient.hgetall("mint:0", function(err,me) {
-    var PUBLICKEY=me.publickey;
-});//we need this to authenticate self as genesis
+
 
 getConfiguration();  //later this should start with just an IP of genesis node 
 

@@ -15,6 +15,7 @@ var lib_1 = require("../lib/lib");
 //import { pulse } from '../pulser/pulser'
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
+expressRedisClient.flushall(); //clean slate
 var express = require('express');
 var app = express();
 var mintStack = 1;
