@@ -17,18 +17,11 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 
-
-
 var mintStack=1;
 
 const DEFAULT_SHOWPULSES="1"
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
-const DEFAULT_START_STATE="HOLD";
-if (DEFAULT_START_STATE!="RUNNING") {
-   console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
-   console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
-   console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
-}
+const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
 
 //function getMatrix() {
 //   expressRedisClient.subscribe("pulses", function (matrix) {
@@ -425,14 +418,13 @@ app.get('/nodefactory', function (req, res) {
          //console.log("req="+dump(req.connection));
          // On Startup, only accept connections from me, and the test is that we have matching publickeys
          //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey);
-         if (  ((mintStack==1) && (me.MYIP==me.GENESIS)) 
-            || (mintStack!=1)) {
+         console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
             provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
                //console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
                res.setHeader('Content-Type', 'application/json');   
                res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
-         }) 
-         } else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
+            }) 
+         //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
       } else console.log("EXPRESS has no me out of redis");
    });
 });

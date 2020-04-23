@@ -21,11 +21,7 @@ var mintStack = 1;
 var DEFAULT_SHOWPULSES = "1";
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 var DEFAULT_START_STATE = "HOLD";
-if (DEFAULT_START_STATE != "RUNNING") {
-    console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
-    console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
-    console.log(lib_1.ts() + "EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
-}
+console.log(lib_1.ts() + "EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
 //function getMatrix() {
 //   expressRedisClient.subscribe("pulses", function (matrix) {
 //      console.log(ts()+"getMatrix(): matrix="+dump(matrix));
@@ -384,16 +380,13 @@ app.get('/nodefactory', function (req, res) {
             //console.log("req="+dump(req.connection));
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
             //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey);
-            if (((mintStack == 1) && (me.MYIP == me.GENESIS))
-                || (mintStack != 1)) {
-                provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-                    //console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
-                    res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
-                });
-            }
-            else
-                console.log("EXPRESS: Received pulse from " + geo + "(" + incomingIP + ") before my genesis node was set up. IGNORING.");
+            console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
+            provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
+                //console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
+            });
+            //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
         }
         else
             console.log("EXPRESS has no me out of redis");
