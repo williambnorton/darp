@@ -21,7 +21,7 @@ var app = express();
 
 var mintStack=1;
 
-const DEFAULT_SHOWPULSES="0"
+const DEFAULT_SHOWPULSES="1"
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 const DEFAULT_START_STATE="RUNNING";
 if (DEFAULT_START_STATE!="RUNNING") {
@@ -507,7 +507,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                expressRedisClient.hmset(mint1.geo+":"+mint1.group, genesisPulseGroupEntry, function (err,reply){  // genesisGroupPulseEntry
                   expressRedisClient.hmset("gSRlist",mint1.geo+":"+mint1.group,"1", function (err,reply){ //Add our Genesis Group Entry to the gSRlist
                      makeConfig(function (config) {
-                        console.log(ts()+"makeConfig");
+                        //console.log(ts()+"makeConfig");
                         config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
                         config.rc="0";
                         config.ts=now();  //give other side a notion of my clock when I sent this
