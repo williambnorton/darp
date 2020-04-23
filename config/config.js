@@ -34,7 +34,7 @@ if (!process.env.VERSION) {
     console.log("No VERSION enviropnmental variable specified - setting to noVersion");
     process.env.VERSION = lib_js_1.MYVERSION();
 }
-console.log(lib_js_1.ts() + "process.env.VERSION=" + VERSION);
+console.log(lib_js_1.ts() + "process.env.VERSION=" + process.env.VERSION);
 if (!process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
     process.env.MYIP = "noMYIP";
