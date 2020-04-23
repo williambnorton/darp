@@ -25,13 +25,20 @@ redisClient.hgetall("mint:0", function (err,me) {
 
 var CYCLETIME=10; //newMint(mint)
 
+
+
 console.log("PULSER: CYCLETIME="+CYCLETIME);
 
 var GEO="";  //global variable for marking source of pulse
-/*setInterval(
-  () => pulse,
-  10000
-);*/
+setInterval(
+  () => checkAdminControl,
+  1000
+);
+function checkAdminControl() {
+  redisClient.hgetall("mint:0", function(err,me) {
+    if (me.adminControl=="PULSE") {pulse();redisClient.hset("mint:0","adminControl","")}
+});
+
 setTimeout(pulse,1000);
 var datagramClient=dgram.createSocket('udp4');
 

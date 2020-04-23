@@ -303,15 +303,15 @@ app.get('/hold', function (req, res) {
 app.get('/pulseMsg', function (req, res) {
    expressRedisClient.hgetall( "mint:0", function (err,me) {
       expressRedisClient.hmset( "mint:"+me.mint, {
-         state : "PULSE",
+         adminControl : "PULSE",
          SHOWPULSE : "1"
       });
       expressRedisClient.hmset( "mint:0", {
-         state : "RUNNING",
+         adminControl : "",
          SHOWPULSE : "1"
       });
       console.log(ts()+"pulse(1) somehow here");
-      oneTimePulse();
+      
       console.log(ts()+"One time PULSE SENT");
 //      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
       res.redirect(req.get('referer'));
