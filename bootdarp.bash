@@ -20,7 +20,8 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 
 export DARPDIR=$HOME/darp
-export PORT=$PORT || 65013
+if ["$PORT" = "" ]; then; PORT=65013; fi;
+echo PORT=$PORT
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 MYIP=`curl ifconfig.io`
