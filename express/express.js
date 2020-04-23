@@ -382,7 +382,7 @@ app.get('/nodefactory', function (req, res) {
             //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey);
             console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
             provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-                //console.log(ts()+"provisionNode CALLBACK gave use config="+dump(config));
+                console.log(lib_1.ts() + "EXPRESS nodeFactory sending config=" + lib_1.dump(config));
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
             });
