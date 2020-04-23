@@ -20,6 +20,7 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 
 export DARPDIR=$HOME/darp
+export PORT=$PORT || 65013
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 MYIP=`curl ifconfig.io`
@@ -160,22 +161,22 @@ do
     if [ $rc -eq 1 ]; then
         echo "rc=1"
     else
-    if [ $rc -ne 36 ]; then
-        echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
-        echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-        echo `date` "$0 result: unexpected rc out of handlepulse rc=$rc"
-        if [ "$GENESISIP" = "$MYIP" ]; then
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-            echo `date` "Ctrl-C detected --OR-- Genesis node needs updated code  "
-            exit -1
-        else
-            echo `date` "Ctrl-C detected for non-genesis node"
+        if [ $rc -ne 36 ]; then
+            echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+            echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
+            echo `date` "$0 result: unexpected rc out of handlepulse rc=$rc"
+            if [ "$GENESISIP" = "$MYIP" ]; then
+                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
+                echo `date` "Ctrl-C detected --OR-- Genesis node needs updated code  "
+                exit -1
+            else
+                echo `date` "Ctrl-C detected for non-genesis node"
+            fi
         fi
-    fi
     fi
     echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
