@@ -23,7 +23,7 @@ var mintStack=1;
 
 const DEFAULT_SHOWPULSES="1"
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
-const DEFAULT_START_STATE="RUNNING";
+const DEFAULT_START_STATE="HOLD";
 if (DEFAULT_START_STATE!="RUNNING") {
    console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");
    console.log(ts()+"EXPRESS ALL NODES START IN HOLD (no pulsing) Mode");

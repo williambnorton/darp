@@ -123,15 +123,9 @@ function getConfiguration() {
         })
 
         res.on('end', function () {
-            console.log("CONFIG data from EXPRESS="+data);
-            var config = JSON.parse(data);
-            
-            //gME=json;  //set my global variable  for convenience
-            console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
-
+            var config = JSON.parse(data);            
             console.log("COMFIG: --------- " +GEO+" --------- configuration");
-            //console.log("CONFIG(): json="+dump(config));
-            //console.log("setting gSRlist="+dump(config.gSRlist));
+            console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
             if (config.isGenesisNode==true) {
                 console.log(ts()+"CONFIG GENESIS node already configured");
@@ -142,22 +136,18 @@ function getConfiguration() {
                 //install config
                 for (var mint in config.mintTable) {
                     var mintEntry=config.mintTable[mint];
-                    console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));
+                    //console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));
                     redisClient.hmset(mint, mintEntry);
                 }
 
                 for (var pulse in config.pulses) {
                     var pulseEntry=config.pulses[pulse];
-                    console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
+                    //console.log("add pulse:"+pulse+" pulseEntry="+dump(pulseEntry));
                     redisClient.hmset(pulse, pulseEntry);
 
                     redisClient.publish("members","ADDED "+pulseEntry.geo)
                 }
 
-                //    console.log("genesis done "+json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );
-                //    redisClient.hmset( json.newSegmentEntry.geo+  ":"+json.newSegmentEntry.group ,   json.newSegmentEntry );    
-
-                console.log("new node config done");
             }
         });
     });
