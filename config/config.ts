@@ -33,6 +33,7 @@ if (! process.env.VERSION) {
 if (! process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
     process.env.MYIP="noMYIP"
+    MYIP();
 }
 
 //  me - my internal state and pointer to genesis

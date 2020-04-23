@@ -32,6 +32,7 @@ if (!process.env.VERSION) {
 if (!process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
     process.env.MYIP = "noMYIP";
+    MYIP();
 }
 //import { generateKeyPairSync } from "crypto";
 //import { getUnpackedSettings } from "http2";
