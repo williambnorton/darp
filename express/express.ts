@@ -9,7 +9,7 @@
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimePulse } from '../lib/lib';
+import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimePulse, MYIP, MYVERSION } from '../lib/lib';
 //import { pulse } from '../pulser/pulser'
 const expressRedis = require('redis');
 
@@ -20,6 +20,39 @@ var express = require('express');
 var app = express();
 
 var mintStack=1;
+
+//      Environment is way for environment to control the code
+if (! process.env.DARPDIR  ) {
+   console.log("No DARPDIR enviropnmental variable specified ");
+   process.env.DARPDIR=process.env.HOME+"/darp"
+   console.log("DARPDIR defaulted to "+process.env.DARPDIR);
+}
+
+if (! process.env.HOSTNAME  ) {
+   console.log("No HOSTNAME enviropnmental variable specified ");
+   process.env.HOSTNAME=require('os').hostname().split(".")[0];
+   console.log("setting HOSTNAME to "+process.env.HOSTNAME);
+}
+
+if (! process.env.GENESIS  ) {
+   console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT");
+   process.env.GENESIS="71.202.2.184"
+   process.env.PORT="65013"
+}
+if (! process.env.PORT) {
+   console.log("No PORT enviropnmental variable specified - setting DEFAULT GENESIS PORT");
+   process.env.PORT="65013"
+}
+if (! process.env.VERSION) {
+   console.log("No VERSION enviropnmental variable specified - setting to noVersion");
+   process.env.VERSION=MYVERSION()
+}
+console.log(ts()+"process.env.VERSION="+process.env.VERSION);
+if (! process.env.MYIP) {
+   console.log("No MYIP enviropnmental variable specified ");
+   process.env.MYIP="noMYIP"
+   MYIP();
+}
 var PUBLICKEY=process.env.PUBLICKEY;
 if (!PUBLICKEY)
 try {
@@ -30,20 +63,19 @@ try {
     console.log("PUBLICKEY lookup failed");
     PUBLICKEY="deadbeef00deadbeef00deadbeef0013";
 }
-expressRedisClient.hmset("mint:0","publickey",PUBLICKEY);//we need this to authenticate self as genesis
 
+var GEO=process.env.HOSTNAME;   //passed into docker
+GEO=GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
+var PORT=process.env.PORT||"65013";         //passed into docker
+var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+//from 
+expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"MYIP",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
+expressRedisClient.hmset("mint:0","publickey",PUBLICKEY);//we need this to authenticate self as genesis
 
 const DEFAULT_SHOWPULSES="1"
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
 //const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
-
-//function getMatrix() {
-//   expressRedisClient.subscribe("pulses", function (matrix) {
-//      console.log(ts()+"getMatrix(): matrix="+dump(matrix));
-//   });
-//}
-//getMatrix();
 
 //
 //      handleShowState(req,res) - show the node state
