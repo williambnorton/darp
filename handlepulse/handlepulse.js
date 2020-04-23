@@ -10,17 +10,20 @@ var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
-redisClient.hgetall("mint:0", function (err, me) {
-    console.log("HANDLEPULSE starting with me=" + lib_js_1.dump(me));
-    if (me != null) {
-    }
-    else {
-        console.log(lib_js_1.ts() + "HANDLEPULSE NO REDIS");
-        process.exit(36);
-    }
-});
 var MYBUILD = "";
 var isGenesisNode = false;
+redisClient.hgetall("mint:0", function (err, me) {
+    console.log("HANDLEPULSE starting with me=" + lib_js_1.dump(me));
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        if (me == null) {
+            console.log(lib_js_1.ts() + "HANDLEPULSE started with no genesis mint:1");
+            process.exit(36);
+        }
+        else {
+            console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
+        }
+    });
+});
 console.log(lib_js_1.ts() + "handlePulse: Starting");
 //
 //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
@@ -28,21 +31,8 @@ console.log(lib_js_1.ts() + "handlePulse: Starting");
 redisClient.hgetall("mint:0", function (err, me) {
     //console.log("handlePulse(): Configuration  me="+dump(me));
     MYBUILD = me.version;
-    redisClient.hgetall("mint:1", function (err, genesis) {
-        if (err) {
-            console.log("HANDLEPULSE(): hgetall genesis failed");
-        }
-        else {
-            console.log("HANDLEPULSE(): genesis=" + lib_js_1.dump(genesis));
-            if (genesis == null) {
-                console.log(lib_js_1.ts() + "HANDLEPULSE(): received pulse before mint:1 setup ");
-                return console.log(lib_js_1.ts() + "HANDLEPULSE(): Weird - mint:1 (GENESIS NODE) is NULL - ignoring by returning");
-            }
-            if (genesis && (genesis.publickey == me.publickey))
-                isGenesisNode = true;
-        }
-    });
-    console.log(lib_js_1.ts() + "handlepulse(): Bingind port " + me.port);
+    isGenesisNode = me.isGenesisNode;
+    console.log(lib_js_1.ts() + "handlepulse(): Binding pulsePort on UDP port " + me.port);
     server.bind(me.port, "0.0.0.0");
 });
 //

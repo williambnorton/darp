@@ -13,14 +13,18 @@ var networkClient = dgram.createSocket('udp4');
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
+var MYPUBLICKEY=me.publickey;
+
 redisClient.hgetall("mint:0", function (err,me) {
   console.log("PULSER starting with me="+dump(me));
- if (me!=null)
-    var MYPUBLICKEY=me.publickey;
-  else {
-      console.log(ts()+"NO REDIS");
+  redisClient.hgetall("mint:1", function (err,genesis) {
+    if (me==null){
+      console.log(ts()+"PULSER started with no genesis mint:1");
       process.exit(36)
-  }
+    } else {
+      console.log(ts()+"PULSER started with genesis="+dump(genesis));
+    }
+  });
 });
 
 var CYCLETIME=10; //newMint(mint)

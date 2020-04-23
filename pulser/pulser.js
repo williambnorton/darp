@@ -11,14 +11,18 @@ var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+var MYPUBLICKEY = me.publickey;
 redisClient.hgetall("mint:0", function (err, me) {
     console.log("PULSER starting with me=" + lib_1.dump(me));
-    if (me != null)
-        var MYPUBLICKEY = me.publickey;
-    else {
-        console.log(lib_1.ts() + "NO REDIS");
-        process.exit(36);
-    }
+    redisClient.hgetall("mint:1", function (err, genesis) {
+        if (me == null) {
+            console.log(lib_1.ts() + "PULSER started with no genesis mint:1");
+            process.exit(36);
+        }
+        else {
+            console.log(lib_1.ts() + "PULSER started with genesis=" + lib_1.dump(genesis));
+        }
+    });
 });
 var CYCLETIME = 10; //newMint(mint)
 console.log("PULSER: CYCLETIME=" + CYCLETIME);
