@@ -59,6 +59,7 @@ redisClient.flushall();    //clean slate
 var GEO=process.env.HOSTNAME;   //passed into docker
 GEO=GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT=process.env.PORT||"65013";         //passed into docker
+/*
 var PUBLICKEY=process.env.PUBLICKEY;
 if (!PUBLICKEY)
 try {
@@ -69,12 +70,12 @@ try {
     console.log("PUBLICKEY lookup failed");
     PUBLICKEY="deadbeef00deadbeef00deadbeef0013";
 }
-
+*/
 var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
 //from 
 console.log(ts()+"setting mint:0 with environmental parms MYPUBLICKEY from redis");
-redisClient.hmset("mint:0","geo",GEO,"port",PORT,"publickey",PUBLICKEY,"wallet",WALLET,"MYIP",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
+redisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"MYIP",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
 console.log(ts()+"checking MYPUBLICKEY from redis");
 
 var MYPUBLICKEY="deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
