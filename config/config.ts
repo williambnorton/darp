@@ -79,10 +79,7 @@ function getConfiguration() {
     URL=URL+encodeURI("nodefactory?geo="+geo+"&port="+port+"&publickey="+process.env.PUBLICKEY+"&version="+process.env.VERSION+"&wallet="+process.env.WALLET+"&myip="+process.env.MYIP+"&ts="+now());
     
     console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
-    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
-    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
-    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
-    console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
+
 
     //FETCH CONFIG
     var req = http.get(URL, function (res) {

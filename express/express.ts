@@ -461,7 +461,8 @@ app.get('/nodefactory', function (req, res) {
          var incomingIP=req.query.myip;  /// for now we believe the node's IP
          var clientIncomingIP=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
          if (incomingIP=="noMYIP") incomingIP=clientIncomingIP;
-         if (typeof incomingIP == "undefined") return console.log(ts()+"ERROR: incomingIP unavailable from geo="+geo);;
+         if (typeof incomingIP == "undefined") 
+            return console.log(ts()+"***********************ERROR: incomingIP unavailable from geo="+geo+" inco,ingIP="+incomingIP+" clientIncomingIP="+clientIncomingIP );;
          var octetCount=incomingIP.split(".").length;
 
          if (typeof incomingTimestamp == "undefined") {

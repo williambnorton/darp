@@ -417,7 +417,7 @@ app.get('/nodefactory', function (req, res) {
             if (incomingIP == "noMYIP")
                 incomingIP = clientIncomingIP;
             if (typeof incomingIP == "undefined")
-                return console.log(lib_1.ts() + "ERROR: incomingIP unavailable from geo=" + geo);
+                return console.log(lib_1.ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " inco,ingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
             ;
             var octetCount = incomingIP.split(".").length;
             if (typeof incomingTimestamp == "undefined") {
