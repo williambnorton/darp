@@ -7,24 +7,24 @@ var lib_js_1 = require("../lib/lib.js");
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
 console.log("Starting CONFIG GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
+var pulseRedis = require('redis');
+var redisClient = pulseRedis.createClient(); //creates a new client
 /*
 process.on('uncaughtException', function (err) {
     console.log("CONFIG: uncaughtException trap: "+err);
 });
 */
 redisClient.hgetall("mint:0", function (err, me) {
-    console.log("COMNFIG starting with me=" + lib_js_1.dump(me));
+    console.log("CONFIG starting with me=" + lib_js_1.dump(me));
     if (me != null)
         var MYPUBLICKEY = me.publickey;
     else {
-        console.log(lib_js_1.ts() + "NO REDIS");
+        console.log(lib_js_1.ts() + "CONFIG NO REDIS");
         process.exit(36);
     }
 });
 //  me - my internal state and pointer to genesis
 //
-var pulseRedis = require('redis');
-var redisClient = pulseRedis.createClient(); //creates a new client
 /***
 var PUBLICKEY=process.env.PUBLICKEY;
 redisClient.hgetall("mint:0", function(err,me) {

@@ -20,6 +20,7 @@ expressRedisClient.flushall(); //clean slate
 var express = require('express');
 var app = express();
 var mintStack = 1;
+/****  NODE SITE CONFIGURATION  ****/
 //      Environment is way for environment to control the code
 if (!process.env.DARPDIR) {
     console.log("No DARPDIR enviropnmental variable specified ");
@@ -68,6 +69,15 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //from 
 expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "MYIP", process.env.MYIP, "VERSION", process.env.VERSION, "HOSTNAME", process.env.HOSTNAME, "GENESIS", process.env.GENESIS);
 expressRedisClient.hmset("mint:0", "publickey", PUBLICKEY); //we need this to authenticate self as genesis
+expressRedisClient.hgetall("mint:0", function (err, me) {
+    console.log("EXPRESS starting with me=" + lib_1.dump(me));
+    if (me != null) { }
+    else {
+        console.log(lib_1.ts() + "EXPRESS NO REDIS");
+        process.exit(36);
+    }
+});
+/**** CONFIGURATION SET ****/
 var DEFAULT_SHOWPULSES = "1";
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 var DEFAULT_START_STATE = "RUNNING";

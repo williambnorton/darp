@@ -14,14 +14,16 @@ import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimeP
 console.log("Starting EXPRESS GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 const expressRedis = require('redis');
-
 var expressRedisClient = expressRedis.createClient(); //creates a new client
+
 expressRedisClient.flushall();    //clean slate
 
 var express = require('express');
 var app = express();
 
 var mintStack=1;
+
+/****  NODE SITE CONFIGURATION  ****/
 
 //      Environment is way for environment to control the code
 if (! process.env.DARPDIR  ) {
@@ -73,6 +75,19 @@ var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b288
 //from 
 expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"MYIP",process.env.MYIP,"VERSION",process.env.VERSION,"HOSTNAME",process.env.HOSTNAME,"GENESIS",process.env.GENESIS);
 expressRedisClient.hmset("mint:0","publickey",PUBLICKEY);//we need this to authenticate self as genesis
+
+expressRedisClient.hgetall("mint:0", function (err,me) {
+   console.log("EXPRESS starting with me="+dump(me));
+   if (me!=null){}
+   else {
+       console.log(ts()+"EXPRESS NO REDIS");
+       process.exit(36)
+   }
+});
+
+/**** CONFIGURATION SET ****/
+
+
 
 const DEFAULT_SHOWPULSES="1"
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
