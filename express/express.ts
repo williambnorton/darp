@@ -99,7 +99,7 @@ function handleShowState(req, res) {
 
                   expressRedisClient.hgetall("mint:"+pulseEntry.srcMint, function (err,mintEntry) {
                   //console.log("mintEntry="+dump(mintEntry));
-                     if (mintEntry!=null {
+                     if (mintEntry!=null) {
 
                         txt += '<tr class="color'+pulseEntry.group+ " "+ pulseEntry.geo + ' ' + "INIT" + '">';
                         //txt += "<td>" + mintEntry.mint + "</td>";
