@@ -46,8 +46,9 @@ if (!process.env.MYIP) {
 var http = require('http');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+var PUBLICKEY = "";
 redisClient.hgetall("mint:0", function (err, me) {
-    var PUBLICKEY = me.publickey;
+    PUBLICKEY = me.publickey;
 }); //we need this to authenticate self as genesis
 //console.log("env="+JSON.stringify(process.env,null,2));
 var GEO = process.env.HOSTNAME; //passed into docker
