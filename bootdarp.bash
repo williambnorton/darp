@@ -47,7 +47,6 @@ echo `date` Genesis node: $GENESIS  "<--- Set GENESIS environmental variable to 
 GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
 echo GENESISIP=$GENESISIP
 
-
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
 #
