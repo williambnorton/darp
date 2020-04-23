@@ -382,7 +382,7 @@ app.get('/nodefactory', function (req, res) {
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
             console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey + " me.publickey=" + me.publickey);
             console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
-            if ((mintStack == 1 && publickey == me.publickey) || (mintStack != 1)) {
+            if ((mintStack == 1 && (geo == "DEVOPS")) || (mintStack != 1)) {
                 provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
                     console.log(lib_1.ts() + "EXPRESS nodeFactory sending config=" + lib_1.dump(config));
                     res.setHeader('Content-Type', 'application/json');
