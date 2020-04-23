@@ -71,68 +71,68 @@ function authenticatedMessage(pulse, callback) {
 //    from pulser.ts:
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
-//server.on('message', function(message, remote) {
-if (SHOWPULSES != "0")
-    console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message);
-var msg = message.toString();
-var ary = msg.split(",");
-//try {
-var pulseTimestamp = ary[5]; //1583783486546
-var OWL = lib_js_1.now() - pulseTimestamp;
-if (OWL <= -999)
-    OWL = -99999; //we can filter out clocks greater than +/- 99 seconds off
-if (OWL >= 999)
-    OWL = 99999; //bad clocks lead to really large OWL pulses 
-var pulseLabel = ary[2] + ":" + ary[3];
-var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
-var owls = msg.substring(owlsStart + 1, msg.length - 1);
-//console.log(ts()+"handlepulse(): owls="+owls);
-redisClient.hgetall(pulseLabel, function (err, oldPulse) {
-    //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-    redisClient.hgetall("mint:0", function (err, me) {
-        if (me.state == "RELOAD")
-            process.exit(36); //this is set when reload button is pressed in express
-        if (me.state == "STOP")
-            process.exit(86); //this is set when reload button is pressed in express
-        if (oldPulse == null) { //first time we see this entry, include stats to increment
-            oldPulse = { "inOctets": "0", "inMsgs": "0" };
-        }
-        if (err) {
-            console.log("ERROR in on.message handling");
-        }
-        var pulse = {
-            version: ary[1],
-            geo: ary[2],
-            group: ary[3],
-            seq: ary[4],
-            pulseTimestamp: pulseTimestamp,
-            srcMint: ary[6],
-            owls: owls,
-            owl: "" + OWL,
-            lastMsg: msg,
-            inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
-            inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
-        };
-        authenticatedMessage(pulse, function (err, authenticated) {
-            //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-            if (pulse.version != MYBUILD) {
-                if (!isGenesisNode) {
-                    console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                    console.log("INSIDE test pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
-                    process.exit(36); //SOFTWARE RELOAD
-                }
+server.on('message', function (message, remote) {
+    if (SHOWPULSES != "0")
+        console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message);
+    var msg = message.toString();
+    var ary = msg.split(",");
+    //try {
+    var pulseTimestamp = ary[5]; //1583783486546
+    var OWL = lib_js_1.now() - pulseTimestamp;
+    if (OWL <= -999)
+        OWL = -99999; //we can filter out clocks greater than +/- 99 seconds off
+    if (OWL >= 999)
+        OWL = 99999; //bad clocks lead to really large OWL pulses 
+    var pulseLabel = ary[2] + ":" + ary[3];
+    var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
+    var owls = msg.substring(owlsStart + 1, msg.length - 1);
+    //console.log(ts()+"handlepulse(): owls="+owls);
+    redisClient.hgetall(pulseLabel, function (err, oldPulse) {
+        //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
+        redisClient.hgetall("mint:0", function (err, me) {
+            if (me.state == "RELOAD")
+                process.exit(36); //this is set when reload button is pressed in express
+            if (me.state == "STOP")
+                process.exit(86); //this is set when reload button is pressed in express
+            if (oldPulse == null) { //first time we see this entry, include stats to increment
+                oldPulse = { "inOctets": "0", "inMsgs": "0" };
             }
-            ;
-            redisClient.publish("pulses", msg);
-            redisClient.hmset(pulseLabel, pulse); //store the pulse
-            redisClient.hmset("mint:" + pulse.srcMint, {
-                "owl": pulse.owl
+            if (err) {
+                console.log("ERROR in on.message handling");
+            }
+            var pulse = {
+                version: ary[1],
+                geo: ary[2],
+                group: ary[3],
+                seq: ary[4],
+                pulseTimestamp: pulseTimestamp,
+                srcMint: ary[6],
+                owls: owls,
+                owl: "" + OWL,
+                lastMsg: msg,
+                inOctets: "" + (parseInt(oldPulse.inOctets) + message.length),
+                inMsgs: "" + (parseInt(oldPulse.inMsgs) + 1)
+            };
+            authenticatedMessage(pulse, function (err, authenticated) {
+                //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+                if (pulse.version != MYBUILD) {
+                    if (!isGenesisNode) {
+                        console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                        console.log("INSIDE test pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
+                        process.exit(36); //SOFTWARE RELOAD
+                    }
+                }
+                ;
+                redisClient.publish("pulses", msg);
+                redisClient.hmset(pulseLabel, pulse); //store the pulse
+                redisClient.hmset("mint:" + pulse.srcMint, {
+                    "owl": pulse.owl
+                });
+                storeOWL(pulse.geo, me.geo, OWL);
             });
-            storeOWL(pulse.geo, me.geo, OWL);
         });
     });
 });
-;
 //
 //      storeOWL() - store one way latency to file or graphing & history
 //
