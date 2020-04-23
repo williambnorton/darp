@@ -417,6 +417,9 @@ app.get('/nodefactory', function (req, res) {
             var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             if (incomingIP == "noMYIP")
                 incomingIP = clientIncomingIP;
+            if (typeof incomingIP == "undefined")
+                return console.log(lib_1.ts() + " from geo=" + geo);
+            ;
             var octetCount = incomingIP.split(".").length;
             if (typeof incomingTimestamp == "undefined") {
                 console.log("/nodeFactory called with no timestamp");
