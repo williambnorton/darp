@@ -11,7 +11,6 @@ var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
-var MYPUBLICKEY = me.publickey;
 redisClient.hgetall("mint:0", function (err, me) {
     console.log("PULSER starting with me=" + lib_1.dump(me));
     redisClient.hgetall("mint:1", function (err, genesis) {

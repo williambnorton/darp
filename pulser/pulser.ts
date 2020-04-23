@@ -13,7 +13,6 @@ var networkClient = dgram.createSocket('udp4');
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
-var MYPUBLICKEY=me.publickey;
 
 redisClient.hgetall("mint:0", function (err,me) {
   console.log("PULSER starting with me="+dump(me));
@@ -26,6 +25,7 @@ redisClient.hgetall("mint:0", function (err,me) {
     }
   });
 });
+
 
 var CYCLETIME=10; //newMint(mint)
 

@@ -406,14 +406,14 @@ function fetchConfig(gSRlist, config, callback) {
 app.get('/nodefactory', function (req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me != null) {
-            console.log('****EXPRESS; config requested with params: ' + lib_1.dump(req.query));
+            console.log('EXPRESS; config requested with params: ' + lib_1.dump(req.query));
             //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
             var geo = req.query.geo;
             var publickey = req.query.publickey;
             var port = req.query.port || 65013;
             var wallet = req.query.wallet || "";
             var incomingTimestamp = req.query.ts;
-            var incomingIP = req.query.myip; /// for now we believe the node's IP
+            var incomingIP = req.query.MYIP; /// for now we believe the node's IP
             var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             if (incomingIP == "noMYIP")
                 incomingIP = clientIncomingIP;
