@@ -6,7 +6,7 @@ import { setWireguard } from "../wireguard/wireguard";
 
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
-console.log("Starting CONFIG GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
+console.log("Starting CONFIG GENESIS="+process.env.GENESIS+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 /*
