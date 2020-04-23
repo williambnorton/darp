@@ -11,6 +11,11 @@ process.on('uncaughtException', function (err) {
 });
 */
 //      Environment is way for environment to control the code
+if (!process.env.DARPDIR) {
+    console.log("No DARPDIR enviropnmental variable specified ");
+    process.env.DARPDIR = process.env.HOME + "/darp";
+    console.log("DARPDIR defaulted to " + process.env.DARPDIR);
+}
 if (!process.env.HOSTNAME) {
     console.log("No HOSTNAME enviropnmental variable specified ");
     process.env.HOSTNAME = require('os').hostname();
@@ -27,7 +32,7 @@ if (!process.env.PORT) {
 }
 if (!process.env.VERSION) {
     console.log("No VERSION enviropnmental variable specified - setting to noVersion");
-    process.env.VERSION = "noVersion";
+    process.env.VERSION = lib_js_1.MYVERSION();
 }
 if (!process.env.MYIP) {
     console.log("No MYIP enviropnmental variable specified ");
