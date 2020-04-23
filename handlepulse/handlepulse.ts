@@ -21,40 +21,29 @@ redisClient.hgetall("mint:0", function (err,me) {
 });
 
 var MYBUILD="";
-
 var isGenesisNode=false;
 console.log(ts()+"handlePulse: Starting");
 //
 //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
 //
 redisClient.hgetall("mint:0", function (err,me) {
-  if (err) {
-    console.log("hgetall me failed");
-  } else {
-    if (me==null) {
-      console.log("handlePulse() - can't find me entry...exitting");
-      process.exit(36);  //no mint:0
-    }
     //console.log("handlePulse(): Configuration  me="+dump(me));
-    MYBUILD=me.version;
-    redisClient.hgetall("mint:1", function (err,genesis) {
-      if (err) {
+  MYBUILD=me.version;
+  redisClient.hgetall("mint:1", function (err,genesis) {
+    if (err) {
         console.log("HANDLEPULSE(): hgetall genesis failed");
-      } else {
-        console.log("HANDLEPULSE(): genesis="+dump(genesis));
-        if (genesis==null) {
-          console.log(ts()+"HANDLEPULSE(): THIS SHOULD NOT HAPPEN - ");
-          return console.log(ts()+"****NEW HANDLEPULSE(): Weird - mint:1 (GENESIS NODE) is NULL - ignoring by returning");
-          
-          //          console.log(ts()+"IGNORING");
-//          process.exit(36);  //RELOAD
-        }
-        if ( genesis && (genesis.publickey == me.publickey))
-          isGenesisNode=true;
+    } else {
+      console.log("HANDLEPULSE(): genesis="+dump(genesis));
+      if (genesis==null) {
+        console.log(ts()+"HANDLEPULSE(): received pulse before mint:1 setup ");
+        return console.log(ts()+"HANDLEPULSE(): Weird - mint:1 (GENESIS NODE) is NULL - ignoring by returning");
       }
-    });
-    server.bind(me.port, "0.0.0.0");
-  }
+      if ( genesis && (genesis.publickey == me.publickey))
+        isGenesisNode=true;
+    }
+  });
+  console.log(ts()+"handlepulse(): Bingind port "+me.port);
+  server.bind(me.port, "0.0.0.0");
 });
 
 
