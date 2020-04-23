@@ -406,7 +406,7 @@ function fetchConfig(gSRlist, config, callback) {
 app.get('/nodefactory', function (req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me != null) {
-            //console.log('****EXPRESS; config requested with params: '+dump(req.query));
+            console.log('****EXPRESS; config requested with params: ' + lib_1.dump(req.query));
             //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
             var geo = req.query.geo;
             var publickey = req.query.publickey;
@@ -418,7 +418,7 @@ app.get('/nodefactory', function (req, res) {
             if (incomingIP == "noMYIP")
                 incomingIP = clientIncomingIP;
             if (typeof incomingIP == "undefined")
-                return console.log(lib_1.ts() + " from geo=" + geo);
+                return console.log(lib_1.ts() + "ERROR: incomingIP unavailable from geo=" + geo);
             ;
             var octetCount = incomingIP.split(".").length;
             if (typeof incomingTimestamp == "undefined") {
