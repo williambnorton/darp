@@ -18,10 +18,23 @@ var express = require('express');
 var app = express();
 
 var mintStack=1;
+var PUBLICKEY=process.env.PUBLICKEY;
+if (!PUBLICKEY)
+try {
+    PUBLICKEY=require('fs').readFileSync('../wireguard/publickey', 'utf8');
+    PUBLICKEY=PUBLICKEY.replace(/^\n|\n$/g, '');
+    console.log("pulled PUBLICKEY from publickey file: >"+PUBLICKEY+"<");
+} catch (err) {
+    console.log("PUBLICKEY lookup failed");
+    PUBLICKEY="deadbeef00deadbeef00deadbeef0013";
+}
+expressRedisClient.hmset("mint:0","publickey",PUBLICKEY);//we need this to authenticate self as genesis
+
 
 const DEFAULT_SHOWPULSES="1"
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
-const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
+const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
+//const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
 
 //function getMatrix() {
 //   expressRedisClient.subscribe("pulses", function (matrix) {
@@ -420,16 +433,16 @@ app.get('/nodefactory', function (req, res) {
          // On Startup, only accept connections from me, and the test is that we have matching publickeys
          console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
          console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
-         if ((mintStack==1 && (geo=="DEVOPS")) || (mintStack!=1)) {   
-            if (geo=="NORTONDARP") {
-               console.log(ts()+"EXPRESS Filtering NORTONDARP");
+         if ((mintStack==1 && (geo=="DEVOPS")) || (mintStack!=1)) {   //check publickey instead!!!!!
+            if (geo!="NORTONDARP") {
+               console.log(ts()+"Filtering");
             } else {
                provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
                console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
                res.setHeader('Content-Type', 'application/json');   
                res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
-            }
             }) 
+         }
          }
          //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
       } else console.log("EXPRESS has no me out of redis");

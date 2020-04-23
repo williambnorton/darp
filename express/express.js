@@ -18,10 +18,23 @@ var expressRedisClient = expressRedis.createClient(); //creates a new client
 var express = require('express');
 var app = express();
 var mintStack = 1;
+var PUBLICKEY = process.env.PUBLICKEY;
+if (!PUBLICKEY)
+    try {
+        PUBLICKEY = require('fs').readFileSync('../wireguard/publickey', 'utf8');
+        PUBLICKEY = PUBLICKEY.replace(/^\n|\n$/g, '');
+        console.log("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
+    }
+    catch (err) {
+        console.log("PUBLICKEY lookup failed");
+        PUBLICKEY = "deadbeef00deadbeef00deadbeef0013";
+    }
+expressRedisClient.hmset("mint:0", "publickey", PUBLICKEY); //we need this to authenticate self as genesis
 var DEFAULT_SHOWPULSES = "1";
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
-var DEFAULT_START_STATE = "HOLD";
-console.log(lib_1.ts() + "EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
+var DEFAULT_START_STATE = "RUNNING";
+console.log(lib_1.ts() + "EXPRESS: ALL NODES START IN RUNNING Mode");
+//const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
 //function getMatrix() {
 //   expressRedisClient.subscribe("pulses", function (matrix) {
 //      console.log(ts()+"getMatrix(): matrix="+dump(matrix));
@@ -382,9 +395,9 @@ app.get('/nodefactory', function (req, res) {
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
             console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey + " me.publickey=" + me.publickey);
             console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
-            if ((mintStack == 1 && (geo == "DEVOPS")) || (mintStack != 1)) {
-                if (geo == "NORTONDARP") {
-                    console.log(lib_1.ts() + "EXPRESS Filtering NORTONDARP");
+            if ((mintStack == 1 && (geo == "DEVOPS")) || (mintStack != 1)) { //check publickey instead!!!!!
+                if (geo != "NORTONDARP") {
+                    console.log(lib_1.ts() + "Filtering");
                 }
                 else {
                     provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
@@ -394,13 +407,12 @@ app.get('/nodefactory', function (req, res) {
                     });
                 }
             }
+            //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
         }
+        else
+            console.log("EXPRESS has no me out of redis");
     });
-}
-//} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
-, console.log("EXPRESS has no me out of redis"));
-;
-;
+});
 function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, wallet, incomingTimestamp) {
     return {
         "mint": "" + mint,
