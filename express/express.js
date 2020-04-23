@@ -67,8 +67,8 @@ GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT = process.env.PORT || "65013"; //passed into docker
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //from 
-expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "myip", process.env.MYIP, "VERSION", process.env.VERSION, "HOSTNAME", process.env.HOSTNAME, "GENESIS", process.env.GENESIS);
-expressRedisClient.hmset("mint:0", "publickey", PUBLICKEY); //we need this to authenticate self as genesis
+expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "myip", process.env.MYIP, "version", process.env.VERSION, "hotname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
+/**** CONFIGURATION SET ****/
 expressRedisClient.hgetall("mint:0", function (err, me) {
     console.log("EXPRESS starting with me=" + lib_1.dump(me));
     if (me != null) { }
@@ -77,7 +77,6 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
         process.exit(36);
     }
 });
-/**** CONFIGURATION SET ****/
 var DEFAULT_SHOWPULSES = "1";
 //const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
 var DEFAULT_START_STATE = "RUNNING";
@@ -406,7 +405,7 @@ function fetchConfig(gSRlist, config, callback) {
 app.get('/nodefactory', function (req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me != null) {
-            console.log('EXPRESS; config requested with params: ' + lib_1.dump(req.query));
+            console.log('EXPRESS nodeFactory: config requested with params: ' + lib_1.dump(req.query));
             //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
             var geo = req.query.geo;
             var publickey = req.query.publickey;
