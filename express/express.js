@@ -383,18 +383,24 @@ app.get('/nodefactory', function (req, res) {
             console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey + " me.publickey=" + me.publickey);
             console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
             if ((mintStack == 1 && (geo == "DEVOPS")) || (mintStack != 1)) {
-                provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-                    console.log(lib_1.ts() + "EXPRESS nodeFactory sending config=" + lib_1.dump(config));
-                    res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
-                });
+                if (geo == "NORTONDARP") {
+                    console.log(lib_1.ts() + "EXPRESS Filtering NORTONDARP");
+                }
+                else {
+                    provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
+                        console.log(lib_1.ts() + "EXPRESS nodeFactory sending config=" + lib_1.dump(config));
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
+                    });
+                }
             }
-            //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
         }
-        else
-            console.log("EXPRESS has no me out of redis");
     });
-});
+}
+//} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
+, console.log("EXPRESS has no me out of redis"));
+;
+;
 function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, wallet, incomingTimestamp) {
     return {
         "mint": "" + mint,

@@ -421,10 +421,14 @@ app.get('/nodefactory', function (req, res) {
          console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
          console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
          if ((mintStack==1 && (geo=="DEVOPS")) || (mintStack!=1)) {   
-            provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
+            if (geo=="NORTONDARP") {
+               console.log(ts()+"EXPRESS Filtering NORTONDARP");
+            } else {
+               provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
                console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
                res.setHeader('Content-Type', 'application/json');   
                res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
+            }
             }) 
          }
          //} else console.log("EXPRESS: Received pulse from "+geo+"("+incomingIP+") before my genesis node was set up. IGNORING.");
