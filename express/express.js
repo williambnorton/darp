@@ -13,6 +13,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 //import { pulse } from '../pulser/pulser'
+console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 expressRedisClient.flushall(); //clean slate

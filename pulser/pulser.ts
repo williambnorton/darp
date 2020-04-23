@@ -1,4 +1,5 @@
 import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
+console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 //
 //  pulse - send my owl measurements to my pulseGroups
@@ -12,11 +13,10 @@ var networkClient = dgram.createSocket('udp4');
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
-var MYPUBLICKEY="deadbeef00deadbeef00deadbeef0013"; //TESTIUNG VALID KEY
 redisClient.hgetall("mint:0", function (err,me) {
   console.log("PULSER starting with me="+dump(me));
  if (me!=null)
-    MYPUBLICKEY=me.publickey;
+    var MYPUBLICKEY=me.publickey;
   else {
       console.log(ts()+"NO REDIS");
       process.exit(36)

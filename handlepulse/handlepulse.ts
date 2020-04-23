@@ -2,6 +2,7 @@
 //  handlePulse - receive incoming pulses and store in redis
 //
 import { now, ts ,dump, newMint, makeYYMMDD } from '../lib/lib.js';
+console.log("Starting HANDLEPULSE GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 var SHOWPULSES="0";
 const pulseRedis = require('redis');

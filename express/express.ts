@@ -11,6 +11,8 @@
 //
 import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimePulse, MYIP, MYVERSION } from '../lib/lib';
 //import { pulse } from '../pulser/pulser'
+console.log("Starting EXPRESS GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
+
 const expressRedis = require('redis');
 
 var expressRedisClient = expressRedis.createClient(); //creates a new client

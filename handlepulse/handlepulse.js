@@ -4,6 +4,7 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
+console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 var SHOWPULSES = "0";
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client

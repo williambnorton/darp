@@ -2,23 +2,31 @@
 //  config.ts - Configure your node to connect to the pulseGroup
 //
 import { now, ts ,dump} from '../lib/lib.js';
+import { setWireguard } from "../wireguard/wireguard";
+
+var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
+console.log("Starting CONFIG GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 /*
 process.on('uncaughtException', function (err) {
     console.log("CONFIG: uncaughtException trap: "+err);
 }); 
 */
-
+redisClient.hgetall("mint:0", function (err,me) {
+    console.log("COMNFIG starting with me="+dump(me));
+   if (me!=null)
+      var MYPUBLICKEY=me.publickey;
+    else {
+        console.log(ts()+"NO REDIS");
+        process.exit(36)
+    }
+  });
 
 
 //  me - my internal state and pointer to genesis
 //
-import { setWireguard } from "../wireguard/wireguard";
-//import { generateKeyPairSync } from "crypto";
-//import { getUnpackedSettings } from "http2";
-//import { Z_VERSION_ERROR } from "zlib";
-var http = require('http');
+
 
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
@@ -41,7 +49,6 @@ redisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"MYIP",process.
 
 //GEO=GEO.toString().split('.').split(',');
 **/
-console.log("CONFIG GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 /*
 //  mint:0 is me  and  mint:1 is Genesis node 
