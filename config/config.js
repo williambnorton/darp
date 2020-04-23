@@ -62,8 +62,9 @@ redisClient.hmset("mint:0",{
 */
 getConfiguration(); //later this should start with just an IP of genesis node 
 function getConfiguration() {
+    var _a;
     var URL = "http://" + process.env.GENESIS + ":" + "65013/";
-    URL = URL + encodeURI("nodefactory?geo=" + process.env.GEO + "&port=" + process.env.PORT + "&publickey=" + process.env.PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + process.env.WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now());
+    URL = URL + encodeURI("nodefactory?geo=" + ((_a = process.env.HOSTNAME) === null || _a === void 0 ? void 0 : _a.split(".")[0]) + "&port=" + process.env.PORT || "65013" + "&publickey=" + process.env.PUBLICKEY + "&version=" + process.env.VERSION + "&wallet=" + process.env.WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_js_1.now());
     console.log("****CONFIG: getConfiguration() Fetching config from URL: " + URL);
     //FETCH CONFIG
     var req = http.get(URL, function (res) {
