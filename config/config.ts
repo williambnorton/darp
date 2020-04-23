@@ -87,6 +87,9 @@ redisClient.hmset("mint:0",{
     "owl": ""   //how long it took this node's last record to reach me
  });
 */
+redisClient.hmgetall("mint:0", function(err,me) {
+    var PUBLICKEY=me.publickey;
+});//we need this to authenticate self as genesis
 
 getConfiguration();  //later this should start with just an IP of genesis node 
 
