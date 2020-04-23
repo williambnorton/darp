@@ -18,7 +18,7 @@ if (!process.env.DARPDIR) {
 }
 if (!process.env.HOSTNAME) {
     console.log("No HOSTNAME enviropnmental variable specified ");
-    process.env.HOSTNAME = require('os').hostname();
+    process.env.HOSTNAME = require('os').hostname().split(".")[0];
     console.log("setting HOSTNAME to " + process.env.HOSTNAME);
 }
 if (!process.env.GENESIS) {

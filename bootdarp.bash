@@ -20,10 +20,13 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 
 export DARPDIR=$HOME/darp
+
+#MAY NOT NEED TO DO THIS ANYMORE - done in code
 MYIP=`curl ifconfig.io`
 echo `date` "MYIP fetch rc=$? MYIP=$MYIP"
 export MYIP=$MYIP
 echo `date` MYIP=$MYIP
+#MAY NOT NEED TO DO THIS ANYMORE - done in code
 
 if [ "$GENESIS" == "" ]; then
     echo `date` $0 You must specify a genesis node 
