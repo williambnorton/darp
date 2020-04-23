@@ -49,17 +49,17 @@ function handleShowState(req, res) {
         txt += '<body>';
         var insert = "";
         expressRedisClient.hgetall("mint:1", function (err, genesis) {
-            if (me.isGenesisNode) {
+            if (me.isGenesisNode == 1) {
                 //console.log(ts()+"handleShowState() ***** GENESIS");
                 insert = 'style="background-color: beige;"';
             }
             txt += '<body onload="startTime()" ' + insert + '>';
-            if (me.isGenesisNode)
+            if (me.isGenesisNode == 1)
                 txt += '<H2>DARP GENESIS NODE : ' + me.geo + '</H2><BR>';
             //txt += '<h1>10.10.0.'+me.mint+'</h1>';
             txt += '<h1>You are ' + me.geo + "(10.10.0." + me.mint + ")</h1>   <h2> : " + me.ipaddr + ":" + me.port + "</H2>" + "<p>//" + me.version + "//</p>";
-            txt += "<p>docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + genesis.ip + " -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>";
-            if (!me.isGenesisNode)
+            txt += "<h2>Connect with: docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + genesis.ipaddr + " -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
+            if (me.isGenesisNode != 1)
                 txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
             //txt += "<H2> Refresh every=" + POLLFREQ/1000 + " seconds</H2>";
             txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
