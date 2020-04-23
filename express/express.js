@@ -282,6 +282,7 @@ app.get('/pulseMsg', function (req, res) {
             SHOWPULSE: "1"
         });
         console.log(lib_1.ts() + "pulse(1) somehow here");
+        lib_1.oneTimePulse();
         console.log(lib_1.ts() + "One time PULSE SENT");
         //      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
         res.redirect(req.get('referer'));

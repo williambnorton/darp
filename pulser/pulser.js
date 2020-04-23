@@ -182,19 +182,12 @@ function newMint(mint) {
 //
 //  pulse - pulser for each me.pulseGroup
 //
-function pulse(flag) {
-    if (typeof flag == "undefined") {
-        setTimeout(pulse, CYCLETIME * 1000); //10 second pollingfrequency
-        setTimeout(publishMatrix, (CYCLETIME * 1000) / 2); // In 5 seconds call it
-        flag = "periodicPoll";
-    }
-    else {
-        flag = "oneTime";
-        console.log(lib_1.ts() + "one-time pulseGroup pulse");
-    }
+function pulse() {
+    setTimeout(pulse, CYCLETIME * 1000); //10 second pollingfrequency
+    setTimeout(publishMatrix, (CYCLETIME * 1000) / 2); // In 5 seconds call it
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
-        if ((me == null) || (me.state == "HOLD" && flag != "oneTime"))
+        if ((me == null) || (me.state == "HOLD"))
             return console.log(lib_1.ts() + " pulse(): HOLDING ");
         //if (me.state=="PULSE") me.state=="HOLD";
         GEO = me.geo;

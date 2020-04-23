@@ -9,7 +9,7 @@
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState } from '../lib/lib';
+import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimePulse } from '../lib/lib';
 //import { pulse } from '../pulser/pulser'
 const expressRedis = require('redis');
 
@@ -318,7 +318,7 @@ app.get('/pulseMsg', function (req, res) {
          SHOWPULSE : "1"
       });
       console.log(ts()+"pulse(1) somehow here");
-
+      oneTimePulse();
       console.log(ts()+"One time PULSE SENT");
 //      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
       res.redirect(req.get('referer'));

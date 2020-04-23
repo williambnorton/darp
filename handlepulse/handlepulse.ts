@@ -10,6 +10,13 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
+redisClient.hgetall("mint:0", function (err,me) {
+  if (me==null) {
+    console.log(ts()+"handlePulse(): Started without redis mint:0 configured");
+    process.exit(36)
+  }
+});
+
 var MYBUILD="";
 
 var isGenesisNode=false;
@@ -76,7 +83,7 @@ function  authenticatedMessage(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
-  if (SHOWPULSES!="0") 
+//  if (SHOWPULSES!="0") 
     console.log(ts()+"HANDLEPULSE: received pulse "+message.length+" bytes from "+remote.address + ':' + remote.port +' - ' + message);
   var msg=message.toString();
   var ary=msg.split(",");
