@@ -111,6 +111,41 @@ function handleShowState(req, res) {
       txt += '<body>';
       var insert="";
 
+      expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+         var lastEntry="";
+         for (var entry in gSRlist) lastEntry=entry;
+
+         expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+            txt+="<table>"
+            for (var node in gSRlist) {
+               txt+="<tr>"
+               var rowEntry=node;
+               txt += '<td>' + '<a href="http://' + ""+ '/" target="_blank">' + rowEntry +"("+gSRlist[node]+")" + '</a></td>';
+
+               for (node in gSRlist) {
+                  var colEntry=node;
+                  txt+="<td>"+colEntry+"-"+rowEntry+"lookup"+"</td>" 
+                  /*
+                  txt += '<td>' + 
+
+                     var src = entry.geo;;
+                     var dst = nodeEntry.geo;
+                     var owl=-1;
+                     var values = getOWL(src, dst); //any src-dst pair will give us latency
+
+                     if (values) owl=values.owl;
+                     var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
+                     var highlight="";//highlightEff(src,dst,group);
+                     if ((owl==0) ||  (src==dst))
+                              txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
+                     else
+                              txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
+
+   */   
+               }
+            }
+         })
+      });
       expressRedisClient.hgetall("mint:1", function (err,genesis) {
          if (genesis==null) return console.log("handleShowState(): WEIRD: NULL mint:1 genesis");
 
@@ -122,8 +157,8 @@ function handleShowState(req, res) {
          txt += '<body onload="startTime()" '+insert+'>'
          if (me.isGenesisNode==1) txt+='<H2>DARP GENESIS NODE : '+me.geo+'</H2><BR>';
          //txt += '<h1>10.10.0.'+me.mint+'</h1>';
-         txt += '<h1>You are '+ me.geo + "(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>"+"<p>//"+me.version+"//</p>";
-         txt += "<h2>Connect with: docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+genesis.ipaddr+" -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
+         txt += '<h1>'+ me.geo + " VPN IP(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>"+"<p>//"+me.version+"//</p>";
+         txt += "<h2>Connect to me with docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+genesis.ipaddr+" -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
 
          if (me.isGenesisNode!=1)
            txt += ' under Genesis Node: <a href="http://'+genesis.ipaddr+":"+genesis.port+'">'+genesis.geo+":"+genesis.group+"</a>";
