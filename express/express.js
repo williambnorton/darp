@@ -101,6 +101,7 @@ function handleShowState(req, res) {
             var lastEntry = "";
             for (var entry in gSRlist)
                 lastEntry = entry;
+            console.log(lib_1.ts() + "gSRlist=" + gSRlist + " lastEntry=" + lastEntry);
             expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                 txt += "<table>";
                 for (var rowNode in gSRlist) {

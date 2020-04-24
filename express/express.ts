@@ -114,6 +114,7 @@ function handleShowState(req, res) {
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { ///WHY twice?
          var lastEntry="";
          for (var entry in gSRlist) lastEntry=entry;
+         console.log(ts()+"gSRlist="+gSRlist+" lastEntry="+lastEntry);
 
          expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
             txt+="<table>"
