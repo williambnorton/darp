@@ -6,7 +6,7 @@ exports.__esModule = true;
 var lib_js_1 = require("../lib/lib.js");
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
-console.log("Starting CONFIG GENESIS=" + process.env.GENESIS + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
+console.log("Starting CONFIG GENESIS=" + process.env.GENESIS + " HOSTNAME=" + process.env.HOSTNAME + " PORT=" + process.env.PORT + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 /*

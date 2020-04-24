@@ -486,8 +486,8 @@ app.get('/nodefactory', function (req, res) {
          console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
          console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
          if ((mintStack==1 && (publickey==me.publickey)) || (mintStack!=1)) {   //check publickey instead!!!!!
-            if (geo!="NORTONDARP") {
-               console.log(ts()+"Filtering");
+            if (geo=="NORTONDARP") {
+               //console.log(ts()+"Filtering");
             } else {
                provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
                console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
