@@ -134,8 +134,8 @@ server.on('message', function(message, remote) {
       for (var measure in owlsAry) {
         console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
 
-        var srcMint=measure.split("=")[0]
-        var owl=measure.split("=")[1]
+        var srcMint=owlsAry[measure].split("=")[0]
+        var owl=owlsAry[measure].split("=")[1]
 
         if (typeof owl == "undefined") owl=""
         var owlEntryLabel=pulse.group+":"+srcMint+"-"+me.mint
