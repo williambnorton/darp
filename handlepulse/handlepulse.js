@@ -126,11 +126,11 @@ server.on('message', function (message, remote) {
                     var srcMint = owlsAry[measure].split("=")[0];
                     var owl = owlsAry[measure].split("=")[1];
                     if (typeof owl == "undefined")
-                        owl = "";
+                        owl = "_";
                     var owlEntryLabel = pulse.group + ":" + srcMint + "-" + me.mint;
                     //console.log(ts()+"STORING "+owlEntryLabel+" owls="+owls+" srcMint="+srcMint+" owl="+owl);
                     console.log(lib_js_1.ts() + "STORING " + owlEntryLabel + "=" + owl);
-                    redisClient.hset(owlEntryLabel, "" + owl); //store the pulse
+                    redisClient.hset(owlEntryLabel, owl); //store the pulse
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
