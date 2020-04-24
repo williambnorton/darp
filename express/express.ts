@@ -10,6 +10,7 @@
 //    PUBLICKEY - Public key 
 //
 import { dump, now, mintList, SRList, ts, getMints, getOwls, dumpState, oneTimePulse, MYIP, MYVERSION } from '../lib/lib';
+import { callbackify } from 'util';
 //import { pulse } from '../pulser/pulser'
 console.log("Starting EXPRESS GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
@@ -89,8 +90,37 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
    }
 });
 
+function getMintRecords(callback) {
+   var mintEntryStack=new Array();
+   var lastMintEntry="";
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
+      for (var pulse in gSRlist) lastMintEntry=gSRlist[pulse];
 
+      for (var label in gSRlist) {
+         expressRedisClient.hgetall(label,function (err,mintEntry) {
+            mintEntryStack.push(mintEntry);
+            if (pulse==lastMintEntry) 
+               callback(mintEntryStack)
+         })
+      }
+   });
+}
 
+function getPulseRecords(callback) {
+   var pulseEntryStack=new Array();
+   var lastPulseEntry="";
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
+      for (var pulse in gSRlist) lastPulseEntry=pulse;
+
+      for (var pulse in gSRlist) {
+         expressRedisClient.hgetall(pulse,function (err,pulseEntry) {
+            pulseEntryStack.push(pulseEntry);
+            if (pulse==lastPulseEntry) 
+               callback(pulseEntryStack)
+         })
+      }
+   });
+}
 
 //
 //      handleShowState(req,res) - show the node state
@@ -114,6 +144,12 @@ function handleShowState(req, res) {
       //
       // Make Matrix
       //
+      getPulseRecords(function(pulseRecords) {
+         console.log(ts()+"pulseRecords="+dump(pulseRecords));
+      })
+      getMintRecords(function(mintRecords) {
+         console.log(ts()+"mintRecords="+dump(mintRecords));
+      })
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
          var lastEntry="";
          for (var entry in gSRlist) lastEntry=entry;

@@ -81,6 +81,36 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
         process.exit(36);
     }
 });
+function getMintRecords(callback) {
+    var mintEntryStack = new Array();
+    var lastMintEntry = "";
+    expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+        for (var pulse in gSRlist)
+            lastMintEntry = gSRlist[pulse];
+        for (var label in gSRlist) {
+            expressRedisClient.hgetall(label, function (err, mintEntry) {
+                mintEntryStack.push(mintEntry);
+                if (pulse == lastMintEntry)
+                    callback(mintEntryStack);
+            });
+        }
+    });
+}
+function getPulseRecords(callback) {
+    var pulseEntryStack = new Array();
+    var lastPulseEntry = "";
+    expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+        for (var pulse in gSRlist)
+            lastPulseEntry = pulse;
+        for (var pulse in gSRlist) {
+            expressRedisClient.hgetall(pulse, function (err, pulseEntry) {
+                pulseEntryStack.push(pulseEntry);
+                if (pulse == lastPulseEntry)
+                    callback(pulseEntryStack);
+            });
+        }
+    });
+}
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -100,6 +130,12 @@ function handleShowState(req, res) {
         //
         // Make Matrix
         //
+        getPulseRecords(function (pulseRecords) {
+            console.log(lib_1.ts() + "pulseRecords=" + lib_1.dump(pulseRecords));
+        });
+        getMintRecords(function (mintRecords) {
+            console.log(lib_1.ts() + "mintRecords=" + lib_1.dump(mintRecords));
+        });
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             var lastEntry = "";
             for (var entry in gSRlist)
