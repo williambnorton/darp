@@ -22,7 +22,10 @@ var express = require('express');
 var app = express();
 
 var mintStack=1;
-
+const DEFAULT_SHOWPULSES="1"
+const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
+//const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
+//const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
 
 //      Environment is way for environment to control the code
@@ -87,10 +90,7 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
 });
 
 
-const DEFAULT_SHOWPULSES="1"
-//const DEFAULT_START_STATE="HOLD";  //for single stepping through network protocol code
-const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
-//const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
+
 
 //
 //      handleShowState(req,res) - show the node state
