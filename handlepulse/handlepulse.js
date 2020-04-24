@@ -119,6 +119,7 @@ server.on('message', function (message, remote) {
                     "owl": pulse.owl
                 });
                 storeOWL(pulse.geo, me.geo, OWL);
+                console.log(lib_js_1.ts() + "HANDLEPULSE(): storedOWL " + lib_js_1.dump(pulse));
             });
         });
     });
