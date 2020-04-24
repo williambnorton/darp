@@ -389,11 +389,11 @@ app.get('/hold', function (req, res) {
    expressRedisClient.hgetall( "mint:0", function (err,me) {
       expressRedisClient.hmset( "mint:"+me.mint, {
          state : "HOLD",
-         SHOWPULSE : "0"
+         SHOWPULSES : "0"
       });
       expressRedisClient.hmset( "mint:0", {
          state : "HOLD",
-         SHOWPULSE : "0"
+         SHOWPULSES : "0"
       });
       console.log(ts()+"pulsed - Now in HOLD state - no pulsing and show no one's pulses");
       console.log(ts()+"HOLD HOLD HOLD HOLD state - ");
@@ -409,11 +409,11 @@ app.get('/pulseMsg', function (req, res) {
    expressRedisClient.hgetall( "mint:0", function (err,me) {
       expressRedisClient.hmset( "mint:"+me.mint, {
          adminControl : "PULSE",
-         SHOWPULSE : "1"
+         SHOWPULSES : "1"
       });
       expressRedisClient.hmset( "mint:0", {
          adminControl : "",
-         SHOWPULSE : "1"
+         SHOWPULSES : "1"
       });
       console.log(ts()+"pulse(1) somehow here");
       
