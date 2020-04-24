@@ -439,7 +439,7 @@ app.get('/nodefactory', function (req, res) {
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
             console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey + " me.publickey=" + me.publickey);
             console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
-            if ((mintStack == 1 && (geo == "DEVOPS")) || (mintStack != 1)) { //check publickey instead!!!!!
+            if ((mintStack == 1 && (publickey == me.publickey)) || (mintStack != 1)) { //check publickey instead!!!!!
                 if (geo != "NORTONDARP") {
                     console.log(lib_1.ts() + "Filtering");
                 }
