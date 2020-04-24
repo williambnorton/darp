@@ -101,157 +101,159 @@ function handleShowState(req, res) {
             var lastEntry = "";
             for (var entry in gSRlist)
                 lastEntry = entry;
-            txt += "<table>";
-            for (var rowNode in gSRlist) {
-                txt += "<tr>";
-                var rowEntry = rowNode.split(":")[0];
-                var rowMint = gSRlist[rowNode];
-                var rowStack = new Array();
-                txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + rowMint + ")" + '</a></td>';
-                for (var colNode in gSRlist) {
-                    var colEntry = colNode;
-                    var colMint = gSRlist[colNode];
-                    txt += "<td>" + colMint + "-" + rowMint + "" + "</td>";
-                    rowStack.unshift({
-                        "colMint": colMint,
-                        "rowMint": rowMint
-                    });
-                    if (colNode == lastEntry) {
-                        txt += "</tr>";
-                        //pop off items of the stack
-                    }
-                    /*
-                    txt += '<td>' +
-  
-                       var src = entry.geo;;
-                       var dst = nodeEntry.geo;
-                       var owl=-1;
-                       var values = getOWL(src, dst); //any src-dst pair will give us latency
-  
-                       if (values) owl=values.owl;
-                       var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
-                       var highlight="";//highlightEff(src,dst,group);
-                       if ((owl==0) ||  (src==dst))
-                                txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
-                       else
-                                txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
-  
-     */
-                }
-            }
-        });
-    });
-    expressRedisClient.hgetall("mint:1", function (err, genesis) {
-        if (genesis == null)
-            return console.log("handleShowState(): WEIRD: NULL mint:1 genesis");
-        if (me.isGenesisNode == 1) {
-            //console.log(ts()+"handleShowState() ***** GENESIS");
-            insert = 'style="background-color: beige;"';
-        }
-        txt += '<body onload="startTime()" ' + insert + '>';
-        if (me.isGenesisNode == 1)
-            txt += '<H2>DARP GENESIS NODE : ' + me.geo + " IP(10.10.0." + me.mint + ') ' + me.ipaddr + ":" + me.port + ' for pulseGroup: ' + me.group + '</H2><BR>';
-        else {
-            txt += '<h2>DARP pulseGroup Member ' + me.geo + " IP(10.10.0." + me.mint + ")</h1>   <h2> : " + me.ipaddr + ":" + me.port + "</H2>" + "<p>//" + me.version + "//</p>";
-            txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
-        }
-        //txt += '<h1>10.10.0.'+me.mint+'</h1>';
-        txt += "<br><h2>Connect to me with docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + genesis.ipaddr + " -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
-        if (me.state == "HOLD")
-            txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
-        //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
-        txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
-        expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            if (err)
-                console.log("gSRlist error");
-            //txt+=dump(gSRlist);
-            var lastEntry = "";
-            for (var entry in gSRlist)
-                lastEntry = entry;
-            //console.log("lastEntry="+lastEntry);
-            txt += '<table class="gSRlist" border="1">';
-            txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>ClockSkew</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
-            for (var entry in gSRlist) {
-                console.log("gSRlist entry=" + lib_1.dump(entry));
-                expressRedisClient.hgetall(entry, function (err, pulseEntry) {
+            expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+                txt += "<table>";
+                for (var rowNode in gSRlist) {
                     txt += "<tr>";
-                    //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-                    //console.log(ts()+"handlepulse(): pulseEntry="+dump(pulseEntry));
-                    expressRedisClient.hgetall("mint:" + pulseEntry.srcMint, function (err, mintEntry) {
-                        //console.log("mintEntry="+dump(mintEntry));
-                        if (mintEntry != null) {
-                            txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
-                            //txt += "<td>" + mintEntry.mint + "</td>";
-                            txt += "<td>10.10.0." + mintEntry.mint + "</td>";
-                            txt += "<td>" + mintEntry.state + "</td>";
-                            txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
-                            txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
-                            txt += "<td>" + mintEntry.ipaddr + "</td>";
-                            txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
-                            txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(mintEntry.publickey.length - 4) + "</td>";
-                            txt += "<td>" + pulseEntry.seq + "</td>";
-                            txt += "<td>" + pulseEntry.inMsgs + "</td>";
-                            txt += "<td>" + pulseEntry.inOctets + "</td>";
-                            var pulseGroupOwner = pulseEntry.group.split(".")[0];
-                            //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
-                            txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
-                            txt += "<td>" + pulseEntry.outMsgs + "</td>";
-                            txt += "<td>" + pulseEntry.outOctets + "</td>";
-                            //txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                            txt += "<td>" + (pulseEntry.seq - pulseEntry.inMsgs) + "</td>";
-                            var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
-                            var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
-                            var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-                            var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
-                            var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
-                            txt += "<td>" + '<FORM>';
-                            txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-                            txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-                            txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
-                            txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-                            txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-                            txt += '<FORM>' + "</td>";
-                            //console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
-                            var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
-                            if (mintEntry.bootTime == 0)
-                                delta = "";
-                            txt += "<td>" + delta + "</td>";
-                            //txt += "<td>" + entry.bootTime+ "</td>";
-                            console.log(lib_1.ts() + " clockSkew=" + mintEntry.clockSkew + "mintEntry=" + lib_1.dump(mintEntry));
-                            if (Math.abs(mintEntry.clockSkew) > 1000)
-                                if (Math.abs(mintEntry.clockSkew) > 60000)
-                                    txt += "<td>" + Math.round(mintEntry.clockSkew / 60000) + " min</td>";
-                                else
-                                    txt += "<td>" + Math.round(mintEntry.clockSkew / 1000) + " sec</td>";
-                            else
-                                txt += "<td>" + mintEntry.clockSkew + " ms</td>";
-                            var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
-                            if (pulseEntry.pulseTimestamp == 0)
-                                deltaSeconds = "";
-                            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                            txt += "<td>" + deltaSeconds + "</td>";
-                            if (pulseEntry.lastMsg)
-                                txt += "<td>" + "" + pulseEntry.lastMsg.length + " bytes: " + pulseEntry.lastMsg + "</td>";
-                            else
-                                txt += "<td>" + "<undefined>" + "</td>";
-                            txt += "<td>" + pulseEntry.version + "</td>";
+                    var rowEntry = rowNode.split(":")[0];
+                    var rowMint = gSRlist[rowNode];
+                    var rowStack = new Array();
+                    txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + rowMint + ")" + '</a></td>';
+                    for (var colNode in gSRlist) {
+                        var colEntry = colNode;
+                        var colMint = gSRlist[colNode];
+                        txt += "<td>" + colMint + "-" + rowMint + "" + "</td>";
+                        rowStack.unshift({
+                            "colMint": colMint,
+                            "rowMint": rowMint
+                        });
+                        if (colNode == lastEntry) {
                             txt += "</tr>";
+                            //pop off items of the stack
                         }
-                        if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                            txt += "</table>";
-                            //console.log(ts()+"READY TO DUMP HTML: "+txt);
-                            txt += "</body></html>";
-                            res.setHeader('Content-Type', 'text/html');
-                            res.setHeader("Access-Control-Allow-Origin", "*");
-                            res.end(txt);
-                        }
-                        //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
-                        // txt+=pulseEntry.geo+":"+pulseEntry.group;
-                        //console.log("mintEntry="+dump(mintEntry));
-                        //});
-                    });
-                });
+                        /*
+                        txt += '<td>' +
+      
+                           var src = entry.geo;;
+                           var dst = nodeEntry.geo;
+                           var owl=-1;
+                           var values = getOWL(src, dst); //any src-dst pair will give us latency
+      
+                           if (values) owl=values.owl;
+                           var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
+                           var highlight="";//highlightEff(src,dst,group);
+                           if ((owl==0) ||  (src==dst))
+                                    txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
+                           else
+                                    txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
+      
+         */
+                    }
+                }
+            });
+        });
+        expressRedisClient.hgetall("mint:1", function (err, genesis) {
+            if (genesis == null)
+                return console.log("handleShowState(): WEIRD: NULL mint:1 genesis");
+            if (me.isGenesisNode == 1) {
+                //console.log(ts()+"handleShowState() ***** GENESIS");
+                insert = 'style="background-color: beige;"';
             }
+            txt += '<body onload="startTime()" ' + insert + '>';
+            if (me.isGenesisNode == 1)
+                txt += '<H2>DARP GENESIS NODE : ' + me.geo + " IP(10.10.0." + me.mint + ') ' + me.ipaddr + ":" + me.port + ' for pulseGroup: ' + me.group + '</H2><BR>';
+            else {
+                txt += '<h2>DARP pulseGroup Member ' + me.geo + " IP(10.10.0." + me.mint + ")</h1>   <h2> : " + me.ipaddr + ":" + me.port + "</H2>" + "<p>//" + me.version + "//</p>";
+                txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
+            }
+            //txt += '<h1>10.10.0.'+me.mint+'</h1>';
+            txt += "<br><h2>Connect to me with docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + genesis.ipaddr + " -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
+            if (me.state == "HOLD")
+                txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
+            //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
+            txt += '<div class="right"><p>.......refreshed at ' + dateTime + "</p></div>";
+            expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+                if (err)
+                    console.log("gSRlist error");
+                //txt+=dump(gSRlist);
+                var lastEntry = "";
+                for (var entry in gSRlist)
+                    lastEntry = entry;
+                //console.log("lastEntry="+lastEntry);
+                txt += '<table class="gSRlist" border="1">';
+                txt += "<th>srcMint</th><th>State</th><th>NodeName</th><th>pulseGroup</th><th>IP Address</th><th>Port #</th><th>publickey</th><th>lastSeq#</th><th>inMsgs</th><th>inOctets</th><th>OWL</th><th>outMsgs</th><th>outOctets</th><th>pktDrops</th><th>....</th><th>bootTime</th><th>ClockSkew</th><th>pulseTimestamp</th><th><---- Last pulse message received</th><th>SW Build</th>";
+                for (var entry in gSRlist) {
+                    console.log("gSRlist entry=" + lib_1.dump(entry));
+                    expressRedisClient.hgetall(entry, function (err, pulseEntry) {
+                        txt += "<tr>";
+                        //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
+                        //console.log(ts()+"handlepulse(): pulseEntry="+dump(pulseEntry));
+                        expressRedisClient.hgetall("mint:" + pulseEntry.srcMint, function (err, mintEntry) {
+                            //console.log("mintEntry="+dump(mintEntry));
+                            if (mintEntry != null) {
+                                txt += '<tr class="color' + pulseEntry.group + " " + pulseEntry.geo + ' ' + "INIT" + '">';
+                                //txt += "<td>" + mintEntry.mint + "</td>";
+                                txt += "<td>10.10.0." + mintEntry.mint + "</td>";
+                                txt += "<td>" + mintEntry.state + "</td>";
+                                txt += '<td>' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" target="_blank">' + mintEntry.geo + '</a></td>';
+                                txt += '<td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/groups" target="_blank">' + pulseEntry.group + "</a></td>";
+                                txt += "<td>" + mintEntry.ipaddr + "</td>";
+                                txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" target="_blank">' + mintEntry.port + "</a></td>";
+                                txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(mintEntry.publickey.length - 4) + "</td>";
+                                txt += "<td>" + pulseEntry.seq + "</td>";
+                                txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                                txt += "<td>" + pulseEntry.inOctets + "</td>";
+                                var pulseGroupOwner = pulseEntry.group.split(".")[0];
+                                //if ( (entry.geo!='GENESIS') && (entry.owl==0) && (entry.geo!=me.geo))  txt += '<td class="alert" bgcolor="#909090">' + '<a href="http://' + me.ipaddr + ':' + entry.port + '/graph?dst=' + me.geo + '&src=' + entry.geo + "&group=" + group + '" target="_blank">' + entry.owl + "</a></td>";
+                                txt += "<td>" + '<a href="http://' + me.ipaddr + ':' + pulseEntry.port + '/graph?dst=' + me.geo + '&src=' + pulseEntry.geo + "&group=" + pulseEntry.group + '" target="_blank">' + pulseEntry.owl + "</a></td>";
+                                txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                                txt += "<td>" + pulseEntry.outOctets + "</td>";
+                                //txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                                txt += "<td>" + (pulseEntry.seq - pulseEntry.inMsgs) + "</td>";
+                                var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+                                var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+                                var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+                                var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
+                                var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+                                txt += "<td>" + '<FORM>';
+                                txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+                                txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+                                txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
+                                txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+                                txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+                                txt += '<FORM>' + "</td>";
+                                //console.log(ts()+"mintEntry.bootTime="+mintEntry.bootTime);
+                                var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
+                                if (mintEntry.bootTime == 0)
+                                    delta = "";
+                                txt += "<td>" + delta + "</td>";
+                                //txt += "<td>" + entry.bootTime+ "</td>";
+                                console.log(lib_1.ts() + " clockSkew=" + mintEntry.clockSkew + "mintEntry=" + lib_1.dump(mintEntry));
+                                if (Math.abs(mintEntry.clockSkew) > 1000)
+                                    if (Math.abs(mintEntry.clockSkew) > 60000)
+                                        txt += "<td>" + Math.round(mintEntry.clockSkew / 60000) + " min</td>";
+                                    else
+                                        txt += "<td>" + Math.round(mintEntry.clockSkew / 1000) + " sec</td>";
+                                else
+                                    txt += "<td>" + mintEntry.clockSkew + " ms</td>";
+                                var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+                                if (pulseEntry.pulseTimestamp == 0)
+                                    deltaSeconds = "";
+                                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                                txt += "<td>" + deltaSeconds + "</td>";
+                                if (pulseEntry.lastMsg)
+                                    txt += "<td>" + "" + pulseEntry.lastMsg.length + " bytes: " + pulseEntry.lastMsg + "</td>";
+                                else
+                                    txt += "<td>" + "<undefined>" + "</td>";
+                                txt += "<td>" + pulseEntry.version + "</td>";
+                                txt += "</tr>";
+                            }
+                            if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
+                                txt += "</table>";
+                                //console.log(ts()+"READY TO DUMP HTML: "+txt);
+                                txt += "</body></html>";
+                                res.setHeader('Content-Type', 'text/html');
+                                res.setHeader("Access-Control-Allow-Origin", "*");
+                                res.end(txt);
+                            }
+                            //expressRedisClient.hgetall(entry, function (err,pulseEntry) {
+                            // txt+=pulseEntry.geo+":"+pulseEntry.group;
+                            //console.log("mintEntry="+dump(mintEntry));
+                            //});
+                        });
+                    });
+                }
+            });
         });
     });
 }
