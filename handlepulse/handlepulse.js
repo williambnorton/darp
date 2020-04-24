@@ -120,13 +120,16 @@ server.on('message', function (message, remote) {
                 redisClient.hmset(pulse.group + ":" + pulse.srcMint + "-" + me.mint, pulse.owl); //store the pulse
                 console.log(lib_js_1.ts() + "saving matrix LOOP entries to redis");
                 var owlsAry = pulse.owls.split(",");
+                console.log(lib_js_1.ts() + "owlsAry=" + owlsAry);
                 for (var measure in owlsAry) {
+                    console.log(lib_js_1.ts() + "measure=" + measure + " owlsAry[measure]=" + owlsAry[measure]);
                     var srcMint = measure.split("=")[0];
                     var owl = measure.split("=")[1];
                     if (typeof owl == "undefined")
                         owl = "";
-                    console.log(lib_js_1.ts() + "owls=" + owls + " srcMint=" + srcMint + " owl=" + owl);
-                    redisClient.hmset(pulse.group + ":" + srcMint + "-" + me.mint, owl); //store the pulse
+                    var owlEntryLabel = pulse.group + ":" + srcMint + "-" + me.mint;
+                    console.log(lib_js_1.ts() + "STORING " + owlEntryLabel + " owls=" + owls + " srcMint=" + srcMint + " owl=" + owl);
+                    redisClient.hmset(owlEntryLabel, owl); //store the pulse
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
