@@ -116,9 +116,9 @@ function handleShowState(req, res) {
          for (var entry in gSRlist) lastEntry=entry;
 
          expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
-            txt+="<table>"
+            txt+='<table border="1">'
             for (var node in gSRlist) {
-               txt+="<tr>"
+               txt+="<tr >"
                var rowEntry=node.split(":")[0];
                var rowMint=gSRlist[node].split(":")[0]
                var rowStack=new Array();
