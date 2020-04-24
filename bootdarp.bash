@@ -20,7 +20,7 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 
 export DARPDIR=$HOME/darp
-if ["$PORT" = "" ]; then 
+if ["$PORT" == "" ]; then 
     PORT=65013; 
 fi
 export PORT
