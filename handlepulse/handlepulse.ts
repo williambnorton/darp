@@ -151,7 +151,7 @@ server.on('message', function(message, remote) {
         "owl" : pulse.owl
       });
 
-      storeOWL(pulse.geo,me.geo,OWL);
+      //storeOWL(pulse.geo,me.geo,OWL);
 
       console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
  

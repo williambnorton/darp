@@ -135,7 +135,7 @@ server.on('message', function (message, remote) {
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
                 });
-                storeOWL(pulse.geo, me.geo, OWL);
+                //storeOWL(pulse.geo,me.geo,OWL);
                 console.log(lib_js_1.ts() + "HANDLEPULSE(): storedOWL " + lib_js_1.dump(pulse));
             });
         });
