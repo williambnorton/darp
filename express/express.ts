@@ -165,18 +165,14 @@ function handleShowState(req, res) {
          }
 
          txt += '<body onload="startTime()" '+insert+'>'
-         if (me.isGenesisNode==1) txt+='<H2>DARP GENESIS NODE : '+me.geo+'</H2><BR>';
+         if (me.isGenesisNode==1) txt+='<H2>DARP GENESIS NODE : '+me.geo+ " IP(10.10.0."+me.mint+') '+ me.ipaddr + ":" + me.port +' for pulseGroup: '+me.group+'</H2><BR>';
+         else {
+            txt += '<h2>DARP pulseGroup Member '+ me.geo + " IP(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>"+"<p>//"+me.version+"//</p>";
+            txt += ' under Genesis Node: <a href="http://'+genesis.ipaddr+":"+genesis.port+'">'+genesis.geo+":"+genesis.group+"</a>";
+         }
          //txt += '<h1>10.10.0.'+me.mint+'</h1>';
-         txt += '<h1>'+ me.geo + " VPN IP(10.10.0."+me.mint+")</h1>   <h2> : " + me.ipaddr + ":" + me.port +"</H2>"+"<p>//"+me.version+"//</p>";
-         txt += "<h2>Connect to me with docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+genesis.ipaddr+" -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
+         txt += "<br><h2>Connect to me with docker run -p 65013:65013 -p 65013:65013/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+genesis.ipaddr+" -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</h2>";
 
-         if (me.isGenesisNode!=1)
-           txt += ' under Genesis Node: <a href="http://'+genesis.ipaddr+":"+genesis.port+'">'+genesis.geo+":"+genesis.group+"</a>";
-            //txt += "<H2> Refresh every=" + POLLFREQ/1000 + " seconds</H2>";
-         txt += "<H2> with pulseMsgSize=" + me.statsPulseMessageLength + "</H2>";
-         //if (JOINOK) txt+='<H2> <  JOINOK  > </H2>';
-         //else txt+='<H2>*** NOT JOINOK ***</H2>';
-         txt+='<H2> STATE: '+me.state+' </H2>';
          if (me.state=="HOLD") txt += "<p>Hit %R to RELOAD PAGE DURING HOLD MODE</p>";
            //txt += ' under Genesis Node: <a href="http://'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+'">'+me.Genesis.split(":")[0]+":"+me.Genesis.split(":")[1]+"</a>";
 
