@@ -487,7 +487,7 @@ app.get('/nodefactory', function (req, res) {
          console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
          if ((mintStack==1 && (publickey==me.publickey)) || (mintStack!=1)) {   //check publickey instead!!!!!
             if (geo=="NORTONDARP") {
-               //console.log(ts()+"Filtering");
+               //console.log(ts()+"Filtering"); //this will eventually be a black list or quarentine group
             } else {
                provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
                console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
