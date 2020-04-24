@@ -120,10 +120,11 @@ function handleShowState(req, res) {
          console.log(ts()+"gSRlist="+dump(gSRlist)+" lastEntry="+lastEntry);
 
          //expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
-         txt+="<table>"
+         txt+="<table><tr><th></th>"
          for (var node in gSRlist) {
             txt += '<th>' + '' + node +"("+gSRlist[node]+")" + '</th>';
          }
+         txt+="</tr>"
          for (var rowNode in gSRlist) {
             txt+="<tr>"
             var rowEntry=rowNode.split(":")[0];
@@ -134,7 +135,7 @@ function handleShowState(req, res) {
             for (var colNode in gSRlist) {
                var colEntry=colNode;
                var colMint=gSRlist[colNode]
-               txt+="<td>"+colMint+"-"+rowMint+""+"</td>" 
+               txt+="<td>"+rowMint+"-"+colMint+""+"</td>" 
                rowStack.unshift({
                   "colMint" : colMint,
                   "rowMint" : rowMint
