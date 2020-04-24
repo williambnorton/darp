@@ -117,7 +117,7 @@ server.on('message', function (message, remote) {
                 redisClient.hmset(pulseLabel, pulse); //store the pulse
                 console.log(lib_js_1.ts() + "SAVING matrix entries to redis");
                 //add to matrix with expiration times
-                redisClient.hset(pulse.group + ":" + pulse.srcMint + "-" + me.mint, "" + pulse.owl); //store the pulse
+                redisClient.hmset(pulse.group + ":" + pulse.srcMint + "-" + me.mint, "owl", pulse.owl); //store the pulse
                 console.log(lib_js_1.ts() + "SAVED my measured OWL to redis");
                 var owlsAry = pulse.owls.split(",");
                 console.log(lib_js_1.ts() + "owlsAry=" + owlsAry);
@@ -130,7 +130,7 @@ server.on('message', function (message, remote) {
                     var owlEntryLabel = pulse.group + ":" + srcMint + "-" + me.mint;
                     //console.log(ts()+"STORING "+owlEntryLabel+" owls="+owls+" srcMint="+srcMint+" owl="+owl);
                     console.log(lib_js_1.ts() + "STORING " + owlEntryLabel + "=" + owl);
-                    redisClient.hset(owlEntryLabel, owl); //store the pulse
+                    redisClient.hmset(owlEntryLabel, "owl", owl); //store the pulse
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
