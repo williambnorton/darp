@@ -120,7 +120,7 @@ function handleShowState(req, res) {
             for (var node in gSRlist) {
                txt+="<tr>"
                var rowEntry=node.split(":")[0];
-               var rowMint=gSRlist[node]
+               var rowMint=gSRlist[node].split(":")[0]
                var rowStack=new Array();
                txt += '<td>' + '<a href="http://' + ""+ '/" target="_blank">' + rowEntry +"("+rowMint+")" + '</a></td>';
 
