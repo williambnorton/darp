@@ -260,7 +260,7 @@ function handleShowState(req, res) {
                         if (pulseEntry.lastMsg)
                            txt += "<td>" + ""+pulseEntry.lastMsg.length +" bytes: "+ pulseEntry.lastMsg + "</td>";
                         else
-                           txt += "<td>" + "<undefined>" + "</td>";
+                           txt += "<td>" + "" + "</td>";
                         txt += "<td>" + pulseEntry.version + "</td>";
 
                         txt+="</tr>"
