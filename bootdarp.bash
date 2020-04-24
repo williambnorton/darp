@@ -131,10 +131,6 @@ do
     echo `date` Starting config to fetch config and code from genesis node
     sleep 1
 
-
-echo `date` SLEEPING 300 seconds; sleep 300
-
-
     cd $DARPDIR
     cd $DARPDIR/pulser
     if [ -f  $DARPDIR/pulser.pid ]; then
