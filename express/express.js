@@ -97,52 +97,58 @@ function handleShowState(req, res) {
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>';
         txt += '<body>';
         var insert = "";
+        //
+        // Make Matrix
+        //
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             var lastEntry = "";
             for (var entry in gSRlist)
                 lastEntry = entry;
             console.log(lib_1.ts() + "gSRlist=" + lib_1.dump(gSRlist) + " lastEntry=" + lastEntry);
-            expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-                txt += "<table>";
-                for (var rowNode in gSRlist) {
-                    txt += "<tr>";
-                    var rowEntry = rowNode.split(":")[0];
-                    var rowMint = gSRlist[rowNode];
-                    var rowStack = new Array();
-                    txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + rowMint + ")" + '</a></td>';
-                    for (var colNode in gSRlist) {
-                        var colEntry = colNode;
-                        var colMint = gSRlist[colNode];
-                        txt += "<td>" + colMint + "-" + rowMint + "" + "</td>";
-                        rowStack.unshift({
-                            "colMint": colMint,
-                            "rowMint": rowMint
-                        });
-                        if (colNode == lastEntry) {
-                            txt += "</tr>";
-                            //pop off items of the stack
-                        }
-                        /*
-                        txt += '<td>' +
-      
-                           var src = entry.geo;;
-                           var dst = nodeEntry.geo;
-                           var owl=-1;
-                           var values = getOWL(src, dst); //any src-dst pair will give us latency
-      
-                           if (values) owl=values.owl;
-                           var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
-                           var highlight="";//highlightEff(src,dst,group);
-                           if ((owl==0) ||  (src==dst))
-                                    txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
-                           else
-                                    txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
-      
-         */
+            //expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+            txt += "<table>";
+            for (var node in gSRlist) {
+                txt += '<th>' + '' + node + "(" + gSRlist[node] + ")" + '</th>';
+            }
+            for (var rowNode in gSRlist) {
+                txt += "<tr>";
+                var rowEntry = rowNode.split(":")[0];
+                var rowMint = gSRlist[rowNode];
+                var rowStack = new Array();
+                txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + rowMint + ")" + '</a></td>';
+                for (var colNode in gSRlist) {
+                    var colEntry = colNode;
+                    var colMint = gSRlist[colNode];
+                    txt += "<td>" + colMint + "-" + rowMint + "" + "</td>";
+                    rowStack.unshift({
+                        "colMint": colMint,
+                        "rowMint": rowMint
+                    });
+                    if (colNode == lastEntry) {
+                        txt += "</tr>";
+                        //pop off items of the stack
                     }
+                    /*
+                    txt += '<td>' +
+     
+                       var src = entry.geo;;
+                       var dst = nodeEntry.geo;
+                       var owl=-1;
+                       var values = getOWL(src, dst); //any src-dst pair will give us latency
+     
+                       if (values) owl=values.owl;
+                       var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
+                       var highlight="";//highlightEff(src,dst,group);
+                       if ((owl==0) ||  (src==dst))
+                                txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
+                       else
+                                txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
+     
+     */
                 }
-            });
+            }
         });
+        //    matrix done
         expressRedisClient.hgetall("mint:1", function (err, genesis) {
             if (genesis == null)
                 return console.log("handleShowState(): WEIRD: NULL mint:1 genesis");
@@ -151,8 +157,9 @@ function handleShowState(req, res) {
                 insert = 'style="background-color: beige;"';
             }
             txt += '<body onload="startTime()" ' + insert + '>';
-            if (me.isGenesisNode == 1)
+            if (me.isGenesisNode == 1) {
                 txt += '<H2>DARP GENESIS NODE : ' + me.geo + " IP(10.10.0." + me.mint + ') ' + me.ipaddr + ":" + me.port + ' for pulseGroup: ' + me.group + '</H2><BR>';
+            }
             else {
                 txt += '<h2>DARP pulseGroup Member ' + me.geo + " IP(10.10.0." + me.mint + ")</h1>   <h2> : " + me.ipaddr + ":" + me.port + "</H2>" + "<p>//" + me.version + "//</p>";
                 txt += ' under Genesis Node: <a href="http://' + genesis.ipaddr + ":" + genesis.port + '">' + genesis.geo + ":" + genesis.group + "</a>";
