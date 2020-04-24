@@ -145,10 +145,10 @@ function handleShowState(req, res) {
       // Make Matrix
       //
       getPulseRecords(function(pulseRecords) {
-         console.log(ts()+"pulseRecords="+dump(pulseRecords));
+         console.log(ts()+"getPulseRecords(): pulseRecords="+dump(pulseRecords));
       })
       getMintRecords(function(mintRecords) {
-         console.log(ts()+"mintRecords="+dump(mintRecords));
+         console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
       })
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
          var lastEntry="";
