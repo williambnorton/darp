@@ -211,7 +211,7 @@ function handleShowState(req, res) {
                   expressRedisClient.hgetall(entry, function (err,pulseEntry) {
                      txt+="<tr>"
                      //txt+="<p>"+mintEntry.mint+":"+mintEntry.geo+":"+mintEntry.group+"</p>";
-                     //console.log(ts()+"handlepulse(): pulseEntry="+dump(pulseEntry));
+                     console.log(ts()+"EXPRESS: About to draw pulseEntry="+dump(pulseEntry));
 
                      expressRedisClient.hgetall("mint:"+pulseEntry.srcMint, function (err,mintEntry) {
                         console.log("EXPRESS drawing mintEntry="+dump(mintEntry));
