@@ -103,21 +103,22 @@ function handleShowState(req, res) {
                 lastEntry = entry;
             expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                 txt += "<table>";
-                for (var node in gSRlist) {
+                for (var rowNode in gSRlist) {
                     txt += "<tr>";
-                    var rowEntry = node.split(":")[0];
-                    var rowMint = gSRlist[node];
+                    var rowEntry = rowNode.split(":")[0];
+                    var rowMint = gSRlist[rowNode];
                     var rowStack = new Array();
                     txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + rowMint + ")" + '</a></td>';
-                    for (node in gSRlist) {
-                        var colEntry = node;
-                        var colMint = node.split(":")[0];
+                    for (var colNode in gSRlist) {
+                        var colEntry = colNode;
+                        var colMint = gSRlist[colNode];
                         txt += "<td>" + colMint + "-" + rowMint + "" + "</td>";
                         rowStack.unshift({
                             "colMint": colMint,
                             "rowMint": rowMint
                         });
-                        if (node == lastEntry) {
+                        if (colNode == lastEntry) {
+                            txt += "</tr>";
                             //pop off items of the stack
                         }
                         /*
