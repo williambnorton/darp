@@ -115,6 +115,16 @@ server.on('message', function (message, remote) {
                 ;
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the pulse
+                //add to matrix with expiration times
+                redisClient.hmset(pulse.group + ":" + pulse.srcMint + "-" + me.mint, pulse.owl); //store the pulse
+                var owlsAry = pulse.owls.split(",");
+                for (var measure in owlsAry) {
+                    var srcMint = measure.split("=")[0];
+                    var owl = measure.split("=")[1];
+                    if (typeof owl == "undefined")
+                        owl = "";
+                    redisClient.hmset(pulse.group + ":" + srcMint + "-" + me.mint, owl); //store the pulse
+                }
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
                 });
