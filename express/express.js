@@ -477,15 +477,15 @@ app.get('/nodefactory', function (req, res) {
             //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
             //console.log("req="+dump(req.connection));
             // On Startup, only accept connections from me, and the test is that we have matching publickeys
-            console.log(lib_1.ts() + "EXPRESS: mintStack=" + mintStack + " publickey=" + publickey + " me.publickey=" + me.publickey);
-            console.log("EXPRESS: Received connection request from " + geo + "(" + incomingIP + ")");
+            //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
+            //console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
             if ((mintStack == 1 && (publickey == me.publickey)) || (mintStack != 1)) { //check publickey instead!!!!!
                 if (geo == "NORTONDARP") {
                     //console.log(ts()+"Filtering"); //this will eventually be a black list or quarentine group
                 }
                 else {
                     provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-                        console.log(lib_1.ts() + "EXPRESS nodeFactory sending config=" + lib_1.dump(config));
+                        //console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
                     });
