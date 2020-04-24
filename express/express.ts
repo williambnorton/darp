@@ -114,10 +114,10 @@ function handleShowState(req, res) {
       //
       // Make Matrix
       //
-      expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { ///WHY twice?
+      expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
          var lastEntry="";
          for (var entry in gSRlist) lastEntry=entry;
-         console.log(ts()+"gSRlist="+dump(gSRlist)+" lastEntry="+lastEntry);
+         console.log(ts()+"Making Matrix gSRlist="+dump(gSRlist)+" lastEntry="+lastEntry);
 
          //expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
          txt+="<table><tr><th></th>"
@@ -135,32 +135,39 @@ function handleShowState(req, res) {
             for (var colNode in gSRlist) {
                var colEntry=colNode;
                var colMint=gSRlist[colNode]
-               txt+="<td>"+rowMint+"-"+colMint+""+"</td>" 
-               rowStack.unshift({
-                  "colMint" : colMint,
-                  "rowMint" : rowMint
-               })
-               if (colNode==lastEntry) {
-                  txt+="</tr>"
-                  //pop off items of the stack
-               }
-               /*
-               txt += '<td>' + 
 
-                  var src = entry.geo;;
-                  var dst = nodeEntry.geo;
-                  var owl=-1;
-                  var values = getOWL(src, dst); //any src-dst pair will give us latency
+               expressRedisClient.hgetall(me.group+":"+rowMint+"-"+colMint, function (err,owlMeasure) { 
+                  txt+="<td>"+owlMeasure+""+"</td>" 
 
-                  if (values) owl=values.owl;
-                  var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
-                  var highlight="";//highlightEff(src,dst,group);
-                  if ((owl==0) ||  (src==dst))
-                           txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
-                  else
-                           txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
+                  rowStack.unshift({
+                     "colMint" : colMint,
+                     "rowMint" : rowMint
+                  });
+                  if (colNode==lastEntry) {
+                     txt+="</tr>"
+                  }
+                  /*
+                  txt += '<td>' + 
 
-*/   
+                     var src = entry.geo;;
+                     var dst = nodeEntry.geo;
+                     var owl=-1;
+                     var values = getOWL(src, dst); //any src-dst pair will give us latency
+
+                     if (values) owl=values.owl;
+                     var id=src+"_"+dst+"_"+group.replace(/\./g,"_");
+                     var highlight="";//highlightEff(src,dst,group);
+                     if ((owl==0) ||  (src==dst))
+                              txt += '<td id="'+id+'" class="color'+color+" "+highlight+'" bgcolor="#FF0000">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + "</a></td>";
+                     else
+                              txt += '<td id="'+id+'" class="color '+color+' '+highlight+'">' + '<a href="http://' + nodeEntry.ipaddr + ':' + nodeEntry.port + '/graph?dst=' + dst + '&src=' + src + "&group=" + group + '" target="_blank">' + owl + " ms</a></td>";
+
+   */   
+               });
+            }
+         
+            if (rowNode==lastEntry) {
+               txt+="</table>"
             }
          }
       });
