@@ -106,11 +106,22 @@ function handleShowState(req, res) {
                 txt += "<table>";
                 for (var node in gSRlist) {
                     txt += "<tr>";
-                    var rowEntry = node;
-                    txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + gSRlist[node] + ")" + '</a></td>';
+                    var rowEntry = node.split(":")[0];
+                    var rowMint = gSRlist[node];
+                    var rowStack = new Array();
+                    txt += '<td>' + '<a href="http://' + "" + '/" target="_blank">' + rowEntry + "(" + rowMint + ")" + '</a></td>';
                     for (node in gSRlist) {
                         var colEntry = node;
-                        txt += "<td>" + colEntry + "-" + rowEntry + "lookup" + "</td>";
+                        var colMint = node.split(":")[0];
+                        txt += "<td>" + colMint + "-" + rowMint + "" + "</td>";
+                        rowStack.unshift({
+                            "colMint": colMint,
+                            "rowMint": rowMint
+                        });
+                        if (node == lastEntry) {
+                            //pop off items of the stack to 
+                            console.log(lib_1.ts() + "while pop entries, add to text");
+                        }
                         /*
                         txt += '<td>' +
       

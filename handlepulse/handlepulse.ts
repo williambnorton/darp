@@ -83,15 +83,15 @@ server.on('message', function(message, remote) {
 
   //console.log(ts()+"handlepulse(): owls="+owls);
 
-  redisClient.hgetall(pulseLabel, function(err, oldPulse) {
+  redisClient.hgetall(pulseLabel, function(err, lastPulse) {
     //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
     redisClient.hgetall("mint:0", function(err, me) {
 
       if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
       if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
 
-      if (oldPulse==null) {     //first time we see this entry, include stats to increment
-        oldPulse={ "inOctets" : "0", "inMsgs" : "0"}
+      if (lastPulse==null) {     //first time we see this entry, include stats to increment
+        lastPulse={ "inOctets" : "0", "inMsgs" : "0"}
       }
       if (err) {console.log("ERROR in on.message handling");}
       var pulse={
@@ -104,8 +104,8 @@ server.on('message', function(message, remote) {
         owls : owls,
         owl : ""+OWL,
         lastMsg : msg,
-        inOctets : ""+(parseInt(oldPulse.inOctets)+message.length),
-        inMsgs : ""+(parseInt(oldPulse.inMsgs)+1)
+        inOctets : ""+(parseInt(lastPulse.inOctets)+message.length),
+        inMsgs : ""+(parseInt(lastPulse.inMsgs)+1)
       };
 
       authenticatedMessage(pulse, function(err,authenticated) {
