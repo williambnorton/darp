@@ -84,8 +84,8 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
 //
 //
 //
-function getMintTable(callback) {
-    console.log(lib_1.ts() + "EXPRESS getMintRecords()");
+function getMintTableEntries(callback) {
+    console.log(lib_1.ts() + "EXPRESS getMintTableEntries()");
     var mintEntryStack = new Array();
     var lastMintEntry = "";
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
@@ -104,7 +104,7 @@ function getMintTable(callback) {
 //
 //
 //
-function getPulseRecords(callback) {
+function getPulseRecordEntries(callback) {
     //console.log(ts()+"EXPRESS getPulseRecords()");
     var pulseEntryStack = new Array();
     var lastPulseEntry = "";
@@ -137,7 +137,7 @@ function getPulseRecordTable(callback) {
     txt += "<th>inMsgs</td>";
     txt += "<th>pktDrops</td>";
     txt += "</tr>";
-    getPulseRecords(function (pulseRecords) {
+    getPulseRecordEntries(function (pulseRecords) {
         console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(pulseRecords));
         for (var pulse in pulseRecords) {
             var pulseEntry = pulseRecords[pulse];
@@ -180,7 +180,7 @@ function getMintTable(callback) {
     txt += "<th>clockSkew</th>";
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
-    getMintTable(function (mintTable) {
+    getMintTableEntries(function (mintTable) {
         for (var mint in mintTable) {
             var mintEntry = mintTable[mint];
             //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
