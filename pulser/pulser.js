@@ -30,11 +30,13 @@ function checkAdminControl() {
     console.log(lib_1.ts() + "checkAdminControl");
     redisClient.hget("mint:0", "adminControl", function (err, adminControl) {
         if (adminControl == "PULSE") {
+            console.log(lib_1.ts() + "adminControl=" + adminControl);
             pulse(1);
             redisClient.hdel("mint:0", "adminControl");
         }
     });
 }
+setTimeout(checkAdminControl, 1000);
 setTimeout(pulse, 1000);
 var datagramClient = dgram.createSocket('udp4');
 //
