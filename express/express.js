@@ -124,6 +124,18 @@ function getPulseRecords(callback) {
 }
 function pulseRecordTable(callback) {
     var txt = '<table border="1">';
+    txt += "<tr>";
+    txt += "<th>geo</td>";
+    txt += "<th>group</td>";
+    txt += "<th>seq</td>";
+    txt += "<th>pulseTimestamp</td>";
+    txt += "<th>srcMint</td>";
+    txt += "<th>owls</td>";
+    txt += "<th>inOctets</td>";
+    txt += "<th>outOctets</td>";
+    txt += "<th>inMsgs</td>";
+    txt += "<th>pktDrops</td>";
+    txt += "</tr>";
     getPulseRecords(function (pulseRecords) {
         console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(pulseRecords));
         for (var pulse in pulseRecords) {
@@ -146,7 +158,7 @@ function pulseRecordTable(callback) {
         callback(txt);
     });
 }
-function display() {
+function display(callback) {
     var txt = "";
     console.log(lib_1.ts() + "display");
     console.log(lib_1.ts() + "display");
@@ -155,6 +167,7 @@ function display() {
     console.log(lib_1.ts() + "display");
     pulseRecordTable(function (txt) {
         console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + txt);
+        callback(txt);
         /*
            getMintRecords(function(mintRecords) {
               console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
@@ -183,7 +196,9 @@ function handleShowState(req, res) {
         //
         // Make Matrix
         //
-        display();
+        display(function (html) {
+            txt += html;
+        });
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             var lastEntry = "";
             for (var entry in gSRlist)

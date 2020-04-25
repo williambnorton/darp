@@ -136,6 +136,18 @@ function getPulseRecords(callback) {
 
 function pulseRecordTable(callback) {
    var txt='<table border="1">';
+   txt+="<tr>"
+   txt+="<th>geo</td>"
+   txt+="<th>group</td>"
+   txt+="<th>seq</td>"
+   txt+="<th>pulseTimestamp</td>"
+   txt+="<th>srcMint</td>"
+   txt+="<th>owls</td>"
+   txt+="<th>inOctets</td>"
+   txt+="<th>outOctets</td>"
+   txt+="<th>inMsgs</td>"
+   txt+="<th>pktDrops</td>"
+   txt+="</tr>"
    getPulseRecords(function (pulseRecords) {
       console.log(ts()+"getPulseRecords() returned "+dump(pulseRecords));
 
@@ -162,7 +174,7 @@ function pulseRecordTable(callback) {
 
 }
 
-function display() {
+function display(callback) {
 var txt="";
    console.log(ts()+"display");
    console.log(ts()+"display");
@@ -172,7 +184,7 @@ var txt="";
 
    pulseRecordTable(function(txt) {
       console.log(ts()+"getPulseRecords(): pulseRecords="+txt);
-
+      callback(txt)
       /*
          getMintRecords(function(mintRecords) {
             console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
@@ -205,7 +217,9 @@ function handleShowState(req, res) {
       //
       // Make Matrix
       //
-      display();
+      display(function (html) {
+         txt+=html;
+      });
 
 
 
