@@ -119,7 +119,7 @@ function getPulseRecords(callback) {
    var lastPulseEntry="";
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
       for (var pulse in gSRlist) lastPulseEntry=pulse;
-      c//onsole.log(ts()+"getPulseRecords(): gSRlist="+dump(gSRlist)+" lastPulseEntry="+lastPulseEntry);
+      //console.log(ts()+"getPulseRecords(): gSRlist="+dump(gSRlist)+" lastPulseEntry="+lastPulseEntry);
 
       for (var pulse in gSRlist) {
          //console.log(ts()+"getPulseRecords(): Processing pulse="+pulse);
