@@ -391,6 +391,12 @@ app.get('/pulseMsg', function (req, res) {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
+    console.log(lib_1.ts() + "NODEFACTORY");
+    console.log(lib_1.ts() + "NODEFACTORY");
+    console.log(lib_1.ts() + "NODEFACTORY");
+    console.log(lib_1.ts() + "NODEFACTORY");
+    console.log(lib_1.ts() + "NODEFACTORY");
+    console.log(lib_1.ts() + "NODEFACTORY");
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me != null) {
             console.log('EXPRESS nodeFactory: config requested with params: ' + lib_1.dump(req.query));
