@@ -114,6 +114,7 @@ function getPulseRecords(callback) {
         for (var pulse in gSRlist) {
             console.log(lib_1.ts() + "getPulseRecords(): Processing pulse=" + pulse);
             expressRedisClient.hgetall(pulse, function (err, pulseEntry) {
+                console.log(lib_1.ts() + "getPulseRecords(): pulseEntry=" + lib_1.dump(pulseEntry));
                 pulseEntryStack.push(pulseEntry);
                 if (pulse == lastPulseEntry)
                     callback(pulseEntryStack);
@@ -124,8 +125,9 @@ function getPulseRecords(callback) {
 function pulseRecordTable(callback) {
     var txt = '<table border="1">';
     getPulseRecords(function (pulseRecords) {
+        console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(pulseRecords));
         for (var pulse in pulseRecords) {
-            console.log(lib_1.ts() + "pulseRecordTable(): pulse=" + lib_1.dump(pulse));
+            console.log(lib_1.ts() + "pulseRecordTable(): Working on pulse=" + lib_1.dump(pulse));
         }
         txt += "</table>";
         callback(txt);
