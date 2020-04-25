@@ -195,8 +195,6 @@ function mintTable(callback) {
    txt+="</tr>"
 
    getMintTable(function (mintTable) {
-      console.log(ts()+"getPulseRecords() returned "+dump(mintTable));
-
       for (var mint in mintTable) {
          var mintEntry=mintTable[mint]
          //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
@@ -235,7 +233,7 @@ var txt="";
    pulseRecordTable(function(myPulseRecordTable) {
       console.log(ts()+"getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;
-      getMintTable(function (myMintTable) {
+      mintTable(function (myMintTable) {
          console.log(ts()+"getmintTable(): myMintTable="+myMintTable);
          txt+=myMintTable
          callback(txt)

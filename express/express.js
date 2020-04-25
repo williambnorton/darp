@@ -180,7 +180,6 @@ function mintTable(callback) {
     txt += "<th>clockSkew</th>";
     txt += "</tr>";
     getMintTable(function (mintTable) {
-        console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(mintTable));
         for (var mint in mintTable) {
             var mintEntry = mintTable[mint];
             //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
@@ -214,7 +213,7 @@ function display(callback) {
     pulseRecordTable(function (myPulseRecordTable) {
         console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
-        getMintTable(function (myMintTable) {
+        mintTable(function (myMintTable) {
             console.log(lib_1.ts() + "getmintTable(): myMintTable=" + myMintTable);
             txt += myMintTable;
             callback(txt);
