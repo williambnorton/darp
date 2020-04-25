@@ -82,6 +82,7 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
     }
 });
 function getMintRecords(callback) {
+    console.log(lib_1.ts() + "EXPRESS getMintRecords()");
     var mintEntryStack = new Array();
     var lastMintEntry = "";
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
@@ -97,6 +98,7 @@ function getMintRecords(callback) {
     });
 }
 function getPulseRecords(callback) {
+    console.log(lib_1.ts() + "EXPRESS getPulseRecords()");
     var pulseEntryStack = new Array();
     var lastPulseEntry = "";
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
