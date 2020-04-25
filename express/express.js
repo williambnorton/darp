@@ -140,7 +140,7 @@ function getPulseRecordTable(callback) {
     txt += "<th>pktDrops</td>";
     txt += "</tr>";
     getPulseRecordEntries(function (pulseRecords) {
-        console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(pulseRecords));
+        console.log(lib_1.ts() + "getPulseRecordEntries() brought us " + lib_1.dump(pulseRecords));
         for (var pulse in pulseRecords) {
             var pulseEntry = pulseRecords[pulse];
             //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
@@ -185,23 +185,9 @@ function getMintTable(callback) {
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
         console.log(lib_1.ts() + "getMintTableEntries(): gave us=" + lib_1.dump(mintTable));
-        for (var mint in mintTable) {
-            var mintEntry = mintTable[mint];
-            console.log(lib_1.ts() + "getMintTableEntries(): mint=" + mint + " mintTable[mint]=" + lib_1.dump(mintTable[mint]));
-            txt += "<tr>";
-            txt += "<td>" + mintEntry.mint + "</td>";
-            txt += "<td>" + mintEntry.geo + "</td>";
-            txt += "<td>" + mintEntry.port + "</td>";
-            txt += "<td>" + mintEntry.ipaddr + "</td>";
-            txt += "<td>" + mintEntry.publickey + "</td>";
-            txt += "<td>" + mintEntry.state + "</td>";
-            txt += "<td>" + mintEntry.bootTime + "</td>";
-            txt += "<td>" + mintEntry.version + "</td>";
-            txt += "<td>" + mintEntry.wallet + "</td>";
-            txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
-            txt += "<td>" + mintEntry.owl + "</td>";
-            txt += "<td>" + mintEntry.isGenesisNode + "</td>";
-            txt += "<td>" + mintEntry.clockSkew + "</td>";
+        for (var i in mintTable) {
+            var mintEntry = mintTable[i];
+            console.log(lib_1.ts() + "getMintTableEntries(): " + mintTable[i], "+dump(mintTable[mint]));, txt += "<tr>", txt += "<td>" + mintEntry.mint + "</td>", txt += "<td>" + mintEntry.geo + "</td>", txt += "<td>" + mintEntry.port + "</td>", txt += "<td>" + mintEntry.ipaddr + "</td>", txt += "<td>" + mintEntry.publickey + "</td>", txt += "<td>" + mintEntry.state + "</td>", txt += "<td>" + mintEntry.bootTime + "</td>", txt += "<td>" + mintEntry.version + "</td>", txt += "<td>" + mintEntry.wallet + "</td>", txt += "<td>" + mintEntry.SHOWPULSES + "</td>", txt += "<td>" + mintEntry.owl + "</td>", txt += "<td>" + mintEntry.isGenesisNode + "</td>", txt += "<td>" + mintEntry.clockSkew + "</td>");
             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
             var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
             var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
