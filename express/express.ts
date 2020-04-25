@@ -99,11 +99,11 @@ function getMintRecords(callback) {
    var mintEntryStack=new Array();
    var lastMintEntry="";
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
-      for (var pulse in gSRlist) lastMintEntry=gSRlist[pulse];
+      for (var pulse in gSRlist) lastMintEntry=pulse;
 
       for (var label in gSRlist) {
          expressRedisClient.hgetall("mint:"+gSRlist[label],function (err,mintEntry) {
-            console.log(ts()+"mintEntry "+gSRlist[pulse]+"="+dump(mintEntry));
+            console.log(ts()+"mintEntry "+gSRlist[label]+"="+dump(mintEntry));
             mintEntryStack.push(mintEntry);
             if (pulse==lastMintEntry) 
                callback(mintEntryStack)
