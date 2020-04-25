@@ -6,7 +6,7 @@
 #           HOSTNAME - can be derived by `hostname` and put in the command line
 #           
 #       Optional parms:
-#           WALLET - a wallet to hold credits and debits for use
+#           WALLET - a wallet to SINGLESTEP credits and debits for use
 #           GENESIS - a STOPPING point for connection into the mesh
 # 
 #       We create

@@ -211,9 +211,9 @@ if (typeof oneTime == "undefined") {
 } 
 //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
-    if ((me==null) || ((me.state=="HOLD")&&(!oneTime))) 
-      return console.log(ts()+" pulse(): HOLDING ");
-    //if (me.state=="PULSE") me.state=="HOLD";
+    if ((me==null) || ((me.state=="SINGLESTEP")&&(!oneTime))) 
+      return console.log(ts()+" pulse(): SINGLESTEPING ");
+    //if (me.state=="PULSE") me.state=="SINGLESTEP";
     GEO=me.geo;
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
     redisClient.scan(cursor, 'MATCH', me.geo+":*", 'COUNT', '100', function(err, pulseGroups){

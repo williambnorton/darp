@@ -21,9 +21,9 @@ var express = require('express');
 var app = express();
 var mintStack = 1;
 var DEFAULT_SHOWPULSES = "1";
-var DEFAULT_START_STATE = "HOLD"; //for single stepping through network protocol code
+var DEFAULT_START_STATE = "SINGLESTEP"; //for single stepping through network protocol code
 //const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
-//const DEFAULT_START_STATE="HOLD"; console.log(ts()+"EXPRESS: ALL NODES START IN HOLD (no pulsing) Mode");
+//const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
 //      Environment is way for environment to control the code
 if (!process.env.DARPDIR) {
@@ -202,12 +202,12 @@ function getMintTable(callback) {
             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
             var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
             var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-            var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
+            var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
             var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
             txt += "<td>" + '<FORM>';
             txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
             txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-            txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
             txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
             txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
             txt += '</FORM>' + "</td>";
@@ -238,7 +238,7 @@ function handleShowState(req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me == null)
             return console.log("handleShowState(): WEIRD: NULL mint:0");
-        if (me.state == "HOLD")
+        if (me.state == "SINGLESTEP")
             txt = '<meta http-equiv="refresh" content="' + 60 + '">';
         txt += '<html><head>';
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
@@ -345,18 +345,18 @@ app.get('/me', function (req, res) {
 //
 //
 //
-app.get('/hold', function (req, res) {
+app.get('/SINGLESTEP', function (req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hmset("mint:" + me.mint, {
-            state: "HOLD",
+            state: "SINGLESTEP",
             SHOWPULSES: "0"
         });
         expressRedisClient.hmset("mint:0", {
-            state: "HOLD",
+            state: "SINGLESTEP",
             SHOWPULSES: "0"
         });
-        console.log(lib_1.ts() + "pulsed - Now in HOLD state - no pulsing and show no one's pulses");
-        console.log(lib_1.ts() + "HOLD HOLD HOLD HOLD state - ");
+        console.log(lib_1.ts() + "pulsed - Now in SINGLESTEP state - no pulsing and show no one's pulses");
+        console.log(lib_1.ts() + "SINGLESTEP SINGLESTEP SINGLESTEP SINGLESTEP state - ");
         //      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
         res.redirect(req.get('referer'));
     });

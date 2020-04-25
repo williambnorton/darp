@@ -12,7 +12,7 @@ express/ - instrumentation via the web, also runs http://node/nodefactory as gen
 scripts/ - configWG.bash - configures wireguard
 
 /etc/wireguard - in the docker is a mount of ~/wireguard in the host. 
-Here holds the keys and configuration files for wireguard
+Here SINGLESTEPs the keys and configuration files for wireguard
 
 to start:
 run the docker
