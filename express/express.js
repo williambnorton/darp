@@ -127,7 +127,7 @@ function pulseRecordTable(callback) {
     getPulseRecords(function (pulseRecords) {
         console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(pulseRecords));
         for (var pulse in pulseRecords) {
-            console.log(lib_1.ts() + "pulseRecordTable(): Working on pulse=" + pulse + " pulseRecords[pulse]=" + pulseRecords[pulse]);
+            console.log(lib_1.ts() + "pulseRecordTable(): Working on pulse=" + pulse + " pulseRecords[pulse]=" + lib_1.dump(pulseRecords[pulse]));
         }
         txt += "</table>";
         callback(txt);
