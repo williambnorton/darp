@@ -184,10 +184,10 @@ function getMintTable(callback) {
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
-        console.log(lib_1.ts() + "getMintTableEntries(): returned=" + lib_1.dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us=" + lib_1.dump(mintTable));
         for (var mint in mintTable) {
             var mintEntry = mintTable[mint];
-            console.log(lib_1.ts() + "getMintTableEntries(): mint=" + mint + " mintTable[mint]=" + mintTable[mint]);
+            console.log(lib_1.ts() + "getMintTableEntries(): mint=" + mint + " mintTable[mint]=" + lib_1.dump(mintTable[mint]));
             txt += "<tr>";
             txt += "<td>" + mintEntry.mint + "</td>";
             txt += "<td>" + mintEntry.geo + "</td>";

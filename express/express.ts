@@ -201,11 +201,11 @@ function getMintTable(callback) {
    txt+="</tr>"
 
    getMintTableEntries(function (mintTable) {
-      console.log(ts()+"getMintTableEntries(): returned="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us="+dump(mintTable));
 
       for (var mint in mintTable) {
          var mintEntry=mintTable[mint]
-         console.log(ts()+"getMintTableEntries(): mint="+mint+" mintTable[mint]="+mintTable[mint]);
+         console.log(ts()+"getMintTableEntries(): mint="+mint+" mintTable[mint]="+dump(mintTable[mint]));
          txt+="<tr>"
          txt+="<td>"+mintEntry.mint+"</td>"
          txt+="<td>"+mintEntry.geo+"</td>"
