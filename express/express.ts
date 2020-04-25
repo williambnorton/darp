@@ -192,6 +192,8 @@ function mintTable(callback) {
    txt+="<th>owl</th>"
    txt+="<th>isGenesisNode</th>"
    txt+="<th>clockSkew</th>"
+   txt+="<th>CONTROLS</th>"
+
    txt+="</tr>"
 
    getMintTable(function (mintTable) {
@@ -212,6 +214,20 @@ function mintTable(callback) {
          txt+="<td>"+mintEntry.owl+"</td>"
          txt+="<td>"+mintEntry.isGenesisNode+"</td>"
          txt+="<td>"+mintEntry.clockSkew+"</td>"
+
+         var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+         var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+         var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+         var holdButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/hold";
+         var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+
+         txt += "<td>" + '<FORM>';
+         txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+         txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+         txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
+         txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+         txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+         txt += '<FORM>' + "</td>";
 
          txt+="</tr>"
       }
