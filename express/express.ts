@@ -197,9 +197,11 @@ function getMintTable(callback) {
    txt+="</tr>"
 
    getMintTableEntries(function (mintTable) {
+      console.log(ts()+"getMintTableEntries(): mintEntry="+dump(mintEntry));
+
       for (var mint in mintTable) {
          var mintEntry=mintTable[mint]
-         //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
+         console.log(ts()+"getMintTableEntries(): mint="+mint+" mintTable[mint]="+mintTable[mint]);
          txt+="<tr>"
          txt+="<td>"+mintEntry.mint+"</td>"
          txt+="<td>"+mintEntry.geo+"</td>"
@@ -233,7 +235,7 @@ function getMintTable(callback) {
       }
       
       txt+="</table>";
-      callback(txt);
+      callback(txt);  //return HTML TABLE of Mint Entries
    })
 
 }

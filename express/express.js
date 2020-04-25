@@ -181,9 +181,10 @@ function getMintTable(callback) {
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
+        console.log(lib_1.ts() + "getMintTableEntries(): mintEntry=" + lib_1.dump(mintEntry));
         for (var mint in mintTable) {
             var mintEntry = mintTable[mint];
-            //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
+            console.log(lib_1.ts() + "getMintTableEntries(): mint=" + mint + " mintTable[mint]=" + mintTable[mint]);
             txt += "<tr>";
             txt += "<td>" + mintEntry.mint + "</td>";
             txt += "<td>" + mintEntry.geo + "</td>";
@@ -213,7 +214,7 @@ function getMintTable(callback) {
             txt += "</tr>";
         }
         txt += "</table>";
-        callback(txt);
+        callback(txt); //return HTML TABLE of Mint Entries
     });
 }
 function display(callback) {
