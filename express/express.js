@@ -134,9 +134,13 @@ function handleShowState(req, res) {
         //
         getPulseRecords(function (pulseRecords) {
             console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + lib_1.dump(pulseRecords));
-        });
-        getMintRecords(function (mintRecords) {
-            console.log(lib_1.ts() + "getMintRecords(): mintRecords=" + lib_1.dump(mintRecords));
+            for (var SR in pulseRecords)
+                console.log(lib_1.ts() + "pulseRecords=" + lib_1.dump(pulseRecords));
+            getMintRecords(function (mintRecords) {
+                console.log(lib_1.ts() + "getMintRecords(): mintRecords=" + lib_1.dump(mintRecords));
+                for (var SR in mintRecords)
+                    console.log(lib_1.ts() + "mintRecords=" + lib_1.dump(mintRecords));
+            });
         });
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             var lastEntry = "";

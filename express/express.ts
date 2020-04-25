@@ -148,10 +148,17 @@ function handleShowState(req, res) {
       //
       getPulseRecords(function(pulseRecords) {
          console.log(ts()+"getPulseRecords(): pulseRecords="+dump(pulseRecords));
+
+         for (var SR in pulseRecords)
+            console.log(ts()+"pulseRecords="+dump(pulseRecords));
+         
+            getMintRecords(function(mintRecords) {
+               console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
+               for (var SR in mintRecords)
+                  console.log(ts()+"mintRecords="+dump(mintRecords));
+            })
       })
-      getMintRecords(function(mintRecords) {
-         console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
-      })
+
 
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
          var lastEntry="";
