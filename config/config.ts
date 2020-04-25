@@ -94,7 +94,7 @@ function getConfiguration() {
 
         res.on('end', function () {
             var config = JSON.parse(data);            
-            console.log("COMFIG: --------- " +menubar.geo+" --------- configuration");
+            console.log("COMFIG: --------- configuration");
             console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
             if (config.isGenesisNode==true) {
