@@ -284,6 +284,11 @@ function handleShowState(req, res) {
       //
       display(function (html) {
          txt+=html;
+         txt += "</body></html>";
+                        
+         res.setHeader('Content-Type', 'text/html');
+         res.setHeader("Access-Control-Allow-Origin", "*");
+         res.end(txt);
       });
    })
 }
