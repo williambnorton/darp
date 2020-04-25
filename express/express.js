@@ -113,6 +113,23 @@ function getPulseRecords(callback) {
         }
     });
 }
+function display() {
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    getPulseRecords(function (pulseRecords) {
+        console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + lib_1.dump(pulseRecords));
+        for (var SR in pulseRecords)
+            console.log(lib_1.ts() + "pulseRecords=" + lib_1.dump(pulseRecords));
+        getMintRecords(function (mintRecords) {
+            console.log(lib_1.ts() + "getMintRecords(): mintRecords=" + lib_1.dump(mintRecords));
+            for (var SR in mintRecords)
+                console.log(lib_1.ts() + "mintRecords=" + lib_1.dump(mintRecords));
+        });
+    });
+}
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -132,16 +149,7 @@ function handleShowState(req, res) {
         //
         // Make Matrix
         //
-        getPulseRecords(function (pulseRecords) {
-            console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + lib_1.dump(pulseRecords));
-            for (var SR in pulseRecords)
-                console.log(lib_1.ts() + "pulseRecords=" + lib_1.dump(pulseRecords));
-            getMintRecords(function (mintRecords) {
-                console.log(lib_1.ts() + "getMintRecords(): mintRecords=" + lib_1.dump(mintRecords));
-                for (var SR in mintRecords)
-                    console.log(lib_1.ts() + "mintRecords=" + lib_1.dump(mintRecords));
-            });
-        });
+        display();
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             var lastEntry = "";
             for (var entry in gSRlist)
