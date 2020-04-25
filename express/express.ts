@@ -122,10 +122,9 @@ function getPulseRecords(callback) {
       //console.log(ts()+"getPulseRecords(): gSRlist="+dump(gSRlist)+" lastPulseEntry="+lastPulseEntry);
 
       for (var pulse in gSRlist) {
-         //console.log(ts()+"getPulseRecords(): Processing pulse="+pulse);
-
+         //console.log(ts()+"getPulseRecords(): **** Processing pulse. About to push for "+pulse+" gSRlist[pulse]="+dump(gSRlist[pulse]));
          expressRedisClient.hgetall(pulse,function (err,pulseEntry) {
-            console.log(ts()+"getPulseRecords(): pulseEntry="+dump(pulseEntry));
+            //console.log(ts()+"getPulseRecords(): pulseEntry="+dump(pulseEntry));
 
             pulseEntryStack.push(pulseEntry);
             if (pulse==lastPulseEntry) 
@@ -141,7 +140,20 @@ function pulseRecordTable(callback) {
       console.log(ts()+"getPulseRecords() returned "+dump(pulseRecords));
 
       for (var pulse in pulseRecords) {
-         console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
+         var pulseEntry=pulseRecords[pulse]
+         //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
+         txt+="<tr>"
+         txt+="<td>"+pulseEntry.geo+"</td>"
+         txt+="<td>"+pulseEntry.group+"</td>"
+         txt+="<td>"+pulseEntry.seq+"</td>"
+         txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+         txt+="<td>"+pulseEntry.srcMint+"</td>"
+         txt+="<td>"+pulseEntry.owls+"</td>"
+         txt+="<td>"+pulseEntry.inOctets+"</td>"
+         txt+="<td>"+pulseEntry.outOctets+"</td>"
+         txt+="<td>"+pulseEntry.inMsgs+"</td>"
+         txt+="<td>"+pulseEntry.pktDrops+"</td>"
+         txt+="</tr>"
       }
       
       txt+="</table>";
