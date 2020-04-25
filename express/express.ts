@@ -135,7 +135,7 @@ function getPulseRecords(callback) {
    });
 }
 
-function pulseRecordTable(callback) {
+function getPulseRecordTable(callback) {
    var txt='<br><h2>pulseTable</h2><table border="1">';
    txt+="<tr>"
    txt+="<th>geo</td>"
@@ -176,7 +176,7 @@ function pulseRecordTable(callback) {
 //
 //
 // wbnwbnwbn
-function mintTable(callback) {
+function getMintTable(callback) {
    var txt='<br><h2>mintTable</h2><table border="1">';
    txt+="<tr>"
    txt+="<th>mint</th>"
@@ -227,7 +227,7 @@ function mintTable(callback) {
          txt += '<INPUT Type="BUTTON" Value="HOLD" Onclick="window.location.href=\'' + holdButtonURL + "'" + '">';
          txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
          txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-         txt += '<FORM>' + "</td>";
+         txt += '</FORM>' + "</td>";
 
          txt+="</tr>"
       }
@@ -241,22 +241,14 @@ function mintTable(callback) {
 function display(callback) {
 var txt="";
 
-   pulseRecordTable(function(myPulseRecordTable) {
+   getPulseRecordTable(function(myPulseRecordTable) {
       console.log(ts()+"getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;
-      mintTable(function (myMintTable) {
+      getMintTable(function (myMintTable) {
          console.log(ts()+"getmintTable(): myMintTable="+myMintTable);
          txt+=myMintTable
          callback(txt)
-
       })
-      /*
-         getMintRecords(function(mintRecords) {
-            console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
-            for (var SR in mintRecords)
-               console.log(ts()+"mintRecords="+dump(mintRecords));
-         })
-         */
    })
 }
 
@@ -478,8 +470,8 @@ app.get('/nodefactory', function (req, res) {
          //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
          //console.log("req="+dump(req.connection));
          // On Startup, only accept connections from me, and the test is that we have matching publickeys
-         //console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
-         //console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
+         console.log(ts()+"EXPRESS: mintStack="+mintStack+" publickey="+publickey+" me.publickey="+me.publickey);
+         console.log("EXPRESS: Received connection request from "+geo+"("+incomingIP+")" );
          if ((mintStack==1 && (publickey==me.publickey)) || (mintStack!=1)) {   //check publickey instead!!!!!
             if (geo=="NORTONDARP") {
                //console.log(ts()+"Filtering"); //this will eventually be a black list or quarentine group
