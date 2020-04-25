@@ -144,16 +144,16 @@ function getPulseRecordTable(callback) {
         for (var i in pulseRecords) {
             var pulseEntry = pulseRecords[i];
             txt += "<tr>";
-            txt += "<td>" + pulseEntry.geo + "</th>";
-            txt += "<td>" + pulseEntry.group + "</th>";
-            txt += "<td>" + pulseEntry.seq + "</th>";
-            txt += "<td>" + pulseEntry.pulseTimestamp + "</th>";
-            txt += "<td>" + pulseEntry.srcMint + "</th>";
-            txt += "<td>" + pulseEntry.owls + "</th>";
-            txt += "<td>" + pulseEntry.inOctets + "</th>";
-            txt += "<td>" + pulseEntry.outOctets + "</th>";
-            txt += "<td>" + pulseEntry.inMsgs + "</th>";
-            txt += "<td>" + pulseEntry.pktDrops + "</th>";
+            txt += "<td>" + pulseEntry.geo + "</td>";
+            txt += "<td>" + pulseEntry.group + "</td>";
+            txt += "<td>" + pulseEntry.seq + "</td>";
+            txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
+            txt += "<td>" + pulseEntry.srcMint + "</td>";
+            txt += "<td>" + pulseEntry.owls + "</td>";
+            txt += "<td>" + pulseEntry.inOctets + "</td>";
+            txt += "<td>" + pulseEntry.outOctets + "</td>";
+            txt += "<td>" + pulseEntry.inMsgs + "</td>";
+            txt += "<td>" + pulseEntry.pktDrops + "</td>";
             txt += "</tr>";
         }
         txt += "</table>";
@@ -230,8 +230,8 @@ function display(callback) {
         console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
         getMintTable(function (myMintTable) {
-            console.log(lib_1.ts() + "getmintTable(): myMintTable=" + myMintTable);
             txt += myMintTable;
+            console.log(lib_1.ts() + "getmintTable(): myMintTable=" + myMintTable);
             callback(txt);
         });
     });
