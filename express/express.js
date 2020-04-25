@@ -259,6 +259,7 @@ function handleShowState(req, res) {
             txt += "</body></html>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
+            console.log(lib_1.ts() + "EXPRESS() ShowState About to send: " + txt);
             res.end(txt);
         });
     });
