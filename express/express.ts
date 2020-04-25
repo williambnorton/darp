@@ -155,8 +155,8 @@ function getPulseRecordTable(callback) {
    getPulseRecordEntries(function (pulseRecords) {
       console.log(ts()+"getPulseRecordEntries() brought us "+dump(pulseRecords));
 
-      for (var pulse in pulseRecords) {
-         var pulseEntry=pulseRecords[pulse]
+      for (var i in pulseRecords) {
+         var pulseEntry=pulseRecords[i]
          //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
          txt+="<tr>"
          txt+="<td>"+pulseEntry.geo+"</th>"
@@ -201,11 +201,10 @@ function getMintTable(callback) {
    txt+="</tr>"
 
    getMintTableEntries(function (mintTable) {
-      console.log(ts()+"getMintTableEntries(): gave us="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave array ="+dump(mintTable));
 
       for (var i in mintTable) {
          var mintEntry=mintTable[i]
-         console.log(ts()+"getMintTableEntries(): "+ mintTable[i]="+dump(mintTable[mint]));
          txt+="<tr>"
          txt+="<td>"+mintEntry.mint+"</td>"
          txt+="<td>"+mintEntry.geo+"</td>"
