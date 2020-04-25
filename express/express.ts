@@ -90,6 +90,10 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
    }
 });
 
+
+//
+//
+//
 function getMintRecords(callback) {
    console.log(ts()+"EXPRESS getMintRecords()");
    var mintEntryStack=new Array();
@@ -106,7 +110,9 @@ function getMintRecords(callback) {
       }
    });
 }
-
+//
+//
+//
 function getPulseRecords(callback) {
    console.log(ts()+"EXPRESS getPulseRecords()");
    var pulseEntryStack=new Array();
@@ -124,23 +130,37 @@ function getPulseRecords(callback) {
    });
 }
 
-function display() {
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   getPulseRecords(function(pulseRecords) {
-      console.log(ts()+"getPulseRecords(): pulseRecords="+dump(pulseRecords));
-
-      for (var SR in pulseRecords)
-         console.log(ts()+"pulseRecords="+dump(pulseRecords));
+function pulseRecordTable(callback) {
+   var txt='<table border="1">';
+   getPulseRecords(function (pulseRecords) {
+      for (var pulse in pulseRecords) {
+         console.log(ts()+"pulseRecordTable(): pulse="+dump(pulse));
+      }
       
+      txt+="</table>";
+      callback(txt);
+   })
+
+}
+
+function display() {
+var txt="";
+   console.log(ts()+"display");
+   console.log(ts()+"display");
+   console.log(ts()+"display");
+   console.log(ts()+"display");
+   console.log(ts()+"display");
+
+   pulseRecordTable(function(txt) {
+      console.log(ts()+"getPulseRecords(): pulseRecords="+txt);
+
+      /*
          getMintRecords(function(mintRecords) {
             console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
             for (var SR in mintRecords)
                console.log(ts()+"mintRecords="+dump(mintRecords));
          })
+         */
    })
 }
 

@@ -81,6 +81,9 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
         process.exit(36);
     }
 });
+//
+//
+//
 function getMintRecords(callback) {
     console.log(lib_1.ts() + "EXPRESS getMintRecords()");
     var mintEntryStack = new Array();
@@ -97,6 +100,9 @@ function getMintRecords(callback) {
         }
     });
 }
+//
+//
+//
 function getPulseRecords(callback) {
     console.log(lib_1.ts() + "EXPRESS getPulseRecords()");
     var pulseEntryStack = new Array();
@@ -113,21 +119,32 @@ function getPulseRecords(callback) {
         }
     });
 }
-function display() {
-    console.log(lib_1.ts() + "display");
-    console.log(lib_1.ts() + "display");
-    console.log(lib_1.ts() + "display");
-    console.log(lib_1.ts() + "display");
-    console.log(lib_1.ts() + "display");
+function pulseRecordTable(callback) {
+    var txt = '<table border="1">';
     getPulseRecords(function (pulseRecords) {
-        console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + lib_1.dump(pulseRecords));
-        for (var SR in pulseRecords)
-            console.log(lib_1.ts() + "pulseRecords=" + lib_1.dump(pulseRecords));
-        getMintRecords(function (mintRecords) {
-            console.log(lib_1.ts() + "getMintRecords(): mintRecords=" + lib_1.dump(mintRecords));
-            for (var SR in mintRecords)
-                console.log(lib_1.ts() + "mintRecords=" + lib_1.dump(mintRecords));
-        });
+        for (var pulse in pulseRecords) {
+            console.log(lib_1.ts() + "pulseRecordTable(): pulse=" + lib_1.dump(pulse));
+        }
+        txt += "</table>";
+        callback(txt);
+    });
+}
+function display() {
+    var txt = "";
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    console.log(lib_1.ts() + "display");
+    pulseRecordTable(function (txt) {
+        console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + txt);
+        /*
+           getMintRecords(function(mintRecords) {
+              console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
+              for (var SR in mintRecords)
+                 console.log(ts()+"mintRecords="+dump(mintRecords));
+           })
+           */
     });
 }
 //
