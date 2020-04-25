@@ -203,14 +203,16 @@ function newMint(mint) {
 //
 //  pulse - pulser for each me.pulseGroup
 //
-function pulse(flag) {
-if (typeof flag == "undefined") {
+function pulse(oneTime) {
+if (typeof oneTime == "undefined") {
     setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
     setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
-}
-  //  get all my pulseGroups
+    oneTime=0;
+} 
+//  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
-    if ((me==null) || (me.state=="HOLD")) return console.log(ts()+" pulse(): HOLDING ");
+    if ((me==null) || ((me.state=="HOLD")&&(!oneTime))) 
+      return console.log(ts()+" pulse(): HOLDING ");
     //if (me.state=="PULSE") me.state=="HOLD";
     GEO=me.geo;
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
