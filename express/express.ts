@@ -136,7 +136,7 @@ function getPulseRecords(callback) {
 }
 
 function pulseRecordTable(callback) {
-   var txt='<h2>pulseTable</h2><table border="1">';
+   var txt='<br><h2>pulseTable</h2><table border="1">';
    txt+="<tr>"
    txt+="<th>geo</td>"
    txt+="<th>group</td>"
@@ -177,7 +177,7 @@ function pulseRecordTable(callback) {
 //
 // wbnwbnwbn
 function mintTable(callback) {
-   var txt='<h2>mintTable</h2><table border="1">';
+   var txt='<br><h2>mintTable</h2><table border="1">';
    txt+="<tr>"
    txt+="<th>mint</th>"
    txt+="<th>geo</th>"
@@ -224,11 +224,6 @@ function mintTable(callback) {
 
 function display(callback) {
 var txt="";
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   console.log(ts()+"display");
-   console.log(ts()+"display");
 
    pulseRecordTable(function(myPulseRecordTable) {
       console.log(ts()+"getPulseRecords(): pulseRecords="+myPulseRecordTable);
