@@ -84,7 +84,7 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
 //
 //
 //
-function getMintRecords(callback) {
+function getMintTable(callback) {
     console.log(lib_1.ts() + "EXPRESS getMintRecords()");
     var mintEntryStack = new Array();
     var lastMintEntry = "";
@@ -143,16 +143,61 @@ function pulseRecordTable(callback) {
             var pulseEntry = pulseRecords[pulse];
             //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
             txt += "<tr>";
-            txt += "<td>" + pulseEntry.geo + "</td>";
-            txt += "<td>" + pulseEntry.group + "</td>";
-            txt += "<td>" + pulseEntry.seq + "</td>";
-            txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
-            txt += "<td>" + pulseEntry.srcMint + "</td>";
-            txt += "<td>" + pulseEntry.owls + "</td>";
-            txt += "<td>" + pulseEntry.inOctets + "</td>";
-            txt += "<td>" + pulseEntry.outOctets + "</td>";
-            txt += "<td>" + pulseEntry.inMsgs + "</td>";
-            txt += "<td>" + pulseEntry.pktDrops + "</td>";
+            txt += "<td>" + pulseEntry.geo + "</th>";
+            txt += "<td>" + pulseEntry.group + "</th>";
+            txt += "<td>" + pulseEntry.seq + "</th>";
+            txt += "<td>" + pulseEntry.pulseTimestamp + "</th>";
+            txt += "<td>" + pulseEntry.srcMint + "</th>";
+            txt += "<td>" + pulseEntry.owls + "</th>";
+            txt += "<td>" + pulseEntry.inOctets + "</th>";
+            txt += "<td>" + pulseEntry.outOctets + "</th>";
+            txt += "<td>" + pulseEntry.inMsgs + "</th>";
+            txt += "<td>" + pulseEntry.pktDrops + "</th>";
+            txt += "</tr>";
+        }
+        txt += "</table>";
+        callback(txt);
+    });
+}
+//
+//
+// wbnwbnwbn
+function mintTable(callback) {
+    var txt = '<h2>mintTable</h2><table border="1">';
+    txt += "<tr>";
+    txt += "<th>mint</th>";
+    txt += "<th>geo</th>";
+    txt += "<th>port</th>";
+    txt += "<th>ipaddr</th>";
+    txt += "<th>publickey</th>";
+    txt += "<th>state</th>";
+    txt += "<th>bootTime</th>";
+    txt += "<th>version</th>";
+    txt += "<th>wallet</th>";
+    txt += "<th>SHOWPULSES</th>";
+    txt += "<th>owl</th>";
+    txt += "<th>isGenesisNode</th>";
+    txt += "<th>clockSkew</th>";
+    txt += "</tr>";
+    getMintTable(function (mintTable) {
+        console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(mintTable));
+        for (var mint in mintTable) {
+            var mintEntry = mintTable[mint];
+            //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
+            txt += "<tr>";
+            txt += "<td>" + mintEntry.mint + "</td>";
+            txt += "<td>" + mintEntry.geo + "</td>";
+            txt += "<td>" + mintEntry.port + "</td>";
+            txt += "<td>" + mintEntry.ipaddr + "</td>";
+            txt += "<td>" + mintEntry.publickey + "</td>";
+            txt += "<td>" + mintEntry.state + "</td>";
+            txt += "<td>" + mintEntry.bootTime + "</td>";
+            txt += "<td>" + mintEntry.version + "</td>";
+            txt += "<td>" + mintEntry.wallet + "</td>";
+            txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
+            txt += "<td>" + mintEntry.owl + "</td>";
+            txt += "<td>" + mintEntry.isGenesisNode + "</td>";
+            txt += "<td>" + mintEntry.clockSkew + "</td>";
             txt += "</tr>";
         }
         txt += "</table>";
@@ -169,8 +214,8 @@ function display(callback) {
     pulseRecordTable(function (myPulseRecordTable) {
         console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
-        getMintRecords(function (myMintTable) {
-            console.log(lib_1.ts() + "getmintTable(): mintTable=" + myMintTable);
+        getMintTable(function (myMintTable) {
+            console.log(lib_1.ts() + "getmintTable(): myMintTable=" + myMintTable);
             txt += myMintTable;
             callback(txt);
         });
