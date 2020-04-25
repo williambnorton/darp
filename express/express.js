@@ -125,6 +125,7 @@ function getPulseRecordEntries(callback) {
     });
 }
 function getPulseRecordTable(callback) {
+    console.log(lib_1.ts() + "getPulseRecordTable() Starting");
     var txt = '<br><h2>pulseTable</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>geo</td>";
@@ -164,6 +165,7 @@ function getPulseRecordTable(callback) {
 //
 // wbnwbnwbn
 function getMintTable(callback) {
+    console.log(lib_1.ts() + "getMintTable() Starting");
     var txt = '<br><h2>mintTable</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>mint</th>";
@@ -182,7 +184,7 @@ function getMintTable(callback) {
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
-        console.log(lib_1.ts() + "getMintTableEntries(): mintEntry=" + lib_1.dump(mintEntry));
+        console.log(lib_1.ts() + "getMintTableEntries(): returned=" + lib_1.dump(mintTable));
         for (var mint in mintTable) {
             var mintEntry = mintTable[mint];
             console.log(lib_1.ts() + "getMintTableEntries(): mint=" + mint + " mintTable[mint]=" + mintTable[mint]);
