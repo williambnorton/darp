@@ -286,6 +286,7 @@ function handleShowState(req, res) {
          txt+=html;
       });
 
+      return;
 
 
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 

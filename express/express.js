@@ -257,6 +257,7 @@ function handleShowState(req, res) {
         display(function (html) {
             txt += html;
         });
+        return;
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             var lastEntry = "";
             for (var entry in gSRlist)
