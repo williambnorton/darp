@@ -104,15 +104,15 @@ function getMintRecords(callback) {
 //
 //
 function getPulseRecords(callback) {
-    console.log(lib_1.ts() + "EXPRESS getPulseRecords()");
+    //console.log(ts()+"EXPRESS getPulseRecords()");
     var pulseEntryStack = new Array();
     var lastPulseEntry = "";
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
             lastPulseEntry = pulse;
-        console.log(lib_1.ts() + "getPulseRecords(): gSRlist=" + lib_1.dump(gSRlist));
+        c; //onsole.log(ts()+"getPulseRecords(): gSRlist="+dump(gSRlist)+" lastPulseEntry="+lastPulseEntry);
         for (var pulse in gSRlist) {
-            console.log(lib_1.ts() + "getPulseRecords(): Processing pulse=" + pulse);
+            //console.log(ts()+"getPulseRecords(): Processing pulse="+pulse);
             expressRedisClient.hgetall(pulse, function (err, pulseEntry) {
                 console.log(lib_1.ts() + "getPulseRecords(): pulseEntry=" + lib_1.dump(pulseEntry));
                 pulseEntryStack.push(pulseEntry);
@@ -127,7 +127,7 @@ function pulseRecordTable(callback) {
     getPulseRecords(function (pulseRecords) {
         console.log(lib_1.ts() + "getPulseRecords() returned " + lib_1.dump(pulseRecords));
         for (var pulse in pulseRecords) {
-            console.log(lib_1.ts() + "pulseRecordTable(): Working on pulse=" + lib_1.dump(pulse));
+            console.log(lib_1.ts() + "pulseRecordTable(): Working on pulse=" + pulse + " pulseRecords[pulse]=" + pulseRecords[pulse]);
         }
         txt += "</table>";
         callback(txt);
