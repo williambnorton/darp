@@ -152,13 +152,14 @@ function handleShowState(req, res) {
       getMintRecords(function(mintRecords) {
          console.log(ts()+"getMintRecords(): mintRecords="+dump(mintRecords));
       })
+
       expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
          var lastEntry="";
          for (var entry in gSRlist) lastEntry=entry;
          console.log(ts()+"Making Matrix gSRlist="+dump(gSRlist)+" lastEntry="+lastEntry);
 
          //expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
-         txt+="<table><tr><th></th>"
+         txt+='<table border="1"><tr><th></th>'
          for (var node in gSRlist) {
             txt += '<th>' + '' + node +"("+gSRlist[node]+")" + '</th>';
          }
@@ -252,7 +253,7 @@ function handleShowState(req, res) {
                      console.log(ts()+"EXPRESS: About to draw pulseEntry="+dump(pulseEntry));
 
                      expressRedisClient.hgetall("mint:"+pulseEntry.srcMint, function (err,mintEntry) {
-                        console.log("EXPRESS fetching "+"mint:"+pulseEntry.srcMint+" mintEntry="+dump(mintEntry));
+                        console.log("EXPRESS lookimg up "+"mint:"+pulseEntry.srcMint+" mintEntry="+dump(mintEntry));
                         if (mintEntry!=null) {
 
                            txt += '<tr class="color'+pulseEntry.group+ " "+ pulseEntry.geo + ' ' + "INIT" + '">';
