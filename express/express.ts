@@ -153,11 +153,10 @@ function getPulseRecordTable(callback) {
    txt+="<th>pktDrops</td>"
    txt+="</tr>"
    getPulseRecordEntries(function (pulseRecords) {
-      console.log(ts()+"getPulseRecordEntries() brought us "+dump(pulseRecords));
+      console.log(ts()+"getPulseRecordEntries() brought  array iof pulseRecords "+dump(pulseRecords));
 
       for (var i in pulseRecords) {
          var pulseEntry=pulseRecords[i]
-         //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
          txt+="<tr>"
          txt+="<td>"+pulseEntry.geo+"</th>"
          txt+="<td>"+pulseEntry.group+"</th>"
@@ -172,6 +171,7 @@ function getPulseRecordTable(callback) {
          txt+="</tr>"
       }
       txt+="</table>";
+      console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
       callback(txt);
    })
 
@@ -180,7 +180,7 @@ function getPulseRecordTable(callback) {
 //
 // wbnwbnwbn
 function getMintTable(callback) {
-   console.log(ts()+"getMintTable() Starting");
+   console.log(ts()+"getMintTable() Making a HTML table for mints");
    var txt='<br><h2>mintTable</h2><table border="1">';
    txt+="<tr>"
    txt+="<th>mint</th>"
@@ -201,7 +201,7 @@ function getMintTable(callback) {
    txt+="</tr>"
 
    getMintTableEntries(function (mintTable) {
-      console.log(ts()+"getMintTableEntries(): gave array ="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us array ="+dump(mintTable));
 
       for (var i in mintTable) {
          var mintEntry=mintTable[i]
@@ -243,9 +243,12 @@ function getMintTable(callback) {
 
 }
 
+//
+// display - produce the HTML to display
+//
 function display(callback) {
 var txt="";
-
+console.log(ts()+"display() - produce the HTML to display");
    getPulseRecordTable(function(myPulseRecordTable) {
       console.log(ts()+"getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;

@@ -140,10 +140,9 @@ function getPulseRecordTable(callback) {
     txt += "<th>pktDrops</td>";
     txt += "</tr>";
     getPulseRecordEntries(function (pulseRecords) {
-        console.log(lib_1.ts() + "getPulseRecordEntries() brought us " + lib_1.dump(pulseRecords));
+        console.log(lib_1.ts() + "getPulseRecordEntries() brought  array iof pulseRecords " + lib_1.dump(pulseRecords));
         for (var i in pulseRecords) {
             var pulseEntry = pulseRecords[i];
-            //console.log(ts()+"pulseRecordTable(): Working on pulse="+pulse+" pulseRecords[pulse]="+dump(pulseRecords[pulse]));
             txt += "<tr>";
             txt += "<td>" + pulseEntry.geo + "</th>";
             txt += "<td>" + pulseEntry.group + "</th>";
@@ -158,6 +157,7 @@ function getPulseRecordTable(callback) {
             txt += "</tr>";
         }
         txt += "</table>";
+        console.log(lib_1.ts() + "getPulseRecordTable() sending this to callback: " + txt);
         callback(txt);
     });
 }
@@ -165,7 +165,7 @@ function getPulseRecordTable(callback) {
 //
 // wbnwbnwbn
 function getMintTable(callback) {
-    console.log(lib_1.ts() + "getMintTable() Starting");
+    console.log(lib_1.ts() + "getMintTable() Making a HTML table for mints");
     var txt = '<br><h2>mintTable</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>mint</th>";
@@ -184,7 +184,7 @@ function getMintTable(callback) {
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
-        console.log(lib_1.ts() + "getMintTableEntries(): gave array =" + lib_1.dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us array =" + lib_1.dump(mintTable));
         for (var i in mintTable) {
             var mintEntry = mintTable[i];
             txt += "<tr>";
@@ -219,8 +219,12 @@ function getMintTable(callback) {
         callback(txt); //return HTML TABLE of Mint Entries
     });
 }
+//
+// display - produce the HTML to display
+//
 function display(callback) {
     var txt = "";
+    console.log(lib_1.ts() + "display() - produce the HTML to display");
     getPulseRecordTable(function (myPulseRecordTable) {
         console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
