@@ -95,7 +95,7 @@ function getMintTableEntries(callback) {
             expressRedisClient.hgetall("mint:" + gSRlist[label], function (err, mintEntry) {
                 console.log(lib_1.ts() + "mintEntry " + gSRlist[label] + "=" + lib_1.dump(mintEntry));
                 mintEntryStack.push(mintEntry);
-                if (pulse == lastMintEntry)
+                if (label == lastMintEntry)
                     callback(mintEntryStack);
             });
         }
