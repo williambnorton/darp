@@ -153,7 +153,7 @@ function getPulseRecordTable(callback) {
    txt+="<th>pktDrops</td>"
    txt+="</tr>"
    getPulseRecordEntries(function (pulseRecords) {
-      console.log(ts()+"getPulseRecordEntries() brought  array iof pulseRecords "+dump(pulseRecords));
+      console.log(ts()+"getPulseRecordEntries() gave us array of pulseRecords "+dump(pulseRecords));
 
       for (var i in pulseRecords) {
          var pulseEntry=pulseRecords[i]
@@ -238,6 +238,7 @@ function getMintTable(callback) {
       }
       
       txt+="</table>";
+      console.log(ts()+"getMintTable(): sending "+txt);
       callback(txt);  //return HTML TABLE of Mint Entries
    })
 
