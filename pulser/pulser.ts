@@ -32,14 +32,11 @@ var CYCLETIME=10; //newMint(mint)
 console.log("PULSER: CYCLETIME="+CYCLETIME);
 
 var GEO="";  //global variable for marking source of pulse
-setInterval(
-  () => checkAdminControl,
-  1000
-);
+
 function checkAdminControl() {
   console.log(ts()+"checkAdminControl");
-  redisClient.hgetall("mint:0", function(err,me) {
-    if (me.adminControl=="PULSE") {pulse();redisClient.hset("mint:0","adminControl","")}
+  redisClient.hget("mint:0", "adminControl", function(err,adminControl) {
+    if (adminControl=="PULSE") {pulse(1);redisClient.hdel("mint:0","adminControl")}
   });
 }
 
@@ -206,11 +203,11 @@ function newMint(mint) {
 //
 //  pulse - pulser for each me.pulseGroup
 //
-function pulse() {
-
+function pulse(flag) {
+if (typeof flag == "undefined") {
     setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
     setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
-
+}
   //  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
     if ((me==null) || (me.state=="HOLD")) return console.log(ts()+" pulse(): HOLDING ");
