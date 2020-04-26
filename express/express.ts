@@ -108,7 +108,8 @@ function getPulseRecordEntries(callback) {
             //console.log(ts()+"getPulseRecords(): pulseEntry="+dump(pulseEntry));
 
             pulseEntryStack.push(pulseEntry);
-            if (pulse==lastPulseEntry) {
+            var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;
+            if (pulseLabel==lastPulseEntry) {
                console.log(ts()+"EXPRESS SENDING BACK PULSE TABLE "+pulse);
                callback(pulseEntryStack)
             }
@@ -215,20 +216,14 @@ function getMintTable(callback) {
    var lastMintEntry="";
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
       for (var pulse in gSRlist) lastMintEntry=pulse;
-      console.log(ts()+"getMintTable(): go until lastMintEntry="+lastMintEntry);
 
       for (var pulseLabel in gSRlist) {
          let mint=gSRlist[pulseLabel];
-         console.log(ts()+"getMintTable(): in loop. mint="+mint+" pulseLabel="+pulseLabel);
 
          expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
-            console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
             mintEntryStack.unshift(mintEntry);
-            console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
             var pulseLabel=mintEntry.geo+":"+mintEntry.group
-            console.log(ts()+"EXPRESS(): getMintTable pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
             if (pulseLabel==lastMintEntry) {
-               console.log(ts()+"EXPRESS getTable Complete Array: "+dump(mintEntryStack));
                for (var mintEntry=mintEntryStack.pop(); mintEntry!=null; mintEntry=mintEntryStack.pop()) {
                   txt+="<tr>"
                   txt+="<td>"+mintEntry.mint+"</td>"
@@ -262,11 +257,7 @@ function getMintTable(callback) {
                   txt+="</tr>"
                }
                txt+="</table>";
-               console.log(ts()+"getMintTable(): sending "+txt);
-               console.log(ts()+"getMintTable(DONE):");
-               console.log(ts()+"getMintTable(DONE):");
-               console.log(ts()+"getMintTable(DONE):");
-               console.log(ts()+"getMintTable(DONE):");
+
                
                callback(txt);  //return HTML TABLE of Mint Entries
 
@@ -305,11 +296,8 @@ console.log(ts()+"display() - produce the HTML to display");
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+   //console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+
    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + 30 + '">';
 
@@ -330,19 +318,14 @@ function handleShowState(req, res) {
 //      display(function (html) {
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
-         console.log(ts()+"+ + + + + + + + + + + + + + + + getMintTable() gave us txt="+txt);
+         //console.log(ts()+"+ + + + + + + + + + + + + + + + getMintTable() gave us txt="+txt);
 
-         console.log(ts()+"handleShowState -> display callback");
+         //console.log(ts()+"handleShowState -> display callback");
          //txt+=html;
          txt += "</body></html>";
                         
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
-         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
-         console.log(ts()+"EXPRESS() handleShowState() About to send: ");
-         console.log(ts()+"EXPRESS() handleShowState() About to send: ");
-         console.log(ts()+"EXPRESS() handleShowState() About to send: ");
-         console.log(ts()+"EXPRESS() handleShowState() About to send: ");
          res.end(txt);
       });
   //    });
