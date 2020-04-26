@@ -159,7 +159,7 @@ function getPulseRecordTable(callback) {
    })
 
 }
-////---------------------------------------------------------------
+//---------------------------------------------------------------
 //
 //
 function getMintTableEntries(callback) {
@@ -182,7 +182,7 @@ function getMintTableEntries(callback) {
             if (pulseLabel==lastMintEntry) {
                console.log(ts()+"EXPRESS SENDING BACK MINT TABLE Array: "+dump(mintEntryStack));
                callback(mintEntryStack)
-            }
+            } else console.log(ts()+"pushed "+pulseLabel+" not sending");
          })
       }
    });

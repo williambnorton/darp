@@ -144,7 +144,7 @@ function getPulseRecordTable(callback) {
         callback(txt);
     });
 }
-////---------------------------------------------------------------
+//---------------------------------------------------------------
 //
 //
 function getMintTableEntries(callback) {
@@ -167,6 +167,8 @@ function getMintTableEntries(callback) {
                     console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE Array: " + lib_1.dump(mintEntryStack));
                     callback(mintEntryStack);
                 }
+                else
+                    console.log(lib_1.ts() + "pushed " + pulseLabel + " not sending");
             });
         }
     });
