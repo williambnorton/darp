@@ -251,14 +251,14 @@ function display(callback) {
 var txt="";
 console.log(ts()+"display() - produce the HTML to display");
    getPulseRecordTable(function(myPulseRecordTable) {
-      console.log(ts()+"getPulseRecords(): pulseRecords="+myPulseRecordTable);
+      console.log(ts()+"*******************          getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;
       getMintTable(function (myMintTable) {
-         txt+=myMintTable
-         console.log(ts()+"getmintTable(): myMintTable="+myMintTable);
+         txt+=myMintTable;
+         console.log(ts()+"+ + + + + + + + + + + + + + + + + + + + + + txt="+txt);
          callback(txt)
-      })
-   })
+      });
+   });
 }
 
 //

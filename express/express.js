@@ -227,11 +227,11 @@ function display(callback) {
     var txt = "";
     console.log(lib_1.ts() + "display() - produce the HTML to display");
     getPulseRecordTable(function (myPulseRecordTable) {
-        console.log(lib_1.ts() + "getPulseRecords(): pulseRecords=" + myPulseRecordTable);
+        console.log(lib_1.ts() + "*******************          getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
         getMintTable(function (myMintTable) {
             txt += myMintTable;
-            console.log(lib_1.ts() + "getmintTable(): myMintTable=" + myMintTable);
+            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + + + + + + + txt=" + txt);
             callback(txt);
         });
     });
