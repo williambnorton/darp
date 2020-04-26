@@ -136,6 +136,10 @@ function getPulseRecordTable(callback) {
    
    txt+="</tr>"
 
+   callback(txt+"</table>");
+   return;
+
+
    var pulseEntryStack=new Array();
    var lastPulseLabel="";
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
