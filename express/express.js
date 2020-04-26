@@ -133,30 +133,30 @@ function getPulseRecordTable(callback) {
         console.log(lib_1.ts() + "lastPulseLabel=" + lastPulseLabel);
         for (var pulseLabel in gSRlist) {
             console.log(lib_1.ts() + "---------------->pulseLabel=" + pulseLabel);
+            pulseEntryStack.unshift(pulseEntry); //save this to fetch in our loop
+        }
+        for (var pulseEntry = pulseEntryStack.pop(); pulseEntry != null; pulseEntry = pulseEntryStack.pop()) {
+            var pulseLabel = pulseEntry.geo + ":" + pulseEntry.group; //is this the last one?
+            console.log(lib_1.ts() + "Fetched pulseLabel=" + pulseLabel + " pulseEntry=" + lib_1.dump(pulseEntry));
             expressRedisClient.hgetall(pulseLabel, function (err, pulseEntry) {
-                pulseEntryStack.unshift(pulseEntry); //save this to fetch in our loop
-                var pulseLabel = pulseEntry.geo + ":" + pulseEntry.group; //is this the last one?
-                console.log(lib_1.ts() + "Fetched pulseLabel=" + pulseLabel + " pulseEntry=" + lib_1.dump(pulseEntry));
+                console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
+                txt += "<tr>";
+                txt += "<td>" + pulseEntry.geo + "</td>";
+                txt += "<td>" + pulseEntry.group + "</td>";
+                txt += "<td>" + pulseEntry.seq + "</td>";
+                txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
+                txt += "<td>" + pulseEntry.srcMint + "</td>";
+                txt += "<td>" + pulseEntry.owls + "</td>";
+                txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                txt += "<td>" + pulseEntry.inOctets + "</td>";
+                txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                txt += "<td>" + pulseEntry.outOctets + "</td>";
+                txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                txt += "</tr>";
+                console.log(lib_1.ts() + "converted pulseEntry=" + lib_1.dump(pulseEntry) + " into " + txt);
+                txt += "</table>";
+                console.log(lib_1.ts() + "getPulseRecordTable() sending this to callback: " + txt);
                 if (pulseLabel == lastPulseLabel) {
-                    for (var pulseEntry = pulseEntryStack.pop(); pulseEntry != null; pulseEntry = pulseEntryStack.pop()) {
-                        console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
-                        txt += "<tr>";
-                        txt += "<td>" + pulseEntry.geo + "</td>";
-                        txt += "<td>" + pulseEntry.group + "</td>";
-                        txt += "<td>" + pulseEntry.seq + "</td>";
-                        txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
-                        txt += "<td>" + pulseEntry.srcMint + "</td>";
-                        txt += "<td>" + pulseEntry.owls + "</td>";
-                        txt += "<td>" + pulseEntry.inMsgs + "</td>";
-                        txt += "<td>" + pulseEntry.inOctets + "</td>";
-                        txt += "<td>" + pulseEntry.outMsgs + "</td>";
-                        txt += "<td>" + pulseEntry.outOctets + "</td>";
-                        txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                        txt += "</tr>";
-                        console.log(lib_1.ts() + "converted pulseEntry=" + lib_1.dump(pulseEntry) + " into " + txt);
-                    }
-                    txt += "</table>";
-                    console.log(lib_1.ts() + "getPulseRecordTable() sending this to callback: " + txt);
                     callback(txt); //return HTML to display
                 }
             });
@@ -217,7 +217,7 @@ function getMintTable(callback) {
         for (var pulse in gSRlist)
             lastMintEntry = pulse;
         for (var pulseLabel in gSRlist) {
-            //let mint=gSRlist[pulseLabel];
+            var mint = gSRlist[pulseLabel];
             expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                 mintEntryStack.unshift(mintEntry);
                 var pulseLabel = mintEntry.geo + ":" + mintEntry.group;

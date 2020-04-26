@@ -144,32 +144,32 @@ function getPulseRecordTable(callback) {
 
       for (var pulseLabel in gSRlist) {
          console.log(ts()+"---------------->pulseLabel="+pulseLabel);
+         pulseEntryStack.unshift(pulseEntry);  //save this to fetch in our loop
+      }
+ 
+      for (var pulseEntry=pulseEntryStack.pop(); pulseEntry!=null; pulseEntry=pulseEntryStack.pop()) {
+         var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
+         console.log(ts()+"Fetched pulseLabel="+pulseLabel+" pulseEntry="+dump(pulseEntry));
 
          expressRedisClient.hgetall(pulseLabel,function (err,pulseEntry) {
-            pulseEntryStack.unshift(pulseEntry);  //save this to fetch in our loop
-            var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-            console.log(ts()+"Fetched pulseLabel="+pulseLabel+" pulseEntry="+dump(pulseEntry));
-
+            console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
+            txt+="<tr>"
+            txt+="<td>"+pulseEntry.geo+"</td>"
+            txt+="<td>"+pulseEntry.group+"</td>"
+            txt+="<td>"+pulseEntry.seq+"</td>"
+            txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+            txt+="<td>"+pulseEntry.srcMint+"</td>"
+            txt+="<td>"+pulseEntry.owls+"</td>"
+            txt+="<td>"+pulseEntry.inMsgs+"</td>"
+            txt+="<td>"+pulseEntry.inOctets+"</td>"
+            txt+="<td>"+pulseEntry.outMsgs+"</td>"
+            txt+="<td>"+pulseEntry.outOctets+"</td>"
+            txt+="<td>"+pulseEntry.pktDrops+"</td>"
+            txt+="</tr>"
+            console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
+            txt+="</table>";
+            console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
             if (pulseLabel==lastPulseLabel) {
-               for (var pulseEntry=pulseEntryStack.pop(); pulseEntry!=null; pulseEntry=pulseEntryStack.pop()) {
-                  console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
-                  txt+="<tr>"
-                  txt+="<td>"+pulseEntry.geo+"</td>"
-                  txt+="<td>"+pulseEntry.group+"</td>"
-                  txt+="<td>"+pulseEntry.seq+"</td>"
-                  txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-                  txt+="<td>"+pulseEntry.srcMint+"</td>"
-                  txt+="<td>"+pulseEntry.owls+"</td>"
-                  txt+="<td>"+pulseEntry.inMsgs+"</td>"
-                  txt+="<td>"+pulseEntry.inOctets+"</td>"
-                  txt+="<td>"+pulseEntry.outMsgs+"</td>"
-                  txt+="<td>"+pulseEntry.outOctets+"</td>"
-                  txt+="<td>"+pulseEntry.pktDrops+"</td>"
-                  txt+="</tr>"
-                  console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
-               }
-               txt+="</table>";
-               console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
                callback(txt);  //return HTML to display
             }
          })
@@ -234,7 +234,7 @@ function getMintTable(callback) {
       for (var pulse in gSRlist) lastMintEntry=pulse;
 
       for (var pulseLabel in gSRlist) {
-         //let mint=gSRlist[pulseLabel];
+         let mint=gSRlist[pulseLabel];
 
          expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
             mintEntryStack.unshift(mintEntry);
