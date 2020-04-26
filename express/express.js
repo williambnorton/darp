@@ -227,11 +227,11 @@ function display(callback) {
     var txt = "";
     console.log(lib_1.ts() + "display() - produce the HTML to display");
     getPulseRecordTable(function (myPulseRecordTable) {
-        console.log(lib_1.ts() + "*******************          getPulseRecords(): pulseRecords=" + myPulseRecordTable);
+        console.log(lib_1.ts() + "*******************   getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
         getMintTable(function (myMintTable) {
             txt += myMintTable;
-            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + + + + + + + txt=" + txt);
+            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + + + + + + + display() returning txt=" + txt);
             callback(txt);
         });
     });
@@ -240,6 +240,11 @@ function display(callback) {
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
+    console.log(lib_1.ts() + "EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(lib_1.ts() + "EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(lib_1.ts() + "EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(lib_1.ts() + "EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(lib_1.ts() + "EXPRESS(): ------------------------------------>  handleShowState()");
     var dateTime = new Date();
     var txt = '<meta http-equiv="refresh" content="' + 30 + '">';
     expressRedisClient.hgetall("mint:0", function (err, me) {
@@ -260,7 +265,7 @@ function handleShowState(req, res) {
             txt += "</body></html>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
-            console.log(lib_1.ts() + "EXPRESS() ShowState About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
             res.end(txt);
         });
     });
@@ -436,7 +441,7 @@ app.get('/nodefactory', function (req, res) {
                 }
                 else {
                     provisionNode(mintStack++, geo, port, incomingIP, publickey, version, wallet, incomingTimestamp, function (config) {
-                        //console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
+                        console.log(lib_1.ts() + "EXPRESS nodeFactory sending config=" + lib_1.dump(config));
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify(config)); //send mint:0 mint:1 *mint:N groupEntry *entryN
                     });

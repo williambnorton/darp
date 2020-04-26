@@ -251,12 +251,12 @@ function display(callback) {
 var txt="";
 console.log(ts()+"display() - produce the HTML to display");
    getPulseRecordTable(function(myPulseRecordTable) {
-      console.log(ts()+"*******************          getPulseRecords(): pulseRecords="+myPulseRecordTable);
+      console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
-         console.log(ts()+"+ + + + + + + + + + + + + + + + + + + + + + txt="+txt);
-         callback(txt)
+         console.log(ts()+"+ + + + + + + + + + + + + + + + + + + + + + display() returning txt="+txt);
+         callback(txt);
       });
    });
 }
@@ -265,7 +265,11 @@ console.log(ts()+"display() - produce the HTML to display");
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-
+   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+   console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + 30 + '">';
 
@@ -289,7 +293,7 @@ function handleShowState(req, res) {
                         
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
-         console.log(ts()+"EXPRESS() ShowState About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
          res.end(txt);
       });
    })
@@ -482,7 +486,7 @@ app.get('/nodefactory', function (req, res) {
                //console.log(ts()+"Filtering"); //this will eventually be a black list or quarentine group
             } else {
                provisionNode(mintStack++,geo,port,incomingIP,publickey,version,wallet, incomingTimestamp, function (config) {
-               //console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
+               console.log(ts()+"EXPRESS nodeFactory sending config="+dump(config));
                res.setHeader('Content-Type', 'application/json');   
                res.end(JSON.stringify( config ));  //send mint:0 mint:1 *mint:N groupEntry *entryN
                }) 
