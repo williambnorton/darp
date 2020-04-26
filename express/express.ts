@@ -299,6 +299,7 @@ function handleShowState(req, res) {
       // Make Matrix
       //
       display(function (html) {
+         console.log(ts()+"handleShowState -> display callback");
          txt+=html;
          txt += "</body></html>";
                         
