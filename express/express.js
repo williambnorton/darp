@@ -254,7 +254,7 @@ function getMintTable(callback) {
                         txt += "</tr>";
                     }
                     txt += "</table>";
-                    var txt = '<p>' + new Date() + '</p><h2>myPulseTable' + '</h2><table border="1">';
+                    txt += '<p>' + new Date() + '</p><h2>myPulseTable' + '</h2><table border="1">';
                     txt += "<tr>";
                     txt += "<th>geo</th>";
                     txt += "<th>group</th>";
