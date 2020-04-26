@@ -230,11 +230,13 @@ function getMintTable(callback) {
 
    var mintEntryStack=new Array();
    var lastMintEntry="";
+   var wbnPulseStack=[];
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
       for (var pulse in gSRlist) lastMintEntry=pulse;
 
       for (var pulseLabel in gSRlist) {
          let mint=gSRlist[pulseLabel];
+         wbnPulseStack.push(pulseLabel);
 
          expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
             mintEntryStack.unshift(mintEntry);
@@ -273,6 +275,31 @@ function getMintTable(callback) {
                   txt+="</tr>"
                }
                txt+="</table>";
+
+
+
+               var txt='<p>'+new Date()+'</p><h2>myPulseTable'+'</h2><table border="1">';
+               txt+="<tr>"
+               txt+="<th>geo</th>"
+               txt+="<th>group</th>"
+               txt+="<th>seq</th>"
+               txt+="<th>pulseTimestamp</th>"
+               txt+="<th>srcMint</th>"
+               txt+="<th>owls</th>"
+               txt+="<th>inMsgs</th>"
+               txt+="<th>inOctets</th>"
+               txt+="<th>outMsgs</th>"
+               txt+="<th>outOctets</th>"
+               txt+="<th>pktDrops</th>"
+               
+               txt+="</tr>"
+               txt+="</table>"
+               
+
+
+
+
+
 
                
                callback(txt);  //return HTML TABLE of Mint Entries
