@@ -275,7 +275,29 @@ function getMintTable(callback) {
                   txt+="</tr>"
                }
                txt+="</table>"; 
-               callback(txt);  //return HTML TABLE of Mint Entries
+
+               getPulseRecordTable(function (pulseTable) {
+                  txt+='<p>'+new Date()+'</p><h2>myPulseTable'+'</h2><table border="1">';
+                  txt+="<tr>"
+                  txt+="<th>geo</th>"
+                  txt+="<th>group</th>"
+                  txt+="<th>seq</th>"
+                  txt+="<th>pulseTimestamp</th>"
+                  txt+="<th>srcMint</th>"
+                  txt+="<th>owls</th>"
+                  txt+="<th>inMsgs</th>"
+                  txt+="<th>inOctets</th>"
+                  txt+="<th>outMsgs</th>"
+                  txt+="<th>outOctets</th>"
+                  txt+="<th>pktDrops</th>"
+                  
+                  txt+="</tr>"
+                  txt+="</table>"
+                  
+                  callback(txt);  //return HTML TABLE of Mint Entries
+
+               });
+
             } 
          })
       }
