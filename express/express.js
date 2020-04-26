@@ -235,11 +235,14 @@ function display(callback) {
     getPulseRecordTable(function (myPulseRecordTable) {
         console.log(lib_1.ts() + "*******************   getPulseRecords(): pulseRecords=" + myPulseRecordTable);
         txt += myPulseRecordTable;
-        getMintTable(function (myMintTable) {
-            txt += myMintTable;
-            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + + + + + + + display() returning txt=" + txt);
-            callback(txt);
-        });
+        callback(txt);
+        /*
+          getMintTable(function (myMintTable) {
+             txt+=myMintTable;
+             console.log(ts()+"+ + + + + + + + + + + + + + + + + + + + + + display() returning txt="+txt);
+             callback(txt);
+          });
+       */
     });
 }
 //

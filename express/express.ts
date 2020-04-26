@@ -259,11 +259,16 @@ console.log(ts()+"display() - produce the HTML to display");
    getPulseRecordTable(function(myPulseRecordTable) {
       console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;
+
+
+      callback(txt)
+    /*
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
          console.log(ts()+"+ + + + + + + + + + + + + + + + + + + + + + display() returning txt="+txt);
          callback(txt);
       });
+   */
    });
 }
 
