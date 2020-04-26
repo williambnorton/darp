@@ -90,31 +90,8 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
    }
 });
 
-//
-//
-//
-function getMintTableEntries(callback) {
-   console.log(ts()+"EXPRESS getMintTableEntries()");
-   var mintEntryStack=new Array();
-   var lastMintEntry="";
-   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
-      for (var pulse in gSRlist) lastMintEntry=pulse;
 
-      for (var label in gSRlist) {
-         expressRedisClient.hgetall("mint:"+gSRlist[label],function (err,mintEntry) {
-            console.log(ts()+"label="+label+" mintEntry "+gSRlist[label]+"="+dump(mintEntry));
-            mintEntryStack.push(mintEntry);
-            console.log(ts()+"EXPRESS(): getMintTableEntries label="+label+" lastMintEntry="+lastMintEntry);
-            if (label==lastMintEntry) {
-               console.log(ts()+"EXPRESS SENDING BACK MINT TABLE");
-
-               callback(mintEntryStack)
-            }
-         })
-      }
-   });
-}
-//---------------------------------------------------------------
+//
 //
 //
 function getPulseRecordEntries(callback) {
@@ -182,9 +159,37 @@ function getPulseRecordTable(callback) {
    })
 
 }
+////---------------------------------------------------------------
 //
 //
-// wbnwbnwbn
+function getMintTableEntries(callback) {
+   console.log(ts()+"EXPRESS getMintTableEntries()");
+   var mintEntryStack=new Array();
+   var lastMintEntry="";
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
+      for (var pulse in gSRlist) lastMintEntry=pulse;
+      console.log(ts()+"getMintTableEntries(): go until lastMintEntry="+lastMintEntry);
+
+      for (var pulseLabel in gSRlist) {
+         var mint=gSRlist[pulseLabel];
+         console.log(ts()+"getMintTableEntries(): in loop. mint="+mint+" pulseLabel="+pulseLabel);
+
+         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
+            console.log(ts()+"mint="+mint+" mintEntry "+"="+dump(mintEntry));
+            mintEntryStack.push(mintEntry);
+            console.log(ts()+"mintEntry pushed on to mintEntryStack: "+dump(mintEntryStack));
+            console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
+            if (pulseLabel==lastMintEntry) {
+               console.log(ts()+"EXPRESS SENDING BACK MINT TABLE ");
+               callback(mintEntryStack)
+            }
+         })
+      }
+   });
+}
+//------------------------------------------------------
+//
+// 
 function getMintTable(callback) {
    //console.log(ts()+"getMintTable() Making a HTML table for mints");
    var txt='<br><h2>mintTable</h2><table border="1">';
