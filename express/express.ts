@@ -215,7 +215,7 @@ function getMintTable(callback) {
    var lastMintEntry="";
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
       for (var pulse in gSRlist) lastMintEntry=pulse;
-      console.log(ts()+"getMintTableEntries(): go until lastMintEntry="+lastMintEntry);
+      console.log(ts()+"getMintTable(): go until lastMintEntry="+lastMintEntry);
 
       for (var pulseLabel in gSRlist) {
          let mint=gSRlist[pulseLabel];
@@ -225,6 +225,7 @@ function getMintTable(callback) {
             console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
             mintEntryStack.unshift(mintEntry);
             console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
+            var pulseLabel=mintEntry.geo+":"+mintEntry.group
             console.log(ts()+"EXPRESS(): getMintTable pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
             if (pulseLabel==lastMintEntry) {
                console.log(ts()+"EXPRESS getTable Complete Array: "+dump(mintEntryStack));
