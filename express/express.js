@@ -96,8 +96,10 @@ function getMintTableEntries(callback) {
                 console.log(lib_1.ts() + "label=" + label + " mintEntry " + gSRlist[label] + "=" + lib_1.dump(mintEntry));
                 mintEntryStack.push(mintEntry);
                 console.log(lib_1.ts() + "EXPRESS(): getMintTableEntries label=" + label + " lastMintEntry=" + lastMintEntry);
-                if (label == lastMintEntry)
+                if (label == lastMintEntry) {
+                    console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE");
                     callback(mintEntryStack);
+                }
             });
         }
     });
@@ -118,8 +120,10 @@ function getPulseRecordEntries(callback) {
             expressRedisClient.hgetall(pulse, function (err, pulseEntry) {
                 //console.log(ts()+"getPulseRecords(): pulseEntry="+dump(pulseEntry));
                 pulseEntryStack.push(pulseEntry);
-                if (pulse == lastPulseEntry)
+                if (pulse == lastPulseEntry) {
+                    console.log(lib_1.ts() + "EXPRESS SENDING BACK PULSE TABLE");
                     callback(pulseEntryStack);
+                }
             });
         }
     });

@@ -90,7 +90,6 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
    }
 });
 
-
 //
 //
 //
@@ -106,8 +105,11 @@ function getMintTableEntries(callback) {
             console.log(ts()+"label="+label+" mintEntry "+gSRlist[label]+"="+dump(mintEntry));
             mintEntryStack.push(mintEntry);
             console.log(ts()+"EXPRESS(): getMintTableEntries label="+label+" lastMintEntry="+lastMintEntry);
-            if (label==lastMintEntry) 
+            if (label==lastMintEntry) {
+               console.log(ts()+"EXPRESS SENDING BACK MINT TABLE");
+
                callback(mintEntryStack)
+            }
          })
       }
    });
@@ -129,8 +131,10 @@ function getPulseRecordEntries(callback) {
             //console.log(ts()+"getPulseRecords(): pulseEntry="+dump(pulseEntry));
 
             pulseEntryStack.push(pulseEntry);
-            if (pulse==lastPulseEntry) 
+            if (pulse==lastPulseEntry) {
+               console.log(ts()+"EXPRESS SENDING BACK PULSE TABLE");
                callback(pulseEntryStack)
+            }
          })
       }
    });
