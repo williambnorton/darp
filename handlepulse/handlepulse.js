@@ -184,12 +184,12 @@ function nth_occurrence(string, char, nth) {
 //  checkSEversion() - reload SW if there is new code to be had
 //this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
 //
-setTimeout(checkSWversion, 20 * 1000);
-; // see if we need new SW
+//setTimeout(checkSWversion,20*1000);; // see if we need new SW
+checkSWversion();
 function checkSWversion() {
     setTimeout(checkSWversion, 20 * 1000);
     ;
-    console.log("checkSWversion() - currentSW=" + MYBUILD);
+    //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         if (err || genesis == null) {
@@ -206,7 +206,7 @@ function checkSWversion() {
             });
             res.on("end", function () {
                 var version = JSON.parse(body);
-                //console.log("mintEntry="+dump(mintEntry));
+                console.log("HANDLEPULSE: checkSWversion(): genesis SWversion==" + lib_js_1.dump(version));
                 if (version != MYBUILD && !isGenesisNode) {
                     console.log(lib_js_1.ts() + " handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD
