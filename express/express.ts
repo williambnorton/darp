@@ -114,7 +114,7 @@ function getMintTableEntries(callback) {
       }
    });
 }
-//
+//---------------------------------------------------------------
 //
 //
 function getPulseRecordEntries(callback) {
@@ -132,7 +132,7 @@ function getPulseRecordEntries(callback) {
 
             pulseEntryStack.push(pulseEntry);
             if (pulse==lastPulseEntry) {
-               console.log(ts()+"EXPRESS SENDING BACK PULSE TABLE");
+               console.log(ts()+"EXPRESS SENDING BACK PULSE TABLE "+pulse);
                callback(pulseEntryStack)
             }
          })
@@ -141,7 +141,7 @@ function getPulseRecordEntries(callback) {
 }
 
 function getPulseRecordTable(callback) {
-   console.log(ts()+"getPulseRecordTable() Starting");
+   console.log(ts()+"getPulseRecordTable() ");
 
    var txt='<br><h2>pulseTable</h2><table border="1">';
    txt+="<tr>"
@@ -256,20 +256,20 @@ function getMintTable(callback) {
 function display(callback) {
 var txt="";
 console.log(ts()+"display() - produce the HTML to display");
+   /*
    getPulseRecordTable(function(myPulseRecordTable) {
       console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
       txt+=myPulseRecordTable;
-
-
       callback(txt)
-    /*
+    */
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
-         console.log(ts()+"+ + + + + + + + + + + + + + + + + + + + + + display() returning txt="+txt);
+         console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
          callback(txt);
       });
-   */
+   /*
    });
+   */
 }
 
 //
