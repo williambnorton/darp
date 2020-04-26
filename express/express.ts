@@ -180,7 +180,7 @@ function getMintTableEntries(callback) {
             console.log(ts()+"mintEntry pushed on to mintEntryStack: "+dump(mintEntryStack));
             console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
             if (pulseLabel==lastMintEntry) {
-               console.log(ts()+"EXPRESS SENDING BACK MINT TABLE ");
+               console.log(ts()+"EXPRESS SENDING BACK MINT TABLE Array: "+dump(mintEntryStack));
                callback(mintEntryStack)
             }
          })

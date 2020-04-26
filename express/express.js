@@ -164,7 +164,7 @@ function getMintTableEntries(callback) {
                 console.log(lib_1.ts() + "mintEntry pushed on to mintEntryStack: " + lib_1.dump(mintEntryStack));
                 console.log(lib_1.ts() + "EXPRESS(): getMintTableEntries pulseLabel=" + pulseLabel + " lastMintEntry=" + lastMintEntry);
                 if (pulseLabel == lastMintEntry) {
-                    console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE ");
+                    console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE Array: " + lib_1.dump(mintEntryStack));
                     callback(mintEntryStack);
                 }
             });
