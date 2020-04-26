@@ -186,7 +186,7 @@ function getPulseRecordTable(callback) {
 //
 // wbnwbnwbn
 function getMintTable(callback) {
-   console.log(ts()+"getMintTable() Making a HTML table for mints");
+   //console.log(ts()+"getMintTable() Making a HTML table for mints");
    var txt='<br><h2>mintTable</h2><table border="1">';
    txt+="<tr>"
    txt+="<th>mint</th>"
@@ -207,7 +207,7 @@ function getMintTable(callback) {
    txt+="</tr>"
 
    getMintTableEntries(function (mintTable) {
-      console.log(ts()+"getMintTableEntries(): gave us array ="+dump(mintTable));
+      //console.log(ts()+"getMintTableEntries(): gave us array ="+dump(mintTable));
 
       for (var i in mintTable) {
          var mintEntry=mintTable[i]
@@ -244,7 +244,7 @@ function getMintTable(callback) {
       }
       
       txt+="</table>";
-      console.log(ts()+"getMintTable(): sending "+txt);
+      //console.log(ts()+"getMintTable(): sending "+txt);
       callback(txt);  //return HTML TABLE of Mint Entries
    })
 
@@ -298,9 +298,13 @@ function handleShowState(req, res) {
       //
       // Make Matrix
       //
-      display(function (html) {
+//      display(function (html) {
+      getMintTable(function (myMintTable) {
+         txt+=myMintTable;
+         console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
+
          console.log(ts()+"handleShowState -> display callback");
-         txt+=html;
+         //txt+=html;
          txt += "</body></html>";
                         
          res.setHeader('Content-Type', 'text/html');
@@ -308,6 +312,7 @@ function handleShowState(req, res) {
          console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
          res.end(txt);
       });
+  //    });
    })
 }
 

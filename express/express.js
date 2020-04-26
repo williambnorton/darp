@@ -171,7 +171,7 @@ function getPulseRecordTable(callback) {
 //
 // wbnwbnwbn
 function getMintTable(callback) {
-    console.log(lib_1.ts() + "getMintTable() Making a HTML table for mints");
+    //console.log(ts()+"getMintTable() Making a HTML table for mints");
     var txt = '<br><h2>mintTable</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>mint</th>";
@@ -190,7 +190,7 @@ function getMintTable(callback) {
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
-        console.log(lib_1.ts() + "getMintTableEntries(): gave us array =" + lib_1.dump(mintTable));
+        //console.log(ts()+"getMintTableEntries(): gave us array ="+dump(mintTable));
         for (var i in mintTable) {
             var mintEntry = mintTable[i];
             txt += "<tr>";
@@ -222,7 +222,7 @@ function getMintTable(callback) {
             txt += "</tr>";
         }
         txt += "</table>";
-        console.log(lib_1.ts() + "getMintTable(): sending " + txt);
+        //console.log(ts()+"getMintTable(): sending "+txt);
         callback(txt); //return HTML TABLE of Mint Entries
     });
 }
@@ -271,15 +271,19 @@ function handleShowState(req, res) {
         //
         // Make Matrix
         //
-        display(function (html) {
+        //      display(function (html) {
+        getMintTable(function (myMintTable) {
+            txt += myMintTable;
+            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + display() returning txt=" + txt);
             console.log(lib_1.ts() + "handleShowState -> display callback");
-            txt += html;
+            //txt+=html;
             txt += "</body></html>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
             console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
             res.end(txt);
         });
+        //    });
     });
 }
 //
