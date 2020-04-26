@@ -126,7 +126,6 @@ function getPulseRecordTable(callback) {
         console.log(lib_1.ts() + "getPulseRecordTable() gave us array of pulseRecords " + lib_1.dump(pulseRecords));
         for (var i in pulseRecords) {
             var pulseEntry = pulseRecords[i];
-            console.log(lib_1.ts() + "pulseEntry=" + pulseEntry.geo);
             txt += "<tr>";
             txt += "<td>" + pulseEntry.geo + "</td>";
             txt += "<td>" + pulseEntry.group + "</td>";
@@ -140,6 +139,7 @@ function getPulseRecordTable(callback) {
             txt += "<td>" + pulseEntry.outOctets + "</td>";
             txt += "<td>" + pulseEntry.pktDrops + "</td>";
             txt += "</tr>";
+            console.log(lib_1.ts() + "converted pulseEntry=" + lib_1.dump(pulseEntry) + " into " + txt);
         }
         txt += "</table>";
         console.log(lib_1.ts() + "getPulseRecordTable() sending this to callback: " + txt);
