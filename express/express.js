@@ -123,9 +123,10 @@ function getPulseRecordTable(callback) {
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
     getPulseRecordEntries(function (pulseRecords) {
-        console.log(lib_1.ts() + "getPulseRecordEntries() gave us array of pulseRecords " + lib_1.dump(pulseRecords));
+        console.log(lib_1.ts() + "getPulseRecordTable() gave us array of pulseRecords " + lib_1.dump(pulseRecords));
         for (var i in pulseRecords) {
             var pulseEntry = pulseRecords[i];
+            console.log(lib_1.ts() + "pulseEntry=" + pulseEntry.geo);
             txt += "<tr>";
             txt += "<td>" + pulseEntry.geo + "</td>";
             txt += "<td>" + pulseEntry.group + "</td>";
@@ -145,30 +146,32 @@ function getPulseRecordTable(callback) {
         callback(txt);
     });
 }
+/*
 //---------------------------------------------------------------
 //
 //
 function getMintTableEntries(callback) {
-    var mintEntryStack = new Array();
-    var lastMintEntry = "";
-    expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-        for (var pulse in gSRlist)
-            lastMintEntry = pulse;
-        for (var pulseLabel in gSRlist) {
-            var mint = gSRlist[pulseLabel];
-            expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                //console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
-                mintEntryStack.unshift(mintEntry);
-                //console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
-                //console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
-                if (pulseLabel == lastMintEntry) {
-                    console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE Array: " + lib_1.dump(mintEntryStack));
-                    callback(mintEntryStack);
-                }
-            });
-        }
-    });
+   var mintEntryStack=new Array();
+   var lastMintEntry="";
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+      for (var pulse in gSRlist) lastMintEntry=pulse;
+
+      for (var pulseLabel in gSRlist) {
+         let mint=gSRlist[pulseLabel];
+         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
+            //console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
+            mintEntryStack.unshift(mintEntry);
+            //console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
+            //console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
+            if (pulseLabel==lastMintEntry) {
+               console.log(ts()+"EXPRESS SENDING BACK MINT TABLE Array: "+dump(mintEntryStack));
+               callback(mintEntryStack)
+            }
+         })
+      }
+   });
 }
+*/
 //------------------------------------------------------
 //
 // 
@@ -208,11 +211,11 @@ function getMintTable(callback) {
                         txt += "<td>" + mintEntry.geo + "</td>";
                         txt += "<td>" + mintEntry.port + "</td>";
                         txt += "<td>" + mintEntry.ipaddr + "</td>";
-                        txt += "<td>" + mintEntry.publickey + "</td>";
+                        txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
                         txt += "<td>" + mintEntry.state + "</td>";
                         txt += "<td>" + mintEntry.bootTime + "</td>";
                         txt += "<td>" + mintEntry.version + "</td>";
-                        txt += "<td>" + mintEntry.wallet + "</td>";
+                        txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                         txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
                         txt += "<td>" + mintEntry.owl + "</td>";
                         txt += "<td>" + mintEntry.isGenesisNode + "</td>";
@@ -470,7 +473,6 @@ app.get('/nodefactory', function (req, res) {
 //
 //
 function makeConfig(callback) {
-    console.log("makeConfig() ");
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
             console.log("gSRlist=" + lib_1.dump(gSRlist));
