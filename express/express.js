@@ -234,27 +234,31 @@ function getMintTable(callback) {
         callback(txt); //return HTML TABLE of Mint Entries
     });
 }
+/*
 //
 // display - produce the HTML to display
 //
 function display(callback) {
-    var txt = "";
-    console.log(lib_1.ts() + "display() - produce the HTML to display");
-    /*
-    getPulseRecordTable(function(myPulseRecordTable) {
-       console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
-       txt+=myPulseRecordTable;
-       callback(txt)
-     */
-    getMintTable(function (myMintTable) {
-        txt += myMintTable;
-        console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + display() returning txt=" + txt);
-        callback(txt);
-    });
-    /*
-    });
+var txt="";
+console.log(ts()+"display() - produce the HTML to display");
+   /*
+   getPulseRecordTable(function(myPulseRecordTable) {
+      console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
+      txt+=myPulseRecordTable;
+      callback(txt)
     */
+/*
+   getMintTable(function (myMintTable) {
+      txt+=myMintTable;
+      console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
+      callback(txt);
+   });
+   */
+/*
+});
+/****/ /*
 }
+*/
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -282,15 +286,28 @@ function handleShowState(req, res) {
         //      display(function (html) {
         getMintTable(function (myMintTable) {
             txt += myMintTable;
-            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + display() returning txt=" + txt);
+            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + getMintTable() gave us txt=" + txt);
             console.log(lib_1.ts() + "handleShowState -> display callback");
             //txt+=html;
             txt += "</body></html>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
             console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
+            console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: " + txt);
             res.end(txt);
         });
+        return;
         //    });
     });
 }

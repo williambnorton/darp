@@ -259,7 +259,7 @@ function getMintTable(callback) {
    })
 
 }
-
+/*
 //
 // display - produce the HTML to display
 //
@@ -272,16 +272,18 @@ console.log(ts()+"display() - produce the HTML to display");
       txt+=myPulseRecordTable;
       callback(txt)
     */
+   /*
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
          console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
          callback(txt);
       });
+      */
    /*
    });
-   */
+   /****/ /*
 }
-
+*/
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -311,7 +313,7 @@ function handleShowState(req, res) {
 //      display(function (html) {
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
-         console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
+         console.log(ts()+"+ + + + + + + + + + + + + + + + getMintTable() gave us txt="+txt);
 
          console.log(ts()+"handleShowState -> display callback");
          //txt+=html;
@@ -320,8 +322,21 @@ function handleShowState(req, res) {
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
          console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
+         console.log(ts()+"EXPRESS() handleShowState() About to send: "+txt);
          res.end(txt);
       });
+      return;
   //    });
    })
 }
