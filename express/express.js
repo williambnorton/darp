@@ -160,7 +160,7 @@ function getMintTableEntries(callback) {
             console.log(lib_1.ts() + "getMintTableEntries(): in loop. mint=" + mint + " pulseLabel=" + pulseLabel);
             expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                 console.log(lib_1.ts() + "mint=" + mint + " mintEntry " + "=" + lib_1.dump(mintEntry));
-                mintEntryStack.push(mintEntry);
+                mintEntryStack.unshift(mintEntry);
                 console.log(lib_1.ts() + "mintEntry pushed on to mintEntryStack: " + lib_1.dump(mintEntryStack));
                 console.log(lib_1.ts() + "EXPRESS(): getMintTableEntries pulseLabel=" + pulseLabel + " lastMintEntry=" + lastMintEntry);
                 if (pulseLabel == lastMintEntry) {
