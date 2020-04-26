@@ -149,28 +149,22 @@ function getPulseRecordTable(callback) {
 //
 //
 function getMintTableEntries(callback) {
-    console.log(lib_1.ts() + "EXPRESS getMintTableEntries()");
     var mintEntryStack = new Array();
     var lastMintEntry = "";
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
             lastMintEntry = pulse;
-        console.log(lib_1.ts() + "getMintTableEntries(): go until lastMintEntry=" + lastMintEntry);
         for (var pulseLabel in gSRlist) {
             var mint = gSRlist[pulseLabel];
-            console.log(lib_1.ts() + "getMintTableEntries(): in loop. mint=" + mint + " pulseLabel=" + pulseLabel);
             expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                console.log(lib_1.ts() + " mintEntry " + "=" + lib_1.dump(mintEntry));
-                0;
+                //console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
                 mintEntryStack.unshift(mintEntry);
-                console.log(lib_1.ts() + "mintEntry pushed on to mintEntryStack: " + mintEntry.geo);
-                console.log(lib_1.ts() + "EXPRESS(): getMintTableEntries pulseLabel=" + pulseLabel + " lastMintEntry=" + lastMintEntry);
+                //console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
+                //console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
                 if (pulseLabel == lastMintEntry) {
                     console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE Array: " + lib_1.dump(mintEntryStack));
                     callback(mintEntryStack);
                 }
-                else
-                    console.log(lib_1.ts() + "pushed " + pulseLabel + " not sending");
             });
         }
     });
@@ -240,8 +234,6 @@ function getMintTable(callback) {
                     txt += "</table>";
                     callback(txt); //return HTML TABLE of Mint Entries
                 }
-                else
-                    console.log(lib_1.ts() + "pushed " + pulseLabel + " not sending");
             });
         }
     });

@@ -164,26 +164,22 @@ function getPulseRecordTable(callback) {
 //
 //
 function getMintTableEntries(callback) {
-   console.log(ts()+"EXPRESS getMintTableEntries()");
    var mintEntryStack=new Array();
    var lastMintEntry="";
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
       for (var pulse in gSRlist) lastMintEntry=pulse;
-      console.log(ts()+"getMintTableEntries(): go until lastMintEntry="+lastMintEntry);
 
       for (var pulseLabel in gSRlist) {
          let mint=gSRlist[pulseLabel];
-         console.log(ts()+"getMintTableEntries(): in loop. mint="+mint+" pulseLabel="+pulseLabel);
-
          expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
-            console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
+            //console.log(ts()+" mintEntry "+"="+dump(mintEntry));0
             mintEntryStack.unshift(mintEntry);
-            console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
-            console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
+            //console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
+            //console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
             if (pulseLabel==lastMintEntry) {
                console.log(ts()+"EXPRESS SENDING BACK MINT TABLE Array: "+dump(mintEntryStack));
                callback(mintEntryStack)
-            } else console.log(ts()+"pushed "+pulseLabel+" not sending");
+            } 
          })
       }
    });
@@ -261,7 +257,7 @@ function getMintTable(callback) {
                
                callback(txt);  //return HTML TABLE of Mint Entries
 
-            } else console.log(ts()+"pushed "+pulseLabel+" not sending");
+            } 
          })
       }
    });
