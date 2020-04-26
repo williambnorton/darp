@@ -108,7 +108,7 @@ function getPulseRecordEntries(callback) {
 }
 function getPulseRecordTable(callback) {
     console.log(lib_1.ts() + "getPulseRecordTable() Making a HTML table for pulses");
-    var txt = '<br><h2>pulseTable</h2><table border="1">';
+    var txt = '<br><h2>myPulseTable' + new Date() + '</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>geo</th>";
     txt += "<th>group</th>";
