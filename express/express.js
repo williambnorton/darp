@@ -128,16 +128,17 @@ function getPulseRecordTable(callback) {
     console.log(lib_1.ts() + "getPulseRecordTable() Starting");
     var txt = '<br><h2>pulseTable</h2><table border="1">';
     txt += "<tr>";
-    txt += "<th>geo</td>";
-    txt += "<th>group</td>";
-    txt += "<th>seq</td>";
-    txt += "<th>pulseTimestamp</td>";
-    txt += "<th>srcMint</td>";
-    txt += "<th>owls</td>";
-    txt += "<th>inOctets</td>";
-    txt += "<th>outOctets</td>";
-    txt += "<th>inMsgs</td>";
-    txt += "<th>pktDrops</td>";
+    txt += "<th>geo</th>";
+    txt += "<th>group</th>";
+    txt += "<th>seq</th>";
+    txt += "<th>pulseTimestamp</th>";
+    txt += "<th>srcMint</th>";
+    txt += "<th>owls</th>";
+    txt += "<th>inMsgs</th>";
+    txt += "<th>inOctets</th>";
+    txt += "<th>outMsgs</th>";
+    txt += "<th>outOctets</th>";
+    txt += "<th>pktDrops</th>";
     txt += "</tr>";
     getPulseRecordEntries(function (pulseRecords) {
         console.log(lib_1.ts() + "getPulseRecordEntries() gave us array of pulseRecords " + lib_1.dump(pulseRecords));
@@ -150,9 +151,10 @@ function getPulseRecordTable(callback) {
             txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
             txt += "<td>" + pulseEntry.srcMint + "</td>";
             txt += "<td>" + pulseEntry.owls + "</td>";
-            txt += "<td>" + pulseEntry.inOctets + "</td>";
-            txt += "<td>" + pulseEntry.outOctets + "</td>";
             txt += "<td>" + pulseEntry.inMsgs + "</td>";
+            txt += "<td>" + pulseEntry.inOctets + "</td>";
+            txt += "<td>" + pulseEntry.outMsgs + "</td>";
+            txt += "<td>" + pulseEntry.outOctets + "</td>";
             txt += "<td>" + pulseEntry.pktDrops + "</td>";
             txt += "</tr>";
         }
