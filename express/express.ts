@@ -136,31 +136,44 @@ function getPulseRecordTable(callback) {
    txt+="<th>pktDrops</th>"
    txt+="</tr>"
    getPulseRecordEntries(function (pulseRecords) {
-      console.log(ts()+"getPulseRecordTable() gave us array of pulseRecords "+dump(pulseRecords));
 
-      for (var i in pulseRecords) {
-         var pulseEntry=pulseRecords[i]
-         txt+="<tr>"
-         txt+="<td>"+pulseEntry.geo+"</td>"
-         txt+="<td>"+pulseEntry.group+"</td>"
-         txt+="<td>"+pulseEntry.seq+"</td>"
-         txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-         txt+="<td>"+pulseEntry.srcMint+"</td>"
-         txt+="<td>"+pulseEntry.owls+"</td>"
-         txt+="<td>"+pulseEntry.inMsgs+"</td>"
-         txt+="<td>"+pulseEntry.inOctets+"</td>"
-         txt+="<td>"+pulseEntry.outMsgs+"</td>"
-         txt+="<td>"+pulseEntry.outOctets+"</td>"
-         txt+="<td>"+pulseEntry.pktDrops+"</td>"
-         txt+="</tr>"
-         console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
+      var pulseEntryStack=new Array();
+      var lastPulseEntry="";
+      expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
+         for (var pulse in gSRlist) lastPulseEntry=pulse;
+   
+         for (var pulseLabel in gSRlist) {
+            let mint=gSRlist[pulseLabel];
 
-      }
-      txt+="</table>";
-      console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
-      callback(txt);
+            expressRedisClient.hgetall(pulseLabel,function (err,pulseEntry) {
+               pulseEntryStack.unshift(pulseEntry);
+               var pulseLabel=pulseEntry.geo+":"+pulseEntry.group
+               if (pulseLabel==lastPulseEntry) {
+                  for (var pulseEntry=pulseEntryStack.pop(); pulseEntry!=null; pulseEntry=pulseEntryStack.pop()) {
+
+                     txt+="<tr>"
+                     txt+="<td>"+pulseEntry.geo+"</td>"
+                     txt+="<td>"+pulseEntry.group+"</td>"
+                     txt+="<td>"+pulseEntry.seq+"</td>"
+                     txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+                     txt+="<td>"+pulseEntry.srcMint+"</td>"
+                     txt+="<td>"+pulseEntry.owls+"</td>"
+                     txt+="<td>"+pulseEntry.inMsgs+"</td>"
+                     txt+="<td>"+pulseEntry.inOctets+"</td>"
+                     txt+="<td>"+pulseEntry.outMsgs+"</td>"
+                     txt+="<td>"+pulseEntry.outOctets+"</td>"
+                     txt+="<td>"+pulseEntry.pktDrops+"</td>"
+                     txt+="</tr>"
+                     console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
+                  }
+                  txt+="</table>";
+                  console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
+                  callback(txt);
+               }
+            })
+         }
+      })
    })
-
 }
 
 /*
