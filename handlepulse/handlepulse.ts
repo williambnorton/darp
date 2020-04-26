@@ -228,7 +228,7 @@ function checkSWversion() {
   
       res.on("end", () => {
         var version = JSON.parse(body);
-        console.log("HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version));
+        console.log("HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
         if ( version != MYBUILD && !isGenesisNode ) {
            console.log(ts()+" handlepulse.ts checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said "+version+" we are running "+MYBUILD+" .......process exitting");
            process.exit(36);  //SOFTWARE RELOAD
