@@ -108,7 +108,7 @@ function getPulseRecordEntries(callback) {
 }
 function getPulseRecordTable(callback) {
     console.log(lib_1.ts() + "getPulseRecordTable() Making a HTML table for pulses");
-    var txt = '<br><h2>myPulseTable' + new Date() + '</h2><table border="1">';
+    var txt = '<p>new Date()</p><h2>myPulseTable' + '</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>geo</th>";
     txt += "<th>group</th>";
@@ -126,13 +126,14 @@ function getPulseRecordTable(callback) {
     var lastPulseEntry = "";
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
-            lastPulseEntry = pulse;
+            lastPulseLabel = pulse;
+        console.log(lib_1.ts() + "lastPulseLabel=" + lastPulseLabel);
         for (var pulseLabel in gSRlist) {
             console.log(lib_1.ts() + "pulseLabel=" + pulseLabel);
             expressRedisClient.hgetall(pulseLabel, function (err, pulseEntry) {
-                console.log(lib_1.ts() + "pulseEntry=" + lib_1.dump(pulseEntry));
                 pulseEntryStack.unshift(pulseEntry); //save this to fetch in our loop
-                var pulseLabel = pulseEntry.geo + ":" + pulseEntry.group; //is this the last one?
+                console.log(lib_1.ts() + "fetched pulseLabel=" + pulseLabel + " pulseEntry=" + lib_1.dump(pulseEntry));
+                //            var pulseLabel=pulseEntry.geo+":"+pulseEntry.group  //is this the last one?
                 if (pulseLabel == lastPulseEntry) {
                     for (var pulseEntry = pulseEntryStack.pop(); pulseEntry != null; pulseEntry = pulseEntryStack.pop()) {
                         console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
