@@ -148,6 +148,7 @@ function getPulseRecordTable(callback) {
          console.log(ts()+"pulseLabel="+pulseLabel);
 
          expressRedisClient.hgetall(pulseLabel,function (err,pulseEntry) {
+            console.log(ts()+"pulseEntry="+dump(pulseEntry));
             pulseEntryStack.unshift(pulseEntry);  //save this to fetch in our loop
             var pulseLabel=pulseEntry.geo+":"+pulseEntry.group  //is this the last one?
             if (pulseLabel==lastPulseEntry) {

@@ -130,6 +130,7 @@ function getPulseRecordTable(callback) {
         for (var pulseLabel in gSRlist) {
             console.log(lib_1.ts() + "pulseLabel=" + pulseLabel);
             expressRedisClient.hgetall(pulseLabel, function (err, pulseEntry) {
+                console.log(lib_1.ts() + "pulseEntry=" + lib_1.dump(pulseEntry));
                 pulseEntryStack.unshift(pulseEntry); //save this to fetch in our loop
                 var pulseLabel = pulseEntry.geo + ":" + pulseEntry.group; //is this the last one?
                 if (pulseLabel == lastPulseEntry) {
