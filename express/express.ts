@@ -208,10 +208,6 @@ function getMintTable(callback) {
 
    getMintTableEntries(function (mintTable) {
       console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
-      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
-      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
-      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
-      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
 
       for (var i in mintTable) {
          var mintEntry=mintTable[i]
@@ -248,7 +244,12 @@ function getMintTable(callback) {
       }
       
       txt+="</table>";
-      //console.log(ts()+"getMintTable(): sending "+txt);
+      console.log(ts()+"getMintTable(): sending "+txt);
+      console.log(ts()+"getMintTable(DONE):");
+      console.log(ts()+"getMintTable(DONE):");
+      console.log(ts()+"getMintTable(DONE):");
+      console.log(ts()+"getMintTable(DONE):");
+      
       callback(txt);  //return HTML TABLE of Mint Entries
    })
 
