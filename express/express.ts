@@ -171,10 +171,10 @@ function getMintTableEntries(callback) {
       console.log(ts()+"getMintTableEntries(): go until lastMintEntry="+lastMintEntry);
 
       for (var pulseLabel in gSRlist) {
-         var mint=gSRlist[pulseLabel];
+         let mint=gSRlist[pulseLabel];
          console.log(ts()+"getMintTableEntries(): in loop. mint="+mint+" pulseLabel="+pulseLabel);
 
-         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
+         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry,mint) {
             console.log(ts()+"mint="+mint+" mintEntry "+"="+dump(mintEntry));
             mintEntryStack.unshift(mintEntry);
             console.log(ts()+"mintEntry pushed on to mintEntryStack: "+dump(mintEntryStack));
