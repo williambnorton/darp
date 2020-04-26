@@ -174,10 +174,10 @@ function getMintTableEntries(callback) {
          let mint=gSRlist[pulseLabel];
          console.log(ts()+"getMintTableEntries(): in loop. mint="+mint+" pulseLabel="+pulseLabel);
 
-         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry,mint) {
-            console.log(ts()+"mint="+mint+" mintEntry "+"="+dump(mintEntry));
+         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
+            console.log(ts()+" mintEntry "+"="+dump(mintEntry));
             mintEntryStack.unshift(mintEntry);
-            console.log(ts()+"mintEntry pushed on to mintEntryStack: "+dump(mintEntryStack));
+            console.log(ts()+"mintEntry pushed on to mintEntryStack: "+mintEntry.geo);
             console.log(ts()+"EXPRESS(): getMintTableEntries pulseLabel="+pulseLabel+" lastMintEntry="+lastMintEntry);
             if (pulseLabel==lastMintEntry) {
                console.log(ts()+"EXPRESS SENDING BACK MINT TABLE Array: "+dump(mintEntryStack));
@@ -328,7 +328,6 @@ function handleShowState(req, res) {
          console.log(ts()+"EXPRESS() handleShowState() About to send: ");
          res.end(txt);
       });
-      return;
   //    });
    })
 }

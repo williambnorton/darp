@@ -158,10 +158,10 @@ function getMintTableEntries(callback) {
         for (var pulseLabel in gSRlist) {
             var mint = gSRlist[pulseLabel];
             console.log(lib_1.ts() + "getMintTableEntries(): in loop. mint=" + mint + " pulseLabel=" + pulseLabel);
-            expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry, mint) {
-                console.log(lib_1.ts() + "mint=" + mint + " mintEntry " + "=" + lib_1.dump(mintEntry));
+            expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+                console.log(lib_1.ts() + " mintEntry " + "=" + lib_1.dump(mintEntry));
                 mintEntryStack.unshift(mintEntry);
-                console.log(lib_1.ts() + "mintEntry pushed on to mintEntryStack: " + lib_1.dump(mintEntryStack));
+                console.log(lib_1.ts() + "mintEntry pushed on to mintEntryStack: " + mintEntry.geo);
                 console.log(lib_1.ts() + "EXPRESS(): getMintTableEntries pulseLabel=" + pulseLabel + " lastMintEntry=" + lastMintEntry);
                 if (pulseLabel == lastMintEntry) {
                     console.log(lib_1.ts() + "EXPRESS SENDING BACK MINT TABLE Array: " + lib_1.dump(mintEntryStack));
@@ -299,7 +299,6 @@ function handleShowState(req, res) {
             console.log(lib_1.ts() + "EXPRESS() handleShowState() About to send: ");
             res.end(txt);
         });
-        return;
         //    });
     });
 }
