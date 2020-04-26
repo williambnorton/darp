@@ -82,7 +82,7 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
     }
 });
 //
-//
+//    getPulseRecordEntries():
 //
 function getPulseRecordEntries(callback) {
     //console.log(ts()+"EXPRESS getPulseRecords()");
@@ -238,31 +238,22 @@ function getMintTable(callback) {
         }
     });
 }
-/*
 //
 // display - produce the HTML to display
 //
 function display(callback) {
-var txt="";
-console.log(ts()+"display() - produce the HTML to display");
-   /*
-   getPulseRecordTable(function(myPulseRecordTable) {
-      console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
-      txt+=myPulseRecordTable;
-      callback(txt)
-    */
-/*
-   getMintTable(function (myMintTable) {
-      txt+=myMintTable;
-      console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
-      callback(txt);
-   });
-   */
-/*
-});
-/****/ /*
+    var txt = "";
+    console.log(lib_1.ts() + "display() - produce the HTML to display");
+    getPulseRecordTable(function (myPulseRecordTable) {
+        console.log(lib_1.ts() + "*******************   getPulseRecords(): pulseRecords=" + myPulseRecordTable);
+        txt += myPulseRecordTable;
+        getMintTable(function (myMintTable) {
+            txt += myMintTable;
+            console.log(lib_1.ts() + "+ + + + + + + + + + + + + + + + display() returning txt=" + txt);
+            callback(txt);
+        });
+    });
 }
-*/
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -283,18 +274,13 @@ function handleShowState(req, res) {
         //
         // Make Matrix
         //
-        //      display(function (html) {
-        getMintTable(function (myMintTable) {
-            txt += myMintTable;
-            //console.log(ts()+"+ + + + + + + + + + + + + + + + getMintTable() gave us txt="+txt);
-            //console.log(ts()+"handleShowState -> display callback");
-            //txt+=html;
+        display(function (html) {
+            txt += html;
             txt += "</body></html>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.end(txt);
         });
-        //    });
     });
 }
 //
