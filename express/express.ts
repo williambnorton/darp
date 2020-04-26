@@ -207,7 +207,11 @@ function getMintTable(callback) {
    txt+="</tr>"
 
    getMintTableEntries(function (mintTable) {
-      //console.log(ts()+"getMintTableEntries(): gave us array ="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
+      console.log(ts()+"getMintTableEntries(): gave us array to process="+dump(mintTable));
 
       for (var i in mintTable) {
          var mintEntry=mintTable[i]

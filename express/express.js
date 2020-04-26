@@ -190,7 +190,11 @@ function getMintTable(callback) {
     txt += "<th>CONTROLS</th>";
     txt += "</tr>";
     getMintTableEntries(function (mintTable) {
-        //console.log(ts()+"getMintTableEntries(): gave us array ="+dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us array to process=" + lib_1.dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us array to process=" + lib_1.dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us array to process=" + lib_1.dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us array to process=" + lib_1.dump(mintTable));
+        console.log(lib_1.ts() + "getMintTableEntries(): gave us array to process=" + lib_1.dump(mintTable));
         for (var i in mintTable) {
             var mintEntry = mintTable[i];
             txt += "<tr>";
