@@ -412,12 +412,8 @@ app.get('/SINGLESTEP', function (req, res) {
 //
 app.get('/pulseMsg', function (req, res) {
    expressRedisClient.hgetall( "mint:0", function (err,me) {
-      expressRedisClient.hmset( "mint:"+me.mint, {
+       expressRedisClient.hmset( "mint:0", {
          adminControl : "PULSE",
-         SHOWPULSES : "1"
-      });
-      expressRedisClient.hmset( "mint:0", {
-         adminControl : "",
          SHOWPULSES : "1"
       });
       console.log(ts()+"pulse(1) somehow here");
