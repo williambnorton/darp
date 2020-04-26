@@ -138,8 +138,8 @@ function getPulseRecordTable(callback) {
    
    txt+="</tr>"
 
-   //callback(txt+"</table>");
-   //return;
+   callback(txt+"</table>");
+   return;
 
 
    var pulseEntryStack=new Array();
