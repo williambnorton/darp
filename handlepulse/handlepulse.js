@@ -187,9 +187,9 @@ function nth_occurrence(string, char, nth) {
 setTimeout(checkSWversion, 20 * 1000);
 ; // see if we need new SW
 function checkSWversion() {
-    setTimeout(checkSWversion, 30 * 1000);
+    setTimeout(checkSWversion, 20 * 1000);
     ;
-    //console.log("checkSWversion() - currentSW="+MYBUILD);
+    console.log("checkSWversion() - currentSW=" + MYBUILD);
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         if (err || genesis == null) {
