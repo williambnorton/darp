@@ -110,6 +110,7 @@ function getPulseRecordEntries(callback) {
 }
 */
 function getPulseRecordTable(callback) {
+    var redisClient = expressRedis.createClient(); //creates a new client
     console.log(lib_1.ts() + "getPulseRecordTable() Making a HTML table for pulses");
     var txt = '<p>' + new Date() + '</p><h2>myPulseTable' + '</h2><table border="1">';
     txt += "<tr>";
@@ -125,11 +126,11 @@ function getPulseRecordTable(callback) {
     txt += "<th>outOctets</th>";
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
-    callback(txt + "</table>");
-    return;
+    //callback(txt+"</table>");
+    //return;
     var pulseEntryStack = new Array();
     var lastPulseLabel = "";
-    expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
+    redisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
             lastPulseLabel = pulse;
         console.log(lib_1.ts() + "lastPulseLabel=" + lastPulseLabel);
@@ -140,7 +141,7 @@ function getPulseRecordTable(callback) {
         for (var pulseLabel = pulseEntryStack.pop(); pulseLabel != null; pulseLabel = pulseEntryStack.pop()) {
             //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
             console.log(lib_1.ts() + "Fetched pulseLabel=" + pulseLabel);
-            expressRedisClient.hgetall(pulseLabel, function (err, pulseEntry) {
+            redisClient.hgetall(pulseLabel, function (err, pulseEntry) {
                 console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
                 txt += "<tr>";
                 txt += "<td>" + pulseEntry.geo + "</td>";
