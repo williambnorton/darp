@@ -150,7 +150,7 @@ function getPulseRecordTable(callback) {
                var pulseLabel=pulseEntry.geo+":"+pulseEntry.group
                if (pulseLabel==lastPulseEntry) {
                   for (var pulseEntry=pulseEntryStack.pop(); pulseEntry!=null; pulseEntry=pulseEntryStack.pop()) {
-
+                     console.log(ts()+"EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
                      txt+="<tr>"
                      txt+="<td>"+pulseEntry.geo+"</td>"
                      txt+="<td>"+pulseEntry.group+"</td>"
