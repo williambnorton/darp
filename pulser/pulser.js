@@ -27,7 +27,7 @@ var CYCLETIME = 10; //newMint(mint)
 console.log("PULSER: CYCLETIME=" + CYCLETIME);
 var GEO = ""; //global variable for marking source of pulse
 function checkAdminControl() {
-    console.log(lib_1.ts() + "checkAdminControl");
+    //console.log(ts()+"checkAdminControl");
     redisClient.hget("mint:0", "adminControl", function (err, adminControl) {
         if (adminControl == "PULSE") {
             console.log(lib_1.ts() + "adminControl=" + adminControl);
