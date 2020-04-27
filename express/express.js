@@ -315,28 +315,26 @@ function handleShowState(req, res) {
         display(function (html) {
             makeConfigAll(function (config) {
                 console.log(lib_1.ts() + "config=" + lib_1.dump(config));
+                console.log(lib_1.ts() + "config.mintTable=" + lib_1.dump(config.mintTable));
+                var txt = '<br><h2>mintTable</h2><table border="1">';
+                txt += "<tr>";
+                txt += "<th>mint</th>";
+                txt += "<th>geo</th>";
+                txt += "<th>port</th>";
+                txt += "<th>ipaddr</th>";
+                txt += "<th>publickey</th>";
+                txt += "<th>state</th>";
+                txt += "<th>bootTime</th>";
+                txt += "<th>version</th>";
+                txt += "<th>wallet</th>";
+                txt += "<th>SHOWPULSES</th>";
+                txt += "<th>owl</th>";
+                txt += "<th>isGenesisNode</th>";
+                txt += "<th>clockSkew</th>";
+                txt += "<th>CONTROLS</th>";
+                txt += "</tr>";
+                var mintTable = config.mintTable;
                 /*
-                console.log(ts()+"config.mintTable="+dump(config.mintTable));
-                var txt='<br><h2>mintTable</h2><table border="1">';
-                txt+="<tr>"
-                txt+="<th>mint</th>"
-                txt+="<th>geo</th>"
-                txt+="<th>port</th>"
-                txt+="<th>ipaddr</th>"
-                txt+="<th>publickey</th>"
-                txt+="<th>state</th>"
-                txt+="<th>bootTime</th>"
-                txt+="<th>version</th>"
-                txt+="<th>wallet</th>"
-                txt+="<th>SHOWPULSES</th>"
-                txt+="<th>owl</th>"
-                txt+="<th>isGenesisNode</th>"
-                txt+="<th>clockSkew</th>"
-                txt+="<th>CONTROLS</th>"
-    
-                txt+="</tr>"
-                var mintTable=config.mintTable
-    
                 for (var mintEntry in mintTable) {
                    console.log(ts()+"mintEntry="+mintEntry);
     
@@ -371,10 +369,8 @@ function handleShowState(req, res) {
           
                    txt+="</tr>"
                 }
-                txt+="</table>";
-    
-    
-    */
+                */
+                txt += "</table>";
                 //console.log("app.get('/state' callback config="+dump(config));
                 //expressRedisClient.hgetall("mint:0", function(err, me) {
                 //   config.mintTable["mint:0"]=me;
