@@ -17,7 +17,7 @@ redisClient.hgetall("mint:0", function (err,me) {
   console.log("HANDLEPULSE starting with me="+dump(me));
   redisClient.hgetall("mint:1", function (err,genesis) {
     if (me==null){
-      console.log(ts()+"HANDLEPULSE started with no genesis mint:1");
+      console.log(ts()+"HANDLEPULSE started with no genesis mint:1 EXITTING...);
       process.exit(36)
     } else {
       SHOWPULSES=me.SHOWPULSES
@@ -68,7 +68,7 @@ function  authenticatedMessage(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
-  if (SHOWPULSES) 
+  if (SHOWPULSES=="1") 
     console.log(ts()+"HANDLEPULSE: received pulse "+message.length+" bytes from "+remote.address + ':' + remote.port +' - ' + message);
   var msg=message.toString();
   var ary=msg.split(",");
