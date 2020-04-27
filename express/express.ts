@@ -388,11 +388,13 @@ function handleShowState(req, res) {
             
             
             for (var mintEntry in mintTable) {
-               console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]");
+               console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
 
                txt+="<tr>"
-/*
-               txt+="<td>"+mintEntry.mint+"</td>"
+               txt+="<td>"+mintEntry+"</td>"
+//               txt+="<td>"+mintEntry.mint+"</td>"
+
+/**
                txt+="<td>"+mintEntry.geo+"</td>"
                txt+="<td>"+mintEntry.port+"</td>"
                txt+="<td>"+mintEntry.ipaddr+"</td>"

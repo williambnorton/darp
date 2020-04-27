@@ -359,10 +359,11 @@ function handleShowState(req, res) {
             console.log(lib_1.ts() + "pulses=" + lib_1.dump(pulses));
             console.log(lib_1.ts() + "gSRlist=" + lib_1.dump(gSRlist));
             for (var mintEntry in mintTable) {
-                console.log(lib_1.ts() + "mintEntry=" + mintEntry + " mintTable[mintEntry]");
+                console.log(lib_1.ts() + "mintEntry=" + mintEntry + " mintTable[mintEntry]" + lib_1.dump(mintTable[mintEntry]));
                 txt += "<tr>";
-                /*
-                               txt+="<td>"+mintEntry.mint+"</td>"
+                txt += "<td>" + mintEntry + "</td>";
+                //               txt+="<td>"+mintEntry.mint+"</td>"
+                /**
                                txt+="<td>"+mintEntry.geo+"</td>"
                                txt+="<td>"+mintEntry.port+"</td>"
                                txt+="<td>"+mintEntry.ipaddr+"</td>"
