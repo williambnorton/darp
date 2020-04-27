@@ -312,16 +312,31 @@ function handleShowState(req, res) {
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>';
         txt += '<body>';
         var insert = "";
+        makeConfig(function (config) {
+            //console.log("app.get('/state' callback config="+dump(config));
+            expressRedisClient.hgetall("mint:0", function (err, me) {
+                config.mintTable["mint:0"] = me;
+                //var html="<html>"
+                //res.setHeader('Content-Type', 'application/json');
+                res.setHeader('Content-Type', 'text/html');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.end(txt + JSON.stringify(config, null, 2) + "</body></html>");
+                return;
+            });
+        });
+        /***
         //
         // Make Matrix
         //
         display(function (html) {
-            txt += html;
-            txt += "</body></html>";
-            res.setHeader('Content-Type', 'text/html');
-            res.setHeader("Access-Control-Allow-Origin", "*");
-            res.end(txt);
+           txt+=html;
+           txt += "</body></html>";
+                          
+           res.setHeader('Content-Type', 'text/html');
+           res.setHeader("Access-Control-Allow-Origin", "*");
+           res.end(txt);
         });
+        ****/
     });
 }
 //
@@ -330,7 +345,7 @@ function handleShowState(req, res) {
 app.get('/state', function (req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res);
-    makeConfig2(function (config) {
+    makeConfig(function (config) {
         //console.log("app.get('/state' callback config="+dump(config));
         expressRedisClient.hgetall("mint:0", function (err, me) {
             config.mintTable["mint:0"] = me;
