@@ -386,7 +386,7 @@ function handleShowState(req, res) {
             //res.setHeader('Content-Type', 'application/json');
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
-            res.end(html + JSON.stringify(config, null, 2) + "</body></html>");
+            res.end(txt + "<p>" + JSON.stringify(config, null, 2) + "</p></body></html>");
             return;
             //});
         });
@@ -616,7 +616,7 @@ app.get('/nodefactory', function (req, res) {
 function makeConfig(callback) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            console.log("gSRlist=" + lib_1.dump(gSRlist));
+            console.log(process.env.VERSION + " gSRlist=" + lib_1.dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
                 //console.log("getConfig(): callback config="+dump(config));
                 callback(config); //call sender
