@@ -143,35 +143,40 @@ function getPulseRecordTable(callback) {
 
    var pulseEntryStack=new Array();
    var lastPulseLabel="";
-   redisClient.hgetall("gSRlist", function (err,gSRlist) { 
+   redisClient.hgetall("gSRlist", function (err,gSRlist) {    //***********************
       for (var pulse in gSRlist) lastPulseLabel=pulse;
-      console.log(ts()+"getPulseRecordTable() popped "+lastPulseLabel);
+      //console.log(ts()+"getPulseRecordTable() popped "+lastPulseLabel);
 
       for (var node in gSRlist) {
-         console.log(ts()+"---------------->pushing="+node);
+         //console.log(ts()+"---------------->pushing="+node);
          pulseEntryStack.push(node);  //save this to fetch in our loop
       }
 
       var FULLpulseEntryStack=new Array();
-      console.log(ts()+"pulseEntryStack="+pulseEntryStack);
+      console.log(ts()+"getPulseRecordTable() STARTING WITH pulseEntryStack="+pulseEntryStack);
       for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
          //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-         console.log(ts()+"Fetching and working on pulseLabel="+pulseLabel+" lastPulseLabel="+lastPulseLabel);
+         console.log(ts()+"CONSTRUCTION LOOP: Fetching and working on pulseLabel="+pulseLabel+" lastPulseLabel="+lastPulseLabel);
 
-         redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
+         redisClient.hgetall(pulseLabel,function (err,pulseEntry) {   //***********************
             console.log(ts()+"LOOOOOOOOOP     dump of pulseLabel entry:"+dump(pulseEntry));
             FULLpulseEntryStack.unshift(pulseEntry)
             var myPulseLabel=pulseEntry.geo+":"+pulseEntry.group;
-            console.log(ts()+"getPulseRecordTable() FULLpulseEntryStack filling up..."+myPulseLabel+" lastPulseLabel="+lastPulseLabel);
+            console.log(ts()+"getPulseRecordTable() FULLpulseEntryStack filling up...until myPulseLabel="+myPulseLabel+" EQUALS lastPulseLabel="+lastPulseLabel);
 
             if (myPulseLabel==lastPulseLabel) {
                console.log(ts()+"******** Got to end of pulseList....");
+               console.log(ts()+"******** Got to end of pulseList....");
+               console.log(ts()+"******** Got to end of pulseList....");
+               console.log(ts()+"******** Got to end of pulseList....");
+               console.log(ts()+"******** Got to end of pulseList....");
+               console.log(ts()+"getPulseRecordTable() END OF CONSTRUCTION WITH FULLpulseEntryStack="+FULLpulseEntryStack);
 
-               for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
+               for (var pulseLabel=FULLpulseEntryStack.pop(); pulseEntry!=null; pulseEntry=FULLpulseEntryStack.pop()) {
                   //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-                  console.log(ts()+"Fetching and working on pulseLabel="+myPulseLabel+" pulseLabel="+myPulseLabel+" lastPulseLabel="+lastPulseLabel);
+                  console.log(ts()+"Filling out HTML");
 
-                  console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
+                  console.log(ts()+"+ + + +            EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
                   txt+="<tr>"
                   txt+="<td>"+pulseEntry.geo+"</td>"
                   txt+="<td>"+pulseEntry.group+"</td>"
