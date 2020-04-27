@@ -444,6 +444,17 @@ app.get('/mintTable', function (req, res) {
 
 app.get('/pulseTable', function (req, res) {
    console.log("EXPRess wbn fetching '/pulseTable' state");
+   makeConfig( function (config) {
+      console.log("app.get('/pulseTable' config="+dump(config));
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.end(config);
+   });
+   return;
+});
+
+app.get('/pulseTableOrig', function (req, res) {
+   console.log("EXPRess wbn fetching '/pulseTable' state");
    getPulseRecordTable( function (pulseRecordTable) {
       console.log("app.get('/pulseTable' pulseRecordTable="+dump(pulseRecordTable));
       res.setHeader('Content-Type', 'text/html');
