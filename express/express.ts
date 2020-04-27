@@ -139,7 +139,7 @@ function getPulseRecordTable(callback) {
    txt+="<th>pktDrops</th>"
    
    txt+="</tr>"
-   console.log(ts()+"****************** getPulseRecordTable() Making a HTML table for pulses Starting txt="+txt);
+   //console.log(ts()+"****************** getPulseRecordTable() Making a HTML table for pulses Starting txt="+txt);
 
    var pulseEntryStack=new Array();
    var lastPulseLabel="";
@@ -148,16 +148,16 @@ function getPulseRecordTable(callback) {
       console.log(ts()+"lastPulseLabel="+lastPulseLabel);
 
       for (var node in gSRlist) {
-         console.log(ts()+"---------------->pulseLabel="+node);
+         //console.log(ts()+"---------------->pulseLabel="+node);
          pulseEntryStack.push(node);  //save this to fetch in our loop
       }
  
       for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
          //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-         console.log(ts()+"Fetched pulseLabel="+pulseLabel);
+         //console.log(ts()+"Fetched pulseLabel="+pulseLabel);
 
          redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
-            console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
+            //console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
             txt+="<tr>"
             txt+="<td>"+pulseEntry.geo+"</td>"
             txt+="<td>"+pulseEntry.group+"</td>"
@@ -171,9 +171,9 @@ function getPulseRecordTable(callback) {
             txt+="<td>"+pulseEntry.outOctets+"</td>"
             txt+="<td>"+pulseEntry.pktDrops+"</td>"
             txt+="</tr>"
-            console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
+            //console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
             txt+="</table>";
-            console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
+            //console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
             if (pulseLabel==lastPulseLabel) {
                callback(txt);  //return HTML to display
             }
@@ -295,14 +295,14 @@ function getMintTable(callback) {
 //
 function display(callback) {
 var txt="";
-console.log(ts()+"display() - produce the HTML to display");
+//console.log(ts()+"display() - produce the HTML to display");
    
 //   getPulseRecordTable(function(myPulseRecordTable) {
 //      console.log(ts()+"*******************   getPulseRecords(): pulseRecords="+myPulseRecordTable);
 //      txt+=myPulseRecordTable;
       getMintTable(function (myMintTable) {
          txt+=myMintTable;
-         console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
+         //console.log(ts()+"+ + + + + + + + + + + + + + + + display() returning txt="+txt);
          callback(txt);
       });
 //   });
