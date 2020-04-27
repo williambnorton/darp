@@ -235,7 +235,7 @@ function getMintTable(callback) {
                         txt += "<td>" + mintEntry.port + "</td>";
                         txt += "<td>" + mintEntry.ipaddr + "</td>";
                         txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-                        txt += "<td>" + mintEntry.state + "</td>";
+                        txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/pulseTable" target="_blank">' + mintEntry.state + '</a>' + "</td>";
                         txt += "<td>" + mintEntry.bootTime + "</td>";
                         txt += "<td>" + mintEntry.version + "</td>";
                         txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
