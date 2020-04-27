@@ -349,7 +349,7 @@ function handleShowState(req, res) {
       var insert="";
 
       display(function (html) {
-         makeConfig2(function(config) {
+         makeConfigAll(function(config) {
             //console.log("app.get('/state' callback config="+dump(config));
             //expressRedisClient.hgetall("mint:0", function(err, me) {
             //   config.mintTable["mint:0"]=me;
@@ -616,19 +616,19 @@ function makeConfig(callback) {
    });
 }
 
-function makeConfig2(callback) {
+function makeConfigAll(callback) {
    expressRedisClient.hgetall("mint:0", function(err, me) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
          console.log("222222222 gSRlist="+dump(gSRlist));
 
-         fetchConfig2(gSRlist, null, function(config) {
+         fetchConfigAll(gSRlist, null, function(config) {
             //console.log("getConfig(): callback config="+dump(config));
             callback(config); //call sender
          });
       });
    });
 }
-function fetchConfig2(gSRlist, config, callback) {
+function fetchConfigAll(gSRlist, config, callback) {
    if (typeof config == "undefined" || config==null) {
       //console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
       config={
@@ -651,13 +651,13 @@ function fetchConfig2(gSRlist, config, callback) {
       var entryLabel=entry.entryLabel;
       expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
          if (err) console.log("ERROR: mintEntry="+mintEntry)                     
-         if (mintEntry) config.mintTable["mint:"+mint] = mintEntry;  //set the pulseEntries
+         if (mintEntry) config.mintTable["mint:"+mintEntry.mint] = mintEntry;  //set the pulseEntries
          //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
          //                       MAZORE:DEVOPS.1
-         expressRedisClient.hgetall(entryLabel, function (err,pulseEntry) {
-            config.pulses[entryLabel] = pulseEntry;  //set the corresponding mintTable
+         expressRedisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,pulseEntry) {
+            config.pulses[mintEntry.geo+":"+mintEntry.group] = pulseEntry;  //set the corresponding mintTable
             //console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
-            fetchConfig2(gSRlist,config,callback);  //recurse until we hit bottom
+            fetchConfigAll(gSRlist,config,callback);  //recurse until we hit bottom
          });
       });
    } else {
