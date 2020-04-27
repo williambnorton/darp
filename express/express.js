@@ -134,14 +134,15 @@ function getPulseRecordTable(callback) {
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
             lastPulseLabel = pulse;
-        console.log(lib_1.ts() + "lastPulseLabel=" + lastPulseLabel);
+        console.log(lib_1.ts() + "getPulseRecordTable() popped " + lastPulseLabel);
         for (var node in gSRlist) {
-            //console.log(ts()+"---------------->pulseLabel="+node);
+            console.log(lib_1.ts() + "---------------->pushing=" + node);
             pulseEntryStack.push(node); //save this to fetch in our loop
         }
+        console.log(lib_1.ts() + "pulseEntryStack=" + pulseEntryStack);
         for (var pulseLabel = pulseEntryStack.pop(); pulseLabel != null; pulseLabel = pulseEntryStack.pop()) {
             //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-            //console.log(ts()+"Fetched pulseLabel="+pulseLabel);
+            console.log(lib_1.ts() + "Fetchworking on pulseLabel=" + pulseLabel);
             redisClient.hgetall(pulseLabel, function (err, pulseEntry) {
                 //console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
                 txt += "<tr>";
