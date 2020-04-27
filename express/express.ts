@@ -137,8 +137,10 @@ function getPulseRecordTable(callback) {
    txt+="<th>outMsgs</th>"
    txt+="<th>outOctets</th>"
    txt+="<th>pktDrops</th>"
-   
    txt+="</tr>"
+   txt+="</table>"
+   callback(txt);
+   return;
    //console.log(ts()+"****************** getPulseRecordTable() Making a HTML table for pulses Starting txt="+txt);
 
    var pulseEntryStack=new Array();
