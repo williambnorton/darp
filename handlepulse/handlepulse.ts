@@ -114,7 +114,7 @@ server.on('message', function(message, remote) {
       if ( pulse.version != MYBUILD ) {
         if (!isGenesisNode) {
           console.log(ts()+" ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode="+isGenesisNode+" - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
-          console.log("INSIDE test pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+          console.log("Genesis node pulsed us as "+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
 
           process.exit(36);  //SOFTWARE RELOAD
         }
@@ -123,16 +123,16 @@ server.on('message', function(message, remote) {
       redisClient.publish("pulses",msg)
       redisClient.hmset(pulseLabel, pulse);  //store the pulse
       
-      console.log(ts()+"SAVING matrix entries to redis");
+      //console.log(ts()+"SAVING matrix entries to redis");
       //add to matrix with expiration times
       redisClient.hmset(pulse.group+":"+pulse.srcMint+"-"+me.mint, "owl",pulse.owl);  //store the pulse
-      console.log(ts()+"SAVED my measured OWL to redis");
+      //console.log(ts()+"SAVED my measured OWL to redis");
 
       var owlsAry=pulse.owls.split(",")
-      console.log(ts()+"owlsAry="+owlsAry);
+      //console.log(ts()+"owlsAry="+owlsAry);
 
       for (var measure in owlsAry) {
-        console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
+        //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
 
         var srcMint=owlsAry[measure].split("=")[0]
         var owl=owlsAry[measure].split("=")[1]
