@@ -170,7 +170,7 @@ function getPulseRecordTable(callback) {
                console.log(ts()+"******** Got to end of pulseList....");
                console.log(ts()+"******** Got to end of pulseList....");
                console.log(ts()+"******** Got to end of pulseList....");
-               console.log(ts()+"getPulseRecordTable() END OF CONSTRUCTION WITH FULLpulseEntryStack="+FULLpulseEntryStack);
+               console.log(ts()+"getPulseRecordTable() END OF CONSTRUCTION WITH FULLpulseEntryStack="+dump(FULLpulseEntryStack));
 
                for (var pulseLabel=FULLpulseEntryStack.pop(); pulseEntry!=null; pulseEntry=FULLpulseEntryStack.pop()) {
                   //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
