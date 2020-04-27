@@ -350,10 +350,11 @@ function handleShowState(req, res) {
       txt += '<body>';
       var insert="";
 
-      display(function (html) {
+      //display(function (html) {
          makeConfigAll(function(config) {
             console.log(ts()+"config="+dump(config));
             
+
             console.log(ts()+"config.mintTable="+dump(config.mintTable));
             var txt='<br><h2>mintTable</h2><table border="1">';
             txt+="<tr>"
@@ -374,6 +375,12 @@ function handleShowState(req, res) {
 
             txt+="</tr>"
             var mintTable=config.mintTable
+            var pulseTable=config.pulseTable
+            var gSRlist=config.gSRlist
+            console.log(ts()+"mintTable="+dump(mintTable));
+            console.log(ts()+"pulseTable="+dump(pulseTable));
+            console.log(ts()+"gSRlist="+dump(gSRlist));
+            
             /*
             for (var mintEntry in mintTable) {
                console.log(ts()+"mintEntry="+mintEntry);
@@ -431,7 +438,7 @@ function handleShowState(req, res) {
                return
             //});
          })
-      });
+      //});
 
       /***
       //
