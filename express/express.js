@@ -321,7 +321,7 @@ function handleShowState(req, res) {
                     //res.setHeader('Content-Type', 'application/json');
                     res.setHeader('Content-Type', 'text/html');
                     res.setHeader("Access-Control-Allow-Origin", "*");
-                    res.end(txt + JSON.stringify(config, null, 2) + "</body></html>");
+                    res.end(html + JSON.stringify(config, null, 2) + "</body></html>");
                     return;
                 });
             });
