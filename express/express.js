@@ -108,6 +108,7 @@ function getPulseRecordEntries(callback) {
       }
    });
 }
+
 */
 function getPulseRecordTable(callback) {
     var redisClient = expressRedis.createClient(); //creates a new client
@@ -127,56 +128,68 @@ function getPulseRecordTable(callback) {
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
     callback(txt + "</table>");
-    return;
-    var pulseEntryStack = new Array();
-    redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        for (var pulse in gSRlist)
-            pulseEntryStack.push(pulse);
-        for (var pulseEntry = pulseEntryStack.pop(); pulseEntry != null; pulseEntryStack.pop()) {
-        }
-        callback(txt + "</table>");
-    });
-    //for (var pulse in gSRlist) pulseEntryStack.push=pulse;
-    callback(txt + "</table>");
-    return;
-    var pulseEntryStack = new Array();
-    var lastPulseLabel = "";
-    redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        for (var pulse in gSRlist)
-            lastPulseLabel = pulse;
-        console.log(lib_1.ts() + "lastPulseLabel=" + lastPulseLabel);
-        for (var node in gSRlist) {
-            console.log(lib_1.ts() + "---------------->pulseLabel=" + node);
-            pulseEntryStack.push(node); //save this to fetch in our loop
-        }
-        for (var pulseLabel = pulseEntryStack.pop(); pulseLabel != null; pulseLabel = pulseEntryStack.pop()) {
-            //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-            console.log(lib_1.ts() + "Fetched pulseLabel=" + pulseLabel);
-            redisClient.hgetall(pulseLabel, function (err, pulseEntry) {
-                console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
-                txt += "<tr>";
-                txt += "<td>" + pulseEntry.geo + "</td>";
-                txt += "<td>" + pulseEntry.group + "</td>";
-                txt += "<td>" + pulseEntry.seq + "</td>";
-                txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
-                txt += "<td>" + pulseEntry.srcMint + "</td>";
-                txt += "<td>" + pulseEntry.owls + "</td>";
-                txt += "<td>" + pulseEntry.inMsgs + "</td>";
-                txt += "<td>" + pulseEntry.inOctets + "</td>";
-                txt += "<td>" + pulseEntry.outMsgs + "</td>";
-                txt += "<td>" + pulseEntry.outOctets + "</td>";
-                txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                txt += "</tr>";
-                console.log(lib_1.ts() + "converted pulseEntry=" + lib_1.dump(pulseEntry) + " into " + txt);
-                txt += "</table>";
-                console.log(lib_1.ts() + "getPulseRecordTable() sending this to callback: " + txt);
-                if (pulseLabel == lastPulseLabel) {
-                    callback(txt); //return HTML to display
-                }
-            });
-        }
-    });
 }
+/****
+return;
+}
+
+
+var pulseEntryStack=new Array()
+redisClient.hgetall("gSRlist", function (err,gSRlist) {
+   for (var pulse in gSRlist) pulseEntryStack.push(pulse);
+   for( var pulseEntry=pulseEntryStack.pop(); pulseEntry!=null; pulseEntryStack.pop() ) {
+   }
+   callback(txt+"</table>");
+
+});
+//for (var pulse in gSRlist) pulseEntryStack.push=pulse;
+
+callback(txt+"</table>");
+return;
+
+
+var pulseEntryStack=new Array();
+var lastPulseLabel="";
+redisClient.hgetall("gSRlist", function (err,gSRlist) {
+   for (var pulse in gSRlist) lastPulseLabel=pulse;
+   console.log(ts()+"lastPulseLabel="+lastPulseLabel);
+
+   for (var node in gSRlist) {
+      console.log(ts()+"---------------->pulseLabel="+node);
+      pulseEntryStack.push(node);  //save this to fetch in our loop
+   }
+
+   for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
+      //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
+      console.log(ts()+"Fetched pulseLabel="+pulseLabel);
+
+      redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
+         console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
+         txt+="<tr>"
+         txt+="<td>"+pulseEntry.geo+"</td>"
+         txt+="<td>"+pulseEntry.group+"</td>"
+         txt+="<td>"+pulseEntry.seq+"</td>"
+         txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+         txt+="<td>"+pulseEntry.srcMint+"</td>"
+         txt+="<td>"+pulseEntry.owls+"</td>"
+         txt+="<td>"+pulseEntry.inMsgs+"</td>"
+         txt+="<td>"+pulseEntry.inOctets+"</td>"
+         txt+="<td>"+pulseEntry.outMsgs+"</td>"
+         txt+="<td>"+pulseEntry.outOctets+"</td>"
+         txt+="<td>"+pulseEntry.pktDrops+"</td>"
+         txt+="</tr>"
+         console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
+         txt+="</table>";
+         console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
+         if (pulseLabel==lastPulseLabel) {
+            callback(txt);  //return HTML to display
+         }
+      })
+   }
+})
+
+}
+***/
 /*
 //---------------------------------------------------------------
 //
@@ -268,24 +281,6 @@ function getMintTable(callback) {
                         txt += "</tr>";
                     }
                     txt += "</table>";
-                    getPulseRecordTable(function (pulseTable) {
-                        txt += '<p>' + new Date() + '</p><h2>myPulseTable' + '</h2><table border="1">';
-                        txt += "<tr>";
-                        txt += "<th>geo</th>";
-                        txt += "<th>group</th>";
-                        txt += "<th>seq</th>";
-                        txt += "<th>pulseTimestamp</th>";
-                        txt += "<th>srcMint</th>";
-                        txt += "<th>owls</th>";
-                        txt += "<th>inMsgs</th>";
-                        txt += "<th>inOctets</th>";
-                        txt += "<th>outMsgs</th>";
-                        txt += "<th>outOctets</th>";
-                        txt += "<th>pktDrops</th>";
-                        txt += "</tr>";
-                        txt += "</table>";
-                        callback(txt); //return HTML TABLE of Mint Entries
-                    });
                 }
             });
         }
@@ -397,6 +392,26 @@ app.get('/reload', function (req, res) {
     console.log("EXITTING to reload the system");
     expressRedisClient.hset("mint:0", "state", "RELOAD"); //handlepulse will exit 36
     res.redirect(req.get('referer'));
+});
+app.get('/mintTable', function (req, res) {
+    //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
+    getMintTable(function (mintTable) {
+        //console.log("app.get('/state' callback config="+dump(config));
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(mintTable);
+    });
+    return;
+});
+app.get('/groups', function (req, res) {
+    //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
+    getPulseRecordTable(function (pulseTable) {
+        //console.log("app.get('/state' callback config="+dump(config));
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(pulseTable);
+    });
+    return;
 });
 app.get('/state', function (req, res) {
     //console.log("EXPRess fetching '/state' state");

@@ -117,6 +117,7 @@ function getPulseRecordEntries(callback) {
       }
    });
 }
+
 */
 function getPulseRecordTable(callback) {
    var redisClient = expressRedis.createClient(); //creates a new client
@@ -137,8 +138,12 @@ function getPulseRecordTable(callback) {
    txt+="<th>pktDrops</th>"
    
    txt+="</tr>"
+
    callback(txt+"</table>");
+}
+   /****
 return;
+}
 
 
    var pulseEntryStack=new Array()
@@ -196,7 +201,7 @@ return;
    }) 
    
 }
-
+***/
 /*
 //---------------------------------------------------------------
 //
@@ -295,27 +300,7 @@ function getMintTable(callback) {
                }
                txt+="</table>"; 
 
-               getPulseRecordTable(function (pulseTable) {
-                  txt+='<p>'+new Date()+'</p><h2>myPulseTable'+'</h2><table border="1">';
-                  txt+="<tr>"
-                  txt+="<th>geo</th>"
-                  txt+="<th>group</th>"
-                  txt+="<th>seq</th>"
-                  txt+="<th>pulseTimestamp</th>"
-                  txt+="<th>srcMint</th>"
-                  txt+="<th>owls</th>"
-                  txt+="<th>inMsgs</th>"
-                  txt+="<th>inOctets</th>"
-                  txt+="<th>outMsgs</th>"
-                  txt+="<th>outOctets</th>"
-                  txt+="<th>pktDrops</th>"
-                  
-                  txt+="</tr>"
-                  txt+="</table>"
-                  
-                  callback(txt);  //return HTML TABLE of Mint Entries
 
-               });
 
             } 
          })
@@ -443,6 +428,28 @@ app.get('/reload', function (req, res) {
    expressRedisClient.hset("mint:0","state","RELOAD");  //handlepulse will exit 36
    res.redirect(req.get('referer'));
 
+});
+
+app.get('/mintTable', function (req, res) {
+   //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
+   getMintTable( function (mintTable) {
+      //console.log("app.get('/state' callback config="+dump(config));
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.end(mintTable);
+   });
+   return;
+});
+
+app.get('/groups', function (req, res) {
+   //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
+   getPulseRecordTable( function (pulseTable) {
+      //console.log("app.get('/state' callback config="+dump(config));
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.end(pulseTable);
+   });
+   return;
 });
 
 app.get('/state', function (req, res) {
