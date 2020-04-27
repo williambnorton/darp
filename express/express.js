@@ -112,7 +112,7 @@ function getPulseRecordEntries(callback) {
 */
 function getPulseRecordTable(callback) {
     var redisClient = expressRedis.createClient(); //creates a new client
-    console.log(lib_1.ts() + "getPulseRecordTable() Making a HTML table for pulses");
+    console.log(lib_1.ts() + "****************** getPulseRecordTable() Making a HTML table for pulses");
     var txt = '<p>' + new Date() + '</p><h2>myPulseTable' + '</h2><table border="1">';
     txt += "<tr>";
     txt += "<th>geo</th>";
@@ -127,6 +127,7 @@ function getPulseRecordTable(callback) {
     txt += "<th>outOctets</th>";
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
+    console.log(lib_1.ts() + "****************** getPulseRecordTable() Making a HTML table for pulses Starting txt=" + txt);
     var pulseEntryStack = new Array();
     var lastPulseLabel = "";
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
