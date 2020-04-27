@@ -155,10 +155,10 @@ function getPulseRecordTable(callback) {
       console.log(ts()+"pulseEntryStack="+pulseEntryStack);
       for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
          //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-         console.log(ts()+"Fetchworking on pulseLabel="+pulseLabel);
+         console.log(ts()+"Fetching and working on pulseLabel="+pulseLabel+" lastPulseLabel="+lastPulseLabel);
 
          redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
-            //console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
+            console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
             txt+="<tr>"
             txt+="<td>"+pulseEntry.geo+"</td>"
             txt+="<td>"+pulseEntry.group+"</td>"
@@ -174,7 +174,7 @@ function getPulseRecordTable(callback) {
             txt+="</tr>"
             //console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
             txt+="</table>";
-            //console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
+            console.log(ts()+"getPulseRecordTable() Done....sending this to callback: " + txt);
             if (pulseLabel==lastPulseLabel) {
                callback(txt);  //return HTML to display
             }
