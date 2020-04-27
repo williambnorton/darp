@@ -160,7 +160,7 @@ function getPulseRecordTable(callback) {
 
          redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
             FULLpulseEntryStack.unshift(pulseEntry)
-            console.log(ts()+"getPulseRecordTable() FULLpulseEntryStack filling up...");
+            console.log(ts()+"getPulseRecordTable() FULLpulseEntryStack filling up..."+pulseLabel+" lastPulseLabel="+lastPulseLabel);
 
             if (pulseLabel==lastPulseLabel) {
                console.log(ts()+"******** Got to end of pulseList....");
