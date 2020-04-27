@@ -349,10 +349,10 @@ function handleShowState(req, res) {
             txt += "<th>CONTROLS</th>";
             txt += "</tr>";
             var mintTable = config.mintTable;
-            var pulseTable = config.pulseTable;
+            var pulses = config.pulses;
             var gSRlist = config.gSRlist;
             console.log(lib_1.ts() + "mintTable=" + lib_1.dump(mintTable));
-            console.log(lib_1.ts() + "pulseTable=" + lib_1.dump(pulseTable));
+            console.log(lib_1.ts() + "pulses=" + lib_1.dump(pulses));
             console.log(lib_1.ts() + "gSRlist=" + lib_1.dump(gSRlist));
             /*
             for (var mintEntry in mintTable) {

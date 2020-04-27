@@ -376,10 +376,10 @@ function handleShowState(req, res) {
 
             txt+="</tr>"
             var mintTable=config.mintTable
-            var pulseTable=config.pulseTable
+            var pulses=config.pulses
             var gSRlist=config.gSRlist
             console.log(ts()+"mintTable="+dump(mintTable));
-            console.log(ts()+"pulseTable="+dump(pulseTable));
+            console.log(ts()+"pulses="+dump(pulses));
             console.log(ts()+"gSRlist="+dump(gSRlist));
             
             /*
