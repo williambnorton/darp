@@ -330,7 +330,7 @@ function handleShowState(req, res) {
 app.get('/state', function (req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res);
-    makeConfig(function (config) {
+    makeConfig2(function (config) {
         //console.log("app.get('/state' callback config="+dump(config));
         expressRedisClient.hgetall("mint:0", function (err, me) {
             config.mintTable["mint:0"] = me;
@@ -544,8 +544,8 @@ function makeConfig(callback) {
 function makeConfig2(callback) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            console.log("gSRlist=" + lib_1.dump(gSRlist));
-            fetchConfig(gSRlist, null, function (config) {
+            console.log("222222222 gSRlist=" + lib_1.dump(gSRlist));
+            fetchConfig2(gSRlist, null, function (config) {
                 //console.log("getConfig(): callback config="+dump(config));
                 callback(config); //call sender
             });
