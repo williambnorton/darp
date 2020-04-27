@@ -333,8 +333,8 @@ function handleShowState(req, res) {
         var insert = "";
         //display(function (html) {
         makeConfigAll(function (config) {
-            console.log(lib_1.ts() + "config=" + lib_1.dump(config));
-            console.log(lib_1.ts() + "config.mintTable=" + lib_1.dump(config.mintTable));
+            //console.log(ts()+"config="+dump(config));
+            //console.log(ts()+"config.mintTable="+dump(config.mintTable));
             var txt = '<br><h2>mintTable</h2><table border="1">';
             txt += "<tr>";
             txt += "<th>mint</th>";
@@ -355,14 +355,15 @@ function handleShowState(req, res) {
             var mintTable = config.mintTable;
             var pulses = config.pulses;
             var gSRlist = config.gSRlist;
-            console.log(lib_1.ts() + "mintTable=" + lib_1.dump(mintTable));
-            console.log(lib_1.ts() + "pulses=" + lib_1.dump(pulses));
-            console.log(lib_1.ts() + "gSRlist=" + lib_1.dump(gSRlist));
+            //console.log(ts()+"mintTable="+dump(mintTable));
+            //console.log(ts()+"pulses="+dump(pulses));
+            //console.log(ts()+"gSRlist="+dump(gSRlist));
+            console.log(lib_1.ts() + "                                      mintTable=" + lib_1.dump(mintTable));
             for (var mint in mintTable) {
                 var mintEntry = mintTable[mint];
                 console.log(lib_1.ts() + "mintEntry=" + mintEntry + " mintTable[mintEntry]" + lib_1.dump(mintTable[mintEntry]));
                 txt += "<tr>";
-                txt += "<td>" + mintEntry + "</td>";
+                //txt+="<td>"+mintEntry+"</td>"
                 txt += "<td>" + mintEntry.mint + "</td>";
                 txt += "<td>" + mintEntry.geo + "</td>";
                 txt += "<td>" + mintEntry.port + "</td>";
