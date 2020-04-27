@@ -245,7 +245,7 @@ function getMintTable(callback) {
                 if (pulseLabel == lastMintEntry) {
                     for (var mintEntry = mintEntryStack.pop(); mintEntry != null; mintEntry = mintEntryStack.pop()) {
                         txt += "<tr>";
-                        txt += '<td> <a href=http://' + mintEntry.ipaddr + ":" + mintEntry.port + '/config>"' + mintEntry.mint + "</a></td>";
+                        txt += '<td><a href="http://' + mintEntry.ipaddr + ":" + mintEntry.port + '/config>"' + mintEntry.mint + "</a></td>";
                         txt += "<td>" + mintEntry.geo + "</td>";
                         txt += "<td>" + mintEntry.port + "</td>";
                         txt += "<td>" + mintEntry.ipaddr + "</td>";
