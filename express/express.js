@@ -126,6 +126,15 @@ function getPulseRecordTable(callback) {
     txt += "<th>outOctets</th>";
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
+    var pulseEntryStack = new Array();
+    redisClient.hgetall("gSRlist", function (err, gSRlist) {
+        for (var pulse in gSRlist)
+            pulseEntryStack.push(pulse);
+        for (var pulseEntry = pulseEntryStack.pop(); pulseEntry != null; pulseEntryStack.pop()) {
+        }
+        callback(txt + "</table>");
+    });
+    //for (var pulse in gSRlist) pulseEntryStack.push=pulse;
     callback(txt + "</table>");
     return;
     var pulseEntryStack = new Array();
