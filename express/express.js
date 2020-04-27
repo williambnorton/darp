@@ -404,13 +404,13 @@ app.get('/mintTable', function (req, res) {
     });
     return;
 });
-app.get('/groups', function (req, res) {
+app.get('/pulseTable', function (req, res) {
     //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
-    getPulseRecordTable(function (pulseTable) {
-        //console.log("app.get('/state' callback config="+dump(config));
-        res.setHeader('Content-Type', 'application/json');
+    getPulseRecordTable(function (pulseRecordTable) {
+        console.log("app.get('/pulseTable' pulseRecordTable=" + lib_1.dump(pulseRecordTable));
+        res.setHeader('Content-Type', 'text/html');
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.end(pulseTable);
+        res.end(pulseRecordTable);
     });
     return;
 });
