@@ -17,7 +17,7 @@ redisClient.hgetall("mint:0", function (err,me) {
   console.log("HANDLEPULSE starting with me="+dump(me));
   redisClient.hgetall("mint:1", function (err,genesis) {
     if (me==null){
-      console.log(ts()+"HANDLEPULSE started with no genesis mint:1 EXITTING...);
+      console.log(ts()+"HANDLEPULSE started with no genesis mint:1 EXITTING...");
       process.exit(36)
     } else {
       SHOWPULSES=me.SHOWPULSES
