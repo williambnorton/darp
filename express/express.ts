@@ -254,13 +254,13 @@ function getMintTable(callback) {
 
    var mintEntryStack=new Array();
    var lastMintEntry="";
-   var wbnPulseStack=[];
+   //var wbnPulseStack=[];
    expressRedisClient.hgetall("gSRlist", function (err,gSRlist) { 
       for (var pulse in gSRlist) lastMintEntry=pulse;
 
       for (var pulseLabel in gSRlist) {
          let mint=gSRlist[pulseLabel];
-         wbnPulseStack.push(pulseLabel);
+         //wbnPulseStack.push(pulseLabel);
 
          expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
             mintEntryStack.unshift(mintEntry);
@@ -300,7 +300,7 @@ function getMintTable(callback) {
                }
                txt+="</table>"; 
 
-
+               callback(txt);
 
             } 
          })

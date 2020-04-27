@@ -240,13 +240,13 @@ function getMintTable(callback) {
     txt += "</tr>";
     var mintEntryStack = new Array();
     var lastMintEntry = "";
-    var wbnPulseStack = [];
+    //var wbnPulseStack=[];
     expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
             lastMintEntry = pulse;
         for (var pulseLabel in gSRlist) {
             var mint = gSRlist[pulseLabel];
-            wbnPulseStack.push(pulseLabel);
+            //wbnPulseStack.push(pulseLabel);
             expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                 mintEntryStack.unshift(mintEntry);
                 var pulseLabel = mintEntry.geo + ":" + mintEntry.group;
@@ -281,6 +281,7 @@ function getMintTable(callback) {
                         txt += "</tr>";
                     }
                     txt += "</table>";
+                    callback(txt);
                 }
             });
         }
