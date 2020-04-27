@@ -126,6 +126,8 @@ function getPulseRecordTable(callback) {
     txt += "<th>outOctets</th>";
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
+    callback(txt + "</table>");
+    return;
     var pulseEntryStack = new Array();
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         for (var pulse in gSRlist)
