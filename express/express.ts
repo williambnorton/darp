@@ -269,7 +269,7 @@ function getMintTable(callback) {
             if (pulseLabel==lastMintEntry) {
                for (var mintEntry=mintEntryStack.pop(); mintEntry!=null; mintEntry=mintEntryStack.pop()) {
                   txt+="<tr>"
-                  txt+="<td>"+mintEntry.mint+"</td>"
+                  txt+='<td> <a href=http://'+mintEntry.ipaddr+":"+mintEntry.port+'/config>"'+mintEntry.mint+"</a></td>"
                   txt+="<td>"+mintEntry.geo+"</td>"
                   txt+="<td>"+mintEntry.port+"</td>"
                   txt+="<td>"+mintEntry.ipaddr+"</td>"
@@ -460,14 +460,14 @@ app.get('/mintTable', function (req, res) {
    return;
 });
 
-app.get('/pulseTableOrig', function (req, res) {
+app.get('/config', function (req, res) {
    console.log("EXPRess wbn fetching '/pulseTable' state");
-   getPulseRecordTable( function (pulseRecordTable) {
-      console.log("app.get('/pulseTable' pulseRecordTable="+dump(pulseRecordTable));
-      res.setHeader('Content-Type', 'text/html');
+   makeConfigAll( function (config) {
+      console.log("app.get('/pulseTable' pulseRecordTable="+dump(config));
+      res.setHeader('Content-Type', 'application/json');
+      //res.setHeader('Content-Type', 'text/html');
       res.setHeader("Access-Control-Allow-Origin", "*");
-
-      res.end(pulseRecordTable);
+      res.end(config);
    });
    return;
 });
