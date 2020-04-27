@@ -450,7 +450,7 @@ app.get('/reload', function (req, res) {
 });
 
 app.get('/mintTable', function (req, res) {
-   //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
+   // console.log("EXPRess fetching '/state' state");
    getMintTable( function (mintTable) {
       //console.log("app.get('/state' callback config="+dump(config));
       res.setHeader('Content-Type', 'application/json');
@@ -461,13 +461,13 @@ app.get('/mintTable', function (req, res) {
 });
 
 app.get('/config', function (req, res) {
-   console.log("EXPRess wbn fetching '/pulseTable' state");
+   console.log("EXPRess wbn fetching '/config' ");
    makeConfigAll( function (config) {
-      console.log("app.get('/pulseTable' pulseRecordTable="+dump(config));
+      console.log("app.get(/config pulseRecordTable="+dump(config));
       res.setHeader('Content-Type', 'application/json');
       //res.setHeader('Content-Type', 'text/html');
       res.setHeader("Access-Control-Allow-Origin", "*");
-      res.end(config);
+      res.end(JSON.stringify(config,null,2));
    });
    return;
 });
