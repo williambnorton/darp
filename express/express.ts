@@ -349,10 +349,10 @@ function handleShowState(req, res) {
       var insert="";
 
       display(function (html) {
-         makeConfig(function(config) {
+         makeConfig2(function(config) {
             //console.log("app.get('/state' callback config="+dump(config));
-            expressRedisClient.hgetall("mint:0", function(err, me) {
-               config.mintTable["mint:0"]=me;
+            //expressRedisClient.hgetall("mint:0", function(err, me) {
+            //   config.mintTable["mint:0"]=me;
                //var html="<html>"
                //res.setHeader('Content-Type', 'application/json');
                res.setHeader('Content-Type', 'text/html');
@@ -360,7 +360,7 @@ function handleShowState(req, res) {
    
                res.end(html+JSON.stringify(config, null, 2)+"</body></html>");
                return
-            });
+            //});
          })
       });
 

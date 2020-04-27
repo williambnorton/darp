@@ -313,17 +313,17 @@ function handleShowState(req, res) {
         txt += '<body>';
         var insert = "";
         display(function (html) {
-            makeConfig(function (config) {
+            makeConfig2(function (config) {
                 //console.log("app.get('/state' callback config="+dump(config));
-                expressRedisClient.hgetall("mint:0", function (err, me) {
-                    config.mintTable["mint:0"] = me;
-                    //var html="<html>"
-                    //res.setHeader('Content-Type', 'application/json');
-                    res.setHeader('Content-Type', 'text/html');
-                    res.setHeader("Access-Control-Allow-Origin", "*");
-                    res.end(html + JSON.stringify(config, null, 2) + "</body></html>");
-                    return;
-                });
+                //expressRedisClient.hgetall("mint:0", function(err, me) {
+                //   config.mintTable["mint:0"]=me;
+                //var html="<html>"
+                //res.setHeader('Content-Type', 'application/json');
+                res.setHeader('Content-Type', 'text/html');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.end(html + JSON.stringify(config, null, 2) + "</body></html>");
+                return;
+                //});
             });
         });
         /***
