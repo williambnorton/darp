@@ -159,15 +159,17 @@ function getPulseRecordTable(callback) {
          console.log(ts()+"Fetching and working on pulseLabel="+pulseLabel+" lastPulseLabel="+lastPulseLabel);
 
          redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
+            console.log(ts()+"LOOOOOOOOOP     dump of pulseLabel entry:"+dump(pulseEntry));
             FULLpulseEntryStack.unshift(pulseEntry)
-            console.log(ts()+"getPulseRecordTable() FULLpulseEntryStack filling up..."+pulseLabel+" lastPulseLabel="+lastPulseLabel);
+            var myPulseLabel=pulseEntry.geo+":"+pulseEntry.group;
+            console.log(ts()+"getPulseRecordTable() FULLpulseEntryStack filling up..."+myPulseLabel+" lastPulseLabel="+lastPulseLabel);
 
-            if (pulseLabel==lastPulseLabel) {
+            if (myPulseLabel==lastPulseLabel) {
                console.log(ts()+"******** Got to end of pulseList....");
 
                for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
                   //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-                  console.log(ts()+"Fetching and working on pulseLabel="+pulseLabel+" pulseLabel="+pulseLabel+" lastPulseLabel="+lastPulseLabel);
+                  console.log(ts()+"Fetching and working on pulseLabel="+myPulseLabel+" pulseLabel="+myPulseLabel+" lastPulseLabel="+lastPulseLabel);
 
                   console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
                   txt+="<tr>"
