@@ -127,69 +127,44 @@ function getPulseRecordTable(callback) {
     txt += "<th>outOctets</th>";
     txt += "<th>pktDrops</th>";
     txt += "</tr>";
-    callback(txt + "</table>");
+    var pulseEntryStack = new Array();
+    var lastPulseLabel = "";
+    redisClient.hgetall("gSRlist", function (err, gSRlist) {
+        for (var pulse in gSRlist)
+            lastPulseLabel = pulse;
+        console.log(lib_1.ts() + "lastPulseLabel=" + lastPulseLabel);
+        for (var node in gSRlist) {
+            console.log(lib_1.ts() + "---------------->pulseLabel=" + node);
+            pulseEntryStack.push(node); //save this to fetch in our loop
+        }
+        for (var pulseLabel = pulseEntryStack.pop(); pulseLabel != null; pulseLabel = pulseEntryStack.pop()) {
+            //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
+            console.log(lib_1.ts() + "Fetched pulseLabel=" + pulseLabel);
+            redisClient.hgetall(pulseLabel, function (err, pulseEntry) {
+                console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
+                txt += "<tr>";
+                txt += "<td>" + pulseEntry.geo + "</td>";
+                txt += "<td>" + pulseEntry.group + "</td>";
+                txt += "<td>" + pulseEntry.seq + "</td>";
+                txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
+                txt += "<td>" + pulseEntry.srcMint + "</td>";
+                txt += "<td>" + pulseEntry.owls + "</td>";
+                txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                txt += "<td>" + pulseEntry.inOctets + "</td>";
+                txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                txt += "<td>" + pulseEntry.outOctets + "</td>";
+                txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                txt += "</tr>";
+                console.log(lib_1.ts() + "converted pulseEntry=" + lib_1.dump(pulseEntry) + " into " + txt);
+                txt += "</table>";
+                console.log(lib_1.ts() + "getPulseRecordTable() sending this to callback: " + txt);
+                if (pulseLabel == lastPulseLabel) {
+                    callback(txt); //return HTML to display
+                }
+            });
+        }
+    });
 }
-/****
-return;
-}
-
-
-var pulseEntryStack=new Array()
-redisClient.hgetall("gSRlist", function (err,gSRlist) {
-   for (var pulse in gSRlist) pulseEntryStack.push(pulse);
-   for( var pulseEntry=pulseEntryStack.pop(); pulseEntry!=null; pulseEntryStack.pop() ) {
-   }
-   callback(txt+"</table>");
-
-});
-//for (var pulse in gSRlist) pulseEntryStack.push=pulse;
-
-callback(txt+"</table>");
-return;
-
-
-var pulseEntryStack=new Array();
-var lastPulseLabel="";
-redisClient.hgetall("gSRlist", function (err,gSRlist) {
-   for (var pulse in gSRlist) lastPulseLabel=pulse;
-   console.log(ts()+"lastPulseLabel="+lastPulseLabel);
-
-   for (var node in gSRlist) {
-      console.log(ts()+"---------------->pulseLabel="+node);
-      pulseEntryStack.push(node);  //save this to fetch in our loop
-   }
-
-   for (var pulseLabel=pulseEntryStack.pop(); pulseLabel!=null; pulseLabel=pulseEntryStack.pop()) {
-      //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
-      console.log(ts()+"Fetched pulseLabel="+pulseLabel);
-
-      redisClient.hgetall(pulseLabel,function (err,pulseEntry) {
-         console.log(ts()+"**************************EXPRESS INSIDE LOOP pulseEntry="+dump(pulseEntry));
-         txt+="<tr>"
-         txt+="<td>"+pulseEntry.geo+"</td>"
-         txt+="<td>"+pulseEntry.group+"</td>"
-         txt+="<td>"+pulseEntry.seq+"</td>"
-         txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-         txt+="<td>"+pulseEntry.srcMint+"</td>"
-         txt+="<td>"+pulseEntry.owls+"</td>"
-         txt+="<td>"+pulseEntry.inMsgs+"</td>"
-         txt+="<td>"+pulseEntry.inOctets+"</td>"
-         txt+="<td>"+pulseEntry.outMsgs+"</td>"
-         txt+="<td>"+pulseEntry.outOctets+"</td>"
-         txt+="<td>"+pulseEntry.pktDrops+"</td>"
-         txt+="</tr>"
-         console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
-         txt+="</table>";
-         console.log(ts()+"getPulseRecordTable() sending this to callback: " + txt);
-         if (pulseLabel==lastPulseLabel) {
-            callback(txt);  //return HTML to display
-         }
-      })
-   }
-})
-
-}
-***/
 /*
 //---------------------------------------------------------------
 //
