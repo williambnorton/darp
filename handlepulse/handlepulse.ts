@@ -4,7 +4,7 @@
 import { now, ts ,dump, newMint, makeYYMMDD } from '../lib/lib.js';
 console.log("Starting HANDLEPULSE GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
-var SHOWPULSES="1";
+var SHOWPULSES="0";
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
@@ -20,6 +20,7 @@ redisClient.hgetall("mint:0", function (err,me) {
       console.log(ts()+"HANDLEPULSE started with no genesis mint:1");
       process.exit(36)
     } else {
+      SHOWPULSES=me.SHOWPULSES
       console.log(ts()+"HANDLEPULSE started with genesis="+dump(genesis));
     }
   });
@@ -67,7 +68,7 @@ function  authenticatedMessage(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
-  if (SHOWPULSES!="0") 
+  if (SHOWPULSES) 
     console.log(ts()+"HANDLEPULSE: received pulse "+message.length+" bytes from "+remote.address + ':' + remote.port +' - ' + message);
   var msg=message.toString();
   var ary=msg.split(",");

@@ -5,7 +5,7 @@ exports.__esModule = true;
 //
 var lib_js_1 = require("../lib/lib.js");
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
-var SHOWPULSES = "1";
+var SHOWPULSES = "0";
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 var dgram = require('dgram');
@@ -20,6 +20,7 @@ redisClient.hgetall("mint:0", function (err, me) {
             process.exit(36);
         }
         else {
+            SHOWPULSES = me.SHOWPULSES;
             console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
         }
     });
@@ -62,7 +63,7 @@ function authenticatedMessage(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function (message, remote) {
-    if (SHOWPULSES != "0")
+    if (SHOWPULSES)
         console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message);
     var msg = message.toString();
     var ary = msg.split(",");

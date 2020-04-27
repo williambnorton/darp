@@ -23,7 +23,7 @@ var express = require('express');
 var app = express();
 
 var mintStack=1;
-const DEFAULT_SHOWPULSES="1"
+const DEFAULT_SHOWPULSES="0"
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 const DEFAULT_START_STATE="RUNNING";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
