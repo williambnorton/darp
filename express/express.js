@@ -358,39 +358,36 @@ function handleShowState(req, res) {
             console.log(lib_1.ts() + "mintTable=" + lib_1.dump(mintTable));
             console.log(lib_1.ts() + "pulses=" + lib_1.dump(pulses));
             console.log(lib_1.ts() + "gSRlist=" + lib_1.dump(gSRlist));
-            for (var mintEntry in mintTable) {
+            for (var mint in mintTable) {
+                var mintEntry = mintTable[mint];
                 console.log(lib_1.ts() + "mintEntry=" + mintEntry + " mintTable[mintEntry]" + lib_1.dump(mintTable[mintEntry]));
                 txt += "<tr>";
                 txt += "<td>" + mintEntry + "</td>";
-                //               txt+="<td>"+mintEntry.mint+"</td>"
-                /**
-                               txt+="<td>"+mintEntry.geo+"</td>"
-                               txt+="<td>"+mintEntry.port+"</td>"
-                               txt+="<td>"+mintEntry.ipaddr+"</td>"
-                               txt+="<td>"+mintEntry.publickey.substring(0,3)+"..."+mintEntry.publickey.substring(40,mintEntry.publickey.length)+"</td>"
-                               txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>'+"</td>"
-                               txt+="<td>"+mintEntry.bootTime+"</td>"
-                               txt+="<td>"+mintEntry.version+"</td>"
-                               txt+="<td>"+mintEntry.wallet.substring(0,3)+"..."+mintEntry.wallet.substring(40,mintEntry.wallet.length)+"</td>"
-                               txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
-                               txt+="<td>"+mintEntry.owl+"</td>"
-                               txt+="<td>"+mintEntry.isGenesisNode+"</td>"
-                               txt+="<td>"+mintEntry.clockSkew+"</td>"
-                      
-                               var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
-                               var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
-                               var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-                               var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
-                               var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
-                      
-                               txt += "<td>" + '<FORM>';
-                               txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-                               txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-                               txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
-                               txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-                               txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-                               txt += '</FORM>' + "</td>";
-                      */
+                txt += "<td>" + mintEntry.mint + "</td>";
+                txt += "<td>" + mintEntry.geo + "</td>";
+                txt += "<td>" + mintEntry.port + "</td>";
+                txt += "<td>" + mintEntry.ipaddr + "</td>";
+                txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
+                txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
+                txt += "<td>" + mintEntry.bootTime + "</td>";
+                txt += "<td>" + mintEntry.version + "</td>";
+                txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
+                txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
+                txt += "<td>" + mintEntry.owl + "</td>";
+                txt += "<td>" + mintEntry.isGenesisNode + "</td>";
+                txt += "<td>" + mintEntry.clockSkew + "</td>";
+                var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+                var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+                var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+                var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
+                var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+                txt += "<td>" + '<FORM>';
+                txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+                txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+                txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
+                txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+                txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+                txt += '</FORM>' + "</td>";
                 txt += "</tr>";
             }
             /**/

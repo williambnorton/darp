@@ -387,14 +387,13 @@ function handleShowState(req, res) {
             console.log(ts()+"gSRlist="+dump(gSRlist));
             
             
-            for (var mintEntry in mintTable) {
+            for (var mint in mintTable) {
+               var mintEntry=mintTable[mint];
                console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
 
                txt+="<tr>"
                txt+="<td>"+mintEntry+"</td>"
-//               txt+="<td>"+mintEntry.mint+"</td>"
-
-/**
+               txt+="<td>"+mintEntry.mint+"</td>"
                txt+="<td>"+mintEntry.geo+"</td>"
                txt+="<td>"+mintEntry.port+"</td>"
                txt+="<td>"+mintEntry.ipaddr+"</td>"
@@ -421,7 +420,7 @@ function handleShowState(req, res) {
                txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
                txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
                txt += '</FORM>' + "</td>";
-      */
+      
                txt+="</tr>"
             }
             /**/
