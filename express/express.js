@@ -139,29 +139,36 @@ function getPulseRecordTable(callback) {
             console.log(lib_1.ts() + "---------------->pushing=" + node);
             pulseEntryStack.push(node); //save this to fetch in our loop
         }
+        var FULLpulseEntryStack = new Array();
         console.log(lib_1.ts() + "pulseEntryStack=" + pulseEntryStack);
         for (var pulseLabel = pulseEntryStack.pop(); pulseLabel != null; pulseLabel = pulseEntryStack.pop()) {
             //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
             console.log(lib_1.ts() + "Fetching and working on pulseLabel=" + pulseLabel + " lastPulseLabel=" + lastPulseLabel);
             redisClient.hgetall(pulseLabel, function (err, pulseEntry) {
-                console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
-                txt += "<tr>";
-                txt += "<td>" + pulseEntry.geo + "</td>";
-                txt += "<td>" + pulseEntry.group + "</td>";
-                txt += "<td>" + pulseEntry.seq + "</td>";
-                txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
-                txt += "<td>" + pulseEntry.srcMint + "</td>";
-                txt += "<td>" + pulseEntry.owls + "</td>";
-                txt += "<td>" + pulseEntry.inMsgs + "</td>";
-                txt += "<td>" + pulseEntry.inOctets + "</td>";
-                txt += "<td>" + pulseEntry.outMsgs + "</td>";
-                txt += "<td>" + pulseEntry.outOctets + "</td>";
-                txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                txt += "</tr>";
-                //console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
-                txt += "</table>";
-                console.log(lib_1.ts() + "getPulseRecordTable() Done....sending this to callback: " + txt);
+                FULLpulseEntryStack.unshift(pulseEntry);
+                console.log(lib_1.ts() + "getPulseRecordTable() FULLpulseEntryStack filling up...");
                 if (pulseLabel == lastPulseLabel) {
+                    console.log(lib_1.ts() + "******** Got to end of pulseList....");
+                    for (var pulseLabel = pulseEntryStack.pop(); pulseLabel != null; pulseLabel = pulseEntryStack.pop()) {
+                        //var pulseLabel=pulseEntry.geo+":"+pulseEntry.group;  //is this the last one?
+                        console.log(lib_1.ts() + "Fetching and working on pulseLabel=" + pulseLabel + " pulseLabel=" + pulseLabel + " lastPulseLabel=" + lastPulseLabel);
+                        console.log(lib_1.ts() + "**************************EXPRESS INSIDE LOOP pulseEntry=" + lib_1.dump(pulseEntry));
+                        txt += "<tr>";
+                        txt += "<td>" + pulseEntry.geo + "</td>";
+                        txt += "<td>" + pulseEntry.group + "</td>";
+                        txt += "<td>" + pulseEntry.seq + "</td>";
+                        txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
+                        txt += "<td>" + pulseEntry.srcMint + "</td>";
+                        txt += "<td>" + pulseEntry.owls + "</td>";
+                        txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                        txt += "<td>" + pulseEntry.inOctets + "</td>";
+                        txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                        txt += "<td>" + pulseEntry.outOctets + "</td>";
+                        txt += "<td>" + pulseEntry.pktDrops + "</td>";
+                        txt += "</tr>";
+                        //console.log(ts()+"converted pulseEntry="+dump(pulseEntry)+" into "+txt);
+                    }
+                    txt += "</table>";
                     callback(txt); //return HTML to display
                 }
             });
