@@ -140,7 +140,7 @@ server.on('message', function(message, remote) {
         if (typeof owl == "undefined") owl="_"
         var owlEntryLabel=pulse.group+":"+srcMint+"-"+me.mint
         //console.log(ts()+"STORING "+owlEntryLabel+" owls="+owls+" srcMint="+srcMint+" owl="+owl);
-        console.log(ts()+"STORING "+owlEntryLabel+"="+owl);
+        //console.log(ts()+"STORING "+owlEntryLabel+"="+owl);
 
         redisClient.hmset(owlEntryLabel, "owl", owl);  //store the pulse
 
@@ -153,7 +153,7 @@ server.on('message', function(message, remote) {
 
       //storeOWL(pulse.geo,me.geo,OWL);
 
-      console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
+      //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
  
     });
   });

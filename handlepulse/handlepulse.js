@@ -129,14 +129,14 @@ server.on('message', function (message, remote) {
                         owl = "_";
                     var owlEntryLabel = pulse.group + ":" + srcMint + "-" + me.mint;
                     //console.log(ts()+"STORING "+owlEntryLabel+" owls="+owls+" srcMint="+srcMint+" owl="+owl);
-                    console.log(lib_js_1.ts() + "STORING " + owlEntryLabel + "=" + owl);
+                    //console.log(ts()+"STORING "+owlEntryLabel+"="+owl);
                     redisClient.hmset(owlEntryLabel, "owl", owl); //store the pulse
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
                 });
                 //storeOWL(pulse.geo,me.geo,OWL);
-                console.log(lib_js_1.ts() + "HANDLEPULSE(): storedOWL " + lib_js_1.dump(pulse));
+                //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
             });
         });
     });
