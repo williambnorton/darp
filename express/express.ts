@@ -423,7 +423,7 @@ app.get('/mintTable', function (req, res) {
 });
 
 app.get('/pulseTable', function (req, res) {
-   //wbnwbnwbnwbnwbnwbn  console.log("EXPRess fetching '/state' state");
+   console.log("EXPRess wbn fetching '/pulseTable' state");
    getPulseRecordTable( function (pulseRecordTable) {
       console.log("app.get('/pulseTable' pulseRecordTable="+dump(pulseRecordTable));
       res.setHeader('Content-Type', 'text/html');
