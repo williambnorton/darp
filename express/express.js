@@ -704,7 +704,8 @@ function fetchConfig(gSRlist, config, callback) {
         };
         for (var index in gSRlist) {
             //console.log("pushing "+index);
-            config.entryStack.push({ entryLabel: index, mint: gSRlist[index] });
+            //config.entryStack.push({ entryLabel:index, mint:gSRlist[index]})
+            config.entryStack.unshift({ entryLabel: index, mint: gSRlist[index] });
         }
         //onsole.log("entryStack="+dump(config.entryStack));
     }
