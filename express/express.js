@@ -245,12 +245,12 @@ function getMintTable(callback) {
                 if (pulseLabel == lastMintEntry) {
                     for (var mintEntry = mintEntryStack.pop(); mintEntry != null; mintEntry = mintEntryStack.pop()) {
                         txt += "<tr>";
-                        txt += '<td><a href="http://' + mintEntry.ipaddr + ":" + mintEntry.port + '/config>"' + mintEntry.mint + "</a></td>";
+                        txt += "<td>" + mintEntry.mint + "</td>";
                         txt += "<td>" + mintEntry.geo + "</td>";
                         txt += "<td>" + mintEntry.port + "</td>";
                         txt += "<td>" + mintEntry.ipaddr + "</td>";
                         txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-                        txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/pulseTable" target="_blank">' + mintEntry.state + '</a>' + "</td>";
+                        txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" target="_blank">' + mintEntry.state + '</a>' + "</td>";
                         txt += "<td>" + mintEntry.bootTime + "</td>";
                         txt += "<td>" + mintEntry.version + "</td>";
                         txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
