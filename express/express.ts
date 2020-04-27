@@ -119,7 +119,7 @@ function getPulseRecordEntries(callback) {
    });
 }
 
-*/
+
 function getPulseRecordTable(callback) {
    var redisClient = expressRedis.createClient(); //creates a new client
 
@@ -204,7 +204,7 @@ function getPulseRecordTable(callback) {
    }) 
    
 }
-
+*/
 /*
 //---------------------------------------------------------------
 //
