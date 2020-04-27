@@ -84,7 +84,11 @@ expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"myip",p
 /**** CONFIGURATION SET ****/
 
 expressRedisClient.hgetall("mint:0", function (err,me) {
-   console.log("EXPRESS starting with me="+dump(me));
+   console.log("EXPRESS DARP "+me.version);
+   console.log("EXPRESS DARP "+me.version);
+   console.log("EXPRESS DARP "+me.version+" starting with me="+dump(me));
+   console.log("EXPRESS DARP "+me.version);
+   console.log("EXPRESS DARP "+me.version);
    if (me!=null){}
    else {
        console.log(ts()+"EXPRESS NO REDIS");

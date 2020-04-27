@@ -76,7 +76,11 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "myip", process.env.MYIP, "version", process.env.VERSION, "hostname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
 /**** CONFIGURATION SET ****/
 expressRedisClient.hgetall("mint:0", function (err, me) {
-    console.log("EXPRESS starting with me=" + lib_1.dump(me));
+    console.log("EXPRESS DARP " + me.version);
+    console.log("EXPRESS DARP " + me.version);
+    console.log("EXPRESS DARP " + me.version + " starting with me=" + lib_1.dump(me));
+    console.log("EXPRESS DARP " + me.version);
+    console.log("EXPRESS DARP " + me.version);
     if (me != null) { }
     else {
         console.log(lib_1.ts() + "EXPRESS NO REDIS");
