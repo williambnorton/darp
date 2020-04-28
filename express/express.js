@@ -293,7 +293,7 @@ function handleShowState(req, res) {
             txt += "</table>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
-            res.end(txt + /*"<p>"+JSON.stringify(config, null, 2)+"</p>*/ "</body></html>");
+            res.end(txt + "<p>RAW /CONFIG:" + JSON.stringify(config, null, 2) + "</p></body></html>");
             return;
         });
     });
