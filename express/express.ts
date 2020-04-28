@@ -105,19 +105,20 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
 //
 function handleShowState(req, res) {
    //console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+   var html="";
 
    var dateTime = new Date();
-   var txt = '<meta http-equiv="refresh" content="' + 30 + '">';
+   html = '<meta http-equiv="refresh" content="' + 30 + '">';
 
    expressRedisClient.hgetall("mint:0", function (err,me) {
       if (me==null) return console.log("handleShowState(): WEIRD: NULL mint:0");
-      if (me.state=="SINGLESTEP") txt = '<meta http-equiv="refresh" content="' + 15 + '">';
-      txt += '<html><head>';
+      if (me.state=="SINGLESTEP") html = '<meta http-equiv="refresh" content="' + 15 + '">';
+      html += '<html><head>';
    
-      txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
-      txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>'
+      html += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
+      html += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>'
       
-      txt += '<body>';
+      html += '<body>';
       var insert="";
 
       makeConfigAll(function(config) {
@@ -126,105 +127,107 @@ function handleShowState(req, res) {
          var pulses=config.pulses
          var gSRlist=config.gSRlist
 
-         //
-         //  Externalize gSRlist Directory
-         //
-         var txt="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
-         txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
-         txt+='<br><h2>gSRlist</h2><table border="1">';
-         txt+="<tr><th>pulse</th><th>mint</th></tr>"
-         for (var entry in gSRlist) {
-            var mint=gSRlist[entry];
-            //console.log(ts()+"mint="+mint);
-            expressRedisClient.hgetall("mint:"+mint,function (mintEntry) {
-               if (mintEntry==null)
-                  txt+="<tr><td>"+entry+"</td><td>"+mint+"</td></tr>"
-               else 
-                  txt+='<tr><td><a href="http://'+mintEntry.ipaddr+":"+mintEntry.port+'/">'+entry+"</a></td>"+'<td><a href="http://'+mintEntry.ipaddr+":"+mintEntry.port+'/state">'+entry+"</a>"+mint+"</a></td></tr>"
-            })
-            //txt+="<tr><td><a>"+entry+"</a></td><td><a>"+mint+"</a></td></tr>"
-         }
-         txt+="</table>"; 
 
          //
          //  Externalize pulses 
          //
-         txt+='<br><h2>pulseTable</h2><table border="1">';
-         txt+="<tr>"
-         txt+="<th>geo</th>"
-         txt+="<th>group</th>"
-         txt+="<th>seq</th>"
-         txt+="<th>pulseTimestamp</th>"
-         txt+="<th>srcMint</th>"
-         txt+="<th>owls</th>"
-         txt+="<th>inOctets</th>"
-         txt+="<th>outOctets</th>"
-         txt+="<th>inMsgs</th>"
-         txt+="<th>outMsgs</th>"
-         txt+="<th>pktDrops</th>"
-         txt+="</tr>"
+         html+='<br><h2>pulseTable</h2><table border="1">';
+         html+="<tr>"
+         html+="<th>geo</th>"
+         html+="<th>group</th>"
+         html+="<th>seq</th>"
+         html+="<th>pulseTimestamp</th>"
+         html+="<th>srcMint</th>"
+         html+="<th>owls</th>"
+         html+="<th>inOctets</th>"
+         html+="<th>outOctets</th>"
+         html+="<th>inMsgs</th>"
+         html+="<th>outMsgs</th>"
+         html+="<th>pktDrops</th>"
+         html+="</tr>"
          
          console.log(ts()+"                            pulses="+dump(pulses));
          for (var a in pulses) {
             var pulseEntry=pulses[a];
             console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
-            txt+="<tr>"
-            txt+="<td>"+pulseEntry.geo+"</td>"
-            txt+="<td>"+pulseEntry.group+"</td>"
-            txt+="<td>"+pulseEntry.seq+"</td>"
-            txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-            txt+="<td>"+pulseEntry.srcMint+"</td>"
-            txt+="<td>"+pulseEntry.owls+"</td>"
-            txt+="<td>"+pulseEntry.inOctets+"</td>"
-            txt+="<td>"+pulseEntry.outOctets+"</td>"
-            txt+="<td>"+pulseEntry.inMsgs+"</td>"
-            txt+="<td>"+pulseEntry.outMsgs+"</td>"
-            txt+="<td>"+pulseEntry.pktDrops+"</td>"
-            txt+="</tr>"
+            html+="<tr>"
+            html+="<td>"+pulseEntry.geo+"</td>"
+            html+="<td>"+pulseEntry.group+"</td>"
+            html+="<td>"+pulseEntry.seq+"</td>"
+            html+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+            html+="<td>"+pulseEntry.srcMint+"</td>"
+            html+="<td>"+pulseEntry.owls+"</td>"
+            html+="<td>"+pulseEntry.inOctets+"</td>"
+            html+="<td>"+pulseEntry.outOctets+"</td>"
+            html+="<td>"+pulseEntry.inMsgs+"</td>"
+            html+="<td>"+pulseEntry.outMsgs+"</td>"
+            html+="<td>"+pulseEntry.pktDrops+"</td>"
+            html+="</tr>"
          }
-         txt+="</table>"; 
+         html+="</table>"; 
+
+         //
+         //  Externalize gSRlist Directory
+         //
+         html+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
+         html+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
+         html+='<br><h2>gSRlist</h2><table border="1">';
+         html+="<tr><th>pulse</th><th>mint</th></tr>"
+         for (var entry in gSRlist) {
+            var mint=gSRlist[entry];
+            //console.log(ts()+"mint="+mint);
+            expressRedisClient.hgetall("mint:"+mint,function (mintEntry) {
+               if (mintEntry==null)
+                  html+="<tr><td>"+entry+"</td><td>"+mint+"</td></tr>"
+               else 
+                  html+='<tr><td><a href="http://'+mintEntry.ipaddr+":"+mintEntry.port+'/">'+entry+"</a></td>"+'<td><a href="http://'+mintEntry.ipaddr+":"+mintEntry.port+'/state">'+entry+"</a>"+mint+"</a></td></tr>"
+            })
+            //html+="<tr><td><a>"+entry+"</a></td><td><a>"+mint+"</a></td></tr>"
+         }
+         html+="</table>"; 
+
          //
          //  Externalize mintTable 
          //
          //console.log(ts()+"config.mintTable="+dump(config.mintTable));
-         txt+='<br><h2>mintTable</h2><table border="1">';
-         txt+="<tr>"
-         txt+="<th>mint</th>"
-         txt+="<th>geo</th>"
-         txt+="<th>port</th>"
-         txt+="<th>ipaddr</th>"
-         txt+="<th>publickey</th>"
-         txt+="<th>state</th>"
-         txt+="<th>bootTime</th>"
-         txt+="<th>version</th>"
-         txt+="<th>wallet</th>"
-         txt+="<th>S</th>"
-         txt+="<th>owl</th>"
-         txt+="<th>G</th>"
-         txt+="<th>skew</th>"
-         txt+="<th>CONTROLS</th>"
-         txt+="</tr>"
+         html+='<br><h2>mintTable</h2><table border="1">';
+         html+="<tr>"
+         html+="<th>mint</th>"
+         html+="<th>geo</th>"
+         html+="<th>port</th>"
+         html+="<th>ipaddr</th>"
+         html+="<th>publickey</th>"
+         html+="<th>state</th>"
+         html+="<th>bootTime</th>"
+         html+="<th>version</th>"
+         html+="<th>wallet</th>"
+         html+="<th>S</th>"
+         html+="<th>owl</th>"
+         html+="<th>G</th>"
+         html+="<th>skew</th>"
+         html+="<th>CONTROLS</th>"
+         html+="</tr>"
 
          //console.log(ts()+"                            mintTable="+dump(mintTable));
          for (var a in mintTable) {
             var mintEntry=mintTable[a];
             //console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
 
-            txt+="<tr>"
-            //txt+="<td>"+mintEntry+"</td>"
-            txt+="<td>"+mintEntry.mint+"</td>"
-            txt+="<td>"+mintEntry.geo+"</td>"
-            txt+="<td>"+mintEntry.port+"</td>"
-            txt+="<td>"+mintEntry.ipaddr+"</td>"
-            txt+="<td>"+mintEntry.publickey.substring(0,3)+"..."+mintEntry.publickey.substring(40,mintEntry.publickey.length)+"</td>"
-            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>'+"</td>"
-            txt+="<td>"+mintEntry.bootTime+"</td>"
-            txt+="<td>"+mintEntry.version+"</td>"
-            txt+="<td>"+mintEntry.wallet.substring(0,3)+"..."+mintEntry.wallet.substring(40,mintEntry.wallet.length)+"</td>"
-            txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
-            txt+="<td>"+mintEntry.owl+"</td>"
-            txt+="<td>"+mintEntry.isGenesisNode+"</td>"
-            txt+="<td>"+mintEntry.clockSkew+"</td>"
+            html+="<tr>"
+            //html+="<td>"+mintEntry+"</td>"
+            html+="<td>"+mintEntry.mint+"</td>"
+            html+="<td>"+mintEntry.geo+"</td>"
+            html+="<td>"+mintEntry.port+"</td>"
+            html+="<td>"+mintEntry.ipaddr+"</td>"
+            html+="<td>"+mintEntry.publickey.substring(0,3)+"..."+mintEntry.publickey.substring(40,mintEntry.publickey.length)+"</td>"
+            html+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>'+"</td>"
+            html+="<td>"+mintEntry.bootTime+"</td>"
+            html+="<td>"+mintEntry.version+"</td>"
+            html+="<td>"+mintEntry.wallet.substring(0,3)+"..."+mintEntry.wallet.substring(40,mintEntry.wallet.length)+"</td>"
+            html+="<td>"+mintEntry.SHOWPULSES+"</td>"
+            html+="<td>"+mintEntry.owl+"</td>"
+            html+="<td>"+mintEntry.isGenesisNode+"</td>"
+            html+="<td>"+mintEntry.clockSkew+"</td>"
    
             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
             var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
@@ -232,21 +235,21 @@ function handleShowState(req, res) {
             var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
             var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
    
-            txt += "<td>" + '<FORM>';
-            txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-            txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-            txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
-            txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-            txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-            txt += '</FORM>' + "</td>";
-            txt+="</tr>"
+            html += "<td>" + '<FORM>';
+            html += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+            html += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+            html += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
+            html += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+            html += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+            html += '</FORM>' + "</td>";
+            html+="</tr>"
          }
-         txt+="</table>"; 
+         html+="</table>"; 
 
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
 
-         res.end(txt+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2)+"</p></body></html>");
+         res.end(html+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2)+"</p></body></html>");
          return
       });
    });
