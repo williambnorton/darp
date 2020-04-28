@@ -159,10 +159,15 @@ function handleShowState(req, res) {
          txt+='<p>Connect to this pulseGroup using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
 
-         txt+='<table border="1">'
+         txt+='<table border="1"><tr>'
+         for (var col in pulses) {
+            var colEntry=pulses[col];
+            txt+="<td>"+colEntry.srcMint+"</td>"
+         }
+
          for (var row in pulses) {
             var rowEntry=pulses[row];
-            txt+="<tr>"
+            txt+="<tr><td>"+rowEntry.srcMint+"</td>"
             for (var col in pulses) {
                var colEntry=pulses[col];
                //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
