@@ -127,6 +127,12 @@ function handleShowState(req, res) {
          var gSRlist=config.gSRlist
 
          //
+         //    Header
+         //
+         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
+         txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
+         
+         //
          //  Externalize pulses 
          //
          txt+='<br><h2>pulseTable</h2><table border="1">';
@@ -226,8 +232,6 @@ function handleShowState(req, res) {
          //
          //  Externalize gSRlist Directory
          //
-         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
-         txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          txt+='<br><h2>gSRlist</h2><table border="1">';
          txt+="<tr><th>pulse</th><th>mint</th></tr>"
          for (var entry in gSRlist) {
