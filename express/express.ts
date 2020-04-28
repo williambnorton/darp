@@ -255,7 +255,7 @@ function handleShowState(req, res) {
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
 
-         res.end(txt+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2)+"</p></body></html>");
+         res.end(txt+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2).split("}")+"</p></body></html>");
          return
       });
    });
