@@ -116,7 +116,7 @@ function handleShowState(req, res) {
             //
             //    Header
             //
-            txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") " + me.version + "</h1>";
+            txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.version + "</h1>";
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //
@@ -145,7 +145,7 @@ function handleShowState(req, res) {
                 if (!pulseEntry.seq)
                     console.log(lib_1.ts() + "NOT A PULSE!!!!!");
                 txt += "<tr>";
-                txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/config" >' + pulseEntry.geo + '</a>' + "</td>";
+                txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                 //txt+="<td>"+pulseEntry.geo+"</td>"
                 txt += "<td>" + pulseEntry.group + "</td>";
                 txt += "<td>" + pulseEntry.seq + "</td>";
