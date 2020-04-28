@@ -111,7 +111,19 @@ function nxnTable(n) {
 }
 //
 //
-//
+//9=25,8=5,1=3,2=39,3=49,5=36,6=20,7=42	
+function getOWLfrom(srcMint,owls) {
+   var ary=owls.split(",");
+   for(var i=0; i<ary.length; i++) {
+      var mint=ary[i].split("=")[0]
+      if (mint==srcMint) {
+         var owl=ary[i].split("=")[1]
+         if (owl) return owl;
+         else return ""
+      }
+   }
+
+}
 //
 //
 //      handleShowState(req,res) - show the node state
@@ -120,11 +132,11 @@ function handleShowState(req, res) {
    //console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
 
    var dateTime = new Date();
-   var txt = '<meta http-equiv="refresh" content="' + 30 + '">';
+   var txt = '<meta http-equiv="refresh" content="' + 10 + '">';
 
    expressRedisClient.hgetall("mint:0", function (err,me) {
       if (me==null) return console.log("handleShowState(): WEIRD: NULL mint:0");
-      if (me.state=="SINGLESTEP") txt = '<meta http-equiv="refresh" content="' + 15 + '">';
+      if (me.state=="SINGLESTEP") txt = '<meta http-equiv="refresh" content="' + 10 + '">';
       txt += '<html><head>';
    
       txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
@@ -146,6 +158,31 @@ function handleShowState(req, res) {
          txt+="<p>"+dateTime+"</p>"
          txt+='<p>Connect to this pulseGroup using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
+
+         txt+='<table border="1">'
+         for (var row in pulses) {
+            var rowEntry=pulses[row];
+            txt+="<tr>"
+            for (var col in pulses) {
+               var colEntry=pulses[col];
+               //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
+//            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
+               txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">'+ getOWLfrom(rowEntry.srcMint,colEntry.owls) + "</td>"
+            }
+            txt+="</tr>"
+         }
+
+         txt+="</table>"; 
+
+
+
+
+
+
+
+
+
+
          //
          //  Externalize pulses 
          //
