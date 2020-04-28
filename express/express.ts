@@ -125,20 +125,8 @@ function handleShowState(req, res) {
          var mintTable=config.mintTable
          var pulses=config.pulses
          var gSRlist=config.gSRlist
+         var txt="";
 
-         //
-         //  Externalize gSRlist Directory
-         //
-         var txt="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
-         txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
-         txt+='<br><h2>gSRlist</h2><table border="1">';
-         txt+="<tr><th>pulse</th><th>mint</th></tr>"
-         for (var entry in gSRlist) {
-            var mint=gSRlist[entry];
-            //console.log(ts()+"mint="+mint);
-            txt+="<tr><td><a>"+entry+"</a></td><td><a>"+mint+"</a></td></tr>"
-         }
-         txt+="</table>"; 
 
          //
          //  Externalize pulses 
@@ -234,6 +222,20 @@ function handleShowState(req, res) {
             txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
             txt += '</FORM>' + "</td>";
             txt+="</tr>"
+         }
+         txt+="</table>"; 
+
+         //
+         //  Externalize gSRlist Directory
+         //
+         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
+         txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
+         txt+='<br><h2>gSRlist</h2><table border="1">';
+         txt+="<tr><th>pulse</th><th>mint</th></tr>"
+         for (var entry in gSRlist) {
+            var mint=gSRlist[entry];
+            //console.log(ts()+"mint="+mint);
+            txt+="<tr><td><a>"+entry+"</a></td><td><a>"+mint+"</a></td></tr>"
          }
          txt+="</table>"; 
 
