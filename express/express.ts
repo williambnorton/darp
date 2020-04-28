@@ -125,8 +125,6 @@ function handleShowState(req, res) {
          var mintTable=config.mintTable
          var pulses=config.pulses
          var gSRlist=config.gSRlist
-         
-
 
          //
          //  Externalize pulses 
