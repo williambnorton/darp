@@ -117,7 +117,8 @@ function handleShowState(req, res) {
             //    Header
             //
             txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") " + me.version + "</h1>";
-            txt += '<p>Connect using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
+            txt += "<p>" + dateTime + "</p>";
+            txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //
             //  Externalize pulses 
             //
@@ -490,11 +491,11 @@ function fetchConfigAll(gSRlist, config, callback) {
             if (err)
                 console.log("ERROR: mintEntry=" + mintEntry);
             if (mintEntry)
-                config.mintTable["mint:" + mintEntry.mint] = mintEntry; //set the pulseEntries
+                config.mintTable["mint:" + mintEntry.mint] = mintEntry; //set the mintEntry-WORKING
             //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
             //                       MAZORE:DEVOPS.1
             expressRedisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, pulseEntry) {
-                config.pulses[mintEntry.geo + ":" + mintEntry.group] = pulseEntry; //set the corresponding mintTable
+                config.pulses[pulseEntry.geo + ":" + pulseEntry.group] = pulseEntry; //set the corresponding mintTable
                 //console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
                 fetchConfigAll(gSRlist, config, callback); //recurse until we hit bottom
             });
