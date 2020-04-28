@@ -202,7 +202,7 @@ function pulse(oneTime) {
     //  get all my pulseGroups
     redisClient.hgetall("mint:0", function (err, me) {
         if ((me == null) || ((me.state == "SINGLESTEP") && (!oneTime)))
-            return console.log(lib_1.ts() + " pulse(): SINGLESTEPING ");
+            return; //console.log(ts()+" pulse(): SINGLESTEPING ");
         //if (me.state=="PULSE") me.state=="SINGLESTEP";
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
