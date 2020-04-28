@@ -159,6 +159,10 @@ function getMintTable(callback) {
     });
 }
 //
+//
+//
+//
+//
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
@@ -178,6 +182,12 @@ function handleShowState(req, res) {
         //display(function (html) {
         makeConfigAll(function (config) {
             //console.log(ts()+"config="+dump(config));
+            var mintTable = config.mintTable;
+            var pulses = config.pulses;
+            var gSRlist = config.gSRlist;
+            //console.log(ts()+"mintTable="+dump(mintTable));
+            //console.log(ts()+"pulses="+dump(pulses));
+            //console.log(ts()+"gSRlist="+dump(gSRlist));
             //wbnwbnwbnwbnwbnwbnwbn
             //console.log(ts()+"config.mintTable="+dump(config.mintTable));
             var txt = '<br><h2>pulseTable</h2><table border="1">';
@@ -194,33 +204,27 @@ function handleShowState(req, res) {
             txt += "<th>outMsgs</th>";
             txt += "<th>pktDrops</th>";
             txt += "</tr>";
-            var mintTable = config.mintTable;
-            var pulses = config.pulses;
-            var gSRlist = config.gSRlist;
-            //console.log(ts()+"mintTable="+dump(mintTable));
-            //console.log(ts()+"pulses="+dump(pulses));
-            //console.log(ts()+"gSRlist="+dump(gSRlist));
-            console.log(lib_1.ts() + "                                      mintTable=" + lib_1.dump(mintTable));
-            for (var mint in mintTable) {
-                var mintEntry = mintTable[mint];
-                console.log(lib_1.ts() + "mintEntry=" + mintEntry + " mintTable[mintEntry]" + lib_1.dump(mintTable[mintEntry]));
+            console.log(lib_1.ts() + "                                      mintTable=" + lib_1.dump(pulses));
+            for (var pulse in pulses) {
+                var pulseEntry = pulses[pulse];
+                console.log(lib_1.ts() + "pulseEntry=" + pulseEntry);
                 txt += "<tr>";
                 //txt+="<td>"+mintEntry+"</td>"
-                txt += "<td>" + mintEntry.geo + "</td>";
-                txt += "<td>" + mintEntry.group + "</td>";
-                txt += "<td>" + mintEntry.seq + "</td>";
-                txt += "<td>" + mintEntry.pulseTimestamp + "</td>";
-                txt += "<td>" + mintEntry.srcMint + "</td>";
-                txt += "<td>" + mintEntry.owls + "</td>";
-                txt += "<td>" + mintEntry.inOctets + "</td>";
-                txt += "<td>" + mintEntry.outOctets + "</td>";
-                txt += "<td>" + mintEntry.inMsgs + "</td>";
-                txt += "<td>" + mintEntry.outMsgs + "</td>";
+                txt += "<td>" + pulseEntry.geo + "</td>";
+                txt += "<td>" + pulseEntry.group + "</td>";
+                txt += "<td>" + pulseEntry.seq + "</td>";
+                txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
+                txt += "<td>" + pulseEntry.srcMint + "</td>";
+                txt += "<td>" + pulseEntry.owls + "</td>";
+                txt += "<td>" + pulseEntry.inOctets + "</td>";
+                txt += "<td>" + pulseEntry.outOctets + "</td>";
+                txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                txt += "<td>" + pulseEntry.outMsgs + "</td>";
                 txt += "</tr>";
             }
             txt += "</table>";
             //console.log(ts()+"config.mintTable="+dump(config.mintTable));
-            var txt = '<br><h2>mintTable</h2><table border="1">';
+            txt += '<br><h2>mintTable</h2><table border="1">';
             txt += "<tr>";
             txt += "<th>mint</th>";
             txt += "<th>geo</th>";
