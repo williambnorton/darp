@@ -161,7 +161,12 @@ function handleShowState(req, res) {
                 //txt+="<td>"+pulseEntry.geo+"</td>"
                 txt += "<td>" + pulseEntry.group + "</td>";
                 txt += "<td>" + pulseEntry.seq + "</td>";
-                txt += "<td>" + pulseEntry.pulseTimestamp + "</td>";
+                var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+                if (pulseEntry.pulseTimestamp == 0)
+                    deltaSeconds = "0";
+                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                txt += "<td>" + deltaSeconds + "</td>";
+                //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                 txt += "<td>" + pulseEntry.srcMint + "</td>";
                 txt += "<td>" + pulseEntry.owl + "</td>";
                 txt += "<td>" + pulseEntry.owls + "</td>";
