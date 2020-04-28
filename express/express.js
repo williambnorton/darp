@@ -185,11 +185,11 @@ function handleShowState(req, res) {
                 txt += "<td>" + mintEntry.mint + "</td>";
                 txt += "<td>" + mintEntry.geo + "</td>";
                 txt += "<td>" + mintEntry.port + "</td>";
-                txt += "<td>" + mintEntry.ipaddr + "</td>";
+                txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.ipaddr + "</a></td>";
                 txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
                 txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
                 txt += "<td>" + mintEntry.bootTime + "</td>";
-                txt += "<td>" + mintEntry.version + "</td>";
+                txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                 txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                 txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
                 txt += "<td>" + mintEntry.owl + "</td>";
