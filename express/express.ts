@@ -157,7 +157,7 @@ function handleShowState(req, res) {
             txt+="<tr>"
 
 
-            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + pulseEntry.geo + '</a>'+"</td>"
+            txt+="<td>"+'<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/config" >' + pulseEntry.geo + '</a>'+"</td>"
 
 
             //txt+="<td>"+pulseEntry.geo+"</td>"

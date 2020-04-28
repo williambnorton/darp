@@ -140,7 +140,7 @@ function handleShowState(req, res) {
                 var pulseEntry = pulses[a];
                 console.log(lib_1.ts() + "a=" + a + " pulseTable[pulseEntry]" + lib_1.dump(pulseEntry));
                 txt += "<tr>";
-                txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + pulseEntry.geo + '</a>' + "</td>";
+                txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/config" >' + pulseEntry.geo + '</a>' + "</td>";
                 //txt+="<td>"+pulseEntry.geo+"</td>"
                 txt += "<td>" + pulseEntry.group + "</td>";
                 txt += "<td>" + pulseEntry.seq + "</td>";
