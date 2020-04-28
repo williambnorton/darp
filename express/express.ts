@@ -540,11 +540,10 @@ function fetchConfigAll(gSRlist, config, callback) {
          if (mintEntry) config.mintTable["mint:"+mintEntry.mint] = mintEntry;  //set the mintEntry-WORKING
          //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
          //                       MAZORE:DEVOPS.1
-         var expressRedisClient2 = expressRedis.createClient(); //creates a new client
          var pulseEntryLabel=mintEntry.geo+":"+mintEntry.group;
          console.log(ts()+"got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
 
-         expressRedisClient2.hgetall(pulseEntryLabel, function (err,pulseEntry) {
+         expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
             console.log(ts()+"pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+pulseEntry);
             config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
             console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
@@ -635,7 +634,8 @@ function makePulseEntry(mint,geo,group) {
       "outOctets": "0",
       "inMsgs": "0",
       "outMsgs": "0",
-      "pktDrops": "0"   //,     //as detected by missed seq#
+      "pktDrops": "0",   //,     //as detected by missed seq#
+      "lastMsg":""
    };
 }
 
