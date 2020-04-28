@@ -87,6 +87,17 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
         process.exit(36);
     }
 });
+function nxnTable(n) {
+    var html = '<table border="1">';
+    for (var i = 0; i < n; i++)
+        html += "<tr>";
+    for (var j = 0; j < n; j++) {
+        html += '<td id="' + i + '-' + j + '">' + i + "-" + j + '</td>';
+    }
+    html += "</tr>";
+    html += "</table";
+    return html;
+}
 //
 //
 //
@@ -145,7 +156,8 @@ function handleShowState(req, res) {
                 if (!pulseEntry.seq)
                     console.log(lib_1.ts() + "NOT A PULSE!!!!!");
                 txt += "<tr>";
-                txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+                //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
+                txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + me.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                 //txt+="<td>"+pulseEntry.geo+"</td>"
                 txt += "<td>" + pulseEntry.group + "</td>";
                 txt += "<td>" + pulseEntry.seq + "</td>";
