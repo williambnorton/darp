@@ -191,7 +191,7 @@ setTimeout(checkSWversion, 20 * 1000);
 function checkSWversion() {
     setTimeout(checkSWversion, 20 * 1000);
     ;
-    console.log("checkSWversion() - currentSW=" + MYBUILD);
+    //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
         if (err || genesis == null) {
