@@ -153,10 +153,10 @@ function handleShowState(req, res) {
          txt+="<th>lastMsg</th>"
          txt+="</tr>"
          
-         console.log(ts()+"                            pulses="+dump(pulses));
+         //console.log(ts()+"                            pulses="+dump(pulses));
          for (var a in pulses) {
             var pulseEntry=pulses[a];
-            console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
+            //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
             if (! pulseEntry.seq) console.log(ts()+"NOT A PULSE!!!!!");
             txt+="<tr>"
 
@@ -501,7 +501,7 @@ function makeConfig(callback) {
 function makeConfigAll(callback) {
    expressRedisClient.hgetall("mint:0", function(err, me) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
-         console.log("makeConfigAll():  gSRlist="+dump(gSRlist));
+         //console.log("makeConfigAll():  gSRlist="+dump(gSRlist));
 
          fetchConfigAll(gSRlist, null, function(config) {
             //console.log("getConfig(): callback config="+dump(config));
@@ -526,7 +526,7 @@ function fetchConfigAll(gSRlist, config, callback) {
          //console.log("pushing "+index);
          config.entryStack.unshift({ entryLabel:index, mint:gSRlist[index]})
       }
-      console.log("fetchConfigAll entryStack="+dump(config.entryStack));
+      //console.log("fetchConfigAll entryStack="+dump(config.entryStack));
    }
    //Whether first call or susequent, pop entries until pop fails
    var entry=config.entryStack.pop();
@@ -541,14 +541,14 @@ function fetchConfigAll(gSRlist, config, callback) {
          //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
          //                       MAZORE:DEVOPS.1
          var pulseEntryLabel=mintEntry.geo+":"+mintEntry.group;
-         console.log(ts()+"*************fetchConfigAll got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
+         //console.log(ts()+"*************fetchConfigAll got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
 
          expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
             if (err) console.log(ts()+"ERROR fetching pulseEntry");
             var pulseEntryLabel=pulseEntry.geo+":"+pulseEntry.group
-            console.log(ts()+"**************fetchConfigAll pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+dump(pulseEntry));
+            //console.log(ts()+"**************fetchConfigAll pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+dump(pulseEntry));
             config.pulses[pulseEntryLabel] = pulseEntry;  //set the corresponding mintTable
-            console.log("EXPRESS() fetchConfigAll RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
+            //console.log("EXPRESS() fetchConfigAll RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
             fetchConfigAll(gSRlist,config,callback);  //recurse until we hit bottom
          });
       });
