@@ -22,6 +22,8 @@ redisClient.hgetall("mint:0", function (err, me) {
         else {
             SHOWPULSES = me.SHOWPULSES;
             console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
+            for (var i = 10; i > 0; i--)
+                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED");
         }
     });
 });
