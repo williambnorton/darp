@@ -190,7 +190,7 @@ function handleShowState(req, res) {
             //console.log(ts()+"gSRlist="+dump(gSRlist));
             //wbnwbnwbnwbnwbnwbnwbn
             //console.log(ts()+"config.mintTable="+dump(config.mintTable));
-            var txt = "";
+            var txt = "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + "</h1>";
             txt += '<br><h2>gSRlist</h2><table border="1">';
             txt += "<tr><th>pulse</th><th>mint</th></tr>";
             for (var entry in gSRlist) {
