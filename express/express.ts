@@ -255,7 +255,7 @@ function handleShowState(req, res) {
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
 
-         res.end(txt+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2).split("}")+"</p></body></html>");
+         res.end(txt+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2)+"</p></body></html>");
          return
       });
    });
@@ -534,6 +534,7 @@ function fetchConfigAll(gSRlist, config, callback) {
    if (entry) {
       var mint=entry.mint;
       var entryLabel=entry.entryLabel;
+
       expressRedisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
          if (err) console.log("ERROR: mintEntry="+mintEntry)                     
          if (mintEntry) config.mintTable["mint:"+mintEntry.mint] = mintEntry;  //set the mintEntry-WORKING
@@ -541,8 +542,10 @@ function fetchConfigAll(gSRlist, config, callback) {
          //                       MAZORE:DEVOPS.1
          var expressRedisClient2 = expressRedis.createClient(); //creates a new client
          var pulseEntryLabel=mintEntry.geo+":"+mintEntry.group;
-         console.log(ts()+"got mint "+mint+" now fetching "+pulseEntryLabel);
+         console.log(ts()+"got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
+
          expressRedisClient2.hgetall(pulseEntryLabel, function (err,pulseEntry) {
+            console.log(ts()+"pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+pulseEntry);
             config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
             console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
             fetchConfigAll(gSRlist,config,callback);  //recurse until we hit bottom
