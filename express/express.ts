@@ -199,7 +199,7 @@ function handleShowState(req, res) {
          //console.log(ts()+"                            mintTable="+dump(mintTable));
          for (var a in mintTable) {
             var mintEntry=mintTable[a];
-            //console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
+            console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
 
             txt+="<tr>"
             //txt+="<td>"+mintEntry+"</td>"
