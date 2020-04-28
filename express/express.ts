@@ -687,7 +687,7 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                      var mintN=makeMintEntry( newMint,geo,mint1.group,port,incomingIP,publickey,version,wallet, incomingTimestamp )
                      expressRedisClient.hmset("mint:"+newMint, mintN, function (err,reply){
                         var newNodePulseEntry=makePulseEntry(newMint,geo,mint1.group)
-                        expressRedisClient.hmset(geo+":"+mint1.group, mintN, function (err,reply){
+                        expressRedisClient.hmset(geo+":"+mint1.group, newNodePulseEntry, function (err,reply){
                            expressRedisClient.hmset("gSRlist",geo+":"+mint1.group,""+newMint, function (err,reply){ //Add our Entry to the genesisGroup in gSRlist
                               genesisGroupEntry.owls=genesisGroupEntry.owls+","+newMint
                               var config={
@@ -696,9 +696,9 @@ function provisionNode(newMint,geo,port,incomingIP,publickey,version,wallet, inc
                                     [geo+":"+mint1.group] : ""+newMint
                                  },                                 
                                  mintTable : {
-                                    "mint:0" : mintN,
-                                    "mint:1" : mint1,
-                                    ["mint:"+newMint] : mintN
+                                    "mint:0" : mintN, //you are mintN
+                                    "mint:1" : mint1, //genesis group
+                                    ["mint:"+newMint] : mintN //and the actual pulse
                                  },
                                  pulses : {
                                     [mint1.geo+":"+mint1.group] : genesisGroupEntry,
