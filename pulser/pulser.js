@@ -27,11 +27,14 @@ var CYCLETIME = 10; //newMint(mint)
 console.log("PULSER: CYCLETIME=" + CYCLETIME);
 var GEO = ""; //global variable for marking source of pulse
 function checkAdminControl() {
+    var state = "IDLE";
     //console.log(ts()+"checkAdminControl");
     redisClient.hget("mint:0", "adminControl", function (err, adminControl) {
-        if (adminControl == "PULSE") {
+        if (adminControl == "PULSE" && state != "PULSING") {
+            state = "PULSING";
             console.log(lib_1.ts() + "adminControl=" + adminControl);
             pulse(1);
+            state = "IDLE";
             redisClient.hdel("mint:0", "adminControl");
         }
     });
