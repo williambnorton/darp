@@ -143,7 +143,7 @@ function handleShowState(req, res) {
             txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.version + "</h1>";
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
-            txt += '<table border="1"><tr>';
+            txt += '<table border="1"><tr><th></th>';
             for (var col in pulses) {
                 var colEntry = pulses[col];
                 txt += "<th>" + colEntry.geo + ":" + colEntry.srcMint + "</th>";
