@@ -392,8 +392,8 @@ app.get('/pulseMsg', function (req, res) {
       
       console.log(ts()+"One time PULSE SENT");
       //res.redirect('http://'+me.ipaddr+":"+me.port+"/");
-      //res.redirect(req.get('referer'));
-      res.end('<meta http-equiv="refresh" content="1;url=http://'+me.ipaddr+":"+me.port+'/ />');
+      res.redirect(req.get('referer'));
+      //res.end('<meta http-equiv="refresh" content="1;url=http://'+me.ipaddr+":"+me.port+'/ />');
    });
 
 

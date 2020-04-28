@@ -42,7 +42,7 @@ function checkAdminControl() {
       redisClient.hdel("mint:0","adminControl")
     }
   });
-  setTimeout(checkAdminControl,1000);
+  setTimeout(checkAdminControl,500);  //how often we check for cmds
 }
 setTimeout(checkAdminControl,1000);
 setTimeout(pulse,1000);
