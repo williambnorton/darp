@@ -8,26 +8,55 @@ export function getPublicKey() {
     return require('fs').readFileSync(process.env.DARPDIR+'/etc/wireguard/publickey', 'utf8');
 }
 export function setWireguard() {
-//we assume these file were set by configWG
-var BASECONFIG;
-try {
-    BASECONFIG=require('fs').readFileSync(process.env.DARPDIR+'etc/wireguard/wg0.conf', 'utf8');
-} catch (err) {
-    BASECONFIG="deadbeef00deadbeef00deadbeef0012";
-}
-//# Created by ./configWG.bash Fri Mar 6 20:46:57 UTC 2020
-//[Interface]
-//PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
+    //we assume these file were set by configWG
+    var BASECONFIG="";
+    try {
+        BASECONFIG=require('fs').readFileSync(process.env.DARPDIR+'etc/wireguard/wg0.conf', 'utf8');
+    } catch (err) {
+        BASECONFIG="deadbeef00deadbeef00deadbeef0012";
+    }
+    //# Created by ./configWG.bash Fri Mar 6 20:46:57 UTC 2020
+    //[Interface]
+    //PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
 
-var PUBLICKEY;
-try {
-    PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
-} catch (err) {
-    PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
+    var PUBLICKEY;
+    try {
+        PUBLICKEY=require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+    } catch (err) {
+        PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
+    }
+
+    //for each group in me.pulseGroups
+
+    redisClient.hgetall("gSRlist", function (err,gSRlist) {
+        redisClient.hgetall("mint:0", function (err,me) {
+            redisClient.hgetall("mint:1", function (err,genesis) {
+                var lastPulse="", config="";
+                for (var entryLabel in gSRlist) lastPulse=entryLabel;
+
+                for (var entryLabel in gSRlist) {
+                    var mint=gSRlist[entryLabel]
+                    redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
+                        console.log("Writing stanza for mint="+mintEntry.geo);
+                            console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
+                            config+="/n[Peer]/n";
+                            config+="PublicKey = "+mintEntry.publickey+"/n";
+                            config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
+                            config+="Endpoint = "+mintEntry.ipaddr;
+                            config+="PersistentKeepalive = 25"+"/n";
+                        if (entryLabel==lastPulse) {
+                            console.log("Got to last pulse - now writeout the config file:"+config);
+
+                        }
+                    });
+                }
+            });
+        });
+    });
 }
 
-//for each group in me.pulseGroups
-redisClient.hget("me","pulseGroups", function (err,pulseGroups) {
+/*
+
     console.log("pulseGroups="+pulseGroups);
     var config="";  // we will add this to the base wireguard config
     var ary=pulseGroups.split(" ");
@@ -69,7 +98,7 @@ AllowedIPs = 10.10.0.3/32
 Endpoint = 71.202.2.184:80
 PersistentKeepalive = 25
 
-*/
+
                     });
 
                 }
@@ -81,4 +110,5 @@ PersistentKeepalive = 25
 })
 
 }
+*/
 setWireguard();

@@ -198,7 +198,7 @@ function handleShowState(req, res) {
          txt+="<th>S</th>"
          txt+="<th>owl</th>"
          txt+="<th>G</th>"
-         txt+="<th>clockSkew</th>"
+         txt+="<th>rtt</th>"
          txt+="<th>CONTROLS</th>"
          txt+="</tr>"
 
@@ -221,7 +221,7 @@ function handleShowState(req, res) {
             txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
             txt+="<td>"+mintEntry.owl+"</td>"
             txt+="<td>"+mintEntry.isGenesisNode+"</td>"
-            txt+="<td>"+mintEntry.clockSkew+"</td>"
+            txt+="<td>"+mintEntry.rtt+"</td>"
    
             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
             var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
@@ -255,7 +255,7 @@ function handleShowState(req, res) {
          res.setHeader('Content-Type', 'text/html');
          res.setHeader("Access-Control-Allow-Origin", "*");
 
-         res.end(txt+"<p>RAW /CONFIG:  pulses="+JSON.stringify(config.pulses, null, 2)+"</p></body></html>");
+         res.end(txt+"<p>"+/*"RAW /CONFIG: "+JSON.stringify(config, null, 2)+ */"</p></body></html>");
          return
       });
    });
@@ -619,7 +619,7 @@ function makeMintEntry(mint,geo,group,port,incomingIP,publickey,version,wallet, 
       "SHOWPULSES" : DEFAULT_SHOWPULSES,
       "owl" : "",   //
       "isGenesisNode" : (mint==1)?"1":"0",
-      "clockSkew" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
+      "rtt" : ""+(now()-incomingTimestamp) //=latency + clock delta between pulser and receiver
    }
 }
 
