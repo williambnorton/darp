@@ -129,7 +129,7 @@ function handleShowState(req, res) {
          //
          //    Header
          //
-         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";
+         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+") "+me.version+" "+new Date()+" </h1>";
          txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
          //
