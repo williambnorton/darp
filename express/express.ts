@@ -539,7 +539,8 @@ function fetchConfigAll(gSRlist, config, callback) {
          if (mintEntry) config.mintTable["mint:"+mintEntry.mint] = mintEntry;  //set the mintEntry-WORKING
          //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
          //                       MAZORE:DEVOPS.1
-         expressRedisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,pulseEntry) {
+         var expressRedisClient2 = expressRedis.createClient(); //creates a new client
+         expressRedisClient2.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,pulseEntry) {
             config.pulses[pulseEntry.geo+":"+pulseEntry.group] = pulseEntry;  //set the corresponding mintTable
             console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
             fetchConfigAll(gSRlist,config,callback);  //recurse until we hit bottom
