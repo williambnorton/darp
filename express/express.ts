@@ -217,7 +217,7 @@ function handleShowState(req, res) {
             txt+="<tr><th>pulse</th><th>mint</th></tr>"
             for (var entry in gSRlist) {
                var mint=gSRlist[entry];
-               console.log(ts()+"mint="+mint);
+               //console.log(ts()+"mint="+mint);
                txt+="<tr><td>"+entry+"</td><td>"+mint+"</td></tr>"
             }
             txt+="</table>"; 
@@ -294,10 +294,10 @@ function handleShowState(req, res) {
             //console.log(ts()+"pulses="+dump(pulses));
             //console.log(ts()+"gSRlist="+dump(gSRlist));
             
-            console.log(ts()+"                            mintTable="+dump(mintTable));
+            //console.log(ts()+"                            mintTable="+dump(mintTable));
             for (var a in mintTable) {
                var mintEntry=mintTable[a];
-               console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
+               //console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
 
                txt+="<tr>"
                //txt+="<td>"+mintEntry+"</td>"
@@ -349,7 +349,7 @@ function handleShowState(req, res) {
                res.setHeader('Content-Type', 'text/html');
                res.setHeader("Access-Control-Allow-Origin", "*");
    
-               res.end(txt+"<p>"+JSON.stringify(config, null, 2)+"</p></body></html>");
+               res.end(txt+/*"<p>"+JSON.stringify(config, null, 2)+"</p>*/"</body></html>");
                return
          })
    });

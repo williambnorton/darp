@@ -195,7 +195,7 @@ function handleShowState(req, res) {
             txt += "<tr><th>pulse</th><th>mint</th></tr>";
             for (var entry in gSRlist) {
                 var mint = gSRlist[entry];
-                console.log(lib_1.ts() + "mint=" + mint);
+                //console.log(ts()+"mint="+mint);
                 txt += "<tr><td>" + entry + "</td><td>" + mint + "</td></tr>";
             }
             txt += "</table>";
@@ -257,10 +257,10 @@ function handleShowState(req, res) {
             //console.log(ts()+"mintTable="+dump(mintTable));
             //console.log(ts()+"pulses="+dump(pulses));
             //console.log(ts()+"gSRlist="+dump(gSRlist));
-            console.log(lib_1.ts() + "                            mintTable=" + lib_1.dump(mintTable));
+            //console.log(ts()+"                            mintTable="+dump(mintTable));
             for (var a in mintTable) {
                 var mintEntry = mintTable[a];
-                console.log(lib_1.ts() + "mintEntry=" + mintEntry + " mintTable[mintEntry]" + lib_1.dump(mintTable[mintEntry]));
+                //console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
                 txt += "<tr>";
                 //txt+="<td>"+mintEntry+"</td>"
                 txt += "<td>" + mintEntry.mint + "</td>";
@@ -293,7 +293,7 @@ function handleShowState(req, res) {
             txt += "</table>";
             res.setHeader('Content-Type', 'text/html');
             res.setHeader("Access-Control-Allow-Origin", "*");
-            res.end(txt + "<p>" + JSON.stringify(config, null, 2) + "</p></body></html>");
+            res.end(txt + /*"<p>"+JSON.stringify(config, null, 2)+"</p>*/ "</body></html>");
             return;
         });
     });
