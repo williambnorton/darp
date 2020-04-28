@@ -544,8 +544,9 @@ function fetchConfigAll(gSRlist, config, callback) {
          console.log(ts()+"*************fetchConfigAll got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
 
          expressRedisClient.hgetall(pulseEntryLabel, function (err,pulseEntry) {
+            if (err) console.log(ts()+"ERROR fetching pulseEntry");
             var pulseEntryLabel=pulseEntry.geo+":"+pulseEntry.group
-            console.log(ts()+"**************fetchConfigAll pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+pulseEntry);
+            console.log(ts()+"**************fetchConfigAll pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+dump(pulseEntry));
             config.pulses[pulseEntryLabel] = pulseEntry;  //set the corresponding mintTable
             console.log("EXPRESS() fetchConfigAll RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
             fetchConfigAll(gSRlist,config,callback);  //recurse until we hit bottom
