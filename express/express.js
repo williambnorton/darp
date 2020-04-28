@@ -586,6 +586,7 @@ function makePulseEntry(mint, geo, group) {
         "seq": "0",
         "pulseTimestamp": "0",
         "srcMint": "" + mint,
+        "owl": "",
         "owls": "1",
         "inOctets": "0",
         "outOctets": "0",

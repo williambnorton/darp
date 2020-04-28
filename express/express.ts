@@ -626,6 +626,7 @@ function makePulseEntry(mint,geo,group) {
       "seq" : "0",         //last sequence number heard
       "pulseTimestamp": "0", //last pulseTimestamp received from this node
       "srcMint" : ""+mint,      //Genesis node would send this 
+      "owl" : "",
       "owls" : "1",        //Startup - I am the only one here
       "inOctets": "0",
       "outOctets": "0",
