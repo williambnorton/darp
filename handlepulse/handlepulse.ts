@@ -22,7 +22,7 @@ redisClient.hgetall("mint:0", function (err,me) {
     } else {
       SHOWPULSES=me.SHOWPULSES
       console.log(ts()+"HANDLEPULSE started with genesis="+dump(genesis));
-      for (var i=10; i>0; i--) console.log(ts()+"DARP COMPONENTS STARTED - Point your browser to http://"+me.ipaddr+":"+me.port+"/");
+      for (var i=10; i>0; i--) console.log(ts()+"DARP COMPONENTS STARTED-Point your browser to http://"+me.ipaddr+":"+me.port+"/");
 
     }
   });
@@ -231,7 +231,7 @@ function checkSWversion() {
   
       res.on("end", () => {
         var version = JSON.parse(body);
-        console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
+        //console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
         if ( version != MYBUILD && !isGenesisNode ) {
            console.log(ts()+" HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said "+version+" we are running "+MYBUILD+" .......process exitting");
            process.exit(36);  //SOFTWARE RELOAD

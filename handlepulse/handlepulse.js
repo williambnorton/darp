@@ -23,7 +23,7 @@ redisClient.hgetall("mint:0", function (err, me) {
             SHOWPULSES = me.SHOWPULSES;
             console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
             for (var i = 10; i > 0; i--)
-                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED - Point your browser to http://" + me.ipaddr + ":" + me.port + "/");
+                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED-Point your browser to http://" + me.ipaddr + ":" + me.port + "/");
         }
     });
 });
@@ -210,7 +210,7 @@ function checkSWversion() {
             });
             res.on("end", function () {
                 var version = JSON.parse(body);
-                console.log(lib_js_1.ts() + "HANDLEPULSE: checkSWversion(): genesis SWversion==" + lib_js_1.dump(version) + " currentSW=" + MYBUILD);
+                //console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
                 if (version != MYBUILD && !isGenesisNode) {
                     console.log(lib_js_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD

@@ -424,12 +424,17 @@ app.get('/nodefactory', function (req, res) {
     });
 });
 //
-//
+// mkeConfig() - Make a config structure - limited to genesis and new node attempting to connect
+//          Once new node starts pulsing, genesis node will respond to mint requests
+//             config {
+//                gSRlist {
+//                pulses {
+//                mintTable{
 //
 function makeConfig(callback) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-            console.log(process.env.VERSION + " gSRlist=" + lib_1.dump(gSRlist));
+            //console.log("makeConfig(): "+process.env.VERSION+" gSRlist="+dump(gSRlist));
             fetchConfig(gSRlist, null, function (config) {
                 //console.log("getConfig(): callback config="+dump(config));
                 callback(config); //call sender
@@ -437,6 +442,13 @@ function makeConfig(callback) {
         });
     });
 }
+//
+// mkeConfigALL() - Make a config structure complete:
+//             config {
+//                gSRlist {
+//                pulses {
+//                mintTable{
+//
 function makeConfigAll(callback) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
