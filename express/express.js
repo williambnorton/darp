@@ -173,23 +173,20 @@ function handleShowState(req, res) {
         if (me == null)
             return console.log("handleShowState(): WEIRD: NULL mint:0");
         if (me.state == "SINGLESTEP")
-            txt = '<meta http-equiv="refresh" content="' + 60 + '">';
+            txt = '<meta http-equiv="refresh" content="' + 15 + '">';
         txt += '<html><head>';
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>';
         txt += '<body>';
         var insert = "";
-        //display(function (html) {
         makeConfigAll(function (config) {
             //console.log(ts()+"config="+dump(config));
             var mintTable = config.mintTable;
             var pulses = config.pulses;
             var gSRlist = config.gSRlist;
-            //console.log(ts()+"mintTable="+dump(mintTable));
-            //console.log(ts()+"pulses="+dump(pulses));
-            //console.log(ts()+"gSRlist="+dump(gSRlist));
-            //wbnwbnwbnwbnwbnwbnwbn
-            //console.log(ts()+"config.mintTable="+dump(config.mintTable));
+            //
+            //  Externalize gSRlist Directory
+            //
             var txt = "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + "</h1>";
             txt += '<br><h2>gSRlist</h2><table border="1">';
             txt += "<tr><th>pulse</th><th>mint</th></tr>";
@@ -199,6 +196,9 @@ function handleShowState(req, res) {
                 txt += "<tr><td>" + entry + "</td><td>" + mint + "</td></tr>";
             }
             txt += "</table>";
+            //
+            //  Externalize pulses 
+            //
             txt += '<br><h2>pulseTable</h2><table border="1">';
             txt += "<tr>";
             txt += "<th>geo</th>";
@@ -213,12 +213,11 @@ function handleShowState(req, res) {
             txt += "<th>outMsgs</th>";
             txt += "<th>pktDrops</th>";
             txt += "</tr>";
-            console.log(lib_1.ts() + "                            mintTable=" + lib_1.dump(mintTable));
+            console.log(lib_1.ts() + "                            pulses=" + lib_1.dump(pulses));
             for (var a in pulses) {
                 var pulseEntry = pulses[a];
-                console.log(lib_1.ts() + "pulseEntry=" + pulseEntry + " pulseTable[pulseEntry]" + lib_1.dump(pulses[a]));
+                console.log(lib_1.ts() + "a=" + a + " pulseTable[pulseEntry]" + lib_1.dump(pulseEntry));
                 txt += "<tr>";
-                //txt+="<td>"+mintEntry+"</td>"
                 txt += "<td>" + pulseEntry.geo + "</td>";
                 txt += "<td>" + pulseEntry.group + "</td>";
                 txt += "<td>" + pulseEntry.seq + "</td>";
@@ -233,6 +232,9 @@ function handleShowState(req, res) {
                 txt += "</tr>";
             }
             txt += "</table>";
+            //
+            //  Externalize mintTable 
+            //
             //console.log(ts()+"config.mintTable="+dump(config.mintTable));
             txt += '<br><h2>mintTable</h2><table border="1">';
             txt += "<tr>";
@@ -251,12 +253,6 @@ function handleShowState(req, res) {
             txt += "<th>clockSkew</th>";
             txt += "<th>CONTROLS</th>";
             txt += "</tr>";
-            var mintTable = config.mintTable;
-            var pulses = config.pulses;
-            var gSRlist = config.gSRlist;
-            //console.log(ts()+"mintTable="+dump(mintTable));
-            //console.log(ts()+"pulses="+dump(pulses));
-            //console.log(ts()+"gSRlist="+dump(gSRlist));
             //console.log(ts()+"                            mintTable="+dump(mintTable));
             for (var a in mintTable) {
                 var mintEntry = mintTable[a];
