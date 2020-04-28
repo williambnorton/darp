@@ -23,7 +23,7 @@ redisClient.hgetall("mint:0", function (err, me) {
             SHOWPULSES = me.SHOWPULSES;
             console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
             for (var i = 10; i > 0; i--)
-                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED");
+                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED - Point your browser to http://" + me.ipaddr + ":" + me.port + "/");
         }
     });
 });
