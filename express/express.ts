@@ -136,7 +136,13 @@ function handleShowState(req, res) {
          for (var entry in gSRlist) {
             var mint=gSRlist[entry];
             //console.log(ts()+"mint="+mint);
-            txt+="<tr><td>"+entry+"</td><td>"+mint+"</td></tr>"
+            expressRedisClient.hgetall("mint:"+mint,function (mintEntry) {
+               if (mintEntry==null)
+                  txt+="<tr><td>"+entry+"</td><td>"+mint+"</td></tr>"
+               else 
+                  txt+='<tr><td><a href="http://'+mintEntry.ipaddr+":"+mintEntry.port+'/">'+entry+"</a></td>"+'<td><a href="http://'+mintEntry.ipaddr+":"+mintEntry.port+'/state">'+entry+"</a>"+mint+"</a></td></tr>"
+            })
+            //txt+="<tr><td><a>"+entry+"</a></td><td><a>"+mint+"</a></td></tr>"
          }
          txt+="</table>"; 
 
@@ -192,10 +198,10 @@ function handleShowState(req, res) {
          txt+="<th>bootTime</th>"
          txt+="<th>version</th>"
          txt+="<th>wallet</th>"
-         txt+="<th>SHOWPULSES</th>"
+         txt+="<th>S</th>"
          txt+="<th>owl</th>"
-         txt+="<th>isGenesisNode</th>"
-         txt+="<th>clockSkew</th>"
+         txt+="<th>G</th>"
+         txt+="<th>skew</th>"
          txt+="<th>CONTROLS</th>"
          txt+="</tr>"
 
@@ -474,7 +480,7 @@ function makeConfig(callback) {
 function makeConfigAll(callback) {
    expressRedisClient.hgetall("mint:0", function(err, me) {
       expressRedisClient.hgetall("gSRlist", function(err,gSRlist) {
-         console.log("222222222 gSRlist="+dump(gSRlist));
+         console.log("makeConfigAll():  gSRlist="+dump(gSRlist));
 
          fetchConfigAll(gSRlist, null, function(config) {
             //console.log("getConfig(): callback config="+dump(config));
@@ -483,6 +489,9 @@ function makeConfigAll(callback) {
       });
    });
 }
+//
+// fetchConfigAll() - recurcive
+//
 function fetchConfigAll(gSRlist, config, callback) {
    if (typeof config == "undefined" || config==null) {
       //console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
