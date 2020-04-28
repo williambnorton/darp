@@ -210,7 +210,7 @@ function checkSWversion() {
             });
             res.on("end", function () {
                 var version = JSON.parse(body);
-                console.log("HANDLEPULSE: checkSWversion(): genesis SWversion==" + lib_js_1.dump(version) + " currentSW=" + MYBUILD);
+                console.log(lib_js_1.ts() + "HANDLEPULSE: checkSWversion(): genesis SWversion==" + lib_js_1.dump(version) + " currentSW=" + MYBUILD);
                 if (version != MYBUILD && !isGenesisNode) {
                     console.log(lib_js_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD
