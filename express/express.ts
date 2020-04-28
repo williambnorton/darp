@@ -24,8 +24,8 @@ var app = express();
 
 var mintStack=1;
 const DEFAULT_SHOWPULSES="0"
-//const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
-const DEFAULT_START_STATE="RUNNING";  //for single stepping through network protocol code
+const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
+//const DEFAULT_START_STATE="RUNNING";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
@@ -155,7 +155,12 @@ function handleShowState(req, res) {
             var pulseEntry=pulses[a];
             console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
             txt+="<tr>"
-            txt+="<td>"+pulseEntry.geo+"</td>"
+
+
+            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + pulseEntry.geo + '</a>'+"</td>"
+
+
+            //txt+="<td>"+pulseEntry.geo+"</td>"
             txt+="<td>"+pulseEntry.group+"</td>"
             txt+="<td>"+pulseEntry.seq+"</td>"
             txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
