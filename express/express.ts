@@ -118,7 +118,7 @@ function getOWLfrom(srcMint,owls) {
       var mint=ary[i].split("=")[0]
       if (mint==srcMint) {
          var owl=ary[i].split("=")[1]
-         if (owl) return owl;
+         if (typeof owl != "undefined") return owl;
          else return ""
       }
    }
@@ -159,6 +159,12 @@ function handleShowState(req, res) {
          txt+='<p>Connect to this pulseGroup using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
 
+         //
+         // show matrix
+         //
+
+         txt+='<br><h2>pulseTable</h2><table border="1">';
+
          txt+='<table border="1"><tr><th></th>'
          for (var col in pulses) {
             var colEntry=pulses[col];
@@ -167,7 +173,7 @@ function handleShowState(req, res) {
 
          for (var row in pulses) {
             var rowEntry=pulses[row];
-            txt+="<tr><td>"+rowEntry.geo+":"+rowEntry.srcMint+"</td>"
+            txt+='<tr><td><a href="http://'+rowEntry.ipaddr+":"+me.port+'/">'+rowEntry.ipaddr+":"+me.port+'</a></td>'
             for (var col in pulses) {
                var colEntry=pulses[col];
                //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
