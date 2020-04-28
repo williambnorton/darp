@@ -125,7 +125,7 @@ function handleShowState(req, res) {
          var mintTable=config.mintTable
          var pulses=config.pulses
          var gSRlist=config.gSRlist
-         var txt="";
+         
 
 
          //
