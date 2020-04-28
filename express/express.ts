@@ -129,7 +129,7 @@ function handleShowState(req, res) {
          //
          //    Header
          //
-         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+") "+me.version+" "+new Date()+" </h1>";
+         txt+="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+") "+me.version+"</h1>";
          txt+='<p>Connect using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
          //
@@ -154,6 +154,7 @@ function handleShowState(req, res) {
          for (var a in pulses) {
             var pulseEntry=pulses[a];
             console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
+            if (! pulseEntry.seq) console.log(ts()+"NOT A PULSE!!!!!");
             txt+="<tr>"
 
 
@@ -204,7 +205,7 @@ function handleShowState(req, res) {
             txt+="<tr>"
             //txt+="<td>"+mintEntry+"</td>"
             txt+="<td>"+mintEntry.mint+"</td>"
-            txt+="<td>"+mintEntry.geo+"</td>"
+            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
             txt+="<td>"+mintEntry.port+"</td>"
             txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.ipaddr+"</a></td>"
             txt+="<td>"+mintEntry.publickey.substring(0,3)+"..."+mintEntry.publickey.substring(40,mintEntry.publickey.length)+"</td>"
@@ -520,7 +521,7 @@ function fetchConfigAll(gSRlist, config, callback) {
          //console.log("pushing "+index);
          config.entryStack.unshift({ entryLabel:index, mint:gSRlist[index]})
       }
-      //onsole.log("entryStack="+dump(config.entryStack));
+      console.log("entryStack="+dump(config.entryStack));
    }
    //Whether first call or susequent, pop entries until pop fails
    var entry=config.entryStack.pop();
