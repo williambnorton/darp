@@ -213,20 +213,60 @@ function handleShowState(req, res) {
             //wbnwbnwbnwbnwbnwbnwbn
             //console.log(ts()+"config.mintTable="+dump(config.mintTable));
             var txt="";            
-
-            txt+='<br><h2>pulseTable</h2><table border="1">';
-            txt+="<tr>"
-            txt+="<th>pulse</th>"
-            txt+="<th>mint</th>"
-            txt+="</tr>"
-            
+            txt+='<br><h2>gSRlist</h2><table border="1">';
+            txt+="<tr><th>pulse</th><th>mint</th></tr>"
             for (var entry in gSRlist) {
                var mint=gSRlist[entry];
                console.log(ts()+"mint="+mint);
                txt+="<tr><td>"+entry+"</td><td>"+mint+"</td></tr>"
             }
+            txt+="</table>"; 
+
+
+
+
+
+
+
+            txt+='<br><h2>pulseTable</h2><table border="1">';
+            txt+="<tr>"
+            txt+="<th>geo</th>"
+            txt+="<th>group</th>"
+            txt+="<th>seq</th>"
+            txt+="<th>pulseTimestamp</th>"
+            txt+="<th>srcMint</th>"
+            txt+="<th>owls</th>"
+            txt+="<th>inOctets</th>"
+            txt+="<th>outOctets</th>"
+            txt+="<th>inMsgs</th>"
+            txt+="<th>outMsgs</th>"
+            txt+="<th>pktDrops</th>"
+            txt+="</tr>"
+            
+            console.log(ts()+"                            mintTable="+dump(mintTable));
+            for (var a in pulses) {
+               var pulseEntry=pulses[a];
+               console.log(ts()+"pulseEntry="+pulseEntry+" pulseTable[pulseEntry]"+dump(pulses[a]));
+
+               txt+="<tr>"
+               //txt+="<td>"+mintEntry+"</td>"
+               txt+="<td>"+pulseEntry.geo+"</td>"
+               txt+="<td>"+pulseEntry.group+"</td>"
+               txt+="<td>"+pulseEntry.seq+"</td>"
+               txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+               txt+="<td>"+pulseEntry.srcMint+"</td>"
+               txt+="<td>"+pulseEntry.owls+"</td>"
+               txt+="<td>"+pulseEntry.inOctets+"</td>"
+               txt+="<td>"+pulseEntry.outOctets+"</td>"
+               txt+="<td>"+pulseEntry.inMsgs+"</td>"
+               txt+="<td>"+pulseEntry.outMsgs+"</td>"
+               txt+="<td>"+pulseEntry.pktDrops+"</td>"
+
+               txt+="</tr>"
+            }
             
             txt+="</table>"; 
+
 
             //console.log(ts()+"config.mintTable="+dump(config.mintTable));
             txt+='<br><h2>mintTable</h2><table border="1">';
@@ -254,7 +294,7 @@ function handleShowState(req, res) {
             //console.log(ts()+"pulses="+dump(pulses));
             //console.log(ts()+"gSRlist="+dump(gSRlist));
             
-            console.log(ts()+"                                      mintTable="+dump(mintTable));
+            console.log(ts()+"                            mintTable="+dump(mintTable));
             for (var a in mintTable) {
                var mintEntry=mintTable[a];
                console.log(ts()+"mintEntry="+mintEntry+" mintTable[mintEntry]"+dump(mintTable[mintEntry]));
