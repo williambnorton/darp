@@ -87,77 +87,87 @@ expressRedisClient.hgetall("mint:0", function (err, me) {
         process.exit(36);
     }
 });
+/*
 //------------------------------------------------------
 //
-// 
+//
 function getMintTable(callback) {
-    //console.log(ts()+"getMintTable() Making a HTML table for mints");
-    var txt = '<br><h2>mintTable</h2><table border="1">';
-    txt += "<tr>";
-    txt += "<th>mint</th>";
-    txt += "<th>geo</th>";
-    txt += "<th>port</th>";
-    txt += "<th>ipaddr</th>";
-    txt += "<th>publickey</th>";
-    txt += "<th>state</th>";
-    txt += "<th>bootTime</th>";
-    txt += "<th>version</th>";
-    txt += "<th>wallet</th>";
-    txt += "<th>SHOWPULSES</th>";
-    txt += "<th>owl</th>";
-    txt += "<th>isGenesisNode</th>";
-    txt += "<th>clockSkew</th>";
-    txt += "<th>CONTROLS</th>";
-    txt += "</tr>";
-    var mintEntryStack = new Array();
-    var lastMintEntry = "";
-    //var wbnPulseStack=[];
-    expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
-        for (var pulse in gSRlist)
-            lastMintEntry = pulse;
-        for (var pulseLabel in gSRlist) {
-            var mint = gSRlist[pulseLabel];
-            //wbnPulseStack.push(pulseLabel);
-            expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                mintEntryStack.unshift(mintEntry);
-                var pulseLabel = mintEntry.geo + ":" + mintEntry.group;
-                if (pulseLabel == lastMintEntry) {
-                    for (var mintEntry = mintEntryStack.pop(); mintEntry != null; mintEntry = mintEntryStack.pop()) {
-                        txt += "<tr>";
-                        txt += "<td>" + mintEntry.mint + "</td>";
-                        txt += "<td>" + mintEntry.geo + "</td>";
-                        txt += "<td>" + mintEntry.port + "</td>";
-                        txt += "<td>" + mintEntry.ipaddr + "</td>";
-                        txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-                        txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
-                        txt += "<td>" + mintEntry.bootTime + "</td>";
-                        txt += "<td>" + mintEntry.version + "</td>";
-                        txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
-                        txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
-                        txt += "<td>" + mintEntry.owl + "</td>";
-                        txt += "<td>" + mintEntry.isGenesisNode + "</td>";
-                        txt += "<td>" + mintEntry.clockSkew + "</td>";
-                        var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
-                        var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
-                        var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-                        var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
-                        var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
-                        txt += "<td>" + '<FORM>';
-                        txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-                        txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-                        txt += '</FORM>' + "</td>";
-                        txt += "</tr>";
-                    }
-                    txt += "</table>";
-                    callback(txt);
-                }
-            });
-        }
-    });
+   //console.log(ts()+"getMintTable() Making a HTML table for mints");
+   var txt='<br><h2>mintTable</h2><table border="1">';
+   txt+="<tr>"
+   txt+="<th>mint</th>"
+   txt+="<th>geo</th>"
+   txt+="<th>port</th>"
+   txt+="<th>ipaddr</th>"
+   txt+="<th>publickey</th>"
+   txt+="<th>state</th>"
+   txt+="<th>bootTime</th>"
+   txt+="<th>version</th>"
+   txt+="<th>wallet</th>"
+   txt+="<th>SHOWPULSES</th>"
+   txt+="<th>owl</th>"
+   txt+="<th>isGenesisNode</th>"
+   txt+="<th>clockSkew</th>"
+   txt+="<th>CONTROLS</th>"
+
+   txt+="</tr>"
+
+   var mintEntryStack=new Array();
+   var lastMintEntry="";
+   //var wbnPulseStack=[];
+   expressRedisClient.hgetall("gSRlist", function (err,gSRlist) {
+      for (var pulse in gSRlist) lastMintEntry=pulse;
+
+      for (var pulseLabel in gSRlist) {
+         let mint=gSRlist[pulseLabel];
+         //wbnPulseStack.push(pulseLabel);
+
+         expressRedisClient.hgetall("mint:"+mint,function (err,mintEntry) {
+            mintEntryStack.unshift(mintEntry);
+            var pulseLabel=mintEntry.geo+":"+mintEntry.group
+            if (pulseLabel==lastMintEntry) {
+               for (var mintEntry=mintEntryStack.pop(); mintEntry!=null; mintEntry=mintEntryStack.pop()) {
+                  txt+="<tr>"
+                  txt+="<td>"+mintEntry.mint+"</td>"
+                  txt+="<td>"+mintEntry.geo+"</td>"
+                  txt+="<td>"+mintEntry.port+"</td>"
+                  txt+="<td>"+mintEntry.ipaddr+"</td>"
+                  txt+="<td>"+mintEntry.publickey.substring(0,3)+"..."+mintEntry.publickey.substring(40,mintEntry.publickey.length)+"</td>"
+                  txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>'+"</td>"
+                  txt+="<td>"+mintEntry.bootTime+"</td>"
+                  txt+="<td>"+mintEntry.version+"</td>"
+                  txt+="<td>"+mintEntry.wallet.substring(0,3)+"..."+mintEntry.wallet.substring(40,mintEntry.wallet.length)+"</td>"
+                  txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
+                  txt+="<td>"+mintEntry.owl+"</td>"
+                  txt+="<td>"+mintEntry.isGenesisNode+"</td>"
+                  txt+="<td>"+mintEntry.clockSkew+"</td>"
+         
+                  var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+                  var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+                  var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+                  var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
+                  var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+         
+                  txt += "<td>" + '<FORM>';
+                  txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+                  txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+                  txt += '</FORM>' + "</td>";
+         
+                  txt+="</tr>"
+               }
+               txt+="</table>";
+
+               callback(txt);
+
+            }
+         })
+      }
+   });
 }
+*/
 //
 //
 //
@@ -187,7 +197,7 @@ function handleShowState(req, res) {
             //
             //  Externalize gSRlist Directory
             //
-            var txt = "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + "</h1>";
+            var txt = "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ")</h1>";
             txt += '<br><h2>gSRlist</h2><table border="1">';
             txt += "<tr><th>pulse</th><th>mint</th></tr>";
             for (var entry in gSRlist) {
@@ -355,16 +365,6 @@ app.get('/reload', function (req, res) {
     console.log("EXITTING to reload the system");
     expressRedisClient.hset("mint:0", "state", "RELOAD"); //handlepulse will exit 36
     res.redirect(req.get('referer'));
-});
-app.get('/mintTable', function (req, res) {
-    // console.log("EXPRess fetching '/state' state");
-    getMintTable(function (mintTable) {
-        //console.log("app.get('/state' callback config="+dump(config));
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.end(mintTable);
-    });
-    return;
 });
 app.get('/config', function (req, res) {
     console.log("EXPRess wbn fetching '/config' ");

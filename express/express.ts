@@ -95,7 +95,7 @@ expressRedisClient.hgetall("mint:0", function (err,me) {
        process.exit(36)
    }
 });
-
+/*
 //------------------------------------------------------
 //
 // 
@@ -175,7 +175,7 @@ function getMintTable(callback) {
       }
    });
 }
-
+*/
 //
 //
 //
@@ -209,7 +209,7 @@ function handleShowState(req, res) {
          //
          //  Externalize gSRlist Directory
          //
-         var txt="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+"</h1>";            
+         var txt="<h1>"+me.geo+"("+me.ipaddr+":"+me.port+")</h1>";            
          txt+='<br><h2>gSRlist</h2><table border="1">';
          txt+="<tr><th>pulse</th><th>mint</th></tr>"
          for (var entry in gSRlist) {
@@ -392,17 +392,6 @@ app.get('/reload', function (req, res) {
    expressRedisClient.hset("mint:0","state","RELOAD");  //handlepulse will exit 36
    res.redirect(req.get('referer'));
 
-});
-
-app.get('/mintTable', function (req, res) {
-   // console.log("EXPRess fetching '/state' state");
-   getMintTable( function (mintTable) {
-      //console.log("app.get('/state' callback config="+dump(config));
-      res.setHeader('Content-Type', 'application/json');
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.end(mintTable);
-   });
-   return;
 });
 
 app.get('/config', function (req, res) {
