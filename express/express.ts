@@ -199,7 +199,7 @@ function handleShowState(req, res) {
          //console.log(ts()+"                            mintTable="+dump(mintTable));
          for (var a in mintTable) {
             var mintEntry=mintTable[a];
-            console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
+            //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
 
             txt+="<tr>"
             //txt+="<td>"+mintEntry+"</td>"
@@ -391,9 +391,9 @@ app.get('/pulseMsg', function (req, res) {
       console.log(ts()+"pulse(1) somehow here");
       
       console.log(ts()+"One time PULSE SENT");
-//      res.redirect('http://'+me.ipaddr+":"+me.port+"/");
-      res.redirect(req.get('referer'));
-
+      //res.redirect('http://'+me.ipaddr+":"+me.port+"/");
+      //res.redirect(req.get('referer'));
+      res.end('<meta http-equiv="refresh" content="1;url=http://'+me.ipaddr+":"+me.port+'/ />');
    });
 
 
