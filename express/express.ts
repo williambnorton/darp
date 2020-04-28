@@ -162,12 +162,12 @@ function handleShowState(req, res) {
          txt+='<table border="1"><tr>'
          for (var col in pulses) {
             var colEntry=pulses[col];
-            txt+="<td>"+colEntry.srcMint+"</td>"
+            txt+="<th>"+colEntry.geo+":"+colEntry.srcMint+"</th>"
          }
 
          for (var row in pulses) {
             var rowEntry=pulses[row];
-            txt+="<tr><td>"+rowEntry.srcMint+"</td>"
+            txt+="<tr><td>"+rowEntry.geo+":"+rowEntry.srcMint+"</td>"
             for (var col in pulses) {
                var colEntry=pulses[col];
                //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
