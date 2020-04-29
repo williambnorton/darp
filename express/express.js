@@ -188,7 +188,7 @@ function handleShowState(req, res) {
                     //console.log(ts()+"IPnPort="+IPnPort);
                     //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
                     console.log(lib_1.ts() + "getting " + rowEntry.srcMint + "-" + colEntry.srcMint);
-                    txt += "<tr>";
+                    txt += "<tr><td>" + rowEntry.geo + " " + rowEntry.srcMint + "</td>";
                     expressRedisClient.get(rowEntry.srcMint + "-" + colEntry.srcMint, function (err, owl) {
                         console.log(lib_1.ts() + "err=" + err);
                         console.log(lib_1.ts() + "owl=" + owl);
