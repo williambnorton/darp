@@ -56,11 +56,13 @@ if (! process.env.VERSION) {
    process.env.VERSION=MYVERSION()
 }
 console.log(ts()+"process.env.VERSION="+process.env.VERSION);
+
 if (! process.env.MYIP) {
    console.log("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
    process.env.MYIP="noMYIP"
    MYIP();
-}
+} else process.env.MYIP=process.env.MYIP.replace(/['"]+/g, '');
+
 var PUBLICKEY=process.env.PUBLICKEY;
 if (!PUBLICKEY)
 try {

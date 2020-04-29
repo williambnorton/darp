@@ -55,6 +55,8 @@ if (!process.env.MYIP) {
     process.env.MYIP = "noMYIP";
     lib_1.MYIP();
 }
+else
+    process.env.MYIP = process.env.MYIP.replace(/['"]+/g, '');
 var PUBLICKEY = process.env.PUBLICKEY;
 if (!PUBLICKEY)
     try {
