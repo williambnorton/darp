@@ -270,42 +270,42 @@ scan(me.geo+":*",function(){
         redisClient.hgetall(ownerPulseLabel,function(err,pulseGroupOwner) {
           //console.log(ts()+"pulseGroupOwner record="+dump(pulseGroupOwner));
           //console.log(ts()+"pulseGroupOwner.owls="+pulseGroupOwner.owls);
-          //var emptyOwls=pulseGroupOwner.owls.replace(/=[0-9]*/ g, '';
-split(",");
-//console.log("emptyOwls="+emptyOwls);
-//make a pulse message
-//console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
-//in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-/*
-  redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
-    //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
-    pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
-    //console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
-    redisClient.hmset(pulseLabel, {
-      "seq" : pulseLabelEntry.seq
-    }, function(err,reply) {
+          //var emptyOwls=pulseGroupOwner.owls.replace(/=[0-9]*,?/g,'').split(",");
+          //console.log("emptyOwls="+emptyOwls);
+
+        //make a pulse message
+        //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
+        //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
+        /*
+          redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
+            //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
+            pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
+            //console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
+            redisClient.hmset(pulseLabel, {
+              "seq" : pulseLabelEntry.seq
+            }, function(err,reply) {
 
 
-      var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
+              var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 
-   
-      //get mintTable to get credentials
-      var owls=""
-      mintList(redisClient, ownerPulseLabel, function(err,mints) {
-        // get nodes' list of mints to send pulse to
-        // and send pulse
-        //console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
-        buildPulsePkt(mints,pulseMessage,null);
-      
-      });
-    });
+           
+              //get mintTable to get credentials
+              var owls=""
+              mintList(redisClient, ownerPulseLabel, function(err,mints) {
+                // get nodes' list of mints to send pulse to
+                // and send pulse
+                //console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
+                buildPulsePkt(mints,pulseMessage,null);
+              
+              });
+            });
+
+          });
+        });
+
+      }
 
   });
-});
-
-}
-
-});
 
 });
 
