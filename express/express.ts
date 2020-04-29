@@ -194,7 +194,7 @@ function handleShowState(req, res) {
                      console.log(ts()+"getMintRecord "+rowEntry.srcMint);
                      console.log(ts()+"getMintRecord "+rowEntry.srcMint);
 */
-                     txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+getOWLfrom(rowEntry.srcMint,colEntry.owls) + " ms</a></td>"
+                     txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' /*+ mintEntry.ipaddr*/ + ':' + /*mintEntry.port +*/ '/" >'+getOWLfrom(rowEntry.srcMint,colEntry.owls) + " ms</a></td>"
 //                  });
                } else {
                   txt+='<td></td>'                  
