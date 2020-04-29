@@ -174,36 +174,35 @@ function handleShowState(req, res) {
                     var colEntry = pulses[col];
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-                    if (rowEntry.srcMint != colEntry.srcMint) {
-                        /*
-                        getMintRecord(rowEntry.srcMint, function (err, mintEntry) {
-                           console.log(ts()+"getMintRecord "+rowEntry.srcMint+" mintEntry="+dump(mintEntry));
-                           console.log(ts()+"getMintRecord "+rowEntry.srcMint);
-                           console.log(ts()+"getMintRecord "+rowEntry.srcMint);
-                           console.log(ts()+"getMintRecord "+rowEntry.srcMint);
-                           console.log(ts()+"getMintRecord "+rowEntry.srcMint);
-                           console.log(ts()+"getMintRecord "+rowEntry.srcMint);
-      */
-                        //                  getIPport(rowEntry.srcMint, function (err,IPnPort) {
-                        //console.log(ts()+"IPnPort="+IPnPort);
-                        //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
-                        console.log(lib_1.ts() + "getting " + rowEntry.srcMint + "-" + colEntry.srcMint);
-                        expressRedisClient.get(rowEntry.srcMint + "-" + colEntry.srcMint, function (err, owl) {
-                            console.log(lib_1.ts() + "err=" + err);
-                            console.log(lib_1.ts() + "owl=" + owl);
-                            //                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
-                            //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
-                            if (owl != null)
-                                txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + owl + " ms</td>";
-                            else
-                                txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + "_" + "</td>";
-                        });
-                        //                  })
-                        //                  });
-                    }
-                    else {
-                        txt += '<td></td>';
-                    }
+                    //console.log(ts()+"getting "+rowEntry.srcMint+"-"+colEntry.srcMint);
+                    //if (rowEntry.srcMint!=colEntry.srcMint) {
+                    /*
+                    getMintRecord(rowEntry.srcMint, function (err, mintEntry) {
+                       console.log(ts()+"getMintRecord "+rowEntry.srcMint+" mintEntry="+dump(mintEntry));
+                       console.log(ts()+"getMintRecord "+rowEntry.srcMint);
+                       console.log(ts()+"getMintRecord "+rowEntry.srcMint);
+                       console.log(ts()+"getMintRecord "+rowEntry.srcMint);
+                       console.log(ts()+"getMintRecord "+rowEntry.srcMint);
+                       console.log(ts()+"getMintRecord "+rowEntry.srcMint);
+  */
+                    //                  getIPport(rowEntry.srcMint, function (err,IPnPort) {
+                    //console.log(ts()+"IPnPort="+IPnPort);
+                    //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
+                    expressRedisClient.get(rowEntry.srcMint + "-" + colEntry.srcMint, function (err, owl) {
+                        console.log(lib_1.ts() + "err=" + err);
+                        console.log(lib_1.ts() + "owl=" + owl);
+                        //                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
+                        //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
+                        if (owl != null)
+                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + owl + " ms</td>";
+                        else
+                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + "_" + "</td>";
+                    });
+                    //                  })
+                    //                  });
+                    //} else {
+                    //   txt+='<td></td>'                  
+                    //}
                 }
                 txt += "</tr>";
             }
