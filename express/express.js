@@ -246,7 +246,11 @@ function handleShowState(req, res) {
                 txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.ipaddr + "</a></td>";
                 txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
                 txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
-                txt += "<td>" + mintEntry.bootTime + "</td>";
+                var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
+                if (pulseEntry.bootTime == 0)
+                    delta = "0";
+                txt += "<td>" + delta + "</td>";
+                //txt+="<td>"+mintEntry.bootTime+"</td>"
                 txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                 txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                 txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
