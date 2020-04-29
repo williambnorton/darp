@@ -200,12 +200,13 @@ function handleShowState(req, res) {
                      console.log(ts()+"getMintRecord "+rowEntry.srcMint);
                      console.log(ts()+"getMintRecord "+rowEntry.srcMint);
 */
-                  getIPport(rowEntry.srcMint, function (err,IPnPort) {
+//                  getIPport(rowEntry.srcMint, function (err,IPnPort) {
                      //console.log(ts()+"IPnPort="+IPnPort);
                      var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
-                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
-                     txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
-                  })
+//                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
+                     //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
+                     txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
+//                  })
 //                  });
                } else {
                   txt+='<td></td>'                  
