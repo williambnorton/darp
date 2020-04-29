@@ -5,7 +5,6 @@ exports.__esModule = true;
 //
 // incoming environmental variables:
 //    GENESIS - IP of Genesis node
-//    MYIP - my measured IP address
 //    DARPDIR - where the code and config reside
 //    VERSION - of software running
 //    HOSTNAME - human readable text name - we use this for "geo"
@@ -13,7 +12,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 //import { pulse } from '../pulser/pulser'
-console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
+console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 expressRedisClient.flushall(); //clean slate
@@ -52,7 +51,7 @@ if (!process.env.VERSION) {
 }
 console.log(lib_1.ts() + "process.env.VERSION=" + process.env.VERSION);
 if (!process.env.MYIP) {
-    console.log("No MYIP enviropnmental variable specified ");
+    console.log("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
     process.env.MYIP = "noMYIP";
     lib_1.MYIP();
 }
@@ -72,8 +71,8 @@ GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var PORT = process.env.PORT || "65013"; //passed into docker
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //from 
-//FAT MODEL expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"myip",process.env.MYIP,"version",process.env.VERSION,"hotname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
-expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "myip", process.env.MYIP, "version", process.env.VERSION, "hostname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
+//FAT MODEL expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"version",process.env.VERSION,"hotname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
+expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "version", process.env.VERSION, "hostname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
 /**** CONFIGURATION SET ****/
 expressRedisClient.hgetall("mint:0", function (err, me) {
     console.log("EXPRESS DARP " + me.version);
