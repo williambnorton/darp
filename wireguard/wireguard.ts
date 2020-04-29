@@ -25,7 +25,7 @@ export function setWireguard() {
     } catch (err) {
         PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
     }
-/*
+
     //for each group in me.pulseGroups
 
     redisClient.hgetall("gSRlist", function (err,gSRlist) {
@@ -36,6 +36,9 @@ export function setWireguard() {
 
                 for (var entryLabel in gSRlist) {
                     var mint=gSRlist[entryLabel]
+                    console.log(ts()+"spew out wireguard config into ~/darp/wireguard");
+                    
+/*
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         console.log("Writing stanza for mint="+mintEntry.geo);
                             console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
@@ -49,11 +52,13 @@ export function setWireguard() {
 
                         }
                     });
+    */
                 }
+                
             });
         });
     });
-*/
+
 }
 
 /*
