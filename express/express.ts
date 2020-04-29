@@ -185,6 +185,8 @@ function handleShowState(req, res) {
          }
          txt+="</tr>"
 
+         for (var row in pulses) var lastEntry=pulses[row];
+
          for (var row in pulses) {
             var rowEntry=pulses[row];
             txt+='<tr><td>'+rowEntry.geo+" "+rowEntry.srcMint+'</td>';
@@ -211,7 +213,11 @@ function handleShowState(req, res) {
                      //console.log(ts()+"err="+err);
                      console.log(ts()+"owl="+owl);
                      txt+='<td>' + owl + "</td>"
-//                   console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
+                     if (colEntry.geo+":"+colEntry.group==lastEntry) {
+                        txt+="</tr>"
+                        if (rowEntry.geo+":"+rowEntry.group==lastEntry) txt+="</table>"
+                     }
+                     //                   console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
                      //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
                      //if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
                      //else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "_" + "</td>"
@@ -223,11 +229,11 @@ function handleShowState(req, res) {
                //}
                    
             }
-            txt+="</tr>"
+            //txt+="</tr>"
 
          }
 
-         txt+="</table>"; 
+//         txt+="</table>"; 
 
 
 

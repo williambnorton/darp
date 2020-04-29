@@ -168,6 +168,8 @@ function handleShowState(req, res) {
                 txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
             }
             txt += "</tr>";
+            for (var row in pulses)
+                var lastEntry = pulses[row];
             for (var row in pulses) {
                 var rowEntry = pulses[row];
                 txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
@@ -193,6 +195,11 @@ function handleShowState(req, res) {
                         //console.log(ts()+"err="+err);
                         console.log(lib_1.ts() + "owl=" + owl);
                         txt += '<td>' + owl + "</td>";
+                        if (colEntry.geo + ":" + colEntry.group == lastEntry) {
+                            txt += "</tr>";
+                            if (rowEntry.geo + ":" + rowEntry.group == lastEntry)
+                                txt += "</table>";
+                        }
                         //                   console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
                         //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
                         //if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
@@ -204,9 +211,9 @@ function handleShowState(req, res) {
                     //   txt+='<td></td>'                  
                     //}
                 }
-                txt += "</tr>";
+                //txt+="</tr>"
             }
-            txt += "</table>";
+            //         txt+="</table>"; 
             //
             //  Externalize pulses 
             //
