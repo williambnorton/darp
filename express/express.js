@@ -144,17 +144,17 @@ function handleShowState(req, res) {
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //
-            // show matrix
+            // show OWL Matrix
             //
             txt += '<br><h2>OWL Matrix for ' + me.group + '</h2><table border="1">';
             txt += '<table border="1"><tr><th></th>';
             for (var col in pulses) {
                 var colEntry = pulses[col];
-                txt += '<th><a href="http://' + colEntry.ipaddr + ":" + me.port + '/">' + colEntry.geo + ":" + colEntry.srcMint + "</th>";
+                txt += '<th><a href="http://' + colEntry.ipaddr + ":" + me.port + '/">' + colEntry.geo + ":" + colEntry.srcMint + "</a></th>";
             }
             for (var row in pulses) {
                 var rowEntry = pulses[row];
-                txt += '<tr><td><a href="http://' + rowEntry.ipaddr + ":" + me.port + '/">' + rowEntry.geo + ":" + me.srcMint + '</a></td>';
+                txt += '<tr><td><a href="http://' + rowEntry.ipaddr + ":" + me.port + '/">' + colEntry.geo + ":" + colEntry.srcMint + '</a></td>';
                 for (var col in pulses) {
                     var colEntry = pulses[col];
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
