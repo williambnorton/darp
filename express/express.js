@@ -160,7 +160,10 @@ function handleShowState(req, res) {
                     var colEntry = pulses[col];
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-                    txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + getOWLfrom(rowEntry.srcMint, colEntry.owls) + "</td>";
+                    if (rowEntry.srcMint != colEntry.srcMint)
+                        txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + getOWLfrom(rowEntry.srcMint, colEntry.owls) + "</td>";
+                    else
+                        txt += '<td></td>';
                 }
                 txt += "</tr>";
             }
@@ -232,7 +235,7 @@ function handleShowState(req, res) {
             txt += "<th>S</th>";
             txt += "<th>owl</th>";
             txt += "<th>G</th>";
-            txt += "<th>rtt</th>";
+            //<th>rtt</th>"
             txt += "<th>CONTROLS</th>";
             txt += "</tr>";
             //console.log(ts()+"                            mintTable="+dump(mintTable));
@@ -257,7 +260,7 @@ function handleShowState(req, res) {
                 txt += "<td>" + mintEntry.SHOWPULSES + "</td>";
                 txt += "<td>" + mintEntry.owl + "</td>";
                 txt += "<td>" + mintEntry.isGenesisNode + "</td>";
-                txt += "<td>" + mintEntry.rtt + "</td>";
+                //            txt+="<td>"+mintEntry.rtt+"</td>"
                 var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
                 var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
                 var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
