@@ -287,7 +287,7 @@ if (typeof oneTime == "undefined") {
 
           }
       } else {
-        console.log(ts()+"WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
+        console.log(ts()+"I don't know how to handle early return from hscan - cursor returned not zero: "+cursor);
       }
     });
   });

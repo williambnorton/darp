@@ -260,7 +260,7 @@ function pulse(oneTime) {
                 }
             }
             else {
-                console.log(lib_1.ts() + "WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
+                console.log(lib_1.ts() + "I don't know how to handle early return from hscan - cursor returned not zero: " + cursor);
             }
         });
     });
