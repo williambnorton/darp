@@ -175,7 +175,7 @@ function handleShowState(req, res) {
          // show OWL Matrix
          //
 
-         txt+='<br><h2>OWL Matrix for pulseGroup: '+me.group+'</h2><table border="1">';
+         txt+='<br><h2>'+me.group+' OWL Matrix for pulseGroup: '+me.group+'</h2><table border="1">';
 
          txt+='<table border="1"><tr><th></th>'
          for (var col in pulses) {
