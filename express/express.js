@@ -169,7 +169,7 @@ function handleShowState(req, res) {
             }
             for (var row in pulses) {
                 var rowEntry = pulses[row];
-                txt += '<tr><td>' + rowEntry.srcMint + '</td>';
+                txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
                 for (var col in pulses) {
                     var colEntry = pulses[col];
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
@@ -188,17 +188,15 @@ function handleShowState(req, res) {
                     //console.log(ts()+"IPnPort="+IPnPort);
                     //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
                     console.log(lib_1.ts() + "getting " + rowEntry.srcMint + "-" + colEntry.srcMint);
-                    txt += "<tr><td>" + rowEntry.geo + " " + rowEntry.srcMint + "</td>";
                     expressRedisClient.get(rowEntry.srcMint + "-" + colEntry.srcMint, function (err, owl) {
-                        console.log(lib_1.ts() + "err=" + err);
+                        //console.log(ts()+"err="+err);
                         console.log(lib_1.ts() + "owl=" + owl);
                         txt += '<td>' + owl + "</td>";
-                        //                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
+                        //                   console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
                         //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
                         //if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
                         //else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "_" + "</td>"
                     });
-                    txt += "</tr>";
                     //                  })
                     //                  });
                     //} else {
@@ -207,6 +205,7 @@ function handleShowState(req, res) {
                 }
                 txt += "</tr>";
             }
+            txt += "</tr>";
             txt += "</table>";
             //
             //  Externalize pulses 
