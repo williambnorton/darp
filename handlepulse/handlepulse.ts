@@ -111,7 +111,7 @@ server.on('message', function(message, remote) {
         inMsgs : ""+(parseInt(lastPulse.inMsgs)+1)
       };
 
-      authenticatedPulse(pulse, function(err,authenticated) {
+      //authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
 
       //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ( pulse.version != MYBUILD ) {

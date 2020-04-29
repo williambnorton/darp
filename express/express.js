@@ -150,7 +150,7 @@ function handleShowState(req, res) {
             //
             //    Header
             //
-            if (me.isGenesisNode)
+            if (me.isGenesisNode == "1")
                 txt += "<h1>GENESIS NODE " + me.geo + " (" + me.ipaddr + ":" + me.port + " ) " + me.version.split(".")[2] + "</h1>";
             else
                 txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.version + "</h1>";

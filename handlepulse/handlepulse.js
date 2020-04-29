@@ -106,42 +106,42 @@ server.on('message', function (message, remote) {
                 inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
                 inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1)
             };
-            authenticatedPulse(pulse, function (err, authenticated) {
-                //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-                if (pulse.version != MYBUILD) {
-                    if (!isGenesisNode) {
-                        console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                        console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
-                        process.exit(36); //SOFTWARE RELOAD
-                    }
+            //authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
+            //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+            if (pulse.version != MYBUILD) {
+                if (!isGenesisNode) {
+                    console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                    console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
+                    process.exit(36); //SOFTWARE RELOAD
                 }
-                ;
-                redisClient.publish("pulses", msg);
-                redisClient.hmset(pulseLabel, pulse); //store the pulse
-                //add to matrix with expiration times
-                redisClient.set(pulse.srcMint + "-" + me.mint, pulse.owl); //store the pulse
-                redisClient.expire(pulse.srcMint + "-" + me.mint, 15); //save for a pollcycle.5 seconds
-                var owlsAry = pulse.owls.split(",");
-                //console.log(ts()+"owlsAry="+owlsAry);
-                for (var measure in owlsAry) {
-                    //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
-                    var srcMint = owlsAry[measure].split("=")[0];
-                    var owl = owlsAry[measure].split("=")[1];
-                    if (typeof owl == "undefined")
-                        owl = "";
-                    srcMint + "-" + me.mint;
-                    redisClient.set(srcMint + "-" + pulse.srcMint, owl); //store the pulse
-                    redisClient.expire(srcMint + "-" + pulse.srcMint, 15); //save for a pollcycle.5 seconds
-                }
-                redisClient.hmset("mint:" + pulse.srcMint, {
-                    "owl": pulse.owl
-                });
-                //storeOWL(pulse.geo,me.geo,OWL);
-                //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
+            }
+            ;
+            redisClient.publish("pulses", msg);
+            redisClient.hmset(pulseLabel, pulse); //store the pulse
+            //add to matrix with expiration times
+            redisClient.set(pulse.srcMint + "-" + me.mint, pulse.owl); //store the pulse
+            redisClient.expire(pulse.srcMint + "-" + me.mint, 15); //save for a pollcycle.5 seconds
+            var owlsAry = pulse.owls.split(",");
+            //console.log(ts()+"owlsAry="+owlsAry);
+            for (var measure in owlsAry) {
+                //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
+                var srcMint = owlsAry[measure].split("=")[0];
+                var owl = owlsAry[measure].split("=")[1];
+                if (typeof owl == "undefined")
+                    owl = "";
+                srcMint + "-" + me.mint;
+                redisClient.set(srcMint + "-" + pulse.srcMint, owl); //store the pulse
+                redisClient.expire(srcMint + "-" + pulse.srcMint, 15); //save for a pollcycle.5 seconds
+            }
+            redisClient.hmset("mint:" + pulse.srcMint, {
+                "owl": pulse.owl
             });
+            //storeOWL(pulse.geo,me.geo,OWL);
+            //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
         });
     });
 });
+;
 //
 //      storeOWL() - store one way latency to file or graphing & history
 //
