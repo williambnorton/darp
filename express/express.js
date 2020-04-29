@@ -175,13 +175,13 @@ function handleShowState(req, res) {
             txt += "<th>pulseTimestamp</th>";
             txt += "<th>srcMint</th>";
             txt += "<th>owl</th>";
-            txt += "<th>owls</th>";
+            //txt+="<th>owls</th>"
             txt += "<th>inOctets</th>";
             txt += "<th>outOctets</th>";
             txt += "<th>inMsgs</th>";
             txt += "<th>outMsgs</th>";
             txt += "<th>pktDrops</th>";
-            txt += "<th>lastMsg</th>";
+            //txt+="<th>lastMsg</th>"
             txt += "</tr>";
             //console.log(ts()+"                            pulses="+dump(pulses));
             for (var a in pulses) {
@@ -203,13 +203,13 @@ function handleShowState(req, res) {
                 //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                 txt += "<td>" + pulseEntry.srcMint + "</td>";
                 txt += "<td>" + pulseEntry.owl + "</td>";
-                txt += "<td>" + pulseEntry.owls + "</td>";
+                //txt+="<td>"+pulseEntry.owls+"</td>"
                 txt += "<td>" + pulseEntry.inOctets + "</td>";
                 txt += "<td>" + pulseEntry.outOctets + "</td>";
                 txt += "<td>" + pulseEntry.inMsgs + "</td>";
                 txt += "<td>" + pulseEntry.outMsgs + "</td>";
                 txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                txt += "<td>" + pulseEntry.lastMsg + "</td>";
+                //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                 txt += "</tr>";
             }
             txt += "</table>";
