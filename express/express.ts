@@ -124,6 +124,11 @@ function getOWLfrom(srcMint,owls) {
    }
 
 }
+function getMintRecord(mint,callback) {
+   expressRedisClient.hgetall("mint:"+mint, function (err,entry) {
+      callback(err,entry)
+   });
+}
 //
 //
 //      handleShowState(req,res) - show the node state
@@ -179,9 +184,14 @@ function handleShowState(req, res) {
                var colEntry=pulses[col];
                //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
 //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-               if (rowEntry.srcMint!=colEntry.srcMint)
-                  txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">'+ getOWLfrom(rowEntry.srcMint,colEntry.owls) + "</td>"
-                  else txt+='<td></td>'
+               if (rowEntry.srcMint!=colEntry.srcMint) {
+                  getMintRecord(rowEntry.srcMint, function (err, mintEntry) {
+                     txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+getOWLfrom(rowEntry.srcMint,colEntry.owls) + "</a></td>"
+                  });
+               } else {
+                  txt+='<td></td>'                  
+               }
+                   
             }
             txt+="</tr>"
          }
