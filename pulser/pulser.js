@@ -209,20 +209,18 @@ function pulse(oneTime) {
         //if (me.state=="PULSE") me.state=="SINGLESTEP";
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
-        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {
+        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '1000', function (err, pulseGroups) {
             if (err) {
                 throw err;
             }
             //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
             cursor = pulseGroups[0];
             if (cursor === '0') {
-                //console.log('Scan Complete ');
-                // do your processing
                 // reply[1] is an array of matched keys: me.geo:*
                 var SRs = pulseGroups[1]; //[0] is the cursor returned
                 //console.log( "We need to pulse each of these SRs="+SRs); 
                 for (var i in SRs) {
-                    //console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
+                    console.log("PULSER(): Pulsing SegmentRouter=" + SRs[i]);
                     var pulseLabel = SRs[i];
                     //chop into named pieces for debugging
                     var pulseSrc = pulseLabel.split(":")[0];
