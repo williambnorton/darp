@@ -24,7 +24,7 @@ redisClient.hgetall("mint:0", function (err, me) {
         }
     });
 });
-console.log("PULSER: CYCLETIME=" + CYCLETIME);
+console.log(lib_1.ts() + "PULSER Starting CYCLETIME=" + CYCLETIME);
 var GEO = ""; //global variable for marking source of pulse
 function checkAdminControl() {
     var state = "IDLE";
@@ -235,6 +235,15 @@ function scan(pattern, callback) {
 //  pulse - pulser for each me.pulseGroup
 //
 function pulse(oneTime) {
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
+    console.log(lib_1.ts() + "pulse()");
     if (typeof oneTime == "undefined") {
         setTimeout(pulse, CYCLETIME * 1000); //10 second pollingfrequency
         setTimeout(publishMatrix, (CYCLETIME * 1000) / 2); // In 5 seconds call it
@@ -248,6 +257,19 @@ function pulse(oneTime) {
         GEO = me.geo;
         var returnSet = {};
         returnSet = scanAsync("0", me.geo + ":*", returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
+        console.log(lib_1.ts() + "returnSet=" + returnSet);
         console.log(lib_1.ts() + "returnSet=" + returnSet);
     });
 }

@@ -31,7 +31,7 @@ redisClient.hgetall("mint:0", function (err,me) {
 
 
 
-console.log("PULSER: CYCLETIME="+CYCLETIME);
+console.log(ts()+"PULSER Starting CYCLETIME="+CYCLETIME);
 
 var GEO="";  //global variable for marking source of pulse
 
@@ -256,6 +256,15 @@ function scan(pattern,callback){
 //  pulse - pulser for each me.pulseGroup
 //
 function pulse(oneTime) {
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
+  console.log(ts()+"pulse()");
   if (typeof oneTime == "undefined") {
       setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
       setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
@@ -270,6 +279,19 @@ function pulse(oneTime) {
 
     var returnSet={};
     returnSet=scanAsync("0", me.geo+":*", returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
+    console.log(ts()+"returnSet="+returnSet);
     console.log(ts()+"returnSet="+returnSet);
   });
 }
