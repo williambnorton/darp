@@ -329,7 +329,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                   "statsPulseMessageLength" : ""+pulseMsg.length
                 });
                 //sending msg
-                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
 
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
                 
