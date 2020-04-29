@@ -177,11 +177,11 @@ function handleShowState(req, res) {
 
          txt+='<br><h2>'+me.group+' OWL Matrix for pulseGroup: '+me.group+'</h2><table border="1">';
 
-         txt+='<table border="1"><tr><th></th>'
+         txt+='<tr><th></th>'
          for (var col in pulses) {
             var colEntry=pulses[col];
             //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-            txt+='<th>'+colEntry.srcMint+"</th>"
+            txt+='<th>'+colEntry.geo+" "+colEntry.srcMint+"</th>"
          }
 
          for (var row in pulses) {
@@ -206,7 +206,7 @@ function handleShowState(req, res) {
                      //console.log(ts()+"IPnPort="+IPnPort);
                      //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
                      console.log(ts()+"getting "+rowEntry.srcMint+"-"+colEntry.srcMint);
-
+                       txt+="<tr>"
                      expressRedisClient.get(rowEntry.srcMint+"-"+colEntry.srcMint, function (err,owl) {
                         console.log(ts()+"err="+err);
                         console.log(ts()+"owl="+owl);
@@ -216,6 +216,7 @@ function handleShowState(req, res) {
                         //if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
                         //else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "_" + "</td>"
                   });
+                  txt+="</tr>"
 //                  })
 //                  });
                //} else {
