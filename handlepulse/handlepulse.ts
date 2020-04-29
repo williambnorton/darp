@@ -126,28 +126,23 @@ server.on('message', function(message, remote) {
       redisClient.publish("pulses",msg)
       redisClient.hmset(pulseLabel, pulse);  //store the pulse
       
-      //console.log(ts()+"SAVING matrix entries to redis");
       //add to matrix with expiration times
-      redisClient.hset(pulse.srcMint+"-"+me.mint, pulse.owl);  //store the pulse
-
-      //console.log(ts()+"SAVED my measured OWL to redis");
+      redisClient.set(pulse.srcMint+"-"+me.mint, pulse.owl);  //store the pulse
+      redisClient.expire(pulse.srcMint+"-"+me.mint,15);  //save for a pollcycle.5 seconds
 
       var owlsAry=pulse.owls.split(",")
       //console.log(ts()+"owlsAry="+owlsAry);
 
       for (var measure in owlsAry) {
         //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
-
         var srcMint=owlsAry[measure].split("=")[0]
         var owl=owlsAry[measure].split("=")[1]
-
         if (typeof owl == "undefined") owl=""
-        var owlEntryLabel=srcMint+"-"+me.mint
-        //console.log(ts()+"STORING "+owlEntryLabel+" owls="+owls+" srcMint="+srcMint+" owl="+owl);
-        //console.log(ts()+"STORING "+owlEntryLabel+"="+owl);
+       srcMint+"-"+me.mint
 
-        redisClient.hset(owlEntryLabel, owl);  //store the pulse
-        redisClient.expire(owlEntryLabel,5);  //save for 5 seconds
+        redisClient.set(srcMint+"-"+pulse.srcMint, owl);  //store the pulse
+        redisClient.expire(srcMint+"-"+pulse.srcMint,15);  //save for a pollcycle.5 seconds
+
       }
 
 
