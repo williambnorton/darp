@@ -119,6 +119,11 @@ function getMintRecord(mint, callback) {
         callback(err, entry);
     });
 }
+function getIPport(mint, callback) {
+    getMintRecord(mint, function (err, mintEntry) {
+        callback(err, mintEntry.ipaddr + ":" + mintEntry.port);
+    });
+}
 //
 //
 //      handleShowState(req,res) - show the node state
@@ -175,7 +180,9 @@ function handleShowState(req, res) {
                            console.log(ts()+"getMintRecord "+rowEntry.srcMint);
                            console.log(ts()+"getMintRecord "+rowEntry.srcMint);
       */
-                        txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + getOWLfrom(rowEntry.srcMint, colEntry.owls) + " ms</a></td>";
+                        getIPport(rowEntry.srcMint, function (err, IPnPort) {
+                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + '<a href="http://' + IPnPort + '/" >' + getOWLfrom(rowEntry.srcMint, colEntry.owls) + " ms</a></td>";
+                        });
                         //                  });
                     }
                     else {
