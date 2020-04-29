@@ -43,7 +43,7 @@ if (! process.env.HOSTNAME  ) {
 }
 
 if (! process.env.GENESIS  ) {
-   console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT");
+   console.log("No GENESIS enviropnmental variable speci.0fied - setting DEFAULT GENESIS and PORT");
    process.env.GENESIS="71.202.2.184"
    process.env.PORT="65013"
 }
@@ -61,7 +61,7 @@ if (! process.env.MYIP) {
    console.log("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
    process.env.MYIP="noMYIP"
    MYIP();
-} else process.env.MYIP=process.env.MYIP.replace(/['"]+/g, '');
+} else process.env.MYIP=process.env.MYIP.replace(/['"]+/g, ''); //\trim string
 
 var PUBLICKEY=process.env.PUBLICKEY;
 if (!PUBLICKEY)
@@ -205,10 +205,11 @@ function handleShowState(req, res) {
                      //console.log(ts()+"IPnPort="+IPnPort);
                      //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
                      expressRedisClient.hgetall(rowEntry.srcMint+"-"+colEntry.srcMint, function (err,owl) {
+                        console.log(ts()+"owl="+owl);
 //                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
                      //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
                         if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
-                        txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "" + "</td>"
+                        else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "" + "</td>"
                   });
 //                  })
 //                  });
