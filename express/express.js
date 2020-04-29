@@ -167,6 +167,7 @@ function handleShowState(req, res) {
                 //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
                 txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
             }
+            txt += "</tr>";
             for (var row in pulses) {
                 var rowEntry = pulses[row];
                 txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
@@ -205,7 +206,6 @@ function handleShowState(req, res) {
                 }
                 txt += "</tr>";
             }
-            txt += "</tr>";
             txt += "</table>";
             //
             //  Externalize pulses 
