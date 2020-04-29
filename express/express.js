@@ -191,12 +191,11 @@ function handleShowState(req, res) {
                     expressRedisClient.get(rowEntry.srcMint + "-" + colEntry.srcMint, function (err, owl) {
                         console.log(lib_1.ts() + "err=" + err);
                         console.log(lib_1.ts() + "owl=" + owl);
+                        txt += '<td>' + owl + "</td>";
                         //                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
                         //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
-                        if (owl != null)
-                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + owl + " ms</td>";
-                        else
-                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + "_" + "</td>";
+                        //if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
+                        //else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "_" + "</td>"
                     });
                     //                  })
                     //                  });
