@@ -167,7 +167,7 @@ function handleShowState(req, res) {
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
                     if (rowEntry.srcMint != colEntry.srcMint) {
                         getMintRecord(rowEntry.srcMint, function (err, mintEntry) {
-                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + getOWLfrom(rowEntry.srcMint, colEntry.owls) + "</a></td>";
+                            txt += '<td id="owl_' + rowEntry.srcMint + "_" + colEntry.srcMint + '">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + getOWLfrom(rowEntry.srcMint, colEntry.owls) + " ms</a></td>";
                         });
                     }
                     else {
