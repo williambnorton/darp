@@ -271,7 +271,8 @@ function pulse(oneTime) {
     var returnSet={};
     returnSet=scanAsync("0", me.geo+":*", returnSet);
     console.log(ts()+"returnSet="+returnSet);
-    
+  });
+}
     /*
     scan(me.geo+":*",function(){
           console.log('Scan Complete');
@@ -329,11 +330,11 @@ function pulse(oneTime) {
       });
 
     });
-*/
+
   });
   //datagramClient.close();
 }
-
+*/
 //
 //  buildPulsePkt() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
