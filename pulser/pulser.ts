@@ -226,7 +226,7 @@ if (typeof oneTime == "undefined") {
     //if (me.state=="PULSE") me.state=="SINGLESTEP";
     GEO=me.geo;
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
-    redisClient.scan(cursor, 'MATCH', me.geo+":*", 'COUNT', '100', function(err, pulseGroups){
+    redisClient.scan(cursor, 'MATCH', me.geo+":*", 'COUNT', '1000', function(err, pulseGroups){
       if (err){
           throw err;
       }
@@ -258,7 +258,7 @@ if (typeof oneTime == "undefined") {
               //console.log("emptyOwls="+emptyOwls);
 
             //make a pulse message
-            //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
+            console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
               redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
                 //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
