@@ -256,6 +256,14 @@ function pulse(oneTime) {
         //if (me.state=="PULSE") me.state=="SINGLESTEP";
         GEO = me.geo;
         var returnSet = {};
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
+        console.log(lib_1.ts() + "trying async");
         returnSet = scanAsync("0", me.geo + ":*", returnSet);
         console.log(lib_1.ts() + "returnSet=" + returnSet);
         console.log(lib_1.ts() + "returnSet=" + returnSet);

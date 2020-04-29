@@ -524,11 +524,7 @@ app.get('/pulseMsg', function (req, res) {
 //
 app.get('/nodefactory', function (req, res) {
    console.log(ts()+"NODEFACTORY");
-   console.log(ts()+"NODEFACTORY");
-   console.log(ts()+"NODEFACTORY");
-   console.log(ts()+"NODEFACTORY");
-   console.log(ts()+"NODEFACTORY");
-   console.log(ts()+"NODEFACTORY");
+
    expressRedisClient.hgetall("mint:0", function (err,me) {
       if (me!=null) {
          console.log('EXPRESS nodeFactory: config requested with params: '+dump(req.query));

@@ -278,7 +278,17 @@ function pulse(oneTime) {
     GEO=me.geo;
 
     var returnSet={};
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+    console.log(ts()+"trying async");
+
     returnSet=scanAsync("0", me.geo+":*", returnSet);
+
     console.log(ts()+"returnSet="+returnSet);
     console.log(ts()+"returnSet="+returnSet);
     console.log(ts()+"returnSet="+returnSet);
