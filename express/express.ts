@@ -204,12 +204,14 @@ function handleShowState(req, res) {
 //                  getIPport(rowEntry.srcMint, function (err,IPnPort) {
                      //console.log(ts()+"IPnPort="+IPnPort);
                      //var owl=getOWLfrom(rowEntry.srcMint,colEntry.owls)
+                     console.log(ts()+"getting "+rowEntry.srcMint+"-"+colEntry.srcMint);
                      expressRedisClient.get(rowEntry.srcMint+"-"+colEntry.srcMint, function (err,owl) {
+                        console.log(ts()+"err="+err);
                         console.log(ts()+"owl="+owl);
 //                     console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
                      //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
                         if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
-                        else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "" + "</td>"
+                        else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "_" + "</td>"
                   });
 //                  })
 //                  });
