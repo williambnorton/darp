@@ -150,7 +150,8 @@ function handleShowState(req, res) {
             txt += '<table border="1"><tr><th></th>';
             for (var col in pulses) {
                 var colEntry = pulses[col];
-                txt += '<th><a href="http://' + colEntry.ipaddr + ":" + me.port + '/">' + colEntry.geo + ":" + colEntry.srcMint + "</a></th>";
+                //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+                txt += '<th>' + colEntry.srcMint + "</th>";
             }
             for (var row in pulses) {
                 var rowEntry = pulses[row];
