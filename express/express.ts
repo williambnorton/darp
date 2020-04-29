@@ -173,7 +173,7 @@ function handleShowState(req, res) {
 
          for (var row in pulses) {
             var rowEntry=pulses[row];
-            txt+='<tr><td><a href="http://'+rowEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+'</a></td>'
+            txt+='<tr><td><a href="http://'+rowEntry.ipaddr+":"+me.port+'/">'+rowEntry.geo+":"+rowEntry.srcMint+'</a></td>'
             for (var col in pulses) {
                var colEntry=pulses[col];
                //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
