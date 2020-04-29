@@ -31,7 +31,7 @@ redisClient.hgetall("mint:0", function (err,me) {
 
 
 
-console.log(ts()+"PULSER Starting CYCLETIME="+CYCLETIME);
+console.log("PULSER: CYCLETIME="+CYCLETIME);
 
 var GEO="";  //global variable for marking source of pulse
 
@@ -209,105 +209,35 @@ function newMint(mint) {
   })
 }
 
-function scanAsync(cursor, pattern, returnSet){
-
-  return redisClient.scanAsync(cursor, "MATCH", pattern, "COUNT", "100").then(
-      function (reply) {
-        console.log(ts()+"reply="+dump(reply));
-          cursor = reply[0];
-          var keys = reply[1];
-          keys.forEach(function(key,i){
-              returnSet.add(key);
-          });
-
-          if( cursor === '0' ){
-              return Array.from(returnSet);
-          }else{
-              return scanAsync(cursor, pattern, returnSet)
-          }
-
-  });
-}
-
-function scan(pattern,callback){
-  var cursor="0"
-  redisClient.scan(cursor, 'MATCH',pattern,'COUNT', '1000', function(err, reply){
-    if(err){
-        throw err;
-    }
-    cursor = reply[0];
-    if(cursor === '0'){
-        return callback();
-    }else{
-      //build something to pass back to caller
-        var keys = reply[1];
-        keys.forEach(function(key,i){                   
-            //redisClient.hgetall(key, function(deleteErr, deleteSuccess){
-                console.log("PULSER scan key="+key);
-            //});
-        });
-
-        return scan(pattern,callback);
-    }
-  });
-}
 
 //
 //  pulse - pulser for each me.pulseGroup
 //
 function pulse(oneTime) {
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  console.log(ts()+"pulse()");
-  if (typeof oneTime == "undefined") {
-      setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
-      setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
-      oneTime=0;
-  } 
-  //  get me
+if (typeof oneTime == "undefined") {
+    setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
+    setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
+    oneTime=0;
+} 
+//  get all my pulseGroups
   redisClient.hgetall("mint:0", function(err, me) {
     if ((me==null) || ((me.state=="SINGLESTEP")&&(!oneTime))) 
       return //console.log(ts()+" pulse(): SINGLESTEPING ");
     //if (me.state=="PULSE") me.state=="SINGLESTEP";
     GEO=me.geo;
+    var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
+    redisClient.scan(cursor, 'MATCH', me.geo+":*", 'COUNT', '100', function(err, pulseGroups){
+      if (err){
+          throw err;
+      }
+      console.log("pulser(): myPulseGroups="+dump(pulseGroups));
 
-    var returnSet={};
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
-    console.log(ts()+"trying async");
+      cursor = pulseGroups[0];
 
-    returnSet=scanAsync("0", me.geo+":*", returnSet);
-
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-    console.log(ts()+"returnSet="+returnSet);
-  });
-}
-    /*
-    scan(me.geo+":*",function(){
-          console.log('Scan Complete');
+      if (cursor === '0'){
+          //console.log('Scan Complete ');
+          // do your processing
+          // reply[1] is an array of matched keys: me.geo:*
           var SRs=pulseGroups[1]; //[0] is the cursor returned
           //console.log( "We need to pulse each of these SRs="+SRs); 
 
@@ -324,13 +254,12 @@ function pulse(oneTime) {
             redisClient.hgetall(ownerPulseLabel,function(err,pulseGroupOwner) {
               //console.log(ts()+"pulseGroupOwner record="+dump(pulseGroupOwner));
               //console.log(ts()+"pulseGroupOwner.owls="+pulseGroupOwner.owls);
-              //var emptyOwls=pulseGroupOwner.owls.replace(/=[0-9]*,?/g,'').split(",");
+              //var emptyOwls=pulseGroupOwner.owls.replace(/=[0-9]*/g,'').split(",");
               //console.log("emptyOwls="+emptyOwls);
 
             //make a pulse message
             //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-            /*
               redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
                 //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
                 pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
@@ -358,15 +287,14 @@ function pulse(oneTime) {
             });
 
           }
-
-      });
-
+      } else {
+        console.log(ts()+"I don't know how to handle early return from hscan - cursor returned not zero: "+cursor);
+      }
     });
-
   });
   //datagramClient.close();
 }
-*/
+
 //
 //  buildPulsePkt() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
