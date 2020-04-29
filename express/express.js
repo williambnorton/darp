@@ -107,7 +107,7 @@ function getOWLfrom(srcMint, owls) {
         var mint = ary[i].split("=")[0];
         if (mint == srcMint) {
             var owl = ary[i].split("=")[1];
-            if (typeof owl != "undefined")
+            if (typeof owl != "undefined" && owl != null)
                 return owl;
             else
                 return "";
