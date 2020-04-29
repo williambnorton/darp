@@ -201,6 +201,7 @@ function handleShowState(req, res) {
                      console.log(ts()+"getMintRecord "+rowEntry.srcMint);
 */
                   getIPport(rowEntry.srcMint, function (err,IPnPort) {
+                     console.log(ts()+"IPnPort="+IPnPort);
                      txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+getOWLfrom(rowEntry.srcMint,colEntry.owls) + " ms</a></td>"
                   })
 //                  });
