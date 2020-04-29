@@ -1,6 +1,8 @@
 //
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //
+import { dump, now, ts } from "../lib/lib";
+
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
@@ -37,8 +39,8 @@ export function setWireguard() {
                 for (var entryLabel in gSRlist) {
                     var mint=gSRlist[entryLabel]
                     console.log(ts()+"spew out wireguard config into ~/darp/wireguard");
-                    
-/*
+
+
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         console.log("Writing stanza for mint="+mintEntry.geo);
                             console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
@@ -47,12 +49,10 @@ export function setWireguard() {
                             config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
                             config+="Endpoint = "+mintEntry.ipaddr;
                             config+="PersistentKeepalive = 25"+"/n";
-                        if (entryLabel==lastPulse) {
+                        if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
                             console.log("Got to last pulse - now writeout the config file:"+config);
-
                         }
                     });
-    */
                 }
                 
             });

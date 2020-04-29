@@ -3,6 +3,7 @@ exports.__esModule = true;
 //
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //
+var lib_1 = require("../lib/lib");
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 function getPublicKey() {
@@ -37,22 +38,19 @@ function setWireguard() {
                     lastPulse = entryLabel;
                 for (var entryLabel in gSRlist) {
                     var mint = gSRlist[entryLabel];
-                    console.log(ts() + "spew out wireguard config into ~/darp/wireguard");
-                    /*
-                                        redisClient.hgetall("mint:"+mint, function (err,mintEntry) {
-                                            console.log("Writing stanza for mint="+mintEntry.geo);
-                                                console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
-                                                config+="/n[Peer]/n";
-                                                config+="PublicKey = "+mintEntry.publickey+"/n";
-                                                config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
-                                                config+="Endpoint = "+mintEntry.ipaddr;
-                                                config+="PersistentKeepalive = 25"+"/n";
-                                            if (entryLabel==lastPulse) {
-                                                console.log("Got to last pulse - now writeout the config file:"+config);
-                    
-                                            }
-                                        });
-                        */
+                    console.log(lib_1.ts() + "spew out wireguard config into ~/darp/wireguard");
+                    redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
+                        console.log("Writing stanza for mint=" + mintEntry.geo);
+                        console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
+                        config += "/n[Peer]/n";
+                        config += "PublicKey = " + mintEntry.publickey + "/n";
+                        config += "AllowedIPs = 10.10.0." + mintEntry.mint + "/n";
+                        config += "Endpoint = " + mintEntry.ipaddr;
+                        config += "PersistentKeepalive = 25" + "/n";
+                        if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
+                            console.log("Got to last pulse - now writeout the config file:" + config);
+                        }
+                    });
                 }
             });
         });
