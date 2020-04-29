@@ -28,31 +28,35 @@ function setWireguard() {
     catch (err) {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
     }
-    //for each group in me.pulseGroups
-    redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        redisClient.hgetall("mint:0", function (err, me) {
-            redisClient.hgetall("mint:1", function (err, genesis) {
-                var lastPulse = "", config = "";
-                for (var entryLabel in gSRlist)
-                    lastPulse = entryLabel;
-                for (var entryLabel in gSRlist) {
-                    var mint = gSRlist[entryLabel];
-                    redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                        console.log("Writing stanza for mint=" + mintEntry.geo);
-                        console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                        config += "/n[Peer]/n";
-                        config += "PublicKey = " + mintEntry.publickey + "/n";
-                        config += "AllowedIPs = 10.10.0." + mintEntry.mint + "/n";
-                        config += "Endpoint = " + mintEntry.ipaddr;
-                        config += "PersistentKeepalive = 25" + "/n";
-                        if (entryLabel == lastPulse) {
-                            console.log("Got to last pulse - now writeout the config file:" + config);
-                        }
-                    });
-                }
+    /*
+        //for each group in me.pulseGroups
+    
+        redisClient.hgetall("gSRlist", function (err,gSRlist) {
+            redisClient.hgetall("mint:0", function (err,me) {
+                redisClient.hgetall("mint:1", function (err,genesis) {
+                    var lastPulse="", config="";
+                    for (var entryLabel in gSRlist) lastPulse=entryLabel;
+    
+                    for (var entryLabel in gSRlist) {
+                        var mint=gSRlist[entryLabel]
+                        redisClient.hgetall("mint:"+mint, function (err,mintEntry) {
+                            console.log("Writing stanza for mint="+mintEntry.geo);
+                                console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
+                                config+="/n[Peer]/n";
+                                config+="PublicKey = "+mintEntry.publickey+"/n";
+                                config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
+                                config+="Endpoint = "+mintEntry.ipaddr;
+                                config+="PersistentKeepalive = 25"+"/n";
+                            if (entryLabel==lastPulse) {
+                                console.log("Got to last pulse - now writeout the config file:"+config);
+    
+                            }
+                        });
+                    }
+                });
             });
         });
-    });
+    */
 }
 exports.setWireguard = setWireguard;
 /*

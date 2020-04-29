@@ -25,7 +25,7 @@ export function setWireguard() {
     } catch (err) {
         PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
     }
-
+/*
     //for each group in me.pulseGroups
 
     redisClient.hgetall("gSRlist", function (err,gSRlist) {
@@ -53,6 +53,7 @@ export function setWireguard() {
             });
         });
     });
+*/
 }
 
 /*
