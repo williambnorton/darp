@@ -138,10 +138,10 @@ server.on('message', function (message, remote) {
             });
             //storeOWL(pulse.geo,me.geo,OWL);
             //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
+            //});
         });
     });
 });
-;
 //
 //      storeOWL() - store one way latency to file or graphing & history
 //
