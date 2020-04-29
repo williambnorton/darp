@@ -209,11 +209,11 @@ function pulse(oneTime) {
         //if (me.state=="PULSE") me.state=="SINGLESTEP";
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
-        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '1000', function (err, pulseGroups) {
+        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100', function (err, pulseGroups) {
             if (err) {
                 throw err;
             }
-            console.log("pulser(): myPulseGroups=" + lib_1.dump(pulseGroups));
+            //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
             cursor = pulseGroups[0];
             if (cursor === '0') {
                 //console.log('Scan Complete ');
@@ -236,7 +236,7 @@ function pulse(oneTime) {
                         //var emptyOwls=pulseGroupOwner.owls.replace(/=[0-9]*/g,'').split(",");
                         //console.log("emptyOwls="+emptyOwls);
                         //make a pulse message
-                        console.log("pulse(): Make a pulse Message, pulseLabel=" + pulseLabel + " pulseGroup=" + pulseGroup + " pulseGroupOwner=" + pulseGroupOwner + " ownerPulseLabel=" + ownerPulseLabel + " pulseSrc=" + pulseSrc);
+                        //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
                         //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
                         redisClient.hgetall(pulseLabel, function (err, pulseLabelEntry) {
                             //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
@@ -260,7 +260,7 @@ function pulse(oneTime) {
                 }
             }
             else {
-                console.log(lib_1.ts() + "I don't know how to handle early return from hscan - cursor returned not zero: " + cursor);
+                console.log(lib_1.ts() + "WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
             }
         });
     });
