@@ -155,7 +155,7 @@ server.on('message', function(message, remote) {
         //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
         //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
 
-        redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl, 'EX', OWLEXPIRES);
+        redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"-"+owl, owl, 'EX', OWLEXPIRES);
 
 
 

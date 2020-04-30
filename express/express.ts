@@ -155,7 +155,7 @@ function getMatrixTable(darpMatrix,callback) {
       console.log(ts()+"src="+src+" dst="+dst+"="+owl);
       if (typeof darpMatrix[src] == "undefined" ) darpMatrix[src]=new Array();
       if (typeof darpMatrix[src][dst] == "undefined" ) darpMatrix[src][dst]=new Array();
-      console.log(ts()+"Storing darpMatrix["+src+"]["+src+"]["+dst+"]="+owl);
+      console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);
       darpMatrix[src][dst]=owl
     }
     if(cursor === '0'){
