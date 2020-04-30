@@ -137,7 +137,7 @@ function getMatrixTable(darpMatrix, callback) {
             throw err;
         }
         cursor = reply[0];
-        console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply[1]));
+        //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
         for (var n in reply[1]) {
             var ary = reply[1][n].split("-"); ///"darp-1-3=35",
             var src = ary[1], dst = ary[2], owl = ary[3];
@@ -146,7 +146,7 @@ function getMatrixTable(darpMatrix, callback) {
                 darpMatrix[src] = {}; //new Array();
             if (typeof darpMatrix[src][dst] == "undefined")
                 darpMatrix[src][dst] = {}; //new Array();
-            console.log(lib_1.ts() + "Storing darpMatrix[" + src + "][" + dst + "]=" + owl);
+            //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
             darpMatrix[src][dst] = owl;
         }
         if (cursor === '0') {
