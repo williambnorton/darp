@@ -142,7 +142,8 @@ function getMatrixTable(param,callback) {
 
 function scan(){
   expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
-    if(err){
+   console.log(ts()+"SCAN reply="+dump(reply));
+   if(err){
         throw err;
     }
     cursor = reply[0];
