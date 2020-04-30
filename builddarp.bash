@@ -3,7 +3,7 @@
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="Delivers OWL matrix via pub/sub"
+MESSAGE="Getting Basic Instant Overlay"
 date>"Build."`date +%y%m%d.%H%M`
 ls -l "Build."`date +%y%m%d.%H%M`
 

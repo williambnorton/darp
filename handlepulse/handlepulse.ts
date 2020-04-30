@@ -98,7 +98,7 @@ server.on('message', function(message, remote) {
       if (lastPulse==null) {     //first time we see this entry, include stats to increment
         lastPulse={ "inOctets" : "0", "inMsgs" : "0"}
       }
-      if (err) {console.log("ERROR in on.message handling");}
+      if (err) { console.log("ERROR in on.message handling"); process.exit(36);}
       var pulse={
         version : ary[1],
         geo : ary[2],
@@ -140,29 +140,23 @@ server.on('message', function(message, remote) {
 
       //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
 
+      //
+      //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl
+      //
       var owlsAry=pulse.owls.split(",")
       //console.log(ts()+"owlsAry="+owlsAry);
-
       for (var measure in owlsAry) {
         //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
         var srcMint=owlsAry[measure].split("=")[0]
         var owl=owlsAry[measure].split("=")[1]
-        if (typeof owl == "undefined") 
-          owl=""
-           //srcMint+"-"+me.mint
-
-
+        if (typeof owl == "undefined") owl=""
+        //srcMint+"-"+me.mint
         //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
         //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
-
         redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"-"+owl, owl, 'EX', OWLEXPIRES);
-
-
-
       }
 
-
-      redisClient.hmset("mint:"+pulse.srcMint, {
+      redisClient.hmset("mint:"+pulse.srcMint, {  //store this OWL in the mintTable for convenience
         "owl" : pulse.owl
       });
 

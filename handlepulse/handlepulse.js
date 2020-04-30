@@ -93,6 +93,7 @@ server.on('message', function (message, remote) {
             }
             if (err) {
                 console.log("ERROR in on.message handling");
+                process.exit(36);
             }
             var pulse = {
                 version: ary[1],
@@ -125,6 +126,9 @@ server.on('message', function (message, remote) {
             //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
             redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
             //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
+            //
+            //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl
+            //
             var owlsAry = pulse.owls.split(",");
             //console.log(ts()+"owlsAry="+owlsAry);
             for (var measure in owlsAry) {
