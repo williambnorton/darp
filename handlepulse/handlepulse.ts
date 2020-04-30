@@ -129,7 +129,7 @@ server.on('message', function(message, remote) {
       //add to matrix with expiration times
       redisClient.set(pulse.srcMint+"-"+me.mint, pulse.owl);  //store the pulse
       redisClient.expire(pulse.srcMint+"-"+me.mint,15);  //save for a pollcycle.5 seconds
-      console.log(ts()+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
+      //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
 
       var owlsAry=pulse.owls.split(",")
       //console.log(ts()+"owlsAry="+owlsAry);

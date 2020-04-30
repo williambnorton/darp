@@ -329,8 +329,10 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
 
+                
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
                 
+
                   if(error) {
                     console.log(ts()+"pulser NetSend error");
                     networkClient.close();
