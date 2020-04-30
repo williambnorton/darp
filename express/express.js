@@ -128,26 +128,26 @@ function getIPport(mint, callback) {
 function getMatrixTable(param, callback) {
     //scan for darp-<from>-<to>
     var cursor = '0';
-    function scan() {
-        expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function (err, reply) {
-            console.log(lib_1.ts() + "SCAN reply=" + lib_1.dump(reply));
-            if (err) {
-                throw err;
-            }
-            cursor = reply[0];
-            console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply));
-            if (cursor === '0') {
-                return console.log('Scan Complete');
-            }
-            else {
-                console.log('processing Complete');
-                // do your processing
-                // reply[1] is an array of matched keys.
-                // console.log(reply[1]);
-                return scan();
-            }
-        });
-    }
+    var matrix = new Array();
+    expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function (err, reply) {
+        console.log(lib_1.ts() + "SCAN reply=" + lib_1.dump(reply));
+        if (err) {
+            throw err;
+        }
+        cursor = reply[0];
+        console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply));
+        matrix.push(reply[1]);
+        if (cursor === '0') {
+            return matrix;
+        }
+        else {
+            console.log('processing Complete');
+            // do your processing
+            // reply[1] is an array of matched keys.
+            // console.log(reply[1]);
+            return matrix; //this only returns one bucket full.............
+        }
+    });
 }
 ;
 function getStuffAsync(param) {
