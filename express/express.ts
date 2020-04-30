@@ -248,7 +248,7 @@ function handleShowState(req, res) {
                   var entryLabel=rowEntry.srcMint+"-"+colEntry.srcMint
                   var owl="";
                   if (( typeof OWLMatrix[rowEntry.srcMint] != "undefined" ) &&
-                      ( typeof OWLMatrix[colEntry.srcMint] != "undefined") ) {
+                      ( typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined") ) {
                      owl=OWLMatrix[rowEntry.srcMint][colEntry.srcMint] 
                   }
                   console.log(ts()+"handleShowState() entryLabel="+entryLabel+" owl="+owl);
@@ -302,7 +302,7 @@ function handleShowState(req, res) {
 
             //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
             txt+="<td>"+pulseEntry.srcMint+"</td>"
-            txt+="<td>"+pulseEntry.owl+"ms</td>"
+            txt+="<td>"+pulseEntry.owl+" ms</td>"
             //txt+="<td>"+pulseEntry.owls+"</td>"
             txt+="<td>"+pulseEntry.inOctets+"</td>"
             txt+="<td>"+pulseEntry.outOctets+"</td>"
@@ -359,7 +359,7 @@ function handleShowState(req, res) {
             txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >'+mintEntry.version+"</a></td>"
             txt+="<td>"+mintEntry.wallet.substring(0,3)+"..."+mintEntry.wallet.substring(40,mintEntry.wallet.length)+"</td>"
             //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
-            txt+="<td>"+mintEntry.owl+"</td>"
+            txt+="<td>"+mintEntry.owl+" ms</td>"
             //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
 //            txt+="<td>"+mintEntry.rtt+"</td>"
    
