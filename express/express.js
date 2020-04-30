@@ -228,7 +228,11 @@ function handleShowState(req, res) {
                     for (var col in pulses) {
                         var colEntry = pulses[col];
                         var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
-                        var owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
+                        var owl = "";
+                        if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
+                            (typeof OWLMatrix[colEntry.srcMint] != "undefined")) {
+                            owl = OWLMatrix[rowEntry.srcMint];
+                        }
                         console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         txt += '<td id="' + entryLabel + '">' + owl + "ms</td>";
                     }
