@@ -220,7 +220,7 @@ function pulse(oneTime) {
                 var SRs = pulseGroups[1]; //[0] is the cursor returned
                 //console.log( "We need to pulse each of these SRs="+SRs); 
                 for (var i in SRs) {
-                    console.log("PULSER(): Pulsing SegmentRouter=" + SRs[i]);
+                    //console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
                     var pulseLabel = SRs[i];
                     //chop into named pieces for debugging
                     var pulseSrc = pulseLabel.split(":")[0];

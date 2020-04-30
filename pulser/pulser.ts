@@ -239,7 +239,7 @@ if (typeof oneTime == "undefined") {
           //console.log( "We need to pulse each of these SRs="+SRs); 
 
           for (var i in SRs) {
-            console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
+            //console.log("PULSER(): Pulsing SegmentRouter="+SRs[i]);
             var pulseLabel=SRs[i];
             //chop into named pieces for debugging
             var pulseSrc=pulseLabel.split(":")[0];
@@ -329,7 +329,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 //sending msg
                 //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
 
-                
+
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
                 
 
