@@ -253,7 +253,6 @@ function handleShowState(req, res) {
                txt+="</tr>"
             }
             txt+="</table>"; 
-         });
 
 
          //
@@ -395,6 +394,8 @@ function handleShowState(req, res) {
          res.end(txt+"<p>"+/*"RAW /CONFIG: "+JSON.stringify(config, null, 2)+ */"</p></body></html>");
          return
       });
+   });
+
    });
 }
 
