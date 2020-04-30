@@ -125,28 +125,30 @@ function getIPport(mint, callback) {
         callback(err, mintEntry.ipaddr + ":" + mintEntry.port);
     });
 }
-function getMatrixTable(param, callback) {
+function getMatrixTable(matrix, callback) {
     //scan for darp-<from>-<to>
     var cursor = '0';
-    var matrix = new Array();
+    if (matrix == null)
+        matrix = new Array();
     expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function (err, reply) {
         //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
-        console.log(lib_1.ts() + "SCAN reply=" + lib_1.dump(reply));
+        //console.log(ts()+"SCAN reply="+dump(reply));
         if (err) {
             throw err;
         }
         cursor = reply[0];
-        console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply));
-        matrix.push(reply[1]);
+        console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply[1]));
+        for (var n in reply[1])
+            matrix.push(reply[1][n]);
         if (cursor === '0') {
             return matrix;
         }
         else {
-            console.log('processing Complete');
+            console.log('EXPRESS getMatrixTable() returned non-"0" reply BUG BUG not sure this will work processing Complete');
             // do your processing
             // reply[1] is an array of matched keys.
             // console.log(reply[1]);
-            return matrix; //this only returns one bucket full.............
+            return getMatrixTable(matrix, callback); //this only returns one bucket full.............
         }
     });
 }
