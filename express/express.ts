@@ -237,15 +237,18 @@ function handleShowState(req, res) {
             txt+="</tr>"
 
             for (var row in pulses) var lastEntry=pulses[row];
+            console.log(ts()+"inside getMatrix.....");
             var fetchStack=new Array();
             for (var row in pulses) {
                var rowEntry=pulses[row];
+
                txt+='<tr><td>'+rowEntry.geo+" "+rowEntry.srcMint+'</td>';
                for (var col in pulses) {
                   var colEntry=pulses[col];
                   var entryLabel=rowEntry.srcMint+"-"+colEntry.srcMint
                   var owl=OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
-                  txt+="<td>"+owl+"</td>"
+                  console.log(ts()+"handleShowState() entryLabel="+entryLabel+" owl="+owl);
+                  txt+='<td id="'+entryLabel+'">'+owl+"</td>"
                }
                txt+="</tr>"
             }

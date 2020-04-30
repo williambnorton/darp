@@ -220,6 +220,7 @@ function handleShowState(req, res) {
                 txt += "</tr>";
                 for (var row in pulses)
                     var lastEntry = pulses[row];
+                console.log(lib_1.ts() + "inside getMatrix.....");
                 var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
@@ -228,7 +229,8 @@ function handleShowState(req, res) {
                         var colEntry = pulses[col];
                         var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
                         var owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
-                        txt += "<td>" + owl + "</td>";
+                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
+                        txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                     }
                     txt += "</tr>";
                 }
