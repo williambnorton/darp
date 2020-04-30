@@ -151,7 +151,7 @@ function getMatrixTable(darpMatrix, callback) {
         }
         if (cursor === '0') {
             console.log(lib_1.ts() + "getMatrixTable(): returning darpMatrix" + lib_1.dump(darpMatrix));
-            return darpMatrix;
+            callback(darpMatrix);
         }
         else {
             console.log('EXPRESS getMatrixTable() returned non-"0" reply BUG BUG not sure this will work processing Complete');
@@ -163,16 +163,16 @@ function getMatrixTable(darpMatrix, callback) {
     });
 }
 ;
+/*
 function getLiveMatrixTable() {
-    return new Promise(function (resolve, reject) {
-        getMatrixTable(null, function (err, data) {
-            if (err !== null)
-                reject(err);
-            else
-                resolve(data);
+    return new Promise(function(resolve, reject) {
+      getMatrixTable(null, function(err, data) {
+            if (err !== null) reject(err);
+            else resolve(data);
         });
     });
 }
+*/
 //
 //
 //      handleShowState(req,res) - show the node state
@@ -205,32 +205,35 @@ function handleShowState(req, res) {
                 txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.version + "</h1>";
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
-            var OWLMatrix = getLiveMatrixTable();
-            console.log(lib_1.ts() + "EXPRESS handleShowState() ********* getStuffAsync returned value=" + lib_1.dump(OWLMatrix));
-            //
-            // show OWL Matrix
-            //
-            txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
-            txt += '<tr><th></th>';
-            for (var col in pulses) {
-                var colEntry = pulses[col];
-                //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
-            }
-            txt += "</tr>";
-            for (var row in pulses)
-                var lastEntry = pulses[row];
-            var fetchStack = new Array();
-            for (var row in pulses) {
-                var rowEntry = pulses[row];
-                txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
+            //         var OWLMatrix=getLiveMatrixTable();
+            getMatrixTable(null, function (OWLMatrix) {
+                //
+                // show OWL Matrix
+                //
+                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
+                txt += '<tr><th></th>';
                 for (var col in pulses) {
                     var colEntry = pulses[col];
-                    var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
+                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+                    txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
                 }
                 txt += "</tr>";
-            }
-            txt += "</table>";
+                for (var row in pulses)
+                    var lastEntry = pulses[row];
+                var fetchStack = new Array();
+                for (var row in pulses) {
+                    var rowEntry = pulses[row];
+                    txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
+                    for (var col in pulses) {
+                        var colEntry = pulses[col];
+                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
+                        var owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
+                        txt += "<td>" + owl + "</td>";
+                    }
+                    txt += "</tr>";
+                }
+                txt += "</table>";
+            });
             //
             //  Externalize pulses 
             //
