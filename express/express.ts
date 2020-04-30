@@ -248,7 +248,7 @@ function handleShowState(req, res) {
                   var entryLabel=rowEntry.srcMint+"-"+colEntry.srcMint
                   var owl=OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
                   console.log(ts()+"handleShowState() entryLabel="+entryLabel+" owl="+owl);
-                  txt+='<td id="'+entryLabel+'">'+owl+"</td>"
+                  txt+='<td id="'+entryLabel+'">'+owl+"ms</td>"
                }
                txt+="</tr>"
             }
@@ -298,7 +298,7 @@ function handleShowState(req, res) {
 
             //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
             txt+="<td>"+pulseEntry.srcMint+"</td>"
-            txt+="<td>"+pulseEntry.owl+"</td>"
+            txt+="<td>"+pulseEntry.owl+"ms</td>"
             //txt+="<td>"+pulseEntry.owls+"</td>"
             txt+="<td>"+pulseEntry.inOctets+"</td>"
             txt+="<td>"+pulseEntry.outOctets+"</td>"
@@ -324,9 +324,9 @@ function handleShowState(req, res) {
          txt+="<th>bootTime</th>"
          txt+="<th>version</th>"
          txt+="<th>wallet</th>"
-         txt+="<th>S</th>"
+         //txt+="<th>S</th>"
          txt+="<th>owl</th>"
-         txt+="<th>G</th>"
+         //txt+="<th>G</th>"
    //<th>rtt</th>"
          txt+="<th>CONTROLS</th>"
          txt+="</tr>"
@@ -354,9 +354,9 @@ function handleShowState(req, res) {
             //txt+="<td>"+mintEntry.bootTime+"</td>"
             txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >'+mintEntry.version+"</a></td>"
             txt+="<td>"+mintEntry.wallet.substring(0,3)+"..."+mintEntry.wallet.substring(40,mintEntry.wallet.length)+"</td>"
-            txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
+            //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
             txt+="<td>"+mintEntry.owl+"</td>"
-            txt+="<td>"+mintEntry.isGenesisNode+"</td>"
+            //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
 //            txt+="<td>"+mintEntry.rtt+"</td>"
    
             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
