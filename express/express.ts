@@ -141,16 +141,18 @@ function getMatrixTable(param,callback) {
    var cursor = '0';
 
 function scan(){
-  expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function(err, reply){
+  expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
     if(err){
         throw err;
     }
     cursor = reply[0];
-    console.log(ts()+"darp-*="+dump(reply));
+    console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply));
     if(cursor === '0'){
         return console.log('Scan Complete');
     }else{
-        // do your processing
+       console.log('processing Complete');
+
+      // do your processing
         // reply[1] is an array of matched keys.
         // console.log(reply[1]);
         return scan();
@@ -203,7 +205,7 @@ function handleShowState(req, res) {
          txt+='<p>Connect to this pulseGroup using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
          var value=getStuffAsync("parm");
-         console.log(ts()+"value="+dump(value));
+         console.log(ts()+"EXPRESS handleShowState() ********* getStuffAsync returned value="+dump(value));
          //
          // show OWL Matrix
          //
