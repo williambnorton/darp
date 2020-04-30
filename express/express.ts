@@ -152,8 +152,10 @@ function getMatrixTable(darpMatrix,callback) {
     for (var n in reply[1]) {
       var ary=reply[1][n].split("-")   ///"darp-1-3=35",
       var src=ary[1], dst=ary[2], owl=ary[3];
+      console.log(ts()+"src="+src+" dst="+dst+"="+owl);
       if (typeof darpMatrix[src] == "undefined" ) darpMatrix[src]=new Array();
       if (typeof darpMatrix[src][dst] == "undefined" ) darpMatrix[src][dst]=new Array();
+      console.log(ts()+"Storing darpMatrix["+src+"]["+src+"]["+dst+"]="+owl);
       darpMatrix[src][dst]=owl
     }
     if(cursor === '0'){
