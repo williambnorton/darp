@@ -148,6 +148,7 @@ function getMatrixTable(darpMatrix, callback) {
             darpMatrix[src][dst] = owl;
         }
         if (cursor === '0') {
+            console.log(lib_1.ts() + "getMatrixTable(): returning darpMatrix" + lib_1.dump(darpMatrix));
             return darpMatrix;
         }
         else {

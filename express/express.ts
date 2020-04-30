@@ -157,6 +157,8 @@ function getMatrixTable(darpMatrix,callback) {
       darpMatrix[src][dst]=owl
     }
     if(cursor === '0'){
+      console.log(ts()+"getMatrixTable(): returning darpMatrix"+dump(darpMatrix));
+
         return darpMatrix;
     }else{
        console.log('EXPRESS getMatrixTable() returned non-"0" reply BUG BUG not sure this will work processing Complete');
