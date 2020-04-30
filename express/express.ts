@@ -135,6 +135,38 @@ function getIPport(mint,callback) {
       callback(err,mintEntry.ipaddr+":"+mintEntry.port)
    })
 }
+
+function getMatrixTable(param,callback) {
+   //scan for darp-<from>-<to>
+   var cursor = '0';
+
+function scan(){
+  expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function(err, reply){
+    if(err){
+        throw err;
+    }
+    cursor = reply[0];
+    console.log(ts()+"darp-*="+dump(reply));
+    if(cursor === '0'){
+        return console.log('Scan Complete');
+    }else{
+        // do your processing
+        // reply[1] is an array of matched keys.
+        // console.log(reply[1]);
+        return scan();
+    }
+  });
+}
+
+};
+function getStuffAsync(param) {
+    return new Promise(function(resolve, reject) {
+      getMatrixTable(param, function(err, data) {
+            if (err !== null) reject(err);
+            else resolve(data);
+        });
+    });
+}
 //
 //
 //      handleShowState(req,res) - show the node state
@@ -170,11 +202,11 @@ function handleShowState(req, res) {
          txt+="<p>"+dateTime+"</p>"
          txt+='<p>Connect to this pulseGroup using: docker run -p '+me.port+":"+me.port+' -p '+me.port+":"+me.port+"/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS="+me.ipaddr+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'       
          
-
+         var value=getStuffAsync("parm");
+         console.log(ts()+"value="+dump(value));
          //
          // show OWL Matrix
          //
-
          txt+='<br><h2>'+me.group+' OWL Matrix for pulseGroup: '+me.group+'</h2><table border="1">';
 
          txt+='<tr><th></th>'
@@ -186,40 +218,18 @@ function handleShowState(req, res) {
          txt+="</tr>"
 
          for (var row in pulses) var lastEntry=pulses[row];
-
+         var fetchStack=new Array();
          for (var row in pulses) {
             var rowEntry=pulses[row];
             txt+='<tr><td>'+rowEntry.geo+" "+rowEntry.srcMint+'</td>';
             for (var col in pulses) {
                var colEntry=pulses[col];
-               let entryLabel=rowEntry.srcMint+"-"+colEntry.srcMint
-                  txt+='<td id="'+entryLabel+'">' + "_" + "</td>"
-                     
-                     //                   console.log(ts()+rowEntry.srcMint+"-"+colEntry.srcMint+"="+owl);
-                     //txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + '<a href="http://' + IPnPort + '/" >'+ owl + " ms</a></td>"
-                     //if (owl!=null) txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + owl + " ms</td>"
-                     //else txt+='<td id="owl_'+rowEntry.srcMint+"_"+colEntry.srcMint+'">' + "_" + "</td>"
-                  
-
-//                  })
-//                  });
-               //} else {
-               //   txt+='<td></td>'                  
-               //}
-                   
+               var entryLabel=rowEntry.srcMint+"-"+colEntry.srcMint
+               
             }
             txt+="</tr>"
-
          }
-
          txt+="</table>"; 
-
-
-
-
-
-
-
 
 
 
