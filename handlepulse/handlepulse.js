@@ -120,8 +120,8 @@ server.on('message', function (message, remote) {
             redisClient.hmset(pulseLabel, pulse); //store the pulse
             var pulseSamplePrefix = "darp-";
             //add to matrix with expiration times
-            redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint, pulse.owl); //store the pulse
-            redisClient.expire(pulseSamplePrefix + pulse.srcMint + "-" + me.mint, 15); //save for a pollcycle.5 seconds
+            redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "=" + pulse.owl, pulse.owl); //store the pulse
+            redisClient.expire(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "=" + pulse.owl, 15); //save for a pollcycle.5 seconds
             //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
             var owlsAry = pulse.owls.split(",");
             //console.log(ts()+"owlsAry="+owlsAry);
@@ -132,8 +132,8 @@ server.on('message', function (message, remote) {
                 if (typeof owl == "undefined")
                     owl = "";
                 //srcMint+"-"+me.mint
-                redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint, owl); //store the pulse
-                redisClient.expire(pulseSamplePrefix + srcMint + "-" + pulse.srcMint, 15); //save for a pollcycle.5 seconds
+                redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "=" + owl, owl); //store the pulse
+                redisClient.expire(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "=" + pulse.owl, 15); //save for a pollcycle.5 seconds
             }
             redisClient.hmset("mint:" + pulse.srcMint, {
                 "owl": pulse.owl
