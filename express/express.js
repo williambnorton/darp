@@ -129,7 +129,7 @@ function getMatrixTable(darpMatrix, callback) {
     //scan for darp-<from>-<to>
     var cursor = '0';
     if (darpMatrix == null)
-        darpMatrix = new Array();
+        darpMatrix = {};
     expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function (err, reply) {
         //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
         //console.log(ts()+"SCAN reply="+dump(reply));
@@ -143,9 +143,9 @@ function getMatrixTable(darpMatrix, callback) {
             var src = ary[1], dst = ary[2], owl = ary[3];
             console.log(lib_1.ts() + "src=" + src + " dst=" + dst + "=" + owl);
             if (typeof darpMatrix[src] == "undefined")
-                darpMatrix[src] = new Array();
+                darpMatrix[src] = {}; //new Array();
             if (typeof darpMatrix[src][dst] == "undefined")
-                darpMatrix[src][dst] = new Array();
+                darpMatrix[src][dst] = {}; //new Array();
             console.log(lib_1.ts() + "Storing darpMatrix[" + src + "][" + dst + "]=" + owl);
             darpMatrix[src][dst] = owl;
         }
