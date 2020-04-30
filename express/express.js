@@ -129,7 +129,8 @@ function getMatrixTable(param, callback) {
     //scan for darp-<from>-<to>
     var cursor = '0';
     var matrix = new Array();
-    expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function (err, reply) {
+    expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function (err, reply) {
+        //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
         console.log(lib_1.ts() + "SCAN reply=" + lib_1.dump(reply));
         if (err) {
             throw err;
