@@ -125,11 +125,11 @@ function getIPport(mint, callback) {
         callback(err, mintEntry.ipaddr + ":" + mintEntry.port);
     });
 }
-function getMatrixTable(matrix, callback) {
+function getMatrixTable(darpMatrix, callback) {
     //scan for darp-<from>-<to>
     var cursor = '0';
-    if (matrix == null)
-        matrix = new Array();
+    if (darpMatrix == null)
+        darpMatrix = new Array();
     expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function (err, reply) {
         //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
         //console.log(ts()+"SCAN reply="+dump(reply));
@@ -138,17 +138,24 @@ function getMatrixTable(matrix, callback) {
         }
         cursor = reply[0];
         console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply[1]));
-        for (var n in reply[1])
-            matrix.push(reply[1][n]);
+        for (var n in reply[1]) {
+            var ary = reply[1][n].split("-"); ///"darp-1-3=35",
+            var src = ary[1], dst = ary[2], owl = ary[3];
+            if (typeof darpMatrix[src] == "undefined")
+                darpMatrix[src] = new Array();
+            if (typeof darpMatrix[src][dst] == "undefined")
+                darpMatrix[src][dst] = new Array();
+            darpMatrix[src][dst] = owl;
+        }
         if (cursor === '0') {
-            return matrix;
+            return darpMatrix;
         }
         else {
             console.log('EXPRESS getMatrixTable() returned non-"0" reply BUG BUG not sure this will work processing Complete');
             // do your processing
             // reply[1] is an array of matched keys.
             // console.log(reply[1]);
-            return getMatrixTable(matrix, callback); //this only returns one bucket full.............
+            return getMatrixTable(darpMatrix, callback); //this only returns one bucket full.............
         }
     });
 }
