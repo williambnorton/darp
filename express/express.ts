@@ -163,9 +163,9 @@ function getMatrixTable(matrix,callback) {
     }
   });
 };
-function getStuffAsync(param) {
+function getLiveMatrixTable() {
     return new Promise(function(resolve, reject) {
-      getMatrixTable(param, function(err, data) {
+      getMatrixTable(null, function(err, data) {
             if (err !== null) reject(err);
             else resolve(data);
         });
@@ -209,8 +209,8 @@ function handleShowState(req, res) {
 
 
 
-         var value=getStuffAsync("parm");
-         console.log(ts()+"EXPRESS handleShowState() ********* getStuffAsync returned value="+dump(value));
+         var OWLMatrix=getLiveMatrixTable();
+         console.log(ts()+"EXPRESS handleShowState() ********* getStuffAsync returned value="+dump(OWLMatrix));
 
 
 

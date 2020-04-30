@@ -153,9 +153,9 @@ function getMatrixTable(matrix, callback) {
     });
 }
 ;
-function getStuffAsync(param) {
+function getLiveMatrixTable() {
     return new Promise(function (resolve, reject) {
-        getMatrixTable(param, function (err, data) {
+        getMatrixTable(null, function (err, data) {
             if (err !== null)
                 reject(err);
             else
@@ -195,8 +195,8 @@ function handleShowState(req, res) {
                 txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.version + "</h1>";
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
-            var value = getStuffAsync("parm");
-            console.log(lib_1.ts() + "EXPRESS handleShowState() ********* getStuffAsync returned value=" + lib_1.dump(value));
+            var OWLMatrix = getLiveMatrixTable();
+            console.log(lib_1.ts() + "EXPRESS handleShowState() ********* getStuffAsync returned value=" + lib_1.dump(OWLMatrix));
             //
             // show OWL Matrix
             //
