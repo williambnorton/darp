@@ -23,6 +23,11 @@ redisClient.hgetall("mint:0", function (err, me) {
         else {
             SHOWPULSES = me.SHOWPULSES;
             console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
+            if (genesis == null) {
+                for (var i = 10; i > 0; i--)
+                    console.log(lib_js_1.ts() + "Genesis not connected - exitting - another loop around");
+                process.exit(36);
+            }
             for (var i = 10; i > 0; i--)
                 console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED-Point your browser to http://" + me.ipaddr + ":" + me.port + "/");
         }
