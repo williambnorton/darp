@@ -487,9 +487,9 @@ app.get('/reload', function(req, res) {
 });
 
 app.get('/config', function(req, res) {
-   console.log("EXPRess wbn fetching '/config' ");
+   //console.log("EXPRess wbn fetching '/config' ");
    makeConfigAll(function(config) {
-       console.log("app.get(/config pulseRecordTable=" + dump(config));
+     //  console.log("app.get(/config pulseRecordTable=" + dump(config));
        res.setHeader('Content-Type', 'application/json');
        //res.setHeader('Content-Type', 'text/html');
        res.setHeader("Access-Control-Allow-Origin", "*");
