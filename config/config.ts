@@ -99,6 +99,9 @@ function getConfiguration() {
 
             if (config.isGenesisNode==true) {
                 console.log(ts()+"CONFIG GENESIS node already configured");
+                redisClient.hset("mint:0", "state", "RUNNING" );    //we are genesis completed our auth
+                redisClient.hset("mint:1", "state", "RUNNING" );    //for members, RUNNING is when all mints from genesis are in mintTable
+
                 //dumpState();
             } else {
                 console.log(ts()+"CONFIG Configuring non-genesis node ... config.isGenesisNode="+config.isGenesisNode);
