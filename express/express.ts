@@ -162,8 +162,11 @@ function getMatrixTable(darpMatrix,callback) {
       if (typeof darpMatrix[src][dst] == "undefined" ) darpMatrix[src][dst]={} //new Array();
       //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
       //if (darpMatrix[src][dst]=={} ) {
+      if ((typeof owl !="undefined") && (owl != null) && (owl!=""))
          darpMatrix[src][dst]=owl
-      //} else {  //overwrite entry? 
+      else darpMatrix[src][dst]=""
+
+         //} else {  //overwrite entry? 
       //   if (darpMatrix[src][dst]=="")
       //      darpMatrix[src][dst]=owl
       //}
