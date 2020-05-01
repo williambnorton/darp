@@ -23,8 +23,9 @@ var app = express();
 
 var mintStack=1;
 const DEFAULT_SHOWPULSES="0"
-const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
-//const DEFAULT_START_STATE="RUNNING";  //for single stepping through network protocol code
+
+//const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
+const DEFAULT_START_STATE="CONFIGURED";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
@@ -81,6 +82,9 @@ var WALLET=process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b288
 //from 
 //FAT MODEL expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"version",process.env.VERSION,"hotname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
 expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"version",process.env.VERSION,"hostname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
+
+//uncomment this to enter protocol single step mode for pulsing manually
+expressRedisClient.hmset("mint:0","adminControl","SINGLESTEP");
 
 /**** CONFIGURATION SET ****/
 
