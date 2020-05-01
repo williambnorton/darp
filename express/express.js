@@ -239,7 +239,7 @@ function handleShowState(req, res) {
                             (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
                             owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
                         }
-                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
+                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + lib_1.dump(owl));
                         txt += '<td id="' + entryLabel + '">' + owl + "ms</td>";
                     }
                     txt += "</tr>";
