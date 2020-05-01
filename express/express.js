@@ -230,9 +230,10 @@ function handleShowState(req, res) {
                 txt += "</tr>";
                 var lastEntry = "";
                 console.log(lib_1.ts() + "handleShowState() pulses=" + lib_1.dump(pulses));
-                for (var row in pulses)
-                    lastEntry = pulses[row];
-                console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lastEntry);
+                for (var row in pulses) {
+                    lastEntry = pulses[row].geo + ":" + pulses[row].group;
+                }
+                console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lib_1.dump(lastEntry));
                 var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
