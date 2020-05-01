@@ -11,7 +11,6 @@ exports.__esModule = true;
 //    PUBLICKEY - Public key 
 //
 var lib_1 = require("../lib/lib");
-//import { pulse } from '../pulser/pulser'
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -75,8 +74,10 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //from 
 //FAT MODEL expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"version",process.env.VERSION,"hotname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
 expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "version", process.env.VERSION, "hostname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
+/*
 //uncomment this to enter protocol single step mode for pulsing manually
 //expressRedisClient.hmset("mint:0","adminControl","SINGLESTEP");
+
 /**** CONFIGURATION SET ****/
 expressRedisClient.hgetall("mint:0", function (err, me) {
     console.log("EXPRESS DARP " + me.version);
@@ -173,16 +174,6 @@ function getMatrixTable(darpMatrix, callback) {
     });
 }
 ;
-/*
-function getLiveMatrixTable() {
-    return new Promise(function(resolve, reject) {
-      getMatrixTable(null, function(err, data) {
-            if (err !== null) reject(err);
-            else resolve(data);
-        });
-    });
-}
-*/
 //
 //
 //      handleShowState(req,res) - show the node state
@@ -544,13 +535,17 @@ app.get('/nodefactory', function (req, res) {
             if (typeof incomingTimestamp == "undefined") {
                 console.log("/nodeFactory called with no timestamp");
                 res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify({ "rc": "-1 nodeFactory called with no timestamp. " }));
+                res.end(JSON.stringify({
+                    "rc": "-1 nodeFactory called with no timestamp. "
+                }));
                 return;
             }
             if (octetCount != 4) {
                 console.log("EXPRESS(): nodefactory called with bad IP address:" + incomingIP + " returning rc=-1 to config geo=" + geo);
                 res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify({ "rc": "-1 nodeFactory called with BAD IP addr: " + incomingIP }));
+                res.end(JSON.stringify({
+                    "rc": "-1 nodeFactory called with BAD IP addr: " + incomingIP
+                }));
                 return;
             }
             //console.log("req="+dump(req));
@@ -629,7 +624,10 @@ function fetchConfigAll(gSRlist, config, callback) {
         };
         for (var index in gSRlist) {
             //console.log("pushing "+index);
-            config.entryStack.unshift({ entryLabel: index, mint: gSRlist[index] });
+            config.entryStack.unshift({
+                entryLabel: index,
+                mint: gSRlist[index]
+            });
         }
         //console.log("fetchConfigAll entryStack="+dump(config.entryStack));
     }
@@ -679,7 +677,10 @@ function fetchConfig(gSRlist, config, callback) {
         for (var index in gSRlist) {
             //console.log("pushing "+index);
             //config.entryStack.push({ entryLabel:index, mint:gSRlist[index]})
-            config.entryStack.unshift({ entryLabel: index, mint: gSRlist[index] });
+            config.entryStack.unshift({
+                entryLabel: index,
+                mint: gSRlist[index]
+            });
         }
         //onsole.log("entryStack="+dump(config.entryStack));
     }
@@ -820,7 +821,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                         callback(config);
                                         /*
                                         makeConfig(function (config) {
-          
+ 
                                            console.log(ts()+"makeConfig");
                                            config.mintTable["mint:0"]=mint0;  //    Install this new guy's mint0 into config
                                            config.rc="0";
@@ -844,13 +845,13 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
         /**
               //      "isGenesisNode" : "1",
               var mintN=makeMintEntry( newMint,geo,geo+".1",port,incomingIP,publickey,version,wallet, incomingTimestamp )
-        
+ 
               if (mint1==null) {         //  GENESIS NODE BEING FORMED -
                  console.log(ts()+"SETTING OURSELVES UP AS GENESIS NODE");
-        
+ 
                  mint1=mint0;            //Genesis mint:1 is mint:0 (me)
                  expressRedisClient.hmset("mint:1",mint1);  //create mint:1 as clone of mint:0
-        
+ 
                  //create the group entry while we are at it
                  
                  expressRedisClient.hmset([geo+":"+geo+".1"], genesisPulseGroupEntry);
@@ -863,7 +864,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
               
               //                      Non-Genesis Node - create the newGeo:genesisGroup entry and add to gSRlist
               ////       mint:0 mint:1 *mint:N genesisGeo:genesisGroup *geoN:genesisGroup and update gSRlist and genesis OWLs
-        
+ 
               if (newMint!=1) {
                  console.log(ts()+"SETTING UP NON-GENESIS NODE to connect with Genesis Node: "+mint1.group);
                  console.log(ts()+"At this point we should have mint:0 mint:1 and group Entry defined... newMint="+newMint);
@@ -874,17 +875,17 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                  mintN=makeMintEntry( newMint,geo,mint1.group,port,incomingIP,publickey,version,wallet, incomingTimestamp )
                  expressRedisClient.hmset("mint:"+newMint,mintN);
                  expressRedisClient.hmset("gSRlist", mint1.group, ""+newMint);
-        
+ 
                  var newMintPulseGroupEntry=makePulseEntry( newMint, geo, mint1.group );
                  expressRedisClient.hmset([geo+":"+mint1.group], newMintPulseGroupEntry);
               }
               expressRedisClient.hgetall("DEVOPS:DEVOPS.1", function(err,genesisGroupEntry) {
                  console.log("DEVOPS:DEVOPS.1="+dump(mint1));});
-        
+ 
                  console.log(ts()+"genesis newOWLs="+newOWLs);
                  var newOWLs="1";
                  if (newMint!=1) newOWLs=genesisGroup.owls+","+newMint
-        
+ 
                  makeConfig(function (config) {
                     console.log(ts()+"makeConfig");
                     config.mintTable["mint:0"]=mint0;  //nstall this new guy's mint0

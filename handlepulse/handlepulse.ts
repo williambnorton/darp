@@ -1,49 +1,55 @@
 //
 //  handlePulse - receive incoming pulses and store in redis
 //
-import { now, ts ,dump, newMint, makeYYMMDD } from '../lib/lib.js';
-console.log("Starting HANDLEPULSE GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
+import {
+  now,
+  ts,
+  dump,
+  newMint,
+  makeYYMMDD
+} from '../lib/lib.js';
+console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
-var OWLEXPIRES=10;  //seconds should match polling cycle time
+var OWLEXPIRES = 10; //seconds should match polling cycle time
 
-var SHOWPULSES="0";
+var SHOWPULSES = "0";
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
-var MYBUILD="";
-var isGenesisNode=false;
-redisClient.hgetall("mint:0", function (err,me) {
-  console.log("HANDLEPULSE starting with me="+dump(me));
-  redisClient.hgetall("mint:1", function (err,genesis) {
-    if (me==null){
-      console.log(ts()+"HANDLEPULSE started with no genesis mint:1 EXITTING...");
-      process.exit(36)
-    } else {
-      SHOWPULSES=me.SHOWPULSES
-      console.log(ts()+"HANDLEPULSE started with genesis="+dump(genesis));
-      if (genesis==null) {
-        for (var i=10; i>0; i--) console.log(ts()+"Genesis not connected - exitting - another loop around");
-        process.exit(36)
-      }
-      for (var i=10; i>0; i--) console.log(ts()+"DARP COMPONENTS STARTED-Point your browser to http://"+me.ipaddr+":"+me.port+"/");
+var MYBUILD = "";
+var isGenesisNode = false;
+redisClient.hgetall("mint:0", function(err, me) {
+  console.log("HANDLEPULSE starting with me=" + dump(me));
+  redisClient.hgetall("mint:1", function(err, genesis) {
+      if (me == null) {
+          console.log(ts() + "HANDLEPULSE started with no genesis mint:1 EXITTING...");
+          process.exit(36)
+      } else {
+          SHOWPULSES = me.SHOWPULSES
+          console.log(ts() + "HANDLEPULSE started with genesis=" + dump(genesis));
+          if (genesis == null) {
+              for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - exitting - another loop around");
+              process.exit(36)
+          }
+          for (var i = 10; i > 0; i--) console.log(ts() + "DARP COMPONENTS STARTED-Point your browser to http://" + me.ipaddr + ":" + me.port + "/");
 
-    }
+      }
   });
 });
 
 
-console.log(ts()+"handlePulse: Starting");
+console.log(ts() + "handlePulse: Starting");
 //
 //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
 //
-redisClient.hgetall("mint:0", function (err,me) {
-    //console.log("handlePulse(): Configuration  me="+dump(me));
-  MYBUILD=me.version;
-  isGenesisNode=me.isGenesisNode;
-  console.log(ts()+"handlepulse(): Binding pulsePort on UDP port "+me.port);
+redisClient.hgetall("mint:0", function(err, me) {
+  //console.log("handlePulse(): Configuration  me="+dump(me));
+  MYBUILD = me.version;
+  isGenesisNode = me.isGenesisNode;
+  console.log(ts() + "handlepulse(): Binding pulsePort on UDP port " + me.port);
   server.bind(me.port, "0.0.0.0");
 });
 
@@ -52,20 +58,20 @@ redisClient.hgetall("mint:0", function (err,me) {
 //
 //  only callback if authenticated
 //
-function  authenticatedPulse(pulse, callback) {
-  redisClient.hgetall("mint:"+pulse.srcMint, function (err,senderMintEntry) {
+function authenticatedPulse(pulse, callback) {
+  redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {
 
-    if (senderMintEntry==null) {
-      console.log("authenticatedPulse(): DROPPING We don't have a mint entry for this pulse:"+dump(pulse));
-      //callback(null,false);
-    } else {
-      //simple authentication matches mint to other resources
-      if (senderMintEntry.geo==pulse.geo) callback(null, true)
-       else {
-          console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo "+pulse.geo+" was not in our mint table");//+dump(pulse)+dump(senderMintEntry.geo));
-          //callback(null,false)
-       }
-    }
+      if (senderMintEntry == null) {
+          console.log("authenticatedPulse(): DROPPING We don't have a mint entry for this pulse:" + dump(pulse));
+          //callback(null,false);
+      } else {
+          //simple authentication matches mint to other resources
+          if (senderMintEntry.geo == pulse.geo) callback(null, true)
+          else {
+              console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not in our mint table"); //+dump(pulse)+dump(senderMintEntry.geo));
+              //callback(null,false)
+          }
+      }
   });
 }
 
@@ -76,112 +82,119 @@ function  authenticatedPulse(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
-  if (SHOWPULSES=="1") 
-    console.log(ts()+"HANDLEPULSE: received pulse "+message.length+" bytes from "+remote.address + ':' + remote.port +' - ' + message);
-  var msg=message.toString();
-  var ary=msg.split(",");
+  if (SHOWPULSES == "1")
+      console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message);
+  var msg = message.toString();
+  var ary = msg.split(",");
   //try {
-  var pulseTimestamp=ary[5];                  //1583783486546
-  var OWL=now()-pulseTimestamp;
-  if (OWL<=-999) OWL=-99999;  //we can filter out clocks greater than +/- 99 seconds off
-  if (OWL>=999) OWL=99999;    //bad clocks lead to really large OWL pulses 
-  var pulseLabel=ary[2]+":"+ary[3];
+  var pulseTimestamp = ary[5]; //1583783486546
+  var OWL = now() - pulseTimestamp;
+  if (OWL <= -999) OWL = -99999; //we can filter out clocks greater than +/- 99 seconds off
+  if (OWL >= 999) OWL = 99999; //bad clocks lead to really large OWL pulses 
+  var pulseLabel = ary[2] + ":" + ary[3];
 
-  var owlsStart=nth_occurrence (msg, ',', 7);   //owls start after the 7th comma
-  var owls=msg.substring(owlsStart+1,msg.length-1);
+  var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
+  var owls = msg.substring(owlsStart + 1, msg.length - 1);
 
   //console.log(ts()+"handlepulse(): owls="+owls);
 
   redisClient.hgetall(pulseLabel, function(err, lastPulse) {
-    //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-    redisClient.hgetall("mint:0", function(err, me) {
-      if (me==null) {
-        console.log(ts()+"HANDLEPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
-        process.exit(36)
-      }
-
-      //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
-      //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
-
-      if (lastPulse==null) {     //first time we see this entry, include stats to increment
-        lastPulse={ "inOctets" : "0", "inMsgs" : "0"}
-      }
-      if (err) { console.log("ERROR in on.message handling"); process.exit(36);}
-      var pulse={
-        version : ary[1],
-        geo : ary[2],
-        group : ary[3],
-        seq : ary[4],
-        pulseTimestamp : pulseTimestamp,
-        srcMint : ary[6],
-        owls : owls,
-        owl : ""+OWL,
-        lastMsg : msg,
-        inOctets : ""+(parseInt(lastPulse.inOctets)+message.length),
-        inMsgs : ""+(parseInt(lastPulse.inMsgs)+1)
-      };
-
-      authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
-      
-        if (me.state=="CONFIGURED") { //we received a pulse from this node, it is now running
-          console.log(ts()+"me="+dump(me));
-          me.state="RUNNING"
-          redisClient.hset("mint:0","state","RUNNING");  //RUNNING means mint inquiries work
-          redisClient.hgetall("mint:0", function (newme) {
-            console.log(ts()+"Received pulse from a node previously called CONFIGURED... Set state to RUNNING:"+dump(newme));
-          })
-        }
-
-        //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-        if ( pulse.version != MYBUILD ) {
-          if (!isGenesisNode) {
-            console.log(ts()+" ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode="+isGenesisNode+" - GroupOwner said "+pulse.version+" we are running "+MYBUILD+" .......process exitting");
-            console.log("Genesis node pulsed us as "+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-            process.exit(36);  //SOFTWARE RELOAD
+      //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
+      redisClient.hgetall("mint:0", function(err, me) {
+          if (me == null) {
+              console.log(ts() + "HANDLEPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
+              process.exit(36)
           }
-        };
 
-        redisClient.publish("pulses",msg)
-        redisClient.hmset(pulseLabel, pulse);  //store the pulse
-        
-        var pulseSamplePrefix="darp-";
-        
-        //add to matrix with expiration times
-        //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
-        
-        
-        //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
+          //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
+          //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
 
-        redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"-"+pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+          if (lastPulse == null) { //first time we see this entry, include stats to increment
+              lastPulse = {
+                  "inOctets": "0",
+                  "inMsgs": "0"
+              }
+          }
+          if (err) {
+              console.log("ERROR in on.message handling");
+              process.exit(36);
+          }
+          var pulse = {
+              version: ary[1],
+              geo: ary[2],
+              group: ary[3],
+              seq: ary[4],
+              pulseTimestamp: pulseTimestamp,
+              srcMint: ary[6],
+              owls: owls,
+              owl: "" + OWL,
+              lastMsg: msg,
+              inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
+              inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1)
+          };
 
-        //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
+          authenticatedPulse(pulse, function(err, authenticated) { ///RE ENABLE !!!!!!
 
-        //
-        //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
-        //
-        var owlsAry=pulse.owls.split(",")
-        //console.log(ts()+"owlsAry="+owlsAry);
-        for (var measure in owlsAry) {
-          //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
-          var srcMint=owlsAry[measure].split("=")[0]
-          var owl=owlsAry[measure].split("=")[1]
-          if (typeof owl == "undefined") owl=""
-          //srcMint+"-"+me.mint
-          //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
-          //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
-          redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"-"+owl, owl, 'EX', OWLEXPIRES);
-        }
+              if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
+                  console.log(ts() + "me=" + dump(me));
+                  me.state = "RUNNING"
+                  redisClient.hset("mint:0", "state", "RUNNING"); //RUNNING means mint inquiries work
+                  redisClient.hgetall("mint:0", function(newme) {
+                      console.log(ts() + "Received pulse from a node previously called CONFIGURED... Set state to RUNNING:" + dump(newme));
+                  })
+              }
 
-        redisClient.hmset("mint:"+pulse.srcMint, {  //store this OWL in the mintTable for convenience
-          "owl" : pulse.owl
-        });
+              //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+              if (pulse.version != MYBUILD) {
+                  if (!isGenesisNode) {
+                      console.log(ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                      console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + dump(pulse));
+                      process.exit(36); //SOFTWARE RELOAD
+                  }
+              };
 
-        //storeOWL(pulse.geo,me.geo,OWL);
+              redisClient.publish("pulses", msg)
+              redisClient.hmset(pulseLabel, pulse); //store the pulse
 
-        //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
-  
-      //});
-    });
+              var pulseSamplePrefix = "darp-";
+
+              //add to matrix with expiration times
+              //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
+
+
+              //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
+
+              redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+
+              //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
+
+              //
+              //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
+              //
+              var owlsAry = pulse.owls.split(",")
+              //console.log(ts()+"owlsAry="+owlsAry);
+              for (var measure in owlsAry) {
+                  //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
+                  var srcMint = owlsAry[measure].split("=")[0]
+                  var owl = owlsAry[measure].split("=")[1]
+                  if (typeof owl == "undefined") owl = ""
+                  //srcMint+"-"+me.mint
+                  //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
+                  //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
+                  redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
+              }
+
+              redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
+                  "owl": pulse.owl
+              });
+
+              //storeOWL(pulse.geo,me.geo,OWL);
+
+              //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
+
+              //});
+          });
+      });
   });
 });
 
@@ -192,23 +205,23 @@ function storeOWL(src, dst, owl) {
   var fs = require('fs');
   var d = new Date();
   var YYMMDD = makeYYMMDD();
-  var filename = process.env.DARPDIR+"/"+src + '-' + dst + '.' + YYMMDD + '.txt';
+  var filename = process.env.DARPDIR + "/" + src + '-' + dst + '.' + YYMMDD + '.txt';
   var logMsg = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
   //console.log("About to file("+filename+") log message:"+logMsg);
 
   //if (owl > 2000 || owl < 0) {
-          //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
-//
-          //owl = 0;
+  //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+  //
+  //owl = 0;
   //}
   //var logMsg = "{y:" + owl + "},\n";
   fs.appendFile(filename, logMsg, function(err) {
-          if (err) throw err;
-          //console.log('Saved!');
+      if (err) throw err;
+      //console.log('Saved!');
   });
 }
 
-function nth_occurrence (string, char, nth) {
+function nth_occurrence(string, char, nth) {
   var first_index = string.indexOf(char);
   var length_up_to_first_index = first_index + 1;
 
@@ -221,7 +234,7 @@ function nth_occurrence (string, char, nth) {
       if (next_occurrence === -1) {
           return -1;
       } else {
-          return length_up_to_first_index + next_occurrence;  
+          return length_up_to_first_index + next_occurrence;
       }
   }
 }
@@ -230,37 +243,37 @@ function nth_occurrence (string, char, nth) {
 //  checkSEversion() - reload SW if there is new code to be had
 //this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
 //
-setTimeout(checkSWversion,20*1000);; // see if we need new SW
+setTimeout(checkSWversion, 20 * 1000);; // see if we need new SW
 //checkSWversion();
 function checkSWversion() {
-  setTimeout(checkSWversion,20*1000);;
+  setTimeout(checkSWversion, 20 * 1000);;
   //console.log("checkSWversion() - currentSW="+MYBUILD);
   const http = require("http");
-  redisClient.hgetall("mint:1",function (err,genesis) {
-    if (err || genesis==null) {
-      console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error="+err+" RELOAD");
-      process.exit(36);
-    }
-    const url = "http://"+genesis.ipaddr+":"+genesis.port+"/version";
-    //console.log("checkSWversion(): url="+url);
-    http.get(url, res => {
-      res.setEncoding("utf8");
-      let body = "";
-  
-      res.on("data", data => {
-        body += data;
-      });
-  
-      res.on("end", () => {
-        var version = JSON.parse(body);
-        //console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
-        if ( version != MYBUILD && !isGenesisNode ) {
-           console.log(ts()+" HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said "+version+" we are running "+MYBUILD+" .......process exitting");
-           process.exit(36);  //SOFTWARE RELOAD
-        }
-      });
+  redisClient.hgetall("mint:1", function(err, genesis) {
+      if (err || genesis == null) {
+          console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
+          process.exit(36);
+      }
+      const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+      //console.log("checkSWversion(): url="+url);
+      http.get(url, res => {
+          res.setEncoding("utf8");
+          let body = "";
 
-    });
+          res.on("data", data => {
+              body += data;
+          });
+
+          res.on("end", () => {
+              var version = JSON.parse(body);
+              //console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
+              if (version != MYBUILD && !isGenesisNode) {
+                  console.log(ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
+                  process.exit(36); //SOFTWARE RELOAD
+              }
+          });
+
+      });
   });
 }
 
@@ -270,12 +283,12 @@ function checkSWversion() {
 server.on('listening', function() {
   var address = server.address();
 
- console.log(ts()+"");
- console.log(ts()+"");
- console.log(ts()+'UDP Server listening for pulses on ' + address.address + ':' + address.port);
- console.log(ts()+"");
- console.log(ts()+"");
- 
+  console.log(ts() + "");
+  console.log(ts() + "");
+  console.log(ts() + 'UDP Server listening for pulses on ' + address.address + ':' + address.port);
+  console.log(ts() + "");
+  console.log(ts() + "");
+
 });
 
 process.on('SIGTERM', () => {
