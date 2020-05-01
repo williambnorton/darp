@@ -147,13 +147,12 @@ function getMatrixTable(darpMatrix, callback) {
             if (typeof darpMatrix[src][dst] == "undefined")
                 darpMatrix[src][dst] = {}; //new Array();
             //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
-            if (darpMatrix[src][dst] == {}) {
-                darpMatrix[src][dst] = owl;
-            }
-            else { //overwrite entry? 
-                if (darpMatrix[src][dst] == "")
-                    darpMatrix[src][dst] = owl;
-            }
+            //if (darpMatrix[src][dst]=={} ) {
+            darpMatrix[src][dst] = owl;
+            //} else {  //overwrite entry? 
+            //   if (darpMatrix[src][dst]=="")
+            //      darpMatrix[src][dst]=owl
+            //}
         }
         if (cursor === '0') {
             //console.log(ts()+"getMatrixTable(): returning darpMatrix"+dump(darpMatrix));
@@ -239,7 +238,7 @@ function handleShowState(req, res) {
                             (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
                             owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
                         }
-                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + lib_1.dump(owl));
+                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         txt += '<td id="' + entryLabel + '">' + owl + "ms</td>";
                     }
                     txt += "</tr>";
