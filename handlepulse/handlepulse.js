@@ -58,7 +58,7 @@ function authenticatedPulse(pulse, callback) {
             if (senderMintEntry.geo == pulse.geo)
                 callback(null, true);
             else {
-                console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " did not match our mint table"); //+dump(pulse)+dump(senderMintEntry.geo));
+                console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not in our mint table"); //+dump(pulse)+dump(senderMintEntry.geo));
                 //callback(null,false)
             }
         }
@@ -89,10 +89,8 @@ server.on('message', function (message, remote) {
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         redisClient.hgetall("mint:0", function (err, me) {
-            if (me.state == "RELOAD")
-                process.exit(36); //this is set when reload button is pressed in express
-            if (me.state == "STOP")
-                process.exit(86); //this is set when reload button is pressed in express
+            //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
+            //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
             if (lastPulse == null) { //first time we see this entry, include stats to increment
                 lastPulse = { "inOctets": "0", "inMsgs": "0" };
             }
