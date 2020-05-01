@@ -147,7 +147,13 @@ function getMatrixTable(darpMatrix, callback) {
             if (typeof darpMatrix[src][dst] == "undefined")
                 darpMatrix[src][dst] = {}; //new Array();
             //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
-            darpMatrix[src][dst] = owl;
+            if (darpMatrix[src][dst] == {}) {
+                darpMatrix[src][dst] = owl;
+            }
+            else { //overwrite entry? 
+                if (darpMatrix[src][dst] == "")
+                    darpMatrix[src][dst] = owl;
+            }
         }
         if (cursor === '0') {
             //console.log(ts()+"getMatrixTable(): returning darpMatrix"+dump(darpMatrix));
