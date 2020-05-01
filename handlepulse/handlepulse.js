@@ -89,6 +89,10 @@ server.on('message', function (message, remote) {
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         redisClient.hgetall("mint:0", function (err, me) {
+            if (me == null) {
+                console.log(lib_js_1.ts() + "HANDLEPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
+                process.exit(36);
+            }
             //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
             //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
             if (lastPulse == null) { //first time we see this entry, include stats to increment
