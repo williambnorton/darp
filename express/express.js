@@ -230,7 +230,7 @@ function handleShowState(req, res) {
                 txt += "</tr>";
                 for (var row in pulses)
                     var lastEntry = pulses[row];
-                console.log(lib_1.ts() + "inside getMatrix.....");
+                console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lastEntry);
                 var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
