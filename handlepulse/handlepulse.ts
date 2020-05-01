@@ -120,6 +120,8 @@ server.on('message', function(message, remote) {
       authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
       
         if (me.state=="CONFIGURED") { //we received a pulse from this node, it is now running
+          console.log(ts()+"me="+dump(me));
+          me.state="RUNNING"
           redisClient.hset("mint:0","state","RUNNING");  //RUNNING means mint inquiries work
           redisClient.hgetall("mint:0", function (newme) {
             console.log(ts()+"Received pulse from a node previously called CONFIGURED... Set state to RUNNING:"+dump(newme));
