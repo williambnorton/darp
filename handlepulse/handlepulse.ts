@@ -113,7 +113,17 @@ server.on('message', function(message, remote) {
         inMsgs : ""+(parseInt(lastPulse.inMsgs)+1)
       };
 
-      //authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
+      authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
+
+      
+      if (me.state=="CONFIGURED") { //we received a pulse from this node, it is now running
+        redisClient.hset("mint:0","state","RUNNING");  //RUNNING means mint inquiries work
+        console.log(ts()+"Received pulse from a node previously called CONFIGURED... Set state to RUNNING.");
+      }
+
+
+
+
 
       //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
       if ( pulse.version != MYBUILD ) {

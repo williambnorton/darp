@@ -466,13 +466,14 @@ app.get('/version', function (req, res) {
       return;
    })
 });
+
 app.get('/stop', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("EXITTING and Stopping the node");
    expressRedisClient.hset("mint:0","adminControl","STOP");  //handlepulse will exit 86
    res.redirect(req.get('referer'));
-
 });
+
 app.get('/reboot', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER");
@@ -480,10 +481,11 @@ app.get('/reboot', function (req, res) {
    res.redirect(req.get('referer'));
 
 });
+
 app.get('/reload', function (req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("EXITTING to reload the system")
-   expressRedisClient.hset("mint:0","state","RELOAD");  //handlepulse will exit 36
+   expressRedisClient.hset("mint:0","adminControl","RELOAD");  //handlepulse will exit 36
    res.redirect(req.get('referer'));
 
 });

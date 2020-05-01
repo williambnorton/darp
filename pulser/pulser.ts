@@ -38,13 +38,21 @@ var GEO="";  //global variable for marking source of pulse
 function checkAdminControl() {
   var state="IDLE";
   //console.log(ts()+"checkAdminControl");
+
   redisClient.hget("mint:0", "adminControl", function(err,adminControl) {
     if (adminControl=="PULSE" && state!="PULSING") {
-      state="PULSING"
-      console.log(ts()+"adminControl="+adminControl);
+      console.log(ts()+"PULSING adminControl="+adminControl);
       pulse(1);
-      state="IDLE"
+//      state="IDLE"
       redisClient.hdel("mint:0","adminControl")
+    }
+    if (adminControl=="RELOAD" ) {
+      console.log(ts()+"RELOAD SOFTWARE adminControl="+adminControl);
+      process.exit(36);
+    }
+    if (adminControl=="STOP" ||adminControl=="REBOOT"  ) {
+      console.log(ts()+"STOP/REBOOT adminControl="+adminControl);
+      process.exit(86);
     }
   });
   setTimeout(checkAdminControl,500);  //how often we check for cmds

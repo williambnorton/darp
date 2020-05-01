@@ -441,7 +441,7 @@ app.get('/reboot', function (req, res) {
 app.get('/reload', function (req, res) {
     //console.log("EXPRess fetching '/state' state");
     console.log("EXITTING to reload the system");
-    expressRedisClient.hset("mint:0", "state", "RELOAD"); //handlepulse will exit 36
+    expressRedisClient.hset("mint:0", "adminControl", "RELOAD"); //handlepulse will exit 36
     res.redirect(req.get('referer'));
 });
 app.get('/config', function (req, res) {

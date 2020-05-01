@@ -108,136 +108,141 @@ server.on('message', function (message, remote) {
                 inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
                 inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1)
             };
-            //authenticatedPulse(pulse, function(err,authenticated) {  ///RE ENABLE !!!!!!
-            //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
-            if (pulse.version != MYBUILD) {
-                if (!isGenesisNode) {
-                    console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                    console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
-                    process.exit(36); //SOFTWARE RELOAD
+            authenticatedPulse(pulse, function (err, authenticated) {
+                if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
+                    redisClient.hset("mint:0", "state", "RUNNING"); //RUNNING means mint inquiries work
+                    console.log(lib_js_1.ts() + "Received pulse from a node previously called CONFIGURED... Set state to RUNNING.");
                 }
-            }
-            ;
-            redisClient.publish("pulses", msg);
-            redisClient.hmset(pulseLabel, pulse); //store the pulse
-            var pulseSamplePrefix = "darp-";
-            //add to matrix with expiration times
-            //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
-            //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
-            redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-            //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
-            //
-            //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
-            //
-            var owlsAry = pulse.owls.split(",");
-            //console.log(ts()+"owlsAry="+owlsAry);
-            for (var measure in owlsAry) {
-                //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
-                var srcMint = owlsAry[measure].split("=")[0];
-                var owl = owlsAry[measure].split("=")[1];
-                if (typeof owl == "undefined")
-                    owl = "";
-                //srcMint+"-"+me.mint
-                //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
-                //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
-                redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
-            }
-            redisClient.hmset("mint:" + pulse.srcMint, {
-                "owl": pulse.owl
+                //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+                if (pulse.version != MYBUILD) {
+                    if (!isGenesisNode) {
+                        console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                        console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
+                        process.exit(36); //SOFTWARE RELOAD
+                    }
+                }
+                ;
+                redisClient.publish("pulses", msg);
+                redisClient.hmset(pulseLabel, pulse); //store the pulse
+                var pulseSamplePrefix = "darp-";
+                //add to matrix with expiration times
+                //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
+                //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
+                redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+                //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
+                //
+                //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
+                //
+                var owlsAry = pulse.owls.split(",");
+                //console.log(ts()+"owlsAry="+owlsAry);
+                for (var measure in owlsAry) {
+                    //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
+                    var srcMint = owlsAry[measure].split("=")[0];
+                    var owl = owlsAry[measure].split("=")[1];
+                    if (typeof owl == "undefined")
+                        owl = "";
+                    //srcMint+"-"+me.mint
+                    //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
+                    //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
+                    redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
+                }
+                redisClient.hmset("mint:" + pulse.srcMint, {
+                    "owl": pulse.owl
+                });
+                //storeOWL(pulse.geo,me.geo,OWL);
+                //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
+                //});
             });
-            //storeOWL(pulse.geo,me.geo,OWL);
-            //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
-            //});
         });
     });
-});
-//
-//      storeOWL() - store one way latency to file or graphing & history
-//
-function storeOWL(src, dst, owl) {
-    var fs = require('fs');
-    var d = new Date();
-    var YYMMDD = lib_js_1.makeYYMMDD();
-    var filename = process.env.DARPDIR + "/" + src + '-' + dst + '.' + YYMMDD + '.txt';
-    var logMsg = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
-    //console.log("About to file("+filename+") log message:"+logMsg);
-    //if (owl > 2000 || owl < 0) {
-    //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
     //
-    //owl = 0;
-    //}
-    //var logMsg = "{y:" + owl + "},\n";
-    fs.appendFile(filename, logMsg, function (err) {
-        if (err)
-            throw err;
-        //console.log('Saved!');
-    });
-}
-function nth_occurrence(string, char, nth) {
-    var first_index = string.indexOf(char);
-    var length_up_to_first_index = first_index + 1;
-    if (nth == 1) {
-        return first_index;
+    //      storeOWL() - store one way latency to file or graphing & history
+    //
+    function storeOWL(src, dst, owl) {
+        var fs = require('fs');
+        var d = new Date();
+        var YYMMDD = lib_js_1.makeYYMMDD();
+        var filename = process.env.DARPDIR + "/" + src + '-' + dst + '.' + YYMMDD + '.txt';
+        var logMsg = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
+        //console.log("About to file("+filename+") log message:"+logMsg);
+        //if (owl > 2000 || owl < 0) {
+        //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+        //
+        //owl = 0;
+        //}
+        //var logMsg = "{y:" + owl + "},\n";
+        fs.appendFile(filename, logMsg, function (err) {
+            if (err)
+                throw err;
+            //console.log('Saved!');
+        });
     }
-    else {
-        var string_after_first_occurrence = string.slice(length_up_to_first_index);
-        var next_occurrence = nth_occurrence(string_after_first_occurrence, char, nth - 1);
-        if (next_occurrence === -1) {
-            return -1;
+    function nth_occurrence(string, char, nth) {
+        var first_index = string.indexOf(char);
+        var length_up_to_first_index = first_index + 1;
+        if (nth == 1) {
+            return first_index;
         }
         else {
-            return length_up_to_first_index + next_occurrence;
+            var string_after_first_occurrence = string.slice(length_up_to_first_index);
+            var next_occurrence = nth_occurrence(string_after_first_occurrence, char, nth - 1);
+            if (next_occurrence === -1) {
+                return -1;
+            }
+            else {
+                return length_up_to_first_index + next_occurrence;
+            }
         }
     }
-}
-//
-//  checkSEversion() - reload SW if there is new code to be had
-//this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
-//
-setTimeout(checkSWversion, 20 * 1000);
-; // see if we need new SW
-//checkSWversion();
-function checkSWversion() {
+    //
+    //  checkSEversion() - reload SW if there is new code to be had
+    //this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
+    //
     setTimeout(checkSWversion, 20 * 1000);
-    ;
-    //console.log("checkSWversion() - currentSW="+MYBUILD);
-    var http = require("http");
-    redisClient.hgetall("mint:1", function (err, genesis) {
-        if (err || genesis == null) {
-            console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
-            process.exit(36);
-        }
-        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
-        //console.log("checkSWversion(): url="+url);
-        http.get(url, function (res) {
-            res.setEncoding("utf8");
-            var body = "";
-            res.on("data", function (data) {
-                body += data;
-            });
-            res.on("end", function () {
-                var version = JSON.parse(body);
-                //console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
-                if (version != MYBUILD && !isGenesisNode) {
-                    console.log(lib_js_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
-                    process.exit(36); //SOFTWARE RELOAD
-                }
+    ; // see if we need new SW
+    //checkSWversion();
+    function checkSWversion() {
+        setTimeout(checkSWversion, 20 * 1000);
+        ;
+        //console.log("checkSWversion() - currentSW="+MYBUILD);
+        var http = require("http");
+        redisClient.hgetall("mint:1", function (err, genesis) {
+            if (err || genesis == null) {
+                console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
+                process.exit(36);
+            }
+            var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+            //console.log("checkSWversion(): url="+url);
+            http.get(url, function (res) {
+                res.setEncoding("utf8");
+                var body = "";
+                res.on("data", function (data) {
+                    body += data;
+                });
+                res.on("end", function () {
+                    var version = JSON.parse(body);
+                    //console.log(ts()+"HANDLEPULSE: checkSWversion(): genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
+                    if (version != MYBUILD && !isGenesisNode) {
+                        console.log(lib_js_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
+                        process.exit(36); //SOFTWARE RELOAD
+                    }
+                });
             });
         });
+    }
+    //
+    // listen for incoming pulses and convert into redis commands
+    //
+    server.on('listening', function () {
+        var address = server.address();
+        console.log(lib_js_1.ts() + "");
+        console.log(lib_js_1.ts() + "");
+        console.log(lib_js_1.ts() + 'UDP Server listening for pulses on ' + address.address + ':' + address.port);
+        console.log(lib_js_1.ts() + "");
+        console.log(lib_js_1.ts() + "");
     });
-}
-//
-// listen for incoming pulses and convert into redis commands
-//
-server.on('listening', function () {
-    var address = server.address();
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + 'UDP Server listening for pulses on ' + address.address + ':' + address.port);
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-});
-process.on('SIGTERM', function () {
-    console.info('handlePulse SIGTERM signal received.');
-    process.exit(36);
+    process.on('SIGTERM', function () {
+        console.info('handlePulse SIGTERM signal received.');
+        process.exit(36);
+    });
 });
