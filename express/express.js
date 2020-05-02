@@ -542,9 +542,9 @@ function handleGraph(req, res, rtt) {
         try {
             //lrange all values from redis for srcMint to DstMint
             expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
-                samples.forEach(function (sample) {
-                    txt += sample + " ";
-                });
+                for (var sample in samples) {
+                    txt += samples[sample];
+                }
                 console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
                 txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
                 console.log(lib_1.ts() + "txt to show graph: ");
