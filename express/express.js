@@ -227,7 +227,7 @@ function handleShowState(req, res) {
                     var colEntry = pulses[col];
                     //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
                     if (count < 5)
-                        txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + " ms</th>";
+                        txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + " </th>";
                     else
                         txt += '<th>' + colEntry.srcMint + "</th>";
                 }
@@ -248,6 +248,8 @@ function handleShowState(req, res) {
                         console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         if (owl == "")
                             txt += '<td id="' + entryLabel + '">' + owl + "</td>";
+                        else if (count < 10)
+                            txt += '<td id="' + entryLabel + '">' + owl + " ms</td>";
                         else
                             txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                     }
