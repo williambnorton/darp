@@ -552,14 +552,14 @@ function handleGraph(req, res, rtt) {
                 console.log(lib_1.ts() + "txt to show graph: " + txt);
                 console.log(lib_1.ts() + "txt to show graph: ");
                 console.log(lib_1.ts() + "txt to show graph: ");
+                txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
+                res.end(txt);
             });
         }
         catch (err) {
             console.error(err);
         }
         //txt += '</script> </body> </html>';
-        txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
-        res.end(txt);
         return;
     });
 }
