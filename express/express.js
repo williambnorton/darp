@@ -236,33 +236,26 @@ function handleShowState(req, res) {
                 var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
-                    getIPport(rowEntry.srcMint, function (IPnPort) {
-                        txt += '<tr><td><a href="http://' + IPnPort + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>';
-                        var lastCol = "";
-                        for (var col in pulses)
-                            lastCol = col;
-                        for (var col in pulses) {
-                            var colEntry = pulses[col];
-                            var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
-                            var owl = "";
-                            if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
-                                (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
-                                owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
-                            }
-                            console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
-                            if (owl == "")
-                                txt += '<td id="' + entryLabel + '">' + "0" + "</td>";
-                            else if (count < 100)
-                                txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + IPnPort + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
-                            else
-                                txt += '<td id="' + entryLabel + '">' + owl + "</td>";
-                            if (col == lastCol)
-                                txt += "</tr>";
+                    txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
+                    for (var col in pulses) {
+                        var colEntry = pulses[col];
+                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
+                        var owl = "";
+                        if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
+                            (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
+                            owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
                         }
-                        if (row == lastCol)
-                            txt += "</table>";
-                    });
+                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
+                        if (owl == "")
+                            txt += '<td id="' + entryLabel + '">' + "0" + "</td>";
+                        else if (count < 100)
+                            txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                        else
+                            txt += '<td id="' + entryLabel + '">' + owl + "</td>";
+                    }
+                    txt += "</tr>";
                 }
+                txt += "</table>";
                 //
                 //  Externalize pulses 
                 //
