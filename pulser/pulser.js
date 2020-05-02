@@ -288,6 +288,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             console.log("buildPulsePkt(): ERROR - ");
         }
         else {
+            redisClient.hmset("mint:0", "state", "RUNNING"); //update stats
             if (mintEntry != null) {
                 //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
                 if (mintEntry.owl == "")
@@ -366,8 +367,10 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     console.log("NOT GETTING HERE EEVR PULSER sendToAry=" + lib_1.dump(sendToAry));
                 }
             }
-            else
-                newMint(mint); //go fetch the mint from the group owner - the genesis node
+            else { //Go fetch the mint associated with this guy we re supposed to pulse
+                newMint(mint); //go fetch 
+                redisClient.hmset("mint:0", "state", "CONFIGURED"); //update stats
+            }
         }
     });
 }
