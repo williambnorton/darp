@@ -158,12 +158,12 @@ server.on('message', function (message, remote) {
                 //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
                 //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                 redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-                redisClient.rpush(pulse.srcMint + "-" + me.mint, {
-                    "ts": "" + lib_js_1.now(),
-                    "src": pulse.srcMint,
-                    "dst": me.mint,
-                    "owl": pulse.owl
-                });
+                redisClient.rpush([pulse.srcMint + "-" + me.mint, {
+                        "ts": "" + lib_js_1.now(),
+                        "src": pulse.srcMint,
+                        "dst": me.mint,
+                        "owl": pulse.owl
+                    }]);
                 //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
                 //
                 //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
@@ -180,12 +180,12 @@ server.on('message', function (message, remote) {
                     //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                     //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                     redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
-                    redisClient.rpush(srcMint + "-" + pulse.srcMint, {
-                        "ts": "" + lib_js_1.now(),
-                        "src": srcMint,
-                        "dst": pulse.srcMint,
-                        "owl": owl
-                    });
+                    redisClient.rpush([srcMint + "-" + pulse.srcMint, {
+                            "ts": "" + lib_js_1.now(),
+                            "src": srcMint,
+                            "dst": pulse.srcMint,
+                            "owl": owl
+                        }]);
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl
