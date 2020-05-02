@@ -487,6 +487,79 @@ app.get('/state', function (req, res) {
     });
     return;
 });
+app.get('/graph', function (req, res) {
+    //console.log("EXPRess fetching '/state' state");
+    //console.log("app.get('/state' callback config="+dump(config));
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    handleGraph(req, res, true);
+    return;
+});
+//
+//      handleGraph() - show a graph of the collected data
+//          note - SRC and DST are the ints active at the time of the pulseGroup
+//
+function handleGraph(req, res, rtt) {
+    var fs = require('fs');
+    res.setHeader('Content-Type', 'text/html');
+    expressRedisClient.hgetall("mint:0", function (err, me) {
+        var DST = me.geo; //set defaults
+        var group = me.group; //set defaults
+        var SRC = "MAZUAE";
+        var ary = req.url.split("?");
+        if (ary.length > 1) {
+            //console.log("ary length="+ary.length);
+            var params = ary[1].split("&");
+            if (params.length > 1) {
+                //console.log("paramslength="+ary.length+" params="+params[0]+params[1]);
+                for (var i = 0; i < params.length; i++) {
+                    var leftSide = params[i].split("=")[0];
+                    var rightSide = params[i].split("=")[1];
+                    switch (leftSide) {
+                        case 'src':
+                            SRC = rightSide;
+                            break;
+                        case 'dst':
+                            DST = rightSide;
+                            break;
+                    }
+                }
+            }
+        }
+        var txt = '';
+        //------------------------------------------------------------
+        //txt += '{ y: 450 }, { y: 414}, { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" }, { y: 460 }, { y: 450 }, { y: 500 }, { y: 480 }, { y: 480 }, { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" }, { y: 500 }, { y: 480 }, { y: 510 } ';
+        //var myYYMMDD = YYMMDD();
+        //var yesterdayYYMMDD = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().substring(2, 10).replace(/-/g, '');
+        //var path = SRC + "-" + DST + "." + myYYMMDD + '.txt';
+        //if (rtt) path = SRC + "-" + DST +"-"+ SRC + "." + myYYMMDD + '.txt';
+        txt += '<!DOCTYPE HTML> <html> <head>';
+        txt += '<script src="https://canvasjs.com/assets/script/canvasjs.min.js">';
+        txt += '</script>';
+        txt += '  <script> window.onload = function () { ';
+        //var contents=fs.readFile('canvasjs.min.js', 'utf8');
+        //txt+=contents;
+        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + "headingGoesHere" + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+        try {
+            //lrange all values from redis for srcMint to DstMint
+            expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
+                samples.forEach(function (sample) {
+                    txt += sample + " ";
+                });
+                console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
+                txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
+                console.log(lib_1.ts() + "txt to show graph: " + txt);
+            });
+        }
+        catch (err) {
+            console.error(err);
+        }
+        //txt += '</script> </body> </html>';
+        txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
+        res.end(txt);
+        return;
+    });
+}
 //
 // 
 //
