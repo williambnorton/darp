@@ -543,8 +543,6 @@ app.get('/state', function(req, res) {
 //          note - SRC and DST are the ints active at the time of the pulseGroup
 //
 function handleGraph(req, res, rtt) {
-    var fs = require('fs');
-
     res.setHeader('Content-Type', 'text/html');
     expressRedisClient.hgetall("mint:0", function(err, me) {
 
@@ -597,8 +595,11 @@ function handleGraph(req, res, rtt) {
                 })
                 console.log(ts()+"redis for /graph data request reply="+dump(samples));
                 txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
+                console.log(ts()+"txt to show graph: ");
+                console.log(ts()+"txt to show graph: ");
                 console.log(ts()+"txt to show graph: "+txt);
-
+                console.log(ts()+"txt to show graph: ");
+                console.log(ts()+"txt to show graph: ");
             });
         } catch (err) {
                 console.error(err)
