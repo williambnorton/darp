@@ -350,6 +350,7 @@ function handleShowState(req, res) {
                //txt+="<th>G</th>"
                //<th>rtt</th>"
                txt += "<th>CONTROLS</th>"
+               txt += "<th>adminControl</th>"
                txt += "</tr>"
 
                //console.log(ts()+"                            mintTable="+dump(mintTable));
@@ -391,6 +392,8 @@ function handleShowState(req, res) {
                    txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
                    txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
                    txt += '</FORM>' + "</td>";
+                   txt += "<td>" + mintEntry.adminControl + "</td>"
+
                    txt += "</tr>"
                }
                txt += "</table>";
