@@ -158,7 +158,11 @@ server.on('message', function (message, remote) {
                 //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
                 //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                 redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-                redisClient.rpush([pulse.srcMint + "-" + me.mint, pulse.srcMint + "-" + me.mint + "-" + pulse.owl]);
+                //{ x: new Date('" + d + "'), y: " + owl + "},
+                var d = new Date();
+                var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
+                //redisClient.rpush([ pulse.srcMint + "-" + me.mint, pulse.srcMint+"-"+me.mint+"-"+pulse.owl]);
+                redisClient.rpush([pulse.srcMint + "-" + me.mint, owlStat]);
                 //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
                 //
                 //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
@@ -175,6 +179,8 @@ server.on('message', function (message, remote) {
                     //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                     //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                     redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
+                    //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
+                    var owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
                     redisClient.rpush([srcMint + "-" + pulse.srcMint, srcMint + "-" + pulse.srcMint + "-" + owl + "-" + lib_js_1.now()]);
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
