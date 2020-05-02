@@ -84,9 +84,9 @@ function authenticatedPulse(pulse, callback) {
           //callback(null,false);
       } else {
           //simple authentication matches mint to other resources
-          if (senderMintEntry.geo == pulse.geo) callback(null, true)
+          if ((senderMintEntry.geo == pulse.geo)&&(senderMintEntry.mint == pulse.srcMint)) callback(null, true)
           else {
-              console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for "+pulse.srcMint+" in our mint table...we had: "+senderMintEntry.geo); //+dump(pulse)+dump(senderMintEntry.geo));
+              console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for "+pulse.srcMint+" in our mint table...we had: "+senderMintEntry.geo+" mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
               //callback(null,false)
           }
       }
@@ -183,7 +183,12 @@ server.on('message', function(message, remote) {
               //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
               
               redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-              redisClient.lpush(pulseSamplePrefix + pulse.srcMint + "-" + me.mint, pulse.owl, 'EX', 60*60*24);
+              redisClient.hmset(pulseSamplePrefix + pulse.srcMint + "-" + me.mint, {
+                    "ts" : ""+now(),
+                    "src" : pulse.srcMint,
+                    "dst" : me.mint,
+                    "owl" : pulse.owl
+              });
 
               //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
 
@@ -201,8 +206,13 @@ server.on('message', function(message, remote) {
                   //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                   //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                   redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
-                  redisClient.lpush(pulseSamplePrefix + srcMint + "-" + pulse.srcMint, owl, 'EX', 60*60*24);
-              }
+                  redisClient.hmset(pulseSamplePrefix + srcMint + "-" + pulse.srcMint, {
+                    "ts" : ""+now(),
+                    "src" : srcMint,
+                    "dst" : pulse.srcMint,
+                    "owl" : owl
+                  });              
+            }
 
               redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
                   "owl": pulse.owl
