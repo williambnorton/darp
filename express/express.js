@@ -257,7 +257,7 @@ function handleShowState(req, res) {
                 //
                 //  Externalize pulses 
                 //
-                txt += '<br><h2>pulseTable msgSize=' + '___' + '</h2><table border="1">';
+                txt += '<br><h2>pulseTable' + '</h2><table border="1">';
                 txt += "<tr>";
                 txt += "<th>geo</th>";
                 txt += "<th>group</th>";
@@ -272,7 +272,7 @@ function handleShowState(req, res) {
                 txt += "<th>outMsgs</th>";
                 txt += "<th>pktDrops</th>";
                 txt += "<th>pulseSz</th>";
-                //txt+="<th>lastMsg</th>"
+                txt += "<th>lastMsg</th>";
                 txt += "</tr>";
                 //console.log(ts()+"                            pulses="+dump(pulses));
                 for (var a in pulses) {
@@ -300,7 +300,14 @@ function handleShowState(req, res) {
                     txt += "<td>" + pulseEntry.inMsgs + "</td>";
                     txt += "<td>" + pulseEntry.outMsgs + "</td>";
                     txt += "<td>" + pulseEntry.pktDrops + "</td>";
-                    txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
+                    if (pulseEntry.lastMsg) {
+                        txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
+                        txt += "<td>" + pulseEntry.lastMsg + "</td>";
+                    }
+                    else {
+                        txt += "<td>" + "" + "</td>";
+                        txt += "<td>" + "" + "</td>";
+                    }
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
