@@ -54,6 +54,24 @@ redisClient.hgetall("mint:0", function(err, me) {
 });
 
 
+function checkAdminControl() {
+//console.log(ts()+"checkAdminControl");
+  
+    redisClient.hget("mint:0", "adminControl", function(err,adminControl) {
+      if (adminControl=="RELOAD" ) {
+        console.log(ts()+"RELOAD SOFTWARE adminControl="+adminControl);
+        process.exit(36);
+      }
+      if (adminControl=="STOP" ||adminControl=="REBOOT"  ) {
+        console.log(ts()+"STOP/REBOOT adminControl="+adminControl);
+        process.exit(86);
+      }
+    });
+    setTimeout(checkAdminControl,500);  //how often we check for cmds
+  }
+  setTimeout(checkAdminControl,1000);
+
+
 
 //
 //  only callback if authenticated
