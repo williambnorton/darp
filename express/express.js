@@ -538,7 +538,7 @@ function handleGraph(req, res, rtt) {
         txt += '  <script> window.onload = function () { ';
         //var contents=fs.readFile('canvasjs.min.js', 'utf8');
         //txt+=contents;
-        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + "headingGoesHere" + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
         try {
             //lrange all values from redis for srcMint to DstMint
             expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
