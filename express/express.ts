@@ -599,7 +599,7 @@ function handleGraph(req, res, rtt) {
                 console.log(ts()+"txt to show graph: "+txt);
                 console.log(ts()+"txt to show graph: ");
                 console.log(ts()+"txt to show graph: ");
-                txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
+                txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
                 res.end(txt);
 
             });
@@ -607,14 +607,6 @@ function handleGraph(req, res, rtt) {
                 console.error(err)
         }
 
-
-
-
-
-
-    //txt += '</script> </body> </html>';
-
-        
         return;
     });
 }
