@@ -216,7 +216,7 @@ function handleShowState(req, res) {
            //
            //    Header
            //
-           if (me.isGenesisNode == "1") txt += "<h1>GENESIS NODE " + me.geo + " (" + me.ipaddr + ":" + me.port + " ) " + me.state + " " + me.version.split(".")[2] + "</h1>";
+           if (me.isGenesisNode == "1") txt += '<h1>GENESIS NODE <a href=http://' + me.ipaddr+":"+me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2] + "</h1>";
            else txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.state + " " + me.version;
            if (me.adminControl) txt += "AdminControl: " + me.adminControl;
            txt += "</h1>"
