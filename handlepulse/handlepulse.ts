@@ -211,7 +211,7 @@ server.on('message', function(message, remote) {
 
                   //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
 
-                owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
+                  owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
                   redisClient.rpush([ srcMint + "-" + pulse.srcMint, owlStat]);              
 
               }
