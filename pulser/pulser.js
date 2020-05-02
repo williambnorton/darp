@@ -178,6 +178,7 @@ function newMint(mint) {
                             redisClient.hmset("gSRlist", (_a = {},
                                 _a[mintEntry.geo + ":" + mintEntry.group] = mint,
                                 _a));
+                            redisClient.hmset("mint:0", "state", "RUNNING"); //We received a mint we are in RUNNING state
                             //
                             //  if Genesis node, expire in 1 minute before removing it
                             //  else 5 minutes
@@ -288,7 +289,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             console.log("buildPulsePkt(): ERROR - ");
         }
         else {
-            redisClient.hmset("mint:0", "state", "RUNNING"); //update stats
             if (mintEntry != null) {
                 //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
                 if (mintEntry.owl == "")
@@ -369,7 +369,6 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
             }
             else { //Go fetch the mint associated with this guy we re supposed to pulse
                 newMint(mint); //go fetch 
-                redisClient.hmset("mint:0", "state", "CONFIGURED"); //update stats
             }
         }
     });

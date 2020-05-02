@@ -445,11 +445,12 @@ app.get('/', function(req, res) {
    return
 });
 //
-//
+//  TODO: require parm of geo&mint# - authenticate by checking against our mint:# and geo for that mint 
 //
 app.get('/mint/:mint', function(req, res) {
    //console.log("fetching '/mint' state");
 
+    //if mint:n lookup shows geo==parm and inMsgs>0 mark him UP
    expressRedisClient.hgetall("mint:" + req.params.mint, function(err, mintEntry) {
        res.end(JSON.stringify(mintEntry, null, 2));
        return;
