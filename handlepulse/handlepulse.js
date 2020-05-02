@@ -65,7 +65,7 @@ setTimeout(checkAdminControl, 1000);
 function authenticatedPulse(pulse, callback) {
     redisClient.hgetall("mint:" + pulse.srcMint, function (err, senderMintEntry) {
         if (senderMintEntry == null) {
-            console.log("authenticatedPulse(): DROPPING We don't have a mint entry for this pulse:" + lib_js_1.dump(pulse));
+            console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint " + pulse.srcMint + " this pulse:" + lib_js_1.dump(pulse));
             //callback(null,false);
         }
         else {
@@ -73,7 +73,7 @@ function authenticatedPulse(pulse, callback) {
             if (senderMintEntry.geo == pulse.geo)
                 callback(null, true);
             else {
-                console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not in our mint table"); //+dump(pulse)+dump(senderMintEntry.geo));
+                console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for " + pulse.srcMint + " in our mint table...we had: " + senderMintEntry.geo); //+dump(pulse)+dump(senderMintEntry.geo));
                 //callback(null,false)
             }
         }
