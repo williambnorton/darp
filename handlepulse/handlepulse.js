@@ -124,7 +124,7 @@ server.on('message', function (message, remote) {
                     me.state = "RUNNING";
                     redisClient.hset("mint:0", "state", "RUNNING"); //RUNNING means mint inquiries work
                     redisClient.hgetall("mint:0", function (newme) {
-                        console.log(lib_js_1.ts() + "Received pulse from a node previously called CONFIGURED... Set state to RUNNING:" + lib_js_1.dump(newme));
+                        console.log(lib_js_1.ts() + "Received pulse from a node previously called CONFIGURED... Set its state RUNNING:" + lib_js_1.dump(newme));
                     });
                 }
                 //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));

@@ -59,7 +59,7 @@ redisClient.hgetall("mint:0", function(err, me) {
 //  only callback if authenticated
 //
 function authenticatedPulse(pulse, callback) {
-  redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {
+  redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
 
       if (senderMintEntry == null) {
           console.log("authenticatedPulse(): DROPPING We don't have a mint entry for this pulse:" + dump(pulse));
@@ -133,14 +133,14 @@ server.on('message', function(message, remote) {
               inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1)
           };
 
-          authenticatedPulse(pulse, function(err, authenticated) { ///RE ENABLE !!!!!!
+          authenticatedPulse(pulse, function(err, authenticated) { 
 
               if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
                   console.log(ts() + "me=" + dump(me));
                   me.state = "RUNNING"
                   redisClient.hset("mint:0", "state", "RUNNING"); //RUNNING means mint inquiries work
                   redisClient.hgetall("mint:0", function(newme) {
-                      console.log(ts() + "Received pulse from a node previously called CONFIGURED... Set state to RUNNING:" + dump(newme));
+                      console.log(ts() + "Received pulse from a node previously called CONFIGURED... Set its state RUNNING:" + dump(newme));
                   })
               }
 

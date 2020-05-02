@@ -214,7 +214,7 @@ function handleShowState(req, res) {
                 //
                 // show OWL Matrix
                 //
-                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
+                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '(in ms)</h2><table border="1">';
                 txt += '<tr><th></th>';
                 var lastEntry = "";
                 console.log(lib_1.ts() + "handleShowState() pulses=" + lib_1.dump(pulses));
@@ -249,7 +249,7 @@ function handleShowState(req, res) {
                         if (owl == "")
                             txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                         else
-                            txt += '<td id="' + entryLabel + '">' + owl + "ms</td>";
+                            txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                     }
                     txt += "</tr>";
                 }
