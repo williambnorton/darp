@@ -216,17 +216,20 @@ function handleShowState(req, res) {
                 //
                 txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
                 txt += '<tr><th></th>';
-                for (var col in pulses) {
-                    var colEntry = pulses[col];
-                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                    txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
-                }
-                txt += "</tr>";
                 var lastEntry = "";
                 console.log(lib_1.ts() + "handleShowState() pulses=" + lib_1.dump(pulses));
                 for (var row in pulses) {
                     lastEntry = pulses[row].geo + ":" + pulses[row].group;
                 }
+                for (var col in pulses) {
+                    var colEntry = pulses[col];
+                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+                    if (pulses.length < 5)
+                        txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
+                    else
+                        txt += '<th>' + colEntry.srcMint + "</th>";
+                }
+                txt += "</tr>";
                 console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lib_1.dump(lastEntry));
                 var fetchStack = new Array();
                 for (var row in pulses) {
