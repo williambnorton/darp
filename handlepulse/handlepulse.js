@@ -158,7 +158,7 @@ server.on('message', function (message, remote) {
                 //redisClient.set(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl, pulse.owl);  //store the pulse
                 //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                 redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-                redisClient.hmset(pulseSamplePrefix + pulse.srcMint + "-" + me.mint, {
+                redisClient.rpush(pulse.srcMint + "-" + me.mint, {
                     "ts": "" + lib_js_1.now(),
                     "src": pulse.srcMint,
                     "dst": me.mint,
@@ -180,7 +180,7 @@ server.on('message', function (message, remote) {
                     //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                     //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                     redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
-                    redisClient.hmset(pulseSamplePrefix + srcMint + "-" + pulse.srcMint, {
+                    redisClient.rpush(srcMint + "-" + pulse.srcMint, {
                         "ts": "" + lib_js_1.now(),
                         "src": srcMint,
                         "dst": pulse.srcMint,
