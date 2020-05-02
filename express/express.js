@@ -214,7 +214,7 @@ function handleShowState(req, res) {
                 //
                 // show OWL Matrix
                 //
-                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '(in ms)</h2><table border="1">';
+                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
                 txt += '<tr><th></th>';
                 var lastEntry = "";
                 console.log(lib_1.ts() + "handleShowState() pulses=" + lib_1.dump(pulses));
@@ -227,7 +227,7 @@ function handleShowState(req, res) {
                     var colEntry = pulses[col];
                     //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
                     if (count < 5)
-                        txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>";
+                        txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + " ms</th>";
                     else
                         txt += '<th>' + colEntry.srcMint + "</th>";
                 }
