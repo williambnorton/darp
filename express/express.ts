@@ -264,7 +264,8 @@ function handleShowState(req, res) {
                            owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint]
                        }
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
-                       txt += '<td id="' + entryLabel + '">' + owl + "ms</td>"
+                       if (owl=="") txt += '<td id="' + entryLabel + '">' + owl + "</td>"
+                       else txt += '<td id="' + entryLabel + '">' + owl + "ms</td>"
                    }
                    txt += "</tr>"
                }
