@@ -181,8 +181,9 @@ server.on('message', function(message, remote) {
 
 
               //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
-
+              
               redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+              redisClient.lpush(pulseSamplePrefix + pulse.srcMint + "-" + me.mint, pulse.owl, 'EX', 60*60*24);
 
               //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
 
@@ -200,6 +201,7 @@ server.on('message', function(message, remote) {
                   //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                   //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                   redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
+                  redisClient.lpush(pulseSamplePrefix + srcMint + "-" + pulse.srcMint, owl, 'EX', 60*60*24);
               }
 
               redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
