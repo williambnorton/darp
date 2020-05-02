@@ -160,6 +160,8 @@ server.on('message', function (message, remote) {
                 redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
                 //{ x: new Date('" + d + "'), y: " + owl + "},
                 var d = new Date();
+                if (pulse.owl == "")
+                    pulse.owl = "0";
                 var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
                 //redisClient.rpush([ pulse.srcMint + "-" + me.mint, pulse.srcMint+"-"+me.mint+"-"+pulse.owl]);
                 redisClient.rpush([pulse.srcMint + "-" + me.mint, owlStat]);
@@ -180,6 +182,8 @@ server.on('message', function (message, remote) {
                     //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
                     redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
                     //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
+                    if (owl == "")
+                        owl = 0;
                     owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
                     redisClient.rpush([srcMint + "-" + pulse.srcMint, owlStat]);
                 }

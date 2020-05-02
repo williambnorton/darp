@@ -187,6 +187,7 @@ server.on('message', function(message, remote) {
               //{ x: new Date('" + d + "'), y: " + owl + "},
 
               var d = new Date();
+              if (pulse.owl=="") pulse.owl="0";
               var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
 
               //redisClient.rpush([ pulse.srcMint + "-" + me.mint, pulse.srcMint+"-"+me.mint+"-"+pulse.owl]);
@@ -210,7 +211,7 @@ server.on('message', function(message, remote) {
                   redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
 
                   //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
-
+                  if (owl=="") owl=0;
                   owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
                   redisClient.rpush([ srcMint + "-" + pulse.srcMint, owlStat]);              
 
