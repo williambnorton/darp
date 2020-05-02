@@ -328,7 +328,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + pulseEntry.pktDrops + "</td>"
                    if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"
-                        txt += "<td>" + pulseEntry.lastMsg.substring(50) + "</td>"
+                        txt += "<td>" + pulseEntry.lastMsg.substring(0,30) + "</td>"
                     } else { 
                         txt += "<td>" + "" + "</td>"
                         txt += "<td>" + "" + "</td>"
