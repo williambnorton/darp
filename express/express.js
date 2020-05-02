@@ -249,7 +249,7 @@ function handleShowState(req, res) {
                         if (owl == "")
                             txt += '<td id="' + entryLabel + '">' + "0" + "</td>";
                         else if (count < 10)
-                            txt += '<td id="' + entryLabel + '">' + '<a href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" target="_blank">' + owl + "</a>" + " ms</td>";
+                            txt += '<td id="' + entryLabel + '">' + '<a href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
                         else
                             txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                     }

@@ -250,7 +250,6 @@ function handleShowState(req, res) {
                }
                txt += "</tr>"
 
-
                console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
                var fetchStack = new Array();
                for (var row in pulses) {
@@ -267,7 +266,7 @@ function handleShowState(req, res) {
                        }
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
-                       else if (count<10) txt += '<td id="' + entryLabel + '">' + '<a href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" target="_blank">' + owl + "</a>" + " ms</td>"
+                       else if (count<10) txt += '<td id="' + entryLabel + '">' + '<a href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                             else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
