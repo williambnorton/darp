@@ -236,14 +236,16 @@ function handleShowState(req, res) {
                txt += '<tr><th></th>'
                var lastEntry = "";
                console.log(ts() + "handleShowState() pulses=" + dump(pulses));
+               var count=0;
                for (var row in pulses) {
                    lastEntry = pulses[row].geo + ":" + pulses[row].group;
+                   count++
                }
 
                for (var col in pulses) {
                    var colEntry = pulses[col];
                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                   if (pulses.length <5) txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>"
+                   if (count <5) txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + "</th>"
                    else txt += '<th>' + colEntry.srcMint + "</th>"
                }
                txt += "</tr>"
