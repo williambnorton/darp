@@ -228,9 +228,9 @@ function handleShowState(req, res) {
                     var colEntry = pulses[col];
                     //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
                     if (count < 5)
-                        txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + " </th>";
+                        txt += '<th><a href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>";
                     else
-                        txt += '<th>' + colEntry.srcMint + "</th>";
+                        txt += '<th><a href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.srcMint + "</a></th>";
                 }
                 txt += "</tr>";
                 //print OWL matrix
@@ -240,7 +240,7 @@ function handleShowState(req, res) {
                     var rowEntry = pulses[row];
                     //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
                     //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
-                    txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>'; //heacer on left side
+                    txt += '<tr><td><a href="http://' + rowEntry.ipaddr + ":" + rowEntry.port + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                     for (var col in pulses) {
                         var colEntry = pulses[col];
                         var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;

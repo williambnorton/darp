@@ -246,8 +246,8 @@ function handleShowState(req, res) {
                for (var col in pulses) {
                    var colEntry = pulses[col];
                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                   if (count <5) txt += '<th>' + colEntry.geo + " " + colEntry.srcMint + " </th>"
-                   else txt += '<th>' + colEntry.srcMint + "</th>"
+                   if (count <5) txt += '<th><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>"
+                   else txt += '<th><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.srcMint + "</a></th>"
                }
                txt += "</tr>"
 
@@ -268,7 +268,7 @@ function handleShowState(req, res) {
 
 
 
-                   txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>'; //heacer on left side
+                   txt += '<tr><td><a href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];
                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint

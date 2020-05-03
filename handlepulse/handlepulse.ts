@@ -86,7 +86,7 @@ function authenticatedPulse(pulse, callback) {
           //simple authentication matches mint to other resources
           if ((senderMintEntry.geo == pulse.geo)&&(senderMintEntry.mint == pulse.srcMint)) {
             pulse.ipaddr=senderMintEntry.ipaddr; //for convenience
-            pulse.ipaddr=senderMintEntry.port;  //for convenience
+            pulse.port=senderMintEntry.port;  //for convenience
 
             callback(pulse, true)
           }
