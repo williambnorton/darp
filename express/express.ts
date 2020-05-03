@@ -628,7 +628,7 @@ function handleGraph(req, res, rtt) {
             //lrange all values from redis for srcMint to DstMint
             expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
                 expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
-                    txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+srcEntry.geo+"-"+dstEntry.geo+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+                    txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+srcEntry.geo+"("+SRC+")"+"-"+dstEntry.geo+"("+DST+")"+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
 
                     expressRedisClient.lrange(""+SRC+"-"+DST, 0, -1, function(err, samples) {
                         for( var sample in samples) {
