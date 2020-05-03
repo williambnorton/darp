@@ -294,12 +294,15 @@ function handleShowState(req, res) {
 
 
                //
-               //  Externalize pulses 
+               //  Externalize pulse structures 
                //
                txt += '<br><h2>pulseTable'+'</h2><table border="1">';
                txt += "<tr>"
                txt += "<th>geo</th>"
                txt += "<th>group</th>"
+               txt += "<th>ipaddr</th>"
+               txt += "<th>port</th>"
+               
                txt += "<th>seq</th>"
                txt += "<th>pulseTimestamp</th>"
                txt += "<th>srcMint</th>"
@@ -328,6 +331,9 @@ function handleShowState(req, res) {
 
                    //txt+="<td>"+pulseEntry.geo+"</td>"
                    txt += "<td>" + pulseEntry.group + "</td>"
+                   txt += "<td>" + pulseEntry.ipaddr + "</td>"
+                   txt += "<td>" + pulseEntry.port + "</td>"
+                   
                    txt += "<td>" + pulseEntry.seq + "</td>"
 
                    var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";

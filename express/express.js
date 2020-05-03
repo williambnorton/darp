@@ -262,12 +262,14 @@ function handleShowState(req, res) {
                 }
                 txt += "</table>";
                 //
-                //  Externalize pulses 
+                //  Externalize pulse structures 
                 //
                 txt += '<br><h2>pulseTable' + '</h2><table border="1">';
                 txt += "<tr>";
                 txt += "<th>geo</th>";
                 txt += "<th>group</th>";
+                txt += "<th>ipaddr</th>";
+                txt += "<th>port</th>";
                 txt += "<th>seq</th>";
                 txt += "<th>pulseTimestamp</th>";
                 txt += "<th>srcMint</th>";
@@ -292,6 +294,8 @@ function handleShowState(req, res) {
                     txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + me.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
                     txt += "<td>" + pulseEntry.group + "</td>";
+                    txt += "<td>" + pulseEntry.ipaddr + "</td>";
+                    txt += "<td>" + pulseEntry.port + "</td>";
                     txt += "<td>" + pulseEntry.seq + "</td>";
                     var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                     if (pulseEntry.pulseTimestamp == 0)
