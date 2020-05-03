@@ -253,7 +253,7 @@ function handleShowState(req, res) {
                         if (owl == "")
                             txt += '<td id="' + entryLabel + '">' + "0" + "</td>";
                         else if (count < 100)
-                            txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                            txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
                         else
                             txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                     }
@@ -291,7 +291,7 @@ function handleShowState(req, res) {
                         console.log(lib_1.ts() + "NOT A PULSE!!!!!");
                     txt += "<tr>";
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + me.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
                     txt += "<td>" + pulseEntry.group + "</td>";
                     txt += "<td>" + pulseEntry.ipaddr + "</td>";
@@ -400,7 +400,7 @@ function handleShowState(req, res) {
                 for (var entry in gSRlist) {
                     var mint = gSRlist[entry];
                     //console.log(ts()+"mint="+mint);
-                    txt += "<tr><td><a>" + entry + "</a></td><td><a>" + mint + "</a></td></tr>";
+                    txt += '<tr><td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + entry + "</a></td><td><a>" + mint + "</a></td></tr>";
                 }
                 txt += "</table>";
                 res.setHeader('Content-Type', 'text/html');
