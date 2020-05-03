@@ -523,6 +523,7 @@ app.get('/graph', function (req, res) {
 function handleGraph(req, res, rtt) {
     res.setHeader('Content-Type', 'text/html');
     expressRedisClient.hgetall("mint:0", function (err, me) {
+        //this should better be done using parm parser of express - passed in
         var DST = me.geo; //set defaults
         var group = me.group; //set defaults
         var SRC = "MAZUAE";
@@ -547,7 +548,7 @@ function handleGraph(req, res, rtt) {
             }
         }
         var txt = '';
-        //------------------------------------------------------------
+        //------------------ SRC and DST are mints    ------------------------------------------
         //txt += '{ y: 450 }, { y: 414}, { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" }, { y: 460 }, { y: 450 }, { y: 500 }, { y: 480 }, { y: 480 }, { y: 410 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" }, { y: 500 }, { y: 480 }, { y: 510 } ';
         //var myYYMMDD = YYMMDD();
         //var yesterdayYYMMDD = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().substring(2, 10).replace(/-/g, '');
@@ -559,22 +560,26 @@ function handleGraph(req, res, rtt) {
         txt += '  <script> window.onload = function () { ';
         //var contents=fs.readFile('canvasjs.min.js', 'utf8');
         //txt+=contents;
-        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
         try {
             //lrange all values from redis for srcMint to DstMint
-            expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
-                for (var sample in samples) {
-                    txt += samples[sample];
-                }
-                console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
-                txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
-                console.log(lib_1.ts() + "txt to show graph: ");
-                console.log(lib_1.ts() + "txt to show graph: ");
-                console.log(lib_1.ts() + "txt to show graph: " + txt);
-                console.log(lib_1.ts() + "txt to show graph: ");
-                console.log(lib_1.ts() + "txt to show graph: ");
-                txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
-                res.end(txt);
+            expressRedisClient.hgetall("mint:" + SRC, function (err, srcEntry) {
+                expressRedisClient.hgetall("mint:" + DST, function (err, dstEntry) {
+                    txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + srcEntry.geo + "-" + dstEntry.geo + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+                    expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
+                        for (var sample in samples) {
+                            txt += samples[sample];
+                        }
+                        console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
+                        txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
+                        console.log(lib_1.ts() + "txt to show graph: ");
+                        console.log(lib_1.ts() + "txt to show graph: ");
+                        console.log(lib_1.ts() + "txt to show graph: " + txt);
+                        console.log(lib_1.ts() + "txt to show graph: ");
+                        console.log(lib_1.ts() + "txt to show graph: ");
+                        txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
+                        res.end(txt);
+                    });
+                });
             });
         }
         catch (err) {
