@@ -348,7 +348,7 @@ function handleShowState(req, res) {
                txt += "<th>ipaddr</th>"
                txt += "<th>publickey</th>"
                txt += "<th>state</th>"
-               txt += "<th>bootTime</th>"
+               txt += "<th>pulseTimestamp</th>"
                txt += "<th>version</th>"
                txt += "<th>wallet</th>"
                //txt+="<th>S</th>"
@@ -357,6 +357,7 @@ function handleShowState(req, res) {
                //<th>rtt</th>"
                txt += "<th>CONTROLS</th>"
                txt += "<th>adminControl</th>"
+               txt += "<th>bootTime</th>"
                txt += "</tr>"
 
                //console.log(ts()+"                            mintTable="+dump(mintTable));
@@ -373,9 +374,11 @@ function handleShowState(req, res) {
                    txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>"
                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
 
-                   var delta = Math.round((now() - mintEntry.bootTime) / 1000) + " secs ago";
-                   if (pulseEntry.bootTime == 0) delta = "0";
-                   txt += "<td>" + delta + "</td>";
+
+                   var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
+                   if (pulseEntry.pulseTimestamp == 0) deltaT = "0";
+                   txt += "<td>" + deltaT + "</td>";
+
 
                    //txt+="<td>"+mintEntry.bootTime+"</td>"
                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>"
@@ -400,7 +403,12 @@ function handleShowState(req, res) {
                    txt += '</FORM>' + "</td>";
                    if (mintEntry.adminControl) txt += "<td>" + mintEntry.adminControl + "</td>"
                     else txt += "<td>" + "</td>"
-                   txt += "</tr>"
+
+                    var delta = Math.round((now() - mintEntry.bootTime) / 1000) + " secs ago";
+                    if (pulseEntry.bootTime == 0) delta = "0";
+                    txt += "<td>" + delta + "</td>";
+
+                    txt += "</tr>"
                }
                txt += "</table>";
 
@@ -884,6 +892,7 @@ function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, w
        "wallet": wallet,
        "SHOWPULSES": DEFAULT_SHOWPULSES,
        "owl": "", //
+       "pulseTimestamp": "0", //last time we heard from this node - set when setting owl
        "isGenesisNode": (mint == 1) ? "1" : "0",
        "rtt": "" + (now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
    }
