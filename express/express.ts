@@ -258,17 +258,17 @@ function handleShowState(req, res) {
                    var rowEntry = pulses[row];
 
 
-                   getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
+                   //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
 
                    
 
-                   txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
+                   //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
                    
 
 
 
 
-                   //txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>'; //heacer on left side
+                   txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];
                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint
@@ -285,7 +285,7 @@ function handleShowState(req, res) {
                    txt += "</tr>"
 
 
-                    });  //getIPportexperiment
+                // });  //experiment
 
 
 
