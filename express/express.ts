@@ -159,7 +159,7 @@ function getMatrixTable(darpMatrix, callback) {
            var src = ary[1],
                dst = ary[2],
                owl = ary[3];
-           console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl);
+           //console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
            if (typeof darpMatrix[src] == "undefined") darpMatrix[src] = {} //new Array();
            if (typeof darpMatrix[src][dst] == "undefined") darpMatrix[src][dst] = {} //new Array();
            //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
