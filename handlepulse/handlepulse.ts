@@ -158,7 +158,7 @@ server.on('message', function(message, remote) {
 
           authenticatedPulse(pulse, function(pulse, authenticated) { 
 
-            console.log(ts()+"Authenticated packet = we have a mint and geos match: "+pulse.ipaddr);
+            //console.log(ts()+"Authenticated packet = we have a mint and geos match: "+pulse.ipaddr+":"+pulse.mint);
               if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
                   console.log(ts() + "me=" + dump(me));
                   me.state = "RUNNING"

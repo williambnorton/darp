@@ -216,8 +216,14 @@ function handleShowState(req, res) {
            //
            //    Header
            //
+           var mint1=config.mintTable["mint:1"]
+           var genesisIP="";
+           if (mint1) genesisIP=mint1.ipaddr; 
+           var genesisPort="";
+           if (mint1) genesisPort=mint1.port; 
+
            if (me.isGenesisNode == "1") txt += '<h1>GENESIS NODE <a href=http://' + me.ipaddr+":"+me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2] + "</h1>";
-           else txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.state + " " + me.version;
+           else txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.state + " " + me.version + " under "+genesisIP+":"+genesisPort;
            if (me.adminControl) txt += "AdminControl: " + me.adminControl;
            txt += "</h1>"
            txt += "<p>" + dateTime + "</p>"
