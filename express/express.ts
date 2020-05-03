@@ -242,6 +242,7 @@ function handleShowState(req, res) {
                    count++
                }
 
+            //print header
                for (var col in pulses) {
                    var colEntry = pulses[col];
                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
@@ -250,12 +251,24 @@ function handleShowState(req, res) {
                }
                txt += "</tr>"
 
+               //print OWL matrix
                console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
                var fetchStack = new Array();
                for (var row in pulses) {
                    var rowEntry = pulses[row];
 
-                   txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
+
+                   getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
+
+                   
+
+                   txt += '<tr><td><a href="http://' + IPnPort + '/">'+IPnPort+'</a></td>'; //heacer on left side
+                   
+
+
+
+
+                   //txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];
                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint
@@ -270,6 +283,12 @@ function handleShowState(req, res) {
                             else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
+
+
+                    });  //getIPport experiment
+
+
+
                }
                txt += "</table>";
 

@@ -223,6 +223,7 @@ function handleShowState(req, res) {
                     lastEntry = pulses[row].geo + ":" + pulses[row].group;
                     count++;
                 }
+                //print header
                 for (var col in pulses) {
                     var colEntry = pulses[col];
                     //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
@@ -232,28 +233,32 @@ function handleShowState(req, res) {
                         txt += '<th>' + colEntry.srcMint + "</th>";
                 }
                 txt += "</tr>";
+                //print OWL matrix
                 console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lib_1.dump(lastEntry));
                 var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
-                    txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>';
-                    for (var col in pulses) {
-                        var colEntry = pulses[col];
-                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
-                        var owl = "";
-                        if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
-                            (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
-                            owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
+                    getIPport(rowEntry.srcMint, function (IPnPort) {
+                        txt += '<tr><td><a href="http://' + IPnPort + '/">' + IPnPort + '</a></td>'; //heacer on left side
+                        //txt += '<tr><td>' + rowEntry.geo + " " + rowEntry.srcMint + '</td>'; //heacer on left side
+                        for (var col in pulses) {
+                            var colEntry = pulses[col];
+                            var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint;
+                            var owl = "";
+                            if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
+                                (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
+                                owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint];
+                            }
+                            console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
+                            if (owl == "")
+                                txt += '<td id="' + entryLabel + '">' + "0" + "</td>";
+                            else if (count < 100)
+                                txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                            else
+                                txt += '<td id="' + entryLabel + '">' + owl + "</td>";
                         }
-                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
-                        if (owl == "")
-                            txt += '<td id="' + entryLabel + '">' + "0" + "</td>";
-                        else if (count < 100)
-                            txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?dst=' + me.mint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
-                        else
-                            txt += '<td id="' + entryLabel + '">' + owl + "</td>";
-                    }
-                    txt += "</tr>";
+                        txt += "</tr>";
+                    }); //getIPport experiment
                 }
                 txt += "</table>";
                 //
