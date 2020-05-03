@@ -262,7 +262,7 @@ function handleShowState(req, res) {
 
                    
 
-                   txt += '<tr><td><a href="http://' + IPnPort + '/">'+IPnPort+'</a></td>'; //heacer on left side
+                   txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
                    
 
 
@@ -285,7 +285,7 @@ function handleShowState(req, res) {
                    txt += "</tr>"
 
 
-                    });  //getIPport experiment
+                    });  //getIPportexperiment
 
 
 
