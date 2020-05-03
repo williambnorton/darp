@@ -70,8 +70,11 @@ function authenticatedPulse(pulse, callback) {
         }
         else {
             //simple authentication matches mint to other resources
-            if ((senderMintEntry.geo == pulse.geo) && (senderMintEntry.mint == pulse.srcMint))
-                callback(null, true);
+            if ((senderMintEntry.geo == pulse.geo) && (senderMintEntry.mint == pulse.srcMint)) {
+                pulse.ipaddr = senderMintEntry.ipaddr; //for convenience
+                pulse.ipaddr = senderMintEntry.port; //for convenience
+                callback(pulse, true);
+            }
             else {
                 console.log("HANDLEPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for " + pulse.srcMint + " in our mint table...we had: " + senderMintEntry.geo + " mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
                 //callback(null,false)
@@ -133,8 +136,8 @@ server.on('message', function (message, remote) {
                 inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
                 inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1)
             };
-            authenticatedPulse(pulse, function (err, authenticated) {
-                console.log(lib_js_1.ts() + "Authenticated packet = we have a mint and geos match: " + pulse.geo);
+            authenticatedPulse(pulse, function (pulse, authenticated) {
+                console.log(lib_js_1.ts() + "Authenticated packet = we have a mint and geos match: " + pulse.ipaddr);
                 if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
                     console.log(lib_js_1.ts() + "me=" + lib_js_1.dump(me));
                     me.state = "RUNNING";
