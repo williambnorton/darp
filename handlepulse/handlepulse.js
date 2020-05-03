@@ -134,6 +134,7 @@ server.on('message', function (message, remote) {
                 inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1)
             };
             authenticatedPulse(pulse, function (err, authenticated) {
+                console.log(lib_js_1.ts() + "Authenticated packet = we have a mint and geos match: " + pulse.geo);
                 if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
                     console.log(lib_js_1.ts() + "me=" + lib_js_1.dump(me));
                     me.state = "RUNNING";
@@ -188,7 +189,8 @@ server.on('message', function (message, remote) {
                     redisClient.rpush([srcMint + "-" + pulse.srcMint, owlStat]);
                 }
                 redisClient.hmset("mint:" + pulse.srcMint, {
-                    "owl": pulse.owl
+                    "owl": pulse.owl,
+                    "pulseTimestamp": lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
                 });
                 //storeOWL(pulse.geo,me.geo,OWL);
                 //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
