@@ -923,10 +923,12 @@ function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, w
    }
 }
 
-function makePulseEntry(mint, geo, group) {
+function makePulseEntry(mint, geo, group, ipaddr, port) {
    return { //one record per pulse - index = <geo>:<group>
        "geo": geo, //record index (key) is <geo>:<genesisGroup>
        "group": group, //DEVPOS:DEVOP.1 for genesis node start
+       "ipaddr": ipaddr, //DEVPOS:DEVOP.1 for genesis node start
+       "port": port, //DEVPOS:DEVOP.1 for genesis node start
        "seq": "0", //last sequence number heard
        "pulseTimestamp": "0", //last pulseTimestamp received from this node
        "srcMint": "" + mint, //Genesis node would send this 
@@ -959,7 +961,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
            expressRedisClient.hmset("mint:0", mint0, function(err, reply) {
                expressRedisClient.hmset("mint:1", mint0, function(err, reply) {
                    var mint1 = mint0; //make a copy for readaibility
-                   var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1");
+                   var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0.port);
                    expressRedisClient.hmset(mint1.geo + ":" + mint1.group, genesisPulseGroupEntry, function(err, reply) { // genesisGroupPulseEntry
                        expressRedisClient.hmset("gSRlist", mint1.geo + ":" + mint1.group, "1", function(err, reply) { //Add our Genesis Group Entry to the gSRlist
                            makeConfig(function(config) {
@@ -985,7 +987,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
 
                            var mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp)
                            expressRedisClient.hmset("mint:" + newMint, mintN, function(err, reply) {
-                               var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group)
+                               var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group, incomingIP, port )
                                expressRedisClient.hmset(geo + ":" + mint1.group, newNodePulseEntry, function(err, reply) {
                                    expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function(err, reply) { //Add our Entry to the genesisGroup in gSRlist
                                        genesisGroupEntry.owls = genesisGroupEntry.owls + "," + newMint
