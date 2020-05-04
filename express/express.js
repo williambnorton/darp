@@ -258,7 +258,7 @@ function handleShowState(req, res) {
                         }
                         console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
-                        /*else if (count<100) */ txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?dst=' + colEntry.srcMint + '&src=' + rowEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                        /*else if (count<100) */ txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + +rowEntry.srcMint + '&dst=' + colEntry.srcMint + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
                         //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                     }
                     txt += "</tr>";
@@ -308,7 +308,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + deltaSeconds + "</td>";
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
-                    txt += "<td>" + pulseEntry.owl + " ms</td>";
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.srcMint + '&dst=' + me.mint + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+pulseEntry.owls+"</td>"
                     txt += "<td>" + pulseEntry.inOctets + "</td>";
                     txt += "<td>" + pulseEntry.outOctets + "</td>";
@@ -370,7 +370,8 @@ function handleShowState(req, res) {
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
-                    txt += "<td>" + mintEntry.owl + " ms</td>";
+                    //txt += "<td>" + mintEntry.owl + " ms</td>"
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.srcMint + '&dst=' + me.mint + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
