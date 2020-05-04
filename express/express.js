@@ -371,7 +371,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.srcMint + '&dst=' + me.mint + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.mint + '&dst=' + me.mint + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
