@@ -263,18 +263,11 @@ function handleShowState(req, res) {
                for (var row in pulses) {
                    var rowEntry = pulses[row];
 
-
                    //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
 
-                   
-
                    //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
-                   
-
-
-
-
-                   txt += '<tr><td><a href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
+                    var cellState="reachable";
+                   txt += '<tr><td class="'+cellState+'"><a href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];
                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint
