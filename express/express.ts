@@ -568,6 +568,15 @@ app.get('/state', function(req, res) {
     return;
  });
  
+ app.get('/asset-manifest.json', function(req, res) {
+    //console.log("EXPRess fetching '/state' state");
+        //console.log("app.get('/state' callback config="+dump(config));
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify({}, null, 2));
+    return;
+ });
+
  app.get('/graph', function(req, res) {
     //console.log("EXPRess fetching '/state' state");
         //console.log("app.get('/state' callback config="+dump(config));
