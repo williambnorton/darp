@@ -234,7 +234,7 @@ function handleShowState(req, res) {
                 for (var col in pulses) {
                     var colEntry = pulses[col];
                     //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                    if (count < 5)
+                    if (count <= 10)
                         txt += '<th><a href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>";
                     else
                         txt += '<th><a href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.srcMint + "</a></th>";
@@ -562,21 +562,23 @@ function handleGraph(req, res, rtt) {
             //lrange all values from redis for srcMint to DstMint
             expressRedisClient.hgetall("mint:" + SRC, function (err, srcEntry) {
                 expressRedisClient.hgetall("mint:" + DST, function (err, dstEntry) {
-                    txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + srcEntry.geo + "(" + SRC + ")" + "-" + dstEntry.geo + "(" + DST + ")" + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
-                    expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
-                        for (var sample in samples) {
-                            txt += samples[sample];
-                        }
-                        console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
-                        txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
-                        console.log(lib_1.ts() + "txt to show graph: ");
-                        console.log(lib_1.ts() + "txt to show graph: ");
-                        console.log(lib_1.ts() + "txt to show graph: " + txt);
-                        console.log(lib_1.ts() + "txt to show graph: ");
-                        console.log(lib_1.ts() + "txt to show graph: ");
-                        txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
-                        res.end(txt);
-                    });
+                    if (srcEntry != null && dstEntry != null) {
+                        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + srcEntry.geo + "(" + SRC + ")" + "-" + dstEntry.geo + "(" + DST + ")" + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+                        expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
+                            for (var sample in samples) {
+                                txt += samples[sample];
+                            }
+                            console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
+                            txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
+                            console.log(lib_1.ts() + "txt to show graph: ");
+                            console.log(lib_1.ts() + "txt to show graph: ");
+                            console.log(lib_1.ts() + "txt to show graph: " + txt);
+                            console.log(lib_1.ts() + "txt to show graph: ");
+                            console.log(lib_1.ts() + "txt to show graph: ");
+                            txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
+                            res.end(txt);
+                        });
+                    }
                 });
             });
         }
