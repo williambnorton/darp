@@ -152,7 +152,7 @@ function getMatrixTable(darpMatrix, callback) {
            throw err;
        }
        cursor = reply[0];
-       //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
+       console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
 
        for (var n in reply[1]) {
            var ary = reply[1][n].split("-") ///"darp-1-3=35",
@@ -266,10 +266,10 @@ function handleShowState(req, res) {
                    //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
 
                    //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
-                    var cellState="reachable";
+                    var cellState="reachable"; //unreachable     badkey   alert   
                    txt += '<tr><td class="'+cellState+'"><a href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
-                       var colEntry = pulses[col];
+                       var colEntry = pulses[col];//
                        var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint
                        var owl = "";
                        if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
@@ -351,7 +351,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + pulseEntry.pktDrops + "</td>"
                    if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"
-                        txt += "<td>" + pulseEntry.lastMsg.substring(0,30) + "</td>"
+                        txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     } else { 
                         txt += "<td>" + "" + "</td>"
                         txt += "<td>" + "" + "</td>"
