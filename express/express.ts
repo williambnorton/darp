@@ -515,6 +515,15 @@ app.get('/version', function(req, res) {
    })
 });
 
+app.get('/mintStack', function(req, res) { 
+    //console.log("EXPRess wbn fetching '/config' ");
+      //  console.log("app.get(/config pulseRecordTable=" + dump(config));
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify(mintStack, null, 2));
+    return;
+ });
+
 app.get('/stop', function(req, res) {
    //console.log("EXPRess fetching '/state' state");
    console.log("EXITTING and Stopping the node");
@@ -543,7 +552,6 @@ app.get('/config', function(req, res) {
    makeConfigAll(function(config) {
      //  console.log("app.get(/config pulseRecordTable=" + dump(config));
        res.setHeader('Content-Type', 'application/json');
-       //res.setHeader('Content-Type', 'text/html');
        res.setHeader("Access-Control-Allow-Origin", "*");
        res.end(JSON.stringify(config, null, 2));
    });
@@ -636,6 +644,12 @@ function handleGraph(req, res, rtt) {
                     txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+srcEntry.geo+"("+SRC+")"+"-"+dstEntry.geo+"("+DST+")"+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
 
                         expressRedisClient.lrange(""+SRC+"-"+DST, 0, -1, function(err, samples) {
+
+
+
+
+
+                            
                             for( var sample in samples) {
                                 txt+=samples[sample] 
                             }
