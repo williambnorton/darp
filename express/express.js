@@ -870,20 +870,28 @@ function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, w
         "owl": "",
         "pulseTimestamp": "0",
         "isGenesisNode": (mint == 1) ? "1" : "0",
-        "rtt": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
+        "rtt": "" + (lib_1.now() - incomingTimestamp) //=latency + clock delta between pulser and receiver  /** DO NOT NEED */
     };
 }
-function makePulseEntry(mint, geo, group, ipaddr, port) {
+//
+//  pulseEntry - contains stats for and relevent fields to configure wireguard
+//
+function makePulseEntry(mint, geo, group, ipaddr, port, incomingTimestamp, version) {
     return {
         "geo": geo,
         "group": group,
         "ipaddr": ipaddr,
         "port": port,
+        //version would go here
+        //ttl might be needed for relaying
         "seq": "0",
         "pulseTimestamp": "0",
         "srcMint": "" + mint,
         "owl": "",
         "owls": "1",
+        // stats
+        "bootTime": "" + incomingTimestamp,
+        "version": version,
         "inOctets": "0",
         "outOctets": "0",
         "inMsgs": "0",
@@ -909,7 +917,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
             expressRedisClient.hmset("mint:0", mint0, function (err, reply) {
                 expressRedisClient.hmset("mint:1", mint0, function (err, reply) {
                     var mint1 = mint0; //make a copy for readaibility
-                    var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0.port);
+                    var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0.port, incomingIP, version);
                     expressRedisClient.hmset(mint1.geo + ":" + mint1.group, genesisPulseGroupEntry, function (err, reply) {
                         expressRedisClient.hmset("gSRlist", mint1.geo + ":" + mint1.group, "1", function (err, reply) {
                             makeConfig(function (config) {
@@ -935,7 +943,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                         expressRedisClient.hgetall("gSRlist", function (err, gSRlist) {
                             var mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp);
                             expressRedisClient.hmset("mint:" + newMint, mintN, function (err, reply) {
-                                var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group, incomingIP, port);
+                                var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group, incomingIP, port, incomingIP, version);
                                 expressRedisClient.hmset(geo + ":" + mint1.group, newNodePulseEntry, function (err, reply) {
                                     expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function (err, reply) {
                                         var _a, _b, _c;

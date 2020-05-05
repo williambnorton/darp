@@ -943,35 +943,43 @@ function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, w
        "ipaddr": incomingIP, //set by genesis node on connection
        "publickey": publickey,
        "state": DEFAULT_START_STATE,
-       "bootTime": "" + incomingTimestamp, //RemoteClock on startup
-       "version": version, //software version
-       "wallet": wallet,
-       "SHOWPULSES": DEFAULT_SHOWPULSES,
+       "bootTime": "" + incomingTimestamp, //RemoteClock on startup  ****
+       "version": version, //software version running on remote system ********
+       "wallet": wallet, // ** 
+       "SHOWPULSES": DEFAULT_SHOWPULSES, // * * 
        "owl": "", //
-       "pulseTimestamp": "0", //last time we heard from this node - set when setting owl
-       "isGenesisNode": (mint == 1) ? "1" : "0",
-       "rtt": "" + (now() - incomingTimestamp) //=latency + clock delta between pulser and receiver
+       "pulseTimestamp": "0", //last time we heard from this node - RemoteTimestanmp - set when setting owl   *****
+       "isGenesisNode": (mint == 1) ? "1" : "0",  // ****
+       "rtt": "" + (now() - incomingTimestamp) //=latency + clock delta between pulser and receiver  /** DO NOT NEED */
    }
 }
 
-function makePulseEntry(mint, geo, group, ipaddr, port) {
+//
+//  pulseEntry - contains stats for and relevent fields to configure wireguard
+//
+function makePulseEntry(mint, geo, group, ipaddr, port, incomingTimestamp, version) {
    return { //one record per pulse - index = <geo>:<group>
        "geo": geo, //record index (key) is <geo>:<genesisGroup>
        "group": group, //DEVPOS:DEVOP.1 for genesis node start
        "ipaddr": ipaddr, //DEVPOS:DEVOP.1 for genesis node start
        "port": port, //DEVPOS:DEVOP.1 for genesis node start
+//version would go here
+//ttl might be needed for relaying
        "seq": "0", //last sequence number heard
-       "pulseTimestamp": "0", //last pulseTimestamp received from this node
+       "pulseTimestamp": "0", //last REMOTE pulseTimestamp received from this node *** could be offset from bootTimestamp
        "srcMint": "" + mint, //Genesis node would send this 
        "owl": "",
        "owls": "1", //Startup - I am the only one here
+       // stats
+       "bootTime": "" + incomingTimestamp, //RemoteClock on startup  **** - we abandon the pulse when this changes
+       "version": version, //software version running on sender's node    
        "inOctets": "0",
        "outOctets": "0",
        "inMsgs": "0",
        "outMsgs": "0",
        "pktDrops": "0", //,     //as detected by missed seq#
        "lastMsg": ""
-   };
+   }
 }
 
 //
@@ -992,7 +1000,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
            expressRedisClient.hmset("mint:0", mint0, function(err, reply) {
                expressRedisClient.hmset("mint:1", mint0, function(err, reply) {
                    var mint1 = mint0; //make a copy for readaibility
-                   var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0.port);
+                   var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0. port, incomingIP, version);
                    expressRedisClient.hmset(mint1.geo + ":" + mint1.group, genesisPulseGroupEntry, function(err, reply) { // genesisGroupPulseEntry
                        expressRedisClient.hmset("gSRlist", mint1.geo + ":" + mint1.group, "1", function(err, reply) { //Add our Genesis Group Entry to the gSRlist
                            makeConfig(function(config) {
@@ -1018,7 +1026,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
 
                            var mintN = makeMintEntry(newMint, geo, mint1.group, port, incomingIP, publickey, version, wallet, incomingTimestamp)
                            expressRedisClient.hmset("mint:" + newMint, mintN, function(err, reply) {
-                               var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group, incomingIP, port )
+                               var newNodePulseEntry = makePulseEntry(newMint, geo, mint1.group, incomingIP, port, incomingIP, version )
                                expressRedisClient.hmset(geo + ":" + mint1.group, newNodePulseEntry, function(err, reply) {
                                    expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function(err, reply) { //Add our Entry to the genesisGroup in gSRlist
                                        genesisGroupEntry.owls = genesisGroupEntry.owls + "," + newMint
