@@ -517,7 +517,7 @@ app.get('/version', function(req, res) {
 
 app.get('/mintStack', function(req, res) { 
     //console.log("EXPRess wbn fetching '/config' ");
-      //  console.log("app.get(/config pulseRecordTable=" + dump(config));
+        console.log("app.get(/mintStack=" + dump(mintStack));
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.end(JSON.stringify(mintStack, null, 2));
