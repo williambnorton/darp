@@ -1,10 +1,17 @@
 #!/bin/bash
 #
-#       configWG.bash - Configure Wireguard public and private for noiaSR-WAN model
+#       configWG.bash - Configure Wireguard public and private for DARP 
 #			~/wireguard outside the Docker is our /etc/wireguard
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
-echo `date` $0 creating wireguard configuration
+#GENESIS=71.202.2.184:65013
+
+#if [ "$GENESIS" != "" ]; then
+#	startsWith=`curl $GENESIS/mintStack`
+#	startsWith=$startsWith$startsWith 
+#	echo `date` Get a publicKey that starts with $startsWith
+#fi
+echo `date` $0 creating wireguard configuration from $GENESIS
 DARPDIR=~/darp
 mkdir -p $DARPDIR/etc/wireguard
 cd $DARPDIR/etc/wireguard
@@ -21,9 +28,17 @@ do
         if [ $? -eq 0 ]; then
                 echo $PUBLICKEY| grep -v ' ' | grep -v '|' | grep -v + | grep -v '/' | grep -v '\\' | grep '='
                 if [ $? -eq 0 ]; then
-                        DONE=1
-                        #PRIVATEKEY=`echo $PRIVATEKEY|sed '1,$s/=//g'`
-                        #PUBLICKEY=`echo $PUBLICKEY|sed '1,$s/=//g'`
+			#if [ "$GENESIS" != "" ]; then
+			#	echo $PUBLICKEY | grep ^$startsWith
+			#	if [ $? -eq 0 ]; then
+                        		DONE=1
+					echo "FOUND PUBLIC KEY: $PUBLICKEY"
+                        		#PRIVATEKEY=`echo $PRIVATEKEY|sed '1,$s/=//g'`
+                        		#PUBLICKEY=`echo $PUBLICKEY|sed '1,$s/=//g'`
+			#	fi
+			#else 
+				DONE=1
+			#fi
                 fi
         fi
 done
