@@ -256,8 +256,9 @@ function handleShowState(req, res) {
                    else txt += '<th><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.srcMint + "</a></th>"
                }
                txt += "</tr>"
-
-               //print OWL matrix
+               //
+               //   Extertnalize OWL matrix
+               //
                console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
                var fetchStack = new Array();
                for (var row in pulses) {
@@ -314,6 +315,8 @@ function handleShowState(req, res) {
                txt += "<th>pktDrops</th>"
                txt += "<th>pulseSz</th>"
                txt+="<th>lastMsg</th>"
+               txt+="<th>bootTime</th>"
+               txt+="<th>version</th>"
                txt += "</tr>"
 
                //console.log(ts()+"                            pulses="+dump(pulses));
@@ -356,6 +359,12 @@ function handleShowState(req, res) {
                         txt += "<td>" + "" + "</td>"
                         txt += "<td>" + "" + "</td>"
                    }
+                   var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
+                   if (pulseEntry.bootTimestamp == 0) deltaSeconds2 = "0";
+                   //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                   txt += "<td>" + deltaSeconds2 + "</td>";
+                   txt += "<td>" + pulseEntry.version + "</td>";
+
                    //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                    txt += "</tr>"
                }
