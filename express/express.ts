@@ -234,8 +234,8 @@ function handleShowState(req, res) {
 
            //         var OWLMatrix=getLiveMatrixTable();
            getMatrixTable(null, function(OWLMatrix) {
-               console.log("call:");
-               console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
+               //console.log("call:");
+               //console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
 
                //
                // show OWL Matrix
@@ -244,7 +244,7 @@ function handleShowState(req, res) {
 
                txt += '<tr><th></th>'
                var lastEntry = "";
-               console.log(ts() + "handleShowState() pulses=" + dump(pulses));
+               //console.log(ts() + "handleShowState() pulses=" + dump(pulses));
                var count=0;
                for (var row in pulses) {
                    lastEntry = pulses[row].geo + ":" + pulses[row].group;
@@ -595,13 +595,12 @@ app.get('/state', function(req, res) {
 
  app.get('/graph', function(req, res) {
     console.log("EXPRess request for '/graph' ");
-    makeConfig(function(config) {
+    //makeConfig(function(config) {
 
-    console.log("app.get('/graph' callback config="+dump(config));
         res.setHeader('Content-Type', 'text/html');
         res.setHeader("Access-Control-Allow-Origin", "*");
         handleGraph(req, res, true);
-    })
+    //})
 
     return;
  });

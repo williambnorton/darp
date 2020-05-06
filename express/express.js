@@ -218,15 +218,15 @@ function handleShowState(req, res) {
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(null, function (OWLMatrix) {
-                console.log("call:");
-                console.log("getMatrixTable: OWLMatrix=" + lib_1.dump(OWLMatrix));
+                //console.log("call:");
+                //console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
                 //
                 // show OWL Matrix
                 //
                 txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
                 txt += '<tr><th></th>';
                 var lastEntry = "";
-                console.log(lib_1.ts() + "handleShowState() pulses=" + lib_1.dump(pulses));
+                //console.log(ts() + "handleShowState() pulses=" + dump(pulses));
                 var count = 0;
                 for (var row in pulses) {
                     lastEntry = pulses[row].geo + ":" + pulses[row].group;
@@ -538,12 +538,11 @@ app.get('/asset-manifest.json', function (req, res) {
 });
 app.get('/graph', function (req, res) {
     console.log("EXPRess request for '/graph' ");
-    makeConfig(function (config) {
-        console.log("app.get('/graph' callback config=" + lib_1.dump(config));
-        res.setHeader('Content-Type', 'text/html');
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        handleGraph(req, res, true);
-    });
+    //makeConfig(function(config) {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    handleGraph(req, res, true);
+    //})
     return;
 });
 //
