@@ -247,6 +247,7 @@ function pulse(oneTime) {
                             }, function (err, reply) {
                                 //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
                                 //and needed for additional groups
+                                console.log("pulseLabelEntry=" + lib_1.dump(pulseLabelEntry));
                                 var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + pulseLabelEntry.seq + "," + lib_1.now() + "," + pulseLabelEntry.bootTimestamp + "," + me.mint + ","; //MAZORE:MAZJAP.1
                                 //get mintTable to get credentials   
                                 var owls = "";
