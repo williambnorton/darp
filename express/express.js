@@ -292,7 +292,6 @@ function handleShowState(req, res) {
                 txt += "<th>bootTime</th>";
                 txt += "<th>version</th>";
                 txt += "</tr>";
-                leftover;
                 //console.log(ts()+"                            pulses="+dump(pulses));
                 for (var a in pulses) {
                     var pulseEntry = pulses[a];
