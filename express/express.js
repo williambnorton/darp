@@ -536,7 +536,7 @@ app.get('/asset-manifest.json', function (req, res) {
 });
 app.get('/graph', function (req, res) {
     //console.log("EXPRess fetching '/state' state");
-    //console.log("app.get('/state' callback config="+dump(config));
+    console.log("app.get('/graph' callback config=" + lib_1.dump(req));
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
     handleGraph(req, res, true);
