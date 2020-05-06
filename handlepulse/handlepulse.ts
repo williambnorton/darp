@@ -189,7 +189,7 @@ server.on('message', function(message, remote) {
 
               //redisClient.expire(pulseSamplePrefix+pulse.srcMint+"-"+me.mint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
               
-              redisClient.set(pulseSamplePrefix + pulse.srcMint + "-" + me.mint + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+              redisClient.set(pulseSamplePrefix + pulse.geo + "-" + me.geo + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
 
               //{ x: new Date('" + d + "'), y: " + owl + "},
 
@@ -210,18 +210,25 @@ server.on('message', function(message, remote) {
               for (var measure in owlsAry) {
                   //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
                   var srcMint = owlsAry[measure].split("=")[0]
-                  var owl = owlsAry[measure].split("=")[1]
-                  if (typeof owl == "undefined") owl = ""
-                  //srcMint+"-"+me.mint
-                  //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
-                  //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
-                  redisClient.set(pulseSamplePrefix + srcMint + "-" + pulse.srcMint + "-" + owl, owl, 'EX', OWLEXPIRES);
+                  redisClient.hgetall("mint:"+srcMint, function(err, mintEntry) {
+                      if (mintEntry!=null) {
+                        var srcGeo=mintEntry.geo; //******* */
+                        var owl = owlsAry[measure].split("=")[1]
+                        if (typeof owl == "undefined") owl = ""
+                        //srcMint+"-"+me.mint
+                        //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
+                        //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
+                        redisClient.set(pulseSamplePrefix + srcGeo + "-" + pulse.geo + "-" + owl, owl, 'EX', OWLEXPIRES);
 
-                  //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
-                  if (owl=="") owl=0;
-                  owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
-                  redisClient.rpush([ srcMint + "-" + pulse.srcMint, owlStat]);              
-
+                        //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
+                        if (owl=="") owl=0;
+                        owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
+                        redisClient.rpush([ srcGeo + "-" + pulse.geo, owlStat]);   
+                      } else {
+                          //if this mint was mentioned by genesis node, go fetch it
+                          //if not genesis node, ignore this mint
+                      }           
+                  });
               }
 
               redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
