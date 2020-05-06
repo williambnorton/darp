@@ -182,6 +182,8 @@ do
             fi
         fi
     fi
+    echo ps aux |grep -v grep | grep node | awk '{ print $2}'
+    ps aux |grep -v grep | grep node | awk '{ print $2}'
     echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
