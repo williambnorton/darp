@@ -97,13 +97,13 @@ server.on('message', function (message, remote) {
     var pulseTimestamp = ary[5]; //1583783486546
     var OWL = lib_js_1.now() - pulseTimestamp;
     if (OWL <= -999)
-        OWL = -99999; //we can filter out clocks greater than +/- 99 seconds off
+        OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
     if (OWL >= 999)
         OWL = 99999; //bad clocks lead to really large OWL pulses 
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
-    //console.log(ts()+"handlepulse(): owls="+owls);
+    console.log(lib_js_1.ts() + "handlepulse(): owls=" + owls); //INSTRUMENTAITON POINT
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         redisClient.hgetall("mint:0", function (err, me) {
@@ -147,7 +147,7 @@ server.on('message', function (message, remote) {
                         console.log(lib_js_1.ts() + "Received pulse from a node previously called CONFIGURED... Set its state RUNNING:" + lib_js_1.dump(newme));
                     });
                 }
-                //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));
+                console.log("*******pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse)); //INSTRUMENTAITON POINT
                 if (pulse.version != MYBUILD) {
                     if (!isGenesisNode) {
                         console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
@@ -169,7 +169,8 @@ server.on('message', function (message, remote) {
                     pulse.owl = "0";
                 var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
                 //redisClient.rpush([ pulse.srcMint + "-" + me.mint, pulse.srcMint+"-"+me.mint+"-"+pulse.owl]);
-                redisClient.rpush([pulse.srcMint + "-" + me.mint, owlStat]);
+                //redisClient.rpush([ pulse.srcMint + "-" + me.mint, owlStat]);
+                redisClient.rpush([pulse.geo + "-" + me.geo, owlStat]);
                 //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
                 //
                 //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`

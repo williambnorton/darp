@@ -301,11 +301,11 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     else {
                         var _loop_1 = function (node) {
                             if (typeof node != "undefined" && node != null) {
-                                redisClient.hmset("mint:0", {
-                                    "statsPulseMessageLength": "" + pulseMsg.length
-                                });
+                                //redisClient.hmset("mint:0",{
+                                //  "statsPulseMessageLength" : ""+pulseMsg.length
+                                //});
                                 //sending msg
-                                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                                console.log("networkClient.send(pulseMsg=" + pulseMsg + " node.port=" + node.port + " node.ipaddr=" + node.ipaddr);
                                 networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
                                     if (error) {
                                         console.log(lib_1.ts() + "pulser NetSend error");
