@@ -272,7 +272,7 @@ if (typeof oneTime == "undefined") {
 
                   //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
                   //and needed for additional groups
-                  console.log("pulseLabelEntry="+dump(pulseLabelEntry));
+                  //console.log("pulseLabelEntry="+dump(pulseLabelEntry));
 
 
                   var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+pulseLabelEntry.bootTimestamp+","+me.mint+",";  //MAZORE:MAZJAP.1

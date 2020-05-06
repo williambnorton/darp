@@ -89,8 +89,8 @@ function authenticatedPulse(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function (message, remote) {
-    //if (SHOWPULSES == "1")
-    console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message);
+    if (SHOWPULSES == "1")
+        console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message);
     var msg = message.toString();
     var ary = msg.split(",");
     //try {
@@ -147,7 +147,7 @@ server.on('message', function (message, remote) {
                         console.log(lib_js_1.ts() + "Received pulse from a node previously called CONFIGURED... Set its state RUNNING:" + lib_js_1.dump(newme));
                     });
                 }
-                console.log("*******pulse.version=" + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse)); //INSTRUMENTAITON POINT
+                //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));  //INSTRUMENTAITON POINT
                 if (pulse.version != MYBUILD) {
                     if (!isGenesisNode) {
                         console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");

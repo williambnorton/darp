@@ -152,7 +152,7 @@ function getMatrixTable(darpMatrix, callback) {
            throw err;
        }
        cursor = reply[0];
-       console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
+       //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
 
        for (var n in reply[1]) {
            var ary = reply[1][n].split("-") ///"darp-1-3=35",
@@ -686,7 +686,7 @@ function handleGraph(req, res, rtt) {
 
             });
         } catch (err) {
-                console.error(err)
+            console.error(err)
         }
 
         return;

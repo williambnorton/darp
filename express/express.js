@@ -140,7 +140,7 @@ function getMatrixTable(darpMatrix, callback) {
             throw err;
         }
         cursor = reply[0];
-        console.log(lib_1.ts() + "EXPRESS scan() : darp-*=" + lib_1.dump(reply[1])); //INSTRUMENTATION POINT
+        //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
         for (var n in reply[1]) {
             var ary = reply[1][n].split("-"); ///"darp-1-3=35",
             var src = ary[1], dst = ary[2], owl = ary[3];
