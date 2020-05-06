@@ -252,7 +252,7 @@ function handleShowState(req, res) {
                     //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
                     //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
                     var cellState = "reachable"; //unreachable     badkey   alert   
-                    txt += '<tr><td class="' + cellState + '"><a href="http://' + me.ipaddr + ":" + rowEntry.port + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
+                    txt += '<tr><td class="' + cellState + '"><a href="http://' + me.ipaddr + ":" + me.port + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                     for (var col in pulses) {
                         var colEntry = pulses[col]; //
                         var entryLabel = rowEntry.geo + "-" + colEntry.geo;
@@ -264,7 +264,7 @@ function handleShowState(req, res) {
                         console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                         /*else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                        /*else if (count<100) */ txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                        /*else if (count<100) */ txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
                         //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                     }
                     txt += "</tr>";
