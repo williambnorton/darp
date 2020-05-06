@@ -283,7 +283,7 @@ function handleShowState(req, res) {
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                        /*else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                       /*else if (count<100) */txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
+                       /*else if (count<100) */txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                             //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
