@@ -271,11 +271,11 @@ function handleShowState(req, res) {
                    txt += '<tr><td class="'+cellState+'"><a href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];//
-                       var entryLabel = rowEntry.srcMint + "-" + colEntry.srcMint
+                       var entryLabel = rowEntry.geo + "-" + colEntry.geo
                        var owl = "";
-                       if ((typeof OWLMatrix[rowEntry.srcMint] != "undefined") &&
-                           (typeof OWLMatrix[rowEntry.srcMint][colEntry.srcMint] != "undefined")) {
-                           owl = OWLMatrix[rowEntry.srcMint][colEntry.srcMint]
+                       if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
+                           (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
+                           owl = OWLMatrix[rowEntry.geo][colEntry.geo]
                        }
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
