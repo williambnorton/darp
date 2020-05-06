@@ -234,6 +234,9 @@ function handleShowState(req, res) {
 
            //         var OWLMatrix=getLiveMatrixTable();
            getMatrixTable(null, function(OWLMatrix) {
+               console.log("call:");
+               console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
+
                //
                // show OWL Matrix
                //

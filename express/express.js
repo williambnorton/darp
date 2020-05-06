@@ -218,6 +218,8 @@ function handleShowState(req, res) {
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(null, function (OWLMatrix) {
+                console.log("call:");
+                console.log("getMatrixTable: OWLMatrix=" + lib_1.dump(OWLMatrix));
                 //
                 // show OWL Matrix
                 //
