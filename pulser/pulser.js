@@ -154,6 +154,8 @@ function newMint(mint) {
                             //"owls" : getOWLs(me.group),  //owls other guy is reporting
                             //node statistics - we measure these ourselves
                             "owl": "",
+                            "bootTimestamp": "" + mintEntry.bootTime,
+                            "version": mintEntry.version,
                             "inOctets": "0",
                             "outOctets": "0",
                             "inMsgs": "0",
@@ -243,13 +245,15 @@ function pulse(oneTime) {
                             redisClient.hmset(pulseLabel, {
                                 "seq": pulseLabelEntry.seq
                             }, function (err, reply) {
-                                var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + pulseLabelEntry.seq + "," + lib_1.now() + "," + me.mint + ","; //MAZORE:MAZJAP.1
+                                //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
+                                //and needed for additional groups
+                                var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + pulseLabelEntry.seq + "," + lib_1.now() + "," + pulseLabelEntry.bootTimestamp + "," + me.mint + ","; //MAZORE:MAZJAP.1
                                 //get mintTable to get credentials   
                                 var owls = "";
                                 lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
                                     // get nodes' list of mints to send pulse to
                                     // and send pulse
-                                    //console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
+                                    console.log(ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
                                     buildPulsePkt(mints, pulseMessage, null);
                                 });
                             });

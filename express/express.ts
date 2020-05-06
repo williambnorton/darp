@@ -317,7 +317,8 @@ function handleShowState(req, res) {
                txt+="<th>lastMsg</th>"
                txt+="<th>bootTime</th>"
                txt+="<th>version</th>"
-               txt += "</tr>"
+               txt += "</tr>"leftover
+               
 
                //console.log(ts()+"                            pulses="+dump(pulses));
                for (var a in pulses) {

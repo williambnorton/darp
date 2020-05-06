@@ -170,6 +170,8 @@ function newMint(mint) {
               //"owls" : getOWLs(me.group),  //owls other guy is reporting
               //node statistics - we measure these ourselves
               "owl": "",   //NO OWL MEASUREMENT HERE (YET)
+              "bootTimestamp" : ""+mintEntry.bootTime,
+              "version" : mintEntry.version,
               "inOctets": "0",
               "outOctets": "0",
               "inMsgs": "0",
@@ -268,7 +270,10 @@ if (typeof oneTime == "undefined") {
                 }, function(err,reply) {
 
 
-                  var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
+                  //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
+                  //and needed for additional groups
+
+                  var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+pulseLabelEntry.bootTimestamp+","+me.mint+",";  //MAZORE:MAZJAP.1
 
                
                   //get mintTable to get credentials   
@@ -276,7 +281,7 @@ if (typeof oneTime == "undefined") {
                   mintList(redisClient, ownerPulseLabel, function(err,mints) {
                     // get nodes' list of mints to send pulse to
                     // and send pulse
-                    //console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
+                    console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
                     buildPulsePkt(mints,pulseMessage,null);
                   
                   });
