@@ -653,15 +653,9 @@ function handleGraph(req, res, rtt) {
             //expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
                 //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
                     //if (srcEntry!=null && dstEntry!=null) {
-                        txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+srcEntry.geo+"("+SRC+")"+"-"+dstEntry.geo+"("+DST+")"+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+                        txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+SRC+"-"+DST+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
 
-                        expressRedisClient.lrange(""+SRC+"-"+DST, 0, -1, function(err, samples) {
-
-
-
-
-
-                            
+                        expressRedisClient.lrange(""+SRC+"-"+DST, 0, -1, function(err, samples) {                            
                             for( var sample in samples) {
                                 txt+=samples[sample] 
                             }
