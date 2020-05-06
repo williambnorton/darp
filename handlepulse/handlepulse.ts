@@ -221,7 +221,7 @@ server.on('message', function(message, remote) {
                         var owl = owlsAry[measure].split("=")[1]
                         if (typeof owl == "undefined") owl = ""
 
-                        console.log("HANDLEPULSE: srcGeo="+srcGeo+" dstGeo="+dstGeo+" owl="+owl;
+                        console.log("HANDLEPULSE: srcGeo="+srcGeo+" dstGeo="+dstGeo+" owl="+owl);
                         //srcMint+"-"+me.mint
                         //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                         //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
