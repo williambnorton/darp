@@ -216,9 +216,12 @@ server.on('message', function(message, remote) {
                   var srcMint = owlsAry[measure].split("=")[0]
                   redisClient.hgetall("mint:"+srcMint, function(err, mintEntry) {
                       if (mintEntry!=null) {
-                        var srcGeo=mintEntry.geo; //******* */
+                        var srcGeo=mintEntry.geo; //
+                        var dstGeo=me.geo;
                         var owl = owlsAry[measure].split("=")[1]
                         if (typeof owl == "undefined") owl = ""
+
+                        console.log("HANDLEPULSE: srcGeo="+srcGeo+" dstGeo="+dstGeo+" owl="+owl;
                         //srcMint+"-"+me.mint
                         //redisClient.set(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+owl, owl);  //store the pulse
                         //redisClient.expire(pulseSamplePrefix+srcMint+"-"+pulse.srcMint+"="+pulse.owl,15);  //save for a pollcycle.5 seconds
