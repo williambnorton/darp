@@ -103,7 +103,7 @@ server.on('message', function (message, remote) {
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
     var owls = msg.substring(owlsStart + 1, msg.length - 1);
-    console.log(lib_js_1.ts() + "handlepulse(): owls=" + owls); //INSTRUMENTAITON POINT
+    console.log(lib_js_1.ts() + "**************************handlepulse(): owls=" + owls); //INSTRUMENTAITON POINT
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
         redisClient.hgetall("mint:0", function (err, me) {
