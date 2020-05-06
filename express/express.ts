@@ -592,10 +592,13 @@ app.get('/state', function(req, res) {
 
  app.get('/graph', function(req, res) {
     //console.log("EXPRess fetching '/state' state");
-        console.log("app.get('/graph' callback config="+dump(req));
+    makeConfig(function(config) {
+
+    console.log("app.get('/graph' callback config="+dump(config));
         res.setHeader('Content-Type', 'text/html');
         res.setHeader("Access-Control-Allow-Origin", "*");
         handleGraph(req, res, true);
+    })
 
     return;
  });
