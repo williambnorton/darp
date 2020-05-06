@@ -116,7 +116,7 @@ server.on('message', function(message, remote) {
   if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
   var pulseLabel = ary[2] + ":" + ary[3];
 
-  var owlsStart = nth_occurrence(msg, ',', 7); //owls start after the 7th comma
+  var owlsStart = nth_occurrence(msg, ',', 8); //owls start after the 7th comma
   var owls = msg.substring(owlsStart + 1, msg.length - 1);
 
   console.log(ts()+"**************************handlepulse(): owls="+owls);  //INSTRUMENTAITON POINT
