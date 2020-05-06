@@ -360,7 +360,7 @@ function handleShowState(req, res) {
                 //<th>rtt</th>"
                 txt += "<th>CONTROLS</th>";
                 txt += "<th>adminControl</th>";
-                txt += "<th>bootTime</th>";
+                txt += "<th>bootTimestamp</th>";
                 txt += "</tr>";
                 //console.log(ts()+"                            mintTable="+dump(mintTable));
                 for (var a in mintTable) {
@@ -378,7 +378,7 @@ function handleShowState(req, res) {
                     if (pulseEntry.pulseTimestamp == 0)
                         deltaT = "0";
                     txt += "<td>" + deltaT + "</td>";
-                    //txt+="<td>"+mintEntry.bootTime+"</td>"
+                    //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
@@ -402,8 +402,8 @@ function handleShowState(req, res) {
                         txt += "<td>" + mintEntry.adminControl + "</td>";
                     else
                         txt += "<td>" + "</td>";
-                    var delta = Math.round((lib_1.now() - mintEntry.bootTime) / 1000) + " secs ago";
-                    if (pulseEntry.bootTime == 0)
+                    var delta = Math.round((lib_1.now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+                    if (pulseEntry.bootTimestamp == 0)
                         delta = "0";
                     txt += "<td>" + delta + "</td>";
                     txt += "</tr>";
@@ -874,7 +874,7 @@ function makeMintEntry(mint, geo, group, port, incomingIP, publickey, version, w
         "ipaddr": incomingIP,
         "publickey": publickey,
         "state": DEFAULT_START_STATE,
-        "bootTime": "" + incomingTimestamp,
+        "bootTimestamp": "" + incomingTimestamp,
         "version": version,
         "wallet": wallet,
         "SHOWPULSES": DEFAULT_SHOWPULSES,
@@ -901,7 +901,7 @@ function makePulseEntry(mint, geo, group, ipaddr, port, incomingTimestamp, versi
         "owl": "",
         "owls": "1",
         // stats
-        "bootTime": "" + incomingTimestamp,
+        "bootTimestamp": "" + incomingTimestamp,
         "version": version,
         "inOctets": "0",
         "outOctets": "0",
