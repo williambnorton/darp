@@ -207,6 +207,9 @@ server.on('message', function(message, remote) {
               //
               var owlsAry = pulse.owls.split(",")
               //console.log(ts()+"owlsAry="+owlsAry);
+              //
+              //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
+              //
               for (var measure in owlsAry) {
                   //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
                   var srcMint = owlsAry[measure].split("=")[0]
@@ -225,6 +228,8 @@ server.on('message', function(message, remote) {
                         owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
                         redisClient.rpush([ srcGeo + "-" + pulse.geo, owlStat]);   
                       } else {
+                          console.log("handlePulse(): we don't have the mint for "+srcMint);
+
                           //if this mint was mentioned by genesis node, go fetch it
                           //if not genesis node, ignore this mint
                       }           
