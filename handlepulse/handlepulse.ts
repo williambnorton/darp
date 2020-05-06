@@ -212,8 +212,9 @@ server.on('message', function(message, remote) {
               //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
               //
               for (var measure in owlsAry) {
-                  //console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
+                  console.log(ts()+"measure="+measure+" owlsAry[measure]="+owlsAry[measure]);
                   var srcMint = owlsAry[measure].split("=")[0]
+                  console.log("HANDLEPULSE: owlsAry[measure]=:"+owlsAry[measure]);
                   redisClient.hgetall("mint:"+srcMint, function(err, mintEntry) {
                       if (mintEntry!=null) {
                         var srcGeo=mintEntry.geo; //
