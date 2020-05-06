@@ -170,7 +170,7 @@ function newMint(mint) {
               //"owls" : getOWLs(me.group),  //owls other guy is reporting
               //node statistics - we measure these ourselves
               "owl": "",   //NO OWL MEASUREMENT HERE (YET)
-              "bootTimestamp" : ""+mintEntry.bootTime,
+              "bootTimestamp" : ""+mintEntry.bootTimestamp,
               "version" : mintEntry.version,
               "inOctets": "0",
               "outOctets": "0",

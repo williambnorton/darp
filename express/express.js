@@ -289,7 +289,7 @@ function handleShowState(req, res) {
                 txt += "<th>pktDrops</th>";
                 txt += "<th>pulseSz</th>";
                 txt += "<th>lastMsg</th>";
-                txt += "<th>bootTime</th>";
+                txt += "<th>bootTimestamp</th>";
                 txt += "<th>version</th>";
                 txt += "</tr>";
                 //console.log(ts()+"                            pulses="+dump(pulses));
@@ -298,6 +298,7 @@ function handleShowState(req, res) {
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
                     if (!pulseEntry.seq)
                         console.log(lib_1.ts() + "NOT A PULSE!!!!!");
+                    console.log("pulseEntry=" + lib_1.dump(pulseEntry));
                     txt += "<tr>";
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
                     txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
