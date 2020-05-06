@@ -591,16 +591,13 @@ function handleGraph(req, res, rtt) {
             //if (srcEntry!=null && dstEntry!=null) {
             txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
             expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
+                console.log("EXPRESS: DumpSamples:" + lib_1.dump(samples));
                 for (var sample in samples) {
                     txt += samples[sample];
                 }
                 console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
                 txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
-                console.log(lib_1.ts() + "txt to show graph: ");
-                console.log(lib_1.ts() + "txt to show graph: ");
                 console.log(lib_1.ts() + "txt to show graph: " + txt);
-                console.log(lib_1.ts() + "txt to show graph: ");
-                console.log(lib_1.ts() + "txt to show graph: ");
                 txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
                 res.end(txt);
             });
