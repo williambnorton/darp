@@ -197,6 +197,7 @@ server.on('message', function (message, remote) {
                             if (owl == "")
                                 owl = 0;
                             owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
+                            console.log("HANDLEPULSE: " + srcGeo + "-" + pulse.geo + "=" + lib_js_1.dump(owlStat));
                             redisClient.rpush([srcGeo + "-" + pulse.geo, owlStat]);
                         }
                         else {

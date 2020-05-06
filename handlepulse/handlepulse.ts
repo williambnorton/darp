@@ -227,6 +227,7 @@ server.on('message', function(message, remote) {
                         //redisClient.rpush([ srcMint + "-" + pulse.srcMint, srcMint+"-"+pulse.srcMint+"-"+owl+"-"+now()]);              
                         if (owl=="") owl=0;
                         owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
+                        console.log("HANDLEPULSE: "+srcGeo + "-" + pulse.geo+"="+ dump(owlStat));
                         redisClient.rpush([ srcGeo + "-" + pulse.geo, owlStat]);   
                       } else {
                           console.log("handlePulse(): we don't have the mint for "+srcMint);
