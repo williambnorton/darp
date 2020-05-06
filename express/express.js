@@ -315,7 +315,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + deltaSeconds + "</td>";
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
-                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.srcMint + '&dst=' + me.mint + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+pulseEntry.owls+"</td>"
                     txt += "<td>" + pulseEntry.inOctets + "</td>";
                     txt += "<td>" + pulseEntry.outOctets + "</td>";
@@ -384,7 +384,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.mint + '&dst=' + me.mint + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
