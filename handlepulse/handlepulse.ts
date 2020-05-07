@@ -166,9 +166,7 @@ server.on('message', function(message, remote) {
               };
 
               redisClient.publish("pulses", msg)
-              redisClient.hmset(pulseLabel, pulse); //store the pulse
-
- 
+              redisClient.hmset(pulseLabel, pulse); //store the pulse  EXPIRE ENTRY???
 
               var d = new Date();
               if (pulse.owl=="") pulse.owl="0";
@@ -177,8 +175,9 @@ server.on('message', function(message, remote) {
              redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);
 
               //
-              //    Store the measured latency for this pulse message to us
+              //    Store the measured latency for this pulse message to me
               //
+              console.log("HANDLEPULSE: storeOWL setting darp-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
               redisClient.set("darp-"+pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
               console.log("handlePulse:");
               //
@@ -223,7 +222,7 @@ function storeOWL(srcMint, destMint, owl) {
             if (srcEntry!=null) {
                 if (destEntry!=null) {
                     //we have src and dst entry - store the OWL
-                    //console.log("HANDLEPULSE: storeOWL setting srcEntry.geo="+srcEntry.geo+" dstEntry.geo="+destEntry.geo+" owl="+owl);
+                    console.log("HANDLEPULSE: storeOWL setting darp-" + srcEntry.geo + "-" + destEntry.geo+" owl="+owl);
                     redisClient.set("darp-" + srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
                     //Create and store the graph entries <---HACK
                     var d = new Date();
