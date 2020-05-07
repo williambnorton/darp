@@ -219,7 +219,7 @@ function handleShowState(req, res) {
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(null, function (OWLMatrix) {
                 //console.log("call:");
-                //console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
+                console.log("getMatrixTable: OWLMatrix=" + lib_1.dump(OWLMatrix));
                 //
                 // show OWL Matrix
                 //
@@ -246,7 +246,7 @@ function handleShowState(req, res) {
                 //   Extertnalize OWL matrix
                 //
                 console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lib_1.dump(lastEntry));
-                var fetchStack = new Array();
+                //var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
                     //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
