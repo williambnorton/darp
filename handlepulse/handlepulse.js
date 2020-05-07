@@ -173,6 +173,7 @@ function storeOWLs(srcMint, owls) {
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
     //
     var owlsAry = owls.split(",");
+    console.log("owlsAry=" + lib_js_1.dump(owlsAry));
     for (var dest in owlsAry) {
         var destMint = dest.split("=")[0];
         var owl = dest.split("=")[1];
