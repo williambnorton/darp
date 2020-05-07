@@ -96,10 +96,8 @@ server.on('message', function (message, remote) {
     //try {
     var pulseTimestamp = ary[5]; //1583783486546
     var OWL = lib_js_1.now() - pulseTimestamp;
-    if (OWL <= -999)
-        OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
-    if (OWL >= 999)
-        OWL = 99999; //bad clocks lead to really large OWL pulses 
+    //if (OWL <= -999) OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
+    //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 8); //owls start after the 7th comma
     var pulseOwls = msg.substring(owlsStart + 1, msg.length - 1);
@@ -155,8 +153,8 @@ server.on('message', function (message, remote) {
                 //
                 //    Store the measured latency for this pulse message to me
                 //
-                console.log("HANDLEPULSE: storeOWL setting darp-" + pulse.geo + "-" + me.geo + " owl=" + pulse.owl);
-                redisClient.set("darp-" + pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
+                console.log("HANDLEPULSE: storeOWL setting group-" + pulse.geo + "-" + me.geo + " owl=" + pulse.owl);
+                redisClient.set(pulse.group + "-" + pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
                 console.log("handlePulse:");
                 //
                 //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
@@ -199,8 +197,8 @@ function storeOWL(srcMint, destMint, owl) {
             if (srcEntry != null) {
                 if (destEntry != null) {
                     //we have src and dst entry - store the OWL
-                    console.log("HANDLEPULSE: storeOWL setting darp-" + srcEntry.geo + "-" + destEntry.geo + " owl=" + owl);
-                    redisClient.set("darp-" + srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
+                    console.log("HANDLEPULSE: storeOWL setting " + srcEntry.group + "-" + srcEntry.geo + "-" + destEntry.geo + " owl=" + owl);
+                    redisClient.set(srcEntry.group + "-" + srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
                     //Create and store the graph entries <---HACK
                     var d = new Date();
                     if (owl == "")

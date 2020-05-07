@@ -141,10 +141,12 @@ function getIPport(mint, callback) {
 }
 
 function getMatrixTable(darpMatrix, callback) {
+    if (darpMatrix==null) {
+        darpMatrix={};
+    }
    //scan for darp-<from>-<to>
    var cursor = '0';
-   if (darpMatrix == null)
-       darpMatrix = {};
+
    expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function(err, reply) {
        //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
        //console.log(ts()+"SCAN reply="+dump(reply));
@@ -152,6 +154,7 @@ function getMatrixTable(darpMatrix, callback) {
            throw err;
        }
        cursor = reply[0];
+       var owls=reply[1];
        //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
 
        for (var n in reply[1]) {
@@ -159,7 +162,7 @@ function getMatrixTable(darpMatrix, callback) {
            var src = ary[1],
                dst = ary[2],
                owl = ary[3];
-           //console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
+           console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
            if (typeof darpMatrix[src] == "undefined") darpMatrix[src] = {} //new Array();
            if (typeof darpMatrix[src][dst] == "undefined") darpMatrix[src][dst] = {} //new Array();
            //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
@@ -283,7 +286,7 @@ function handleShowState(req, res) {
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                        /*else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                       /*else if (count<100) */txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
+                       txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                             //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
