@@ -152,16 +152,16 @@ server.on('message', function (message, remote) {
                 var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
                 redisClient.rpush([pulse.geo + "-" + me.geo, owlStat]);
                 //
-                //this is the measured latency for the pulse message to us
+                //    Store the measured latency for this pulse message to us
                 //
-                redisClient.set(pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
+                redisClient.set("darp-" + pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
                 console.log("handlePulse:");
                 //
                 //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
                 //
                 storeOWLs(pulse.srcMint, pulse.owls);
                 //
-                //    Store the OWL measured - stick it in the mintTable
+                //    Also Store the OWL measured - stick it in the mintTable <--- DELETE THIS LATER
                 //
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl,
@@ -198,6 +198,13 @@ function storeOWL(srcMint, destMint, owl) {
                     //we have src and dst entry - store the OWL
                     //console.log("HANDLEPULSE: storeOWL setting srcEntry.geo="+srcEntry.geo+" dstEntry.geo="+destEntry.geo+" owl="+owl);
                     redisClient.set("darp-" + srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
+                    //Create and store the graph entries <---HACK
+                    var d = new Date();
+                    if (owl == "")
+                        owl = "0";
+                    var owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
+                    console.log("HANDLEPULSE: " + srcEntry.geo + "-" + destEntry.geo + "=" + owlStat);
+                    redisClient.rpush([srcEntry.geo + "-" + destEntry.geo, owlStat]);
                 }
                 else
                     console.log("HANDLEPULSE: We have no mint for this mint: " + destMint);
@@ -206,18 +213,6 @@ function storeOWL(srcMint, destMint, owl) {
                 console.log("HANDLEPULSE: We have no mint for this mint: " + srcMint);
         });
     });
-    /*
-               owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
-               console.log("HANDLEPULSE: "+srcGeo + "-" + pulse.geo+"="+ dump(owlStat));
-               redisClient.rpush([ srcGeo + "-" + pulse.geo, owlStat]);
-           } else {
-               console.log("handlePulse(): we don't have the mint for "+srcMint);
-   
-               //if this mint was mentioned by genesis node, go fetch it
-               //if not genesis node, ignore this mint
-           }
-       });
-       */
 }
 function nth_occurrence(string, char, nth) {
     var first_index = string.indexOf(char);
