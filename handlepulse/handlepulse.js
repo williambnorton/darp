@@ -175,7 +175,7 @@ function storeOWLs(srcMint, owls) {
     var owlsAry = owls.split(",");
     console.log("owlsAry=" + lib_js_1.dump(owlsAry));
     for (var dest in owlsAry) {
-        var destMint = dest.split("=")[0];
+        var destMint = owlsAry[dest].split("=")[0];
         var owl = dest.split("=")[1];
         if (typeof owl == "undefined")
             owl = "";
