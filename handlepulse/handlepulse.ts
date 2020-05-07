@@ -204,7 +204,7 @@ console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);
     console.log("owlsAry="+dump(owlsAry));
     for (var dest in owlsAry) {
         var destMint=owlsAry[dest].split("=")[0];
-        var owl=dest.split("=")[1];
+        var owl=owlsAry[dest].split("=")[1];
         if (typeof owl == "undefined") owl="";
         storeOWL(srcMint,destMint,owl)
     }
