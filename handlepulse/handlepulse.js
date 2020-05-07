@@ -167,11 +167,12 @@ server.on('message', function (message, remote) {
         });
     });
 });
-function storeOWLs(srcMint, owlsAry) {
+function storeOWLs(srcMint, owls) {
     console.log("HANDLEPULSE(): storeOWLs srcMint=" + srcMint + " owlsAry=" + lib_js_1.dump(owlsAry));
     //
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
     //
+    var owlsAry = owls.split(",");
     for (var dest in owlsAry) {
         var destMint = dest.split("=")[0];
         var owl = dest.split("=")[1];
@@ -184,7 +185,7 @@ function storeOWLs(srcMint, owlsAry) {
 //      storeOWL() - store one way latency to file or graphing & history
 //
 function storeOWL(srcMint, destMint, owl) {
-    console.log("HANDLEPULSE: storeOWL() srcMint=" + srcMint + " dst=" + destMint + " " + " owl=" + owl);
+    console.log("HANDLEPULSE: storeOWL() srcMint=" + srcMint + " destMint=" + destMint + " " + " owl=" + owl);
     redisClient.hgetall("mint:" + srcMint, function (err, srcEntry) {
         redisClient.hgetall("mint:" + destMint, function (err, destEntry) {
             if (srcEntry != null) {
