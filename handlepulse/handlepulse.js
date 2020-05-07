@@ -150,7 +150,8 @@ server.on('message', function (message, remote) {
                 if (pulse.owl == "")
                     pulse.owl = "0";
                 var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
-                redisClient.rpush([pulse.geo + "-" + me.geo, owlStat]);
+                console.log("HANDLEPULSE: ---> incoming " + pulse.geo + "-" + me.geo + "=" + owlStat);
+                redisClient.rpush([pulse.geo + "-" + me.geo, owlStat]); //store incoming pulse
                 //
                 //    Store the measured latency for this pulse message to me
                 //
@@ -204,7 +205,7 @@ function storeOWL(srcMint, destMint, owl) {
                     if (owl == "")
                         owl = "0";
                     var owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
-                    console.log("HANDLEPULSE: " + srcEntry.geo + "-" + destEntry.geo + "=" + owlStat);
+                    console.log("HANDLEPULSE: OWL DATA ---> " + srcEntry.geo + "-" + destEntry.geo + "=" + owlStat);
                     redisClient.rpush([srcEntry.geo + "-" + destEntry.geo, owlStat]);
                 }
                 else
