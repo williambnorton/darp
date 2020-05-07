@@ -146,26 +146,27 @@ server.on('message', function (message, remote) {
                 ;
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the pulse
-                var pulseSamplePrefix = "darp-";
-                //this is the measured latency for the pulse message to us
-                redisClient.set(pulseSamplePrefix + pulse.geo + "-" + me.geo + "-" + pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-                console.log("handlePulse:");
                 var d = new Date();
                 if (pulse.owl == "")
                     pulse.owl = "0";
                 var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
                 redisClient.rpush([pulse.geo + "-" + me.geo, owlStat]);
                 //
-                //    Store the OWL measured receiving the pulse
+                //this is the measured latency for the pulse message to us
+                //
+                redisClient.set(pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
+                console.log("handlePulse:");
+                //
+                //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
+                //
+                storeOWLs(pulse.srcMint, pulse.owls);
+                //
+                //    Store the OWL measured - stick it in the mintTable
                 //
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl,
                     "pulseTimestamp": lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
                 });
-                //
-                //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
-                //
-                storeOWLs(pulse.srcMint, pulse.owls);
             });
         });
     });
