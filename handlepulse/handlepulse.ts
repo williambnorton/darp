@@ -228,10 +228,9 @@ console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owlsAry="+dump(owlsAry
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
     //
     for (var dest in owlsAry) {
-        if (typeof owlsAry[dest] == "undefined") owlsAry[dest] = ""
         var destMint=dest.split("=")[0];
         var owl=dest.split("=")[1];
-        if (typeof owl == undefined) owl="";
+        if (typeof owl == "undefined") owl="";
         storeOWL(srcMint,destMint,owl)
     }
 }
