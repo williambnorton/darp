@@ -117,7 +117,7 @@ server.on('message', function(message, remote) {
   var pulseLabel = ary[2] + ":" + ary[3];
 
   var owlsStart = nth_occurrence(msg, ',', 8); //owls start after the 7th comma
-  var owls = msg.substring(owlsStart + 1, msg.length - 1);
+  //var owls = msg.substring(owlsStart + 1, msg.length - 1);
 
   //console.log(ts()+"**************************handlepulse(): owls="+owls);  //INSTRUMENTAITON POINT
 
@@ -150,7 +150,7 @@ server.on('message', function(message, remote) {
               pulseTimestamp: pulseTimestamp,
               bootTimestamp: ary[6],
               srcMint: ary[7],
-              owls: owls,
+              owls: pulse.owls,
               owl: "" + OWL,
               lastMsg: msg,
               inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
@@ -159,18 +159,6 @@ server.on('message', function(message, remote) {
 
           authenticatedPulse(pulse, function(pulse, authenticated) { 
 
-            /* DOES NOT WORK
-            //console.log(ts()+"Authenticated packet = we have a mint and geos match: "+pulse.ipaddr+":"+pulse.mint);
-              if (me.state == "CONFIGURED") { //we received a pulse from this node, it is now running
-                  console.log(ts() + "me=" + dump(me));
-                  me.state = "RUNNING"
-                  redisClient.hset("mint:0", "state", "RUNNING"); //RUNNING means mint inquiries work
-                  redisClient.hgetall("mint:0", function(newme) {
-                      console.log(ts() + "Received pulse from a node previously called CONFIGURED... Set its state RUNNING:" + dump(newme));
-                  })
-              }
-              */
-              //console.log("*******pulse.version="+pulse.version+" MYBUILD="+MYBUILD+" dump pulse="+dump(pulse));  //INSTRUMENTAITON POINT
               if (pulse.srcMint=="1" && pulse.version != MYBUILD) {
                       console.log(ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                       console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + dump(pulse));
@@ -190,39 +178,24 @@ server.on('message', function(message, remote) {
               if (pulse.owl=="") pulse.owl="0";
               var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
 
-              //redisClient.rpush([ pulse.srcMint + "-" + me.mint, pulse.srcMint+"-"+me.mint+"-"+pulse.owl]);
-              //redisClient.rpush([ pulse.srcMint + "-" + me.mint, owlStat]);
-              redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);
-
-              //console.log(ts()+"HANDLEPULSE(): storing with TTL "+pulse.srcMint+"-"+me.mint+"="+ pulse.owl);
+             redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);
 
               //
               //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
               //
-              console.log("handlepulse(): owls="+pulse.owls);
-              var owlsAry = pulse.owls.split(",")
-              storeOWLs(pulse.srcMint,owls, function () {
-                console.log("handlepulse(): storeOWLS returned");
-              });
-              //console.log(ts()+"owlsAry="+owlsAry);
-
+              storeOWLs(pulse.srcMint,pulse.owls);
 
               redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
                   "owl": pulse.owl,
                   "pulseTimestamp" : now()  //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
               });
 
-              //storeOWL(pulse.geo,me.geo,OWL);
-
-              //console.log(ts()+"HANDLEPULSE(): storedOWL "+dump(pulse));
-
-              //});
           });
       });
   });
 });
 
-function storeOWLs(srcMint, owlsAry, callback) {
+function storeOWLs(srcMint, owlsAry) {
 console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owlsAry="+dump(owlsAry));
     //
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
@@ -237,17 +210,17 @@ console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owlsAry="+dump(owlsAry
 //
 //      storeOWL() - store one way latency to file or graphing & history
 //
-function storeOWL(srcMint, dstMint, owl) {
-    console.log("HANDLEPULSE: storeOWL() srcMint="+srcMint+" dst="+dstMint+" "+" owl="+owl);
+function storeOWL(srcMint, destMint, owl) {
+    console.log("HANDLEPULSE: storeOWL() srcMint="+srcMint+" dst="+destMint+" "+" owl="+owl);
 
     redisClient.hgetall("mint:"+srcMint, function(err, srcEntry) {
-        redisClient.hgetall("mint:"+dstMint, function(err, dstEntry) {
+        redisClient.hgetall("mint:"+destMint, function(err, destEntry) {
             if (srcEntry!=null) {
-                if (dstEntry!=null) {
+                if (destEntry!=null) {
                     //we have src and dst entry - store the OWL
-                    console.log("HANDLEPULSE: storeOWL setting srcEntry.geo="+srcEntry.geo+" dstEntry.geo="+dstEntry.geo+" owl="+owl);
-                    redisClient.set("darp-" + srcEntry.geo + "-" + dstEntry.geo, owl, 'EX', OWLEXPIRES);
-                } else console.log("HANDLEPULSE: We have no mint for this mint: "+dstMint);
+                    console.log("HANDLEPULSE: storeOWL setting srcEntry.geo="+srcEntry.geo+" dstEntry.geo="+destEntry.geo+" owl="+owl);
+                    redisClient.set("darp-" + srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
+                } else console.log("HANDLEPULSE: We have no mint for this mint: "+destMint);
             } else console.log("HANDLEPULSE: We have no mint for this mint: "+srcMint);
         });
     });
