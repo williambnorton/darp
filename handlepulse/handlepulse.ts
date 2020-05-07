@@ -229,7 +229,10 @@ console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owlsAry="+dump(owlsAry
     //
     for (var dest in owlsAry) {
         if (typeof owlsAry[dest] == "undefined") owlsAry[dest] = ""
-        storeOWL(srcMint,dest.split("=")[0],owlsAry[dest])
+        var destMint=dest.split("=")[0];
+        var owl=dest.split("=")[1];
+        if (typeof owl == undefined) owl="";
+        storeOWL(srcMint,destMint,owl)
     }
 }
 //
