@@ -102,8 +102,7 @@ server.on('message', function (message, remote) {
         OWL = 99999; //bad clocks lead to really large OWL pulses 
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 8); //owls start after the 7th comma
-    //  var pulseOwls = msg.substring(owlsStart + 1, msg.length-1);
-    var pulseOwls = msg.substring(owlsStart + 1, msg.length);
+    var pulseOwls = msg.substring(owlsStart + 1, msg.length - 1);
     //console.log(ts()+"**************************handlepulse(): owls="+owls);  //INSTRUMENTAITON POINT
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
