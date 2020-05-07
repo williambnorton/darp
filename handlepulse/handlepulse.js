@@ -161,7 +161,7 @@ server.on('message', function (message, remote) {
                 //
                 //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
                 //
-                storeOWLs(pulse.srcMint, pulse.owls);
+                storeOWLs(pulse.srcMint, pulse.owls, me.mint);
                 //
                 //    Also Store the OWL measured - stick it in the mintTable <--- DELETE THIS LATER
                 //
@@ -173,7 +173,7 @@ server.on('message', function (message, remote) {
         });
     });
 });
-function storeOWLs(srcMint, owls) {
+function storeOWLs(srcMint, owls, memint) {
     console.log("HANDLEPULSE(): storeOWLs srcMint=" + srcMint + " owls=" + owls);
     //
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
@@ -185,7 +185,8 @@ function storeOWLs(srcMint, owls) {
         var owl = owlsAry[dest].split("=")[1];
         if (typeof owl == "undefined")
             owl = "";
-        storeOWL(srcMint, destMint, owl);
+        if (!(destMint == memint)) //Do not believe what remote says is my latency - I just measured it!
+            storeOWL(srcMint, destMint, owl);
     }
 }
 //
