@@ -102,7 +102,8 @@ server.on('message', function (message, remote) {
         OWL = 99999; //bad clocks lead to really large OWL pulses 
     var pulseLabel = ary[2] + ":" + ary[3];
     var owlsStart = nth_occurrence(msg, ',', 8); //owls start after the 7th comma
-    var pulseOwls = msg.substring(owlsStart + 1, msg.length - 1);
+    //  var pulseOwls = msg.substring(owlsStart + 1, msg.length-1);
+    var pulseOwls = msg.substring(owlsStart + 1, msg.length);
     //console.log(ts()+"**************************handlepulse(): owls="+owls);  //INSTRUMENTAITON POINT
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
@@ -156,13 +157,16 @@ server.on('message', function (message, remote) {
                 var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
                 redisClient.rpush([pulse.geo + "-" + me.geo, owlStat]);
                 //
-                //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
+                //    Store the OWL measured receiving the pulse
                 //
-                storeOWLs(pulse.srcMint, pulse.owls);
                 redisClient.hmset("mint:" + pulse.srcMint, {
                     "owl": pulse.owl,
                     "pulseTimestamp": lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
                 });
+                //
+                //  Store the OWL measure and save for 1 pulse cycle - naming convention darp-src-dst-owl`
+                //
+                storeOWLs(pulse.srcMint, pulse.owls);
             });
         });
     });
@@ -173,7 +177,7 @@ function storeOWLs(srcMint, owls) {
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
     //
     var owlsAry = owls.split(",");
-    console.log("owlsAry=" + lib_js_1.dump(owlsAry));
+    //console.log("owlsAry="+dump(owlsAry));
     for (var dest in owlsAry) {
         var destMint = owlsAry[dest].split("=")[0];
         var owl = owlsAry[dest].split("=")[1];
@@ -192,7 +196,7 @@ function storeOWL(srcMint, destMint, owl) {
             if (srcEntry != null) {
                 if (destEntry != null) {
                     //we have src and dst entry - store the OWL
-                    console.log("HANDLEPULSE: storeOWL setting srcEntry.geo=" + srcEntry.geo + " dstEntry.geo=" + destEntry.geo + " owl=" + owl);
+                    //console.log("HANDLEPULSE: storeOWL setting srcEntry.geo="+srcEntry.geo+" dstEntry.geo="+destEntry.geo+" owl="+owl);
                     redisClient.set("darp-" + srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
                 }
                 else
