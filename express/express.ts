@@ -177,7 +177,7 @@ function getMatrixTable(group, darpMatrix, callback) {
    var cursor = '0';
 
    //expressRedisClient.hgetall('gSRlist', function(err, gSRlist) {
- 
+    var src='*';
        expressRedisClient.scan(cursor, 'MATCH', 'DEVOPS.1-'+src+'-*', 'COUNT', '1000', function(err, reply){
        //console.log(ts()+"SCAN reply="+dump(reply));
        if (err) {
