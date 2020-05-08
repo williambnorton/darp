@@ -168,7 +168,7 @@ function getMatrixTable(group, darpMatrix, callback) {
            var src = ary[1],
                dst = ary[2],
                owl = ary[3];
-           console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
+           //console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
            if (typeof darpMatrix[src] == "undefined") darpMatrix[src] = {} //new Array();
            if (typeof darpMatrix[src][dst] == "undefined") darpMatrix[src][dst] = {} //new Array();
            //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
@@ -224,10 +224,10 @@ function handleShowState(req, res) {
            var pulses = config.pulses
            var gSRlist = config.gSRlist
 
-           for (var SR in config.gSRlist) {
-               var entry=config.gSRlist[SR];
-               console.log("config.gSRlist="+dump(entry));
-           }
+           //for (var SR in config.gSRlist) {
+           //    var entry=config.gSRlist[SR];
+           //    console.log("config.gSRlist="+dump(entry));
+           //}
 
            //
            //    Header
@@ -276,7 +276,7 @@ function handleShowState(req, res) {
                //
                //   Extertnalize OWL matrix
                //
-               console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
+               //console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
                //var fetchStack = new Array();
                for (var row in pulses) {
                    var rowEntry = pulses[row];
@@ -284,7 +284,7 @@ function handleShowState(req, res) {
                    //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
 
                    //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
-                    var cellState="reachable"; //unreachable     badkey   alert   
+                    var cellState="RUNNING"; //unreachable     badkey   alert   
                    txt += '<tr><td class="'+cellState+'"><a href="http://' + me.ipaddr+":"+me.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];//
@@ -295,7 +295,7 @@ function handleShowState(req, res) {
                            (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                            owl = OWLMatrix[rowEntry.geo][colEntry.geo]
                        }
-                       console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
+                       //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                        //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                        
@@ -345,7 +345,7 @@ function handleShowState(req, res) {
                    var pulseEntry = pulses[a];
                    //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
                    if (!pulseEntry.seq) console.log(ts() + "NOT A PULSE!!!!!");
-                   console.log("pulseEntry="+dump(pulseEntry));
+                   //console.log("pulseEntry="+dump(pulseEntry));
                    txt += "<tr>"
 
                    //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"

@@ -149,7 +149,7 @@ function getMatrixTable(group, darpMatrix, callback) {
         for (var n in reply[1]) {
             var ary = reply[1][n].split("-"); ///"DEVOPS.1-DEVOPS-MAZORE",
             var src = ary[1], dst = ary[2], owl = ary[3];
-            console.log(lib_1.ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
+            //console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
             if (typeof darpMatrix[src] == "undefined")
                 darpMatrix[src] = {}; //new Array();
             if (typeof darpMatrix[src][dst] == "undefined")
@@ -202,10 +202,10 @@ function handleShowState(req, res) {
             var mintTable = config.mintTable;
             var pulses = config.pulses;
             var gSRlist = config.gSRlist;
-            for (var SR in config.gSRlist) {
-                var entry = config.gSRlist[SR];
-                console.log("config.gSRlist=" + lib_1.dump(entry));
-            }
+            //for (var SR in config.gSRlist) {
+            //    var entry=config.gSRlist[SR];
+            //    console.log("config.gSRlist="+dump(entry));
+            //}
             //
             //    Header
             //
@@ -254,13 +254,13 @@ function handleShowState(req, res) {
                 //
                 //   Extertnalize OWL matrix
                 //
-                console.log(lib_1.ts() + "handleShowState() inside getMatrix.....lastEntry=" + lib_1.dump(lastEntry));
+                //console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
                 //var fetchStack = new Array();
                 for (var row in pulses) {
                     var rowEntry = pulses[row];
                     //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
                     //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
-                    var cellState = "reachable"; //unreachable     badkey   alert   
+                    var cellState = "RUNNING"; //unreachable     badkey   alert   
                     txt += '<tr><td class="' + cellState + '"><a href="http://' + me.ipaddr + ":" + me.port + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                     for (var col in pulses) {
                         var colEntry = pulses[col]; //
@@ -271,7 +271,7 @@ function handleShowState(req, res) {
                             (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                             owl = OWLMatrix[rowEntry.geo][colEntry.geo];
                         }
-                        console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
+                        //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                         //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                         txt += '<td class="' + cellState + '" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
@@ -311,7 +311,7 @@ function handleShowState(req, res) {
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
                     if (!pulseEntry.seq)
                         console.log(lib_1.ts() + "NOT A PULSE!!!!!");
-                    console.log("pulseEntry=" + lib_1.dump(pulseEntry));
+                    //console.log("pulseEntry="+dump(pulseEntry));
                     txt += "<tr>";
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
                     txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
