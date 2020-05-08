@@ -135,11 +135,33 @@ function getMatrixTable(group, darpMatrix, callback) {
     console.log("getMatrixTable(): group=" + group + " darpMatrix=" + lib_1.dump(darpMatrix));
     if (darpMatrix == null) {
         darpMatrix = {};
+        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
+            var last = "";
+            for (var srcEntry in gSRlist)
+                last = srcEntry;
+            for (var srcEntry in gSRlist) {
+                var srcEntryLabel = gSRlist[srcEntry];
+                var srcGroup = srcEntryLabel.split(":")[0];
+                var srcGeo = srcEntryLabel.split(":")[1];
+                for (var destEntry in gSRlist) {
+                    var destEntryLabel = gSRlist[destEntry];
+                    var destGroup = destEntry.split(":")[0];
+                    var destGeo = destEntry.split(":")[1];
+                    darpMatrix[srcGeo] = {};
+                    darpMatrix[srcGeo][destGeo] = "";
+                    if (destEntryLabel == last) {
+                        if (srcEntry == last) {
+                            callback(darpMatrix);
+                        }
+                    }
+                }
+            }
+        });
     }
     //scan for group-<from>-<to>
     var cursor = '0';
     //expressRedisClient.hgetall('gSRlist', function(err, gSRlist) {
-    expressRedisClient.scan(cursor, 'MATCH', 'DEVOPS.1-*', 'COUNT', '1000', function (err, reply) {
+    expressRedisClient.scan(cursor, 'MATCH', 'DEVOPS.1-' + src + '-*', 'COUNT', '1000', function (err, reply) {
         //console.log(ts()+"SCAN reply="+dump(reply));
         if (err) {
             throw err;
