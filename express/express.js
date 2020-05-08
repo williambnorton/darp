@@ -266,10 +266,7 @@ function handleShowState(req, res) {
                         var colEntry = pulses[col]; //
                         var entryLabel = rowEntry.geo + "-" + colEntry.geo;
                         var owl = "";
-                        if (rowEntry.state == "CONFIGURED")
-                            cellState = "reachable";
-                        else
-                            cellState = "unreachable";
+                        cellState = rowEntry.state;
                         if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
                             (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                             owl = OWLMatrix[rowEntry.geo][colEntry.geo];

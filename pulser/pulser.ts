@@ -29,8 +29,6 @@ redisClient.hgetall("mint:0", function (err,me) {
   });
 });
 
-
-
 console.log("PULSER: CYCLETIME="+CYCLETIME);
 
 var GEO="";  //global variable for marking source of pulse
@@ -47,7 +45,7 @@ function checkAdminControl() {
       redisClient.hdel("mint:0","adminControl")
     }
   });
-  setTimeout(checkAdminControl,500);  //how often we check for cmds
+  setTimeout(checkAdminControl,2000);  //how often we check for cmds
 }
 setTimeout(checkAdminControl,1000);
 
