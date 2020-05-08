@@ -269,8 +269,8 @@ function handleShowState(req, res) {
                for (var col in pulses) {
                    var colEntry = pulses[col];
                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                   if (count <=10) txt += '<th><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>"
-                   else txt += '<th><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.srcMint + "</a></th>"
+                   if (count <=10) txt += '<th class="'+colEntry.state+'"><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>"
+                   else txt += '<th class="'+colEntry.state+'"><a href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.srcMint + "</a></th>"
                }
                txt += "</tr>"
                //
@@ -290,6 +290,9 @@ function handleShowState(req, res) {
                        var colEntry = pulses[col];//
                        var entryLabel = rowEntry.geo + "-" + colEntry.geo
                        var owl = "";
+                        if (rowEntry.state=="CONFIGURED") 
+                            cellState="reachable"
+                            else cellState="unreachable"
                        if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
                            (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                            owl = OWLMatrix[rowEntry.geo][colEntry.geo]
@@ -297,7 +300,8 @@ function handleShowState(req, res) {
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                        //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                       txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
+                       
+                       txt += '<td class="'+cellState+'" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                             //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
