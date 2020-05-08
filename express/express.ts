@@ -150,14 +150,17 @@ function getMatrixTable(group, darpMatrix, callback) {
         darpMatrix={};
         expressRedisClient.hgetall("gSRlist", function (gSRlist) {
             var last="";
-            for (var srcEntry in gSRlist) last=srcEntry;
-
+            var pulseNodes=new Array();
             for (var srcEntry in gSRlist) {
-                var srcEntryLabel=gSRlist[srcEntry]
+                pulseNodes.push(srcEntry.split(":"[0]))
+                last=srcEntry;
+            }
+            for (var srcEntry in pulseNodes) {
+                var srcEntryLabel=pulseNodes[srcEntry]
                 var srcGroup=srcEntryLabel.split(":")[0];
                 var srcGeo=srcEntryLabel.split(":")[1]
 
-                for (var destEntry in gSRlist) {
+                for (var destEntry in srcEntry) {
                     var destEntryLabel=gSRlist[destEntry]
                     var destGroup=destEntry.split(":")[0];
                     var destGeo=destEntry.split(":")[1]
