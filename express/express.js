@@ -128,23 +128,26 @@ function getIPport(mint, callback) {
         callback(err, mintEntry.ipaddr + ":" + mintEntry.port);
     });
 }
-function getMatrixTable(darpMatrix, callback) {
+//
+//  Make a matrix of group latency measures
+//
+function getMatrixTable(group, darpMatrix, callback) {
     if (darpMatrix == null) {
         darpMatrix = {};
     }
-    //scan for darp-<from>-<to>
+    //scan for group-<from>-<to>
     var cursor = '0';
-    expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function (err, reply) {
-        //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
+    //expressRedisClient.hgetall('gSRlist', function(err, gSRlist) {
+    expressRedisClient.scan(cursor, 'MATCH', 'DEVOPS.1-*', 'COUNT', '1000', function (err, reply) {
         //console.log(ts()+"SCAN reply="+dump(reply));
         if (err) {
             throw err;
         }
         cursor = reply[0];
-        var owls = reply[1];
-        //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
+        //var owls=reply[1];
+        //console.log(ts()+"EXPRESS scan() : group-*="+dump(reply[1]));//INSTRUMENTATION POINT
         for (var n in reply[1]) {
-            var ary = reply[1][n].split("-"); ///"darp-1-3=35",
+            var ary = reply[1][n].split("-"); ///"DEVOPS.1-DEVOPS-MAZORE",
             var src = ary[1], dst = ary[2], owl = ary[3];
             console.log(lib_1.ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
             if (typeof darpMatrix[src] == "undefined")
@@ -171,7 +174,7 @@ function getMatrixTable(darpMatrix, callback) {
             // do your processing
             // reply[1] is an array of matched keys.
             // console.log(reply[1]);
-            return getMatrixTable(darpMatrix, callback); //this only returns one bucket full.............
+            return getMatrixTable(group, darpMatrix, callback); //this only returns one bucket full.............
         }
     });
 }
@@ -199,6 +202,10 @@ function handleShowState(req, res) {
             var mintTable = config.mintTable;
             var pulses = config.pulses;
             var gSRlist = config.gSRlist;
+            for (var SR in config.gSRlist) {
+                var entry = config.gSRlist[SR];
+                console.log("config.gSRlist=" + lib_1.dump(entry));
+            }
             //
             //    Header
             //
@@ -219,7 +226,7 @@ function handleShowState(req, res) {
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
-            getMatrixTable(null, function (OWLMatrix) {
+            getMatrixTable(me.group, null, function (OWLMatrix) {
                 //console.log("call:");
                 console.log("getMatrixTable: OWLMatrix=" + lib_1.dump(OWLMatrix));
                 //
@@ -265,159 +272,137 @@ function handleShowState(req, res) {
                         }
                         console.log(lib_1.ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
-                        /*else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                        txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                             //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
+                        //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
+                        txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                        //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                     }
-                    txt += "</tr>"
- 
- 
-                 // });  //experiment
- 
- 
- 
+                    txt += "</tr>";
+                    // });  //experiment
                 }
                 txt += "</table>";
- 
- 
                 //
-                //  Externalize pulse structures
+                //  Externalize pulse structures 
                 //
-                txt += '<br><h2>pulseTable'+'</h2><table border="1">';
-                txt += "<tr>"
-                txt += "<th>geo</th>"
-                txt += "<th>group</th>"
-                txt += "<th>ipaddr</th>"
-                txt += "<th>port</th>"
-                
-                txt += "<th>seq</th>"
-                txt += "<th>pulseTimestamp</th>"
-                txt += "<th>srcMint</th>"
-                txt += "<th>owl</th>"
+                txt += '<br><h2>pulseTable' + '</h2><table border="1">';
+                txt += "<tr>";
+                txt += "<th>geo</th>";
+                txt += "<th>group</th>";
+                txt += "<th>ipaddr</th>";
+                txt += "<th>port</th>";
+                txt += "<th>seq</th>";
+                txt += "<th>pulseTimestamp</th>";
+                txt += "<th>srcMint</th>";
+                txt += "<th>owl</th>";
                 //txt+="<th>owls</th>"
-                txt += "<th>inOctets</th>"
-                txt += "<th>outOctets</th>"
-                txt += "<th>inMsgs</th>"
-                txt += "<th>outMsgs</th>"
-                txt += "<th>pktDrops</th>"
-                txt += "<th>pulseSz</th>"
-                txt+="<th>lastMsg</th>"
-                txt+="<th>bootTimestamp</th>"
-                txt+="<th>version</th>"
-                txt += "</tr>"
- 
- 
+                txt += "<th>inOctets</th>";
+                txt += "<th>outOctets</th>";
+                txt += "<th>inMsgs</th>";
+                txt += "<th>outMsgs</th>";
+                txt += "<th>pktDrops</th>";
+                txt += "<th>pulseSz</th>";
+                txt += "<th>lastMsg</th>";
+                txt += "<th>bootTimestamp</th>";
+                txt += "<th>version</th>";
+                txt += "</tr>";
                 //console.log(ts()+"                            pulses="+dump(pulses));
                 for (var a in pulses) {
                     var pulseEntry = pulses[a];
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
-                    if (!pulseEntry.seq) console.log(ts() + "NOT A PULSE!!!!!");
-                    console.log("pulseEntry="+dump(pulseEntry));
-                    txt += "<tr>"
- 
+                    if (!pulseEntry.seq)
+                        console.log(lib_1.ts() + "NOT A PULSE!!!!!");
+                    console.log("pulseEntry=" + lib_1.dump(pulseEntry));
+                    txt += "<tr>";
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
- 
-                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>"
- 
- 
+                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
-                    txt += "<td>" + pulseEntry.group + "</td>"
-                    txt += "<td>" + pulseEntry.ipaddr + "</td>"
-                    txt += "<td>" + pulseEntry.port + "</td>"
-                    
-                    txt += "<td>" + pulseEntry.seq + "</td>"
- 
-                    var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
-                    if (pulseEntry.pulseTimestamp == 0) deltaSeconds = "0";
+                    txt += "<td>" + pulseEntry.group + "</td>";
+                    txt += "<td>" + pulseEntry.ipaddr + "</td>";
+                    txt += "<td>" + pulseEntry.port + "</td>";
+                    txt += "<td>" + pulseEntry.seq + "</td>";
+                    var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+                    if (pulseEntry.pulseTimestamp == 0)
+                        deltaSeconds = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += "<td>" + deltaSeconds + "</td>";
- 
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-                    txt += "<td>" + pulseEntry.srcMint + "</td>"
-                    txt += "<td>"+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
+                    txt += "<td>" + pulseEntry.srcMint + "</td>";
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+pulseEntry.owls+"</td>"
-                    txt += "<td>" + pulseEntry.inOctets + "</td>"
-                    txt += "<td>" + pulseEntry.outOctets + "</td>"
-                    txt += "<td>" + pulseEntry.inMsgs + "</td>"
-                    txt += "<td>" + pulseEntry.outMsgs + "</td>"
-                    txt += "<td>" + pulseEntry.pktDrops + "</td>"
+                    txt += "<td>" + pulseEntry.inOctets + "</td>";
+                    txt += "<td>" + pulseEntry.outOctets + "</td>";
+                    txt += "<td>" + pulseEntry.inMsgs + "</td>";
+                    txt += "<td>" + pulseEntry.outMsgs + "</td>";
+                    txt += "<td>" + pulseEntry.pktDrops + "</td>";
                     if (pulseEntry.lastMsg) {
-                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"
-                         txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
-                     } else {
-                         txt += "<td>" + "" + "</td>"
-                         txt += "<td>" + "" + "</td>"
+                        txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
+                        txt += "<td>" + pulseEntry.lastMsg.substring(0, 50) + "</td>";
                     }
-                    var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
-                    if (pulseEntry.bootTimestamp == 0) deltaSeconds2 = "0";
+                    else {
+                        txt += "<td>" + "" + "</td>";
+                        txt += "<td>" + "" + "</td>";
+                    }
+                    var deltaSeconds2 = Math.round((lib_1.now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
+                    if (pulseEntry.bootTimestamp == 0)
+                        deltaSeconds2 = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += "<td>" + deltaSeconds2 + "</td>";
                     txt += "<td>" + pulseEntry.version + "</td>";
- 
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
-                    txt += "</tr>"
+                    txt += "</tr>";
                 }
                 txt += "</table>";
                 //
-                //  Externalize mintTable
+                //  Externalize mintTable 
                 //
                 //console.log(ts()+"config.mintTable="+dump(config.mintTable));
                 txt += '<br><h2>mintTable</h2><table border="1">';
-                txt += "<tr>"
-                txt += "<th>mint</th>"
-                txt += "<th>geo</th>"
-                txt += "<th>port</th>"
-                txt += "<th>ipaddr</th>"
-                txt += "<th>publickey</th>"
-                txt += "<th>state</th>"
-                txt += "<th>pulseTimestamp</th>"
-                txt += "<th>version</th>"
-                txt += "<th>wallet</th>"
+                txt += "<tr>";
+                txt += "<th>mint</th>";
+                txt += "<th>geo</th>";
+                txt += "<th>port</th>";
+                txt += "<th>ipaddr</th>";
+                txt += "<th>publickey</th>";
+                txt += "<th>state</th>";
+                txt += "<th>pulseTimestamp</th>";
+                txt += "<th>version</th>";
+                txt += "<th>wallet</th>";
                 //txt+="<th>S</th>"
-                txt += "<th>owl</th>"
+                txt += "<th>owl</th>";
                 //txt+="<th>G</th>"
                 //<th>rtt</th>"
-                txt += "<th>CONTROLS</th>"
-                txt += "<th>adminControl</th>"
-                txt += "<th>bootTimestamp</th>"
-                txt += "</tr>"
- 
+                txt += "<th>CONTROLS</th>";
+                txt += "<th>adminControl</th>";
+                txt += "<th>bootTimestamp</th>";
+                txt += "</tr>";
                 //console.log(ts()+"                            mintTable="+dump(mintTable));
                 for (var a in mintTable) {
                     var mintEntry = mintTable[a];
                     //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
- 
-                    txt += "<tr>"
+                    txt += "<tr>";
                     //txt+="<td>"+mintEntry+"</td>"
-                    txt += "<td>" + mintEntry.mint + "</td>"
-                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>"
-                    txt += "<td>" + mintEntry.port + "</td>"
-                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.ipaddr + "</a></td>"
-                    txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>"
-                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
- 
- 
-                    var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
-                    if (pulseEntry.pulseTimestamp == 0) deltaT = "0";
+                    txt += "<td>" + mintEntry.mint + "</td>";
+                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>";
+                    txt += "<td>" + mintEntry.port + "</td>";
+                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.ipaddr + "</a></td>";
+                    txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
+                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
+                    var deltaT = Math.round((lib_1.now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
+                    if (pulseEntry.pulseTimestamp == 0)
+                        deltaT = "0";
                     txt += "<td>" + deltaT + "</td>";
- 
- 
                     //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
-                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>"
-                    txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>"
+                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
+                    txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += "<td>"+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>"
- 
+                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
- 
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
                     var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
                     var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
                     var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
                     var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
- 
                     txt += "<td>" + '<FORM>';
                     txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
                     txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
@@ -425,41 +410,36 @@ function handleShowState(req, res) {
                     txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
                     txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
                     txt += '</FORM>' + "</td>";
-                    if (mintEntry.adminControl) txt += "<td>" + mintEntry.adminControl + "</td>"
-                     else txt += "<td>" + "</td>"
- 
-                     var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
-                     if (pulseEntry.bootTimestamp == 0) delta = "0";
-                     txt += "<td>" + delta + "</td>";
- 
-                     txt += "</tr>"
+                    if (mintEntry.adminControl)
+                        txt += "<td>" + mintEntry.adminControl + "</td>";
+                    else
+                        txt += "<td>" + "</td>";
+                    var delta = Math.round((lib_1.now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+                    if (pulseEntry.bootTimestamp == 0)
+                        delta = "0";
+                    txt += "<td>" + delta + "</td>";
+                    txt += "</tr>";
                 }
                 txt += "</table>";
- 
                 //
                 //  Externalize gSRlist Directory
                 //
                 txt += '<br><h2>gSRlist</h2><table border="1">';
-                txt += "<tr><th>pulse</th><th>mint</th></tr>"
+                txt += "<tr><th>pulse</th><th>mint</th></tr>";
                 for (var entry in gSRlist) {
                     var mint = gSRlist[entry];
                     //console.log(ts()+"mint="+mint);
-                    txt += '<tr><td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + entry + "</a></td><td><a>" + mint + "</a></td></tr>"
+                    txt += '<tr><td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + entry + "</a></td><td><a>" + mint + "</a></td></tr>";
                 }
                 txt += "</table>";
- 
                 res.setHeader('Content-Type', 'text/html');
                 res.setHeader("Access-Control-Allow-Origin", "*");
- 
-                res.end(txt + "<p>" + /*"RAW /CONFIG: "+JSON.stringify(config, null, 2)+ */ "</p></body></html>";
-                    }
-                }
+                res.end(txt + "<p>" + /*"RAW /CONFIG: "+JSON.stringify(config, null, 2)+ */ "</p></body></html>");
+                return;
             });
-            return;
         });
     });
 }
-;
 //
 //
 //

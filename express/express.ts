@@ -140,25 +140,31 @@ function getIPport(mint, callback) {
    })
 }
 
-function getMatrixTable(darpMatrix, callback) {
+
+//
+//  Make a matrix of group latency measures
+//
+function getMatrixTable(group, darpMatrix, callback) {
+    
     if (darpMatrix==null) {
         darpMatrix={};
-    }
-   //scan for darp-<from>-<to>
+    } 
+   //scan for group-<from>-<to>
    var cursor = '0';
 
-   expressRedisClient.scan(cursor, 'MATCH', 'darp-*', 'COUNT', '1000', function(err, reply) {
-       //      expressRedisClient.scan(cursor, 'MATCH', '*:DEVOPS.1', 'COUNT', '1000', function(err, reply){
+   //expressRedisClient.hgetall('gSRlist', function(err, gSRlist) {
+ 
+       expressRedisClient.scan(cursor, 'MATCH', 'DEVOPS.1-*', 'COUNT', '1000', function(err, reply){
        //console.log(ts()+"SCAN reply="+dump(reply));
        if (err) {
            throw err;
        }
        cursor = reply[0];
-       var owls=reply[1];
-       //console.log(ts()+"EXPRESS scan() : darp-*="+dump(reply[1]));//INSTRUMENTATION POINT
+       //var owls=reply[1];
+       //console.log(ts()+"EXPRESS scan() : group-*="+dump(reply[1]));//INSTRUMENTATION POINT
 
        for (var n in reply[1]) {
-           var ary = reply[1][n].split("-") ///"darp-1-3=35",
+           var ary = reply[1][n].split("-") ///"DEVOPS.1-DEVOPS-MAZORE",
            var src = ary[1],
                dst = ary[2],
                owl = ary[3];
@@ -185,9 +191,11 @@ function getMatrixTable(darpMatrix, callback) {
            // do your processing
            // reply[1] is an array of matched keys.
            // console.log(reply[1]);
-           return getMatrixTable(darpMatrix, callback); //this only returns one bucket full.............
+           return getMatrixTable(group,darpMatrix, callback); //this only returns one bucket full.............
        }
    });
+   
+   
 };
 
 //
@@ -216,6 +224,11 @@ function handleShowState(req, res) {
            var pulses = config.pulses
            var gSRlist = config.gSRlist
 
+           for (var SR in config.gSRlist) {
+               var entry=config.gSRlist[SR];
+               console.log("config.gSRlist="+dump(entry));
+           }
+
            //
            //    Header
            //
@@ -233,10 +246,8 @@ function handleShowState(req, res) {
            txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'
 
 
-
-
            //         var OWLMatrix=getLiveMatrixTable();
-           getMatrixTable(null, function(OWLMatrix) {
+           getMatrixTable(me.group, null, function(OWLMatrix) {
                //console.log("call:");
                console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
 
@@ -285,7 +296,7 @@ function handleShowState(req, res) {
                        }
                        console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                        //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
-                       /*else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
+                       //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                        txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                             //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                    }
