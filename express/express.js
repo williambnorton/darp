@@ -132,6 +132,7 @@ function getIPport(mint, callback) {
 //  Make a matrix of group latency measures
 //
 function getMatrixTable(group, darpMatrix, callback) {
+    console.log("getMatrixTable(): group=" + group + " darpMatrix=" + lib_1.dump(darpMatrix));
     if (darpMatrix == null) {
         darpMatrix = {};
     }
@@ -144,10 +145,10 @@ function getMatrixTable(group, darpMatrix, callback) {
             throw err;
         }
         cursor = reply[0];
-        //var owls=reply[1];
-        //console.log(ts()+"EXPRESS scan() : group-*="+dump(reply[1]));//INSTRUMENTATION POINT
-        for (var n in reply[1]) {
-            var ary = reply[1][n].split("-"); ///"DEVOPS.1-DEVOPS-MAZORE",
+        var owls = reply[1];
+        console.log(lib_1.ts() + "EXPRESS scan() : DEVOPS.1-*=" + lib_1.dump(owls)); //INSTRUMENTATION POINT
+        for (var n in owls) {
+            var ary = owls[n].split("-"); ///"DEVOPS.1-DEVOPS-MAZORE",
             var src = ary[1], dst = ary[2], owl = ary[3];
             //console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
             if (typeof darpMatrix[src] == "undefined")
@@ -179,7 +180,6 @@ function getMatrixTable(group, darpMatrix, callback) {
     });
 }
 ;
-//
 //
 //      handleShowState(req,res) - show the node state
 //

@@ -172,14 +172,20 @@ server.on('message', function(message, remote) {
               if (pulse.owl=="") pulse.owl="0";
               var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
 
-              console.log("HANDLEPULSE: ---> incoming "+ pulse.geo + "-" + me.geo+"="+ owlStat);
+             console.log("HANDLEPULSE: ---> incoming "+ pulse.geo + "-" + me.geo+"="+ owlStat);
              redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);  //store incoming pulse
 
               //
               //    Store the measured latency for this pulse message to me
               //
               console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
-              redisClient.set(pulse.group+"-"+pulse.geo + "-" + me.geo+"-"+pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+             // redisClient.set(pulse.group+"-"+pulse.geo + "-" + me.geo+"-"+pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
+            //   <group>-<src>-<dest>
+            // use case - DEVOPS.1-* for all OWLS in group
+            //          DEVOPS.1-DEVOPS-* for all measures from me
+            //          DEVOPS.1-*-DEVOPS for all measure to me
+              redisClient.set(pulse.group+"-"+pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
+
               console.log("handlePulse:");
               //
               //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
@@ -225,7 +231,10 @@ function storeOWL(srcMint, destMint, owl) {
                 if (destEntry!=null) {
                     //we have src and dst entry - store the OWL
                     console.log("HANDLEPULSE: storeOWL setting "+srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo+" owl="+owl);
-                    redisClient.set(srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo + "-" + owl, owl, 'EX', OWLEXPIRES);
+                    //redisClient.set(srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo + "-" + owl, owl, 'EX', OWLEXPIRES);
+
+                    redisClient.set(srcEntry.group+"-"+srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
+
                     //Create and store the graph entries <---HACK
                     var d = new Date();
                     if (owl=="") owl="0"
