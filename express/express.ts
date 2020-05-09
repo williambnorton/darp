@@ -146,53 +146,55 @@ function getIPport(mint, callback) {
 //
 function getMatrixTable(darp, callback) {
     console.log("getMatrixTable(): darpMatrix="+dump(darp) );
-    expressRedisClient.hgetall("gSRlist", function (gSRlist) {
-        if (darp==null) {
-            darp={};
-            darp.matrix={};
-            darp.srcNodes=new Array()
-            darp.last="";
-                for (var srcEntry in gSRlist) {
-                    darp.srcNodes.push(srcEntry.split(":")[0])
-                    darp.last=srcEntry;
-                }
+    if (darp==null) {
+        darp={};
+        darp.matrix={};
+        darp.srcNodes=new Array()
+        darp.last="";
+        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
 
-                for (var srcEntry in darp.srcNodes) {
-                    var srcEntryLabel=darp.srcNodes[srcEntry]
-                    var srcGroup=srcEntryLabel.split(":")[0];
-                    var srcGeo=srcEntryLabel.split(":")[1]
+            for (var srcEntry in gSRlist) {
+                darp.srcNodes.push(srcEntry.split(":")[0])
+                darp.last=srcEntry;
+            }
 
-                    for (var destEntry in darp.srcNodes) {
-                        var destEntryLabel=darp.srcNodes[destEntry]
-                        var destGroup=destEntry.split(":")[0];
-                        var destGeo=destEntry.split(":")[1]
-                        
-                        darp.matrix[srcGeo]={}
-                        darp.matrix[srcGeo][destGeo]=srcGeo+"-"+destGeo
-                        if (destEntryLabel==darp.last) {
-                            if (srcEntryLabel==darp.last) {  //we now have an empty default matrix
-                                console.log("getMatrixTable(): populating matrix:"+dump(darp));
-                                getMatrixTable(darp, callback);
-                            }
+            for (var srcEntry in darp.srcNodes) {
+                var srcEntryLabel=darp.srcNodes[srcEntry]
+                var srcGroup=srcEntryLabel.split(":")[0];
+                var srcGeo=srcEntryLabel.split(":")[1]
+
+                for (var destEntry in darp.srcNodes) {
+                    var destEntryLabel=darp.srcNodes[destEntry]
+                    var destGroup=destEntry.split(":")[0];
+                    var destGeo=destEntry.split(":")[1]
+                    
+                    darp.matrix[srcGeo]={}
+                    darp.matrix[srcGeo][destGeo]=srcGeo+"-"+destGeo
+                    if (destEntryLabel==darp.last) {
+                        if (srcEntryLabel==darp.last) {  //we now have an empty default matrix
+                            console.log("getMatrixTable(): populating matrix:"+dump(darp));
+                            getMatrixTable(darp, callback);
                         }
                     }
                 }
             }
-    });
-
-
-    //else fill in the default matrix with available values
-    console.log("darp=:"+dump(darp));
-    var node=darp.srcNodes.pop();
-    console.log("node="+node);
-    expressRedisClient.hgetall(node, function(err, nodeOWLEntries){
-       console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
-       if (err) {
-           throw err;
-       }
-       getMatrixTable(darp, callback); //this only returns one bucket full.............
-   });
-   
+        });
+    } else {
+        //else fill in the default matrix with available values
+        console.log("darp=:"+dump(darp));
+        var node=darp.srcNodes.pop();
+        if (node==null) callback(darp.matrix);
+        else {
+            console.log("node="+node);
+            expressRedisClient.hgetall(node, function(err, nodeOWLEntries){
+            console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
+            if (err) {
+                throw err;
+            }
+            console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix:");
+            getMatrixTable(darp, callback); //this only returns one bucket full.............
+        });   
+    }   
    
 };
 
