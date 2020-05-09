@@ -186,18 +186,21 @@ function getMatrixTable(config,darp, callback) {
     } else {
         //else fill in the default matrix with available values
         console.log("NON-NULL darp=:"+dump(darp));
-        var node=darp.srcNodes.pop();
-        if (node==null) callback(darp.matrix);
+        var dstNode=darp.srcNodes.pop();
+        if (dstNode==null) callback(darp.matrix);
         else {
-            console.log("node="+node);
-            expressRedisClient.hgetall(node, function(err, nodeOWLEntries){
+            console.log("dstNode="+dstNode);
+            expressRedisClient.hgetall(dstNode, function(err, nodeOWLEntries){
                 console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
                 if (err) {
                     throw err;
                 }
                 console.log("sourceNode OWL measures:"+dump(nodeOWLEntries));
-                for (var node in nodeOWLEntries ) {
-                    console.log("node="+node+" nodeOWLEntries[node]="+dump(nodeOWLEntries[node]));
+                for (var srcGeo in nodeOWLEntries ) {
+                    if (srcGeo!="EX") {
+                        console.log("srcGeo="+srcGeo+" nodeOWLEntries[srcGeo]="+dump(nodeOWLEntries[srcGeo]));
+                        darp.matrix[srcGeo][dstNode]=nodeOWLEntries[dstNode]
+                    }
                 }
 
                 getMatrixTable(config, darp, callback); //this only returns one bucket full.............
