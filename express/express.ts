@@ -297,7 +297,7 @@ function handleShowState(req, res) {
 
                    //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
                     var cellState="RUNNING"; //unreachable     badkey   alert   
-                   txt += '<tr><td><a href="http://' + me.ipaddr+":"+me.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
+                   txt += '<tr><td><a href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];//
                        var entryLabel = rowEntry.geo + "-" + colEntry.geo
