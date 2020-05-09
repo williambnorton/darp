@@ -163,7 +163,7 @@ function getMatrixTable(darp, callback) {
         });
     }
     //else fill in the default matrix with available values
-    var node = darp.pop();
+    var node = darp.srcNodes.pop();
     expressRedisClient.hgetall(node, function (err, nodeOWLEntries) {
         console.log(lib_1.ts() + "nodeOWLEntries=" + lib_1.dump(nodeOWLEntries));
         if (err) {

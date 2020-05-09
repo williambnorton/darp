@@ -181,7 +181,7 @@ function getMatrixTable(darp, callback) {
 
     //else fill in the default matrix with available values
 
-    var node=darp.pop();
+    var node=darp.srcNodes.pop();
     expressRedisClient.hgetall(node, function(err, nodeOWLEntries){
        console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
        if (err) {
