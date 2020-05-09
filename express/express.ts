@@ -155,26 +155,25 @@ function getMatrixTable(config,darp, callback) {
         var gSRlist=config.gSRlist;
         console.log("gSRlist:"+dump(gSRlist));
 
-            for (var srcEntry in gSRlist) {
+        for (var srcEntry in gSRlist) {
                 darp.srcNodes.push(srcEntry.split(":")[0])
                 darp.last=srcEntry;
-            }
-            console.log("darp.srcNodes:"+darp.srcNodes);
+        }
+        console.log("darp.srcNodes:"+darp.srcNodes);
 
             for (var srcEntry in gSRlist) {
                 var srcEntryLabel=srcEntry
-                var srcGroup=srcEntryLabel.split(":")[0];
-                var srcGeo=srcEntryLabel.split(":")[1]
+                var srcGroup=srcEntryLabel.split(":")[1];
+                var srcGeo=srcEntryLabel.split(":")[0]
                 console.log("srcGeo:"+srcGeo);
 
 
                 for (var destEntry in gSRlist) {
                     var destEntryLabel=destEntry
-                    var destGroup=destEntry.split(":")[0];
-                    var destGeo=destEntry.split(":")[1]
+                    var destGroup=destEntry.split(":")[1];
+                    var destGeo=destEntry.split(":")[0]
                     console.log("dstGeo:"+destGeo);
 
-                    
                     darp.matrix[srcGeo]={}
                     darp.matrix[srcGeo][destGeo]=srcGeo+"-"+destGeo
                     console.log("destEntryLabel:"+destEntryLabel+" srcEntryLabel:"+srcEntryLabel+" darp.last:"+darp.last);
