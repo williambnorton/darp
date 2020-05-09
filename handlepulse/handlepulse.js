@@ -143,7 +143,7 @@ server.on('message', function (message, remote) {
                 }
                 ;
                 redisClient.publish("pulses", msg);
-                redisClient.hmset(pulseLabel, pulse); //store the pulse  EXPIRE ENTRY???
+                redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
                 var d = new Date();
                 if (pulse.owl == "")
                     pulse.owl = "0";
@@ -205,7 +205,7 @@ function storeOWL(srcMint, destMint, owl) {
                     console.log("HANDLEPULSE: storeOWL setting " + srcEntry.group + "-" + srcEntry.geo + "-" + destEntry.geo + " owl=" + owl);
                     //redisClient.set(srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo + "-" + owl, owl, 'EX', OWLEXPIRES);
                     //redisClient.set(srcEntry.group+"-"+srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
-                    redisClient.hset(srcEntry.geo, destEntry.geo, owl, 'EX', OWLEXPIRES);
+                    redisClient.hset(destEntry.geo, srcEntry.geo, owl, 'EX', OWLEXPIRES);
                     //Create and store the graph entries <---HACK
                     var d = new Date();
                     if (owl == "")
