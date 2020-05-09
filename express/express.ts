@@ -170,7 +170,8 @@ function getMatrixTable(darp, callback) {
                     darp.matrix[srcGeo]={}
                     darp.matrix[srcGeo][destGeo]=""
                     if (destEntryLabel==darp.last) {
-                        if (srcEntry==darp.last) {  //we now have an empty default matrix
+                        if (srcEntryLabel==darp.last) {  //we now have an empty default matrix
+                            console.log("getMatrixTable(): populating matrix:"+dump(darp));
                             getMatrixTable(darp, callback);
                         }
                     }
