@@ -185,7 +185,7 @@ function getMatrixTable(config, darp, callback) {
                 for (var srcGeo in nodeOWLEntries) {
                     if (srcGeo != "EX") {
                         console.log("srcGeo=" + srcGeo + " nodeOWLEntries[srcGeo]=" + lib_1.dump(nodeOWLEntries[srcGeo]));
-                        darp.matrix[srcGeo][dstNode] = nodeOWLEntries[dstNode];
+                        darp.matrix[srcGeo][dstNode] = nodeOWLEntries[srcGeo];
                     }
                 }
                 getMatrixTable(config, darp, callback); //this only returns one bucket full.............
