@@ -281,7 +281,7 @@ if (typeof oneTime == "undefined") {
                   mintList(redisClient, ownerPulseLabel, function(err,mints) {
                     // get nodes' list of mints to send pulse to
                     // and send pulse
-                    console.log(ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
+                    console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
                     buildPulsePkt(mints,pulseMessage,null);
                   
                   });
@@ -335,9 +335,8 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 //  "statsPulseMessageLength" : ""+pulseMsg.length
                 //});
                 //sending msg
-                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
-
-
+                console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
 
                   if(error) {
