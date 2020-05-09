@@ -132,7 +132,7 @@ function getIPport(mint, callback) {
 //  Make a matrix of group latency measures
 //
 function getMatrixTable(config, darp, callback) {
-    console.log("getMatrixTable(): darpMatrix=" + lib_1.dump(darp));
+    //console.log("getMatrixTable(): darpMatrix="+dump(darp) );
     if (darp == null) {
         darp = {};
         darp.matrix = {};
@@ -140,19 +140,19 @@ function getMatrixTable(config, darp, callback) {
         darp.last = "";
         //        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
         var gSRlist = config.gSRlist;
-        console.log("gSRlist:" + lib_1.dump(gSRlist));
+        //console.log("gSRlist:"+dump(gSRlist));
         for (var srcEntry in gSRlist) {
             var srcGeo = srcEntry.split(":")[0];
             darp.srcNodes.push(srcGeo);
             darp.last = srcGeo;
         }
-        console.log("darp.srcNodes:" + darp.srcNodes);
+        ///console.log("darp.srcNodes:"+darp.srcNodes);
         for (var srcNode in darp.srcNodes) {
             srcGeo = darp.srcNodes[srcNode];
-            console.log("srcGeo:" + srcGeo);
+            //console.log("srcGeo:"+srcGeo);
             for (var destNode in darp.srcNodes) {
                 var destGeo = darp.srcNodes[destNode];
-                console.log("dstGeo:" + destGeo);
+                //console.log("dstGeo:"+destGeo);
                 if (typeof darp.matrix[srcGeo] == "undefined")
                     darp.matrix[srcGeo] = {};
                 if (typeof darp.matrix[srcGeo][destGeo] == "undefined")
@@ -170,7 +170,7 @@ function getMatrixTable(config, darp, callback) {
     }
     else {
         //else fill in the default matrix with available values
-        console.log("darp=:" + lib_1.dump(darp));
+        console.log("NON-NULL darp=:" + lib_1.dump(darp));
         var node = darp.srcNodes.pop();
         if (node == null)
             callback(darp.matrix);
@@ -181,7 +181,7 @@ function getMatrixTable(config, darp, callback) {
                 if (err) {
                     throw err;
                 }
-                console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix:");
+                console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix: nodeOWLEntries=" + lib_1.dump(nodeOWLEntries));
                 getMatrixTable(config, darp, callback); //this only returns one bucket full.............
             });
         }
