@@ -168,7 +168,7 @@ server.on('message', function(message, remote) {
               redisClient.publish("pulses", msg)
               redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
 
-              console.log("STORING incoming OWL : " + me.geo + " -> " + pulse.geo + " = " + pulse.owl );
+              console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
 
               var d = new Date();
@@ -200,7 +200,7 @@ server.on('message', function(message, remote) {
           });
       });
   });
-});
+});``
 
 function storeOWLs(srcMint, owls, memint) {
 console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);
@@ -227,8 +227,8 @@ function storeOWL(srcMint, destMint, owl) {
         redisClient.hgetall("mint:"+destMint, function(err, destEntry) {
             if (srcEntry!=null ) {
                 if (destEntry!=null) {
-                    //we have src and dst entry - store the OWL
-                    console.log("HANDLEPULSE: storeOWL() storing "+ destEntry.geo + "-" + srcEntry.geo+" owl="+owl);
+
+                    console.log("STORING incoming OWL : " +  srcEntry.geo +  " -> "+destEntry.geo + "=" + owl + "stored as "+destEntry.geo+" field");
                     redisClient.hset(destEntry.geo, srcEntry.geo, owl, 'EX', OWLEXPIRES);  //store owl in destEntry
 
                     //Create and store the graph entries <---HACK
@@ -236,7 +236,7 @@ function storeOWL(srcMint, destMint, owl) {
                     if (owl=="") owl="0"
                     var owlStat = "{ x: new Date('" + d + "'), y: " + owl + "},";
                     
-                    console.log("HANDLEPULSE: OWL DATA ---> "+ srcEntry.geo + "-" + destEntry.geo+"="+ owlStat);
+                    //console.log("HANDLEPULSE: OWL DATA ---> "+ srcEntry.geo + "-" + destEntry.geo+"="+ owlStat);
                     redisClient.rpush([ srcEntry.geo + "-" + destEntry.geo, owlStat]);   
 
                 } else console.log("HANDLEPULSE: We have no mint for this mint: "+destMint);
