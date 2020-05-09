@@ -168,6 +168,9 @@ server.on('message', function(message, remote) {
               redisClient.publish("pulses", msg)
               redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
 
+              console.log("STORING incoming OWL : " + me.geo + " -> " + pulse.geo + " = " + pulse.owl );
+              redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
+
               var d = new Date();
               if (pulse.owl=="") pulse.owl="0";
               var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
@@ -179,12 +182,7 @@ server.on('message', function(message, remote) {
               //    Store the measured latency for this pulse message to me
               //
               console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
-             // redisClient.set(pulse.group+"-"+pulse.geo + "-" + me.geo+"-"+pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-            //   key:<src> dest owl dest owl 
-            // use case - DEVOPS.1-* for all OWLS in group
-            //          DEVOPS.1-DEVOPS-* for all measures from me
-            //          DEVOPS.1-*-DEVOPS for all measure to me
-              redisClient.hset(pulse.geo, me.geo, pulse.owl, 'EX', OWLEXPIRES);
+
 
               console.log("handlePulse:");
               //
@@ -230,11 +228,8 @@ function storeOWL(srcMint, destMint, owl) {
             if (srcEntry!=null ) {
                 if (destEntry!=null) {
                     //we have src and dst entry - store the OWL
-                    console.log("HANDLEPULSE: storeOWL setting "+srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo+" owl="+owl);
-                    //redisClient.set(srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo + "-" + owl, owl, 'EX', OWLEXPIRES);
-
-                    //redisClient.set(srcEntry.group+"-"+srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
-                    redisClient.hset(destEntry.geo, srcEntry.geo,  owl, 'EX', OWLEXPIRES);
+                    console.log("HANDLEPULSE: storeOWL() storing "+ destEntry.geo + "-" + srcEntry.geo+" owl="+owl);
+                    redisClient.hset(destEntry.geo, srcEntry.geo, owl, 'EX', OWLEXPIRES);  //store owl in destEntry
 
                     //Create and store the graph entries <---HACK
                     var d = new Date();
