@@ -221,7 +221,7 @@ console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);
 //      storeOWL() - store one way latency to file or graphing & history
 //
 function storeOWL(srcMint, destMint, owl) {
-    console.log("HANDLEPULSE: storeOWL() srcMint="+srcMint+" destMint="+destMint+" "+" owl="+owl);
+    //console.log("HANDLEPULSE: storeOWL() srcMint="+srcMint+" destMint="+destMint+" "+" owl="+owl);
 
     redisClient.hgetall("mint:"+srcMint, function(err, srcEntry) {
         redisClient.hgetall("mint:"+destMint, function(err, destEntry) {

@@ -176,7 +176,7 @@ function getMatrixTable(config,darp, callback) {
 
                 if (destGeo==darp.last) {
                     if (srcGeo==darp.last) {  //we now have an empty default matrix
-                        console.log("getMatrixTable: populated matrix:"+dump(darp));
+                        //console.log("getMatrixTable: populated matrix:"+dump(darp));
                         getMatrixTable(config, darp, callback); //call again
                     }
                 }
@@ -267,7 +267,7 @@ function handleShowState(req, res) {
            //         var OWLMatrix=getLiveMatrixTable();
            getMatrixTable(config,null, function(OWLMatrix) {
                //console.log("call:");
-               console.log("getMatrixTable brought us: OWLMatrix="+dump(OWLMatrix));
+               //console.log("getMatrixTable brought us: OWLMatrix="+dump(OWLMatrix));
 
                //
                // show OWL Matrix
