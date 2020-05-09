@@ -140,7 +140,7 @@ function getMatrixTable(config, darp, callback) {
         darp.last = "";
         //        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
         var gSRlist = config.gSRlist;
-        console.log("gSRlist:" + gSRlist);
+        console.log("gSRlist:" + lib_1.dump(gSRlist));
         for (var srcEntry in gSRlist) {
             darp.srcNodes.push(srcEntry.split(":")[0]);
             darp.last = srcEntry;
