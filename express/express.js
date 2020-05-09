@@ -131,42 +131,43 @@ function getIPport(mint, callback) {
 //
 //  Make a matrix of group latency measures
 //
-function getMatrixTable(darp, callback) {
+function getMatrixTable(config, darp, callback) {
     console.log("getMatrixTable(): darpMatrix=" + lib_1.dump(darp));
     if (darp == null) {
         darp = {};
         darp.matrix = {};
         darp.srcNodes = new Array();
         darp.last = "";
-        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
-            console.log("gSRlist:" + gSRlist);
-            for (var srcEntry in gSRlist) {
-                darp.srcNodes.push(srcEntry.split(":")[0]);
-                darp.last = srcEntry;
-            }
-            console.log("darp.srcNodes:" + darp.srcNodes);
-            for (var srcEntry in darp.srcNodes) {
-                var srcEntryLabel = darp.srcNodes[srcEntry];
-                var srcGroup = srcEntryLabel.split(":")[0];
-                var srcGeo = srcEntryLabel.split(":")[1];
-                console.log("srcGeo:" + srcGeo);
-                for (var destEntry in darp.srcNodes) {
-                    var destEntryLabel = darp.srcNodes[destEntry];
-                    var destGroup = destEntry.split(":")[0];
-                    var destGeo = destEntry.split(":")[1];
-                    console.log("dstGeo:" + destGeo);
-                    darp.matrix[srcGeo] = {};
-                    darp.matrix[srcGeo][destGeo] = srcGeo + "-" + destGeo;
-                    console.log("destEntryLabel:" + destEntryLabel + " srcEntryLabel:" + srcEntryLabel + " darp.last:" + darp.last);
-                    if (destEntryLabel == darp.last) {
-                        if (srcEntryLabel == darp.last) { //we now have an empty default matrix
-                            console.log("getMatrixTable(): populating matrix:" + lib_1.dump(darp));
-                            getMatrixTable(darp, callback);
-                        }
+        //        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
+        var gSRlist = config.gSRlist;
+        console.log("gSRlist:" + gSRlist);
+        for (var srcEntry in gSRlist) {
+            darp.srcNodes.push(srcEntry.split(":")[0]);
+            darp.last = srcEntry;
+        }
+        console.log("darp.srcNodes:" + darp.srcNodes);
+        for (var srcEntry in darp.srcNodes) {
+            var srcEntryLabel = darp.srcNodes[srcEntry];
+            var srcGroup = srcEntryLabel.split(":")[0];
+            var srcGeo = srcEntryLabel.split(":")[1];
+            console.log("srcGeo:" + srcGeo);
+            for (var destEntry in darp.srcNodes) {
+                var destEntryLabel = darp.srcNodes[destEntry];
+                var destGroup = destEntry.split(":")[0];
+                var destGeo = destEntry.split(":")[1];
+                console.log("dstGeo:" + destGeo);
+                darp.matrix[srcGeo] = {};
+                darp.matrix[srcGeo][destGeo] = srcGeo + "-" + destGeo;
+                console.log("destEntryLabel:" + destEntryLabel + " srcEntryLabel:" + srcEntryLabel + " darp.last:" + darp.last);
+                if (destEntryLabel == darp.last) {
+                    if (srcEntryLabel == darp.last) { //we now have an empty default matrix
+                        console.log("getMatrixTable(): populating matrix:" + lib_1.dump(darp));
+                        getMatrixTable(config, darp, callback); //call again
                     }
                 }
             }
-        });
+        }
+        //});
     }
     else {
         //else fill in the default matrix with available values
@@ -182,7 +183,7 @@ function getMatrixTable(darp, callback) {
                     throw err;
                 }
                 console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix:");
-                getMatrixTable(darp, callback); //this only returns one bucket full.............
+                getMatrixTable(config, darp, callback); //this only returns one bucket full.............
             });
         }
     }
@@ -240,7 +241,7 @@ function handleShowState(req, res) {
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
-            getMatrixTable(null, function (OWLMatrix) {
+            getMatrixTable(config, null, function (OWLMatrix) {
                 //console.log("call:");
                 console.log("getMatrixTable brought us: OWLMatrix=" + lib_1.dump(OWLMatrix));
                 //

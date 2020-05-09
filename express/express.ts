@@ -144,15 +144,16 @@ function getIPport(mint, callback) {
 //
 //  Make a matrix of group latency measures
 //
-function getMatrixTable(darp, callback) {
+function getMatrixTable(config,darp, callback) {
     console.log("getMatrixTable(): darpMatrix="+dump(darp) );
     if (darp==null) {
         darp={};
         darp.matrix={};
         darp.srcNodes=new Array()
         darp.last="";
-        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
-            console.log("gSRlist:"+gSRlist);
+//        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
+        var gSRlist=config.gSRlist;
+        console.log("gSRlist:"+gSRlist);
 
             for (var srcEntry in gSRlist) {
                 darp.srcNodes.push(srcEntry.split(":")[0])
@@ -181,12 +182,12 @@ function getMatrixTable(darp, callback) {
                     if (destEntryLabel==darp.last) {
                         if (srcEntryLabel==darp.last) {  //we now have an empty default matrix
                             console.log("getMatrixTable(): populating matrix:"+dump(darp));
-                            getMatrixTable(darp, callback);
+                            getMatrixTable(config,darp, callback); //call again
                         }
                     }
                 }
             }
-        });
+        //});
     } else {
         //else fill in the default matrix with available values
         console.log("darp=:"+dump(darp));
@@ -200,7 +201,7 @@ function getMatrixTable(darp, callback) {
                     throw err;
                 }
                 console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix:");
-                getMatrixTable(darp, callback); //this only returns one bucket full.............
+                getMatrixTable(config, darp, callback); //this only returns one bucket full.............
             });   
         }   
     }
@@ -262,7 +263,7 @@ function handleShowState(req, res) {
 
 
            //         var OWLMatrix=getLiveMatrixTable();
-           getMatrixTable(null, function(OWLMatrix) {
+           getMatrixTable(config,null, function(OWLMatrix) {
                //console.log("call:");
                console.log("getMatrixTable brought us: OWLMatrix="+dump(OWLMatrix));
 

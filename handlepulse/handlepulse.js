@@ -29,7 +29,7 @@ redisClient.hgetall("mint:0", function (err, me) {
                 process.exit(36);
             }
             for (var i = 10; i > 0; i--)
-                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED-Point your browser to http://" + me.ipaddr + ":" + me.port + "/");
+                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
         }
     });
 });
