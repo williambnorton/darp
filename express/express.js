@@ -153,7 +153,7 @@ function getMatrixTable(darp, callback) {
                     var destEntryLabel = darp.srcNodes[destEntry];
                     var destGroup = destEntry.split(":")[0];
                     var destGeo = destEntry.split(":")[1];
-                    console.log("dstGeo:" + dstGeo);
+                    console.log("dstGeo:" + destGeo);
                     darp.matrix[srcGeo] = {};
                     darp.matrix[srcGeo][destGeo] = srcGeo + "-" + destGeo;
                     console.log("destEntryLabel:" + destEntryLabel + " srcEntryLabel:" + srcEntryLabel + " darp.last:" + darp.last);
