@@ -183,6 +183,7 @@ function getMatrixTable(darp, callback) {
     //else fill in the default matrix with available values
 
     var node=darp.srcNodes.pop();
+    console.log("node="+node);
     expressRedisClient.hgetall(node, function(err, nodeOWLEntries){
        console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
        if (err) {
@@ -215,7 +216,7 @@ function handleShowState(req, res) {
        var insert = "";
 
        makeConfigAll(function(config) {
-           //console.log(ts()+"config="+dump(config));
+           console.log(ts()+"config="+dump(config));
            var mintTable = config.mintTable
            var pulses = config.pulses
            var gSRlist = config.gSRlist
@@ -245,7 +246,7 @@ function handleShowState(req, res) {
            //         var OWLMatrix=getLiveMatrixTable();
            getMatrixTable(null, function(OWLMatrix) {
                //console.log("call:");
-               console.log("getMatrixTable: OWLMatrix="+dump(OWLMatrix));
+               console.log("getMatrixTable brought us: OWLMatrix="+dump(OWLMatrix));
 
                //
                // show OWL Matrix
