@@ -237,7 +237,7 @@ function handleShowState(req, res) {
        var insert = "";
 
        makeConfigAll(function(config) {
-           console.log(ts()+"config="+dump(config));
+           //console.log(ts()+"config="+dump(config));
            var mintTable = config.mintTable
            var pulses = config.pulses
            var gSRlist = config.gSRlist

@@ -228,7 +228,7 @@ function storeOWL(srcMint, destMint, owl) {
             if (srcEntry!=null ) {
                 if (destEntry!=null) {
 
-                    console.log("STORING incoming OWL : " +  srcEntry.geo +  " -> "+destEntry.geo + "=" + owl + "stored as "+destEntry.geo+" field");
+                    //console.log("STORING incoming OWL : " +  srcEntry.geo +  " -> "+destEntry.geo + "=" + owl + "stored as "+destEntry.geo+" field");
                     redisClient.hset(destEntry.geo, srcEntry.geo, owl, 'EX', OWLEXPIRES);  //store owl in destEntry
 
                     //Create and store the graph entries <---HACK

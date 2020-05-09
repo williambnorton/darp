@@ -220,7 +220,7 @@ function handleShowState(req, res) {
         txt += '<body>';
         var insert = "";
         makeConfigAll(function (config) {
-            console.log(lib_1.ts() + "config=" + lib_1.dump(config));
+            //console.log(ts()+"config="+dump(config));
             var mintTable = config.mintTable;
             var pulses = config.pulses;
             var gSRlist = config.gSRlist;
