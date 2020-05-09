@@ -156,36 +156,30 @@ function getMatrixTable(config,darp, callback) {
         console.log("gSRlist:"+dump(gSRlist));
 
         for (var srcEntry in gSRlist) {
-                darp.srcNodes.push(srcEntry.split(":")[0])
-                darp.last=srcEntry;
+            var srcGeo=srcEntry.split(":")[0];
+                darp.srcNodes.push(srcGeo)
+                darp.last=srcGeo;
         }
         console.log("darp.srcNodes:"+darp.srcNodes);
 
-            for (var srcEntry in gSRlist) {
-                var srcEntryLabel=srcEntry
-                var srcGroup=srcEntryLabel.split(":")[1];
-                var srcGeo=srcEntryLabel.split(":")[0]
-                console.log("srcGeo:"+srcGeo);
+        for (var srcGeo in darp.srcNodes) {
+             console.log("srcGeo:"+srcGeo);
 
+            for (var destGeo in darp.srcNodes) {
+                console.log("dstGeo:"+destGeo);
 
-                for (var destEntry in gSRlist) {
-                    var destEntryLabel=destEntry
-                    var destGroup=destEntry.split(":")[1];
-                    var destGeo=destEntry.split(":")[0]
-                    console.log("dstGeo:"+destGeo);
+                if (typeof darp.matrix[srcGeo] == "undefined") darp.matrix[srcGeo]={}
+                if (typeof darp.matrix[srcGeo][destGeo] == "undefined") darp.matrix[srcGeo][destGeo]=srcGeo+"-"+destGeo
+                //console.log("destEntryLabel:"+destEntryLabel+" srcEntryLabel:"+srcEntryLabel+" darp.last:"+darp.last);
 
-                    darp.matrix[srcGeo]={}
-                    darp.matrix[srcGeo][destGeo]=srcGeo+"-"+destGeo
-                    console.log("destEntryLabel:"+destEntryLabel+" srcEntryLabel:"+srcEntryLabel+" darp.last:"+darp.last);
-
-                    if (destEntryLabel==darp.last) {
-                        if (srcEntryLabel==darp.last) {  //we now have an empty default matrix
-                            console.log("getMatrixTable(): populating matrix:"+dump(darp));
-                            getMatrixTable(config,darp, callback); //call again
-                        }
+                if (destGeo==darp.last) {
+                    if (srcGeo==darp.last) {  //we now have an empty default matrix
+                        console.log("getMatrixTable: populated matrix:"+dump(darp));
+                        getMatrixTable(config, darp, callback); //call again
                     }
                 }
             }
+        }
         //});
     } else {
         //else fill in the default matrix with available values
