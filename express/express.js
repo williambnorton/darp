@@ -147,9 +147,11 @@ function getMatrixTable(config, darp, callback) {
             darp.last = srcGeo;
         }
         console.log("darp.srcNodes:" + darp.srcNodes);
-        for (var srcGeo in darp.srcNodes) {
+        for (var srcNode in darp.srcNodes) {
+            srcGeo = darp.srcNodes[srcNode];
             console.log("srcGeo:" + srcGeo);
-            for (var destGeo in darp.srcNodes) {
+            for (var destNode in darp.srcNodes) {
+                var destGeo = darp.srcNodes[destNode];
                 console.log("dstGeo:" + destGeo);
                 if (typeof darp.matrix[srcGeo] == "undefined")
                     darp.matrix[srcGeo] = {};
