@@ -181,7 +181,10 @@ function getMatrixTable(config, darp, callback) {
                 if (err) {
                     throw err;
                 }
-                console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix: nodeOWLEntries=" + lib_1.dump(nodeOWLEntries));
+                console.log("sourceNode OWL measures:" + lib_1.dump(nodeOWLEntries));
+                for (var node in nodeOWLEntries) {
+                    console.log("node=" + node + " nodeOWLEntries[node]=" + lib_1.dump(nodeOWLEntries[node]));
+                }
                 getMatrixTable(config, darp, callback); //this only returns one bucket full.............
             });
         }
