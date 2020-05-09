@@ -157,19 +157,26 @@ function getMatrixTable(darp, callback) {
                 darp.srcNodes.push(srcEntry.split(":")[0])
                 darp.last=srcEntry;
             }
+            console.log("darp.srcNodes:"+darp.srcNodes);
 
             for (var srcEntry in darp.srcNodes) {
                 var srcEntryLabel=darp.srcNodes[srcEntry]
                 var srcGroup=srcEntryLabel.split(":")[0];
                 var srcGeo=srcEntryLabel.split(":")[1]
+                console.log("srcGeo:"+srcGeo);
+
 
                 for (var destEntry in darp.srcNodes) {
                     var destEntryLabel=darp.srcNodes[destEntry]
                     var destGroup=destEntry.split(":")[0];
                     var destGeo=destEntry.split(":")[1]
+                    console.log("dstGeo:"+dstGeo);
+
                     
                     darp.matrix[srcGeo]={}
                     darp.matrix[srcGeo][destGeo]=srcGeo+"-"+destGeo
+                    console.log("destEntryLabel:"+destEntryLabel+" srcEntryLabel:"+srcEntryLabel+" darp.last:"+darp.last);
+
                     if (destEntryLabel==darp.last) {
                         if (srcEntryLabel==darp.last) {  //we now have an empty default matrix
                             console.log("getMatrixTable(): populating matrix:"+dump(darp));
