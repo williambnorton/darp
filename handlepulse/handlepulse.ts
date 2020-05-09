@@ -180,11 +180,11 @@ server.on('message', function(message, remote) {
               //
               console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
              // redisClient.set(pulse.group+"-"+pulse.geo + "-" + me.geo+"-"+pulse.owl, pulse.owl, 'EX', OWLEXPIRES);
-            //   <group>-<src>-<dest>
+            //   key:<src> dest owl dest owl 
             // use case - DEVOPS.1-* for all OWLS in group
             //          DEVOPS.1-DEVOPS-* for all measures from me
             //          DEVOPS.1-*-DEVOPS for all measure to me
-              redisClient.set(pulse.group+"-"+pulse.geo + "-" + me.geo, pulse.owl, 'EX', OWLEXPIRES);
+              redisClient.hset(pulse.geo, me.geo, pulse.owl, 'EX', OWLEXPIRES);
 
               console.log("handlePulse:");
               //
@@ -233,7 +233,8 @@ function storeOWL(srcMint, destMint, owl) {
                     console.log("HANDLEPULSE: storeOWL setting "+srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo+" owl="+owl);
                     //redisClient.set(srcEntry.group+"-" + srcEntry.geo + "-" + destEntry.geo + "-" + owl, owl, 'EX', OWLEXPIRES);
 
-                    redisClient.set(srcEntry.group+"-"+srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
+                    //redisClient.set(srcEntry.group+"-"+srcEntry.geo + "-" + destEntry.geo, owl, 'EX', OWLEXPIRES);
+                    redisClient.hset(srcEntry.geo, destEntry.geo, owl, 'EX', OWLEXPIRES);
 
                     //Create and store the graph entries <---HACK
                     var d = new Date();
