@@ -169,7 +169,7 @@ function getMatrixTable(darp, callback) {
         if (err) {
             throw err;
         }
-        getMatrixTable(group, darp, callback); //this only returns one bucket full.............
+        getMatrixTable(darp, callback); //this only returns one bucket full.............
     });
 }
 ;
