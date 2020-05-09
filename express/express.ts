@@ -187,14 +187,15 @@ function getMatrixTable(darp, callback) {
         else {
             console.log("node="+node);
             expressRedisClient.hgetall(node, function(err, nodeOWLEntries){
-            console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
-            if (err) {
-                throw err;
-            }
-            console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix:");
-            getMatrixTable(darp, callback); //this only returns one bucket full.............
-        });   
-    }   
+                console.log(ts()+"nodeOWLEntries="+dump(nodeOWLEntries));
+                if (err) {
+                    throw err;
+                }
+                console.log("HERE WE PROCESS EACH OWL INTO THE darp.matrix:");
+                getMatrixTable(darp, callback); //this only returns one bucket full.............
+            });   
+        }   
+    }
    
 };
 
