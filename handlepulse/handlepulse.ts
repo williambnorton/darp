@@ -203,7 +203,7 @@ server.on('message', function(message, remote) {
 });``
 
 function storeOWLs(srcMint, owls, memint) {
-console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);
+//console.log("HANDLEPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);
     //
     //    for each owl in pulsed owls, add to history-srcGeo-dstGeo 
     //

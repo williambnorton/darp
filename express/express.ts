@@ -215,13 +215,7 @@ function getMatrixTable(config,darp, callback) {
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+
     var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + 10 + '">';
 
