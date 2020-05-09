@@ -135,74 +135,41 @@ function getMatrixTable(group, darpMatrix, callback) {
     console.log("getMatrixTable(): group=" + group + " darpMatrix=" + lib_1.dump(darpMatrix));
     if (darpMatrix == null) {
         darpMatrix = {};
+        darpMatrix.ary = {};
+        darpMatrix.srcNodes = new Array();
+        darpMatrix.last = "";
         expressRedisClient.hgetall("gSRlist", function (gSRlist) {
-            var last = "";
-            var pulseNodes = new Array();
             for (var srcEntry in gSRlist) {
-                pulseNodes.push(srcEntry.split(":"[0]));
-                last = srcEntry;
+                darpMatrix.srcNodes.push(srcEntry.split(":"[0]));
+                darpMatrix.last = srcEntry;
             }
-            for (var srcEntry in pulseNodes) {
-                var srcEntryLabel = pulseNodes[srcEntry];
+            for (var srcEntry in darpMatrix.srcNodes) {
+                var srcEntryLabel = darpMatrix.srcNodes[srcEntry];
                 var srcGroup = srcEntryLabel.split(":")[0];
                 var srcGeo = srcEntryLabel.split(":")[1];
-                for (var destEntry in srcEntry) {
-                    var destEntryLabel = gSRlist[destEntry];
+                for (var destEntry in darpMatrix.srcNodes) {
+                    var destEntryLabel = darpMatrix.srcNodes[destEntry];
                     var destGroup = destEntry.split(":")[0];
                     var destGeo = destEntry.split(":")[1];
                     darpMatrix[srcGeo] = {};
                     darpMatrix[srcGeo][destGeo] = "";
-                    if (destEntryLabel == last) {
-                        if (srcEntry == last) {
-                            callback(darpMatrix);
+                    if (destEntryLabel == darpMatrix.last) {
+                        if (srcEntry == darpMatrix.last) { //we now have an empty default matrix
+                            getMatrixTable(group, darpMatrix, callback);
                         }
                     }
                 }
             }
         });
     }
-    //scan for group-<from>-<to>
-    var cursor = '0';
-    //expressRedisClient.hgetall('gSRlist', function(err, gSRlist) {
-    var src = '*';
-    expressRedisClient.scan(cursor, 'MATCH', 'DEVOPS.1-' + src + '-*', 'COUNT', '1000', function (err, reply) {
-        //console.log(ts()+"SCAN reply="+dump(reply));
+    //else fill in the default matrix with available values
+    var node = darpMatrix.pop();
+    expressRedisClient.hgetall(node, function (err, nodeOWLEntries) {
+        console.log(lib_1.ts() + "nodeOWLEntries=" + lib_1.dump(nodeOWLEntries));
         if (err) {
             throw err;
         }
-        cursor = reply[0];
-        var owls = reply[1];
-        console.log(lib_1.ts() + "EXPRESS scan() : DEVOPS.1-*=" + lib_1.dump(owls)); //INSTRUMENTATION POINT
-        for (var n in owls) {
-            var ary = owls[n].split("-"); ///"DEVOPS.1-DEVOPS-MAZORE",
-            var src = ary[1], dst = ary[2], owl = ary[3];
-            //console.log(ts() + "getMatrixTable src=" + src + " dst=" + dst + " owl=" + owl); //INSTRUMENTATION POINT
-            if (typeof darpMatrix[src] == "undefined")
-                darpMatrix[src] = {}; //new Array();
-            if (typeof darpMatrix[src][dst] == "undefined")
-                darpMatrix[src][dst] = {}; //new Array();
-            //console.log(ts()+"Storing darpMatrix["+src+"]["+dst+"]="+owl);  ///INSTRUMENTATION POINT
-            //if (darpMatrix[src][dst]=={} ) {
-            if ((typeof owl != "undefined") && (owl != null) && (owl != ""))
-                darpMatrix[src][dst] = owl;
-            else
-                darpMatrix[src][dst] = "";
-            //} else {  //overwrite entry? 
-            //   if (darpMatrix[src][dst]=="")
-            //      darpMatrix[src][dst]=owl
-            //}
-        }
-        if (cursor === '0') {
-            //console.log(ts()+"getMatrixTable(): returning darpMatrix"+dump(darpMatrix));
-            callback(darpMatrix);
-        }
-        else {
-            console.log('EXPRESS getMatrixTable() returned non-"0" reply BUG BUG not sure this will work processing Complete');
-            // do your processing
-            // reply[1] is an array of matched keys.
-            // console.log(reply[1]);
-            return getMatrixTable(group, darpMatrix, callback); //this only returns one bucket full.............
-        }
+        getMatrixTable(group, darpMatrix, callback); //this only returns one bucket full.............
     });
 }
 ;
