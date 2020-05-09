@@ -158,9 +158,9 @@ server.on('message', function(message, remote) {
           };
 
           authenticatedPulse(pulse, function(pulse, authenticated) { 
-
+            
               if (pulse.srcMint=="1" && pulse.version != MYBUILD) {
-                      console.log(ts() + " ******** HANDLEPULSE(): NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                      console.log(ts() + " ******** HANDLEPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                       console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + dump(pulse));
                       process.exit(36); //SOFTWARE RELOAD
               };
@@ -168,23 +168,23 @@ server.on('message', function(message, remote) {
               redisClient.publish("pulses", msg)
               redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
 
-              console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
+              //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
 
               var d = new Date();
               if (pulse.owl=="") pulse.owl="0";
               var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
 
-             console.log("HANDLEPULSE: ---> incoming "+ pulse.geo + "-" + me.geo+"="+ owlStat);
+             //console.log("HANDLEPULSE: ---> incoming "+ pulse.geo + "-" + me.geo+"="+ owlStat);
              redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);  //store incoming pulse
 
               //
               //    Store the measured latency for this pulse message to me
               //
-              console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
+              //console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
 
 
-              console.log("handlePulse:");
+              //console.log("handlePulse:");
               //
               //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
               //

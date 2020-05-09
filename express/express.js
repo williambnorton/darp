@@ -170,22 +170,22 @@ function getMatrixTable(config, darp, callback) {
     }
     else {
         //else fill in the default matrix with available values
-        console.log("READY TO FILL MATRIX darp=:" + lib_1.dump(darp));
+        //console.log("READY TO FILL MATRIX darp=:"+dump(darp));
         var dstNode = darp.srcNodes.pop();
         if (dstNode == null)
             callback(darp.matrix);
         else {
-            console.log("PROCESSING dstNode=" + dstNode);
+            //console.log("PROCESSING dstNode="+dstNode);
             expressRedisClient.hgetall(dstNode, function (err, nodeOWLEntries) {
                 //console.log(ts()+"dstNode nodeOWLEntries="+dump(nodeOWLEntries));
                 if (err) {
                     throw err;
                 }
                 else {
-                    console.log("dstNode OWL measures:" + lib_1.dump(nodeOWLEntries));
+                    //console.log("dstNode OWL measures:"+dump(nodeOWLEntries));
                     for (var srcGeo in nodeOWLEntries) {
                         if (srcGeo != "EX") {
-                            console.log("srcGeo=" + srcGeo + " to " + dstNode + " =nodeOWLEntries[srcGeo]=" + lib_1.dump(nodeOWLEntries[srcGeo]));
+                            //console.log("srcGeo="+srcGeo+" to "+dstNode+" =nodeOWLEntries[srcGeo]="+dump(nodeOWLEntries[srcGeo]));
                             darp.matrix[srcGeo][dstNode] = nodeOWLEntries[srcGeo];
                         }
                     }
