@@ -152,6 +152,7 @@ function getMatrixTable(darp, callback) {
         darp.srcNodes=new Array()
         darp.last="";
         expressRedisClient.hgetall("gSRlist", function (gSRlist) {
+            console.log("gSRlist:"+gSRlist);
 
             for (var srcEntry in gSRlist) {
                 darp.srcNodes.push(srcEntry.split(":")[0])
@@ -211,8 +212,14 @@ function getMatrixTable(darp, callback) {
 //      handleShowState(req,res) - show the node state
 //
 function handleShowState(req, res) {
-   //console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
-   var dateTime = new Date();
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    console.log(ts()+"EXPRESS(): ------------------------------------>  handleShowState()");
+    var dateTime = new Date();
    var txt = '<meta http-equiv="refresh" content="' + 10 + '">';
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
