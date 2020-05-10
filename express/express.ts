@@ -230,7 +230,8 @@ function handleShowState(req, res) {
 
        txt += ' <script type = "text/javascript" language="javascript">'
 
-       txt += " $.getJSON('http://"+me.ipaddr+":"+me.port+"/state'"+',function(state) {console.log(ts()+"state="+JSON.stringify(state,null,2));});'
+       txt += " var URL='http://"+me.ipaddr+":"+me.port+"/state';"
+       txt += " setTimeout($.getJSON(URL, function(state) {console.log('JSON FETCHED state='+JSON.stringify(state,null,2));},2000);"
 
         txt += '</script> '
 
