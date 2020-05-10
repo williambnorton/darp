@@ -226,8 +226,9 @@ function handleShowState(req, res) {
         txt += '  $("#"+pulse.geo+"_pktDrops").html(pulse.pktDrops);';
         txt += '  $("#"+pulse.geo+"_seq").html(pulse.seq);';
         txt += '  $("#"+pulse.geo+"_pulseTimestamp").html(pulse.pulseTimestamp);';
-        txt += '  $("#"+pulse.owl+"_owl").html(pulse.owl);';
-        txt += '  $("#"+pulse.owl+"_owls").html(pulse.owls);';
+        txt += '  $("#"+pulse.geo+"_owl").html(pulse.owl);';
+        txt += '  $("#"+pulse.geo+"_owls").html(pulse.owls);';
+        txt += '  $("#"+pulse.geo+"-"' + me.geo + ').html(pulse.owl);';
         txt += "}";
         var samplepulse = {
             "inMsgs": "71",
@@ -335,7 +336,7 @@ function handleShowState(req, res) {
                         //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                         //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                        txt += '<td id="' + rowEntry.geo + '_owl">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
+                        txt += '<td id="' + rowEntry.geo + "-" + colEntry.geo + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
                         //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                     }
                     txt += "</tr>";
@@ -450,9 +451,9 @@ function handleShowState(req, res) {
                     txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
                     var deltaT = Math.round((lib_1.now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
-                    if (pulseEntry.pulseTimestamp == 0)
+                    if (mintEntry.pulseTimestamp == 0)
                         deltaT = "0";
-                    txt += "<td>" + deltaT + "</td>";
+                    txt += '<td id="' + mintEntry.geo + '_pulseTimestamp"' + '">' + deltaT + "</td>";
                     //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
@@ -480,7 +481,7 @@ function handleShowState(req, res) {
                     var delta = Math.round((lib_1.now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                     if (pulseEntry.bootTimestamp == 0)
                         delta = "0";
-                    txt += "<td>" + delta + "</td>";
+                    txt += '<td id="' + pulseEntry.geo + '_bootTimestamp"' + '">' + delta + "</td>";
                     txt += "</tr>";
                 }
                 txt += "</table>";
