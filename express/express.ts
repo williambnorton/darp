@@ -259,10 +259,10 @@ function handleShowState(req, res) {
         "version": "Build.200510.0859"
       }
 
-       txt +=    "setTimeout(fetchState,2000);"
+       txt +=    "setTimeout(fetchState,5000);"
        txt +=   "});"
        txt += "}"
-       txt += "setTimeout(fetchState,2000);"
+       txt += "setTimeout(fetchState,1000);"
 
         txt += '</script> '
 
@@ -400,6 +400,7 @@ function handleShowState(req, res) {
                //console.log(ts()+"                            pulses="+dump(pulses));
                for (var a in pulses) {
                    var pulseEntry = pulses[a];
+                   var srcMint=pulseEntry.srcMint;
                    //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
                    if (!pulseEntry.seq) console.log(ts() + "NOT A PULSE!!!!!");
                    //console.log("pulseEntry="+dump(pulseEntry));
@@ -407,7 +408,7 @@ function handleShowState(req, res) {
 
                    //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
 
-                   txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>"
 
 
                    //txt+="<td>"+pulseEntry.geo+"</td>"
