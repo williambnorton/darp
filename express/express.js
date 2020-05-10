@@ -213,7 +213,7 @@ function handleShowState(req, res) {
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += ' <script type = "text/javascript" language="javascript">';
         txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
-        txt += " setTimeout($.getJSON(URL, function(state) {console.log('JSON FETCHED state='+JSON.stringify(state,null,2));},2000);";
+        txt += " setTimeout($.getJSON(URL, function(state) {console.log('JSON FETCHED state='+JSON.stringify(state,null,2));},2000));";
         txt += '</script> ';
         txt += '<script>';
         txt += '</script>';
