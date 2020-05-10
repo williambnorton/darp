@@ -391,7 +391,7 @@ function handleShowState(req, res) {
                     txt += '<td id="' + pulseEntry.geo + '_pulseTimestamp"' + '">' + deltaSeconds + "</td>";
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
-                    txt += "<td>" + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+                    txt += '<td id="' + pulseEntry.geo + '_owl"' + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+pulseEntry.owls+"</td>"
                     txt += '<td id="' + pulseEntry.geo + '_inOctets"' + '">' + pulseEntry.inOctets + "</td>";
                     txt += '<td id="' + pulseEntry.geo + '_outOctets"' + '">' + pulseEntry.outOctets + "</td>";
@@ -400,7 +400,8 @@ function handleShowState(req, res) {
                     txt += '<td id="' + pulseEntry.geo + '_pktDrops"' + '">' + pulseEntry.pktDrops + "</td>";
                     if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
-                        txt += "<td>" + pulseEntry.lastMsg.substring(0, 50) + "</td>";
+                        txt += "<td>" + pulseEntry.owls + "</td>";
+                        //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     }
                     else {
                         txt += "<td>" + "" + "</td>";
