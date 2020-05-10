@@ -226,6 +226,8 @@ function handleShowState(req, res) {
         txt += '  $("#"+pulse.geo+"_pktDrops").html(pulse.pktDrops);';
         txt += '  $("#"+pulse.geo+"_seq").html(pulse.seq);';
         txt += '  $("#"+pulse.geo+"_pulseTimestamp").html(pulse.pulseTimestamp);';
+        txt += '  $("#"+pulse.owl+"_owl").html(pulse.owl);';
+        txt += '  $("#"+pulse.owl+"_owls").html(pulse.owls);';
         txt += "}";
         var samplepulse = {
             "inMsgs": "71",
