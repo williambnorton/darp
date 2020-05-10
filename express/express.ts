@@ -236,7 +236,9 @@ function handleShowState(req, res) {
        txt +=    "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));"
        txt +=    "for (var node in config.pulses) { "
        txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
-       txt +=    "  console.log('setting mint'+pulse.srcMint);"
+       txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
+       txt +=    '  $("#pulse_"+pulse.geo+"_"+inOctets).html(pulse.inOctets);'
+       
        txt +=    "}"
       
        var samplepulse={
