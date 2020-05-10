@@ -261,7 +261,7 @@ function handleShowState(req, res) {
         "version": "Build.200510.0859"
       }
 
-       txt +=    "setTimeout(fetchState,5000);"
+       txt +=    "setTimeout(fetchState,1000);"
        txt +=   "});"
        txt += "}"
        txt += "setTimeout(fetchState,1000);"
