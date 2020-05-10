@@ -335,7 +335,7 @@ function handleShowState(req, res) {
                         //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                         //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                        txt += '<td id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
+                        txt += '<td id="' + rowEntry.geo + '_owl">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
                         //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                     }
                     txt += "</tr>";
@@ -381,7 +381,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + pulseEntry.group + "</td>";
                     txt += "<td>" + pulseEntry.ipaddr + "</td>";
                     txt += "<td>" + pulseEntry.port + "</td>";
-                    txt += '<td id="' + pulseEntry.seq + '_seq"' + '">' + pulseEntry.seq + "</td>";
+                    txt += '<td id="' + pulseEntry.geo + '_seq"' + '">' + pulseEntry.seq + "</td>";
                     var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                     if (pulseEntry.pulseTimestamp == 0)
                         deltaSeconds = "0";
