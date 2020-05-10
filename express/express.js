@@ -209,7 +209,14 @@ function handleShowState(req, res) {
             txt = '<meta http-equiv="refresh" content="' + 10 + '">';
         txt += '<html><head>';
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
-        txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /></head>';
+        txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
+        txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
+        txt += ' <script type = "text/javascript" language="javascript">';
+        txt += " $.getJSON('http://" + me.ipaddr + ":" + me.port + "/state" + ',function(state) {console.log(ts()+"state="+JSON.stringify(state,null,2));});';
+        txt += '</script> ';
+        txt += '<script>';
+        txt += '</script>';
+        txt += '</head>';
         txt += '<body>';
         var insert = "";
         makeConfigAll(function (config) {
@@ -289,7 +296,7 @@ function handleShowState(req, res) {
                         //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
                         //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                        txt += '<td id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>";
+                        txt += '<td id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
                         //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
                     }
                     txt += "</tr>";
