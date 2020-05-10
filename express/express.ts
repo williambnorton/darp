@@ -235,7 +235,7 @@ function handleShowState(req, res) {
        txt +=  '$.getJSON(URL, function(config) {'
        txt +=    "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));"
        txt +=    "for (var node in config.pulses) { "
-       txt +=    "  console.log('pulse='+dump(config.pulses[node]));"
+       txt +=    "  console.log('pulse='+JSON.stringify(config.pulses[node],null,2));"
        txt +=    "}"
 
        txt +=    "setTimeout(fetchState,2000);"
