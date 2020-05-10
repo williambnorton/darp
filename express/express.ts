@@ -232,11 +232,11 @@ function handleShowState(req, res) {
 
        txt += " var URL='http://"+me.ipaddr+":"+me.port+"/state';console.log('URL='+URL);"
        txt += 'function fetchState() {'
-       txt += '$.getJSON(URL, function(state) {'
-       txt += "console.log('JSON FETCHED state='+JSON.stringify(state,null,2));"
-       txt += "setTimeout(fetchState,2000);"
-       txt += "});"
-       txt += ""
+       txt +=  '$.getJSON(URL, function(state) {'
+       txt +=    "console.log('JSON FETCHED state='+JSON.stringify(state,null,2));"
+       txt +=    "setTimeout(fetchState,2000);"
+       txt +=   "});"
+       txt += "}"
        txt += "setTimeout(fetchState,2000);"
 
         txt += '</script> '
