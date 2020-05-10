@@ -237,7 +237,7 @@ function handleShowState(req, res) {
        txt +=    "for (var node in config.pulses) { "
        txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
        txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
-       txt +=    '  $("#pulse_"+pulse.geo+"_inOctewts").html(pulse.inOctets);'
+       txt +=    '  $("#"+pulse.geo+"_inOctets").html(pulse.inOctets);'
        
        txt +=    "}"
       
@@ -429,7 +429,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + pulseEntry.srcMint + "</td>"
                    txt += "<td>"+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
                    //txt+="<td>"+pulseEntry.owls+"</td>"
-                   txt += "<td>" + pulseEntry.inOctets + "</td>"
+                   txt += '<td id="'+pulseEntry.geo+'_inOctets"'+'">' + pulseEntry.inOctets + "</td>"
                    txt += "<td>" + pulseEntry.outOctets + "</td>"
                    txt += "<td>" + pulseEntry.inMsgs + "</td>"
                    txt += "<td>" + pulseEntry.outMsgs + "</td>"
