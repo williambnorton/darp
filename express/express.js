@@ -229,7 +229,7 @@ function handleShowState(req, res) {
         txt += '  $("#"+pulse.geo+"_owl").html(pulse.owl);';
         txt += '  $("#"+pulse.geo+"_owls").html(pulse.owls);';
         //       txt +=    '  $("#"+pulse.geo+"-"+"'+me.geo+'").html(pulse.owl);'  //color matrix value directly measured
-        txt += '  $("#"+pulse.geo+"-"+"' + me.geo + '").text(pulse.owl);'; //color matrix value directly measured
+        txt += '  $("#"+pulse.geo+"-"+"' + me.geo + '").html("<a href=\"http://\">"+pulse.owl+"</a>");'; //color matrix value directly measured
         /***/
         //txt +=    '  for (pulse.owls);'
         txt += "}";
