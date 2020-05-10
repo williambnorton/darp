@@ -250,7 +250,7 @@ function handleShowState(req, res) {
        txt +=    '  $("#"+pulse.geo+"-"+"'+me.geo+'").text(pulse.owl);'  //color matrix value directly measured
        /***/
 
-       txt +=    '  for (pulse.owls);'
+       //txt +=    '  for (pulse.owls);'
 
 
        txt +=    "}"
