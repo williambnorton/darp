@@ -246,12 +246,12 @@ function handleShowState(req, res) {
             if (mint1)
                 genesisPort = mint1.port;
             if (me.isGenesisNode == "1")
-                txt += '<h1>GENESIS NODE <a href=http://' + me.ipaddr + ":" + me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2] + "</h1>";
+                txt += '<h1>GENESIS NODE <a href=http://' + me.ipaddr + ":" + me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2];
             else
                 txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.state + " " + me.version + " under " + genesisIP + ":" + genesisPort;
-            if (me.adminControl)
-                txt += "AdminControl: " + me.adminControl;
             txt += "</h1>";
+            if (me.adminControl)
+                txt += "<h3>AdminControl: " + me.adminControl + "</h3>";
             txt += "<p>" + dateTime + "</p>";
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
