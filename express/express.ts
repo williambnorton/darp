@@ -245,8 +245,8 @@ function handleShowState(req, res) {
        txt +=    '  $("#"+pulse.geo+"_seq").html(pulse.seq);'
        txt +=    '  $("#"+pulse.geo+"_pulseTimestamp").html(pulse.pulseTimestamp);'
        txt +=    '  $("#"+pulse.geo+"_owl").html(pulse.owl);'
-      /* txt +=    '  $("#"+pulse.geo+"_owls").html(pulse.owls);'
-       txt +=    '  $("#"+pulse.geo+"-"'+me.geo+').html(pulse.owl);'
+       txt +=    '  $("#"+pulse.geo+"_owls").html(pulse.owls);'
+/*       txt +=    '  $("#"+pulse.geo+"-"'+me.geo+').html(pulse.owl);'
        ***/
        txt +=    "}"
       
