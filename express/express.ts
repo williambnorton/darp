@@ -237,7 +237,7 @@ function handleShowState(req, res) {
        txt +=    "for (var node in config.pulses) { "
        txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
        txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
-       txt +=    '  $("#pulse_"+pulse.geo+"_"+inOctets).html(pulse.inOctets);'
+       txt +=    '  $("#pulse_"+pulse.geo+"_inOctewts").html(pulse.inOctets);'
        
        txt +=    "}"
       
