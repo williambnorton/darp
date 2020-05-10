@@ -232,8 +232,12 @@ function handleShowState(req, res) {
 
        txt += " var URL='http://"+me.ipaddr+":"+me.port+"/state';console.log('URL='+URL);"
        txt += 'function fetchState() {'
-       txt +=  '$.getJSON(URL, function(state) {'
-       txt +=    "console.log('JSON FETCHED state='+JSON.stringify(state,null,2));"
+       txt +=  '$.getJSON(URL, function(config) {'
+       txt +=    "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));"
+       txt +=    "for (var node in config.pulses) { "
+       txt +=    "  console.log('pulse='+dump(config.pulses[node]);"
+       txt +=    "}"
+
        txt +=    "setTimeout(fetchState,2000);"
        txt +=   "});"
        txt += "}"
