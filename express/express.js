@@ -364,7 +364,7 @@ function handleShowState(req, res) {
                 txt += "<th>outMsgs</th>";
                 txt += "<th>pktDrops</th>";
                 txt += "<th>pulseSz</th>";
-                txt += "<th>lastMsg</th>";
+                txt += "<th>owls</th>";
                 txt += "<th>bootTimestamp</th>";
                 txt += "<th>version</th>";
                 txt += "</tr>";
@@ -400,7 +400,7 @@ function handleShowState(req, res) {
                     txt += '<td id="' + pulseEntry.geo + '_pktDrops"' + '">' + pulseEntry.pktDrops + "</td>";
                     if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
-                        txt += "<td>" + pulseEntry.owls + "</td>";
+                        txt += "<td>" + pulseEntry.owls.substring(0, 20) + "</td>";
                         //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     }
                     else {
