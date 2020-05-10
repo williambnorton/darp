@@ -445,7 +445,7 @@ function handleShowState(req, res) {
                    txt += '<td id="'+pulseEntry.geo+'_pktDrops"'+'">' + pulseEntry.pktDrops + "</td>"
                    if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"
-                        txt += "<td>" + pulseEntry.owls.substring(0,20) + "</td>"
+                        txt += '<td id="'+pulseEntry.geo+'_owls"'+'">' + pulseEntry.owls.substring(0,20) + "</td>"
                         //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     } else { 
                         txt += "<td>" + "" + "</td>"
