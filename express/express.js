@@ -217,7 +217,7 @@ function handleShowState(req, res) {
         txt += '$.getJSON(URL, function(state) {';
         txt += "console.log('JSON FETCHED state='+JSON.stringify(state,null,2));";
         txt += "setTimeout(fetchState,2000);";
-        txt += "}";
+        txt += "});";
         txt += "";
         txt += "setTimeout(fetchState,2000);";
         txt += '</script> ';
