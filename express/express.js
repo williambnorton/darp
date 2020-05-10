@@ -220,6 +220,12 @@ function handleShowState(req, res) {
         txt += "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));";
         txt += "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);";
         txt += '  $("#"+pulse.geo+"_inOctets").html(pulse.inOctets);';
+        txt += '  $("#"+pulse.geo+"_outOctets").html(pulse.outOctets);';
+        txt += '  $("#"+pulse.geo+"_inMsgs").html(pulse.inMsgs);';
+        txt += '  $("#"+pulse.geo+"_outMsgs").html(pulse.outMsgs);';
+        txt += '  $("#"+pulse.geo+"_pktDrops").html(pulse.pktDrops);';
+        txt += '  $("#"+pulse.geo+"_seq").html(pulse.seq);';
+        txt += '  $("#"+pulse.geo+"_pulseTimestamp").html(pulse.pulseTimestamp);';
         txt += "}";
         var samplepulse = {
             "inMsgs": "71",
