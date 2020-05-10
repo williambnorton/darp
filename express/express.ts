@@ -418,22 +418,22 @@ function handleShowState(req, res) {
                    txt += "<td>" + pulseEntry.ipaddr + "</td>"
                    txt += "<td>" + pulseEntry.port + "</td>"
                    
-                   txt += "<td>" + pulseEntry.seq + "</td>"
+                   txt += '<td id="'+pulseEntry.seq+'_seq"'+'">' + pulseEntry.seq + "</td>"
 
                    var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                    if (pulseEntry.pulseTimestamp == 0) deltaSeconds = "0";
                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                   txt += "<td>" + deltaSeconds + "</td>";
+                   txt += '<td id="'+pulseEntry.geo+'_pulseTimestamp"'+'">' + deltaSeconds + "</td>";
 
                    //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                    txt += "<td>" + pulseEntry.srcMint + "</td>"
                    txt += "<td>"+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
                    //txt+="<td>"+pulseEntry.owls+"</td>"
                    txt += '<td id="'+pulseEntry.geo+'_inOctets"'+'">' + pulseEntry.inOctets + "</td>"
-                   txt += "<td>" + pulseEntry.outOctets + "</td>"
-                   txt += "<td>" + pulseEntry.inMsgs + "</td>"
-                   txt += "<td>" + pulseEntry.outMsgs + "</td>"
-                   txt += "<td>" + pulseEntry.pktDrops + "</td>"
+                   txt += '<td id="'+pulseEntry.geo+'_outOctets"'+'">' + pulseEntry.outOctets + "</td>"
+                   txt += '<td id="'+pulseEntry.geo+'_inMsgs"'+'">' + pulseEntry.inMsgs + "</td>"
+                   txt += '<td id="'+pulseEntry.geo+'_outMsgs"'+'">' + pulseEntry.outMsgs + "</td>"
+                   txt += '<td id="'+pulseEntry.geo+'_pktDrops"'+'">' + pulseEntry.pktDrops + "</td>"
                    if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"
                         txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
@@ -444,8 +444,8 @@ function handleShowState(req, res) {
                    var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
                    if (pulseEntry.bootTimestamp == 0) deltaSeconds2 = "0";
                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                   txt += "<td>" + deltaSeconds2 + "</td>";
-                   txt += "<td>" + pulseEntry.version + "</td>";
+                   txt += '<td id="'+pulseEntry.geo+'_bootTimestamp"'+'">' + deltaSeconds2 + "</td>";
+                   txt += '<td id="'+pulseEntry.geo+'_version"'+'">' + pulseEntry.version + "</td>";
 
                    //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                    txt += "</tr>"
