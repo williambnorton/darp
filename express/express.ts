@@ -235,8 +235,29 @@ function handleShowState(req, res) {
        txt +=  '$.getJSON(URL, function(config) {'
        txt +=    "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));"
        txt +=    "for (var node in config.pulses) { "
-       txt +=    "  console.log('pulse='+JSON.stringify(config.pulses[node],null,2));"
+       txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
+       txt +=    "  console.log('setting mint'+pulse.srcMint);"
        txt +=    "}"
+      
+       var samplepulse={
+        "inMsgs": "71",
+        "owl": "2",
+        "group": "DEVOPS.1",
+        "geo": "DEVOPS",
+        "pulseTimestamp": "1589127099830",
+        "owls": "1=2",
+        "port": "65013",
+        "outOctets": "10486",
+        "pktDrops": "0",
+        "lastMsg": "0,Build.200510.0859,DEVOPS,DEVOPS.1,72,1589127099830,1589126387562,1,1=2,",
+        "outMsgs": "144",
+        "ipaddr": "71.202.2.184",
+        "inOctets": "5173",
+        "srcMint": "1",
+        "bootTimestamp": "1589126387562",
+        "seq": "72",
+        "version": "Build.200510.0859"
+      }
 
        txt +=    "setTimeout(fetchState,2000);"
        txt +=   "});"
