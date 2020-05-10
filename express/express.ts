@@ -230,7 +230,7 @@ function handleShowState(req, res) {
 
        txt += ' <script type = "text/javascript" language="javascript">'
 
-       txt += " $.getJSON('http://"+me.ipaddr+":"+me.port+"/state"+',function(state) {console.log(ts()+"state="+JSON.stringify(state,null,2));});'
+       txt += " $.getJSON('http://"+me.ipaddr+":"+me.port+"/state'"+',function(state) {console.log(ts()+"state="+JSON.stringify(state,null,2));});'
 
         txt += '</script> '
 

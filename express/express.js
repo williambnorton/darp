@@ -212,7 +212,7 @@ function handleShowState(req, res) {
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += ' <script type = "text/javascript" language="javascript">';
-        txt += " $.getJSON('http://" + me.ipaddr + ":" + me.port + "/state" + ',function(state) {console.log(ts()+"state="+JSON.stringify(state,null,2));});';
+        txt += " $.getJSON('http://" + me.ipaddr + ":" + me.port + "/state'" + ',function(state) {console.log(ts()+"state="+JSON.stringify(state,null,2));});';
         txt += '</script> ';
         txt += '<script>';
         txt += '</script>';
