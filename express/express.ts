@@ -233,7 +233,7 @@ function handleShowState(req, res) {
         //txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
 //        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
 
-        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+pulse[field]);'
+        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+pulse[field//wbnwbn] );'
 //wbnwbn        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );'
 
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
