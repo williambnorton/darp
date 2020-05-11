@@ -210,7 +210,9 @@ function handleShowState(req, res) {
         txt += '   console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);';
         txt += '   var pulseLabel=key.split(":")[0];';
         txt += '   var pulse=value;';
-        txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));';
+        txt += '   for (let [field, fieldValue] of Object.entries(config.pulses[${key}])) {';
+        txt += '      console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));';
+        txt += '   }';
         txt += '}';
         txt += "for (var node in config.pulses) { "; //here we could generalize - power tool - for each field, set
         txt += "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));";
