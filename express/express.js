@@ -211,7 +211,8 @@ function handleShowState(req, res) {
         txt += '   var pulseLabel=key.split(":")[0];';
         txt += '   var pulse=value;';
         txt += '   for (let [field, fieldValue] of Object.entries(config.pulses[key])) {';
-        txt += '      console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));';
+        txt += '     var fieldValue=pulse[field])';
+        txt += '      console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));';
         txt += '   }';
         txt += '}';
         txt += "for (var node in config.pulses) { "; //here we could generalize - power tool - for each field, set
