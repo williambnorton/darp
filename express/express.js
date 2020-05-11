@@ -215,23 +215,23 @@ function handleShowState(req, res) {
         //txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
         //        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
         txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+pulse[field]);';
-        txt += '     $("."+pulse.geo+"_"+field).html(  pulse[field] );';
+        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );';
         //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
         txt += '   }';
         txt += '}';
-        txt += "for (var node in config.pulses) { "; //here we could generalize - power tool - for each field, set
-        txt += "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));";
-        txt += "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);";
-        txt += '  $("."+pulse.geo+"_inOctets").html(pulse.inOctets);';
-        txt += '  $("."+pulse.geo+"_outOctets").html(pulse.outOctets);';
-        txt += '  $("."+pulse.geo+"_inMsgs").html(pulse.inMsgs);';
-        txt += '  $("."+pulse.geo+"_outMsgs").html(pulse.outMsgs);';
-        txt += '  $("."+pulse.geo+"_pktDrops").html(pulse.pktDrops);';
-        txt += '  $("."+pulse.geo+"_seq").html(pulse.seq);';
+        //       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
+        //       txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
+        //       txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
+        //       txt +=    '  $("."+pulse.geo+"_inOctets").html(pulse.inOctets);'
+        //       txt +=    '  $("."+pulse.geo+"_outOctets").html(pulse.outOctets);'
+        //       txt +=    '  $("."+pulse.geo+"_inMsgs").html(pulse.inMsgs);'
+        //       txt +=    '  $("."+pulse.geo+"_outMsgs").html(pulse.outMsgs);'
+        //       txt +=    '  $("."+pulse.geo+"_pktDrops").html(pulse.pktDrops);'
+        //       txt +=    '  $("."+pulse.geo+"_seq").html(pulse.seq);'
         txt += '  $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '  $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '  $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
-        txt += '  $("."+pulse.geo+"_owls").html(pulse.owls);';
+        //       txt +=    '  $("."+pulse.geo+"_owls").html(pulse.owls);'
         txt += '  $("."+pulse.geo+"-"+"' + me.geo + '").html(pulse.owl);'; //color matrix value directly measured
         //       txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
         /***/
