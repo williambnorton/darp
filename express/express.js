@@ -215,7 +215,7 @@ function handleShowState(req, res) {
         //txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
         //        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
         txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+pulse[field]);';
-        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );';
+        //wbnwbn        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );'
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
         //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
         txt += '   }';
