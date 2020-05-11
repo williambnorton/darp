@@ -253,8 +253,11 @@ function handleShowState(req, res) {
 //       txt +=    '  $("."+pulse.geo+"_outMsgs").html(pulse.outMsgs);'
 //       txt +=    '  $("."+pulse.geo+"_pktDrops").html(pulse.pktDrops);'
 //       txt +=    '  $("."+pulse.geo+"_seq").html(pulse.seq);'
-       txt +=    '  $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
-       txt +=    '  $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
+        txt += 'if (pulse.pulseTimestamp!="0")'
+        txt +=    '  $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+        txt += 'else $("."+pulse.geo+"_pulseTimestamp").html("0");'
+
+        txt +=    '  $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
        txt +=    '  $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
 //       txt +=    '  $("."+pulse.geo+"_owls").html(pulse.owls);'
        txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html(pulse.owl+" ms");'  //color matrix value directly measured
