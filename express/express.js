@@ -215,7 +215,7 @@ function handleShowState(req, res) {
         txt += '     console.log("^field="+field+" fieldValue="+fieldValue);';
         txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
         //txt += '     console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
-        //wbnwbn        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );'
+        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );';
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
         //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
         //       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
@@ -231,7 +231,7 @@ function handleShowState(req, res) {
         txt += '  $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '  $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
         //       txt +=    '  $("."+pulse.geo+"_owls").html(pulse.owls);'
-        txt += '  $("."+pulse.geo+"-"+"' + me.geo + '").html(pulse.owl);'; //color matrix value directly measured
+        txt += '  $("."+pulse.geo+"-"+"' + me.geo + '").html(pulse.owl+" ms");'; //color matrix value directly measured
         //       txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
         /***/
         //txt +=    '  for (pulse.owls);'
