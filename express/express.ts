@@ -231,7 +231,7 @@ function handleShowState(req, res) {
       txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
        txt += '   for (let [field, fieldValue] of Object.entries(pulse)) {'
         txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
-        txt += '     console.log("^^^^^^Setting XXXX_"+field+"="+fieldValue);'
+        txt += '     console.log("^^^^^^Setting "+pulse.geo+"_"+field+"="+fieldValue);'
 //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
        txt += '   }'
        txt += '}'
