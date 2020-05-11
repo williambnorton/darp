@@ -238,8 +238,7 @@ function handleShowState(req, res) {
 
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
 //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
-       txt += '   }'
-       txt += '}'
+
 
 
 //       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
@@ -261,9 +260,10 @@ function handleShowState(req, res) {
        /***/
 
        //txt +=    '  for (pulse.owls);'
+       txt += '   }'
+       txt += '}'
 
-
-       txt +=    "}"
+       //txt +=    "}"
       
        var samplepulse={
         "inMsgs": "71",

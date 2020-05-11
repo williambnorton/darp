@@ -218,8 +218,6 @@ function handleShowState(req, res) {
         //wbnwbn        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );'
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
         //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
-        txt += '   }';
-        txt += '}';
         //       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
         //       txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
         //       txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
@@ -237,7 +235,9 @@ function handleShowState(req, res) {
         //       txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
         /***/
         //txt +=    '  for (pulse.owls);'
-        txt += "}";
+        txt += '   }';
+        txt += '}';
+        //txt +=    "}"
         var samplepulse = {
             "inMsgs": "71",
             "owl": "2",
