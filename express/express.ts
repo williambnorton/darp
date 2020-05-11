@@ -245,7 +245,8 @@ function handleShowState(req, res) {
        txt +=    '  $("#"+pulse.geo+"_pktDrops").html(pulse.pktDrops);'
        txt +=    '  $("#"+pulse.geo+"_seq").html(pulse.seq);'
        txt +=    '  $("#"+pulse.geo+"_pulseTimestamp").html(""+(now-pulse.pulseTimestamp)+" secs ago");'
-       txt +=    '  $("#"+pulse.geo+"_owl").html(pulse.owl);'
+       txt +=    '  $("#"+pulse.geo+"_bootTimestamp").html(""+(now-pulse.bootTimestamp)+" secs ago");'
+       txt +=    '  $("#"+pulse.geo+"_owl").txt(pulse.owl+" ms");'
        txt +=    '  $("#"+pulse.geo+"_owls").html(pulse.owls);'
        txt +=    '  $("#"+pulse.geo+"-"+"'+me.geo+'").html(pulse.owl);'  //color matrix value directly measured
 //       txt +=    '  $("#"+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
