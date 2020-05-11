@@ -225,16 +225,16 @@ function handleShowState(req, res) {
 
 
        txt += 'for (let [key, value] of Object.entries(config.pulses)) {'
-       txt += '   console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+//       txt += '   console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
       txt += '   var pulseLabel=key;'
       txt += '   var pulse=value;'
       //txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
        txt += '   for (let [field, fieldValue] of Object.entries(pulse)) {'
-       txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
+//       txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
 
         //txt += '     console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
-        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );'
+        txt += '     $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
 
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
 //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
