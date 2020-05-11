@@ -224,7 +224,7 @@ function handleShowState(req, res) {
        txt +=    " var d = new Date(); var now=d.getTime();"
 
 
-       txt += 'for (let [key, value] of Object.entries(config)) {'
+       txt += 'for (let [key, value] of Object.entries(config.pulses)) {'
        txt += ' console.log(`COULD GENERALIZE: ${key}: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
        txt += '}'
 
