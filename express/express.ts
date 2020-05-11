@@ -226,9 +226,9 @@ function handleShowState(req, res) {
 
        txt += 'for (let [key, value] of Object.entries(config.pulses)) {'
        txt += '   console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-       txt += '   var pulseLabel=key;'
-       txt += '   var pulse=value;'
-       txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
+//       txt += '   var pulseLabel=key;'
+//       txt += '   var pulse=value;'
+//       txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
 //       txt += '   for (let [field, fieldValue] of Object.entries(pulse)) {'
 //        txt += '     //var fieldValue=pulse[field];'
 //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
