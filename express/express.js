@@ -216,6 +216,7 @@ function handleShowState(req, res) {
         txt += 'function fetchState() {';
         txt += '$.getJSON(URL, function(config) {';
         txt += "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
+        txt += " var d = new Date(); var now=d.getTime();";
         txt += "for (var node in config.pulses) { ";
         txt += "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));";
         txt += "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);";
@@ -225,7 +226,7 @@ function handleShowState(req, res) {
         txt += '  $("#"+pulse.geo+"_outMsgs").html(pulse.outMsgs);';
         txt += '  $("#"+pulse.geo+"_pktDrops").html(pulse.pktDrops);';
         txt += '  $("#"+pulse.geo+"_seq").html(pulse.seq);';
-        txt += '  $("#"+pulse.geo+"_pulseTimestamp").html(pulse.pulseTimestamp);';
+        txt += '  $("#"+pulse.geo+"_pulseTimestamp").html(""+(now-pulse.pulseTimestamp)+" secs ago");';
         txt += '  $("#"+pulse.geo+"_owl").html(pulse.owl);';
         txt += '  $("#"+pulse.geo+"_owls").html(pulse.owls);';
         txt += '  $("#"+pulse.geo+"-"+"' + me.geo + '").html(pulse.owl);'; //color matrix value directly measured
