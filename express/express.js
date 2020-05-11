@@ -207,10 +207,12 @@ function handleShowState(req, res) {
         txt += "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
         txt += " var d = new Date(); var now=d.getTime();";
         txt += 'for (let [key, value] of Object.entries(config.pulses)) {';
-        txt += 'var node=${key}.split(":")[0]';
-        txt += 'for (let [field, fieldValue] of Object.entries(config.pulses[${key}])) {';
-        txt += ' console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${field}+").html("+${fieldValue}+");`);';
-        txt += '}}';
+        txt += '   var node=${key}.split(":")[0]';
+        txt += '   var pulse=${value}';
+        txt += '   for (let [field, fieldValue] of Object.entries( config.pulses[${key}] )) {';
+        txt += '       console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${field}+").html("+${fieldValue}+");`);';
+        txt += '   }';
+        txt += '}';
         txt += "for (var node in config.pulses) { "; //here we could generalize - power tool - for each field, set
         txt += "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));";
         txt += "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);";
