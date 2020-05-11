@@ -100,18 +100,6 @@ expressRedisClient.hgetall("mint:0", function(err, me) {
    }
 });
 
-function nxnTable(n) {
-   var html = '<table border="1">'
-   for (var i = 0; i < n; i++)
-       html += "<tr>"
-   for (var j = 0; j < n; j++) {
-       html += '<td id="' + i + '-' + j + '">' + i + "-" + j + '</td>'
-   }
-   html += "</tr>"
-
-   html += "</table"
-   return html
-}
 //
 //
 //9=25,8=5,1=3,2=39,3=49,5=36,6=20,7=42	
@@ -139,7 +127,6 @@ function getIPport(mint, callback) {
        callback(err, mintEntry.ipaddr + ":" + mintEntry.port)
    })
 }
-
 
 //
 //  Make a matrix of group latency measures
@@ -238,18 +225,18 @@ function handleShowState(req, res) {
        txt +=    "for (var node in config.pulses) { "
        txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
        txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
-       txt +=    '  $("#"+pulse.geo+"_inOctets").html(pulse.inOctets);'
-       txt +=    '  $("#"+pulse.geo+"_outOctets").html(pulse.outOctets);'
-       txt +=    '  $("#"+pulse.geo+"_inMsgs").html(pulse.inMsgs);'
-       txt +=    '  $("#"+pulse.geo+"_outMsgs").html(pulse.outMsgs);'
-       txt +=    '  $("#"+pulse.geo+"_pktDrops").html(pulse.pktDrops);'
-       txt +=    '  $("#"+pulse.geo+"_seq").html(pulse.seq);'
-       txt +=    '  $("#"+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
-       txt +=    '  $("#"+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
-       txt +=    '  $("#"+pulse.geo+"_owl").text(pulse.owl+" ms");'
-       txt +=    '  $("#"+pulse.geo+"_owls").html(pulse.owls);'
-       txt +=    '  $("#"+pulse.geo+"-"+"'+me.geo+'").html(pulse.owl);'  //color matrix value directly measured
-//       txt +=    '  $("#"+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
+       txt +=    '  $("."+pulse.geo+"_inOctets").html(pulse.inOctets);'
+       txt +=    '  $("."+pulse.geo+"_outOctets").html(pulse.outOctets);'
+       txt +=    '  $("."+pulse.geo+"_inMsgs").html(pulse.inMsgs);'
+       txt +=    '  $("."+pulse.geo+"_outMsgs").html(pulse.outMsgs);'
+       txt +=    '  $("."+pulse.geo+"_pktDrops").html(pulse.pktDrops);'
+       txt +=    '  $("."+pulse.geo+"_seq").html(pulse.seq);'
+       txt +=    '  $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+       txt +=    '  $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
+       txt +=    '  $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
+       txt +=    '  $("."+pulse.geo+"_owls").html(pulse.owls);'
+       txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html(pulse.owl);'  //color matrix value directly measured
+//       txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
        
        /***/
 
@@ -372,11 +359,11 @@ function handleShowState(req, res) {
                            owl = OWLMatrix[rowEntry.geo][colEntry.geo]
                        }
                        //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
-                       //if (owl=="") txt += '<td id="' + entryLabel + '">' + "0" + "</td>"
-                       //else if (count<100) txt += '<td class="XXXXX" id="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
+                       //if (owl=="") txt += '<td class="' + entryLabel + '">' + "0" + "</td>"
+                       //else if (count<100) txt += '<td class="XXXXX" class="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                        
-                       txt += '<td id="' + rowEntry.geo + "-" + colEntry.geo+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
-                            //else txt += '<td id="' + entryLabel + '">' + owl + "</td>"
+                       txt += '<td class="' + rowEntry.geo + "-" + colEntry.geo+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
+                            //else txt += '<td class="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
 
@@ -434,25 +421,25 @@ function handleShowState(req, res) {
                    txt += "<td>" + pulseEntry.ipaddr + "</td>"
                    txt += "<td>" + pulseEntry.port + "</td>"
                    
-                   txt += '<td id="'+pulseEntry.geo+'_seq"'+'">' + pulseEntry.seq + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_seq"'+'">' + pulseEntry.seq + "</td>"
 
                    var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                    if (pulseEntry.pulseTimestamp == 0) deltaSeconds = "0";
                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                   txt += '<td id="'+pulseEntry.geo+'_pulseTimestamp"'+'">' + deltaSeconds + "</td>";
+                   txt += '<td class="'+pulseEntry.geo+'_pulseTimestamp"'+'">' + deltaSeconds + "</td>";
 
                    //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                    txt += "<td>" + pulseEntry.srcMint + "</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_owl"'+'">'+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_owl"'+'">'+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
                    //txt+="<td>"+pulseEntry.owls+"</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_inOctets"'+'">' + pulseEntry.inOctets + "</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_outOctets"'+'">' + pulseEntry.outOctets + "</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_inMsgs"'+'">' + pulseEntry.inMsgs + "</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_outMsgs"'+'">' + pulseEntry.outMsgs + "</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_pktDrops"'+'">' + pulseEntry.pktDrops + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_inOctets"'+'">' + pulseEntry.inOctets + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_outOctets"'+'">' + pulseEntry.outOctets + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_inMsgs"'+'">' + pulseEntry.inMsgs + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_outMsgs"'+'">' + pulseEntry.outMsgs + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_pktDrops"'+'">' + pulseEntry.pktDrops + "</td>"
                    if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"
-                        txt += '<td id="'+pulseEntry.geo+'_owls"'+'">' + pulseEntry.owls.substring(0,20) + "</td>"
+                        txt += '<td class="'+pulseEntry.geo+'_owls"'+'">' + pulseEntry.owls.substring(0,20) + "</td>"
                         //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     } else { 
                         txt += "<td>" + "" + "</td>"
@@ -461,9 +448,9 @@ function handleShowState(req, res) {
                    var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
                    if (pulseEntry.bootTimestamp == 0) deltaSeconds2 = "0";
                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                   txt += '<td id="'+pulseEntry.geo+'_bootTimestamp"'+'">' + deltaSeconds2 + "</td>";
+                   txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + deltaSeconds2 + "</td>";
 
-                   txt += '<td id="'+pulseEntry.geo+'_version"'+'">' + pulseEntry.version + "</td>";
+                   txt += '<td class="'+pulseEntry.geo+'_version"'+'">' + pulseEntry.version + "</td>";
 
                    //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                    txt += "</tr>"
@@ -510,14 +497,14 @@ function handleShowState(req, res) {
 
                    //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
                    //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
-                   //txt += '<td id="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
+                   //txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
 
 
 
                    var deltaSeconds = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
                    if (mintEntry.pulseTimestamp == 0) deltaSeconds = "0";
                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                   txt += '<td id="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaSeconds + "</td>";
+                   txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaSeconds + "</td>";
 
 
 
@@ -530,7 +517,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>"
                    //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                    //txt += "<td>" + mintEntry.owl + " ms</td>"
-                   txt += '<td id="'+pulseEntry.geo+'_owl"'+'">'+'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_owl"'+'">'+'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>"
 
                    //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                    //            txt+="<td>"+mintEntry.rtt+"</td>"
@@ -556,14 +543,14 @@ function handleShowState(req, res) {
 
                     //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                     //if (pulseEntry.bootTimestamp == 0) delta = "0";
-                    //txt += '<td id="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
+                    //txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
 
 
 
                     var deltaSeconds2 = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                     if (mintEntry.bootTimestamp == 0) deltaSeconds2 = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                    txt += '<td id="'+mintEntry.geo+'_bootTimestamp"'+'">' + deltaSeconds2 + "</td>";
+                    txt += '<td class="'+mintEntry.geo+'_bootTimestamp"'+'">' + deltaSeconds2 + "</td>";
 
 
 
