@@ -222,7 +222,14 @@ function handleShowState(req, res) {
        txt +=  '$.getJSON(URL, function(config) {'
        txt +=    "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));"
        txt +=    " var d = new Date(); var now=d.getTime();"
-       txt +=    "for (var node in config.pulses) { "
+
+
+       txt += 'for (let [key, value] of Object.entries(config)) {'
+       txt += ' console.log(`COULD GENERALIZE: ${key}: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+       txt += '}'
+
+
+       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
        txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
        txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
        txt +=    '  $("."+pulse.geo+"_inOctets").html(pulse.inOctets);'
