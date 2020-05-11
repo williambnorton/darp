@@ -225,10 +225,8 @@ function handleShowState(req, res) {
 
 
        txt += 'for (let [key, value] of Object.entries(config.pulses)) {'
-       txt += '//var node=${key}.split(":")[0]'
-       txt += '//for (let [key, value] of Object.entries(config.pulses[${key}])) {'
-       txt += '    console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-       txt += '} //}'
+       txt += ' console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+       txt += '}'
 
 
        txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
