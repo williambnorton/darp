@@ -456,16 +456,20 @@ function handleShowState(req, res) {
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.ipaddr + "</a></td>";
                     txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>";
-                    var deltaT = Math.round((lib_1.now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
+                    //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
+                    //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
+                    //txt += '<td id="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
+                    var deltaSeconds = Math.round((lib_1.now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
                     if (mintEntry.pulseTimestamp == 0)
-                        deltaT = "0";
-                    txt += '<td id="' + mintEntry.geo + '_pulseTimestamp"' + '">' + deltaT + "</td>";
+                        deltaSeconds = "0";
+                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                    txt += '<td id="' + mintEntry.geo + '_pulseTimestamp"' + '">' + deltaSeconds + "</td>";
                     //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += '<td id="' + pulseEntry.geo + '_owl"' + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
+                    txt += '<td id="' + pulseEntry.geo + '_owl"' + '">' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
@@ -484,10 +488,14 @@ function handleShowState(req, res) {
                         txt += "<td>" + mintEntry.adminControl + "</td>";
                     else
                         txt += "<td>" + "</td>";
-                    var delta = Math.round((lib_1.now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
-                    if (pulseEntry.bootTimestamp == 0)
-                        delta = "0";
-                    txt += '<td id="' + pulseEntry.geo + '_bootTimestamp"' + '">' + delta + "</td>";
+                    //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+                    //if (pulseEntry.bootTimestamp == 0) delta = "0";
+                    //txt += '<td id="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
+                    var deltaSeconds2 = Math.round((lib_1.now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+                    if (mintEntry.bootTimestamp == 0)
+                        deltaSeconds2 = "0";
+                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                    txt += '<td id="' + mintEntry.geo + '_bootTimestamp"' + '">' + deltaSeconds2 + "</td>";
                     txt += "</tr>";
                 }
                 txt += "</table>";
