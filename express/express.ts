@@ -230,10 +230,10 @@ function handleShowState(req, res) {
       txt += '   var pulse=value;'
       //txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
        txt += '   for (let [field, fieldValue] of Object.entries(pulse)) {'
-        //txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
-//        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+       txt += '     console.log("^field="+field+" fieldValue="+fieldValue);'
+       txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
 
-        txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+ fieldValue );'
+        //txt += '     console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
 //wbnwbn        txt += '     $("."+pulse.geo+"_"+field).html( pulse[field] );'
 
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
