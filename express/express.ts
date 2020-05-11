@@ -226,7 +226,7 @@ function handleShowState(req, res) {
 
        txt += 'for (let [key, value] of Object.entries(config.pulses)) {'
        txt += '   console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-       txt += '   var pulseLabel=${key}.split(":")[0];'
+       txt += '   var pulseLabel=key.split(":")[0];'
        //txt += '   var pulse=value;'
        //txt += '   console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
        txt += '}'
