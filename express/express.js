@@ -194,6 +194,7 @@ function handleShowState(req, res) {
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me == null)
             return console.log("handleShowState(): WEIRD: NULL mint:0");
+        //UI for DARP
         if (me.state == "SINGLESTEP")
             txt = '<meta http-equiv="refresh" content="' + 10 + '">';
         txt += '<html><head>';
@@ -201,7 +202,7 @@ function handleShowState(req, res) {
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += ' <script type = "text/javascript" language="javascript">';
-        txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';console.log('URL='+URL);";
+        txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += 'function fetchState() {';
         txt += '$.getJSON(URL, function(config) {';
         txt += "console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
@@ -216,6 +217,7 @@ function handleShowState(req, res) {
         txt += '     console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
         //txt += '     console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
         txt += '     $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );';
+        txt += '     $("#dateTime").html( "*"+d.toString()+"*" );';
         //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
         //       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
         //       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
@@ -293,7 +295,7 @@ function handleShowState(req, res) {
             txt += "</h1>";
             if (me.adminControl)
                 txt += "<h3>AdminControl: " + me.adminControl + "</h3>";
-            txt += "<p>" + dateTime + "</p>";
+            txt += '<p id="dateTime">" + dateTime + "</p>"';
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
