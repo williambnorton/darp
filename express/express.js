@@ -229,9 +229,8 @@ function handleShowState(req, res) {
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
         txt += '          for (var src in ary) {';
+        txt += '              var segment=ary[src];';
         /*
-                txt += '              var segment=ary[src];'
-        
                 txt += '              var srcMint=segment.split("=")[0];'
                 txt += '              var owl=segment.split("=")[1];'
         
