@@ -247,7 +247,7 @@ function handleShowState(req, res) {
 
 
         
-        txt += '             $("."+pulse.geo+"_"+field).html( "<a href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.geo + "&dstMint=" + colEntry.geo +  "&group=" + me.group + " *" + pulse[field] + "*</a>" );'
+        txt += '             $("."+pulse.geo+"_"+field).html( "<a href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.srcMint + "&dstMint=" + colEntry.srcMint +  "&group=" + me.group + "\"> *" + pulse[field] + "*</a>" );'
 
 
 
