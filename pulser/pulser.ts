@@ -5,7 +5,7 @@ console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.
 //  pulse - send my owl measurements to my pulseGroups
 //
 //var HOST='127.0.0.1';
-var CYCLETIME=1; //newMint(mint)
+var CYCLETIME=5; //newMint(mint)
 
 
 
