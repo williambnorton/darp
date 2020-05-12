@@ -240,7 +240,7 @@ function handleShowState(req, res) {
         txt += '         }'
       
         //          special case formatting for non-numbers
-
+/*
         txt += '          if (pulse.pulseTimestamp!="0")'
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
@@ -263,7 +263,7 @@ function handleShowState(req, res) {
         txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'  
     
         txt += '          }'
-     
+     */
         txt += '       }'
       
         txt += "    });"
