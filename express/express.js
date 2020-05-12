@@ -230,14 +230,19 @@ function handleShowState(req, res) {
                 txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms*");'
                 txt += '          var ary=pulse.owls.split(",");'
                 txt += '          var dstMint=pulse.srcMint;'
+         
+                txt += '          for (var src in ary) {'
+        
+                txt += '              var segment=ary[src];'
+        
+                txt += '              var srcMint=segment.split("=")[0];'
+                txt += '              var owl=segment.split("=")[1];'
+        
+                txt += '              //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);'
+                txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'
+            
+                txt += '          }'
             */
-        txt += '          for (var src in ary) {';
-        txt += '              var segment=ary[src];';
-        txt += '              var srcMint=segment.split("=")[0];';
-        txt += '              var owl=segment.split("=")[1];';
-        txt += '              //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
-        txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");';
-        txt += '          }';
         txt += '       }';
         txt += "    });";
         txt += "    setTimeout(fetchState,1000);";
