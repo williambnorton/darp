@@ -252,7 +252,7 @@ function handleShowState(req, res) {
 
 
 
-        txt += '             $("."+pulse.geo+"_"+field).html(\"<a href=\"+href+\"+"> " + pulse[field] + \" );'
+        txt += '             $("."+pulse.geo+"_"+field).html(\"<a href=\"+href+"\"> " + pulse[field] + \" );'
 
 
 
