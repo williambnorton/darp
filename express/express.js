@@ -235,7 +235,8 @@ function handleShowState(req, res) {
         txt += '  $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '  $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
         //       txt +=    '  $("."+pulse.geo+"_owls").html(pulse.owls);'
-        txt += '  $("."+pulse.geo+"-"+"' + me.geo + '").html(pulse.owl+" ms");'; //color matrix value directly measured
+        txt += '  $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms");'; //color matrix value directly measured
+        txt += 'console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
         //       txt +=    '  $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
         /***/
         //txt +=    '  for (pulse.owls);'
@@ -348,7 +349,8 @@ function handleShowState(req, res) {
                         //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
                         //if (owl=="") txt += '<td class="' + entryLabel + '">' + "0" + "</td>"
                         //else if (count<100) txt += '<td class="XXXXX" class="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                        txt += '<td class="' + rowEntry.geo + "-" + colEntry.geo + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
+                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>";
+                        //orig                       txt += '<td class="' + rowEntry.geo + "-" + colEntry.geo+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
                         //else txt += '<td class="' + entryLabel + '">' + owl + "</td>"
                     }
                     txt += "</tr>";
