@@ -221,12 +221,12 @@ function handleShowState(req, res) {
         txt += '         }';
         /*
                 //          special case formatting for non-numbers
-                txt += '             if (pulse.pulseTimestamp!="0")'
-                txt += '                 $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
-                txt += '             else $("."+pulse.geo+"_pulseTimestamp").html("0");'
-                txt += '             $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
-                txt += '             $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
                 */
+        txt += '             if (pulse.pulseTimestamp!="0")';
+        txt += '                 $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
+        txt += '             else $("."+pulse.geo+"_pulseTimestamp").html("0");';
+        txt += '             $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
+        txt += '             $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
         //       txt +='             $("."+pulse.geo+"_owls").html(pulse.owls);'
         txt += '             $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");';
         txt += '             var ary=pulse.owls.split(",");';
