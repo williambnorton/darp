@@ -265,7 +265,7 @@ function handleShowState(req, res) {
         txt += '              var owl=segment.split("=")[1];'
 
 //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\' +  srcMint +"&dstMint=" + dstMint +  "&group=" + me.group + ">+owl+" ms </a>";'
+        txt += '              var link='+'\'<a href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\' +  srcMint +"&dstMint=" + dstMint +  "&group=" + me.group + ">+owl+" ms </a>";'
         txt += '              console.log("my link="+link);'
 
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';   
