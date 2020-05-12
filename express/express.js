@@ -237,9 +237,13 @@ function handleShowState(req, res) {
         //       txt +=    '  $("."+pulse.geo+"_owls").html(pulse.owls);'
         txt += '  $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms");'; //color matrix value directly measured
         txt += '     var ary=pulse.owls.split(",");';
+        txt += '     var dstMint=pulse.srcMint;';
         txt += '     for (var src in ary) {';
-        txt += '         console.log("src="+src+" ary[src]="+ary[src]);';
-        txt += '         $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms");'; //color matrix value directly measured
+        txt += '         var segment=ary[src];';
+        txt += '         var srcMint=segment.split("=")[0];';
+        txt += '         var owl=segment.split("=")[1];';
+        txt += '         console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
+        txt += '         $("."+srcMint+"-"+"dstMint").html(owl+" ms");'; //color matrix value directly measured
         txt += '     }';
         txt += '     console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
         //txt += '     console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
