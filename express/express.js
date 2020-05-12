@@ -205,7 +205,7 @@ function handleShowState(req, res) {
         txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
-        txt += "      console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
+        txt += "      //console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
         txt += "      var d = new Date(); var now=d.getTime();";
         txt += '      $("#dateTime").html( "*"+d.toString()+"*" );';
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
@@ -235,10 +235,10 @@ function handleShowState(req, res) {
         txt += '                 var segment=ary[src];';
         txt += '                 var srcMint=segment.split("=")[0];';
         txt += '                 var owl=segment.split("=")[1];';
-        txt += '                 console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
+        txt += '                 //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
         txt += '                 $("."+srcMint+"-"+dstMint).html(owl+" ms*");';
         txt += '             }';
-        txt += '             console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
+        txt += '             //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
         /*
                txt += '         }'
          */
