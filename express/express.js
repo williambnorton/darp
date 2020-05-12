@@ -220,9 +220,9 @@ function handleShowState(req, res) {
         //        txt += 'console.log("+++++++++++++++++++++++++++++++++++++ aRecord="+aRecord);'
         //        txt += '             $("."+pulse.geo+"_"+field).html( aRecord );'
         //                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
-        txt += 'var href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint="+  rowEntry.srcMint + "&dstMint=" + colEntry.srcMint + "&group=" + me.group ;';
+        txt += 'var href="<a href=\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + rowEntry.srcMint + "&dstMint=" + colEntry.srcMint + "&group=" + me.group + "\">" + pulse[field] + "</a>" ; ';
         //txt += '             $("."+pulse.geo+"_"+field).html( \'<a href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.srcMint + "&dstMint=" + colEntry.srcMint +  "&group=" + me.group + "> *" + pulse[field] + "*</a>\'+" );'
-        txt += '             $("."+pulse.geo+"_"+field).html(\"<a href=\"+href +' + '\">' + '+pulse[field] + "</a>" );';
+        //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
         txt += '         }';
         //          special case formatting for non-numbers
         txt += '          if (pulse.pulseTimestamp!="0")';
