@@ -224,7 +224,7 @@ function handleShowState(req, res) {
        txt += '   $.getJSON(URL, function(config) {'
 
        txt += "      var d = new Date(); var now=d.getTime();"
-       //txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
+       txt += '      $("#dateTime").html( "*"+d+"*" );'
 /*
     
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
