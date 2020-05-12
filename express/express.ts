@@ -253,16 +253,7 @@ function handleShowState(req, res) {
         //                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
 
 
-
-
-
-
-
-
         txt += '             $("."+pulse.geo+"_"+field).innerText=pulse[field];'
-
-
-
 
         txt += '         }'
       

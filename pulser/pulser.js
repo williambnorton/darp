@@ -6,7 +6,7 @@ console.log("Starting PULSER GENESIS=" + process.env.GENESIS + " PORT=" + proces
 //  pulse - send my owl measurements to my pulseGroups
 //
 //var HOST='127.0.0.1';
-var CYCLETIME = 5; //newMint(mint)
+var CYCLETIME = 1; //newMint(mint)
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
