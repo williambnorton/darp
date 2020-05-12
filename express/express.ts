@@ -252,7 +252,7 @@ function handleShowState(req, res) {
         txt += '          var ary=pulse.owls.split(",");'
         txt += '          var dstMint=pulse.srcMint;'
   
-        txt += '          for (var src in ary) {'
+        //txt += '          for (var src in ary) {'
 /*
         txt += '              var segment=ary[src];'
 
@@ -262,7 +262,7 @@ function handleShowState(req, res) {
         txt += '              //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);'
         txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'  
 */    
-        txt += '          }'
+        //txt += '          }'
         txt += '          //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
        
         //txt += '         }'
