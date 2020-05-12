@@ -224,6 +224,7 @@ function handleShowState(req, res) {
        txt += "      var d = new Date(); var now=d.getTime();"
        txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
 
+       /**
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
        txt += '          var pulseLabel=key;'
@@ -237,7 +238,7 @@ function handleShowState(req, res) {
         txt += '         }'
         
         //          special case formatting for non-numbers
-    /*
+
         txt += '          if (pulse.pulseTimestamp!="0")'
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
@@ -257,10 +258,11 @@ function handleShowState(req, res) {
         txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'  
         txt += '          }'
         txt += '          //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
- /*      
-        txt += '         }'
-  */
+       
+        //txt += '         }'
+  
         txt += '       }'
+        ***/
         txt += "    });"
         txt += "    setTimeout(fetchState,5000);"
 
