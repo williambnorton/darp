@@ -203,8 +203,8 @@ function handleShowState(req, res) {
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += ' <script type = "text/javascript" language="javascript">';
         txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
+        txt += 'function fetchState() {';
         /*
-               txt += 'function fetchState() {'
                txt += '   $.getJSON(URL, function(config) {'
                txt += "      var d = new Date(); var now=d.getTime();"
                txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
@@ -250,10 +250,9 @@ function handleShowState(req, res) {
                 
                 txt += "    });"
                 txt += "    setTimeout(fetchState,5000);"
-        
-                txt += "}"
-                txt += "setTimeout(fetchState,1000);"
         */
+        txt += "}";
+        txt += "setTimeout(fetchState,1000);";
         txt += '</script> ';
         txt += '</head>';
         txt += '<body>';
