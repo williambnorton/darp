@@ -205,44 +205,46 @@ function handleShowState(req, res) {
         txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
-        txt += "   console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
-        txt += "   var d = new Date(); var now=d.getTime();";
-        txt += '   for (let [key, value] of Object.entries(config.pulses)) {';
-        //             txt += '   console.log(`COULD GENERALIZE: ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-        txt += '       var pulseLabel=key;';
-        txt += '       var pulse=value;';
-        //txt += '     console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
-        txt += '       for (let [field, fieldValue] of Object.entries(pulse)) {';
-        // txt += '        console.log("^field="+field+" fieldValue="+fieldValue);'
-        //txt += '         console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-        //txt += '        console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
-        txt += '          $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );';
-        txt += '          $("#dateTime").html( "*"+d.toString()+"*" );';
-        txt += '          if (pulse.pulseTimestamp!="0")';
-        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
-        //       txt +='          $("."+pulse.geo+"_owls").html(pulse.owls);'
-        txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");'; //color matrix value directly measured
-        txt += '          var ary=pulse.owls.split(",");';
-        txt += '          var dstMint=pulse.srcMint;';
-        txt += '          for (var src in ary) {';
-        txt += '              var segment=ary[src];';
-        txt += '              var srcMint=segment.split("=")[0];';
-        txt += '              var owl=segment.split("=")[1];';
-        txt += '              console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
-        txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'; //color matrix value directly measured
-        txt += '          }';
-        txt += '          console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
-        //txt += '        console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
-        // txt += '       $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
+        txt += "      console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
+        txt += "      var d = new Date(); var now=d.getTime();";
+        txt += '             $("#dateTime").html( "*"+d.toString()+"*" );';
+        txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
+        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+        txt += '          var pulseLabel=key;';
+        txt += '          var pulse=value;';
+        //txt += '        console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
+        txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
+        // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+        //txt += '            console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+        //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
+        txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );';
+        txt += '         }';
+        //          special case formatting for non-numbers
+        txt += '             if (pulse.pulseTimestamp!="0")';
+        txt += '                 $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
+        txt += '             else $("."+pulse.geo+"_pulseTimestamp").html("0");';
+        txt += '             $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
+        txt += '             $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
+        //       txt +='             $("."+pulse.geo+"_owls").html(pulse.owls);'
+        txt += '             $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");'; //color matrix value directly measured
+        txt += '             var ary=pulse.owls.split(",");';
+        txt += '             var dstMint=pulse.srcMint;';
+        txt += '             for (var src in ary) {';
+        txt += '                 var segment=ary[src];';
+        txt += '                 var srcMint=segment.split("=")[0];';
+        txt += '                 var owl=segment.split("=")[1];';
+        txt += '                 console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
+        txt += '                 $("."+srcMint+"-"+dstMint).html(owl+" ms*");'; //color matrix value directly measured
+        txt += '             }';
+        txt += '             console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
+        //txt += '           console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
+        // txt += '          $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
         /***/
         //txt +=    '  for (pulse.owls);'
+        txt += '         }';
         txt += '      }';
-        txt += '   }';
-        txt += "setTimeout(fetchState,1000);";
-        txt += "});";
+        txt += "   setTimeout(fetchState,5000);";
+        txt += "  });";
         txt += "}";
         txt += "setTimeout(fetchState,1000);";
         txt += '</script> ';
