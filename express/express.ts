@@ -266,9 +266,6 @@ function handleShowState(req, res) {
 
 //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-        //txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-
-        //txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + me.group + "> + owl + " ms </a>";'
         txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + me.group + "> + owl + " ms </a>";'
         txt += '              console.log("my link="+link);'
 
