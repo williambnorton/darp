@@ -266,7 +266,7 @@ function handleShowState(req, res) {
         txt += '       }'
       
         txt += "    });"
-        txt += "    setTimeout(fetchState,5000);"
+        txt += "    setTimeout(fetchState,1000);"
 
         txt += "}"
         txt += "setTimeout(fetchState,1000);"
