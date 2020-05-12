@@ -226,7 +226,6 @@ function handleShowState(req, res) {
         //                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
         txt += '             $("."+pulse.geo+"_"+field).innerText=pulse[field];';
         txt += '         }';
-        //          special case formatting for non-numbers
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
@@ -240,7 +239,7 @@ function handleShowState(req, res) {
         txt += '              var segment=ary[src];';
         txt += '              var srcMint=segment.split("=")[0];';
         txt += '              var owl=segment.split("=")[1];';
-        txt += '              $("."+srcMint+"-"+dstMint).html(">"+owl+" ms < ");'; /*WBNWBNWBNwbwbnwbn*/
+        txt += '              $("."+srcMint+"-"+dstMint).html("<a href=\"http://\">"+owl+" ms </a> ");';
         txt += '          }';
         txt += '       }';
         txt += "    });";
