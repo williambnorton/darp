@@ -248,7 +248,8 @@ function handleShowState(req, res) {
 
         txt += 'var href="<a href=\\\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "'+me.group+'" + "\\\">" + pulse[field] + "</a>" ; '
         txt += 'console.log("href="+href);'
-        //txt += '             $("."+pulse.geo+"_"+field).html( \'<a href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.srcMint + "&dstMint=" + colEntry.srcMint +  "&group=" + me.group + "> *" + pulse[field] + "*</a>\'+" );'
+        txt += '             $("."+pulse.geo+"_"+field).html( href );'
+        //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
 
 
 
