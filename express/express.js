@@ -206,19 +206,21 @@ function handleShowState(req, res) {
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
         txt += "      var d = new Date(); var now=d.getTime();";
-        txt += '      $("#dateTime").html( "*"+d.toString()+"*" );';
-        txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
-        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-        txt += '          var pulseLabel=key;';
-        txt += '          var pulse=value;';
-        //txt += '        console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
-        txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
-        // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-        //txt += '            console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-        //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
-        txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );';
-        txt += '         }';
+        //txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
         /*
+            
+               txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
+               //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+               txt += '          var pulseLabel=key;'
+               txt += '          var pulse=value;'
+               //txt += '        console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
+               txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
+               // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+               //txt += '            console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+                //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
+                txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
+                txt += '         }'
+                
                 //          special case formatting for non-numbers
         
                 txt += '          if (pulse.pulseTimestamp!="0")'

@@ -224,8 +224,8 @@ function handleShowState(req, res) {
        txt += '   $.getJSON(URL, function(config) {'
 
        txt += "      var d = new Date(); var now=d.getTime();"
-       txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
-
+       //txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
+/*
     
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
@@ -238,7 +238,7 @@ function handleShowState(req, res) {
         //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
         txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
         txt += '         }'
-/*        
+        
         //          special case formatting for non-numbers
 
         txt += '          if (pulse.pulseTimestamp!="0")'
