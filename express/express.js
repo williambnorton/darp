@@ -216,11 +216,11 @@ function handleShowState(req, res) {
         // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
         //txt += '            console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
         //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
-        //txt += 'var aRecord= "<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.geo+"&dstMint=" + colEntry.geo +  "&group=" + me.group + " >*"+pulse[field]+"*</a>"; '
-        //txt += 'console.log("+++++++++++++++++++++++++++++++++++++ aRecord="+aRecord);'
-        //txt += '             $("."+pulse.geo+"_"+field).html( aRecord );'
+        txt += 'var aRecord= "<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.geo+"&dstMint=" + colEntry.geo +  "&group=" + me.group + " >*"+pulse[field]+"*</a>"; ';
+        txt += 'console.log("+++++++++++++++++++++++++++++++++++++ aRecord="+aRecord);';
+        txt += '             $("."+pulse.geo+"_"+field).html( aRecord );';
         //                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
-        txt += '             $("."+pulse.geo+"_"+field).html( ">"+pulse[field]+"<" );';
+        // txt += '             $("."+pulse.geo+"_"+field).html( ">"+pulse[field]+"<" );'
         txt += '         }';
         //          special case formatting for non-numbers
         txt += '          if (pulse.pulseTimestamp!="0")';
