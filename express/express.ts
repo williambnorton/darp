@@ -254,8 +254,9 @@ function handleShowState(req, res) {
         txt += '                 $("."+srcMint+"-"+dstMint).html(owl+" ms*");'  
         txt += '             }'
         txt += '             console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
-  */      
+       
         txt += '         }'
+  */
         txt += '      }'
         txt +=    "   setTimeout(fetchState,5000);"
         txt +=   "  });"
