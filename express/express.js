@@ -236,7 +236,7 @@ function handleShowState(req, res) {
         txt += '              var segment=ary[src];';
         txt += '              var srcMint=segment.split("=")[0];';
         txt += '              var owl=segment.split("=")[1];';
-        txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");';
+        txt += '              $("."+srcMint+"-"+dstMint).html(">"+owl+" ms < ");'; /*WBNWBNWBNwbwbnwbn*/
         txt += '          }';
         txt += '       }';
         txt += "    });";

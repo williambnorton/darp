@@ -275,7 +275,7 @@ function handleShowState(req, res) {
 
         txt += '              var owl=segment.split("=")[1];'
 
-        txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'  
+        txt += '              $("."+srcMint+"-"+dstMint).html(">"+owl+" ms < ");'; /*WBNWBNWBNwbwbnwbn*/  
     
         txt += '          }'
     
