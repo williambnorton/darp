@@ -230,9 +230,9 @@ function handleShowState(req, res) {
                 txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms*");'
                 txt += '          var ary=pulse.owls.split(",");'
                 txt += '          var dstMint=pulse.srcMint;'
-         */
-        //txt += '          for (var src in ary) {'
-        /*
+        
+                //txt += '          for (var src in ary) {'
+        
                 txt += '              var segment=ary[src];'
         
                 txt += '              var srcMint=segment.split("=")[0];'
@@ -242,7 +242,6 @@ function handleShowState(req, res) {
                 txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'
         */
         //txt += '          }'
-        txt += '          //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
         //txt += '         }'
         txt += '       }';
         txt += "    });";
