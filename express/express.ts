@@ -220,8 +220,9 @@ function handleShowState(req, res) {
        txt += " var URL='http://"+me.ipaddr+":"+me.port+"/state';"
 
        txt += 'function fetchState() {'
-/*
+
        txt += '   $.getJSON(URL, function(config) {'
+/*
        txt += "      var d = new Date(); var now=d.getTime();"
        txt += '      $("#dateTime").html( "*"+d.toString()+"*" );'
 
@@ -263,10 +264,10 @@ function handleShowState(req, res) {
         //txt += '         }'
   
         txt += '       }'
-        
+*/        
         txt += "    });"
         txt += "    setTimeout(fetchState,5000);"
-*/
+
         txt += "}"
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '
