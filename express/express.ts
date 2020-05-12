@@ -238,7 +238,7 @@ function handleShowState(req, res) {
         //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
         txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
         txt += '         }'
-/*        
+      
         //          special case formatting for non-numbers
 
         txt += '          if (pulse.pulseTimestamp!="0")'
@@ -251,7 +251,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms*");'  
         txt += '          var ary=pulse.owls.split(",");'
         txt += '          var dstMint=pulse.srcMint;'
-
+/*  
         txt += '          for (var src in ary) {'
         txt += '              var segment=ary[src];'
         txt += '              var srcMint=segment.split("=")[0];'
