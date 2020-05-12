@@ -225,7 +225,7 @@ function handleShowState(req, res) {
 
        txt += "      var d = new Date(); var now=d.getTime();"
        txt += '      $("#dateTime").html( "*"+d+"*" );'
-/*
+
     
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
@@ -264,7 +264,7 @@ function handleShowState(req, res) {
         //txt += '         }'
   
         txt += '       }'
-*/        
+      
         txt += "    });"
         txt += "    setTimeout(fetchState,5000);"
 
