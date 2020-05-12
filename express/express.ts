@@ -239,20 +239,6 @@ function handleShowState(req, res) {
         txt += '     $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
         txt += '     $("#dateTime").html( "*"+d.toString()+"*" );'
 
-        //        txt += '     $("."+pulse.geo+"_"+field).html( "*"+ pulse[field] );'
-//       txt += '      //console.log("pulseLabel="+pulseLabel+" field="+field+" fieldValue="+JSON.stringify(fieldValue));'
-
-
-
-//       txt +=    "for (var node in config.pulses) { "  //here we could generalize - power tool - for each field, set
-//       txt +=    "  var pulse=config.pulses[node]; console.log('rendering pulse='+JSON.stringify(pulse,null,2));"
-//       txt +=    "  console.log('setting '+pulse.geo+' inOctets='+pulse.inOctets);"
-//       txt +=    '  $("."+pulse.geo+"_inOctets").html(pulse.inOctets);'
-//       txt +=    '  $("."+pulse.geo+"_outOctets").html(pulse.outOctets);'
-//       txt +=    '  $("."+pulse.geo+"_inMsgs").html(pulse.inMsgs);'
-//       txt +=    '  $("."+pulse.geo+"_outMsgs").html(pulse.outMsgs);'
-//       txt +=    '  $("."+pulse.geo+"_pktDrops").html(pulse.pktDrops);'
-//       txt +=    '  $("."+pulse.geo+"_seq").html(pulse.seq);'
         txt += 'if (pulse.pulseTimestamp!="0")'
         txt +=    '  $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += 'else $("."+pulse.geo+"_pulseTimestamp").html("0");'
@@ -268,7 +254,7 @@ function handleShowState(req, res) {
        txt += '         var srcMint=segment.split("=")[0];'
        txt += '         var owl=segment.split("=")[1];'
        txt += '         console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);'
-       txt += '         $("."+srcMint+"-"+"dstMint").html(owl+" ms");'  //color matrix value directly measured
+       txt += '         $("."+srcMint+"-"+"dstMint").html(owl+" *ms");'  //color matrix value directly measured
        txt += '     }'
        txt += '     console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
        //txt += '     console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
