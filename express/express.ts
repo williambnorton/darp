@@ -235,7 +235,7 @@ function handleShowState(req, res) {
         //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
         txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
         txt += '         }'
-
+/*
         //          special case formatting for non-numbers
         txt += '             if (pulse.pulseTimestamp!="0")'
         txt += '                 $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
@@ -254,7 +254,7 @@ function handleShowState(req, res) {
         txt += '                 $("."+srcMint+"-"+dstMint).html(owl+" ms*");'  
         txt += '             }'
         txt += '             console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
-        //txt +=    '  for (pulse.owls);'
+  */      
         txt += '         }'
         txt += '      }'
         txt +=    "   setTimeout(fetchState,5000);"
