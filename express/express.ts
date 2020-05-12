@@ -349,7 +349,7 @@ function handleShowState(req, res) {
                }
                txt += "</tr>"
                //
-               //   Extertnalize OWL matrix
+               //   Externalize OWL matrix
                //
                //console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
                //var fetchStack = new Array();
@@ -374,7 +374,7 @@ function handleShowState(req, res) {
                        //if (owl=="") txt += '<td class="' + entryLabel + '">' + "0" + "</td>"
                        //else if (count<100) txt += '<td class="XXXXX" class="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
                        
-                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
+                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + " ms</a>" + " ms</td>"
 //orig                       txt += '<td class="' + rowEntry.geo + "-" + colEntry.geo+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
                             //else txt += '<td class="' + entryLabel + '">' + owl + "</td>"
                    }
