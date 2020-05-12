@@ -233,9 +233,10 @@ function handleShowState(req, res) {
        txt += '          var pulse=value;'
        
        
-       txt += 'var href="<a href=\\\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "'+me.group+'" + "\\\">" + pulse[owl] + "</a>" ; '
-       txt += 'console.log("href="+href);'
-       txt += '             $("."+pulse.geo+"_owl").html( href );'
+//       txt += 'var href="<a href=\\\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "'+me.group+'" + "\\\">" + pulse[owl] + "</a>" ; '
+//       txt += 'console.log("href="+href);'
+//       txt += '             $("."+pulse.geo+"_owl").html( href );'
+
        //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
 
        //txt += '        console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
@@ -258,7 +259,7 @@ function handleShowState(req, res) {
 
 
 
-        //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
+        txt += '             $("."+pulse.geo+"_"+field).innerText=pulse[field];'
 
 
 
