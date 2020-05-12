@@ -231,6 +231,13 @@ function handleShowState(req, res) {
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
        txt += '          var pulseLabel=key;'
        txt += '          var pulse=value;'
+       
+       
+       txt += 'var href="<a href=\\\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "'+me.group+'" + "\\\">" + pulse[owl] + "</a>" ; '
+       txt += 'console.log("href="+href);'
+       txt += '             $("."+pulse.geo+"_owl").html( href );'
+       //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
+
        //txt += '        console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
        txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
        // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
@@ -246,10 +253,7 @@ function handleShowState(req, res) {
 
 
 
-        txt += 'var href="<a href=\\\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "'+me.group+'" + "\\\">" + pulse[field] + "</a>" ; '
-        txt += 'console.log("href="+href);'
-        txt += '             $("."+pulse.geo+"_"+field).html( href );'
-        //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
+
 
 
 
