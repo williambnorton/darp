@@ -246,13 +246,13 @@ function handleShowState(req, res) {
 
 
 
-        
-        txt += '             $("."+pulse.geo+"_"+field).html( "<a href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.srcMint + "&dstMint=" + colEntry.srcMint +  "&group=" + me.group + "\"> *" + pulse[field] + "*</a>" );'
+        txt += 'var href=http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=";'
+        //txt += '             $("."+pulse.geo+"_"+field).html( \'<a href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.srcMint + "&dstMint=" + colEntry.srcMint +  "&group=" + me.group + "> *" + pulse[field] + "*</a>\'+" );'
 
 
 
 
-        //origtxt += '             $("."+pulse.geo+"_"+field).html( ">"+pulse[field]+"<" );'
+        txt += '             $("."+pulse.geo+"_"+field).html( ">"+pulse[field]+"<" );'
 
 
 
