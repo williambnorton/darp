@@ -231,9 +231,8 @@ function handleShowState(req, res) {
         txt += '          for (var src in ary) {';
         txt += '              var segment=ary[src];';
         txt += '              var srcMint=segment.split("=")[0];';
+        txt += '              var owl=segment.split("=")[1];';
         /*
-                txt += '              var owl=segment.split("=")[1];'
-        
                 txt += '              //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);'
                 txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'
             */
