@@ -207,7 +207,7 @@ function handleShowState(req, res) {
         txt += '   $.getJSON(URL, function(config) {';
         txt += "      console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
         txt += "      var d = new Date(); var now=d.getTime();";
-        txt += '             $("#dateTime").html( "*"+d.toString()+"*" );';
+        txt += '      $("#dateTime").html( "*"+d.toString()+"*" );';
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
         txt += '          var pulseLabel=key;';
@@ -226,7 +226,7 @@ function handleShowState(req, res) {
         txt += '             $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '             $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
         //       txt +='             $("."+pulse.geo+"_owls").html(pulse.owls);'
-        txt += '             $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");'; //color matrix value directly measured
+        txt += '             $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");';
         txt += '             var ary=pulse.owls.split(",");';
         txt += '             var dstMint=pulse.srcMint;';
         txt += '             for (var src in ary) {';
@@ -234,12 +234,9 @@ function handleShowState(req, res) {
         txt += '                 var srcMint=segment.split("=")[0];';
         txt += '                 var owl=segment.split("=")[1];';
         txt += '                 console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
-        txt += '                 $("."+srcMint+"-"+dstMint).html(owl+" ms*");'; //color matrix value directly measured
+        txt += '                 $("."+srcMint+"-"+dstMint).html(owl+" ms*");';
         txt += '             }';
         txt += '             console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
-        //txt += '           console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
-        // txt += '          $("."+pulse.geo+"-"+"'+me.geo+'").html("<a >"+pulse.owl+"</a>");'  //color matrix value directly measured
-        /***/
         //txt +=    '  for (pulse.owls);'
         txt += '         }';
         txt += '      }';
