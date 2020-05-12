@@ -205,7 +205,6 @@ function handleShowState(req, res) {
         txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
-        txt += "      //console.log('JSON FETCHED config='+JSON.stringify(config,null,2));";
         txt += "      var d = new Date(); var now=d.getTime();";
         txt += '      $("#dateTime").html( "*"+d.toString()+"*" );';
         /**
