@@ -238,7 +238,7 @@ function handleShowState(req, res) {
         //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
         txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );'
         txt += '         }'
-        
+/*        
         //          special case formatting for non-numbers
 
         txt += '          if (pulse.pulseTimestamp!="0")'
@@ -262,7 +262,7 @@ function handleShowState(req, res) {
         txt += '          //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
        
         //txt += '         }'
-  
+  */
         txt += '       }'
       
         txt += "    });"

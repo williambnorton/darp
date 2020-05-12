@@ -218,25 +218,31 @@ function handleShowState(req, res) {
         //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
         txt += '             $("."+pulse.geo+"_"+field).html( "*"+pulse[field]+"*" );';
         txt += '         }';
-        //          special case formatting for non-numbers
-        txt += '          if (pulse.pulseTimestamp!="0")';
-        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
+        /*
+                //          special case formatting for non-numbers
+        
+                txt += '          if (pulse.pulseTimestamp!="0")'
+                txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+                txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
+                txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
+                txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
+                
         //       txt +='             $("."+pulse.geo+"_owls").html(pulse.owls);'
-        txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");';
-        txt += '          var ary=pulse.owls.split(",");';
-        txt += '          var dstMint=pulse.srcMint;';
-        txt += '          for (var src in ary) {';
-        txt += '              var segment=ary[src];';
-        txt += '              var srcMint=segment.split("=")[0];';
-        txt += '              var owl=segment.split("=")[1];';
-        txt += '              //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);';
-        txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");';
-        txt += '          }';
-        txt += '          //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);';
-        //txt += '         }'
+                txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms*");'
+                txt += '          var ary=pulse.owls.split(",");'
+                txt += '          var dstMint=pulse.srcMint;'
+        
+                txt += '          for (var src in ary) {'
+                txt += '              var segment=ary[src];'
+                txt += '              var srcMint=segment.split("=")[0];'
+                txt += '              var owl=segment.split("=")[1];'
+                txt += '              //console.log("segment="+segment+" srcMint="+srcMint+" owl="+owl);'
+                txt += '              $("."+srcMint+"-"+dstMint).html(owl+" ms*");'
+                txt += '          }'
+                txt += '          //console.log("Here update the other nodes from their pulse owl: "+pulse.owls);'
+               
+                //txt += '         }'
+          */
         txt += '       }';
         txt += "    });";
         txt += "    setTimeout(fetchState,5000);";
