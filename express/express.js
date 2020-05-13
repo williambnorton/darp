@@ -682,7 +682,7 @@ function handleGraph(req, res, rtt) {
 }
 function grapher(res, SRC, DST) {
     var txt = '';
-    txt += '<!DOCTYPE HTML> <html> < title="DARP">';
+    txt += '<!DOCTYPE HTML> <html><head title="DARP">';
     txt += '<script src="https://canvasjs.com/assets/script/canvasjs.min.js">';
     txt += '</script>';
     txt += '  <script> window.onload = function () { ';
