@@ -428,10 +428,10 @@ function handleShowState(req, res) {
                    txt += '<td class="'+pulseEntry.geo+'_outOctets"'+'>' + pulseEntry.outOctets + "</td>"
                    txt += '<td class="'+pulseEntry.geo+'_inMsgs"'+'>' + pulseEntry.inMsgs + "</td>"
                    txt += '<td class="'+pulseEntry.geo+'_outMsgs"'+'>' + pulseEntry.outMsgs + "</td>"
-                   var pktLoss=(pulseEntry.seq-pulseEntry.inMsgs);
+                   var pktLoss=pulseEntry.seq-pulseEntry.inMsgs;
                    if (pktLoss) 
-                       txt += '<td class="'+pulseEntry.geo+'_pktDrops BAD"'+'>' + (pulseEntry.seq-pulseEntry.inMsgs) + "</td>"
-                    else txt += '<td class="'+pulseEntry.geo+'_pktDrops"'+'>' + (pulseEntry.seq-pulseEntry.inMsgs) + "</td>"
+                       txt += '<td class="'+pulseEntry.geo+'_pktDrops BAD"'+'>' + pktLoss + "</td>"
+                    else txt += '<td class="'+pulseEntry.geo+'_pktDrops GOOD"'+'>' + pktLoss + "</td>"
                    if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
                         txt += '<td class="'+pulseEntry.geo+'_owls"'+'>' + pulseEntry.owls.substring(0,20) + "</td>"
