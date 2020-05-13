@@ -385,6 +385,16 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + '_outMsgs"' + '>' + pulseEntry.outMsgs + "</td>";
                     var pktLoss = parseInt(pulseEntry.seq) - parseInt(pulseEntry.inMsgs);
                     console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
+                    console.log("pktloss=:" + pktLoss);
                     if (pktLoss > 1)
                         txt += '<td class="' + pulseEntry.geo + '_pktDrops BAD"' + '>' + pktLoss + "</td>";
                     else
