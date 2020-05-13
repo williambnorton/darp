@@ -489,7 +489,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + mintEntry.port + "</td>"
                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.ipaddr + "</a></td>"
                    txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>"
-                   txt += '<td class="'+mintEntry.geo+'_state'+'">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
+                   txt += '<td class="'+mintEntry.geo+'_state'+' '+mintEntry.state+'">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
 //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
 
 
