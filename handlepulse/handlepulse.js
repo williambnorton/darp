@@ -136,7 +136,7 @@ server.on('message', function (message, remote) {
                 inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1),
                 pktDrops: "0"
             };
-            var pktDrops = "" + (parseInt(pulse.inMsgs) - parseInt(pulse.seq));
+            var pktDrops = "" + (parseInt(pulse.seq) - parseInt(pulse.inMsgs));
             pulse.pktDrops = pktDrops;
             authenticatedPulse(pulse, function (pulse, authenticated) {
                 if (pulse.srcMint == "1" && pulse.version != MYBUILD) {
