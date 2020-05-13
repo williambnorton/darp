@@ -224,7 +224,8 @@ function handleShowState(req, res) {
         //        txt += 'console.log("+++++++++++++++++++++++++++++++++++++ aRecord="+aRecord);'
         //        txt += '             $("."+pulse.geo+"_"+field).html( aRecord );'
         //                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
-        txt += '             $("."+pulse.geo+"_"+field).innerText=pulse[field];';
+        //        txt += '             $("."+pulse.geo+"_"+field).innerText=pulse[field];'
+        txt += '             $("."+pulse.geo+"_"+field).innerText="*"+fieldValue+"*";';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
