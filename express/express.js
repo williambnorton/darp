@@ -383,7 +383,7 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_inMsgs"' + '>' + pulseEntry.inMsgs + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_outMsgs"' + '>' + pulseEntry.outMsgs + "</td>";
-                    var pktLoss = pulseEntry.seq - pulseEntry.inMsgs;
+                    var pktLoss = parseInt(pulseEntry.seq) - parseInt(pulseEntry.inMsgs);
                     if (pktLoss > 1)
                         txt += '<td class="' + pulseEntry.geo + '_pktDrops BAD"' + '>' + pktLoss + "</td>";
                     else
