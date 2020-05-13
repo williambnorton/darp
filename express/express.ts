@@ -303,7 +303,7 @@ function handleShowState(req, res) {
            var genesisPort="";
            if (mint1) genesisPort=mint1.port; 
 
-           if (me.isGenesisNode == "1") txt += '<h1>GENESIS NODE <a href=http://' + me.ipaddr+":"+me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2];
+           if (me.isGenesisNode == "1") txt += '<h1>GENESIS NODE <a href="http://' + me.ipaddr+":"+me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2];
            else txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.state + " " + me.version + " under "+genesisIP+":"+genesisPort;
            txt += "</h1>"
            if (me.adminControl) txt += "<h3>AdminControl: " + me.adminControl+"</h3>";
@@ -508,10 +508,7 @@ function handleShowState(req, res) {
                    var deltaSeconds = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
                    if (mintEntry.pulseTimestamp == 0) deltaSeconds = "0";
                    //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                   txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaSeconds + "</td>";
-
-
-
+                   txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'>' + deltaSeconds + "</td>";
 
 
 
@@ -521,7 +518,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>"
                    //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                    //txt += "<td>" + mintEntry.owl + " ms</td>"
-                   txt += '<td class="'+pulseEntry.geo+'_owl"'+'">'+'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_owl"'+'>'+'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>"
 
                    //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                    //            txt+="<td>"+mintEntry.rtt+"</td>"
@@ -554,7 +551,7 @@ function handleShowState(req, res) {
                     var deltaSeconds2 = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                     if (mintEntry.bootTimestamp == 0) deltaSeconds2 = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                    txt += '<td class="'+mintEntry.geo+'_bootTimestamp"'+'">' + deltaSeconds2 + "</td>";
+                    txt += '<td class="'+mintEntry.geo+'_bootTimestamp"'+'>' + deltaSeconds2 + "</td>";
 
 
 
