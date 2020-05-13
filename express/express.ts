@@ -371,7 +371,7 @@ function handleShowState(req, res) {
                //
                //  Externalize pulse structures 
                //
-               txt += '<br><h2>pulseTable'+'</h2><table border="1">';
+               txt += '<br><h2>pulseTable'+'</h2><table>';
                txt += "<tr>"
                txt += "<th>geo</th>"
                txt += "<th>group</th>"
@@ -452,7 +452,7 @@ function handleShowState(req, res) {
                //  Externalize mintTable 
                //
                //console.log(ts()+"config.mintTable="+dump(config.mintTable));
-               txt += '<br><h2>mintTable</h2><table border="1">';
+               txt += '<br><h2>mintTable</h2><table>';
                txt += "<tr>"
                txt += "<th>mint</th>"
                txt += "<th>geo</th>"
@@ -556,7 +556,7 @@ function handleShowState(req, res) {
                //
                //  Externalize gSRlist Directory
                //
-               txt += '<br><h2>gSRlist</h2><table border="1">';
+               txt += '<br><h2>gSRlist</h2><table>';
                txt += "<tr><th>pulse</th><th>mint</th></tr>"
                for (var entry in gSRlist) {
                    var mint = gSRlist[entry];
