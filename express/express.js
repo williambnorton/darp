@@ -205,7 +205,7 @@ function handleShowState(req, res) {
         txt += " var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
-        txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[5];";
+        txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
         txt += '      $("#dateTime").html( "<h2>>"+timeStr+"</h2>" );';
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
