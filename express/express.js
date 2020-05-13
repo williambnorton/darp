@@ -684,7 +684,7 @@ function grapher(res, SRC, DST) {
         //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
         //if (srcEntry!=null && dstEntry!=null) {
         txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
-        expressRedisClient.lrange("" + SRC + "-" + DST, 0, -1, function (err, samples) {
+        expressRedisClient.lrange("" + SRC + "-" + DST, -300, -1, function (err, samples) {
             console.log("EXPRESS: DumpSamples:" + lib_1.dump(samples));
             for (var sample in samples) {
                 txt += samples[sample];
