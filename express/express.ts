@@ -726,7 +726,7 @@ function handleGraph(req, res, rtt) {
                 //console.log("ary length="+ary.length);
                 var params = ary[1].split("&");
                 if (params.length > 1) {
-                        //console.log("paramslength="+ary.length+" params="+params[0]+params[1]);
+                        //console.log("paramslength="+ary.length+" params="+params[0]+params[1]);   //     this needs redsign
                         for (var i = 0; i < params.length; i++) {
                                 var leftSide = params[i].split("=")[0];
                                 var rightSide = params[i].split("=")[1];
@@ -749,7 +749,7 @@ function handleGraph(req, res, rtt) {
                                                     DST = destMintEntry.geo;
                                                     console.log("handleGraph: SRC="+SRC+" DST="+DST+" about to graph");
 
-                                                    return grapher(res, SRC, DST);
+                                                    grapher(res, SRC, DST);
                                                 }
                                             });
                                         });
@@ -760,7 +760,7 @@ function handleGraph(req, res, rtt) {
         }
 
         //------------------ SRC and DST are geos    ------------------------------------------
-        return grapher(res,SRC,DST);
+        //return grapher(res,SRC,DST);
     });
 }
 
