@@ -223,8 +223,8 @@ function handleShowState(req, res) {
 
        txt += '   $.getJSON(URL, function(config) {'
 
-       txt += "      var d = new Date(); var now=d.getTime();"
-       txt += '      $("#dateTime").html( "*"+d+"*" );'
+       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.split(' ')[5];"
+       txt += '      $("#dateTime").html( "<h2>>"+timeStr+"</h2>" );'
 
     
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
