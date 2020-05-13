@@ -211,20 +211,9 @@ function handleShowState(req, res) {
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
         txt += '          var pulseLabel=key;';
         txt += '          var pulse=value;';
-        //       txt += 'var href="<a href=\\\"" + "http://" + "' + me.ipaddr + ':' + me.port + '/graph?srcMint=" + pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "'+me.group+'" + "\\\">" + pulse[owl] + "</a>" ; '
-        //       txt += 'console.log("href="+href);'
-        //       txt += '             $("."+pulse.geo+"_owl").html( href );'
-        //txt += '             $("."+pulse.geo+"_"+field).html(\'<a href=" + href + '">"' + '+pulse[field] + "</a>" );'
-        //txt += '        console.log("pulseLabel="+pulseLabel+" pulse="+JSON.stringify(pulse));'
         txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
         // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-        txt += '            console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
-        //txt += '           console.log("Setting " + pulse.geo + "_" + field + "=" + fieldValue );'
-        //txt += 'var aRecord="<a target=\"_blank\" href=\"http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=" +  rowEntry.geo+"&dstMint=" + colEntry.geo +  "&group=" + me.group + " >*"+pulse[field]+"*</a>"; '
-        //        txt += 'console.log("+++++++++++++++++++++++++++++++++++++ aRecord="+aRecord);'
-        //        txt += '             $("."+pulse.geo+"_"+field).html( aRecord );'
-        //                       txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
-        //        txt += '             $("."+pulse.geo+"_"+field).innerText=pulse[field];'
+        txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue+"."+pulse.geo+"_"+field).text="*"+fieldValue+"*");';
         txt += '             $("."+pulse.geo+"_"+field).text="*"+fieldValue+"*";';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
