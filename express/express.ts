@@ -429,7 +429,7 @@ function handleShowState(req, res) {
                    txt += '<td class="'+pulseEntry.geo+'_inMsgs"'+'>' + pulseEntry.inMsgs + "</td>"
                    txt += '<td class="'+pulseEntry.geo+'_outMsgs"'+'>' + pulseEntry.outMsgs + "</td>"
                    var pktLoss=pulseEntry.seq-pulseEntry.inMsgs;
-                   if (pktLoss) 
+                   if (pktLoss>1) 
                        txt += '<td class="'+pulseEntry.geo+'_pktDrops BAD"'+'>' + pktLoss + "</td>"
                     else txt += '<td class="'+pulseEntry.geo+'_pktDrops GOOD"'+'>' + pktLoss + "</td>"
                    if (pulseEntry.lastMsg) {
@@ -738,11 +738,14 @@ function handleGraph(req, res, rtt) {
                                         SRC = rightSide;
                                         break;
                                     case 'dstMint':
+                                        console.log("handleGraph: SRC="+SRC+" DST="+rightSide);
                                         expressRedisClient.hgetall("mint:"+rightSide, function(err, destMintEntry) {
                                             expressRedisClient.hgetall("mint:"+SRC, function(err, srcMintEntry) {
                                                 if (destMintEntry && srcMintEntry) {
                                                     SRC = srcMintEntry.geo;
                                                     DST = destMintEntry.geo;
+                                                    console.log("handleGraph: SRC="+SRC+" DST="+DST+" about to graph");
+
                                                     return grapher(res, SRC, DST);
                                                 }
                                             });
