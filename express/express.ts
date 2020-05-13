@@ -204,7 +204,7 @@ function getMatrixTable(config,darp, callback) {
 function handleShowState(req, res) {
 
     var dateTime = new Date();
-   var txt = '<meta http-equiv="refresh" content="' + 30 + '">';
+   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 30 + '">';
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
        if (me == null) return console.log("handleShowState(): WEIRD: NULL mint:0");
