@@ -209,7 +209,7 @@ function handleShowState(req, res) {
    expressRedisClient.hgetall("mint:0", function(err, me) {
        if (me == null) return console.log("handleShowState(): WEIRD: NULL mint:0");
 
-       //UI for DARP
+       //Simple instrumentation UI for DARP
        if (me.state == "SINGLESTEP") txt = '<meta http-equiv="refresh" content="' + 10 + '">';
        txt += '<html><head>';
 
@@ -424,7 +424,7 @@ function handleShowState(req, res) {
                    txt += "<td>" + pulseEntry.ipaddr + "</td>"
                    txt += "<td>" + pulseEntry.port + "</td>"
                    
-                   txt += '<td class="'+pulseEntry.geo+'_seq"'+'">' + pulseEntry.seq + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+'_seq"'+'>' + pulseEntry.seq + "</td>"
 
                    var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                    if (pulseEntry.pulseTimestamp == 0) deltaSeconds = "0";
