@@ -211,7 +211,8 @@ function handleShowState(req, res) {
 
        //Simple instrumentation UI for DARP
        if (me.state == "SINGLESTEP") txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 10 + '">';
-       txt += '<html><head>';
+//       txt += '<html><head>';
+       txt += '<head>';
 
        txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
        txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> '
