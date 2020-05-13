@@ -215,7 +215,7 @@ function handleShowState(req, res) {
         txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
         // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
         txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
-        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue);';
+        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"*");';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago*");';
@@ -385,7 +385,7 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + '_outMsgs"' + '>' + pulseEntry.outMsgs + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_pktDrops"' + '>' + pulseEntry.pktDrops + "</td>";
                     if (pulseEntry.lastMsg) {
-                        txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
+                        txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
                         txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, 20) + "</td>";
                         //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     }
