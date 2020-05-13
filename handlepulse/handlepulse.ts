@@ -158,7 +158,7 @@ server.on('message', function(message, remote) {
           };
 
           authenticatedPulse(pulse, function(pulse, authenticated) { 
-            
+
               if (pulse.srcMint=="1" && pulse.version != MYBUILD) {
                       console.log(ts() + " ******** HANDLEPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                       console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + dump(pulse));
@@ -167,6 +167,7 @@ server.on('message', function(message, remote) {
 
               redisClient.publish("pulses", msg)
               redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
+              redisClient.hmset(pulseLabel, "packetDrops", ""+(parseInt(pulse.inMsgs)-parseInt(pulse.seq))); //store the RAW PULSE EXPIRE ENTRY???
 
               //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
