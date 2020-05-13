@@ -254,7 +254,7 @@ function handleShowState(req, res) {
         txt += '              var srcMint=segment.split("=")[0];'
         txt += '              var owl=segment.split("=")[1];'
 //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
+        txt += '              var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
         txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + owl + " ms *</a>";'
         txt += '              console.log("my link="+link);'
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';   
