@@ -649,6 +649,17 @@ function handleGraph(req, res, rtt) {
                         case 'dst':
                             DST = rightSide;
                             break;
+                        case 'srcMint':
+                            SRC = rightSide;
+                            break;
+                        case 'dstMint':
+                            expressRedisClient.hgetall("mint:" + rightSide, function (err, destMintEntry) {
+                                expressRedisClient.hgetall("mint:" + SRC, function (err, srcMintEntry) {
+                                    SRC = srcMintEntry.geo;
+                                    DST = destMintEntry.geo;
+                                });
+                            });
+                            break;
                     }
                 }
             }
