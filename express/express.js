@@ -202,7 +202,7 @@ function handleShowState(req, res) {
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
-        txt += '<script type = "text/javascript">';
+        txt += '<script>';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
