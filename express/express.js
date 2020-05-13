@@ -375,7 +375,7 @@ function handleShowState(req, res) {
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
                     txt += '<td class="' + pulseEntry.geo + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
-                    txt += "<td>" + pulseEntry.group + "</td>";
+                    txt += "<td >" + pulseEntry.group + "</td>";
                     txt += "<td>" + pulseEntry.ipaddr + "</td>";
                     txt += "<td>" + pulseEntry.port + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
@@ -383,19 +383,19 @@ function handleShowState(req, res) {
                     if (pulseEntry.pulseTimestamp == 0)
                         deltaSeconds = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '">' + deltaSeconds + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_owl"' + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_owl"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+pulseEntry.owls+"</td>"
-                    txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '">' + pulseEntry.inOctets + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '">' + pulseEntry.outOctets + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_inMsgs"' + '">' + pulseEntry.inMsgs + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_outMsgs"' + '">' + pulseEntry.outMsgs + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_pktDrops"' + '">' + pulseEntry.pktDrops + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_inMsgs"' + '>' + pulseEntry.inMsgs + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_outMsgs"' + '>' + pulseEntry.outMsgs + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_pktDrops"' + '>' + pulseEntry.pktDrops + "</td>";
                     if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>";
-                        txt += '<td class="' + pulseEntry.geo + '_owls"' + '">' + pulseEntry.owls.substring(0, 20) + "</td>";
+                        txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, 20) + "</td>";
                         //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
                     }
                     else {
@@ -406,8 +406,8 @@ function handleShowState(req, res) {
                     if (pulseEntry.bootTimestamp == 0)
                         deltaSeconds2 = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '">' + deltaSeconds2 + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_version"' + '">' + pulseEntry.version + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
