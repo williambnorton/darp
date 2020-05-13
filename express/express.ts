@@ -737,8 +737,11 @@ function handleGraph(req, res, rtt) {
                                     case 'dstMint':
                                         expressRedisClient.hgetall("mint:"+rightSide, function(err, destMintEntry) {
                                             expressRedisClient.hgetall("mint:"+SRC, function(err, srcMintEntry) {
-                                                SRC = srcMintEntry.geo;
-                                                DST = destMintEntry.geo;
+                                                if (destMintEntry && srcMintEntry) {
+                                                    SRC = srcMintEntry.geo;
+                                                    DST = destMintEntry.geo;
+                                                    return grapher(res, SRC, DST);
+                                                }
                                             });
                                         });
                                         break;        
@@ -746,48 +749,49 @@ function handleGraph(req, res, rtt) {
                         }
                 }
         }
-        var txt = '';
 
         //------------------ SRC and DST are geos    ------------------------------------------
-
-        txt += '<!DOCTYPE HTML> <html> < title="DARP">';
-        txt+='<script src="https://canvasjs.com/assets/script/canvasjs.min.js">';
-
-        txt+='</script>';
-
-        txt+='  <script> window.onload = function () { ';
-        //var contents=fs.readFile('canvasjs.min.js', 'utf8');
-        //txt+=contents;
-        try {
-            //lrange all values from redis for srcMint to DstMint
-            //expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
-                //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
-                    //if (srcEntry!=null && dstEntry!=null) {
-                        txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+SRC+"-"+DST+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
-
-                        expressRedisClient.lrange(""+SRC+"-"+DST, 0, -1, function(err, samples) {         
-                            console.log("EXPRESS: DumpSamples:"+dump(samples));                   
-                            for( var sample in samples) {
-                                txt+=samples[sample] 
-                            }
-                            console.log(ts()+"redis for /graph data request reply="+dump(samples));
-                            txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
-                            console.log(ts()+"txt to show graph: "+txt);
-                            txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
-                            res.end(txt);
-                        });
-                //}
-                //});
-
-            //});
-        } catch (err) {
-            console.error(err)
-        }
-
-        return;
+        return grapher(res,SRC,DST);
     });
 }
 
+function grapher(res,SRC,DST) {
+    var txt = '';
+
+    txt += '<!DOCTYPE HTML> <html> < title="DARP">';
+    txt+='<script src="https://canvasjs.com/assets/script/canvasjs.min.js">';
+
+    txt+='</script>';
+
+    txt+='  <script> window.onload = function () { ';
+    //var contents=fs.readFile('canvasjs.min.js', 'utf8');
+    //txt+=contents;
+    try {
+        //lrange all values from redis for srcMint to DstMint
+        //expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
+            //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
+                //if (srcEntry!=null && dstEntry!=null) {
+                    txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+SRC+"-"+DST+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+
+                    expressRedisClient.lrange(""+SRC+"-"+DST, 0, -1, function(err, samples) {         
+                        console.log("EXPRESS: DumpSamples:"+dump(samples));                   
+                        for( var sample in samples) {
+                            txt+=samples[sample] 
+                        }
+                        console.log(ts()+"redis for /graph data request reply="+dump(samples));
+                        txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
+                        console.log(ts()+"txt to show graph: "+txt);
+                        //txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
+                        res.end(txt);
+                    });
+            //}
+            //});
+
+        //});
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 //
 // 
