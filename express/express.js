@@ -222,7 +222,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
         txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);';
-        txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms*");';
+        txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms@");';
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
         txt += '          for (var src in ary) {';
@@ -231,7 +231,7 @@ function handleShowState(req, res) {
         txt += '              var owl=segment.split("=")[1];';
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
-        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + " ms </a>";';
+        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + " ms *</a>";';
         txt += '              console.log("my link="+link);';
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';
         txt += '          }';
