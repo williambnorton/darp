@@ -215,7 +215,7 @@ function handleShowState(req, res) {
         txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
         // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
         txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
-        txt += '             $("."+pulse.geo+"_"+field).text=fieldValue;';
+        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue);';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago*");';
