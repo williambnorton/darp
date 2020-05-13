@@ -254,7 +254,7 @@ function pulse(oneTime) {
                                 lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
                                     // get nodes' list of mints to send pulse to
                                     // and send pulse
-                                    console.log("PULSER(): " + ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
+                                    //console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
                                     buildPulsePkt(mints, pulseMessage, null);
                                 });
                             });
