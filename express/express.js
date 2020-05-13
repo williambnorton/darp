@@ -198,7 +198,7 @@ function handleShowState(req, res) {
         if (me.state == "SINGLESTEP")
             txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 10 + '">';
         //       txt += '<html><head>';
-        txt += '<head>';
+        txt += '<head title="DARP">';
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
@@ -207,7 +207,7 @@ function handleShowState(req, res) {
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
         txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
-        txt += '      $("#dateTime").html( "<h1>Update: "+timeStr+"</h1>" );';
+        txt += '      $("#dateTime").html( "<h1>Update: " + timeStr + "*</h1>" );';
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
         txt += '          var pulseLabel=key;';
@@ -218,11 +218,11 @@ function handleShowState(req, res) {
         txt += '             $("."+pulse.geo+"_"+field).text=fieldValue;';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
-        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
-        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);';
+        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago*");';
+        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0*");';
+        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago*");';
+        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms*");';
+        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"*");';
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms@");';
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
@@ -280,7 +280,7 @@ function handleShowState(req, res) {
                 //
                 // show OWL Matrix
                 //
-                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table border="1">';
+                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table>';
                 txt += '<tr><th></th>';
                 var lastEntry = "";
                 //console.log(ts() + "handleShowState() pulses=" + dump(pulses));
@@ -658,7 +658,7 @@ function handleGraph(req, res, rtt) {
         }
         var txt = '';
         //------------------ SRC and DST are geos    ------------------------------------------
-        txt += '<!DOCTYPE HTML> <html> <head>';
+        txt += '<!DOCTYPE HTML> <html> < title="DARP">';
         txt += '<script src="https://canvasjs.com/assets/script/canvasjs.min.js">';
         txt += '</script>';
         txt += '  <script> window.onload = function () { ';
