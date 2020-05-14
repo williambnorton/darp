@@ -207,7 +207,7 @@ function handleShowState(req, res) {
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
         txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
-        txt += '      $("#dateTime").html( "<h1>Update: " + timeStr + "*</h1>" );';
+        txt += '      $("#dateTime").html( "<h1>Update: " + timeStr + "</h1>" );';
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
         txt += '          var pulseLabel=key;';
@@ -215,14 +215,14 @@ function handleShowState(req, res) {
         txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
         // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
         txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
-        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"*");';
+        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago*");';
-        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0*");';
+        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago*");';
-        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms*");';
-        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"*");';
+        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
+        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"");';
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(pulse.owl+" ms@");';
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
@@ -232,7 +232,7 @@ function handleShowState(req, res) {
         txt += '              var owl=segment.split("=")[1];';
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
-        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + " ms *</a>";';
+        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + " ms </a>";';
         //        txt += '              console.log("my link="+link);'
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';
         txt += '          }';
@@ -451,13 +451,13 @@ function handleShowState(req, res) {
                     if (mintEntry.pulseTimestamp == 0)
                         deltaSeconds = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                    txt += '<td class="' + mintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "*</td>";
+                    txt += '<td class="' + mintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
                     //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
                     txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += '<td class="' + pulseEntry.geo + '_owl"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms*</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_owl"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
@@ -483,7 +483,7 @@ function handleShowState(req, res) {
                     if (mintEntry.bootTimestamp == 0)
                         deltaSeconds2 = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                    txt += '<td class="' + mintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "*</td>";
+                    txt += '<td class="' + mintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                     txt += "</tr>";
                 }
                 txt += "</table>";
