@@ -248,26 +248,28 @@ function checkSWversion() {
     ;
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     var http = require("http");
-    redisClient.hgetall("mint:1", function (err, genesis) {
-        if (err || genesis == null) {
-            console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
-            process.exit(36);
-        }
-        var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
-        //console.log("checkSWversion(): url="+url);
-        http.get(url, function (res) {
-            res.setEncoding("utf8");
-            var body = "";
-            res.on("data", function (data) {
-                body += data;
-            });
-            res.on("end", function () {
-                var version = JSON.parse(body);
-                console.log(lib_js_1.ts() + "HANDLEPULSE: checkSWversion(): isGenesis" + isGenesis + " SWversion==" + lib_js_1.dump(version) + " currentSW=" + MYBUILD);
-                if (version != MYBUILD && !isGenesisNode) {
-                    console.log(lib_js_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
-                    process.exit(36); //SOFTWARE RELOAD
-                }
+    redisClient.hgetall("mint:0", function (err, me) {
+        redisClient.hgetall("mint:1", function (err, genesis) {
+            if (err || genesis == null) {
+                console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
+                process.exit(36);
+            }
+            var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+            //console.log("checkSWversion(): url="+url);
+            http.get(url, function (res) {
+                res.setEncoding("utf8");
+                var body = "";
+                res.on("data", function (data) {
+                    body += data;
+                });
+                res.on("end", function () {
+                    var version = JSON.parse(body);
+                    console.log(lib_js_1.ts() + "HANDLEPULSE: checkSWversion(): " + " genesis SWversion==" + lib_js_1.dump(version) + " currentSW=" + MYBUILD);
+                    if ((version != MYBUILD) && (me.publicKey != genesis.publicKey)) {
+                        console.log(lib_js_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
+                        process.exit(36); //SOFTWARE RELOAD
+                    }
+                });
             });
         });
     });
