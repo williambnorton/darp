@@ -173,6 +173,17 @@ server.on('message', function(message, remote) {
               //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
 
+
+
+              //NEW CODE - expire the mint table entries and pulse entries when  we don't hear for 60 seconds
+              redisClient.expire(pulseLabel,60);  //hold for 60 seconds before deleteing entry
+              redisClient.expire("mint:"+pulse.srcMint,60);  //hold for 60 seconds before deleteing mint
+              //this could be deleteing the genesis node forcing reload
+
+
+
+
+
               var d = new Date();
               if (pulse.owl=="") pulse.owl="0";
               var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
