@@ -218,9 +218,9 @@ function handleShowState(req, res) {
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
-        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago*");';
+        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago*");';
+        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");';
         txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"");';
         txt += '              var linkToMe=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
@@ -274,7 +274,7 @@ function handleShowState(req, res) {
             txt += "</h1>";
             if (me.adminControl)
                 txt += "<h3>AdminControl: " + me.adminControl + "</h3>";
-            txt += '<p id="dateTime"> + dateTime + "</p>"';
+            //txt += '<p id="dateTime"> + dateTime + "</p>"'
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
@@ -391,7 +391,7 @@ function handleShowState(req, res) {
                     if (pulseEntry.pktDrops > 1)
                         txt += '<td class="' + pulseEntry.geo + '_pktDrops BAD"' + '>' + pulseEntry.pktDrops + "</td>";
                     else
-                        txt += '<td class="' + pulseEntry.geo + '_pktDrops GOOD"' + '>' + pulseEntry.pktDrops + "</td>";
+                        txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
                     if (pulseEntry.lastMsg) {
                         txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
                         txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, 20) + "</td>";
