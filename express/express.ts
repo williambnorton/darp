@@ -225,7 +225,7 @@ function handleShowState(req, res) {
        txt += '   $.getJSON(URL, function(config) {'
 
        txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-       txt += '      $("#dateTime").html( "<h1>Update: " + timeStr + "</h1>" );'
+       txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );'
     
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
@@ -436,7 +436,7 @@ function handleShowState(req, res) {
                    //console.log("pktloss=:"+pktLoss);
                 
                    if (pulseEntry.pktDrops>1) 
-                        txt += '<td class="'+pulseEntry.geo+'_pktDrops BAD"'+'>' + pulseEntry.pktDrops + "</td>";
+                        txt += '<td class="'+pulseEntry.geo+'_pktDrops WARNING"'+'>' + pulseEntry.pktDrops + "</td>";
                     else 
                         txt += '<td class="'+pulseEntry.geo+'_pktDrops "'+'>' + pulseEntry.pktDrops + "</td>";
                    if (pulseEntry.lastMsg) {
