@@ -300,7 +300,7 @@ function handleShowState(req, res) {
            txt += "</h1>"
            if (me.adminControl) txt += "<h3>AdminControl: " + me.adminControl+"</h3>";
 
-           //txt += '<p id="dateTime"> + dateTime + "</p>"'
+           txt += '<p id="dateTime"> + dateTime + "</p>"'
            txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'
 
 
