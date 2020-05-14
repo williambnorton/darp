@@ -211,7 +211,7 @@ function pulse(oneTime) {
         //if (me.state=="PULSE") me.state=="SINGLESTEP";
         GEO = me.geo;
         var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
-        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '1000', function (err, pulseGroups) {
+        redisClient.scan(cursor, 'MATCH', me.geo + ":*", 'COUNT', '100000', function (err, pulseGroups) {
             if (err) {
                 throw err;
             }
