@@ -709,7 +709,7 @@ app.get('/state', function(req, res) {
 
         res.setHeader('Content-Type', 'text/html');
         res.setHeader("Access-Control-Allow-Origin", "*");
-        handleGraph(req, res, true);
+        handleGraph(req, res);
     //})
 
     return;
@@ -719,7 +719,7 @@ app.get('/state', function(req, res) {
 //      handleGraph() - show a graph of the collected data
 //          note - SRC and DST are the ints active at the time of the pulseGroup
 //
-function handleGraph(req, res, rtt) {
+function handleGraph(req, res) {
     expressRedisClient.hgetall("mint:0", function(err, me) {
         //this should better be done using parm parser of express - passed in
         var DST = me.geo; //set defaults

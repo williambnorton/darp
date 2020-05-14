@@ -393,6 +393,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
           console.log("NOT GETTING HERE EEVR PULSER sendToAry="+dump(sendToAry)); 
         }
       } else {  //Go fetch the mint associated with this guy we re supposed to pulse
+          console.log("pulser(): We don't have this mint: "+mint+" looking it up in newMint()...");
           newMint(mint); //go fetch 
       }
     }
