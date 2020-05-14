@@ -246,7 +246,11 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
         txt +='           $("."+pulse.geo+"_owls").html(pulse.owls+"");'
 
-        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms@");'  
+        txt += '              var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
+        txt += '              linkToMe += pulse.srcMint + "&dstMint=" + "'+me.mint+'" + "&group=" + "'+me.group+'"+ \'">\' + pulse.owl + " ms </a>";'
+        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(linkToMe);'  
+//        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
+        
         txt += '          var ary=pulse.owls.split(",");'
         txt += '          var dstMint=pulse.srcMint;'
         txt += '          for (var src in ary) {'
