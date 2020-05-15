@@ -414,7 +414,7 @@ function handleShowState(req, res) {
 
                    //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
 
-                   txt += '<td class="'+pulseEntry.geo+'">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>"
+                   txt += '<td class="'+pulseEntry.geo+' '+pulseEntry.srcMint+'">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>"
 
                    //txt+="<td>"+pulseEntry.geo+"</td>"
                    txt += "<td >" + pulseEntry.group + "</td>"

@@ -368,7 +368,7 @@ function handleShowState(req, res) {
                     //console.log("pulseEntry="+dump(pulseEntry));
                     txt += "<tr>";
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-                    txt += '<td class="' + pulseEntry.geo + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + ' ' + pulseEntry.srcMint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
                     txt += "<td >" + pulseEntry.group + "</td>";
                     txt += "<td>" + pulseEntry.ipaddr + "</td>";
