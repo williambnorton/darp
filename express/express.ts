@@ -243,13 +243,17 @@ function handleShowState(req, res) {
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
-        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
+        
         txt +='           $("."+pulse.geo+"_owls").html(pulse.owls+"");'
 
         txt += '              var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
         txt += '              linkToMe += pulse.srcMint + "&dstMint=" + "'+me.mint+'" + "&group=" + "'+me.group+'"+ \'">\' + pulse.owl + " ms </a>";'
         txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(linkToMe);'  
-//        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
+
+//        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
+        txt += '          $("."+pulse.geo+"_owl").html(linkToMe);'
+
+        //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         
         txt += '          var ary=pulse.owls.split(",");'
         txt += '          var dstMint=pulse.srcMint;'
