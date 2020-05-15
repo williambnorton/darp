@@ -993,21 +993,25 @@ function fetchConfigAll(gSRlist, config, callback) {
 
        expressRedisClient.hgetall("mint:" + mint, function(err, mintEntry) {
            if (err) console.log("ERROR: mintEntry=" + mintEntry)
-           config.mintTable["mint:" + mintEntry.mint] = mintEntry; //set the mintEntry-WORKING
-           //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
-           //                       MAZORE:DEVOPS.1
-           var pulseEntryLabel = mintEntry.geo + ":" + mintEntry.group;
-           //console.log(ts()+"*************fetchConfigAll got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
+           if (mintEntry!=null) {
+                config.mintTable["mint:" + mintEntry.mint] = mintEntry; //set the mintEntry-WORKING
+                //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
+                //                       MAZORE:DEVOPS.1
+                var pulseEntryLabel = mintEntry.geo + ":" + mintEntry.group;
+                //console.log(ts()+"*************fetchConfigAll got mint "+mintEntry.mint+" now fetching "+pulseEntryLabel);
 
-           expressRedisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
-               if (err) console.log(ts() + "ERROR fetching pulseEntry");
-               var pulseEntryLabel = pulseEntry.geo + ":" + pulseEntry.group
-               //console.log(ts()+"**************fetchConfigAll pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+dump(pulseEntry));
-               config.pulses[pulseEntryLabel] = pulseEntry; //set the corresponding mintTable
-               //console.log("EXPRESS() fetchConfigAll RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
-               fetchConfigAll(gSRlist, config, callback); //recurse until we hit bottom
-           });
-       });
+                expressRedisClient.hgetall(pulseEntryLabel, function(err, pulseEntry) {
+                    if (err) console.log(ts() + "ERROR fetching pulseEntry");
+                    var pulseEntryLabel = pulseEntry.geo + ":" + pulseEntry.group
+                    //console.log(ts()+"**************fetchConfigAll pulseEntryLabel="+pulseEntryLabel+" pulseEntry="+dump(pulseEntry));
+                    config.pulses[pulseEntryLabel] = pulseEntry; //set the corresponding mintTable
+                    //console.log("EXPRESS() fetchConfigAll RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
+                    fetchConfigAll(gSRlist, config, callback); //recurse until we hit bottom
+                });
+            } else {
+                console.log("EXPRESS: can't find mint entry: "+mint+" timeout?");
+            }
+        });
    } else {
        delete config.entryStack;
        //console.log(ts()+"fetchConfig(): returning "+dump(config));
