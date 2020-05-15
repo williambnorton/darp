@@ -182,7 +182,7 @@ function newMint(mint) {
                             "pktDrops": "0" //as detected by missed seq#
                             //"remoteState": "0"   //and there are mints : owls for received pulses 
                         };
-                        //console.log("newSegmentEntry="+dump(newSegmentEntry));
+                        console.log("fetching mint from genesis node gave us: newSegmentEntry=" + lib_1.dump(newSegmentEntry));
                         redisClient.hmset(mintEntry.geo + ":" + mintEntry.group, newSegmentEntry);
                         //console.log("Past first set");
                         redisClient.hgetall(mintEntry.geo + ":" + mintEntry.group, function (err, newSegment) {
@@ -295,7 +295,7 @@ function pulse(oneTime) {
 function buildPulsePkt(mints, pulseMsg, sendToAry) {
     if (sendToAry == null)
         sendToAry = new Array();
-    console.log("buildPulsePkt(): mints=" + mints);
+    //console.log("buildPulsePkt(): mints="+mints);
     if (typeof mints == "undefined" || !mints || mints == "")
         return console.log("buildPulsePkt(): bad mints parm - ignoring mints=" + mints + " pulseMsg was to be " + pulseMsg);
     var mint = mints.pop(); //get our mint to add to the msg
