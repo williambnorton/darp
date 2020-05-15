@@ -147,10 +147,14 @@ function publishMatrix() {
 //
 function newMint(mint) {
   //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
-  if (isNaN(mint)) {return console.log("newMint("+mint+"): bad mint: "+mint);}
+  if (isNaN(mint)) {
+    console.log("newMint("+mint+"): bad mint: "+mint);
+    process.exit(86);
+    return;
+  }
   const http = require("http");
   redisClient.hgetall("mint:1",function (err,genesis) {
-  
+    
     const url = "http://"+genesis.ipaddr+":"+genesis.port+"/mint/"+mint;
     //console.log("FETCHMINT              fetchMint(): url="+url);
     http.get(url, res => {

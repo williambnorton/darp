@@ -136,7 +136,9 @@ function publishMatrix() {
 function newMint(mint) {
     //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
     if (isNaN(mint)) {
-        return console.log("newMint(" + mint + "): bad mint: " + mint);
+        console.log("newMint(" + mint + "): bad mint: " + mint);
+        process.exit(86);
+        return;
     }
     var http = require("http");
     redisClient.hgetall("mint:1", function (err, genesis) {
