@@ -1048,12 +1048,16 @@ function fetchConfig(gSRlist, config, callback) {
            //console.log("EXPRESS() mint="+mint+" mintEntry="+dump(mintEntry)+" config="+dump(config)+" entryLabel="+entryLabel);
            //                       MAZORE:DEVOPS.1
            expressRedisClient.hgetall(entryLabel, function(err, pulseEntry) {
-               config.pulses[pulseEntry.geo + ":" + pulseEntry.group] = pulseEntry; //set the corresponding mintTable
+               if (pulseEntry) {
+                    config.pulses[pulseEntry.geo + ":" + pulseEntry.group] = pulseEntry; //set the corresponding mintTable
 
-               //config.pulses[entryLabel] = pulseEntry;  //set the corresponding mintTable
-               //console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
-               fetchConfig(gSRlist, config, callback); //recurse until we hit bottom
-           });
+                   //config.pulses[entryLabel] = pulseEntry;  //set the corresponding mintTable
+                   //console.log("EXPRESS() RECURSING entryLabel="+entryLabel+" pulseEntry="+dump(pulseEntry)+" config="+dump(config));
+                   fetchConfig(gSRlist, config, callback); //recurse until we hit bottom
+               } else {
+                   console.log("EXPRESS: "+entryLabel+" does not exist - probably timed out - maybe should remove it from gSRlist too");
+               }
+             });
        });
    } else {
        delete config.entryStack;
