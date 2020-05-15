@@ -295,7 +295,7 @@ function pulse(oneTime) {
 function buildPulsePkt(mints, pulseMsg, sendToAry) {
     if (sendToAry == null)
         sendToAry = new Array();
-    //console.log("buildPulsePkt(): mints="+mints);
+    console.log("buildPulsePkt(): mints=" + mints);
     if (typeof mints == "undefined" || !mints || mints == "")
         return console.log("buildPulsePkt(): bad mints parm - ignoring mints=" + mints + " pulseMsg was to be " + pulseMsg);
     var mint = mints.pop(); //get our mint to add to the msg
@@ -384,7 +384,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 }
             }
             else { //Go fetch the mint associated with this guy we re supposed to pulse
-                console.log("pulser(): We don't have this mint: " + mint + " looking it up in newMint()...");
+                console.log("pulser(): buildPulsePkt(mints=" + mints + ", pulseMsg=" + pulseMsg + ", sendToAry=" + sendToAry + ") We don't have this mint: " + mint + "  fetching mint from genesis node w/newMint()...");
                 newMint(mint); //go fetch 
             }
         }

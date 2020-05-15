@@ -268,7 +268,7 @@ function checkSWversion() {
                 });
                 res.on("end", function () {
                     var version = JSON.parse(body);
-                    console.log(lib_js_1.ts() + "HANDLEPULSE: checkSWversion(): " + " genesis SWversion==" + lib_js_1.dump(version) + " currentSW=" + MYBUILD);
+                    //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
                     if ((version != MYBUILD)) {
                         if (me.ipaddr == genesis.ipaddr)
                             return console.log("ignoring this software version - I am genesis node");
