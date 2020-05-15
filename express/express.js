@@ -363,8 +363,6 @@ function handleShowState(req, res) {
                     var pulseEntry = pulses[a];
                     var srcMint = pulseEntry.srcMint;
                     //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
-                    if (!pulseEntry.seq)
-                        console.log(lib_1.ts() + "NOT A PULSE!!!!!");
                     //console.log("pulseEntry="+dump(pulseEntry));
                     txt += "<tr>";
                     //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"

@@ -29,32 +29,59 @@ function setWireguard() {
     catch (err) {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
     }
-    //for each group in me.pulseGroups
-    redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        redisClient.hgetall("mint:0", function (err, me) {
-            redisClient.hgetall("mint:1", function (err, genesis) {
-                var lastPulse = "", config = "";
-                for (var entryLabel in gSRlist)
-                    lastPulse = entryLabel;
-                for (var entryLabel in gSRlist) {
-                    var mint = gSRlist[entryLabel];
-                    console.log(lib_1.ts() + "spew out wireguard config into ~/darp/wireguard");
-                    redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                        console.log("Writing stanza for mint=" + mintEntry.geo);
-                        console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                        config += "/n[Peer]/n";
-                        config += "PublicKey = " + mintEntry.publickey + "/n";
-                        config += "AllowedIPs = 10.10.0." + mintEntry.mint + "/n";
-                        config += "Endpoint = " + mintEntry.ipaddr;
-                        config += "PersistentKeepalive = 25" + "/n";
-                        if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
-                            console.log("Got to last pulse - now writeout the config file:" + config);
-                        }
-                    });
-                }
+    var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
+    redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '200', function (err, reply) {
+        if (err) {
+            throw err;
+        }
+        //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
+        cursor = reply[0];
+        if (cursor === '0') {
+            // reply[1] is an array of matched keys: me.geo:*
+            var mintTable = reply[1]; //[0] is the cursor returned
+            //console.log( "We need to pulse each of these SRs="+SRs); 
+            for (var i in mintTable) {
+                var mintEntry = mintTable[i];
+                console.log("wireguard - setting tanze for mintEntry=:" + lib_1.dump(mintEntry));
+            }
+        }
+        else {
+            console.log("wireguard: scan returned non-zero :");
+            process.exit(86);
+        }
+    });
+    /*
+        //for each group in me.pulseGroups
+        console.log("Setting up wireguard files ");
+        redisClient.hgetall("gSRlist", function (err,gSRlist) {
+            redisClient.hgetall("mint:0", function (err,me) {
+                redisClient.hgetall("mint:1", function (err,genesis) {
+                    var lastPulse="", config="";
+                    for (var entryLabel in gSRlist) lastPulse=entryLabel;
+    
+                    for (var entryLabel in gSRlist) {
+                        var mint=gSRlist[entryLabel]
+                        console.log(ts()+"spewing out wireguard config file into ~/darp/etc/wireguard");
+    
+    
+                        redisClient.hgetall("mint:"+mint, function (err,mintEntry) {
+                            console.log("Writing stanza for mint="+mintEntry.geo);
+                                console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
+                                config+="/n[Peer]/n";
+                                config+="PublicKey = "+mintEntry.publickey+"/n";
+                                config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
+                                config+="Endpoint = "+mintEntry.ipaddr;
+                                config+="PersistentKeepalive = 25"+"/n";
+                            if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
+                                console.log("Got to last pulse - now writeout the config file:"+config);
+                            }
+                        });
+                    }
+                    
+                });
             });
         });
-    });
+    */
 }
 exports.setWireguard = setWireguard;
 /*

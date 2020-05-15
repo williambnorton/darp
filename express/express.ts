@@ -408,7 +408,6 @@ function handleShowState(req, res) {
                    var pulseEntry = pulses[a];
                    var srcMint=pulseEntry.srcMint;
                    //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
-                   if (!pulseEntry.seq) console.log(ts() + "NOT A PULSE!!!!!");
                    //console.log("pulseEntry="+dump(pulseEntry));
                    txt += "<tr>"
 
