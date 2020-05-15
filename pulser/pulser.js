@@ -276,7 +276,7 @@ function pulse(oneTime) {
 function buildPulsePkt(mints, pulseMsg, sendToAry) {
     if (sendToAry == null)
         sendToAry = new Array();
-    console.log("buildPulsePkt(): mints=" + mints);
+    //console.log("buildPulsePkt(): mints="+mints);
     if (typeof mints == "undefined" || !mints || mints == "")
         return console.log("buildPulsePkt(): bad mints parm - ignoring mints=" + mints + " pulseMsg was to be " + pulseMsg);
     var mint = mints.pop(); //get our mint to add to the msg
