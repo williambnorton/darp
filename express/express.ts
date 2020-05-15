@@ -418,7 +418,7 @@ function handleShowState(req, res) {
 
                    //txt+="<td>"+pulseEntry.geo+"</td>"
                    txt += "<td >" + pulseEntry.group + "</td>"
-                   txt += "<td>" + pulseEntry.ipaddr + "</td>"
+                   txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.ipaddr + "</a></td>"
                    txt += "<td>" + pulseEntry.port + "</td>"
                    
                    txt += '<td class="'+pulseEntry.geo+'_seq"'+'>' + pulseEntry.seq + "</td>"
