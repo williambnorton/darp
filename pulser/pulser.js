@@ -62,56 +62,70 @@ function publishMatrix() {
             stack: new Array()
         };
         redisClient.hgetall("mint:0", function (err, me) {
-            redisClient.hgetall(me.geo + ":" + me.group, function (err, groupPulseEntry) {
-                for (var entry in gSRlist) {
-                    //console.log(ts()+"publicMatrix(): entry="+dump(entry));
-                    if (me != null && groupPulseEntry != null) {
-                        redisClient.hgetall(entry, function (err, pulseEntry) {
-                            if (pulseEntry) {
-                                //console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
-                                matrix.stack.unshift({ "geo": pulseEntry.geo, "mint": pulseEntry.srcMint, "owls": pulseEntry.owls });
-                                //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
-                                //matrix.owlList+=pulseEntry.owls+",";
-                                //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
-                                //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
-                                if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
-                                    //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
-                                    for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
-                                        if (typeof node.owls == "undefined")
-                                            node.owls = "";
-                                        if (typeof node.mint == "undefined")
-                                            node.mint = "";
-                                        matrix.geoList.push(node.geo + ":" + node.mint);
-                                        //console.log(ts()+"node="+dump(node));
-                                        if ((typeof node.owls == "undefined") ||
-                                            (typeof node.mint == "undefined"))
-                                            console.log("got apulseEntry w/no mint or owls: node.geo=" + node.geo);
-                                        else {
-                                            var owlsAry = node.owls.split(",");
-                                            var toMint = node.mint;
-                                            //array of      3=34, 5=12, 6, 7, 8=23
-                                            for (var i in owlsAry) {
-                                                var fromMint = owlsAry[i].split("=")[0];
-                                                var owl = owlsAry[i].split("=")[1];
-                                                if (typeof owl == "undefined")
-                                                    owl = "";
-                                                //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
-                                                var owlMeasure = "" + fromMint + ">" + toMint + "=" + owl;
-                                                //console.log(ts()+"owlMeasure="+owlMeasure);
-                                                matrix.owl.push(owlMeasure);
+            if (me) {
+                redisClient.hgetall(me.geo + ":" + me.group, function (err, groupPulseEntry) {
+                    if (groupPulseEntry) {
+                        for (var entry in gSRlist) {
+                            //console.log(ts()+"publicMatrix(): entry="+dump(entry));
+                            if (me != null && groupPulseEntry != null) {
+                                redisClient.hgetall(entry, function (err, pulseEntry) {
+                                    if (pulseEntry) {
+                                        //console.log(ts()+"publishMatrix(): entry="+dump(pulseEntry)+" me="+dump(me));
+                                        matrix.stack.unshift({ "geo": pulseEntry.geo, "mint": pulseEntry.srcMint, "owls": pulseEntry.owls });
+                                        //matrix.geoList+=pulseEntry.geo+":"+pulseEntry.srcMint+",";
+                                        //matrix.owlList+=pulseEntry.owls+",";
+                                        //console.log(ts()+"publicMatrix(): geoList="+geoList+" owlList="+owlList+" pulseEntry="+dump(pulseEntry));
+                                        //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
+                                        if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
+                                            //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
+                                            for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
+                                                if (typeof node.owls == "undefined")
+                                                    node.owls = "";
+                                                if (typeof node.mint == "undefined")
+                                                    node.mint = "";
+                                                matrix.geoList.push(node.geo + ":" + node.mint);
+                                                //console.log(ts()+"node="+dump(node));
+                                                if ((typeof node.owls == "undefined") ||
+                                                    (typeof node.mint == "undefined"))
+                                                    console.log("got apulseEntry w/no mint or owls: node.geo=" + node.geo);
+                                                else {
+                                                    var owlsAry = node.owls.split(",");
+                                                    var toMint = node.mint;
+                                                    //array of      3=34, 5=12, 6, 7, 8=23
+                                                    for (var i in owlsAry) {
+                                                        var fromMint = owlsAry[i].split("=")[0];
+                                                        var owl = owlsAry[i].split("=")[1];
+                                                        if (typeof owl == "undefined")
+                                                            owl = "";
+                                                        //console.log("geo="+node.geo+" owlsAry[i]="+owlsAry[i]+" fromMint="+fromMint+" owl="+owl);
+                                                        var owlMeasure = "" + fromMint + ">" + toMint + "=" + owl;
+                                                        //console.log(ts()+"owlMeasure="+owlMeasure);
+                                                        matrix.owl.push(owlMeasure);
+                                                    }
+                                                }
                                             }
+                                            //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
+                                            //console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
+                                            delete matrix.stack;
+                                            redisClient.publish("matrix", JSON.stringify(matrix, null, 2));
                                         }
                                     }
-                                    //var txt=""+groupPulseEntry.seq+","+count+","+geoList+owlList;
-                                    //console.log("publishMatrix(): publishing matrix="+JSON.stringify(matrix));
-                                    delete matrix.stack;
-                                    redisClient.publish("matrix", JSON.stringify(matrix, null, 2));
-                                }
+                                });
                             }
-                        });
+                        }
                     }
-                }
-            });
+                    else {
+                        console.log("PULSER: publishMatrix(): Weird: could not find my own groupEntry: " + me.geo + ":" + me.group);
+                        console.log("PULSER:  publishMatrix(): SHOULD NOT HAPPEN ");
+                        process.exit(86);
+                    }
+                });
+            }
+            else {
+                console.log("PULSER: publishMatrix(): Weird: could not find my own mint entry mint:0 ");
+                console.log("PULSER:  publishMatrix(): SHOULD NOT HAPPEN ");
+                process.exit(86);
+            }
         });
     });
 }
