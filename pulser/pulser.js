@@ -6,12 +6,15 @@ console.log("Starting PULSER GENESIS=" + process.env.GENESIS + " PORT=" + proces
 //  pulse - send my owl measurements to my pulseGroups
 //
 //var HOST='127.0.0.1';
-var CYCLETIME = 1; //newMint(mint)
+var CYCLETIME = 1; //poll every ____ seconds
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
+//
+//  check necessary config is here: mint:0 and mint:1
+//
 redisClient.hgetall("mint:0", function (err, me) {
     console.log("PULSER starting with me=" + lib_1.dump(me));
     redisClient.hgetall("mint:1", function (err, genesis) {

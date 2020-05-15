@@ -182,11 +182,11 @@ do
             fi
         fi
     fi
-    echo "ABOUT TO KILL TASKS --- DOES THIS WORK ACROSS NODES?  :  ps aux |grep -v grep | grep node | awk '{ print $2}'"
-    ps aux |grep -v grep | grep node | awk '{ print $2}'
-    echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $2}'`
-    kill -9 `ps aux |grep -v grep | grep node | awk '{ print $2}'`
-    kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $2}'`
+    echo "ABOUT TO KILL TASKS --- ubuntu docker has pid in field #1, native might be #2   :  ps aux |grep -v grep | grep node | awk '{ print $1}'"
+    ps aux |grep -v grep | grep node | awk '{ print $1}'
+    echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
 
     ps aux
     echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
