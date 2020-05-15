@@ -30,7 +30,7 @@ function setWireguard() {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
     }
     var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
-    redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '200', function (err, reply) {
+    redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '1000', function (err, reply) {
         if (err) {
             throw err;
         }
@@ -46,7 +46,7 @@ function setWireguard() {
             }
         }
         else {
-            console.log("wireguard: scan returned non-zero :");
+            console.log("wireguard: scan returned non-zero cursor:");
             process.exit(86);
         }
     });
@@ -139,4 +139,4 @@ PersistentKeepalive = 25
 
 }
 */
-setWireguard();
+//setWireguard();

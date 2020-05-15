@@ -1,4 +1,5 @@
 import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
+import { setWireguard } from "../wireguard/wireguard";
 console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
 //
@@ -206,6 +207,14 @@ function newMint(mint) {
 
               });
               redisClient.hmset("mint:0", "state", "RUNNING");  //We received a mint we are in RUNNING state
+
+
+              setWireguard();  //create a new wireguard config
+
+
+
+
+
               //
               //  if Genesis node, expire in 1 minute before removing it
               //  else 5 minutes

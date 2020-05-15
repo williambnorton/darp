@@ -29,7 +29,7 @@ export function setWireguard() {
     }
 
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
-    redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '200', function(err, reply ){
+    redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '1000', function(err, reply ){
       if (err){
           throw err;
       }
@@ -46,7 +46,7 @@ export function setWireguard() {
               console.log("wireguard - setting tanze for mintEntry=:"+dump(mintEntry));
           }
         } else {
-            console.log("wireguard: scan returned non-zero :");
+            console.log("wireguard: scan returned non-zero cursor:");
             process.exit(86);
         }
     });
@@ -141,4 +141,4 @@ PersistentKeepalive = 25
 
 }
 */
-setWireguard();
+//setWireguard();

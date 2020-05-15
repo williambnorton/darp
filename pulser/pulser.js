@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var lib_1 = require("../lib/lib");
+var wireguard_1 = require("../wireguard/wireguard");
 console.log("Starting PULSER GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 //
 //  pulse - send my owl measurements to my pulseGroups
@@ -192,6 +193,7 @@ function newMint(mint) {
                                 _a[mintEntry.geo + ":" + mintEntry.group] = mint,
                                 _a));
                             redisClient.hmset("mint:0", "state", "RUNNING"); //We received a mint we are in RUNNING state
+                            wireguard_1.setWireguard(); //create a new wireguard config
                             //
                             //  if Genesis node, expire in 1 minute before removing it
                             //  else 5 minutes
