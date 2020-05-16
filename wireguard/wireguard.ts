@@ -43,7 +43,7 @@ export function setWireguard() {
 
           for (var i in mintTable) {
               var mintEntry=mintTable[i];
-              console.log("wireguard - setting tanze for mintEntry=:"+dump(mintEntry));
+              console.log("wireguard - setting stanza for mintEntry=:"+dump(mintEntry));
           }
         } else {
             console.log("wireguard: scan returned non-zero cursor:");

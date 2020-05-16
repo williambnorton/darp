@@ -42,7 +42,7 @@ function setWireguard() {
             //console.log( "We need to pulse each of these SRs="+SRs); 
             for (var i in mintTable) {
                 var mintEntry = mintTable[i];
-                console.log("wireguard - setting tanze for mintEntry=:" + lib_1.dump(mintEntry));
+                console.log("wireguard - setting stanza for mintEntry=:" + lib_1.dump(mintEntry));
             }
         }
         else {
