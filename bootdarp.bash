@@ -103,7 +103,7 @@ do
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
     ./configWG.bash #>/dev/null
-    export PUBLICKEY=`cat $DARPDIR/etc/wireguard/publickey`
+    export PUBLICKEY=`cat $DARPDIR/wireguard/publickey`
     echo PUBLICKEY=$PUBLICKEY
     sleep 1
 
