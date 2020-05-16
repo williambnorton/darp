@@ -29,6 +29,7 @@ export function setWireguard() {
         PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
     }
 
+    /*****
     var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
     redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '1000', function(err, reply ){
       if (err){
@@ -66,11 +67,11 @@ export function setWireguard() {
             process.exit(86);
         }
     });
+***/
 
-/*
     //for each group in me.pulseGroups
     console.log("Setting up wireguard files ");
-    redisClient.hgetall("gSRlist", function (err,gSRlist) {
+    redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
                 var lastPulse="", config="";
@@ -89,6 +90,8 @@ export function setWireguard() {
                             config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
                             config+="Endpoint = "+mintEntry.ipaddr;
                             config+="PersistentKeepalive = 25"+"/n";
+                            console.log("config="+config);
+
                         if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
                             console.log("Got to last pulse - now writeout the config file:"+config);
                         }
@@ -98,7 +101,7 @@ export function setWireguard() {
             });
         });
     });
-*/
+
 }
 
 /*
