@@ -54,7 +54,7 @@ echo ''>$DARPDIR/etc/wireguard/wgbase.conf
 echo '# Created by '$0 `date` >> $DARPDIR/etc/wireguard/wgbase.conf
 echo '[Interface]'>>$DARPDIR/etc/wireguard/wgbase.conf
 echo "PrivateKey = $PRIVATEKEY" >>$DARPDIR/etc/wireguard/wgbase.conf
-echo "# my PublicKey to share is $PRIVATEKEY" >>$DARPDIR/etc/wireguard/wgbase.conf
+echo "# my PublicKey to share is $PUBLICKEY" >>$DARPDIR/etc/wireguard/wgbase.conf
 echo "#" >>$DARPDIR/etc/wireguard/wgbase.conf
 
 cp $DARPDIR/etc/wireguard/wgbase.conf $DARPDIR/etc/wireguard/wg0.conf

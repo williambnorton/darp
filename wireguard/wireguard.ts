@@ -82,11 +82,15 @@ export function setWireguard() {
 
     //for each group in me.pulseGroups
     console.log("Setting up wireguard files ");
+    console.log("Setting up wireguard files ");
+    console.log("Setting up wireguard files ");
+    console.log("Setting up wireguard files ");
+    console.log("Setting up wireguard files ");
     redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
                 var lastPulse="", config="";
-                for (var entryLabel in gSRlist) lastPulse=entryLabel;
+                for (var entryLabel in gSRlist) lastPulse=entryLabel;  //stop when we get to this entry
 
                 for (var entryLabel in gSRlist) {
                     var mint=gSRlist[entryLabel]
