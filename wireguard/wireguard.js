@@ -102,12 +102,13 @@ function setWireguard() {
                         console.log("wireguard(): mintEntry.geo: ");
                         if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
                             console.log("Got to last pulse - now writeout the config file:" + config);
-                            console.log("SHOULD WRITE :" + BASECONFIG + "/n" + config);
+                            console.log("SHOULD WRITE :" + BASECONFIG + "\n" + config);
                             var fs = require('fs');
-                            fs.writeFile(process.env.DARPDIR + '/etc/wireguard/wg0.conf', config, function (err) {
+                            fs.writeFile(process.env.DARPDIR + '/etc/wireguard/wg0.conf', BASECONFIG + "\n" + config, function (err) {
                                 // throws an error, you could also catch it here
                                 if (err)
                                     throw err;
+                                console.log("wireguaerd: about to dump wgConfig file::");
                                 wgdump();
                             });
                         }
