@@ -47,6 +47,7 @@ do
                 fi
         fi
 done
+PRIVATEKEY=`echo $PRIVATEKEY | sed '1,$s/=//g'`
 echo PRIVATEKEY=$PRIVATEKEY PUBLICKEY=$PUBLICKEY
 #
 #	The wgbase model will be used to re-build the conf file
