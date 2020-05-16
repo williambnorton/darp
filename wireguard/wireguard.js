@@ -86,11 +86,13 @@ function setWireguard() {
                         config += "/n[Peer]/n";
                         config += "PublicKey = " + mintEntry.publickey + "/n";
                         config += "AllowedIPs = 10.10.0." + mintEntry.mint + "/n";
-                        config += "Endpoint = " + mintEntry.ipaddr;
+                        config += "Endpoint = " + mintEntry.ipaddr + "/n";
                         config += "PersistentKeepalive = 25" + "/n";
                         console.log("config=" + config);
+                        console.log("wireguard(): mintEntry.geo: ");
                         if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
                             console.log("Got to last pulse - now writeout the config file:" + config);
+                            console.log("SHOULD WRITE :" + BASECONFIG + "/n" + config);
                         }
                     });
                 }
