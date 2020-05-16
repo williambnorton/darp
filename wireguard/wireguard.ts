@@ -108,7 +108,7 @@ export function setWireguard() {
                             if (mintEntry.geo==me.geo) {prefix="#"}  //comment my stuff out
                             console.log(prefix+"Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
                             console.log(prefix+"mintTableEntry ="+JSON.stringify(mintEntry,null,2));
-                            
+                            config+="\n";                            
                             config+=prefix+"# "+mintEntry.geo+" mint="+ mintEntry.mint+"\n";
                             config+=prefix+"[Peer]\n"
                             config+=prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
