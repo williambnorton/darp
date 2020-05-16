@@ -122,10 +122,13 @@ function getConfiguration() {
                 }
 
 
-                console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
-                setWireguard(); //set up initial wireguard comfig
+
 
             }
+            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
+            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
+            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
+            setWireguard(); //set up initial wireguard comfig
         });
     });
 }
