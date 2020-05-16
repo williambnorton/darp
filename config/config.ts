@@ -94,7 +94,7 @@ function getConfiguration() {
 
         res.on('end', function () {
             var config = JSON.parse(data);            
-            console.log("COMFIG: --------- configuration");
+            console.log("CONFIG --------- configuration");
             console.log("CONFIG from node factory:"+JSON.stringify(config,null,2));
 
             if (config.isGenesisNode==true) {
@@ -126,11 +126,6 @@ function getConfiguration() {
 
             }
 
-
-
-
-            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
-            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
             console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
             setWireguard(); //set up initial wireguard comfig
         });

@@ -100,10 +100,11 @@ export function setWireguard() {
 
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         if (mintEntry !=null) {
-                            console.log("Writing stanza for mint="+mintEntry.geo);
+
+                            console.log("Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
                             console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
 
-                            config+="#Auto generated for "+mintEntry.geo+" "+ts()+" by wireguard.ts\n[Peer]\n";
+                            config+="\n#Auto generated for "+mintEntry.geo+" "+" mint="+mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n[Peer]\n";
                             config+="PublicKey = "+mintEntry.publickey+"\n";
                             config+="AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
                             config+="Endpoint = "+mintEntry.ipaddr+"\n";

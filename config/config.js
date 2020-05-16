@@ -81,7 +81,7 @@ function getConfiguration() {
         });
         res.on('end', function () {
             var config = JSON.parse(data);
-            console.log("COMFIG: --------- configuration");
+            console.log("CONFIG --------- configuration");
             console.log("CONFIG from node factory:" + JSON.stringify(config, null, 2));
             if (config.isGenesisNode == true) {
                 console.log(lib_js_1.ts() + "CONFIG GENESIS node already configured");
@@ -105,8 +105,6 @@ function getConfiguration() {
                     redisClient.publish("members", "ADDED " + pulseEntry.geo);
                 }
             }
-            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
-            console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
             console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
             wireguard_1.setWireguard(); //set up initial wireguard comfig
         });
