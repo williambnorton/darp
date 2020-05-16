@@ -103,8 +103,10 @@ export function setWireguard() {
 
                             console.log("Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
                             console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
-
                             config+="\n#Auto generated for "+mintEntry.geo+" "+" mint="+mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n[Peer]\n";
+                            config+="Address = 10.10.0."+me.mint+"/24, fd86:ea04:1115::"+me.mint+"/64\n";
+                            config+="ListenPort = 80\n";
+
                             config+="PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
                             config+="AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
                             config+="Endpoint = "+mintEntry.ipaddr+"\n";
