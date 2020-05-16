@@ -120,6 +120,7 @@ function getConfiguration() {
 
                     redisClient.publish("members","ADDED "+pulseEntry.geo)
                 }
+                setWireguard(); //set up initial wireguard comfig
 
             }
         });

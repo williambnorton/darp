@@ -171,7 +171,7 @@ function newMint(mint) {
                             "srcMint": "" + mint,
                             // =
                             "owls": "",
-                            //"owls" : getOWLs(me.group),  //owls other guy is reporting
+                            //"owls" : getOWLs(me.group),  //owls other guy is reportingb
                             //node statistics - we measure these ourselves
                             "owl": "",
                             "bootTimestamp": "" + mintEntry.bootTimestamp,

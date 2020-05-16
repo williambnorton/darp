@@ -4,6 +4,7 @@ exports.__esModule = true;
 //  config.ts - Configure your node to connect to the pulseGroup
 //
 var lib_js_1 = require("../lib/lib.js");
+var wireguard_1 = require("../wireguard/wireguard");
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
 console.log("Starting CONFIG GENESIS=" + process.env.GENESIS + " HOSTNAME=" + process.env.HOSTNAME + " PORT=" + process.env.PORT + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
@@ -103,6 +104,7 @@ function getConfiguration() {
                     redisClient.hmset(pulse, pulseEntry);
                     redisClient.publish("members", "ADDED " + pulseEntry.geo);
                 }
+                wireguard_1.setWireguard(); //set up initial wireguard comfig
             }
         });
     });
