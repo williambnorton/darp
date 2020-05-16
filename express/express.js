@@ -691,9 +691,9 @@ function grapher(res, SRC, DST) {
             for (var sample in samples) {
                 txt += samples[sample];
             }
-            console.log(lib_1.ts() + "redis for /graph data request reply=" + lib_1.dump(samples));
+            //console.log(ts()+"redis for /graph data request reply="+dump(samples));
             txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
-            console.log(lib_1.ts() + "txt to show graph: " + txt);
+            console.log(lib_1.ts() + "EXPRESS GRAPHER show graph: ");
             //txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
             res.end(txt);
         });
