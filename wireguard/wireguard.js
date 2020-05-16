@@ -90,6 +90,9 @@ function setWireguard() {
         redisClient.hgetall("mint:0", function (err, me) {
             redisClient.hgetall("mint:1", function (err, genesis) {
                 var lastPulse = "", config = "";
+                config += "\n#Auto generated for " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts";
+                config += "Address = 10.10.0." + me.mint + "/24, fd86:ea04:1115::" + me.mint + "/64\n";
+                config += "ListenPort = 80\n";
                 for (var entryLabel in gSRlist)
                     lastPulse = entryLabel; //stop when we get to this entry
                 for (var entryLabel in gSRlist) { //for all currently used mint entries
@@ -99,9 +102,7 @@ function setWireguard() {
                         if ((mintEntry != null) && (mintEntry.geo != me.geo)) {
                             console.log("Writing stanza for mint=" + mintEntry.mint + " " + mintEntry.geo);
                             console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                            config += "\n#Auto generated for " + mintEntry.geo + " " + " mint=" + mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n[Peer]\n";
-                            config += "Address = 10.10.0." + me.mint + "/24, fd86:ea04:1115::" + me.mint + "/64\n";
-                            config += "ListenPort = 80\n";
+                            config += "\n[Peer]\n";
                             config += "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n";
                             config += "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
                             config += "Endpoint = " + mintEntry.ipaddr + "\n";
