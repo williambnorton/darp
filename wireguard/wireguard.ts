@@ -14,7 +14,7 @@ export function setWireguard() {
     console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
     var BASECONFIG="";
     try {
-        BASECONFIG=require('fs').readFileSync(process.env.DARPDIR+'etc/wireguard/wg0.conf', 'utf8');
+        BASECONFIG=require('fs').readFileSync(process.env.DARPDIR+'/etc/wireguard/wg0.conf', 'utf8');
     } catch (err) {
         BASECONFIG="deadbeef00deadbeef00deadbeef0012";
     }
