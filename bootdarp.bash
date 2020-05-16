@@ -19,6 +19,7 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 echo `date` "------------------ $0 STARTING --------------------" 
 
+export WGDIR=/etc/wireguard
 export DARPDIR=$HOME/darp
 if [ "$PORT" == "" ]; then 
     PORT=65013; 
@@ -103,7 +104,7 @@ do
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
     ./configWG.bash #>/dev/null
-    export PUBLICKEY=`cat $DARPDIR/wireguard/publickey`
+    export PUBLICKEY=`cat $WGDIR/publickey`
     echo PUBLICKEY=$PUBLICKEY
     sleep 1
 
