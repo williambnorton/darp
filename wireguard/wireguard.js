@@ -25,7 +25,7 @@ function setWireguard() {
     //PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
     var PUBLICKEY;
     try {
-        PUBLICKEY = require('fs').readFileSync('/etc/wireguard/publickey', 'utf8');
+        PUBLICKEY = require('fs').readFileSync(process.env.DARPDIR + '/etc/wireguard/publickey', 'utf8');
     }
     catch (err) {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
@@ -41,16 +41,23 @@ function setWireguard() {
             // reply[1] is an array of matched keys: me.geo:*
             var mintTable = reply[1]; //[0] is the cursor returned
             //console.log( "We need to pulse each of these SRs="+SRs); 
+            var config = ""; //our config
             for (var i in mintTable) {
                 var mintEntry = mintTable[i];
                 console.log("wireguard - setting stanza for mintEntry=:" + lib_1.dump(mintEntry));
-                console.log("wireguard - setting stanza for mintEntry=:");
-                console.log("wireguard - setting stanza for mintEntry=:");
-                console.log("wireguard - setting stanza for mintEntry=:");
-                console.log("wireguard - setting stanza for mintEntry=:");
-                console.log("wireguard - setting stanza for mintEntry=:");
-                console.log("wireguard - setting stanza for mintEntry=:");
-                console.log("wireguard - setting stanza for mintEntry=:");
+                //redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
+                console.log("Writing stanza for mint=" + mintEntry.geo);
+                console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
+                config += "/n[Peer]/n";
+                config += "PublicKey = " + mintEntry.publickey + "/n";
+                config += "AllowedIPs = 10.10.0." + mintEntry.mint + "/n";
+                config += "Endpoint = " + mintEntry.ipaddr;
+                config += "PersistentKeepalive = 25" + "/n";
+                console.log("config=:" + config);
+                // if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
+                //   console.log("Got to last pulse - now writeout the config file:"+config);
+                //}
+                //});
             }
         }
         else {
