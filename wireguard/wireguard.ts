@@ -10,7 +10,7 @@ export function getPublicKey() {
     return require('fs').readFileSync(process.env.DARPDIR+'/etc/wireguard/publickey', 'utf8');
 }
 
-function dumpWGConf() {
+function wgdump() {
     var wgconfig="";
     try {
         wgconfig=require('fs').readFileSync(process.env.DARPDIR+'/etc/wireguard/wg0.conf', 'utf8');
@@ -106,6 +106,16 @@ export function setWireguard() {
                         if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
                             console.log("Got to last pulse - now writeout the config file:"+config);
                             console.log("SHOULD WRITE :"+BASECONFIG+"/n"+config);
+
+                            const fs = require('fs');
+
+                            fs.writeFile(process.env.DARPDIR+'/etc/wireguard/wg0.conf', config, (err) => {
+                                // throws an error, you could also catch it here
+                                if (err) throw err;
+                                wgdump();                            
+
+                            });
+                            
                         }
                     });
                 }
