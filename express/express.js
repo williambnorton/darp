@@ -687,13 +687,13 @@ function grapher(res, SRC, DST) {
         //if (srcEntry!=null && dstEntry!=null) {
         txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
         expressRedisClient.lrange("" + SRC + "-" + DST, -300, -1, function (err, samples) {
-            console.log("EXPRESS: DumpSamples:" + lib_1.dump(samples));
+            //console.log("EXPRESS: DumpSamples:"+dump(samples));                   
             for (var sample in samples) {
                 txt += samples[sample];
             }
             //console.log(ts()+"redis for /graph data request reply="+dump(samples));
             txt += '] }] }); chart.render(); } </script> </head> <body> <div id="chartContainer" style="height: 500px; width: 100%;"></div></body> </html>';
-            console.log(lib_1.ts() + "EXPRESS GRAPHER show graph: ");
+            console.log(lib_1.ts() + "EXPRESS GRAPHER showed graph: ");
             //txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body></html>';
             res.end(txt);
         });
