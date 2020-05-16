@@ -104,6 +104,7 @@ function getConfiguration() {
                     redisClient.hmset(pulse, pulseEntry);
                     redisClient.publish("members", "ADDED " + pulseEntry.geo);
                 }
+                console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
                 wireguard_1.setWireguard(); //set up initial wireguard comfig
             }
         });

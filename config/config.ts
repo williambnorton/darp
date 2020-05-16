@@ -120,6 +120,9 @@ function getConfiguration() {
 
                     redisClient.publish("members","ADDED "+pulseEntry.geo)
                 }
+
+
+                console.log("config() - calling setWireguard to generate wireguard config for me and genesis node:");
                 setWireguard(); //set up initial wireguard comfig
 
             }
