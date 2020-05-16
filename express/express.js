@@ -11,6 +11,7 @@ exports.__esModule = true;
 //    PUBLICKEY - Public key 
 //
 var lib_1 = require("../lib/lib");
+var wireguard_1 = require("../wireguard/wireguard");
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -1083,6 +1084,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                         expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
                                         //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
                                         callback(config);
+                                        wireguard_1.setWireguard(); //add the mint to our wireguard config
                                         /*
                                         makeConfig(function (config) {
  

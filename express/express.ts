@@ -1195,7 +1195,8 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                        expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
                                        //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
 
-                                       callback(config)
+                                       callback(config);
+                                       setWireguard();  //add the mint to our wireguard config
                                        /*
                                        makeConfig(function (config) {
 
