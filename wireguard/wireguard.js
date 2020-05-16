@@ -93,11 +93,11 @@ function setWireguard() {
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                         console.log("Writing stanza for mint=" + mintEntry.geo);
                         console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                        config += '/n[Peer]/n';
-                        config += "PublicKey = " + mintEntry.publickey + '/n';
-                        config += "AllowedIPs = 10.10.0." + mintEntry.mint + "/n";
-                        config += "Endpoint = " + mintEntry.ipaddr + "/n";
-                        config += "PersistentKeepalive = 25" + "/n";
+                        config += "\n[Peer]\n";
+                        config += "PublicKey = " + mintEntry.publickey + "\n";
+                        config += "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
+                        config += "Endpoint = " + mintEntry.ipaddr + "\n";
+                        config += "PersistentKeepalive = 25" + "\n";
                         console.log("config=" + config);
                         console.log("wireguard(): mintEntry.geo: ");
                         if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
