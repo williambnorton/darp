@@ -105,7 +105,7 @@ export function setWireguard() {
                             console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
 
                             config+="\n#Auto generated for "+mintEntry.geo+" "+" mint="+mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n[Peer]\n";
-                            config+="PublicKey = "+mintEntry.publickey+"\n";
+                            config+="PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
                             config+="AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
                             config+="Endpoint = "+mintEntry.ipaddr+"\n";
                             config+="PersistentKeepalive = 25"+"\n";
