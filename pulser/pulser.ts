@@ -208,8 +208,8 @@ function newMint(mint) {
               });
               redisClient.hmset("mint:0", "state", "RUNNING");  //We received a mint we are in RUNNING state
 
-
-              setWireguard();  //create a new wireguard config
+              console.log("PULSER newMint(): New mint in place - so set up wireguard ");
+              setWireguard();  //re-create a new wireguard config
 
 
 

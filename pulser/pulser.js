@@ -193,7 +193,8 @@ function newMint(mint) {
                                 _a[mintEntry.geo + ":" + mintEntry.group] = mint,
                                 _a));
                             redisClient.hmset("mint:0", "state", "RUNNING"); //We received a mint we are in RUNNING state
-                            wireguard_1.setWireguard(); //create a new wireguard config
+                            console.log("PULSER newMint(): New mint in place - so set up wireguard ");
+                            wireguard_1.setWireguard(); //re-create a new wireguard config
                             //
                             //  if Genesis node, expire in 1 minute before removing it
                             //  else 5 minutes
