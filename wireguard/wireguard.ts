@@ -127,7 +127,11 @@ export function setWireguard() {
                                 fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+"\n"+config, (err) => {
                                     // throws an error, you could also catch it here
                                     if (err) throw err;
-                                    console.log("wireguaerd: wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("********wireguard: wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("********wireguard: wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("********wireguard: wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("********wireguard: wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("********wireguard: wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
                                     wgdump();                            
 
                                 });
