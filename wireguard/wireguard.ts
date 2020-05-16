@@ -9,6 +9,17 @@ var redisClient = pulseRedis.createClient(); //creates a new client
 export function getPublicKey() {
     return require('fs').readFileSync(process.env.DARPDIR+'/etc/wireguard/publickey', 'utf8');
 }
+
+function dumpWGConf() {
+    var wgconfig="";
+    try {
+        wgconfig=require('fs').readFileSync(process.env.DARPDIR+'/etc/wireguard/wg0.conf', 'utf8');
+    } catch (err) {
+        console.log("wireguard: dumpWGconf() ERROR");
+    }
+    console.log("wgconfig=:"+wgconfig);
+}
+
 export function setWireguard() {
     //we assume these file were set by configWG
     console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
