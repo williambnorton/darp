@@ -106,6 +106,7 @@ function setWireguard() {
                             } //comment my stuff out
                             console.log(prefix + "Writing stanza for mint=" + mintEntry.mint + " " + mintEntry.geo);
                             console.log(prefix + "mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
+                            config += prefix + "# " + mintEntry.geo + " mint=" + mintEntry.mint + "\n";
                             config += prefix + "[Peer]\n";
                             config += prefix + "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n";
                             config += prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
