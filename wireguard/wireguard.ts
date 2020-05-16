@@ -99,7 +99,7 @@ export function setWireguard() {
 
 
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
-                        if (mintEntry !=null) {
+                        if ((mintEntry !=null)  && (mintEntry.geo!=me.geo)) {
 
                             console.log("Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
                             console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));

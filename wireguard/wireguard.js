@@ -96,7 +96,7 @@ function setWireguard() {
                     var mint = gSRlist[entryLabel];
                     console.log(lib_1.ts() + "spewing out wireguard config file into ~/darp/wireguard");
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                        if (mintEntry != null) {
+                        if ((mintEntry != null) && (mintEntry.geo != me.geo)) {
                             console.log("Writing stanza for mint=" + mintEntry.mint + " " + mintEntry.geo);
                             console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
                             config += "\n#Auto generated for " + mintEntry.geo + " " + " mint=" + mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n[Peer]\n";
