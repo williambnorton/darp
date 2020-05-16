@@ -95,26 +95,31 @@ function setWireguard() {
                     var mint = gSRlist[entryLabel];
                     console.log(lib_1.ts() + "spewing out wireguard config file into ~/darp/wireguard");
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                        console.log("Writing stanza for mint=" + mintEntry.geo);
-                        console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                        config += "#Auto generated " + lib_1.ts() + " by wireguard.ts\n[Peer]\n";
-                        config += "PublicKey = " + mintEntry.publickey + "\n";
-                        config += "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
-                        config += "Endpoint = " + mintEntry.ipaddr + "\n";
-                        config += "PersistentKeepalive = 25" + "\n";
-                        console.log("config=" + config);
-                        console.log("wireguard(): mintEntry.geo: ");
-                        if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
-                            console.log("Got to last pulse - now writeout the config file:" + config);
-                            console.log("SHOULD WRITE :" + BASECONFIG + "\n" + config);
-                            var fs = require('fs');
-                            fs.writeFile(process.env.DARPDIR + '/wireguard/wg0.conf', BASECONFIG + "\n" + config, function (err) {
-                                // throws an error, you could also catch it here
-                                if (err)
-                                    throw err;
-                                console.log("wireguaerd: about to dump wgConfig file::");
-                                wgdump();
-                            });
+                        if (mintEntry != null) {
+                            console.log("Writing stanza for mint=" + mintEntry.geo);
+                            console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
+                            config += "#Auto generated " + lib_1.ts() + " by wireguard.ts\n[Peer]\n";
+                            config += "PublicKey = " + mintEntry.publickey + "\n";
+                            config += "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
+                            config += "Endpoint = " + mintEntry.ipaddr + "\n";
+                            config += "PersistentKeepalive = 25" + "\n";
+                            console.log("config=" + config);
+                            console.log("wireguard(): mintEntry.geo: ");
+                            if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
+                                console.log("Got to last pulse - now writeout the config file:" + config);
+                                console.log("SHOULD WRITE :" + BASECONFIG + "\n" + config);
+                                var fs = require('fs');
+                                fs.writeFile(process.env.DARPDIR + '/wireguard/wg0.conf', BASECONFIG + "\n" + config, function (err) {
+                                    // throws an error, you could also catch it here
+                                    if (err)
+                                        throw err;
+                                    console.log("wireguaerd: about to dump wgConfig file:");
+                                    wgdump();
+                                });
+                            }
+                        }
+                        else {
+                            console.log("wireguard: configuring wireguard...could not find mint " + mint);
                         }
                     });
                 }
