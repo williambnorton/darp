@@ -98,7 +98,7 @@ function setWireguard() {
                         if (mintEntry != null) {
                             console.log("Writing stanza for mint=" + mintEntry.geo);
                             console.log("mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                            config += "#Auto generated " + lib_1.ts() + " by wireguard.ts\n[Peer]\n";
+                            config += "#Auto generated for " + mintEntry.geo + " " + lib_1.ts() + " by wireguard.ts\n[Peer]\n";
                             config += "PublicKey = " + mintEntry.publickey + "\n";
                             config += "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
                             config += "Endpoint = " + mintEntry.ipaddr + "\n";
