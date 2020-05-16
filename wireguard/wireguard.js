@@ -4,28 +4,29 @@ exports.__esModule = true;
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //
 var lib_1 = require("../lib/lib");
+var WGDIR = "/etc/wireguard"; //this is the direcvtory to build and evolve wg config files
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 function getPublicKey() {
-    return require('fs').readFileSync(process.env.DARPDIR + '/wireguard/publickey', 'utf8');
+    return require('fs').readFileSync(WGDIR + '/publickey', 'utf8');
 }
 exports.getPublicKey = getPublicKey;
 function wgdump() {
     var wgconfig = "";
     try {
-        wgconfig = require('fs').readFileSync(process.env.DARPDIR + '/wireguard/wg0.conf', 'utf8');
+        wgconfig = require('fs').readFileSync(WGDIR + '/wg0.conf', 'utf8');
     }
     catch (err) {
         console.log("wireguard: dumpWGconf() ERROR");
     }
-    console.log("wgconfig=:" + wgconfig);
+    console.log("wgconfig=" + wgconfig);
 }
 function setWireguard() {
     //we assume these file were set by configWG
     console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
     var BASECONFIG = "";
     try {
-        BASECONFIG = require('fs').readFileSync(process.env.DARPDIR + '/wireguard/wg0.conf', 'utf8');
+        BASECONFIG = require('fs').readFileSync(WGDIR + '/wg0.conf', 'utf8');
     }
     catch (err) {
         BASECONFIG = "deadbeef00deadbeef00deadbeef0012";
@@ -35,7 +36,7 @@ function setWireguard() {
     //PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
     var PUBLICKEY;
     try {
-        PUBLICKEY = require('fs').readFileSync(process.env.DARPDIR + '/wireguard/publickey', 'utf8');
+        PUBLICKEY = require('fs').readFileSync(WGDIR + '/publickey', 'utf8');
     }
     catch (err) {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
@@ -109,11 +110,11 @@ function setWireguard() {
                                 console.log("Got to last pulse - now writeout the config file:" + config);
                                 console.log("SHOULD WRITE :" + BASECONFIG + "\n" + config);
                                 var fs = require('fs');
-                                fs.writeFile(process.env.DARPDIR + '/wireguard/wg0.conf', BASECONFIG + "\n" + config, function (err) {
+                                fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + "\n" + config, function (err) {
                                     // throws an error, you could also catch it here
                                     if (err)
                                         throw err;
-                                    console.log("wireguaerd: about to dump wgConfig file:");
+                                    console.log("wireguaerd: wgConfig file: " + WGDIR + "/wg0.conf  <-- when working call it /etc/wireguard/darp0");
                                     wgdump();
                                 });
                             }
