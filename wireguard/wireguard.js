@@ -12,6 +12,7 @@ function getPublicKey() {
 exports.getPublicKey = getPublicKey;
 function setWireguard() {
     //we assume these file were set by configWG
+    console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
     var BASECONFIG = "";
     try {
         BASECONFIG = require('fs').readFileSync(process.env.DARPDIR + 'etc/wireguard/wg0.conf', 'utf8');
@@ -43,6 +44,13 @@ function setWireguard() {
             for (var i in mintTable) {
                 var mintEntry = mintTable[i];
                 console.log("wireguard - setting stanza for mintEntry=:" + lib_1.dump(mintEntry));
+                console.log("wireguard - setting stanza for mintEntry=:");
+                console.log("wireguard - setting stanza for mintEntry=:");
+                console.log("wireguard - setting stanza for mintEntry=:");
+                console.log("wireguard - setting stanza for mintEntry=:");
+                console.log("wireguard - setting stanza for mintEntry=:");
+                console.log("wireguard - setting stanza for mintEntry=:");
+                console.log("wireguard - setting stanza for mintEntry=:");
             }
         }
         else {
