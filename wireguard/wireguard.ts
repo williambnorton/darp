@@ -103,16 +103,17 @@ export function setWireguard() {
                     console.log(ts()+"spewing out wireguard config file into ~/darp/wireguard");
 
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
-                        if ((mintEntry!=null)  && (mintEntry.geo!=me.geo)) {
-
-                            console.log("Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
-                            console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
+                        if ((mintEntry!=null)  ) {
+                            var prefix="";
+                            if (mintEntry.geo==me.geo) {prefix="#"}  //comment my stuff out
+                            console.log(prefix+"Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
+                            console.log(prefix+"mintTableEntry ="+JSON.stringify(mintEntry,null,2));
                             
-                            config+="\n[Peer]\n"
-                            config+="PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
-                            config+="AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
-                            config+="Endpoint = "+mintEntry.ipaddr+"\n";
-                            config+="PersistentKeepalive = 25"+"\n";
+                            config+=prefix+"[Peer]\n"
+                            config+=prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
+                            config+=prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
+                            config+=prefix+"Endpoint = "+mintEntry.ipaddr+"\n";
+                            config+=prefix+"PersistentKeepalive = 25"+"\n";
 
                             console.log("config="+config);
                             console.log("wireguard(): mintEntry.geo: ");
@@ -132,7 +133,7 @@ export function setWireguard() {
                             }
                             
                         } else {
-                            console.log("wireguard: configuring wireguard...could not find mint "+mint);
+                            console.log("wireguard: configuring wireguard...ignoring self "+me.geo+" or null mint:"+mint);
                         }
                     });
                 }
