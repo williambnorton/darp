@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #       configWG.bash - Configure Wireguard public and private for DARP 
-#			~/wireguard outside the Docker is our $DARPDIR/wireguard
+#			~/wireguard outside the Docker is our $WGDIR/wireguard
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
 #GENESIS=71.202.2.184:65013
@@ -11,10 +11,15 @@
 #	startsWith=$startsWith$startsWith 
 #	echo `date` Get a publicKey that starts with $startsWith
 #fi
-echo `date` $0 creating wireguard configuration from $GENESIS
-DARPDIR=~/darp
-mkdir -p $DARPDIR/wireguard
-cd $DARPDIR/wireguard
+WGDIR=/etc/wireguard   #in the docker and natively we will interact with this directory 
+
+echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
+
+#WGDIR=~/darp
+#mkdir -p $WGDIR/wireguard
+#cd $WGDIR/wireguard
+touch $WGDIR
+cd $WGDIR
 umask 077
 echo `date` "This will create publickey and privatekey We do not want them to include space characters, braces or brackets or commas"
 DONE=0
@@ -46,17 +51,17 @@ echo PRIVATEKEY=$PRIVATEKEY PUBLICKEY=$PUBLICKEY
 #
 #	The wgbase model will be used to re-build the conf file
 # Note: for security reasons we don't NEED to store privatekey in VM
-touch $DARPDIR/wireguard/wgbase.conf $DARPDIR/wireguard/wg0.conf
-chmod 600 $DARPDIR/wireguard/wg0.conf $DARPDIR/wireguard/wgbase.conf
+touch $WGDIR/wgbase.conf $WGDIR/wg0.conf
+chmod 600 $WGDIR/wg0.conf $WGDIR/wgbase.conf
 
-echo ''>$DARPDIR/wireguard/wgbase.conf
-echo '# Created by '$0 `date` >> $DARPDIR/wireguard/wgbase.conf
-echo '[Interface]'>>$DARPDIR/wireguard/wgbase.conf
-echo "PrivateKey = $PRIVATEKEY" >>$DARPDIR/wireguard/wgbase.conf
-echo "# my PublicKey to share is $PUBLICKEY" >>$DARPDIR/wireguard/wgbase.conf
-echo "#" >>$DARPDIR/wireguard/wgbase.conf
+echo '#'>$WGDIR/wgbase.conf
+echo '# Base wireguard config file created automatically by '$0 `date` >> $WGDIR/wgbase.conf
+echo '[Interface]'>>$WGDIR/wgbase.conf
+echo "PrivateKey = $PRIVATEKEY" >>$WGDIR/wgbase.conf
+echo "# my PublicKey to share is $PUBLICKEY" >>$WGDIR/wgbase.conf
+echo "#" >>$WGDIR/wgbase.conf
 
-cp $DARPDIR/wireguard/wgbase.conf $DARPDIR/wireguard/wg0.conf
+cp $WGDIR/wgbase.conf $WGDIR/wg0.conf
 
 echo `date` $0 wgbase.conf below - the rest will be added by running code
-cat $DARPDIR/wireguard/wgbase.conf
+cat $WGDIR/wgbase.conf
