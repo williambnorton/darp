@@ -97,24 +97,25 @@ function setWireguard() {
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                         if ((mintEntry != null)) {
                             var prefix = "";
-                            config[mintEntry.mint] = "";
+                            var mint = parseInt(mintEntry.mint); //do not count on mint outside my scope
+                            config[mint] = "";
                             if (mintEntry.geo == me.geo) {
                                 prefix = "#   * me *   ";
                             } //comment my stuff out
-                            console.log(prefix + "------------------- Writing stanza for mint=" + mintEntry.mint + " " + mintEntry.geo);
+                            console.log(prefix + "------------------- Writing stanza for mint=" + mint + " " + mintEntry.geo);
                             console.log(prefix + "mintEntry =" + JSON.stringify(mintEntry, null, 2));
                             //config+="\n";                            
-                            config[mintEntry.mint] += prefix + "# " + mintEntry.geo + " mint=" + mintEntry.mint + "\n";
-                            config[mintEntry.mint] += prefix + "[Peer]\n";
-                            config[mintEntry.mint] += prefix + "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n";
-                            config[mintEntry.mint] += prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
-                            config[mintEntry.mint] += prefix + "Endpoint = " + mintEntry.ipaddr + "\n";
-                            config[mintEntry.mint] += prefix + "PersistentKeepalive = 25" + "\n\n";
-                            console.log("config[mint=" + mintEntry.mint + "]=" + config[mintEntry.mint]);
+                            config[mint] += prefix + "# " + mintEntry.geo + " mint=" + mint + "\n";
+                            config[mint] += prefix + "[Peer]\n";
+                            config[mint] += prefix + "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n";
+                            config[mint] += prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
+                            config[mint] += prefix + "Endpoint = " + mintEntry.ipaddr + "\n";
+                            config[mint] += prefix + "PersistentKeepalive = 25" + "\n\n";
+                            console.log("config[mint=" + mint + "]=" + config[mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
                             if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
-                                console.log("Got to last pulse " + lastPulse + " - now WRITE the wireguard config file:" + config);
+                                console.log("Got to last pulse " + lastPulse + " - now WRITE the wireguard config file:" + lib_1.dump(config));
                                 //console.log("Wireguard file :"+config);
                                 var fs = require('fs');
                                 var aggregateStanzas = "";
