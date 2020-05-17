@@ -100,7 +100,7 @@ export function setWireguard() {
 
                 for (var entryLabel in gSRlist) {  //for all currently used mint entries
                     var mint=gSRlist[entryLabel]
-                    console.log(ts()+"spewing out wireguard config file into /etc/wireguard");
+                    console.log(ts()+"spewing out wireguard config file into /etc/wireguard mint="+mint+" entryLabel="+entryLabel);
 
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         if ((mintEntry!=null)  ) {

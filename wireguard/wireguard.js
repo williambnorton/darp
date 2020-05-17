@@ -97,7 +97,7 @@ function setWireguard() {
                     lastPulse = entryLabel; //stop when we get to this entry
                 for (var entryLabel in gSRlist) { //for all currently used mint entries
                     var mint = gSRlist[entryLabel];
-                    console.log(lib_1.ts() + "spewing out wireguard config file into /etc/wireguard");
+                    console.log(lib_1.ts() + "spewing out wireguard config file into /etc/wireguard mint=" + mint + " entryLabel=" + entryLabel);
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                         if ((mintEntry != null)) {
                             var prefix = "";
