@@ -126,10 +126,9 @@ prefix+"PersistentKeepalive = 25"+"\n\n";
 
                                 const fs = require('fs');
                                 var aggregateStanzas="";
-                                console.log("dump config:"+config);
-                                for (var stanza in config) {
-                                    console.log("stanza=:"+stanza+" - "+config[stanza]);
-                                    aggregateStanzas+=config[stanza];
+                                console.log("dump config:"+dump(config));
+                                for (var stanza=config.pop(); stanza!=null; stanza=config.pop()) {
+                                    aggregateStanzas+=stanza;
                                 }
                                 console.log("WIREGUARD FILE: "+BASECONFIG+addressStanza+aggregateStanzas);
 

@@ -121,10 +121,9 @@ function setWireguard() {
                                 //console.log("Wireguard file :"+config);
                                 var fs = require('fs');
                                 var aggregateStanzas = "";
-                                console.log("dump config:" + config);
-                                for (var stanza in config) {
-                                    console.log("stanza=:" + stanza + " - " + config[stanza]);
-                                    aggregateStanzas += config[stanza];
+                                console.log("dump config:" + lib_1.dump(config));
+                                for (var stanza = config.pop(); stanza != null; stanza = config.pop()) {
+                                    aggregateStanzas += stanza;
                                 }
                                 console.log("WIREGUARD FILE: " + BASECONFIG + addressStanza + aggregateStanzas);
                                 fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
