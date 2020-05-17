@@ -89,7 +89,7 @@ export function setWireguard() {
             redisClient.hgetall("mint:1", function (err,genesis) {
                 var lastPulse="", config="";
 
-                config+="\n#Auto updated for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
+                config+="#Individual entries for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
                 config+="Address = 10.10.0."+me.mint+"/24, fd86:ea04:1115::"+me.mint+"/64\n";
                 config+="ListenPort = 80\n";
 
