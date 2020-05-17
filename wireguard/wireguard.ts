@@ -87,7 +87,7 @@ export function setWireguard() {
     redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
-                var lastPulse="", addressStanza="", config="";
+                var lastPulse="", addressStanza="", config=new Array();
 
                 addressStanza+="#Individual entries for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
                 addressStanza+="Address = 10.10.0."+me.mint+"/24, fd86:ea04:1115::"+me.mint+"/64\n";
@@ -99,19 +99,20 @@ export function setWireguard() {
                     var mint=gSRlist[entryLabel]
                     console.log(ts()+"***** Spewing out wireguard config file into /etc/wireguard mint="+mint+" entryLabel="+entryLabel);
 
-                    redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
+                        redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         if ((mintEntry!=null)  ) {
                             var prefix="";
+                            config[mint]="";
                             if (mintEntry.geo==me.geo) {prefix="#   * me *   "}  //comment my stuff out
                             console.log(prefix+"------------------- Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
-                            console.log(prefix+"mintTableEntry ="+JSON.stringify(mintEntry,null,2));
+                            console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
-                            config+=prefix+"# "+mintEntry.geo+" mint="+ mintEntry.mint+"\n";
-                            config+=prefix+"[Peer]\n"
-                            config+=prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
-                            config+=prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
-                            config+=prefix+"Endpoint = "+mintEntry.ipaddr+"\n";
-                            config+=prefix+"PersistentKeepalive = 25"+"\n\n";
+                            config[mint]+=prefix+"# "+mintEntry.geo+" mint="+ mintEntry.mint+"\n";
+                            config[mint]+=prefix+"[Peer]\n"
+                            config[mint]+=prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
+                            config[mint]+=prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
+                            config[mint]+=prefix+"Endpoint = "+mintEntry.ipaddr+"\n";
+                            config[mint]+=prefix+"PersistentKeepalive = 25"+"\n\n";
 
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
@@ -120,8 +121,9 @@ export function setWireguard() {
                                 //console.log("Wireguard file :"+config);
 
                                 const fs = require('fs');
-
-                                fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+config, (err) => {
+                                var aggregateStanzas="";
+                                for (var stanza in config) aggregateStanzas+=config[stanza];
+                                fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
                                     // throws an error, you could also catch it here
                                     if (err) throw err;
                                     console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
