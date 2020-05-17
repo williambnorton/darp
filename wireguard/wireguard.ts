@@ -115,7 +115,7 @@ prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n" +
 prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n" +
 prefix+"Endpoint = "+mintEntry.ipaddr+"\n" +
 prefix+"PersistentKeepalive = 25"+"\n\n";
-                            config.push({ mint : myStanza })
+                            config.push(myStanza)
                             //console.log("config[mint="+mint+"]="+config[mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
