@@ -82,10 +82,6 @@ function setWireguard() {
 ***/
     //for each group in me.pulseGroups
     console.log("Setting up wireguard files ");
-    console.log("Setting up wireguard files ");
-    console.log("Setting up wireguard files ");
-    console.log("Setting up wireguard files ");
-    console.log("Setting up wireguard files ");
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         redisClient.hgetall("mint:0", function (err, me) {
             redisClient.hgetall("mint:1", function (err, genesis) {
