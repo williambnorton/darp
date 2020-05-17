@@ -113,7 +113,7 @@ export function setWireguard() {
                             config[mint]+=prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
                             config[mint]+=prefix+"Endpoint = "+mintEntry.ipaddr+"\n";
                             config[mint]+=prefix+"PersistentKeepalive = 25"+"\n\n";
-
+                            console.log("config[mint="+mint+"]="+config[mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
                             if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
@@ -123,6 +123,8 @@ export function setWireguard() {
                                 const fs = require('fs');
                                 var aggregateStanzas="";
                                 for (var stanza in config) aggregateStanzas+=config[stanza];
+                                console.log("agr=gregateStanas=:"+aggregateStanzas);
+                                
                                 fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
                                     // throws an error, you could also catch it here
                                     if (err) throw err;

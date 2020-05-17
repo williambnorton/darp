@@ -85,10 +85,10 @@ function setWireguard() {
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         redisClient.hgetall("mint:0", function (err, me) {
             redisClient.hgetall("mint:1", function (err, genesis) {
-                var lastPulse = "", config = "";
-                config += "\n#Auto updated for node: " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
-                config += "Address = 10.10.0." + me.mint + "/24, fd86:ea04:1115::" + me.mint + "/64\n";
-                config += "ListenPort = 80\n";
+                var lastPulse = "", addressStanza = "", config = new Array();
+                addressStanza += "#Individual entries for node: " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
+                addressStanza += "Address = 10.10.0." + me.mint + "/24, fd86:ea04:1115::" + me.mint + "/64\n";
+                addressStanza += "ListenPort = 80\n";
                 for (var entryLabel in gSRlist)
                     lastPulse = entryLabel; //stop when we get to this entry
                 for (var entryLabel in gSRlist) { //for all currently used mint entries
@@ -97,25 +97,31 @@ function setWireguard() {
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                         if ((mintEntry != null)) {
                             var prefix = "";
+                            config[mint] = "";
                             if (mintEntry.geo == me.geo) {
                                 prefix = "#   * me *   ";
                             } //comment my stuff out
                             console.log(prefix + "------------------- Writing stanza for mint=" + mintEntry.mint + " " + mintEntry.geo);
-                            console.log(prefix + "mintTableEntry =" + JSON.stringify(mintEntry, null, 2));
-                            config += "\n";
-                            config += prefix + "# " + mintEntry.geo + " mint=" + mintEntry.mint + "\n";
-                            config += prefix + "[Peer]\n";
-                            config += prefix + "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n";
-                            config += prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
-                            config += prefix + "Endpoint = " + mintEntry.ipaddr + "\n";
-                            config += prefix + "PersistentKeepalive = 25" + "\n\n";
-                            console.log("config=" + config);
-                            console.log("wireguard(): mintEntry.geo: ");
+                            console.log(prefix + "mintEntry =" + JSON.stringify(mintEntry, null, 2));
+                            //config+="\n";                            
+                            config[mint] += prefix + "# " + mintEntry.geo + " mint=" + mintEntry.mint + "\n";
+                            config[mint] += prefix + "[Peer]\n";
+                            config[mint] += prefix + "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n";
+                            config[mint] += prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n";
+                            config[mint] += prefix + "Endpoint = " + mintEntry.ipaddr + "\n";
+                            config[mint] += prefix + "PersistentKeepalive = 25" + "\n\n";
+                            console.log("config[mint=" + mint + "]=" + config[mint]);
+                            //console.log("config="+config);
+                            //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
                             if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
-                                console.log("Got to last pulse - now writeout the config file:" + config);
-                                console.log("SHOULD WRITE :" + BASECONFIG + "\n" + config);
+                                console.log("Got to last pulse " + lastPulse + " - now WRITE the wireguard config file:" + config);
+                                //console.log("Wireguard file :"+config);
                                 var fs = require('fs');
-                                fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + "\n" + config, function (err) {
+                                var aggregateStanzas = "";
+                                for (var stanza in config)
+                                    aggregateStanzas += config[stanza];
+                                console.log("agr=gregateStanas=:" + aggregateStanzas);
+                                fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
                                     // throws an error, you could also catch it here
                                     if (err)
                                         throw err;
