@@ -105,8 +105,8 @@ export function setWireguard() {
                             var mint=parseInt(mintEntry.mint);  //do not count on mint outside my scope
                             config[mint]=new Array();
                             if (mintEntry.geo==me.geo) {prefix="#   * me *   "}  //comment my stuff out
-                            console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
-                            console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
+                            //console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
+                            //console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
                             config[mint]="" + 
 prefix+"# "+mintEntry.geo+" mint="+ mint+"\n" +
@@ -115,18 +115,19 @@ prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n" +
 prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n" +
 prefix+"Endpoint = "+mintEntry.ipaddr+"\n" +
 prefix+"PersistentKeepalive = 25"+"\n\n";
-                            console.log("config[mint="+mint+"]="+config[mint]);
+                            //console.log("config[mint="+mint+"]="+config[mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
 
                             if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
-                                console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
+                                //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
                                 //console.log("Wireguard file :"+config);
 
                                 const fs = require('fs');
                                 var aggregateStanzas="";
-                                for (var stanza in config) aggregateStanzas+=config[stanza];
-                                console.log("aggregateStanzas="+aggregateStanzas);
+                                for (var stanza in config) 
+                                    aggregateStanzas+=config[stanza];
+                                console.log("WIREGUARD FILE: "+BASECONFIG+addressStanza+aggregateStanzas);
 
                                 fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
                                     // throws an error, you could also catch it here

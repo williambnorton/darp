@@ -102,8 +102,8 @@ function setWireguard() {
                             if (mintEntry.geo == me.geo) {
                                 prefix = "#   * me *   ";
                             } //comment my stuff out
-                            console.log(prefix + "------------------- Writing stanza for mint=" + mint + " " + mintEntry.geo);
-                            console.log(prefix + "mintEntry =" + JSON.stringify(mintEntry, null, 2));
+                            //console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
+                            //console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
                             config[mint] = "" +
                                 prefix + "# " + mintEntry.geo + " mint=" + mint + "\n" +
@@ -112,17 +112,17 @@ function setWireguard() {
                                 prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n" +
                                 prefix + "Endpoint = " + mintEntry.ipaddr + "\n" +
                                 prefix + "PersistentKeepalive = 25" + "\n\n";
-                            console.log("config[mint=" + mint + "]=" + config[mint]);
+                            //console.log("config[mint="+mint+"]="+config[mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
                             if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
-                                console.log("Got to last pulse " + lastPulse + " - now WRITE the wireguard config stanzas:" + lib_1.dump(config));
+                                //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
                                 //console.log("Wireguard file :"+config);
                                 var fs = require('fs');
                                 var aggregateStanzas = "";
                                 for (var stanza in config)
                                     aggregateStanzas += config[stanza];
-                                console.log("aggregateStanzas=" + aggregateStanzas);
+                                console.log("WIREGUARD FILE: " + BASECONFIG + addressStanza + aggregateStanzas);
                                 fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
                                     // throws an error, you could also catch it here
                                     if (err)
