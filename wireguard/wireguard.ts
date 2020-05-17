@@ -87,11 +87,11 @@ export function setWireguard() {
     redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
-                var lastPulse="", config="";
+                var lastPulse="", addressStanza="", config="";
 
-                config+="#Individual entries for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
-                config+="Address = 10.10.0."+me.mint+"/24, fd86:ea04:1115::"+me.mint+"/64\n";
-                config+="ListenPort = 80\n";
+                addressStanza+="#Individual entries for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
+                addressStanza+="Address = 10.10.0."+me.mint+"/24, fd86:ea04:1115::"+me.mint+"/64\n";
+                addressStanza+="ListenPort = 80\n";
 
                 for (var entryLabel in gSRlist) lastPulse=entryLabel;  //stop when we get to this entry
 
@@ -121,7 +121,7 @@ export function setWireguard() {
 
                                 const fs = require('fs');
 
-                                fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+config, (err) => {
+                                fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+config, (err) => {
                                     // throws an error, you could also catch it here
                                     if (err) throw err;
                                     console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
