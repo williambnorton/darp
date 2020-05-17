@@ -81,24 +81,24 @@ function setWireguard() {
     });
 ***/
     //for each group in me.pulseGroups
-    console.log("Setting up wireguard files ");
+    console.log(lib_1.ts() + "Setting up wireguard files ");
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         redisClient.hgetall("mint:0", function (err, me) {
             redisClient.hgetall("mint:1", function (err, genesis) {
                 var lastPulse = "", config = "";
-                config += "\n#Auto generated for " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
+                config += "\n#Auto updated for node: " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
                 config += "Address = 10.10.0." + me.mint + "/24, fd86:ea04:1115::" + me.mint + "/64\n";
                 config += "ListenPort = 80\n";
                 for (var entryLabel in gSRlist)
                     lastPulse = entryLabel; //stop when we get to this entry
                 for (var entryLabel in gSRlist) { //for all currently used mint entries
                     var mint = gSRlist[entryLabel];
-                    console.log(lib_1.ts() + "spewing out wireguard config file into /etc/wireguard mint=" + mint + " entryLabel=" + entryLabel);
+                    console.log(lib_1.ts() + "***** Spewing out wireguard config file into /etc/wireguard mint=" + mint + " entryLabel=" + entryLabel);
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
                         if ((mintEntry != null)) {
                             var prefix = "";
                             if (mintEntry.geo == me.geo) {
-                                prefix = "#";
+                                prefix = "#   * me *   ";
                             } //comment my stuff out
                             console.log(prefix + "------------------- Writing stanza for mint=" + mintEntry.mint + " " + mintEntry.geo);
                             console.log(prefix + "mintTableEntry =" + JSON.stringify(mintEntry, null, 2));

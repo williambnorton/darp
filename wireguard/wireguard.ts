@@ -82,14 +82,14 @@ export function setWireguard() {
 ***/
 
     //for each group in me.pulseGroups
-    console.log("Setting up wireguard files ");
+    console.log(ts()+"Setting up wireguard files ");
 
     redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
                 var lastPulse="", config="";
 
-                config+="\n#Auto generated for "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
+                config+="\n#Auto updated for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
                 config+="Address = 10.10.0."+me.mint+"/24, fd86:ea04:1115::"+me.mint+"/64\n";
                 config+="ListenPort = 80\n";
 
@@ -97,12 +97,12 @@ export function setWireguard() {
 
                 for (var entryLabel in gSRlist) {  //for all currently used mint entries
                     var mint=gSRlist[entryLabel]
-                    console.log(ts()+"spewing out wireguard config file into /etc/wireguard mint="+mint+" entryLabel="+entryLabel);
+                    console.log(ts()+"***** Spewing out wireguard config file into /etc/wireguard mint="+mint+" entryLabel="+entryLabel);
 
                     redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         if ((mintEntry!=null)  ) {
                             var prefix="";
-                            if (mintEntry.geo==me.geo) {prefix="#"}  //comment my stuff out
+                            if (mintEntry.geo==me.geo) {prefix="#   * me *   "}  //comment my stuff out
                             console.log(prefix+"------------------- Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
                             console.log(prefix+"mintTableEntry ="+JSON.stringify(mintEntry,null,2));
                             config+="\n";                            
