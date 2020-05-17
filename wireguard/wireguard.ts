@@ -102,17 +102,17 @@ export function setWireguard() {
                         redisClient.hgetall("mint:"+mint, function (err,mintEntry) {   
                         if ((mintEntry!=null)  ) {
                             var prefix="";
-                            config[mint]="";
+                            config[mintEntry.mint]="";
                             if (mintEntry.geo==me.geo) {prefix="#   * me *   "}  //comment my stuff out
                             console.log(prefix+"------------------- Writing stanza for mint="+mintEntry.mint+" "+mintEntry.geo);
                             console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
-                            config[mint]+=prefix+"# "+mintEntry.geo+" mint="+ mintEntry.mint+"\n";
-                            config[mint]+=prefix+"[Peer]\n"
-                            config[mint]+=prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
-                            config[mint]+=prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
-                            config[mint]+=prefix+"Endpoint = "+mintEntry.ipaddr+"\n";
-                            config[mint]+=prefix+"PersistentKeepalive = 25"+"\n\n";
+                            config[mintEntry.mint]+=prefix+"# "+mintEntry.geo+" mint="+ mintEntry.mint+"\n";
+                            config[mintEntry.mint]+=prefix+"[Peer]\n"
+                            config[mintEntry.mint]+=prefix+"PublicKey = "+mintEntry.publickey.split("=")[0]+"\n";
+                            config[mintEntry.mint]+=prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n";
+                            config[mintEntry.mint]+=prefix+"Endpoint = "+mintEntry.ipaddr+"\n";
+                            config[mintEntry.mint]+=prefix+"PersistentKeepalive = 25"+"\n\n";
                             console.log("config[mint="+mintEntry.mint+"]="+config[mintEntry.mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
@@ -140,7 +140,7 @@ export function setWireguard() {
                             }
                             
                         } else {
-                            console.log("wireguard: configuring wireguard...ignoring self "+me.geo+" or null mint:"+mint);
+                            console.log("wireguard: configuring wireguard...ignoring self "+me.geo+" or null mint");
                         }
                     });
                 }
