@@ -75,7 +75,7 @@ prefix+"# "+mintEntry.geo+" mint="+ mint+"\n" +
 prefix+"[Peer]\n" +
 prefix+"PublicKey = "+mintEntry.publickey+"\n" +
 prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"\n" +
-prefix+"Endpoint = "+mintEntry.ipaddr+"\n" +
+prefix+"Endpoint = "+mintEntry.ipaddr+":"+"80"+"\n" +
 prefix+"PersistentKeepalive = 25"+"\n\n";
 
                             config.unshift(myStanza);
