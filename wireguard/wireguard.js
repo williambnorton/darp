@@ -50,7 +50,7 @@ function setWireguard() {
             redisClient.hgetall("mint:1", function (err, genesis) {
                 var lastPulse = "", addressStanza = "", config = new Array();
                 addressStanza += "#Individual entries for node: " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
-                addressStanza += "Address = 10.10.0." + me.mint + "/24, fd86:ea04:1115::" + me.mint + "/64\n";
+                addressStanza += "Address = 10.10.0." + me.mint + "/16, fd86:ea04:1115::" + me.mint + "/64\n";
                 addressStanza += "ListenPort = 80\n";
                 for (var entryLabel in gSRlist)
                     lastPulse = entryLabel; //stop when we get to this entry
@@ -72,7 +72,7 @@ function setWireguard() {
                                 prefix + "# " + mintEntry.geo + " mint=" + mint + "\n" +
                                 prefix + "[Peer]\n" +
                                 prefix + "PublicKey = " + mintEntry.publickey + "\n" +
-                                prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n" +
+                                prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "/16, fd86:ea04:1115::" + me.mint + "/64\n" +
                                 prefix + "Endpoint = " + mintEntry.ipaddr + ":" + "80" + "\n" +
                                 prefix + "PersistentKeepalive = 25" + "\n\n";
                             config.unshift(myStanza);
