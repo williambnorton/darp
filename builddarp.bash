@@ -9,7 +9,7 @@ ls -l "Build."`date +%y%m%d.%H%M`
 
 #tsc config/config && tsc express/express && tsc pulser/pulser && tsc handlepulse/handlepulse && git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
 
-for file in config express pulser handlepulse
+for file in config express pulser handlepulse wireguard
 do
 	if [ $file/$file.ts -nt $file/$file.js ]; then
 		cd $file

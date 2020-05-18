@@ -3,6 +3,7 @@ exports.__esModule = true;
 //
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //
+// ***
 var lib_1 = require("../lib/lib");
 var WGDIR = "/etc/wireguard"; //this is the direcvtory to build and evolve wg config files
 var pulseRedis = require('redis');
@@ -67,12 +68,12 @@ function setWireguard() {
                             //console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
                             //console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
-                            var myStanza = "" +
+                            var myStanza = "#\n" +
                                 prefix + "# " + mintEntry.geo + " mint=" + mint + "\n" +
                                 prefix + "[Peer]\n" +
                                 prefix + "PublicKey = " + mintEntry.publickey + "\n" +
                                 prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n" +
-                                prefix + "Endpoint = " + mintEntry.ipaddr + "\n" +
+                                prefix + "Endpoint = " + mintEntry.ipaddr + ":" + "80" + "\n" +
                                 prefix + "PersistentKeepalive = 25" + "\n\n";
                             config.unshift(myStanza);
                             //console.log("config[mint="+mint+"]="+config[mint]);

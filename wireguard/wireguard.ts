@@ -1,6 +1,7 @@
 //
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //
+// ***
 import { dump, now, ts } from "../lib/lib";
 const WGDIR="/etc/wireguard";  //this is the direcvtory to build and evolve wg config files
 
@@ -70,7 +71,7 @@ export function setWireguard() {
                             //console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
                             //console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
-                            var myStanza="" + 
+                            var myStanza="#\n" + 
 prefix+"# "+mintEntry.geo+" mint="+ mint+"\n" +
 prefix+"[Peer]\n" +
 prefix+"PublicKey = "+mintEntry.publickey+"\n" +
