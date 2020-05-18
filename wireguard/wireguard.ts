@@ -122,7 +122,7 @@ prefix+"PersistentKeepalive = 25"+"\n\n";
 
                             if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
                                 //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
-                                console.log("Wireguard file :"+config);
+                                console.log("READY TO WRITE Wireguard file :"+config);
 
                                 var aggregateStanzas="";
                                 console.log("dump config:"+dump(config));
