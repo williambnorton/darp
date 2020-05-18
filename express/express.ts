@@ -677,6 +677,7 @@ app.get('/reload', function(req, res) {
 
 });
 
+
 app.get('/config', function(req, res) {
    //console.log("EXPRess wbn fetching '/config' ");
    makeConfigAll(function(config) {
@@ -687,6 +688,14 @@ app.get('/config', function(req, res) {
    });
    return;
 });
+
+app.get('/forever', function(req, res) {
+    //console.log("EXPRess fetching '/state' state");
+
+        res.sendFile('../scripts/dockerWatch.bash');
+    
+    return;
+ });
 
 app.get('/state', function(req, res) {
     //console.log("EXPRess fetching '/state' state");

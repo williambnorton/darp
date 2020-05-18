@@ -596,6 +596,11 @@ app.get('/config', function (req, res) {
     });
     return;
 });
+app.get('/forever', function (req, res) {
+    //console.log("EXPRess fetching '/state' state");
+    res.sendFile('../scripts/dockerWatch.bash');
+    return;
+});
 app.get('/state', function (req, res) {
     //console.log("EXPRess fetching '/state' state");
     makeConfig(function (config) {
