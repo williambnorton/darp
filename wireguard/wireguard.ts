@@ -122,16 +122,18 @@ prefix+"PersistentKeepalive = 25"+"\n\n";
 
                             if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
                                 //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
-                                //console.log("Wireguard file :"+config);
+                                console.log("Wireguard file :"+config);
 
-                                const fs = require('fs');
                                 var aggregateStanzas="";
                                 console.log("dump config:"+dump(config));
                                 for (var stanza=config.pop(); stanza!=null; stanza=config.pop()) {
                                     aggregateStanzas+=stanza;
                                 }
-                                console.log("WIREGUARD FILE: "+BASECONFIG+addressStanza+aggregateStanzas);
-
+                                console.log("BASECONFIG: " + BASECONFIG);
+                                console.log("addressStanza: " + addressStanza);
+                                console.log("aggregateStanzas: " + aggregateStanzas);
+                                
+                                const fs = require('fs');
                                 fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
                                     // throws an error, you could also catch it here
                                     if (err) throw err;

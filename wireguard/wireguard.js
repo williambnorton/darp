@@ -118,14 +118,16 @@ function setWireguard() {
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
                             if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
                                 //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
-                                //console.log("Wireguard file :"+config);
-                                var fs = require('fs');
+                                console.log("Wireguard file :" + config);
                                 var aggregateStanzas = "";
                                 console.log("dump config:" + lib_1.dump(config));
                                 for (var stanza = config.pop(); stanza != null; stanza = config.pop()) {
                                     aggregateStanzas += stanza;
                                 }
-                                console.log("WIREGUARD FILE: " + BASECONFIG + addressStanza + aggregateStanzas);
+                                console.log("BASECONFIG: " + BASECONFIG);
+                                console.log("addressStanza: " + addressStanza);
+                                console.log("aggregateStanzas: " + aggregateStanzas);
+                                var fs = require('fs');
                                 fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
                                     // throws an error, you could also catch it here
                                     if (err)
