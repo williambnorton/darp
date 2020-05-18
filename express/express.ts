@@ -689,6 +689,7 @@ app.get('/config', function(req, res) {
    return;
 });
 
+/** does not work - intention to provide all launch scripts from genesis node
 app.get('/forever', function(req, res) {
     //console.log("EXPRess fetching '/state' state");
     var fs=require("fs");
@@ -698,6 +699,7 @@ app.get('/forever', function(req, res) {
     })
     return;
  });
+**/
 
 app.get('/state', function(req, res) {
     //console.log("EXPRess fetching '/state' state");
