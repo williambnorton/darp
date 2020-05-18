@@ -72,7 +72,7 @@ export function setWireguard() {
                             //console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
                             var myStanza="#\n" + 
-prefix+"# "+mintEntry.geo+" mint="+ mint+"\n" +
+prefix+"# "+mintEntry.geo+" can send to us on this channel mint="+ mint+"\n" +
 prefix+"[Peer]\n" +
 prefix+"PublicKey = "+mintEntry.publickey+"\n" +
 prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"/16, fd86:ea04:1115::"+me.mint+"/64\n" +
