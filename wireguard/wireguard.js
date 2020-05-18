@@ -70,7 +70,7 @@ function setWireguard() {
                             var myStanza = "" +
                                 prefix + "# " + mintEntry.geo + " mint=" + mint + "\n" +
                                 prefix + "[Peer]\n" +
-                                prefix + "PublicKey = " + mintEntry.publickey.split("=")[0] + "\n" +
+                                prefix + "PublicKey = " + mintEntry.publickey + "\n" +
                                 prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "\n" +
                                 prefix + "Endpoint = " + mintEntry.ipaddr + "\n" +
                                 prefix + "PersistentKeepalive = 25" + "\n\n";
