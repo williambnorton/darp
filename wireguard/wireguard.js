@@ -31,7 +31,7 @@ function setWireguard() {
     catch (err) {
         BASECONFIG = "deadbeef00deadbeef00deadbeef0012";
     }
-    console.log("BASECONFIG=" + BASECONFIG);
+    //console.log("BASECONFIG="+BASECONFIG);
     //# Created by ./configWG.bash Fri Mar 6 20:46:57 UTC 2020
     //[Interface]
     //PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
@@ -80,15 +80,15 @@ function setWireguard() {
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
                             if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
                                 //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
-                                console.log("READY TO WRITE Wireguard file :" + config);
+                                //console.log("READY TO WRITE Wireguard file :"+config);
                                 var aggregateStanzas = "";
-                                console.log("dump config:" + lib_1.dump(config));
+                                //console.log("dump config:"+dump(config));
                                 for (var stanza = config.pop(); stanza != null; stanza = config.pop()) {
                                     aggregateStanzas += stanza;
                                 }
-                                console.log("BASECONFIG: " + BASECONFIG);
-                                console.log("addressStanza: " + addressStanza);
-                                console.log("aggregateStanzas: " + aggregateStanzas);
+                                //console.log("BASECONFIG: " + BASECONFIG);
+                                //console.log("addressStanza: " + addressStanza);
+                                //console.log("aggregateStanzas: " + aggregateStanzas);
                                 var fs = require('fs');
                                 fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
                                     // throws an error, you could also catch it here
