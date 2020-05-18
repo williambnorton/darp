@@ -63,6 +63,7 @@ echo "# my PublicKey to share is $PUBLICKEY" >>$WGDIR/wgbase.conf
 echo "#" >>$WGDIR/wgbase.conf
 
 cp $WGDIR/wgbase.conf $WGDIR/wg0.conf
+echo `date` "Base wireguard config: wg0.conf " `cat $WGDIR/wg0.conf` 
 
 echo `date` $0 wgbase.conf below - the rest will be added by running code
 cat $WGDIR/wgbase.conf
