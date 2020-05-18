@@ -31,6 +31,7 @@ function setWireguard() {
     catch (err) {
         BASECONFIG = "deadbeef00deadbeef00deadbeef0012";
     }
+    console.log("BASECONFIG=" + BASECONFIG);
     //# Created by ./configWG.bash Fri Mar 6 20:46:57 UTC 2020
     //[Interface]
     //PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
@@ -41,45 +42,6 @@ function setWireguard() {
     catch (err) {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
     }
-    /*****
-    var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
-    redisClient.scan(cursor, 'MATCH', "mint:*", 'COUNT', '1000', function(err, reply ){
-      if (err){
-          throw err;
-      }
-      //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
-
-      cursor = reply[0];
-      if (cursor === '0'){
-          // reply[1] is an array of matched keys: me.geo:*
-          var mintTable=reply[1]; //[0] is the cursor returned
-          //console.log( "We need to pulse each of these SRs="+SRs);
-            var config="";   //our config
-          for (var i in mintTable) {
-              var mintEntry=mintTable[i];
-              console.log("wireguard - setting stanza for mintEntry=:"+dump(mintEntry));
-
-              //redisClient.hgetall("mint:"+mint, function (err,mintEntry) {
-                console.log("Writing stanza for mint="+mintEntry.geo);
-                    console.log("mintTableEntry ="+JSON.stringify(mintEntry,null,2));
-                    config+="/n[Peer]/n";
-                    config+="PublicKey = "+mintEntry.publickey+"/n";
-                    config+="AllowedIPs = 10.10.0."+mintEntry.mint+"/n";
-                    config+="Endpoint = "+mintEntry.ipaddr;
-                    config+="PersistentKeepalive = 25"+"/n";
-                    console.log("config=:"+config);
-               // if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
-                 //   console.log("Got to last pulse - now writeout the config file:"+config);
-                //}
-                //});
-
-          }
-        } else {
-            console.log("wireguard: scan returned non-zero cursor:");
-            process.exit(86);
-        }
-    });
-***/
     //for each group in me.pulseGroups
     console.log(lib_1.ts() + "Setting up wireguard files ");
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
@@ -92,10 +54,10 @@ function setWireguard() {
                 for (var entryLabel in gSRlist)
                     lastPulse = entryLabel; //stop when we get to this entry
                 for (var entryLabel in gSRlist) { //for all currently used mint entries
-                    var mint = gSRlist[entryLabel];
+                    var mint = gSRlist[entryLabel]; //
                     console.log(lib_1.ts() + "***** Spewing out wireguard config file into /etc/wireguard mint=" + mint + " entryLabel=" + entryLabel);
                     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                        if ((mintEntry != null)) {
+                        if (mintEntry != null) {
                             var prefix = "";
                             var mint = parseInt(mintEntry.mint); //do not count on mint outside my scope
                             //config[mint]=new Array();
