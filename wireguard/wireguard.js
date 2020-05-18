@@ -91,7 +91,7 @@ function setWireguard() {
                                 //console.log("addressStanza: " + addressStanza);
                                 //console.log("aggregateStanzas: " + aggregateStanzas);
                                 var fs = require('fs');
-                                fs.writeFile(WGDIR + '/wg0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
+                                fs.writeFile(WGDIR + '/darp0.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
                                     // throws an error, you could also catch it here
                                     if (err)
                                         throw err;

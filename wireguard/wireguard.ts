@@ -98,7 +98,7 @@ prefix+"PersistentKeepalive = 25"+"\n\n";
                                 //console.log("aggregateStanzas: " + aggregateStanzas);
                                 
                                 const fs = require('fs');
-                                fs.writeFile(WGDIR+'/wg0.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
+                                fs.writeFile(WGDIR+'/darp0.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
                                     // throws an error, you could also catch it here
                                     if (err) throw err;
                                     console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/wg0.conf  <-- when working call it /etc/wireguard/darp0");
