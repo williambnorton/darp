@@ -370,8 +370,8 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + ' ' + pulseEntry.srcMint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
                     txt += "<td >" + pulseEntry.group + "</td>";
-                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.ipaddr + "</a></td>";
-                    txt += "<td>" + pulseEntry.port + "</td>";
+                    txt += "<td>" + '<a href="http://' + genesisIP + ":" + "8081" + '/ssh?ip=ubuntu@' + pulseEntry.ipaddr + '" >' + pulseEntry.ipaddr + "</a></td>";
+                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
                     txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
                     var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                     if (pulseEntry.pulseTimestamp == 0)
