@@ -419,7 +419,7 @@ function handleShowState(req, res) {
                    //txt+="<td>"+pulseEntry.geo+"</td>"
                    txt += "<td >" + pulseEntry.group + "</td>"
 
-                   txt += "<td>" + '<a href="http://'+genesisIP+":"+"8081"+'/ssh?ip=ubuntu@'+pulseEntry.ipaddr+'" >' + pulseEntry.ipaddr + "</a></td>";
+                   txt += "<td> " + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >'+ pulseEntry.ipaddr + "</a></td>";
                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
                    
                    txt += '<td class="'+pulseEntry.geo+'_seq"'+'>' + pulseEntry.seq + "</td>"
