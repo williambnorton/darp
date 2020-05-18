@@ -691,9 +691,10 @@ app.get('/config', function(req, res) {
 
 app.get('/forever', function(req, res) {
     //console.log("EXPRess fetching '/state' state");
-
-        res.sendFile('dockerWatch.bash');
-    
+    var fs=require("fs");
+    var script=fs.readFile("../scripts/dockerWatch.bash", function(err,buf) {
+        res.end(script);
+    })
     return;
  });
 
