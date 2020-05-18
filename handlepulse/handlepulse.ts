@@ -9,7 +9,7 @@ import {
 } from '../lib/lib.js';
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
-var OWLEXPIRES = 10; //seconds should match polling cycle time
+var OWLEXPIRES = 1; //seconds should match polling cycle time
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
