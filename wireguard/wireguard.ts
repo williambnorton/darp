@@ -69,7 +69,7 @@ export function setWireguard() {
                             //config[mint]=new Array();
                             if (mintEntry.geo==me.geo) {prefix="#   * me *   "}  //comment my stuff out
                             //console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
-                            //console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
+                            console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
                             var myStanza="#\n" + 
 prefix+"# "+mintEntry.geo+" can send to us on this channel mint="+ mint+"\n" +
