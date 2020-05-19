@@ -299,9 +299,9 @@ function handleShowState(req, res) {
                     var colEntry = pulses[col];
                     //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
                     if (count <= 10)
-                        txt += '<th><a href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>";
+                        txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>";
                     else
-                        txt += '<th><a href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.srcMint + "</a></th>";
+                        txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.srcMint + "</a></th>";
                 }
                 txt += "</tr>";
                 //
@@ -314,7 +314,7 @@ function handleShowState(req, res) {
                     //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
                     //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
                     var cellState = "RUNNING"; //unreachable     badkey   alert   
-                    txt += '<tr><td><a href="http://' + rowEntry.ipaddr + ":" + rowEntry.port + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
+                    txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr + ":" + rowEntry.port + '/">' + rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                     for (var col in pulses) {
                         var colEntry = pulses[col]; //
                         var entryLabel = rowEntry.geo + "-" + colEntry.geo;
@@ -370,8 +370,8 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + ' ' + pulseEntry.srcMint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
                     //txt+="<td>"+pulseEntry.geo+"</td>"
                     txt += "<td >" + pulseEntry.group + "</td>";
-                    txt += "<td> " + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
-                    txt += "<td>" + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
+                    txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
+                    txt += "<td>" + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
                     txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
                     var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
                     if (pulseEntry.pulseTimestamp == 0)
@@ -441,11 +441,11 @@ function handleShowState(req, res) {
                     txt += "<tr>";
                     //txt+="<td>"+mintEntry+"</td>"
                     txt += "<td>" + mintEntry.mint + "</td>";
-                    txt += '<td class="' + mintEntry.state + '">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>";
+                    txt += '<td class="' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>";
                     txt += "<td>" + mintEntry.port + "</td>";
-                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >' + mintEntry.ipaddr + "</a></td>";
+                    txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >' + mintEntry.ipaddr + "</a></td>";
                     txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-                    txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" >' + mintEntry.state + '</a>' + "</td>";
+                    txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" >' + mintEntry.state + '</a>' + "</td>";
                     //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
                     //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
                     //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
@@ -456,7 +456,7 @@ function handleShowState(req, res) {
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += '<td class="' + mintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
                     //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
-                    txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
+                    txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
@@ -498,7 +498,7 @@ function handleShowState(req, res) {
                 for (var entry in gSRlist) {
                     var mint = gSRlist[entry];
                     //console.log(ts()+"mint="+mint);
-                    txt += '<tr><td><a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + entry + "</a></td><td><a>" + mint + "</a></td></tr>";
+                    txt += '<tr><td><a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + entry + "</a></td><td><a>" + mint + "</a></td></tr>";
                 }
                 txt += "</table>";
                 res.setHeader('Content-Type', 'text/html');
