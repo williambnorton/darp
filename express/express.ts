@@ -311,24 +311,19 @@ function handleShowState(req, res) {
 
            //         var OWLMatrix=getLiveMatrixTable();
            getMatrixTable(config,null, function(OWLMatrix) {
-               //console.log("call:");
-               //console.log("getMatrixTable brought us: OWLMatrix="+dump(OWLMatrix));
 
                //
-               // show OWL Matrix
+               //   show OWL Matrix table
                //
                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table>';
-
                txt += '<tr><th></th>'
                var lastEntry = "";
-               //console.log(ts() + "handleShowState() pulses=" + dump(pulses));
                var count=0;
                for (var row in pulses) {
                    lastEntry = pulses[row].geo + ":" + pulses[row].group;
                    count++
                }
-
-               //print header
+               //   print OWL headers
                for (var col in pulses) {
                    var colEntry = pulses[col];
                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
@@ -337,17 +332,11 @@ function handleShowState(req, res) {
                }
                txt += "</tr>"
                //
-               //   Externalize OWL matrix
+               //   print OWL matrix
                //
-               //console.log(ts() + "handleShowState() inside getMatrix.....lastEntry=" + dump(lastEntry));
-               //var fetchStack = new Array();
                for (var row in pulses) {
                    var rowEntry = pulses[row];
-
-                   //getIPport(rowEntry.srcMint,function (IPnPort) {  //experiment
-
-                   //txt += '<tr><td>' + IPnPort + '</td>'; //heacer on left side
-                    var cellState="RUNNING"; //unreachable     badkey   alert   
+                   var cellState="RUNNING"; //unreachable     badkey   alert   
                    txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.srcMint + '</a></td>'; //heacer on left side
                    for (var col in pulses) {
                        var colEntry = pulses[col];  //
@@ -357,22 +346,10 @@ function handleShowState(req, res) {
                        if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
                            (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                            owl = OWLMatrix[rowEntry.geo][colEntry.geo]
-                       }
-                       //console.log(ts() + "handleShowState() entryLabel=" + entryLabel + " owl=" + owl);
-                       //if (owl=="") txt += '<td class="' + entryLabel + '">' + "0" + "</td>"
-                       //else if (count<100) txt += '<td class="XXXXX" class="' + entryLabel + '">' + '<a  target="_blank" href="http://' + colEntry.ipaddr + ':' + colEntry.port + '/graph?src=' + + rowEntry.srcMint+'&dst='+colEntry.srcMint +  "&group=" + me.group + '" >' + owl + "</a>" + " ms</td>"
-                       
+                       }                       
                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + " ms</a>" + " ms</td>"
-//orig                       txt += '<td class="' + rowEntry.geo + "-" + colEntry.geo+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + me.group + '" >' + owl + "ms</a>" + " ms</td>"
-                            //else txt += '<td class="' + entryLabel + '">' + owl + "</td>"
                    }
                    txt += "</tr>"
-
-
-                // });  //experiment
-
-
-
                }
                txt += "</table>";
 
