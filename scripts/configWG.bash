@@ -53,18 +53,18 @@ echo PRIVATEKEY=$PRIVATEKEY PUBLICKEY=$PUBLICKEY
 #
 #	The wgbase model will be used to re-build the conf file
 # Note: for security reasons we don't NEED to store privatekey in VM
-touch $WGDIR/wgbase.conf $WGDIR/wg0.conf
-chmod 600 $WGDIR/wg0.conf $WGDIR/wgbase.conf
+touch $WGDIR/wgbase.conf $WGDIR/darp0.conf
+chmod 600 $WGDIR/darp0.conf $WGDIR/wgbase.conf
 
 echo '#'>$WGDIR/wgbase.conf
-echo '# `date` Base wireguard config file for ' $HOSTNAME  $VERSION >> $WGDIR/wgbase.conf
+echo '# '`date` ' Base wireguard config file for ' $HOSTNAME  $VERSION >> $WGDIR/wgbase.conf
 echo '[Interface]'>>$WGDIR/wgbase.conf
 echo "PrivateKey = $PRIVATEKEY" >>$WGDIR/wgbase.conf
 echo "# my PublicKey to share is $PUBLICKEY" >>$WGDIR/wgbase.conf
 echo "#" >>$WGDIR/wgbase.conf
 
-cp $WGDIR/wgbase.conf $WGDIR/wg0.conf
-echo `date` "Base wireguard config: wg0.conf " `cat $WGDIR/wg0.conf` 
+cp $WGDIR/wgbase.conf $WGDIR/darp0.conf
+echo `date` "Base wireguard config: darp0.conf " `cat $WGDIR/darp0.conf` 
 
 echo `date` $0 wgbase.conf below - the rest will be added by running code
 cat $WGDIR/wgbase.conf
