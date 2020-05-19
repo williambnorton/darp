@@ -15,7 +15,7 @@ exports.getPublicKey = getPublicKey;
 function wgdump() {
     var wgconfig = "";
     try {
-        wgconfig = require('fs').readFileSync(WGDIR + '/wg0.conf', 'utf8');
+        wgconfig = require('fs').readFileSync(WGDIR + '/darp0.conf', 'utf8');
     }
     catch (err) {
         console.log("wireguard: dumpWGconf() ERROR");
@@ -95,11 +95,7 @@ function setWireguard() {
                                     // throws an error, you could also catch it here
                                     if (err)
                                         throw err;
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/wg0.conf  <-- when working call it /etc/wireguard/darp0");
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/wg0.conf  <-- when working call it /etc/wireguard/darp0");
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/wg0.conf  <-- when working call it /etc/wireguard/darp0");
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/wg0.conf  <-- when working call it /etc/wireguard/darp0");
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/wg0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf  <-- when working call it /etc/wireguard/darp0");
                                     wgdump();
                                 });
                             }
