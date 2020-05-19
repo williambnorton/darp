@@ -57,7 +57,7 @@ touch $WGDIR/wgbase.conf $WGDIR/wg0.conf
 chmod 600 $WGDIR/wg0.conf $WGDIR/wgbase.conf
 
 echo '#'>$WGDIR/wgbase.conf
-echo '# `date` Base wireguard config file for '  `hostname`  >> $WGDIR/wgbase.conf
+echo '# `date` Base wireguard config file for ' $HOSTNAME  $VERSION >> $WGDIR/wgbase.conf
 echo '[Interface]'>>$WGDIR/wgbase.conf
 echo "PrivateKey = $PRIVATEKEY" >>$WGDIR/wgbase.conf
 echo "# my PublicKey to share is $PUBLICKEY" >>$WGDIR/wgbase.conf

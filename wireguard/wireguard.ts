@@ -75,7 +75,7 @@ export function setWireguard() {
 prefix+"# "+mintEntry.geo+" can send to us on this channel mint="+ mint+"\n" +
 prefix+"[Peer]\n" +
 prefix+"PublicKey = "+mintEntry.publickey+"\n" +
-prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"/16, fd86:ea04:1115::"+me.mint+"/64\n" +
+prefix+"AllowedIPs = 10.10.0."+mintEntry.mint+"/16,fd86:ea04:1115::"+mintEntry.mint+"/64\n" +
 prefix+"Endpoint = "+mintEntry.ipaddr+":"+"80"+"\n" +
 prefix+"PersistentKeepalive = 25"+"\n\n";
 
