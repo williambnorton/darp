@@ -82,7 +82,7 @@ function publishMatrix() {
                                         //stack.push( { "mint" : pulseEntry.mint, "geo" : pulseEntry.geo, "owls" : pulseEntry.owls } );
                                         if (pulseEntry.geo + ":" + pulseEntry.group == lastEntry) {
                                             //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
-                                            matrix.stack = matrix.stack.sort(compareValues('mint'));
+                                            //matrix.stack=matrix.stack.sort(compareValues('mint'));
                                             for (var node = matrix.stack.pop(); node != null; node = matrix.stack.pop()) {
                                                 if (typeof node.owls == "undefined")
                                                     node.owls = "";

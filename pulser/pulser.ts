@@ -94,7 +94,7 @@ function publishMatrix() {
                       if (pulseEntry.geo+":"+pulseEntry.group==lastEntry) {
                         //console.log(ts()+"READY TO ROCK. matrix="+dump(matrix));
                         
-                        matrix.stack=matrix.stack.sort(compareValues('mint'));
+                        //matrix.stack=matrix.stack.sort(compareValues('mint'));
 
 
 
