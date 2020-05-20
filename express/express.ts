@@ -971,16 +971,20 @@ function fetchConfigAll(gSRlist, config, callback) {
         }
         console.log("sortedGSRlist: "+sortedGSRlist);
        config = {
-           gSRlist: gSRlist,
-           mintTable: {},
-           pulses: {},
-           entryStack: new Array()
+            //gSRlist: gSRlist,
+            gSRlist: sortedGSRlist,
+            mintTable: {},
+            pulses: {},
+            entryStack: new Array()
        }
-       for (var index in gSRlist) {
-           //console.log("pushing "+index);
+//       for (var index in gSRlist) {
+        for (var index in sortedGSRlist) {
+            //console.log("pushing "+index);
            config.entryStack.unshift({
-               entryLabel: index,
-               mint: gSRlist[index]
+                entryLabel: gSRlist[index],
+                mint: index
+                //entryLabel: index,
+                //mint: gSRlist[index]
            })
        }
        //console.log("fetchConfigAll entryStack="+dump(config.entryStack));
