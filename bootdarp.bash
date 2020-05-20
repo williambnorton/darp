@@ -28,7 +28,7 @@ case "${unameOut}" in
     *)          MACHINE="UNKNOWN:${unameOut}"
 esac
 export MACHINE
-echo `date` "Machine type: ${MACHINE} - we need to know this for some host cmds."
+echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
 
 export WGDIR=/etc/wireguard
 export DARPDIR=$HOME/darp
