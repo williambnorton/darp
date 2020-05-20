@@ -129,7 +129,7 @@ function getMatrixTable(config, darp, callback) {
         darp.srcNodes = new Array();
         darp.last = "";
         //        expressRedisClient.hgetall("gSRlist", function (gSRlist) {
-        var gSRlist = config.gSRlist;
+        var gSRlist = config.gSRlist.sort();
         console.log("gSRlist:" + lib_1.dump(gSRlist));
         for (var srcEntry in gSRlist) {
             var srcGeo = srcEntry.split(":")[0];
