@@ -19,6 +19,17 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 echo `date` "------------------ $0 STARTING --------------------" 
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac;;
+    CYGWIN*)    MACHINE=Cygwin;;
+    MINGW*)     MACHINE=MinGw;;
+    *)          MACHINE="UNKNOWN:${unameOut}"
+esac
+export MACHINE
+echo `date` "Machine type: ${MACHINE} - we need to know this for some host cmds."
+
 export WGDIR=/etc/wireguard
 export DARPDIR=$HOME/darp
 if [ "$PORT" == "" ]; then 
