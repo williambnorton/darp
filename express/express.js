@@ -858,6 +858,12 @@ function makeConfigAll(callback) {
 function fetchConfigAll(gSRlist, config, callback) {
     if (typeof config == "undefined" || config == null) {
         //console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
+        var sortedGSRlist = new Array();
+        for (var sEntryLabel in gSRlist) {
+            var mint = gSRlist[sEntryLabel];
+            sortedGSRlist[mint] = sEntryLabel;
+        }
+        console.log("sortedGSRlist: " + sortedGSRlist);
         config = {
             gSRlist: gSRlist,
             mintTable: {},
