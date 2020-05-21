@@ -879,8 +879,8 @@ function fetchConfigAll(gSRlist, config, callback) {
             //        for (var index in sortedGSRlist) {
             //console.log("pushing "+index);
             config.entryStack.unshift({
-                "entryLabel": gSRlist.split("_")[1],
-                "mint": gSRlist.split("_")[0]
+                "entryLabel": allStack[index].split("_")[1],
+                "mint": allStack[index].split("_")[0]
                 //entryLabel: index,
                 //mint: gSRlist[index]
             });
