@@ -7,7 +7,7 @@ import {
   dump,
   makeYYMMDD
 } from '../lib/lib.js';
-var jStat = require('jStat').jStat;
+var ss = require('simple-statistics')
 
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
@@ -189,7 +189,7 @@ server.on('message', function(message, remote) {
                  return;
                 }
                 //console.log("data:"+dump(data));
-                console.log("min/max/mean/median/stdev: "+jStat.min(data)+jStat.max(data)+jStat.mean(data)+jStat.median(data)+jStat.stdev(data));
+                console.log("min/max/mean/median/stdev: "+ss.min(data)+ss.max(data)+ss.mean(data)+ss.median(data)+ss.stdev(data));
                 //var list="";
                 //data.forEach(ip => {
                 // list += `${ip}; `;

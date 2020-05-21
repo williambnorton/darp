@@ -28,6 +28,8 @@
     "@types/node": "^13.9.5",
     "express": "^4.17.1",
     "jStat": "^1.8.6",
-    "redis": "^3.0.2"
+    "jstat": "^1.9.3",
+    "redis": "^3.0.2",
+    "simple-statistics": "^7.1.0"
   }
 }
