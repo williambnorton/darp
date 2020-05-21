@@ -970,7 +970,7 @@ function fetchConfigAll(gSRlist, config, callback) {
             sortedGSRlist[mint]=sEntryLabel;
         }
         sortedGSRlist.sort();
-        console.log("sortedGSRlist: "+sortedGSRlist);
+        console.log("sortedGSRlist: "+dump(sortedGSRlist));
        config = {
             //gSRlist: gSRlist,
             gSRlist: sortedGSRlist,
