@@ -154,6 +154,17 @@ server.on('message', function (message, remote) {
                 //redisClient.expire("mint:"+pulse.srcMint,10);  //hold for 60 seconds before deleteing mint
                 //this could be deleteing the genesis node forcing reload
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + OWL); //store incoming pulse
+                redisClient.lrange(pulse.geo + "-" + me.geo + "-history", 0, -1, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log("data:" + lib_js_1.dump(data));
+                    var list = "";
+                    data.forEach(function (ip) {
+                        list += ip + "; ";
+                    });
+                });
                 /*
                 var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
                 redisClient.scan(cursor, 'MATCH', pulse.geo + "-" + me.geo+"-history", 'COUNT', '100000', function(err, reply){
