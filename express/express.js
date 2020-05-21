@@ -853,10 +853,6 @@ function makeConfigAll(callback) {
         });
     });
 }
-function pad(num, size) {
-    var s = "000000000" + num;
-    return s.substr(s.length - size);
-}
 //
 // fetchConfigAll() - recurcive
 //
@@ -866,9 +862,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         var sortedGSRlist = new Array();
         var allStack = [];
         for (var sEntryLabel in gSRlist) {
-            var mint0 = pad(parseInt(gSRlist[sEntryLabel]), 3);
-            console.log("mint0:" + mint0);
-            allStack.push(mint0 + "_" + sEntryLabel);
+            allStack.push(gSRlist[sEntryLabel] + "_" + sEntryLabel);
         }
         allStack.sort();
         //we need srlist to be an array of objects we can sort
