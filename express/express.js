@@ -864,6 +864,9 @@ function fetchConfigAll(gSRlist, config, callback) {
             sortedGSRlist[mint] = sEntryLabel;
         }
         sortedGSRlist.sort();
+        //we need srlist to be an array of objects we can sort
+        // { "mint" : mint, "entryLabel" : entryLabel }
+        // sort(compareBy('mint'))
         console.log("sortedGSRlist: " + sortedGSRlist);
         config = {
             gSRlist: gSRlist,
