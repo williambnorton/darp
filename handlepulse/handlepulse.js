@@ -160,6 +160,7 @@ server.on('message', function (message, remote) {
                     if (err) {
                         throw err;
                     }
+                    console.log("reply:" + lib_js_1.dump(reply));
                     //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
                     cursor = reply[0];
                     if (cursor === '0') {

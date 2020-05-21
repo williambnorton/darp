@@ -188,6 +188,7 @@ server.on('message', function(message, remote) {
                 if (err){
                     throw err;
                 }
+                console.log("reply:"+dump(reply));
                 //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
           
                 cursor = reply[0];
