@@ -7,6 +7,7 @@ import {
   dump,
   makeYYMMDD
 } from '../lib/lib.js';
+var jStat = require('jStat').jStat;
 
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
@@ -182,7 +183,6 @@ server.on('message', function(message, remote) {
 
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
 
-              var jStat = require('jStat').jStat;
               redisClient.lrange(pulse.geo + "-" + me.geo+"-history", 0, -1, (err, data) => {
                 if (err) {
                  console.log(err);

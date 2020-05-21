@@ -4,6 +4,7 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
+var jStat = require('jStat').jStat;
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 var OWLEXPIRES = 1; //seconds should match polling cycle time
 var SHOWPULSES = "0";
@@ -154,7 +155,6 @@ server.on('message', function (message, remote) {
                 //redisClient.expire("mint:"+pulse.srcMint,10);  //hold for 60 seconds before deleteing mint
                 //this could be deleteing the genesis node forcing reload
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + OWL); //store incoming pulse
-                var jStat = require('jStat').jStat;
                 redisClient.lrange(pulse.geo + "-" + me.geo + "-history", 0, -1, function (err, data) {
                     if (err) {
                         console.log(err);
