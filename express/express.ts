@@ -969,6 +969,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         var sortedGSRlist=new Array();
         var allStack=[];
         for (var sEntryLabel in gSRlist) {
+            if (parseInt(gSRlist[sEntryLabel])<10) gSRlist[sEntryLabel]="0"+gSRlist[sEntryLabel];
             allStack.push( gSRlist[sEntryLabel] + "_" + sEntryLabel );
         }
         allStack.sort();
