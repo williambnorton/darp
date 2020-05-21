@@ -8,8 +8,6 @@ console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.
 //var HOST='127.0.0.1';
 var CYCLETIME=1; //poll every ____ seconds
 
-
-
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');

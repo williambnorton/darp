@@ -37,6 +37,7 @@ export function setWireguard() {
     //[Interface]
     //PrivateKey = CPEQ3Q4tv6MXHhbQEyfw3VdJP5QzBihe4B41ocAm9UE=
 
+    
     var PUBLICKEY;
     try {
         PUBLICKEY=require('fs').readFileSync(WGDIR+'/publickey', 'utf8');

@@ -11,6 +11,7 @@
 import {   dump,   now,   mintList,   SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION } from '../lib/lib';
 import { setWireguard } from "../wireguard/wireguard";
 
+
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 
 const expressRedis = require('redis');
