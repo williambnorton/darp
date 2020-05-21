@@ -870,7 +870,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         //we need srlist to be an array of objects we can sort
         // { "mint" : mint, "entryLabel" : entryLabel }
         // sort(compareBy('mint'))
-        console.log("allStack: " + lib_1.dump(allStack));
+        //console.log("allStack: "+dump(allStack));
         config = {
             //gSRlist: gSRlist,
             gSRlist: allStack,
