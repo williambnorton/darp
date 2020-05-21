@@ -7,6 +7,7 @@ import {
   dump,
   makeYYMMDD
 } from '../lib/lib.js';
+
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
 var OWLEXPIRES = 1; //seconds should match polling cycle time
@@ -181,16 +182,18 @@ server.on('message', function(message, remote) {
 
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
 
+              var jStat = require('jStat').jStat;
               redisClient.lrange(pulse.geo + "-" + me.geo+"-history", 0, -1, (err, data) => {
                 if (err) {
                  console.log(err);
                  return;
                 }
-                console.log("data:"+dump(data));
-                var list="";
-                data.forEach(ip => {
-                 list += `${ip}; `;
-                });
+                //console.log("data:"+dump(data));
+                console.log("min/max/mean/median/stdev: "+jStat.min(data)+jStat.max(data)+jStat.mean(data)+jStat.median(data)+jStat.stdev(data));
+                //var list="";
+                //data.forEach(ip => {
+                // list += `${ip}; `;
+                //});
               });
               /*
               var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
