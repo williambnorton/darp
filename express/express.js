@@ -894,7 +894,7 @@ function fetchConfigAll(gSRlist, config, callback) {
     var entry = config.entryStack.pop();
     //console.log("EXPRESS() popped entry="+dump(entry));
     if (entry) {
-        var mint = entry.mint;
+        var mint = parseInt(entry.mint);
         var entryLabel = entry.entryLabel;
         expressRedisClient.hgetall("mint:" + mint, function (err, mintEntry) {
             if (err)
