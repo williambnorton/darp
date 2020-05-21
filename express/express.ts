@@ -967,7 +967,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         var sortedGSRlist=new Array();
         var allStack=[];
         for (var sEntryLabel in gSRlist) {
-            allStack.push({'mint':parseInt(gSRlist[sEntryLabel]), 'entryLabel':sEntryLabel});
+            allStack.push( gSRlist[sEntryLabel] + "_" + sEntryLabel );
         }
         allStack.sort();
 
@@ -980,8 +980,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         console.log("allStack: "+dump(allStack));
 
 
-
-
+        
         config = {
             gSRlist: gSRlist,
             //gSRlist: sortedGSRlist,
