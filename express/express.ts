@@ -551,9 +551,10 @@ function handleShowState(req, res) {
                txt += '<br><h2>gSRlist</h2><table>';
                txt += "<tr><th>pulse</th><th>mint</th></tr>"
                for (var entry in gSRlist) {
-                   var mint = gSRlist[entry];
-                   //console.log(ts()+"mint="+mint);
-                   txt += '<tr><td><a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + entry + "</a></td><td><a>" + mint + "</a></td></tr>"
+                var mint = gSRlist[entry].split("_")[0];
+                var gEntryLabel = gSRlist[entry].split("_")[1];
+                //console.log(ts()+"mint="+mint);
+                   txt += '<tr><td><a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mint + "</a></td><td><a>" + gEntryLabel + "</a></td></tr>"
                }
                txt += "</table>";
 
