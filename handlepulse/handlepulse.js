@@ -153,6 +153,23 @@ server.on('message', function (message, remote) {
                 //redisClient.expire(pulseLabel,10);  //hold for 60 seconds before deleteing entry
                 //redisClient.expire("mint:"+pulse.srcMint,10);  //hold for 60 seconds before deleteing mint
                 //this could be deleteing the genesis node forcing reload
+                redisClient.rpush([pulse.geo + "-" + me.geo + "_history", OWL]); //store incoming pulse
+                redisClient.scan(pulse.geo + "-" + me.geo + "_history"); //wbnwbnwbnwbn
+                var cursor = '0'; // DEVOPS:* returns all of my pulseGroups
+                redisClient.scan(cursor, 'MATCH', pulse.geo + "-" + me.geo + "_history", 'COUNT', '100000', function (err, reply) {
+                    if (err) {
+                        throw err;
+                    }
+                    //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
+                    cursor = reply[0];
+                    if (cursor === '0') {
+                        // reply[1] is an array of matched keys: me.geo:*
+                        var dataPoints = reply[1]; //[0] is the cursor returned
+                        for (var i in dataPoints) {
+                            console.log("EXPRESS(): =" + dataPoints[i]);
+                        }
+                    }
+                });
                 var d = new Date();
                 if (pulse.owl == "")
                     pulse.owl = "0";

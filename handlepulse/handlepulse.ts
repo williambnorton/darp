@@ -179,6 +179,33 @@ server.on('message', function(message, remote) {
               //redisClient.expire("mint:"+pulse.srcMint,10);  //hold for 60 seconds before deleteing mint
               //this could be deleteing the genesis node forcing reload
 
+              redisClient.rpush([ pulse.geo + "-" + me.geo+"_history", OWL ]);  //store incoming pulse
+
+
+              redisClient.scan(pulse.geo + "-" + me.geo+"_history",)    //wbnwbnwbnwbn
+              var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
+              redisClient.scan(cursor, 'MATCH', pulse.geo + "-" + me.geo+"_history", 'COUNT', '100000', function(err, reply){
+                if (err){
+                    throw err;
+                }
+                //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
+          
+                cursor = reply[0];
+                if (cursor === '0'){
+                    // reply[1] is an array of matched keys: me.geo:*
+                    var dataPoints=reply[1]; //[0] is the cursor returned
+
+                    for (var i in dataPoints) {
+                        console.log("EXPRESS(): ="+dataPoints[i]);
+                    }
+                }
+             });
+
+
+
+
+
+
 
 
 
@@ -195,6 +222,7 @@ server.on('message', function(message, remote) {
               //
               //console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
 
+              
 
               //console.log("handlePulse:");
               //
