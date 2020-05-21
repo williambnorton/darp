@@ -224,7 +224,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"");';
         txt += '              var linkToMe=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
-        txt += '              linkToMe += pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "' + me.group + '"+ \'">\' + pulse.owl + " ms </a>";';
+        txt += '              linkToMe += pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "' + me.group + '"+ \'">\' + pulse.owl + "ms </a>";';
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(linkToMe);';
         //        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);';
@@ -237,7 +237,7 @@ function handleShowState(req, res) {
         txt += '              var owl=segment.split("=")[1];';
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
-        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + " ms </a>";';
+        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + "ms </a>";';
         //        txt += '              console.log("my link="+link);'
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';
         txt += '          }';
@@ -317,7 +317,7 @@ function handleShowState(req, res) {
                             (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                             owl = OWLMatrix[rowEntry.geo][colEntry.geo];
                         }
-                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + " ms</a>" + " ms</td>";
+                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + "</td>";
                     }
                     txt += "</tr>";
                 }
