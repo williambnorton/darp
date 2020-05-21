@@ -215,7 +215,7 @@ function handleShowState(req, res) {
         txt += '          var pulse=value;';
         txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
         // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-        txt += '              /*console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);*/';
+        txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);';
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
         txt += '         }';
         txt += '          if (pulse.pulseTimestamp!="0")';
@@ -864,7 +864,7 @@ function fetchConfigAll(gSRlist, config, callback) {
             sortedGSRlist[mint] = sEntryLabel;
         }
         sortedGSRlist.sort();
-        console.log("sortedGSRlist: " + lib_1.dump(sortedGSRlist));
+        console.log("sortedGSRlist: " + sortedGSRlist);
         config = {
             //gSRlist: gSRlist,
             gSRlist: sortedGSRlist,
