@@ -869,20 +869,20 @@ function fetchConfigAll(gSRlist, config, callback) {
         // sort(compareBy('mint'))
         console.log("allStack: " + lib_1.dump(allStack));
         config = {
-            gSRlist: gSRlist,
-            //gSRlist: sortedGSRlist,
+            //gSRlist: gSRlist,
+            gSRlist: allStack,
             mintTable: {},
             pulses: {},
             entryStack: new Array()
         };
-        for (var index in gSRlist) {
+        for (var index in allStack) {
             //        for (var index in sortedGSRlist) {
             //console.log("pushing "+index);
             config.entryStack.unshift({
-                //entryLabel: gSRlist[index],
-                //mint: index
-                entryLabel: index,
-                mint: gSRlist[index]
+                "entryLabel": gSRlist.split("_")[1],
+                "mint": gSRlist.split("_")[0]
+                //entryLabel: index,
+                //mint: gSRlist[index]
             });
         }
         //console.log("fetchConfigAll entryStack="+dump(config.entryStack));
