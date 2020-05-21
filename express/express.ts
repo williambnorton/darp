@@ -965,11 +965,11 @@ function fetchConfigAll(gSRlist, config, callback) {
    if (typeof config == "undefined" || config == null) {
        //console.log(ts()+"fetchConfig(): STARTING ECHO: gSRlist="+dump(gSRlist)+" config="+dump(config)+" ");
         var sortedGSRlist=new Array();
+        var allStack=[];
         for (var sEntryLabel in gSRlist) {
-            var mint=gSRlist[sEntryLabel];
-            sortedGSRlist[mint]=sEntryLabel;
+            allStack.push({'mint':parseInt(gSRlist[sEntryLabel]), 'entryLabel':sEntryLabel});
         }
-        sortedGSRlist.sort();
+        allStack.sort();
 
 
 
@@ -977,7 +977,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         //we need srlist to be an array of objects we can sort
         // { "mint" : mint, "entryLabel" : entryLabel }
         // sort(compareBy('mint'))
-        console.log("sortedGSRlist: "+sortedGSRlist);
+        console.log("allStack: "+dump(allStack));
 
 
 
