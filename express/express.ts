@@ -295,6 +295,21 @@ function handleShowState(req, res) {
         
         
         // print out the number then color the background
+
+
+
+
+        txt += '              if (pulseDestEntry!=null) {' 
+        txt += '                  var myMedian=pulseDestEntry.median;'
+        txt += '                  var myOwl=pulseDestEntry.owl;'   //measured latency reported by this node       
+        txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);'
+
+        txt += '                  if (typeof myMedian != "undefined") {'
+//        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
+
+        txt +='                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
+
+
         
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
@@ -303,16 +318,7 @@ function handleShowState(req, res) {
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';   
 
 
-        
-        txt += '              if (pulseDestEntry!=null) {' 
-        txt += '                  var myMedian=pulseDestEntry.median;'
-        txt += '                  var myOwl=pulseDestEntry.owl;'   //measured latency reported by this node       
-        txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);'
 
-        txt += '                  if (typeof myMedian != "undefined") {'
-        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
-
-        txt +='                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
 
         txt += '                        if ((typeof Ideviation == "number") && (Ideviation>51))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
         txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>33)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
