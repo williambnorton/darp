@@ -4,7 +4,7 @@ exports.__esModule = true;
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
-var jstat = require('../node_modules/jstat/dist/jstat.js');
+var jstat = require('jstat');
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 var OWLEXPIRES = 1; //seconds should match polling cycle time
 var SHOWPULSES = "0";
