@@ -308,14 +308,15 @@ function handleShowState(req, res) {
 //        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
 
         txt +='                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
+        txt += '                        console.log("Ideviation="+Ideviation+"%");'
 
 
         
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-        txt += '              var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-        txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + owl + "ms</a>";'
-//        txt += '              console.log("my link="+link);'
-        txt += '              $("."+srcMint+"-"+dstMint).html(link);';   
+        txt += '                        var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
+        txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
+//        txt += '                      console.log("my link="+link);'
+        txt += '                        $("."+srcMint+"-"+dstMint).html(link);';   
 
 
 
