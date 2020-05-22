@@ -369,7 +369,7 @@ function handleShowState(req, res) {
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_owl"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.median + "</td>";
+                    txt += '<td class="' + pulseEntry.geo + '_median"' + '>' + pulseEntry.median + "</td>";
                     //txt+="<td>"+pulseEntry.owls+"</td>"
                     txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
