@@ -223,7 +223,7 @@ function handleShowState(req, res) {
         //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
         txt += '         }';
-        txt += '          console.log("config="+JSON.stringify(config,null,2));';
+        //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
@@ -247,17 +247,15 @@ function handleShowState(req, res) {
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
-        //        txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
-        //        txt += 'function findPulse(mint) { for (var x in config.pulses) {var pulseEntry=config.pulses[x]; if (pulseEntry.srcMint==mint) return pulseEntry;}return null;}';  //for each owl in this pulse's owls list
-        //        txt += '              var segment=ary[src];'
-        //        txt += '              var srcMint=segment.split("=")[0];'
-        //        txt += '              var owl=segment.split("=")[1];';  //OWL value from srcMint
+        txt += '          var dstMedian=pulse.median;'; //median measure for this incoming pulse
+        txt += '          for (var src in ary) {'; //for each owl in this pulse's owl list
+        txt += '              var segment=ary[src];';
+        txt += '              var srcMint=segment.split("=")[0];';
+        txt += '              var owl=segment.split("=")[1];'; //OWL value from srcMint
         //        txt += '              /*colorMatrix(srcMint,dstMint,owl);*/'
-        //        txt += '              for (var p in config.pulses) {'  //find others with a measurement from us
+        //        txt += '              for (var p in config.pulses) {'  //find this srcMint in the owls reported by others
         //        txt += '                  var entry=config.pulses[p]; '
         //        txt += '                  for (owl in entry.owls) {'
-        //        txt += '                        var srcMint=segment.split("=")[0];'
-        //        txt += '                        var owl=segment.split("=")[1];';  //OWL value from srcMint
         //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
         //        txt += '                  }'
         //        txt += '              }'
