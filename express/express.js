@@ -199,6 +199,11 @@ function handleShowState(req, res) {
         if (me.state == "SINGLESTEP")
             txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 10 + '">';
         //       txt += '<html><head>';
+        //
+        //
+        //      In browser XHR Code to fetch and update the page
+        //
+        //
         txt += '<head title="DARP">';
         txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
@@ -234,9 +239,9 @@ function handleShowState(req, res) {
         txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
         txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
         txt += '            else $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","white");';
-        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.geo+"_median").css("background-color","red");';
-        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.geo+"_median").css("background-color","orange");';
-        txt += '            else $("."+pulse.geo+"_median").css("background-color","white");';
+        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.geo+"_owl").css("background-color","red");';
+        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.geo+"_owl").css("background-color","orange");';
+        txt += '            else $("."+pulse.geo+"_owl").css("background-color","white");';
         txt += '          }';
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         txt += '          var ary=pulse.owls.split(",");';

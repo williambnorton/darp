@@ -214,6 +214,11 @@ function handleShowState(req, res) {
        //Simple instrumentation UI for DARP
        if (me.state == "SINGLESTEP") txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 10 + '">';
 //       txt += '<html><head>';
+//
+//
+//      In browser XHR Code to fetch and update the page
+//
+//
        txt += '<head title="DARP">';
 
        txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
@@ -261,13 +266,14 @@ function handleShowState(req, res) {
         txt +='           if (typeof pulse.median != "unknown") {'
         txt +='             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
         txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
+
         txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","red");'
         txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","orange");'
         txt += '            else $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","white");'
 
-        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.geo+"_median").css("background-color","red");'
-        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.geo+"_median").css("background-color","orange");'
-        txt += '            else $("."+pulse.geo+"_median").css("background-color","white");'
+        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.geo+"_owl").css("background-color","red");'
+        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.geo+"_owl").css("background-color","orange");'
+        txt += '            else $("."+pulse.geo+"_owl").css("background-color","white");'
         txt += '          }'
        
 
@@ -431,8 +437,14 @@ function handleShowState(req, res) {
 
                    //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                    txt += "<td>" + pulseEntry.srcMint + "</td>"
+
+
+
                    txt += '<td class="'+pulseEntry.geo+'_owl"'+'>'+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
                    txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
+
+
+
 
                    //txt+="<td>"+pulseEntry.owls+"</td>"
                    txt += '<td class="'+pulseEntry.geo+'_inOctets"'+'>' + pulseEntry.inOctets + "</td>"
