@@ -228,13 +228,13 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(linkToMe);';
         //        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);';
-        /*
-                txt +='           var classification=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
-                txt +='           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);'
-                txt += '          if ((typeof classification == "number") && (classification>50)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","red");'
-                txt += '          else if ((typeof classification == "number") && (classification>30)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","orange");'
-                txt += '          else $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","white");'
-        */
+        txt += '           if (typeof pulse.median != "unknown") {';
+        txt += '             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));';
+        txt += '             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");';
+        txt += '            if ((typeof deviation == "number") && (deviation>50)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
+        txt += '            else if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
+        txt += '            else $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","white");';
+        txt += '          }';
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
