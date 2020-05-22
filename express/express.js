@@ -258,8 +258,8 @@ function handleShowState(req, res) {
         txt += '                  var myMedian=pulseDestEntry.median;';
         txt += '                  console.log(pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);';
         //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
-        txt += '                  }';
-        txt += '                var pulseEntry';
+        txt += '                  } else {console.log("pulseDestEntry=null");}';
+        txt += '               ';
         txt += '              ';
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
