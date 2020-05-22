@@ -181,8 +181,8 @@ server.on('message', function(message, remote) {
                 }
 
                 var newData=data.toString().split`,`.map(x=>+x)
-                pulse.median=""+jstat(newData.sort()).median();
-                console.log("                           * * * * * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median);
+                pulse.median=""+jstat(newData).median();
+                console.log("        * * * * * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median);
 
               });
 
