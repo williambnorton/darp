@@ -285,7 +285,18 @@ function handleShowState(req, res) {
         txt += '              var segment=ary[src];'
         txt += '              var srcMint=segment.split("=")[0];'
         txt += '              var owl=segment.split("=")[1];'
-//        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
+        txt += '              /*colorMatrix(srcMint,dstMint,owl);*/'
+
+        txt += '              for (var p in config.pulses) {'
+        txt += '                  var entry=config.pulses[p]; '
+        txt += '                  for (owl in entry.owls) {'
+        txt += '                      console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
+        txt += '                  }'
+
+        txt += '              }'
+
+
+        //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
         txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + owl + "ms</a>";'
 //        txt += '              console.log("my link="+link);'
