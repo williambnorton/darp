@@ -263,7 +263,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);'
 
 
-        txt +='           if (typeof pulse.median != "unknown") {'
+        txt +='           if (typeof pulse.median != "unknown" && pulse.median>5) {'
         txt +='             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
         txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
 
