@@ -230,7 +230,9 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);';
         txt += '           var classification=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));';
         txt += '           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);';
-        //txt += '          if (classification>50) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","red");'
+        txt += '          if ((typeof classification == "number") && (classification>50)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
+        txt += '          else if ((typeof classification == "number") && (classification>30)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
+        txt += '          else $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","white");';
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
