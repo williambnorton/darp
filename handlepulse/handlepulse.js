@@ -152,13 +152,13 @@ server.on('message', function (message, remote) {
                 }
                 ;
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + OWL); //store incoming pulse
-                redisClient.lrange(pulse.geo + "-" + me.geo + "-history", 0, -1, function (err, data) {
+                redisClient.lrange(pulse.geo + "-" + me.geo + "-history", -300, -1, function (err, data) {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     var newData = data.toString().split(templateObject_1 || (templateObject_1 = __makeTemplateObject([","], [","]))).map(function (x) { return +x; });
-                    pulse.median = "" + jstat(newData).median();
+                    pulse.median = "" + Math.round(jstat(newData).median());
                     console.log("      * * * * * STATS pulse.geo=" + pulse.geo + " newData=" + newData + " median=" + pulse.median);
                 });
                 redisClient.publish("pulses", msg);
