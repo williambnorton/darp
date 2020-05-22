@@ -154,6 +154,7 @@ server.on('message', function (message, remote) {
                         return;
                     }
                     pulse.median = "" + jstat(data).median();
+                    console.log("pulse.geo=" + pulse.geo + " data=" + data + " median=" + pulse.median);
                 });
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
