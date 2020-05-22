@@ -270,6 +270,14 @@ function handleShowState(req, res) {
         txt += "    });";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
+        txt += "function getOwl(config,src,dst) {";
+        txt += "    for (var x in config.pulses) {";
+        txt += "        var pulseEntry=config.pulses[x];";
+        txt += "        if (pulseEntry.srcMint==dst) {";
+        txt += "            console.log('getOwl(): Found the '+dst);";
+        txt += "        }";
+        txt += "    }";
+        txt += "}";
         txt += "setTimeout(fetchState,1000);";
         txt += '</script> ';
         txt += '</head>';
