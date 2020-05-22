@@ -259,7 +259,7 @@ function handleShowState(req, res) {
 
 
         txt +='           var classification=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
-        //txt +='           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);'
+        txt +='           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);'
         //txt += '          if (classification>50) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","red");'
        
 
