@@ -246,17 +246,18 @@ function handleShowState(req, res) {
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
-        txt += '          for (var src in ary) {';
+        txt += '          var dstMedian=pulse.median;'; //median measure for this incoming pulse
+        txt += '          for (var src in ary) {'; //for each owl in this pulse's owl list
         txt += '              var segment=ary[src];';
         txt += '              var srcMint=segment.split("=")[0];';
-        txt += '              var owl=segment.split("=")[1];';
-        txt += '              /*colorMatrix(srcMint,dstMint,owl);*/';
-        txt += '              for (var p in config.pulses) {';
-        txt += '                  var entry=config.pulses[p]; ';
-        txt += '                  for (owl in entry.owls) {';
-        txt += '                      console.log("entry.geo="+entry.geo+" owl="+entry.owl);';
-        txt += '                  }';
-        txt += '              }';
+        txt += '              var owl=segment.split("=")[1];'; //OWL value from srcMint
+        //        txt += '              /*colorMatrix(srcMint,dstMint,owl);*/'
+        //        txt += '              for (var p in config.pulses) {'  //find this srcMint in the owls reported by others
+        //        txt += '                  var entry=config.pulses[p]; '
+        //        txt += '                  for (owl in entry.owls) {'
+        //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
+        //        txt += '                  }'
+        //        txt += '              }'
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
         txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + "ms</a>";';
