@@ -179,8 +179,10 @@ server.on('message', function(message, remote) {
                  console.log(err);
                  return;
                 }
-                pulse.median=""+jstat(data.sort()).median();
-                console.log("                           * * * * * * * * * STATS pulse.geo="+pulse.geo+" data="+data+" median="+pulse.median);
+
+                var newData=data.split`,`.map(x=>+x)
+                pulse.median=""+jstat(newData.sort()).median();
+                console.log("                           * * * * * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median);
 
               });
 

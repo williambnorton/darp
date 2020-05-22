@@ -1,4 +1,8 @@
 "use strict";
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 exports.__esModule = true;
 //
 //  handlePulse - receive incoming pulses and store in redis
@@ -153,8 +157,9 @@ server.on('message', function (message, remote) {
                         console.log(err);
                         return;
                     }
-                    pulse.median = "" + jstat(data.sort()).median();
-                    console.log("                           * * * * * * * * * STATS pulse.geo=" + pulse.geo + " data=" + data + " median=" + pulse.median);
+                    var newData = data.split(templateObject_1 || (templateObject_1 = __makeTemplateObject([","], [","]))).map(function (x) { return +x; });
+                    pulse.median = "" + jstat(newData.sort()).median();
+                    console.log("                           * * * * * * * * * STATS pulse.geo=" + pulse.geo + " newData=" + newData + " median=" + pulse.median);
                 });
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
@@ -326,3 +331,4 @@ process.on('SIGTERM', function () {
     console.info('handlePulse SIGTERM signal received.');
     process.exit(36);
 });
+var templateObject_1;
