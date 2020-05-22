@@ -259,6 +259,10 @@ function handleShowState(req, res) {
         txt += '                  var myOwl=pulseDestEntry.owl;'; //measured latency reported by this node       
         txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);';
         //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
+        txt += '                  if (typeof myMedian != "undefined") {';
+        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey")';
+        txt += '                  ';
+        txt += '                  }';
         txt += '              } else {console.log("pulseDestEntry=null");}';
         txt += '               ';
         txt += '              ';
