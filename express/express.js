@@ -250,15 +250,16 @@ function handleShowState(req, res) {
         //txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
         txt += '          for (var owl in owls) {'; //for each owl in this pulse's owl list
         txt += '              var owlEntry=owls[owl];';
-        txt += '              var srcMint=owlEntry.split("=")[0];';
-        txt += '              var dstMint=pulse.srcMint;';
-        txt += '              var myOwl=owlEntry.split("=")[1];'; //OWL value from srcMint
+        txt += '              var srcMint=owlEntry.split("=")[0];'; //this is the guy who sent the reported pulse
+        txt += '              var dstMint=pulse.srcMint;'; //this was his peer's measure to him
+        txt += '              var myOwl=owlEntry.split("=")[1];'; //OWL value reported to
         txt += '              var pulseDestEntry=getPulse(config,srcMint);';
         txt += '              if (pulseDestEntry!=null) {';
         txt += '                  var myMedian=pulseDestEntry.median;';
-        txt += '                  console.log(pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);';
+        txt += '                  var myOwl=pulseDestEntry.owl;'; //measured latency reported by this node       
+        txt += '                  console.log("pulseEntry.geo="+pulseEntry.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);';
         //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
-        txt += '                  } else {console.log("pulseDestEntry=null");}';
+        txt += '              } else {console.log("pulseDestEntry=null");}';
         txt += '               ';
         txt += '              ';
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
