@@ -29,5 +29,6 @@
     "express": "^4.17.1",
     "jstat": "^1.9.3",
     "redis": "^3.0.2"
-  }
+  },
+  "devDependencies": {}
 }
