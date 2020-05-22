@@ -185,9 +185,9 @@ server.on('message', function(message, remote) {
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
   
-                redisClient.hgetall(pulseLabel,function (err, writtenPulse){
-                  console.log("wrote :"+dump(writtenPulse));
-                })
+                //redisClient.hgetall(pulseLabel,function (err, writtenPulse){  //INSTRUMENTATIOJ POINT
+                //  console.log("wrote :"+dump(writtenPulse));
+                //})
 
                 //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
                 redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
