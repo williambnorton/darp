@@ -299,7 +299,7 @@ function handleShowState(req, res) {
 //        txt += '                  }'
 
         txt += '              '
-        txt += '            }'
+        txt += '              '
 
 
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
