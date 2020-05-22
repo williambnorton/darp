@@ -246,7 +246,7 @@ function handleShowState(req, res) {
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
         txt += '         }'
 
-       txt += '          console.log("config="+dump(config));'
+       txt += '          console.log("config="+JSON.stringify(config,null,2));'
 
 
         txt += '          if (pulse.pulseTimestamp!="0")'
