@@ -289,7 +289,7 @@ function handleShowState(req, res) {
         txt += '          for (var owl in owls) {';  //for each owl in this pulse's owl list
         txt += '              var owlEntry=owls[owl];'
         txt += '              var srcMint=owlEntry.split("=")[0];'
-        txt += '              var destMint=pulse.srcMint;'
+        txt += '              var dstMint=pulse.srcMint;'
         txt += '              var myOwl=owlEntry.split("=")[1];';  //OWL value from srcMint
         txt += '              var pulseDestEntry=getPulse(config,srcMint);'
 
