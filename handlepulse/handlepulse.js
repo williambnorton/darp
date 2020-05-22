@@ -153,7 +153,7 @@ server.on('message', function (message, remote) {
                         console.log(err);
                         return;
                     }
-                    pulse.median = "" + jstat(data).median();
+                    pulse.median = "" + jstat(data.sort()).median();
                     console.log("                           * * * * * * * * * STATS pulse.geo=" + pulse.geo + " data=" + data + " median=" + pulse.median);
                 });
                 redisClient.publish("pulses", msg);
