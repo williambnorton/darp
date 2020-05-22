@@ -223,7 +223,7 @@ function handleShowState(req, res) {
         //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
         txt += '         }';
-        txt += '          console.log("config="+JSON.stringify(config,null,2));';
+        //txt += '          console.log("config="+JSON.stringify(config,null,2));'
         txt += '          if (pulse.pulseTimestamp!="0")';
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
@@ -274,7 +274,11 @@ function handleShowState(req, res) {
         txt += "    for (var x in config.pulses) {";
         txt += "        var pulseEntry=config.pulses[x];";
         txt += "        if (pulseEntry.srcMint==dst) {";
-        txt += "            console.log('getOwl(): Found the '+dst);";
+        txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');";
+        txt += '            for (var owl in pulseEntry.owls) {';
+        txt += '                console.log("pulseEntry.geo="+pulseEntry.geo+" owl="+entry.owl);';
+        txt += '             }';
+        txt += "            ";
         txt += "        }";
         txt += "    }";
         txt += "}";
