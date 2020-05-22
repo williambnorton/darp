@@ -2,7 +2,7 @@
   "name": "darp",
   "version": "1.0.1",
   "description": "Distrinbuted Routing Autonomous Protocol",
-  "main": "handlePulse/handlePulse.js",
+  "main": "bootdarp.bash",
   "directories": {
     "doc": "docs",
     "lib": "lib"
