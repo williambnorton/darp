@@ -231,8 +231,8 @@ function handleShowState(req, res) {
         txt += '           if (typeof pulse.median != "unknown") {';
         txt += '             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));';
         txt += '             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");';
-        txt += '            if ((typeof deviation == "number") && (deviation>50)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
-        txt += '            else if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
+        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
+        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
         txt += '            else $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","white");';
         txt += '          }';
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
