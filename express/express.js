@@ -237,11 +237,11 @@ function handleShowState(req, res) {
         txt += '           if (typeof pulse.median != "unknown" && pulse.median>5) {';
         txt += '             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));';
         txt += '             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");';
-        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
-        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
+        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","red");';
+        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","orange");';
         txt += '            else $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","white");';
-        txt += '            if ((typeof deviation == "number") && (deviation>51)) $("."+pulse.geo+"_owl").css("background-color","red");';
-        txt += '            else if ((typeof deviation == "number") && (deviation>33)) $("."+pulse.geo+"_owl").css("background-color","orange");';
+        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.geo+"_owl").css("background-color","red");';
+        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.geo+"_owl").css("background-color","orange");';
         txt += '            else $("."+pulse.geo+"_owl").css("background-color","white");';
         txt += '          }';
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
@@ -268,8 +268,8 @@ function handleShowState(req, res) {
         txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
         //        txt += '                      console.log("my link="+link);'
         txt += '                        $("."+srcMint+"-"+dstMint).html(link);';
-        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>51))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
-        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>33)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
+        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
+        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
         txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");';
         txt += '                  ';
         txt += '                  }';
