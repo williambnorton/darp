@@ -250,7 +250,6 @@ function handleShowState(req, res) {
 
 
 
-        txt +='           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);'
         txt += '          var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
         txt += '          linkToMe += pulse.srcMint + "&dstMint=" + "'+me.mint+'" + "&group=" + "'+me.group+'"+ \'">\' + pulse.owl + "ms </a>";'
         txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(linkToMe);'  
@@ -258,8 +257,10 @@ function handleShowState(req, res) {
 //        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);'
 
+
         txt +='           var classification=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
-        txt += '          if (classification>50) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color", "red")'
+        txt +='           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);'
+        txt += '          if (classification>50) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","red");'
        
 
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
