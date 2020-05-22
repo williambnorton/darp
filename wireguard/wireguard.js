@@ -50,7 +50,7 @@ function setWireguard() {
             redisClient.hgetall("mint:1", function (err, genesis) {
                 var lastPulse = "", addressStanza = "", config = new Array();
                 addressStanza += "#Individual entries for node: " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
-                addressStanza += "Address = 10.10.0." + me.mint + "/16, fd86:ea04:1115::" + me.mint + "/64\n";
+                addressStanza += "Address = 10.10." + Math.round(me.mint / 254) + "." + (me.mint % 254) + "/16, fd86:ea04:1115::" + me.mint + "/64\n";
                 addressStanza += "ListenPort = 80\n";
                 for (var entryLabel in gSRlist)
                     lastPulse = entryLabel; //stop when we get to this entry
@@ -72,7 +72,7 @@ function setWireguard() {
                                 prefix + "# " + mintEntry.geo + " can send to us on this channel mint=" + mint + "\n" +
                                 prefix + "[Peer]\n" +
                                 prefix + "PublicKey = " + mintEntry.publickey + "\n" +
-                                prefix + "AllowedIPs = 10.10.0." + mintEntry.mint + "/32,fd86:ea04:1115::" + mintEntry.mint + "/128\n" +
+                                prefix + "AllowedIPs = 10.10." + Math.round(me.mint / 254) + "." + (me.mint % 254) + "/32,fd86:ea04:1115::" + mintEntry.mint + "/128\n" +
                                 prefix + "Endpoint = " + mintEntry.ipaddr + ":" + "80" + "\n" +
                                 prefix + "PersistentKeepalive = 25" + "\n\n";
                             config.unshift(myStanza);
@@ -95,7 +95,7 @@ function setWireguard() {
                                     // throws an error, you could also catch it here
                                     if (err)
                                         throw err;
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf  <-- when working call it /etc/wireguard/darp0");
+                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf ");
                                     wgdump();
                                 });
                             }
