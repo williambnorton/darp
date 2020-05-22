@@ -247,8 +247,8 @@ function handleShowState(req, res) {
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         txt += '          var ary=pulse.owls.split(",");';
         txt += '          var dstMint=pulse.srcMint;';
-        txt += '          var dstMedian=pulse.median;'; //median measure for this incoming pulse
-        txt += 'function findPulse(mint) { for (var x in config.pulses) {var pulseEntry=config.pulses[x]; if (pulseEntry.srcMint==mint) return pulseEntry;}return null;}'; //for each owl in this pulse's owls list
+        //        txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
+        //        txt += 'function findPulse(mint) { for (var x in config.pulses) {var pulseEntry=config.pulses[x]; if (pulseEntry.srcMint==mint) return pulseEntry;}return null;}';  //for each owl in this pulse's owls list
         //        txt += '              var segment=ary[src];'
         //        txt += '              var srcMint=segment.split("=")[0];'
         //        txt += '              var owl=segment.split("=")[1];';  //OWL value from srcMint
