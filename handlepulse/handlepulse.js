@@ -159,7 +159,7 @@ server.on('message', function (message, remote) {
                     }
                     var newData = data.toString().split(templateObject_1 || (templateObject_1 = __makeTemplateObject([","], [","]))).map(function (x) { return +x; });
                     pulse.median = "" + Math.round(jstat(newData).median());
-                    console.log("      * * * * * STATS pulse.geo=" + pulse.geo + " newData=" + newData + " median=" + pulse.median);
+                    console.log("      * * * * * STATS pulse.geo=" + pulse.geo + " newData=" + newData + " median=" + pulse.median + " pulse=" + lib_js_1.dump(pulse));
                 });
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
