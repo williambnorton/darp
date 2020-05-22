@@ -300,7 +300,6 @@ function handleShowState(req, res) {
 
         txt += '              '
         txt += '              '
-        txt += '          }'
 
 
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
@@ -309,6 +308,7 @@ function handleShowState(req, res) {
 //        txt += '              console.log("my link="+link);'
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';   
 
+        txt += '          }'
         
         
         

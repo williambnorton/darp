@@ -260,12 +260,12 @@ function handleShowState(req, res) {
         //        txt += '                  }'
         txt += '              ';
         txt += '              ';
-        txt += '          }';
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '              var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
         txt += '              link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + owl + "ms</a>";';
         //        txt += '              console.log("my link="+link);'
         txt += '              $("."+srcMint+"-"+dstMint).html(link);';
+        txt += '          }';
         txt += '       }';
         txt += "    });";
         txt += "    setTimeout(fetchState,1000);";
