@@ -191,8 +191,8 @@ server.on('message', function(message, remote) {
                  console.log(err);
                  return;
                 }
-                console.log("data:"+data);
-                console.log("min/max/mean/median/stdev: "+jstat.min(data)+"ms/"+jstat.max(data)+"ms/"+jstat.mean(data)+"ms/"+jstat.median(data)+"ms/"+jstat.stdev(data)+"ms");
+                console.log("* * * * * * * * * * * * * * * * * * * * * *     STATS data:"+data);
+                console.log("min/max/mean/median/stdev: "+jstat(data).min()+"ms/"+jstat(data).max()+"ms/"+jstat(data).mean()+"ms/"+jstat(data).median()+"ms/"+jstat(data).stdev()+"ms");
                 //var list="";
                 //data.forEach(ip => {
                 // list += `${ip}; `;
