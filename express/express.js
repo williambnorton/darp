@@ -223,8 +223,8 @@ function handleShowState(req, res) {
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"");';
-        txt += '           var classification=Math.round(100*Math.abs(pulse.median-pulse.owl)/pulse.median);';
-        txt += '           console.log("classification="+classification);';
+        txt += '           var classification=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));';
+        txt += '           console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" classification="+classification);';
         txt += '          var linkToMe=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
         txt += '          linkToMe += pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "' + me.group + '"+ \'">\' + pulse.owl + "ms </a>";';
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(linkToMe);';
