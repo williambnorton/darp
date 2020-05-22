@@ -268,6 +268,7 @@ function handleShowState(req, res) {
         txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
         //        txt += '                      console.log("my link="+link);'
         txt += '                        $("."+srcMint+"-"+dstMint).html(link);';
+        txt += '                        if (myOwl>5)'; // in absolute terms - ignore coloring owls<5ms
         txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
         txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
         txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");';

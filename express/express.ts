@@ -320,7 +320,7 @@ function handleShowState(req, res) {
 
 
 
-
+        txt += '                        if (myOwl>5)' // in absolute terms - ignore coloring owls<5ms
         txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
         txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
         txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");'
