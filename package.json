@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/node": "^13.13.9",
     "express": "^4.17.1",
-    "redis": "^3.0.2",
-    "simple-statistics": "^7.1.0"
+    "jstat": "^1.9.3",
+    "redis": "^3.0.2"
   }
 }
