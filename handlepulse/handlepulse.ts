@@ -180,7 +180,7 @@ server.on('message', function(message, remote) {
                  return;
                 }
 
-                var newData=data.split`,`.map(x=>+x)
+                var newData=data.toString().split`,`.map(x=>+x)
                 pulse.median=""+jstat(newData.sort()).median();
                 console.log("                           * * * * * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median);
 

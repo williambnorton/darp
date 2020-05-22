@@ -157,7 +157,7 @@ server.on('message', function (message, remote) {
                         console.log(err);
                         return;
                     }
-                    var newData = data.split(templateObject_1 || (templateObject_1 = __makeTemplateObject([","], [","]))).map(function (x) { return +x; });
+                    var newData = data.toString().split(templateObject_1 || (templateObject_1 = __makeTemplateObject([","], [","]))).map(function (x) { return +x; });
                     pulse.median = "" + jstat(newData.sort()).median();
                     console.log("                           * * * * * * * * * STATS pulse.geo=" + pulse.geo + " newData=" + newData + " median=" + pulse.median);
                 });
