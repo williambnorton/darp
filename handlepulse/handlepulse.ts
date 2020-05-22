@@ -174,19 +174,20 @@ server.on('message', function(message, remote) {
 
 
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
-              redisClient.lrange(pulse.geo + "-" + me.geo+"-history", 0, -1, (err, data) => {
+              redisClient.lrange(pulse.geo + "-" + me.geo+"-history", 0, -300, (err, data) => {
                 if (err) {
                  console.log(err);
                  return;
                 }
 
                 var newData=data.toString().split`,`.map(x=>+x)
-                pulse.median=""+jstat(newData).median();
-                console.log("        * * * * * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median);
+                pulse.median = "" + jstat(newData).median();
+                console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median);
+
 
               });
 
-              redisClient.publish("pulses", msg)
+              redisClient.publish("pulses", msg);
               redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
 
               //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
