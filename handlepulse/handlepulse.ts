@@ -192,7 +192,7 @@ server.on('message', function(message, remote) {
                  return;
                 }
                 console.log("data:"+data);
-                console.log("min/max/mean/median/stdev: "+jstat.min(data)+jstat.max(data)+jstat.mean(data)+jstat.median(data)+jstat.stdev(data));
+                console.log("min/max/mean/median/stdev: "+jstat.min(data)+"ms/"+jstat.max(data)+"ms/"+jstat.mean(data)+"ms/"+jstat.median(data)+"ms/"+jstat.stdev(data)+"ms");
                 //var list="";
                 //data.forEach(ip => {
                 // list += `${ip}; `;
