@@ -261,6 +261,11 @@ function handleShowState(req, res) {
         //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
         txt += '                  if (typeof myMedian != "undefined") {';
         txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey")';
+        txt += '                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));';
+        // txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
+        txt += '                if ((typeof Ideviation == "number") && (Ideviation>51)) $("."+srcMint+"-"+dstMint).css("background-color","red");';
+        txt += '            else if ((typeof deviation == "number") && (Ideviation>33)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
+        txt += '            else $("."+srcMint+"-"+dstMint).css("background-color","white");';
         txt += '                  ';
         txt += '                  }';
         txt += '              } else {console.log("pulseDestEntry=null");}';
