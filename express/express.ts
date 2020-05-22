@@ -282,23 +282,24 @@ function handleShowState(req, res) {
 
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
         
-        txt += '          var ary=pulse.owls.split(",");'
-        txt += '          var dstMint=pulse.srcMint;'
-        txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
+        txt += '          var owls=pulse.owls.split(",");'
+//        txt += '          var srcMint=pulse.srcMint;'
+        //txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
 
-        txt += '          for (var src in ary) {';  //for each owl in this pulse's owl list
-        txt += '              var segment=ary[src];'
-        txt += '              var srcMint=segment.split("=")[0];'
-        txt += '              var owl=segment.split("=")[1];';  //OWL value from srcMint
-//        txt += '              /*colorMatrix(srcMint,dstMint,owl);*/'
+        txt += '          for (var owl in owls) {';  //for each owl in this pulse's owl list
+        txt += '              var owlEntry=owls[owl];'
+        txt += '              var srcMint=owlEntry.split("=")[0];'
+        txt += '              var destMint=pulse.srcMint;'
+        txt += '              var myOwl=owlEntry.split("=")[1];';  //OWL value from srcMint
+        txt += '              var pulseDestEntry=getPulse(config,srcMint);'
 
-//        txt += '              for (var p in config.pulses) {'  //find this srcMint in the owls reported by others
-//        txt += '                  var entry=config.pulses[p]; '
-//        txt += '                  for (owl in entry.owls) {'
+        txt += '              if (pulseDestEntry!=null) {' 
+        txt += '                  var myMedian=pulseDestEntry.median;'
+        txt += '                  console.log(pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);'
 //        txt += '                      if (entry.owls[owl].console.log("entry.geo="+entry.geo+" owl="+entry.owl);'
-//        txt += '                  }'
+    txt += '                  }'
 
-        txt += '              '
+        txt += '                var pulseEntry'
         txt += '              '
 
 
@@ -318,17 +319,17 @@ function handleShowState(req, res) {
         txt += "    });"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-        txt += "function getOwl(config,src,dst) {"
+        txt += "function getPulse(config,destinationMint) {"
         txt += "    for (var x in config.pulses) {"
         txt += "        var pulseEntry=config.pulses[x];"
-        txt += "        if (pulseEntry.srcMint==dst) {"
-        txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
-        txt += '            for (var owl in pulseEntry.owls) {'
-        txt += '                console.log("pulseEntry.geo="+pulseEntry.geo+" owl="+entry.owl);'
-        txt += '             }'
-        txt += "            "
+        txt += "        if (pulseEntry.srcMint==destinationMint) {"
+//        txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
+//        txt += '            for (var owl in pulseEntry.owls.split(",")) {'
+//        txt += '                console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+//        txt += '             }'
+        txt += "            return(pulseEntry)"
         txt += "        }"
-        txt += "    }"
+        txt += "    } return null"
         txt += "}"
 
         txt += "setTimeout(fetchState,1000);"
