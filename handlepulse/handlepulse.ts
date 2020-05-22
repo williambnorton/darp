@@ -182,82 +182,47 @@ server.on('message', function(message, remote) {
                 var newData=data.toString().split`,`.map(x=>+x)
                 pulse.median = "" + Math.round(jstat(newData).median());
                 console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median+" pulse="+dump(pulse));
-              });
+                redisClient.publish("pulses", msg);
+                redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
+  
+                redisClient.hgetall(pulseLabel,function (err, writtenPulse){
+                  console.log("wrote :"+dump(writtenPulse));
+                })
 
-              redisClient.publish("pulses", msg);
-              redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
+                //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
+                redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
 
-              redisClient.hgetall(pulseLabel,function (err, writtenPulse){
-                console.log("wrote :"+dump(writtenPulse));
+                var d = new Date();
+                if (pulse.owl=="") pulse.owl="0";
+                var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
 
-              })
+                //console.log("HANDLEPULSE: ---> incoming "+ pulse.geo + "-" + me.geo+"="+ owlStat);
+                redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);  //store incoming pulse
 
-              //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
-              redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
+                //
+                //    Store the measured latency for this pulse message to me
+                //
+                //console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
 
+                
 
-
-              //NEW CODE - expire the mint table entries and pulse entries when  we don't hear for 60 seconds
-              //redisClient.expire(pulseLabel,10);  //hold for 60 seconds before deleteing entry
-              //redisClient.expire("mint:"+pulse.srcMint,10);  //hold for 60 seconds before deleteing mint
-              //this could be deleteing the genesis node forcing reload
-
-
-              /*
-              var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
-              redisClient.scan(cursor, 'MATCH', pulse.geo + "-" + me.geo+"-history", 'COUNT', '100000', function(err, reply){
-                if (err){
-                    throw err;
-                }
-                console.log("reply:"+dump(reply));
-                //console.log("pulser(): myPulseGroups="+dump(pulseGroups));
-          
-                cursor = reply[0];
-                if (cursor === '0'){
-                    // reply[1] is an array of matched keys: me.geo:*
-                    var dataPoints=reply[1]; //[0] is the cursor returned
-
-                    for (var i in dataPoints) {
-                        console.log( "EXPRESS(): =" + dataPoints[i] );
-                    }
-                }
-             });
-*/
+                //console.log("handlePulse:");
+                //
+                //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
+                //
+                storeOWLs( pulse.srcMint, pulse.owls, me.mint );
+                //
+                //    Also Store the OWL measured - stick it in the mintTable <--- DELETE THIS LATER
+                //
+                redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
+                    "owl": pulse.owl,
+                    "pulseTimestamp" : now()  //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
+                });
 
 
+                });
 
 
-
-
-
-
-
-              var d = new Date();
-              if (pulse.owl=="") pulse.owl="0";
-              var owlStat = "{ x: new Date('" + d + "'), y: " + pulse.owl + "},";
-
-             //console.log("HANDLEPULSE: ---> incoming "+ pulse.geo + "-" + me.geo+"="+ owlStat);
-             redisClient.rpush([ pulse.geo + "-" + me.geo, owlStat ]);  //store incoming pulse
-
-              //
-              //    Store the measured latency for this pulse message to me
-              //
-              //console.log("HANDLEPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
-
-              
-
-              //console.log("handlePulse:");
-              //
-              //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
-              //
-              storeOWLs( pulse.srcMint, pulse.owls, me.mint );
-              //
-              //    Also Store the OWL measured - stick it in the mintTable <--- DELETE THIS LATER
-              //
-              redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
-                "owl": pulse.owl,
-                "pulseTimestamp" : now()  //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
-            });
 
           });
       });
