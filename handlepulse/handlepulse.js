@@ -135,6 +135,7 @@ server.on('message', function (message, remote) {
                 lastMsg: msg,
                 inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
                 inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1),
+                median: "0",
                 pktDrops: "0"
             };
             var pktDrops = "" + (parseInt(pulse.seq) - parseInt(pulse.inMsgs));
@@ -146,6 +147,14 @@ server.on('message', function (message, remote) {
                     process.exit(36); //SOFTWARE RELOAD
                 }
                 ;
+                redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + OWL); //store incoming pulse
+                redisClient.lrange(pulse.geo + "-" + me.geo + "-history", 0, -1, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    pulse.median = "" + jstat(data).median();
+                });
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
                 //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
@@ -154,19 +163,6 @@ server.on('message', function (message, remote) {
                 //redisClient.expire(pulseLabel,10);  //hold for 60 seconds before deleteing entry
                 //redisClient.expire("mint:"+pulse.srcMint,10);  //hold for 60 seconds before deleteing mint
                 //this could be deleteing the genesis node forcing reload
-                redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + OWL); //store incoming pulse
-                redisClient.lrange(pulse.geo + "-" + me.geo + "-history", 0, -1, function (err, data) {
-                    if (err) {
-                        console.log(err);
-                        return;
-                    }
-                    console.log("* * * * * * * * * * * * * * * * * * * * * *     STATS data:" + data);
-                    console.log("min/max/mean/median/stdev: " + jstat(data).min() + "ms/" + jstat(data).max() + "ms/" + jstat(data).mean() + "ms/" + jstat(data).median() + "ms/" + jstat(data).stdev() + "ms");
-                    //var list="";
-                    //data.forEach(ip => {
-                    // list += `${ip}; `;
-                    //});
-                });
                 /*
                 var cursor = '0';     // DEVOPS:* returns all of my pulseGroups
                 redisClient.scan(cursor, 'MATCH', pulse.geo + "-" + me.geo+"-history", 'COUNT', '100000', function(err, reply){
