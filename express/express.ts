@@ -233,36 +233,33 @@ function handleShowState(req, res) {
        txt += '   $.getJSON(URL, function(config) {'
        txt += '      configs.unshift(config);'; //push onto front of stack
        txt += '      if (configs.length>5) configs.pop();'; //pop off end of stack (5 seconds worth kept)
+       txt += '      renderPage(config);'
+       txt += '   }'
 
+       txt += '   function renderPage(config) {'
        txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-       txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );'
-    
+       txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );' //we show this epoch
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-       txt += '          var pulseLabel=key;'
-       txt += '          var pulse=value;'
-       
+       txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
+       txt += '          var pulse=value;'      //
        txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
        // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
        //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
         txt += '         }'
 
        txt += '          console.log("config="+JSON.stringify(config,null,2));'
-
         txt += '          if (pulse.pulseTimestamp!="0")'
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
-        
+        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
         txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'
 //
 //      print my OWL Matrix COLUMN based on my pulseEntries
 //
         txt +='           '
-
         txt += '          var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
         txt += '          linkToMe += pulse.srcMint + "&dstMint=" + "'+me.mint+'" + "&group=" + "'+me.group+'"+ \'">\' + pulse.owl + "ms </a>";'
         txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(linkToMe);'  
