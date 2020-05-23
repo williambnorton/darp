@@ -1117,7 +1117,8 @@ function fetchConfigAll(gSRlist, config, callback) {
             gSRlist: allStack,
             mintTable: {},
             pulses: {},
-            entryStack: new Array()
+            entryStack: new Array(),
+            ts: ""+now()
         }
        for (var index in allStack) {
 //        for (var index in sortedGSRlist) {
