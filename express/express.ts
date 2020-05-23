@@ -416,7 +416,7 @@ function handleShowState(req, res) {
         txt += "    }"
         txt += '    return null;'
         txt += "}"
-      
+*/      
         txt += "function getPulse(config,destinationMint) {"
         txt += "    for (var x in config.pulses) {"
         txt += "        var pulseEntry=config.pulses[x];"
@@ -427,7 +427,7 @@ function handleShowState(req, res) {
         txt += "        }"
         txt += "    } return null"
         txt += "}"
-*/
+
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '
         txt += '</head>'
