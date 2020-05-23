@@ -371,28 +371,27 @@ function handleShowState(req, res) {
         txt += "    for (var config in configs) {"
 
         txt += "        for (var pulse in configs[config].pulses) {"
-/*
+
         txt += "            var pulseEntry=config[configs].pulses[pulse];"  //convenience
         txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");'
         txt += '              '
         txt += '               for (var owl in owls) {'
-        txt += '                var owlMint=owls[owl].split("=")[0];'
-        txt += '                var owl=owls[owl].split("=")[1];'   
-        txt += '                if (typeof owl == "undefined") {'
-        txt += '                    owl="";'
-        txt += '                }'
-        txt += '                if (owlMint==src) {'
-        txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                    values.push( owl );'
-        //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '                }'
+        txt += '                  var owlMint=owls[owl].split("=")[0];'
+        txt += '                  var owl=owls[owl].split("=")[1];'   
+        txt += '                  if (typeof owl == "undefined") {'
+        txt += '                     owl="";'
+        txt += '                  }'
+        txt += '                  if (owlMint==src) {'
+        txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+        txt += '                     values.push( owl );'
+        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+        txt += '                  }'
+        txt += '               }'
         txt += '            }'
-*/
         txt += "         }"
         txt += "    }"
         txt += "    console.log('values='+values);"
-
         txt += '    return values;'
         txt += "}"
 
