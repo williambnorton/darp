@@ -348,32 +348,30 @@ function handleShowState(req, res) {
         txt += '    return values;'
         txt += "}"
 
-
-        txt += "function getOWL(config,src,dst) { "
-        txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
-        txt += "    if (pulseReceiver!=null) { "
-        txt += "        for (var pulse in config.pulses) {"
-        txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
-        txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
-        txt += '            var owls=pulseEntry.owls.split(","); '
-      
-        txt += '            for (var owl in owls) {'
-        txt += '                var owlMint=owls[owl].split("=")[0];'
-        txt += '                var owl=owls[owl].split("=")[1];'
-        txt += '                if (typeof owl == "undefined") {'
-        txt += '                    owl="";'
-        txt += '                }'
-        txt += '                if (owlMint==src) {'
-        txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                    return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });'
-        //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '                }'
-        txt += '            }'
-        txt += "         }"
-        txt += "    }"
-        txt += '    return null;'
-        txt += "}"
 */
+        txt += "function getOWL(config,src,dst) { ";
+        txt += "    var pulseReceiver=getPulse(config,dst);"; //receiver pulse tells us measured latency and median to it
+        txt += "    if (pulseReceiver!=null) { ";
+        txt += "        for (var pulse in config.pulses) {";
+        txt += "            var pulseEntry=config.pulses[pulse];"; //convenience
+        txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');";
+        txt += '            var owls=pulseEntry.owls.split(","); ';
+        txt += '            for (var owl in owls) {';
+        txt += '                var owlMint=owls[owl].split("=")[0];';
+        txt += '                var owl=owls[owl].split("=")[1];';
+        txt += '                if (typeof owl == "undefined") {';
+        txt += '                    owl="";';
+        txt += '                }';
+        txt += '                if (owlMint==src) {';
+        txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);';
+        txt += '                    return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });';
+        //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+        txt += '                }';
+        txt += '            }';
+        txt += "         }";
+        txt += "    }";
+        txt += '    return null;';
+        txt += "}";
         txt += "function getPulse(config,destinationMint) {";
         txt += "    for (var x in config.pulses) {";
         txt += "        var pulseEntry=config.pulses[x];";

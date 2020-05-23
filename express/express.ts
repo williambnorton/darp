@@ -391,7 +391,7 @@ function handleShowState(req, res) {
         txt += '    return values;'
         txt += "}"
 
-
+*/  
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
         txt += "    if (pulseReceiver!=null) { "
@@ -416,7 +416,7 @@ function handleShowState(req, res) {
         txt += "    }"
         txt += '    return null;'
         txt += "}"
-*/      
+    
         txt += "function getPulse(config,destinationMint) {"
         txt += "    for (var x in config.pulses) {"
         txt += "        var pulseEntry=config.pulses[x];"
