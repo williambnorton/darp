@@ -1176,7 +1176,8 @@ function fetchConfig(gSRlist, config, callback) {
            gSRlist: gSRlist,
            mintTable: {},
            pulses: {},
-           entryStack: new Array()
+           entryStack: new Array(),
+           ts: ""+now()
        }
        for (var index in gSRlist) {
            //console.log("pushing "+index);
