@@ -1,14 +1,10 @@
 "use strict";
-var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-};
 exports.__esModule = true;
 //
 //  handlePulse - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
-var jstat = require('/jstat/dist/jstat.js');
+//var jstat = require('/jstat/dist/jstat.js')
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 var OWLEXPIRES = 1; //seconds should match polling cycle time
 var SHOWPULSES = "0";
@@ -157,8 +153,8 @@ server.on('message', function (message, remote) {
                         console.log(err);
                         return;
                     }
-                    var newData = data.toString().split(templateObject_1 || (templateObject_1 = __makeTemplateObject([","], [","]))).map(function (x) { return +x; });
-                    pulse.median = "" + Math.round(jstat(newData).median());
+                    //var newData=data.toString().split`,`.map(x=>+x)
+                    //pulse.median = "" + Math.round(jstat(newData).median());
                     //console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median+" pulse="+dump(pulse));
                     redisClient.publish("pulses", msg);
                     redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
@@ -312,4 +308,3 @@ process.on('SIGTERM', function () {
     console.info('handlePulse SIGTERM signal received.');
     process.exit(36);
 });
-var templateObject_1;
