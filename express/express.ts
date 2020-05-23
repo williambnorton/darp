@@ -369,6 +369,8 @@ function handleShowState(req, res) {
       
         txt += "        "
         txt += "    }"
+        txt += ''
+
         txt += "}"
       
         txt += "function getPulse(config,destinationMint) {"
@@ -376,7 +378,8 @@ function handleShowState(req, res) {
         txt += "        var pulseEntry=config.pulses[x];"
         txt += '        console.log("getPulse(): searching for "+destinationMint+" pulseEntry="+JSON.stringify(pulseEntry,null,2));'
         txt += "        if (pulseEntry.srcMint==destinationMint) {"
-        txt += "            return(pulseEntry)"
+        txt += "            console.log('FOUND IT: '+destinationMint);"
+        txt += "            return(pulseEntry);"
         txt += "        }"
         txt += "    } return null"
         txt += "}"
