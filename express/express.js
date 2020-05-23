@@ -323,9 +323,9 @@ function handleShowState(req, res) {
         txt += "}";
         txt += "function getMedian(configs,src,dst) { ";
         txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
+        txt += "    for (var config in configs) {";
+        txt += "        for (var pulse in configs[config].pulses) {";
         /*
-                txt += "    for (var config in configs) {"
-                txt += "        for (var pulse in configs[config].pulses) {"
                 txt += "            var pulseEntry=config[configs].pulses[pulse];"  //convenience
                 txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
                 txt += '               var owls=pulseEntry.owls.split(",");'
@@ -342,10 +342,10 @@ function handleShowState(req, res) {
                 //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
                 txt += '                }'
                 txt += '            }'
-                txt += "         }"
-                txt += "    }"
-                txt += "    console.log('values='+values);"
         */
+        txt += "         }";
+        txt += "    }";
+        txt += "    console.log('values='+values);";
         txt += '    return values;';
         txt += "}";
         txt += "function getOWL(config,src,dst) { ";
