@@ -398,7 +398,7 @@ function handleShowState(req, res) {
         txt += "    if (pulseReceiver!=null) { "
         txt += "        for (var pulse in config.pulses) {"
         txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
-        txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
+        //txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
         txt += '            var owls=pulseEntry.owls.split(","); '
       
         txt += '            for (var owl in owls) {'
@@ -408,7 +408,7 @@ function handleShowState(req, res) {
         txt += '                    owl="";'
         txt += '                }'
         txt += '                if (owlMint==src) {'
-        txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+        //txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
         txt += '                    return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });'
         //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
         txt += '                }'
@@ -421,9 +421,9 @@ function handleShowState(req, res) {
         txt += "function getPulse(config,destinationMint) {"
         txt += "    for (var x in config.pulses) {"
         txt += "        var pulseEntry=config.pulses[x];"
-        txt += '        console.log("getPulse(): searching for "+destinationMint+" pulseEntry="+JSON.stringify(pulseEntry,null,2));'
+        //txt += '        console.log("getPulse(): searching for "+destinationMint+" pulseEntry="+JSON.stringify(pulseEntry,null,2));'
         txt += "        if (pulseEntry.srcMint==destinationMint) {"
-        txt += "            console.log('FOUND IT: '+destinationMint);"
+        //txt += "            console.log('FOUND IT: '+destinationMint);"
         txt += "            return(pulseEntry);"
         txt += "        }"
         txt += "    } return null"
