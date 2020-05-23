@@ -228,7 +228,11 @@ function handleShowState(req, res) {
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls+"");';
+        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);';
+        //
+        //      print my OWL Matrix COLUMN based on my pulseEntries
+        //
+        txt += '           ';
         txt += '          var linkToMe=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
         txt += '          linkToMe += pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "' + me.group + '"+ \'">\' + pulse.owl + "ms </a>";';
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(linkToMe);';
@@ -245,39 +249,69 @@ function handleShowState(req, res) {
         txt += '            else $("."+pulse.geo+"_owl").css("background-color","white");';
         txt += '          }';
         //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
+        //
+        //      print the OWL matrix based on OWLS reported to us - we don't have medians unless we track them ourselves....
+        //        
         txt += '          var owls=pulse.owls.split(",");';
         //        txt += '          var srcMint=pulse.srcMint;'
         //txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
+        txt += '          var dstMint=pulse.srcMint;'; //this was his peer's measure to him
         txt += '          for (var owl in owls) {'; //for each owl in this pulse's owl list
-        txt += '              ';
         txt += '              var owlEntry=owls[owl];';
         txt += '              var srcMint=owlEntry.split("=")[0];'; //this is the guy who sent the reported pulse
-        txt += '              var dstMint=pulse.srcMint;'; //this was his peer's measure to him
         txt += '              var myOwl=owlEntry.split("=")[1];'; //OWL value reported to
-        txt += '              var pulseDestEntry=getPulse(config,srcMint);';
-        // print out the number then color the background
-        txt += '              if (pulseDestEntry!=null) {';
-        txt += '                  var myMedian=pulseDestEntry.median;';
-        txt += '                  var myOwl=pulseDestEntry.owl;'; //measured latency reported by this node       
-        txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);';
-        txt += '                  if (typeof myMedian != "undefined") {';
-        //        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
-        txt += '                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));';
-        txt += '                        console.log("Ideviation="+Ideviation+"%");';
+        txt += '              if (typeof myOwl == "undefined") myOwl="";';
+        //txt +='               var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-        txt += '                        var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
-        txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
+        txt += '               var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
         //        txt += '                      console.log("my link="+link);'
         txt += '                        $("."+srcMint+"-"+dstMint).html(link);';
-        txt += '                        if (myOwl>5) ';
-        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
-        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
-        txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");';
-        txt += '                  ';
-        txt += '                  }';
-        txt += '              } else {console.log("pulseDestEntry=null");}';
-        txt += '               ';
-        txt += '              ';
+        //we can not color the cells until we have a median matrix
+        //        txt += '                        if (myOwl>5) '
+        //        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
+        //        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
+        //        txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");'
+        /*
+                txt += '              var pulseDestEntry=getPulse(config,srcMint);'
+                txt += '              '
+                
+                
+                // print out the number then color the background
+        
+        
+                txt += '              if (pulseDestEntry!=null) {'
+                txt += '                  var myMedian=pulseDestEntry.median;'
+                txt += '                  var myOwl=pulseDestEntry.owl;'   //measured latency reported by this node
+                txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);'
+        
+                txt += '                  if (typeof myMedian != "undefined") {'
+        //        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
+        
+                txt += '                        console.log("Ideviation="+Ideviation+"%");'
+        
+        
+                
+                //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
+                txt += '                        var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
+                txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
+        //        txt += '                      console.log("my link="+link);'
+                txt += '                        $("."+srcMint+"-"+dstMint).html(link);';
+        
+        
+        
+                txt += '                        if (myOwl>5) '
+                txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
+                txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
+                txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");'
+        
+        
+                txt += '                  '
+                txt += '                  }'
+                txt += '              } else {console.log("pulseDestEntry=null");}'
+        
+                txt += '               '
+                txt += '              '
+        */
         txt += '          }';
         txt += '       }';
         txt += "    });";

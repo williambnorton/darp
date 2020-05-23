@@ -294,7 +294,9 @@ function nth_occurrence(string, char, nth) {
 //
 //  checkSEversion() - reload SW if there is new code to be had
 //this is needed because when genesis dies and doesn't know about the peers - peers must reloadSW
-//
+//  TODO: Version is based on date: Build.YYMMDD.HHMMSS
+//      Only listen to genesis pulse version#'s, Ignore all others
+//      And only check SWversion if not gnesis version, and use > comparison
 setTimeout(checkSWversion, 20 * 1000);; // see if we need new SW
 //checkSWversion();
 function checkSWversion() {
