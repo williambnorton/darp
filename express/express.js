@@ -245,7 +245,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.srcMint+"-"+"' + me.mint + '").html(linkToMe);';
         //        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);';
-        txt += '           if (typeof pulse.median != "unknown" && pulse.median>5) {';
+        txt += '           if (typeof pulse.median != "unknown" ) {';
         txt += '             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));';
         //txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
         txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"' + me.mint + '").css("background-color","lightred");';
