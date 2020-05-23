@@ -285,7 +285,7 @@ function handleShowState(req, res) {
         txt += '          var owls=pulse.owls.split(",");'
 //        txt += '          var srcMint=pulse.srcMint;'
         //txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
-/*
+
         txt += '          for (var owl in owls) {';  //for each owl in this pulse's owl list
         txt += '              var owlEntry=owls[owl];'
         txt += '              var srcMint=owlEntry.split("=")[0];' //this is the guy who sent the reported pulse
@@ -338,7 +338,7 @@ function handleShowState(req, res) {
 
         txt += '          }'
         
-        */
+        
         
 
 
@@ -346,6 +346,7 @@ function handleShowState(req, res) {
         txt += "    });"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
+      /*  
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
         txt += "    for (var pulse in config.pulses) {"
@@ -367,6 +368,7 @@ function handleShowState(req, res) {
         txt += "        "
         txt += "    }"
         txt += "}"
+        */
         txt += "function getPulse(config,destinationMint) {"
         txt += "    for (var x in config.pulses) {"
         txt += "        var pulseEntry=config.pulses[x];"

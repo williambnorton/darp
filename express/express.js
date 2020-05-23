@@ -248,85 +248,63 @@ function handleShowState(req, res) {
         txt += '          var owls=pulse.owls.split(",");';
         //        txt += '          var srcMint=pulse.srcMint;'
         //txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
-        /*
-                txt += '          for (var owl in owls) {';  //for each owl in this pulse's owl list
-                txt += '              var owlEntry=owls[owl];'
-                txt += '              var srcMint=owlEntry.split("=")[0];' //this is the guy who sent the reported pulse
-                txt += '              var dstMint=pulse.srcMint;'           //this was his peer's measure to him
-                txt += '              var myOwl=owlEntry.split("=")[1];';  //OWL value reported to
-                txt += '              var pulseDestEntry=getPulse(config,srcMint);'
-                
-                
-                // print out the number then color the background
-        
-        
-        
-        
-                txt += '              if (pulseDestEntry!=null) {'
-                txt += '                  var myMedian=pulseDestEntry.median;'
-                txt += '                  var myOwl=pulseDestEntry.owl;'   //measured latency reported by this node
-                txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);'
-        
-                txt += '                  if (typeof myMedian != "undefined") {'
+        txt += '          for (var owl in owls) {'; //for each owl in this pulse's owl list
+        txt += '              var owlEntry=owls[owl];';
+        txt += '              var srcMint=owlEntry.split("=")[0];'; //this is the guy who sent the reported pulse
+        txt += '              var dstMint=pulse.srcMint;'; //this was his peer's measure to him
+        txt += '              var myOwl=owlEntry.split("=")[1];'; //OWL value reported to
+        txt += '              var pulseDestEntry=getPulse(config,srcMint);';
+        // print out the number then color the background
+        txt += '              if (pulseDestEntry!=null) {';
+        txt += '                  var myMedian=pulseDestEntry.median;';
+        txt += '                  var myOwl=pulseDestEntry.owl;'; //measured latency reported by this node       
+        txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);';
+        txt += '                  if (typeof myMedian != "undefined") {';
         //        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
-        
-                txt +='                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
-                txt += '                        console.log("Ideviation="+Ideviation+"%");'
-        
-        
-                
-                //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-                txt += '                        var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-                txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
+        txt += '                         var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));';
+        txt += '                        console.log("Ideviation="+Ideviation+"%");';
+        //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
+        txt += '                        var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
+        txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
         //        txt += '                      console.log("my link="+link);'
-                txt += '                        $("."+srcMint+"-"+dstMint).html(link);';
-        
-        
-        
-                txt += '                        if (myOwl>5) '
-                txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
-                txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
-                txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");'
-        
-        
-                txt += '                  '
-                txt += '                  }'
-                txt += '              } else {console.log("pulseDestEntry=null");}'
-        
-                txt += '               '
-                txt += '              '
-        
-        
-        
-        
-                txt += '          }'
-                
-                */
+        txt += '                        $("."+srcMint+"-"+dstMint).html(link);';
+        txt += '                        if (myOwl>5) ';
+        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
+        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
+        txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");';
+        txt += '                  ';
+        txt += '                  }';
+        txt += '              } else {console.log("pulseDestEntry=null");}';
+        txt += '               ';
+        txt += '              ';
+        txt += '          }';
         txt += '       }';
         txt += "    });";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
-        txt += "function getOWL(config,src,dst) { ";
-        txt += "    var pulseReceiver=getPulse(config,dst);"; //receiver pulse tells us measured latency and median to it
-        txt += "    for (var pulse in config.pulses) {";
-        txt += "        var pulseEntry=config.pulses[pulse];";
-        txt += "        console.log('getOwl(): Found the '+dst+' pulseEntry');";
-        txt += '        var owls=pulseEntry.owls.split(",")) {';
-        txt += '        for (var owl in owls) {';
-        txt += '            var owlMint=owls[owl].split("=")[0];';
-        txt += '            var owl=owls[owl].split("=")[1];';
-        txt += '            if (typeof owl == "undefined") {';
-        txt += '                owl="";';
-        txt += '            }';
-        txt += '            if (owlMint==src) {';
-        txt += '               console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);';
-        txt += '               return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });';
-        //txt += '            console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '            }';
-        txt += '        }';
-        txt += "        ";
-        txt += "    }";
-        txt += "}";
+        /*
+          txt += "function getOWL(config,src,dst) { "
+          txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
+          txt += "    for (var pulse in config.pulses) {"
+          txt += "        var pulseEntry=config.pulses[pulse];"
+          txt += "        console.log('getOwl(): Found the '+dst+' pulseEntry');"
+          txt += '        var owls=pulseEntry.owls.split(",")) {'
+          txt += '        for (var owl in owls) {'
+          txt += '            var owlMint=owls[owl].split("=")[0];'
+          txt += '            var owl=owls[owl].split("=")[1];'
+          txt += '            if (typeof owl == "undefined") {'
+          txt += '                owl="";'
+          txt += '            }'
+          txt += '            if (owlMint==src) {'
+          txt += '               console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+          txt += '               return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });'
+          //txt += '            console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+          txt += '            }'
+          txt += '        }'
+          txt += "        "
+          txt += "    }"
+          txt += "}"
+          */
         txt += "function getPulse(config,destinationMint) {";
         txt += "    for (var x in config.pulses) {";
         txt += "        var pulseEntry=config.pulses[x];";
