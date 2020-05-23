@@ -246,7 +246,7 @@ function handleShowState(req, res) {
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
         txt += '         }'
 
-       //txt += '          console.log("config="+JSON.stringify(config,null,2));'
+       txt += '          console.log("config="+JSON.stringify(config,null,2));'
 
         txt += '          if (pulse.pulseTimestamp!="0")'
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
