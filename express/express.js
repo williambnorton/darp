@@ -210,9 +210,12 @@ function handleShowState(req, res) {
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += '<script>';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
+        txt += "var configs=[];";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
-        txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
+        txt += '      configs.push(config);'; //push onto stack
+        txt += "      var d = new Date(config.ts); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
+        //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
         txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );';
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
