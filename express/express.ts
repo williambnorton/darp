@@ -375,7 +375,7 @@ function handleShowState(req, res) {
         txt += '              '
         txt += '               for (var owl in owls) {'
         txt += '                var owlMint=owls[owl].split("=")[0];'
-        txt += '                var owl=owls[owl].split("=")[1];'
+        txt += '                var owl=owls[owl].split("=")[1];'   
         txt += '                if (typeof owl == "undefined") {'
         txt += '                    owl="";'
         txt += '                }'
@@ -390,7 +390,7 @@ function handleShowState(req, res) {
         txt += "    console.log('values='+values);"
         txt += '    return values;'
         txt += "}"
-*/
+
 
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
@@ -427,7 +427,7 @@ function handleShowState(req, res) {
         txt += "        }"
         txt += "    } return null"
         txt += "}"
-
+*/
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '
         txt += '</head>'
