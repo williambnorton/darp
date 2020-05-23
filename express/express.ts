@@ -292,13 +292,13 @@ function handleShowState(req, res) {
         txt += '              var owlEntry=owls[owl];'
         txt += '              var srcMint=owlEntry.split("=")[0];' //this is the guy who sent the reported pulse
         txt += '              var myOwl=owlEntry.split("=")[1];';  //OWL value reported to
-        txt += '              if (typeof myOwl == "undefined") myOwl="";'
+        txt += '              if (typeof myOwl == "undefined") myOwl="0";'
 
         //txt +='               var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
                 //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '               var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
-//        txt += '                      console.log("my link="+link);'
-        txt += '                        $("."+srcMint+"-"+dstMint).html(link);';   
+        txt += '               console.log("my link="+link);'
+        txt += '               $("."+srcMint+"-"+dstMint).html(link);';   
 
                                     //we can not color the cells until we have a median matrix
 
