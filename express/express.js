@@ -331,7 +331,7 @@ function handleShowState(req, res) {
         txt += '    if (typeof configs == "undefined" || configs==null || configs.length<5) return 0;';
         txt += "    for (var config in configs) {";
         txt += "        for (var pulse in configs[config].pulses) {";
-        txt += "            var pulseEntry=config[configs].pulses[pulse];"; //convenience
+        txt += "            var pulseEntry=configs[config].pulses[pulse];"; //convenience
         txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");';
         txt += '              ';
