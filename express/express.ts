@@ -234,7 +234,7 @@ function handleShowState(req, res) {
        txt += '      configs.unshift(config);'; //push onto front of stack
        txt += '      if (configs.length>5) configs.pop();'; //pop off end of stack (5 seconds worth kept)
 
-       txt += "      var d = new Date(config.ts); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+       txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
        txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );'
     
