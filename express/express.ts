@@ -232,7 +232,7 @@ function handleShowState(req, res) {
 
        txt += '   $.getJSON(URL, function(config) {'
        txt += '      configs.unshift(config);'; //push onto front of stack
-       txt += '      if (configs.length>5) configs.pop();'; //pop off end of stack (5 seconds worth kept)
+       txt += '      if (configs.length>300) configs.pop();'; //pop off end of stack (300 seconds worth kept)
        txt += '      renderPage(config);'
        txt += '   });'
 
@@ -250,7 +250,7 @@ function handleShowState(req, res) {
         txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
         txt += '         }'
 
-       txt += '          console.log("config="+JSON.stringify(config,null,2));'
+       //txt += '          console.log("config="+JSON.stringify(config,null,2));'
         txt += '          if (pulse.pulseTimestamp!="0")'
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
@@ -269,7 +269,7 @@ function handleShowState(req, res) {
 
         txt +='           if (typeof pulse.median != "unknown" && pulse.median>5) {'
         txt +='             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
-        txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
+        //txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
 
         txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","lightred");'
         txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","yellow");'
@@ -297,10 +297,10 @@ function handleShowState(req, res) {
 
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '               var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
-        txt += '               console.log("my link="+link);'
+       // txt += '               console.log("my link="+link);'
         txt += '               $("."+srcMint+"-"+dstMint).html(link);';   
         txt += '               var median=getMedian(configs,srcMint,dstMint);'
-        txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);'
+       // txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);'
         txt +='                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));'
         //we can not color the cells until we have a median matrix
 
