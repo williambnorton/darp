@@ -191,7 +191,7 @@ function getMatrixTable(config, darp, callback) {
 //
 function handleShowState(req, res) {
     var dateTime = new Date();
-    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 30 + '">';
+    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 300 + '">';
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me == null)
             return console.log("handleShowState(): WEIRD: NULL mint:0");
@@ -277,9 +277,9 @@ function handleShowState(req, res) {
         txt += '                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));';
         //we can not color the cells until we have a median matrix
         //txt += '               if (myOwl>5) '
-        txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
-        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
-        txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","white");';
+        txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
+        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
+        txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
         /*
                 txt += '              var pulseDestEntry=getPulse(config,srcMint);'
                 txt += '              '
@@ -328,7 +328,7 @@ function handleShowState(req, res) {
         txt += "}";
         txt += "function getMedian(configs,src,dst) { ";
         txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
-        txt += '    if (typeof configs == "undefined" || configs==null || configs.length<5) return 0;';
+        txt += '    if (typeof configs == "undefined" || configs==null ) return 0;';
         txt += "    for (var config in configs) {";
         txt += "        for (var pulse in configs[config].pulses) {";
         txt += "            var pulseEntry=configs[config].pulses[pulse];"; //convenience
@@ -342,7 +342,7 @@ function handleShowState(req, res) {
         txt += '                     owl="";';
         txt += '                  }';
         txt += '                  if (owlMint==src) {';
-        txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);';
+        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
         txt += '                     values.push( owl );';
         //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
         txt += '                  }';
@@ -351,7 +351,7 @@ function handleShowState(req, res) {
         txt += "         }";
         txt += "    }";
         txt += "    var median = values.sort() [ Math.round(values.length/2) ];";
-        txt += '    console.log("median="+median);'; //get middlish value
+        //txt += '    console.log("median="+median);'; //get middlish value
         txt += '    return median;';
         txt += "}";
         txt += "function getOWL(config,src,dst) { ";
