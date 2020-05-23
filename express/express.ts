@@ -271,13 +271,13 @@ function handleShowState(req, res) {
         txt +='             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
         txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
 
-        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","red");'
-        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","orange");'
-        txt += '            else $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","white");'
+        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","lightred");'
+        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","yellow");'
+        txt += '            else $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","lightgreen");'
 
-        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.geo+"_owl").css("background-color","red");'
-        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.geo+"_owl").css("background-color","orange");'
-        txt += '            else $("."+pulse.geo+"_owl").css("background-color","white");'
+        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.geo+"_owl").css("background-color","lightred");'
+        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.geo+"_owl").css("background-color","yellow");'
+        txt += '            else $("."+pulse.geo+"_owl").css("background-color","lightgreen");'
         txt += '          }'
        
 
@@ -304,7 +304,7 @@ function handleShowState(req, res) {
         txt +='                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));'
         //we can not color the cells until we have a median matrix
 
-        //txt += '               if (myOwl>5) '
+        txt += '               if (myOwl>5) '
         txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
