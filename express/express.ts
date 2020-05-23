@@ -364,9 +364,10 @@ function handleShowState(req, res) {
         txt += "    });"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-        /*
+    
         txt += "function getMedian(configs,src,dst) { "
         txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
+/*
         txt += "    for (var config in configs) {"
         txt += "        for (var pulse in configs[config].pulses) {"
         txt += "            var pulseEntry=config[configs].pulses[pulse];"  //convenience
@@ -388,10 +389,10 @@ function handleShowState(req, res) {
         txt += "         }"
         txt += "    }"
         txt += "    console.log('values='+values);"
+*/
         txt += '    return values;'
         txt += "}"
 
-*/  
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
         txt += "    if (pulseReceiver!=null) { "
