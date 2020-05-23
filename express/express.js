@@ -273,6 +273,8 @@ function handleShowState(req, res) {
         txt += '               var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
         txt += '               console.log("my link="+link);';
         txt += '               $("."+srcMint+"-"+dstMint).html(link);';
+        txt += '               var median=getMedian(configs,srcMint,dstMint);';
+        txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);';
         //we can not color the cells until we have a median matrix
         //        txt += '                        if (myOwl>5) '
         //        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'

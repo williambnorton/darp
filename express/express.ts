@@ -296,10 +296,12 @@ function handleShowState(req, res) {
         txt += '              if (typeof myOwl == "undefined") myOwl="0";'
 
         //txt +='               var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
-                //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
+        //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '               var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
         txt += '               console.log("my link="+link);'
         txt += '               $("."+srcMint+"-"+dstMint).html(link);';   
+        txt += '               var median=getMedian(configs,srcMint,dstMint);'
+        txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);'
 
                                     //we can not color the cells until we have a median matrix
 
