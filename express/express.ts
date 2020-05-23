@@ -366,9 +366,8 @@ function handleShowState(req, res) {
     
         txt += "function getMedian(configs,src,dst) { "
         txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
-
+        txt += '    if (typeof configs == "undefined" || configs==null || configs.length<5) return 0;'
         txt += "    for (var config in configs) {"
-
         txt += "        for (var pulse in configs[config].pulses) {"
 
         txt += "            var pulseEntry=config[configs].pulses[pulse];"  //convenience
