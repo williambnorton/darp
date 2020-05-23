@@ -390,6 +390,7 @@ function handleShowState(req, res) {
         txt += "         }"
         txt += "    }"
         txt += "    console.log('values='+values);"
+        txt += '    console.log("median="+values.sort()[2]);'
         txt += '    return values;'
         txt += "}"
 
