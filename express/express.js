@@ -268,18 +268,18 @@ function handleShowState(req, res) {
         txt += '              var srcMint=owlEntry.split("=")[0];'; //this is the guy who sent the reported pulse
         txt += '              var myOwl=owlEntry.split("=")[1];'; //OWL value reported to
         txt += '              if (typeof myOwl == "undefined") myOwl="0";';
-        //txt +='               var Ideviation=Math.round(100*(Math.abs(myMedian-myOwl)/myMedian));'
         //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
         txt += '               var link=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "' + me.group + '"+ \'">\' + myOwl + "ms</a>";';
         txt += '               console.log("my link="+link);';
         txt += '               $("."+srcMint+"-"+dstMint).html(link);';
         txt += '               var median=getMedian(configs,srcMint,dstMint);';
         txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);';
+        txt += '                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));';
         //we can not color the cells until we have a median matrix
-        //        txt += '                        if (myOwl>5) '
-        //        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
-        //        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
-        //        txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");'
+        //txt += '               if (myOwl>5) '
+        txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");';
+        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
+        txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","white");';
         /*
                 txt += '              var pulseDestEntry=getPulse(config,srcMint);'
                 txt += '              '
@@ -350,9 +350,9 @@ function handleShowState(req, res) {
         txt += '            }';
         txt += "         }";
         txt += "    }";
-        txt += "    console.log('values='+values);";
-        txt += '    console.log("median="+values.sort()[2]);';
-        txt += '    return values;';
+        txt += "    var median = values.sort() [ Math.round(values.length/2) ];";
+        txt += '    console.log("median="+median);'; //get middlish value
+        txt += '    return median;';
         txt += "}";
         txt += "function getOWL(config,src,dst) { ";
         txt += "    var pulseReceiver=getPulse(config,dst);"; //receiver pulse tells us measured latency and median to it
