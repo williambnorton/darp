@@ -276,9 +276,8 @@ function handleShowState(req, res) {
 
         txt +='      for(var src in config.mintTable) {'
         txt +='         for(var dst in config.mintTable) {'
-        txt +='           var srcmint=config.mintTable[src];'
-        txt +='           var dstmint=config.mintTable[dst];'
-
+        txt +='           var srcmint=config.mintTable[src].mint;'
+        txt +='           var dstmint=config.mintTable[dst].mint;'
         txt +='           var owls=getOwls(configs,srcmint,dstmint);' //return array of owls
         txt +='           var owl=owls[0];'                            //recent measure is first
         txt +='           var myMedian=median(owls);'
