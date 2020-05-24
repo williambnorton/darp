@@ -262,16 +262,20 @@ function handleShowState(req, res) {
         txt += '                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
         txt += '                console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);';
         //
-        txt += '               if (!isNaN(owl)) owl="";';
-        txt += '               ';
-        txt += '               var owlHTML=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '"/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ "&group=" + "' + me.group + '"+ \'">\' + owl + "ms </a>";';
-        txt += '               console.log("owlHTML="+owlHTML);';
-        txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value
-        txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
-        txt += '                  else if (srcMint!=dstMint) ';
-        txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
-        txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
-        txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
+        /*
+                txt += '               if (!isNaN(owl)) owl="";'
+                txt += '               '
+                txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'"/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
+                txt += '               console.log("owlHTML="+owlHTML);'
+                txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
+        
+                txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
+                txt += '                  else if (srcMint!=dstMint) '
+                txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
+                txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
+                txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
+        
+                */
         txt += '                ';
         txt += '           ';
         txt += '           ';

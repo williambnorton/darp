@@ -290,7 +290,7 @@ function handleShowState(req, res) {
         txt +='                console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
         //
 
-
+/*
         txt += '               if (!isNaN(owl)) owl="";'
         txt += '               '
         txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'"/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
@@ -303,6 +303,8 @@ function handleShowState(req, res) {
         txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
 
+        */
+       
         txt +='                '
         txt +='           '
         txt +='           '
