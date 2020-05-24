@@ -267,7 +267,7 @@ function handleShowState(req, res) {
 //        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
         txt += '          $("."+pulse.geo+"_owl").html(linkToMe);'
 
-        txt +='           if (typeof pulse.median != "unknown" ) {'
+        txt +='           if ((typeof pulse.median != "unknown") &&  (srcMint!=dstMint)) {'
         txt +='             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
         //txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
 
@@ -304,7 +304,7 @@ function handleShowState(req, res) {
         txt +='                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));'
         //we can not color the cells until we have a median matrix
 
-        //txt += '               if (myOwl>5) '
+        txt += '               if (srcMint!=dstMint) '
         txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
