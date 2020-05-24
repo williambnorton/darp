@@ -347,7 +347,7 @@ function handleShowState(req, res) {
         txt += '                  }';
         txt += '                  if (owlMint==src) {';
         //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                     values.push( owl );';
+        txt += '                     values.push( parseInt(owl) );';
         //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
         txt += '                  }';
         txt += '               }';
