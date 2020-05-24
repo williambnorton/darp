@@ -241,7 +241,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
         txt += '     }';
-        txt += '      for(var src in config.mintTable)';
+        txt += '      for(var src in config.mintTable) {';
         txt += '         for(var dst in config.mintTable) {';
         txt += '           var srcmint=config.mintTable[src];';
         txt += '           var dstmint=config.mintTable[dst];';
