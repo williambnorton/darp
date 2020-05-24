@@ -232,10 +232,11 @@ function handleShowState(req, res) {
 
        txt += '   $.getJSON(URL, function(config) {'
        txt += '      configs.unshift(config);'; //push onto front of stack
-       txt += '      if (configs.length>120) configs.pop();'; //pop off end of stack (120 seconds worth kept)
+       txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
        txt += '      renderPage(config);'
        txt += '   });'
 
+        //TODO: This should be a full mesh of unique active mints from gSRlist
        txt += '   function renderPage(config) {'
        txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
