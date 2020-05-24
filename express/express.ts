@@ -280,8 +280,17 @@ function handleShowState(req, res) {
         txt +='           var dstmint=config.mintTable[dst].mint;'
         txt +='           var owls=getOwls(configs,srcmint,dstmint);' //return array of owls
         txt +='           var owl=owls[0];'                            //recent measure is first
-        txt +='           var myMedian=median(owls);'
+        txt +='           var myMedian=Math.round(median(owls));'
         txt +='           console.log(srcmint+"-"+dstmint+" owl="+owl+" myMedian="+myMedian);'
+
+        txt +='                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
+        //we can not color the cells until we have a median matrix
+
+        txt += '               if (srcMint!=dstMint && (owl!=0)) '
+        txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
+        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
+        txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
+
         txt +='           '
         txt +='           '
         txt +='           '
@@ -348,13 +357,6 @@ function handleShowState(req, res) {
         txt += '               $("."+srcMint+"-"+dstMint).html(link);';   
         txt += '               var median=getMedian(configs,srcMint,dstMint);'
        // txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);'
-        txt +='                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));'
-        //we can not color the cells until we have a median matrix
-
-        txt += '               if (srcMint!=dstMint && (owl!=0)) '
-        txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
-        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
-        txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
 
 
 
