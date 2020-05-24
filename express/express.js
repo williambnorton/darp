@@ -269,16 +269,12 @@ function handleShowState(req, res) {
         txt += '               if (owl!="?") owlHTML += owl + "ms </a>";';
         txt += '               else owlHTML += "</a>";';
         txt += '               console.log("owlHTML="+owlHTML);';
-        /*
-                txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
-        
-                txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
-                txt += '                  else if (srcMint!=dstMint) '
-                txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
-                txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
-                txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
-        
-                */
+        txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value
+        txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
+        txt += '                  else if (srcMint!=dstMint) ';
+        txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
+        txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
+        txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
         txt += '                ';
         txt += '           ';
         txt += '           ';
