@@ -273,7 +273,9 @@ function handleShowState(req, res) {
         txt += '     }'        
 
 //Note: we are measuring relative latency so there IS NO ABSOLUTE latency - 0 and -# are valid latency measures
-
+//
+//                  FILL MATRIX
+//
         txt +='      for(var src in config.mintTable) {'
         txt +='         for(var dst in config.mintTable) {'
         txt +='           var srcMint=config.mintTable[src].mint;'
@@ -282,14 +284,11 @@ function handleShowState(req, res) {
         txt +='           var owl=owls[0];'                            //recent measure is first
         txt +='           var myMedian=Math.round(median(owls));'
         txt +='           '
-        txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
+       // txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
 
         txt +='                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
-        txt +='                console.log("Idevitation=:"+Ideviation);'
+        //txt +='                console.log("Idevitation=:"+Ideviation);'
         //
-
-
-
 
 
         txt += '               if (!isNaN(owl)) owl="";'
@@ -312,81 +311,6 @@ function handleShowState(req, res) {
         txt +='      }'
 
         
-        
-
-        txt +='           '
-        txt +='           '
-        txt +='           '
-        txt +='           '
-        txt +='           '
-        txt +=' '
-
-
-
-
-        /*
-
-//
-//      print my OWL Matrix COLUMN based on my pulseEntries
-//
-        txt +='           '
-        txt += '          var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-        txt += '          linkToMe += pulse.srcMint + "&dstMint=" + "'+me.mint+'" + "&group=" + "'+me.group+'"+ \'">\' + pulse.owl + "ms </a>";'
-        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(linkToMe);'  
-
-//        txt += '          $("."+pulse.geo+"_owl").text(pulse.owl+" ms");'
-        txt += '          $("."+pulse.geo+"_owl").html(linkToMe);'
-
-        txt +='           if ((typeof pulse.median != "unknown") &&  (srcMint!=dstMint) && (owl!=0) ) {'
-        txt +='             var deviation=Math.round(100*(Math.abs(pulse.median-pulse.owl)/pulse.median));'
-        //txt +='             console.log("pulse.owl="+pulse.owl+" pulse.median="+pulse.median+" deviation="+deviation+"%");'
-
-        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","lightred");'
-        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","yellow");'
-        txt += '            else $("."+pulse.srcMint+"-"+"'+me.mint+'").css("background-color","lightgreen");'
-
-        txt += '            if ((typeof deviation == "number") && (deviation>30)) $("."+pulse.geo+"_owl").css("background-color","lightred");'
-        txt += '            else if ((typeof deviation == "number") && (deviation>20)) $("."+pulse.geo+"_owl").css("background-color","yellow");'
-        txt += '            else $("."+pulse.geo+"_owl").css("background-color","lightgreen");'
-        txt += '          }'
-       
-
-        //        txt += '          $("."+pulse.srcMint+"-"+"'+me.mint+'").html(pulse.owl+" ms");'  
-//
-//      print the OWL matrix based on OWLS reported to us - we don't have medians unless we track them ourselves....
-//        
-        txt += '          var owls=pulse.owls.split(",");'
-//        txt += '          var srcMint=pulse.srcMint;'
-        //txt += '          var dstMedian=pulse.median;'  //median measure for this incoming pulse
-        txt += '          var dstMint=pulse.srcMint;'           //this was his peer's measure to him
-        txt += '          for (var owl in owls) {';  //for each owl in this pulse's owl list
-        txt += '              var owlEntry=owls[owl];'
-        txt += '              var srcMint=owlEntry.split("=")[0];' //this is the guy who sent the reported pulse
-        txt += '              var myOwl=owlEntry.split("=")[1];';  //OWL value reported to
-        txt += '              if (typeof myOwl == "undefined") myOwl="0";'
-
-        //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-        txt += '               var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\' + srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
-       // txt += '               console.log("my link="+link);'
-        txt += '               $("."+srcMint+"-"+dstMint).html(link);';   
-        txt += '               var median=getMedian(configs,srcMint,dstMint);'
-       // txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);'
-
-
-
-
-        txt += '          }'
-        
-
-
-*/
-
-
-        
-        
-
-
-
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
@@ -417,47 +341,11 @@ function handleShowState(req, res) {
         txt += "         }"
         txt += "    }"
         //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
-        txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
+        //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
         txt += '    return values;'
         txt += "}"
 
-        /*
-        txt += "function getOWL(config,src,dst) { "
-        txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
-        txt += "    if (pulseReceiver!=null) { "
-        txt += "        for (var pulse in config.pulses) {"
-        txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
-        //txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
-        txt += '            var owls=pulseEntry.owls.split(","); '
-      
-        txt += '            for (var owl in owls) {'
-        txt += '                var owlMint=owls[owl].split("=")[0];'
-        txt += '                var owl=owls[owl].split("=")[1];'
-        txt += '                if (typeof owl == "undefined") {'
-        txt += '                    owl="";'
-        txt += '                }'
-        txt += '                if (owlMint==src) {'
-        //txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                    return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });'
-        //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '                }'
-        txt += '            }'
-        txt += "         }"
-        txt += "    }"
-        txt += '    return null;'
-        txt += "}"
-    
-        txt += "function getPulse(config,destinationMint) {"
-        txt += "    for (var x in config.pulses) {"
-        txt += "        var pulseEntry=config.pulses[x];"
-        //txt += '        console.log("getPulse(): searching for "+destinationMint+" pulseEntry="+JSON.stringify(pulseEntry,null,2));'
-        txt += "        if (pulseEntry.srcMint==destinationMint) {"
-        //txt += "            console.log('FOUND IT: '+destinationMint);"
-        txt += "            return(pulseEntry);"
-        txt += "        }"
-        txt += "    } return null"
-        txt += "}"
-*/
+
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '
         txt += '</head>'
