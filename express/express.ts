@@ -366,7 +366,7 @@ function handleShowState(req, res) {
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-    /*
+    
         txt += "function getOwls(configs,src,dst) { "
         txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
         txt += '    if (typeof configs == "undefined" || configs==null ) return 0;'
@@ -396,7 +396,7 @@ function handleShowState(req, res) {
         txt += '    console.log("values="+values);'; //get middlish value
         txt += '    return values;'
         txt += "}"
-*/
+
         /*
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
