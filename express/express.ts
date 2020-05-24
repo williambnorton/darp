@@ -296,7 +296,7 @@ function handleShowState(req, res) {
         txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint="\'+ srcMint + "&dstMint=" + dstMint;'
         txt += '               owlHTML+=\'">\' ;'
         txt += '               if (owl!="?") owlHTML += owl + "ms </a>";'
-        txt += '               else owlHTML += "</a>";'
+        txt += '               else owlHTML += "???</a>";'
 
         txt += '               console.log("owlHTML="+owlHTML);'
 
