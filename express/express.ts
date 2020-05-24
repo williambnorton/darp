@@ -304,7 +304,7 @@ function handleShowState(req, res) {
 
         txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
 
-        txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
+        txt += '                  if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '                  else if (srcMint!=dstMint) '
         txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
         txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
