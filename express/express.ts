@@ -240,6 +240,9 @@ function handleShowState(req, res) {
        txt += '   function renderPage(config) {'
        txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+//
+//      Render table from information in the state fetched from node
+//
        txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );' //we show this epoch
        txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
@@ -256,7 +259,38 @@ function handleShowState(req, res) {
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
-        txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'
+        txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
+        txt += '     }'        
+
+        txt +='      for(var src in config.mintTable)'
+        txt +='         for(var dst in config.mintTable) {'
+        txt +='           var srcmint=config.mintTable[src];'
+        txt +='           var dstmint=config.mintTable[dst];'
+
+        txt +='           var owls=getOwls(configs,srcmint,dstmint);' //return array of owls
+        txt +='           var owl=owls[0];'                            //recent measure is first
+        txt +='           var median=Math.median(owls);'
+        txt +='           console.log(srcmint+"-"+dstmint+" owl="+owl+" median="+median);'
+        txt +='           '
+        txt +='           '
+        txt +='           '
+        txt +='         }'
+        txt +='      }'
+
+        txt +=' '
+        txt +='           '
+        txt +='           '
+        txt +='           '
+        txt +='           '
+        txt +='           '
+        txt +='           '
+        txt +=' '
+
+
+
+
+        /*
+
 //
 //      print my OWL Matrix COLUMN based on my pulseEntries
 //
@@ -309,62 +343,27 @@ function handleShowState(req, res) {
         txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
-/*
-        txt += '              var pulseDestEntry=getPulse(config,srcMint);'
-        txt += '              '
-        
-        
-        // print out the number then color the background
 
-
-        txt += '              if (pulseDestEntry!=null) {' 
-        txt += '                  var myMedian=pulseDestEntry.median;'
-        txt += '                  var myOwl=pulseDestEntry.owl;'   //measured latency reported by this node       
-        txt += '                  console.log("pulse.geo="+pulse.geo+" - "+pulseDestEntry.geo+"      myMedian="+myMedian+" myOwl="+myOwl);'
-
-        txt += '                  if (typeof myMedian != "undefined") {'
-//        txt += '                        $("."+srcMint+"-"+dstMint).css("background-color","grey");'
-
-        txt += '                        console.log("Ideviation="+Ideviation+"%");'
-
-
-        
-        //        txt += '              var link=\'<a href="http://'+me.ipaddr+':'+me.port+'">\'+owl+" ms </a>";'
-        txt += '                        var link=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-        txt += '                        link += srcMint + "&dstMint=" + dstMint + "&group=" + "'+me.group+'"+ \'">\' + myOwl + "ms</a>";'
-//        txt += '                      console.log("my link="+link);'
-        txt += '                        $("."+srcMint+"-"+dstMint).html(link);';   
-
-
-
-        txt += '                        if (myOwl>5) '
-        txt += '                        if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","red");'
-        txt += '                        else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
-        txt += '                        else $("."+srcMint+"-"+dstMint).css("background-color","white");'
-
-
-        txt += '                  '
-        txt += '                  }'
-        txt += '              } else {console.log("pulseDestEntry=null");}'
-
-        txt += '               '
-        txt += '              '
-*/
 
 
 
         txt += '          }'
         
+
+
+*/
+
+
         
         
 
 
-        txt += '       }'
+
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
     
-        txt += "function getMedian(configs,src,dst) { "
+        txt += "function getOwls(configs,src,dst) { "
         txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
         txt += '    if (typeof configs == "undefined" || configs==null ) return 0;'
         txt += "    for (var config in configs) {"
@@ -389,11 +388,11 @@ function handleShowState(req, res) {
         txt += '            }'
         txt += "         }"
         txt += "    }"
-        txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
-        //txt += '    console.log("median="+median);'; //get middlish value
-        txt += '    return median;'
+        //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
+        txt += '    console.log("values="+values);'; //get middlish value
+        txt += '    return values;'
         txt += "}"
-
+/*
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
         txt += "    if (pulseReceiver!=null) { "
@@ -429,7 +428,7 @@ function handleShowState(req, res) {
         txt += "        }"
         txt += "    } return null"
         txt += "}"
-
+*/
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '
         txt += '</head>'
