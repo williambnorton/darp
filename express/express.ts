@@ -293,7 +293,7 @@ function handleShowState(req, res) {
 
         txt += '               if (!isNaN(owl)) owl="";'
         txt += '               '
-        txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
+        txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ \'">\' + owl + "ms </a>";'
 /*
         txt += '               console.log("owlHTML="+owlHTML);'
         txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
