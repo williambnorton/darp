@@ -246,6 +246,7 @@ function handleShowState(req, res) {
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
         txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
         txt += '     }';
+        //Note: we are measuring relative latency so there IS NO ABSOLUTE latency - 0 and -# are valid latency measures
         txt += '      for(var src in config.mintTable) {';
         txt += '         for(var dst in config.mintTable) {';
         txt += '           var srcMint=config.mintTable[src].mint;';
@@ -253,9 +254,11 @@ function handleShowState(req, res) {
         txt += '           var owls=getOwls(configs,srcMint,dstMint);'; //return array of owls
         txt += '           var owl=owls[0];'; //recent measure is first
         txt += '           var myMedian=Math.round(median(owls));';
+        txt += '           ';
         txt += '           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);';
         txt += '                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
-        //we can not color the cells until we have a median matrix
+        txt += '                console.log("Idevitation=:"+Ideviation);';
+        //
         txt += '               if (srcMint!=dstMint && (owl!=0)) ';
         txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
