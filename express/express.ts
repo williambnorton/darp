@@ -284,10 +284,10 @@ function handleShowState(req, res) {
         txt +='           var owl=owls[0];'                            //recent measure is first
         txt +='           var myMedian=Math.round(median(owls));'
         txt +='           '
-        txt +='           console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
+       // txt +='           console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
 
         txt +='           var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
-        txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
+        //txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
         //
 
         txt += '          if (isNaN(owl)) owl="?";'
@@ -299,7 +299,7 @@ function handleShowState(req, res) {
 
                                           //owlHTML=<a target="_blank" href="http://71.202.2.184:65013/graph?srcMint="1&dstMint=1">3ms </a>
 
-        txt += '          console.log("owlHTML="+owlHTML);'
+        //txt += '          console.log("owlHTML="+owlHTML);'
 
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
 
