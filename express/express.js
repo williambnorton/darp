@@ -356,7 +356,7 @@ function handleShowState(req, res) {
         txt += "         }";
         txt += "    }";
         //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
-        txt += '    console.log("values="+dump(values));'; //get middlish value
+        txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
         txt += '    return values;';
         txt += "}";
         /*
