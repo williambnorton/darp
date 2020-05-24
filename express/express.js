@@ -258,7 +258,7 @@ function handleShowState(req, res) {
         txt += '           var owl=owls[0];'; //recent measure is first
         txt += '           var myMedian=Math.round(median(owls));';
         txt += '           ';
-        // txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
+        txt += '           console.log("owls="+owls+" srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);';
         txt += '                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
         txt += '                console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);';
         //
