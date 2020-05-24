@@ -294,8 +294,8 @@ function handleShowState(req, res) {
         txt += '               if (!isNaN(owl)) owl="";'
         txt += '               '
         txt += '               var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
-        txt += '               linkToMe += srcMint + "&dstMint=" + destMint+ "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
-        txt += '               $("."+srcMint+"-"+destMint).html(linkToMe);'  //set owl value
+        txt += '               linkToMe += srcMint + "&dstMint=" + dstMint+ "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
+        txt += '               $("."+srcMint+"-"+dstMint).html(linkToMe);'  //set owl value
 
         txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '                  else if (srcMint!=dstMint) '
