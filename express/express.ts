@@ -276,12 +276,12 @@ function handleShowState(req, res) {
 
         txt +='      for(var src in config.mintTable) {'
         txt +='         for(var dst in config.mintTable) {'
-        txt +='           var srcmint=config.mintTable[src].mint;'
-        txt +='           var dstmint=config.mintTable[dst].mint;'
-        txt +='           var owls=getOwls(configs,srcmint,dstmint);' //return array of owls
+        txt +='           var srcMint=config.mintTable[src].mint;'
+        txt +='           var dstMint=config.mintTable[dst].mint;'
+        txt +='           var owls=getOwls(configs,srcMint,dstMint);' //return array of owls
         txt +='           var owl=owls[0];'                            //recent measure is first
         txt +='           var myMedian=Math.round(median(owls));'
-        txt +='           console.log(srcmint+"-"+dstmint+" owl="+owl+" myMedian="+myMedian);'
+        txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
 
         txt +='                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
         //we can not color the cells until we have a median matrix
