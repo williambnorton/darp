@@ -242,7 +242,7 @@ function handleShowState(req, res) {
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 
 
-/*
+
 //
 //      Render table from information in the state fetched from node
 //
@@ -280,7 +280,7 @@ function handleShowState(req, res) {
         txt +='         }'
         txt +='      }'
 
-        */
+        
         txt +=' '
         txt +='           '
         txt +='           '
