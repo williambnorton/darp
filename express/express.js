@@ -260,13 +260,13 @@ function handleShowState(req, res) {
         txt += '           ';
         // txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
         txt += '                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
-        //txt +='                console.log("Idevitation=:"+Ideviation);'
+        txt += '                console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);';
         //
         txt += '               if (!isNaN(owl)) owl="";';
         txt += '               ';
-        txt += '                  var linkToMe=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
-        txt += '                  linkToMe += pulse.srcMint + "&dstMint=" + "' + me.mint + '" + "&group=" + "' + me.group + '"+ \'">\' + owl + "ms </a>";';
-        txt += '                  $("."+pulse.srcMint+"-"+"' + me.mint + '").html(linkToMe);';
+        txt += '               var linkToMe=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\';';
+        txt += '               linkToMe += srcMint + "&dstMint=" + destMint+ "&group=" + "' + me.group + '"+ \'">\' + owl + "ms </a>";';
+        txt += '               $("."+srcMint+"-"+destMint).html(linkToMe);'; //set owl value
         txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
         txt += '                  else if (srcMint!=dstMint) ';
         txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
