@@ -297,11 +297,10 @@ function handleShowState(req, res) {
         txt += '          if (owl!="?") owlHTML += owl + "ms </a>";'
         txt += '          else owlHTML += "???</a>";'
 
-                                          //owlHTML=<a target="_blank" href="http://71.202.2.184:65013/graph?srcMint="1&dstMint=1">3ms </a>
-
         //txt += '          console.log("owlHTML="+owlHTML);'
 
-        txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
+        txt += '          $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
+//        txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value *******************
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) '
