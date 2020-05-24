@@ -276,7 +276,7 @@ function handleShowState(req, res) {
         // txt += '               console.log("srcMint="+srcMint+" dstMint="+dstMint+" owl="+myOwl+" median="+median);'
         txt += '                var Ideviation=Math.round(100*(Math.abs(median-myOwl)/median));';
         //we can not color the cells until we have a median matrix
-        txt += '               if (myOwl>5) ';
+        //txt += '               if (myOwl>5) '
         txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
         txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
