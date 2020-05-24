@@ -269,7 +269,7 @@ function handleShowState(req, res) {
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
-        txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
+        txt +='           $("."+pulse.geo+"_owls").html("<span style="text-align:left>"+pulse.owls+"</span>");'  //TODO : Align left for this text field
         txt += '     }'        
 
 //Note: we are measuring relative latency so there IS NO ABSOLUTE latency - 0 and -# are valid latency measures
@@ -286,35 +286,28 @@ function handleShowState(req, res) {
         txt +='           '
         txt +='           console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
 
-        txt +='                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
-        txt +='                console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
+        txt +='           var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
+        txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
         //
 
-
-        txt += '               if (isNaN(owl)) owl="?";'
-        txt += '               '
-        txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;'
-        txt += '               owlHTML+=\'">\' ;'
-        txt += '               if (owl!="?") owlHTML += owl + "ms </a>";'
-        txt += '               else owlHTML += "???</a>";'
+        txt += '          if (isNaN(owl)) owl="?";'
+        //txt += '               '
+        txt += '          var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;'
+        txt += '          owlHTML+=\'">\' ;'
+        txt += '          if (owl!="?") owlHTML += owl + "ms </a>";'
+        txt += '          else owlHTML += "???</a>";'
 
                                           //owlHTML=<a target="_blank" href="http://71.202.2.184:65013/graph?srcMint="1&dstMint=1">3ms </a>
 
-        txt += '               console.log("owlHTML="+owlHTML);'
+        txt += '          console.log("owlHTML="+owlHTML);'
 
-        txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
+        txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
 
-        txt += '                  if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
-        txt += '                  else if (srcMint!=dstMint) '
-        txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
-        txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
-        txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
-
-        
-
-        txt +='                '
-        txt +='           '
-        txt +='           '
+        txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
+        txt += '          else if (srcMint!=dstMint) '
+        txt += '               if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
+        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
+        txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
         txt +='         }'
         txt +='      }'
 
