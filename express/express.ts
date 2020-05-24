@@ -265,6 +265,8 @@ function handleShowState(req, res) {
         txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
         txt += '     }'        
 
+
+
         txt +='      for(var src in config.mintTable) {'
         txt +='         for(var dst in config.mintTable) {'
         txt +='           var srcmint=config.mintTable[src];'
@@ -272,8 +274,8 @@ function handleShowState(req, res) {
 
         txt +='           var owls=getOwls(configs,srcmint,dstmint);' //return array of owls
         txt +='           var owl=owls[0];'                            //recent measure is first
-        txt +='           var median=Math.median(owls);'
-        txt +='           console.log(srcmint+"-"+dstmint+" owl="+owl+" median="+median);'
+        txt +='           var myMedian=median(owls);'
+        txt +='           console.log(srcmint+"-"+dstmint+" owl="+owl+" myMedian="+myMedian);'
         txt +='           '
         txt +='           '
         txt +='           '
@@ -281,8 +283,12 @@ function handleShowState(req, res) {
         txt +='      }'
 
         
-        txt +=' '
-        txt +='           '
+        
+        txt +='const median = arr => {'
+        txt +='    const mid = Math.floor(arr.length / 2),'
+        txt +='      nums = [...arr].sort((a, b) => a - b);'
+        txt +='    return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;'
+        txt += '  };'
         txt +='           '
         txt +='           '
         txt +='           '
