@@ -240,6 +240,9 @@ function handleShowState(req, res) {
        txt += '   function renderPage(config) {'
        txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+
+
+/*
 //
 //      Render table from information in the state fetched from node
 //
@@ -277,6 +280,7 @@ function handleShowState(req, res) {
         txt +='         }'
         txt +='      }'
 
+        */
         txt +=' '
         txt +='           '
         txt +='           '
@@ -362,7 +366,7 @@ function handleShowState(req, res) {
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-    
+    /*
         txt += "function getOwls(configs,src,dst) { "
         txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
         txt += '    if (typeof configs == "undefined" || configs==null ) return 0;'
@@ -392,7 +396,8 @@ function handleShowState(req, res) {
         txt += '    console.log("values="+values);'; //get middlish value
         txt += '    return values;'
         txt += "}"
-/*
+*/
+        /*
         txt += "function getOWL(config,src,dst) { "
         txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
         txt += "    if (pulseReceiver!=null) { "

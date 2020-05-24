@@ -221,39 +221,45 @@ function handleShowState(req, res) {
         txt += '   function renderPage(config) {';
         txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
         //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+        /*
         //
         //      Render table from information in the state fetched from node
         //
-        txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );'; //we show this epoch
-        txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
-        //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-        txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
-        txt += '          var pulse=value;'; //
-        txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
-        // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-        //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
-        txt += '         }';
-        //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-        txt += '          if (pulse.pulseTimestamp!="0")';
-        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-        txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
-        txt += '     }';
-        txt += '      for(var src in config.mintTable)';
-        txt += '         for(var dst in config.mintTable) {';
-        txt += '           var srcmint=config.mintTable[src];';
-        txt += '           var dstmint=config.mintTable[dst];';
-        txt += '           var owls=getOwls(configs,srcmint,dstmint);'; //return array of owls
-        txt += '           var owl=owls[0];'; //recent measure is first
-        txt += '           var median=Math.median(owls);';
-        txt += '           console.log(srcmint+"-"+dstmint+" owl="+owl+" median="+median);';
-        txt += '           ';
-        txt += '           ';
-        txt += '           ';
-        txt += '         }';
-        txt += '      }';
+               txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );' //we show this epoch
+               txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
+               //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+               txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
+               txt += '          var pulse=value;'      //
+               txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
+               // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+               //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+                txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+                txt += '         }'
+        
+               //txt += '          console.log("config="+JSON.stringify(config,null,2));'
+                txt += '          if (pulse.pulseTimestamp!="0")'
+                txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+                txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
+                txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
+                txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
+                txt += '     }'
+        
+                txt +='      for(var src in config.mintTable)'
+                txt +='         for(var dst in config.mintTable) {'
+                txt +='           var srcmint=config.mintTable[src];'
+                txt +='           var dstmint=config.mintTable[dst];'
+        
+                txt +='           var owls=getOwls(configs,srcmint,dstmint);' //return array of owls
+                txt +='           var owl=owls[0];'                            //recent measure is first
+                txt +='           var median=Math.median(owls);'
+                txt +='           console.log(srcmint+"-"+dstmint+" owl="+owl+" median="+median);'
+                txt +='           '
+                txt +='           '
+                txt +='           '
+                txt +='         }'
+                txt +='      }'
+        
+                */
         txt += ' ';
         txt += '           ';
         txt += '           ';
@@ -328,71 +334,74 @@ function handleShowState(req, res) {
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
-        txt += "function getOwls(configs,src,dst) { ";
-        txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
-        txt += '    if (typeof configs == "undefined" || configs==null ) return 0;';
-        txt += "    for (var config in configs) {";
-        txt += "        for (var pulse in configs[config].pulses) {";
-        txt += "            var pulseEntry=configs[config].pulses[pulse];"; //convenience
-        txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
-        txt += '               var owls=pulseEntry.owls.split(",");';
-        txt += '              ';
-        txt += '               for (var owl in owls) {';
-        txt += '                  var owlMint=owls[owl].split("=")[0];';
-        txt += '                  var owl=owls[owl].split("=")[1];';
-        txt += '                  if (typeof owl == "undefined") {';
-        txt += '                     owl="";';
-        txt += '                  }';
-        txt += '                  if (owlMint==src) {';
-        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                     values.push( owl );';
-        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '                  }';
-        txt += '               }';
-        txt += '            }';
-        txt += "         }";
-        txt += "    }";
-        //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
-        txt += '    console.log("values="+values);'; //get middlish value
-        txt += '    return values;';
-        txt += "}";
         /*
-                txt += "function getOWL(config,src,dst) { "
-                txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
-                txt += "    if (pulseReceiver!=null) { "
-                txt += "        for (var pulse in config.pulses) {"
-                txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
-                //txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
-                txt += '            var owls=pulseEntry.owls.split(","); '
-              
-                txt += '            for (var owl in owls) {'
-                txt += '                var owlMint=owls[owl].split("=")[0];'
-                txt += '                var owl=owls[owl].split("=")[1];'
-                txt += '                if (typeof owl == "undefined") {'
-                txt += '                    owl="";'
-                txt += '                }'
-                txt += '                if (owlMint==src) {'
-                //txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-                txt += '                    return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });'
-                //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-                txt += '                }'
-                txt += '            }'
-                txt += "         }"
-                txt += "    }"
-                txt += '    return null;'
-                txt += "}"
-            
-                txt += "function getPulse(config,destinationMint) {"
-                txt += "    for (var x in config.pulses) {"
-                txt += "        var pulseEntry=config.pulses[x];"
-                //txt += '        console.log("getPulse(): searching for "+destinationMint+" pulseEntry="+JSON.stringify(pulseEntry,null,2));'
-                txt += "        if (pulseEntry.srcMint==destinationMint) {"
-                //txt += "            console.log('FOUND IT: '+destinationMint);"
-                txt += "            return(pulseEntry);"
-                txt += "        }"
-                txt += "    } return null"
-                txt += "}"
-        */
+            txt += "function getOwls(configs,src,dst) { "
+            txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
+            txt += '    if (typeof configs == "undefined" || configs==null ) return 0;'
+            txt += "    for (var config in configs) {"
+            txt += "        for (var pulse in configs[config].pulses) {"
+    
+            txt += "            var pulseEntry=configs[config].pulses[pulse];"  //convenience
+            txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
+            txt += '               var owls=pulseEntry.owls.split(",");'
+            txt += '              '
+            txt += '               for (var owl in owls) {'
+            txt += '                  var owlMint=owls[owl].split("=")[0];'
+            txt += '                  var owl=owls[owl].split("=")[1];'
+            txt += '                  if (typeof owl == "undefined") {'
+            txt += '                     owl="";'
+            txt += '                  }'
+            txt += '                  if (owlMint==src) {'
+            //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+            txt += '                     values.push( owl );'
+            //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+            txt += '                  }'
+            txt += '               }'
+            txt += '            }'
+            txt += "         }"
+            txt += "    }"
+            //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
+            txt += '    console.log("values="+values);'; //get middlish value
+            txt += '    return values;'
+            txt += "}"
+    */
+        /*
+        txt += "function getOWL(config,src,dst) { "
+        txt += "    var pulseReceiver=getPulse(config,dst);"   //receiver pulse tells us measured latency and median to it
+        txt += "    if (pulseReceiver!=null) { "
+        txt += "        for (var pulse in config.pulses) {"
+        txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
+        //txt += "            console.log('getOwl(): Found the '+dst+' pulseEntry');"
+        txt += '            var owls=pulseEntry.owls.split(","); '
+      
+        txt += '            for (var owl in owls) {'
+        txt += '                var owlMint=owls[owl].split("=")[0];'
+        txt += '                var owl=owls[owl].split("=")[1];'
+        txt += '                if (typeof owl == "undefined") {'
+        txt += '                    owl="";'
+        txt += '                }'
+        txt += '                if (owlMint==src) {'
+        //txt += '                    console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+        txt += '                    return({ "src" : src, "dst" : dst, "owl" : owl, "median" : median });'
+        //txt += '                  console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+        txt += '                }'
+        txt += '            }'
+        txt += "         }"
+        txt += "    }"
+        txt += '    return null;'
+        txt += "}"
+    
+        txt += "function getPulse(config,destinationMint) {"
+        txt += "    for (var x in config.pulses) {"
+        txt += "        var pulseEntry=config.pulses[x];"
+        //txt += '        console.log("getPulse(): searching for "+destinationMint+" pulseEntry="+JSON.stringify(pulseEntry,null,2));'
+        txt += "        if (pulseEntry.srcMint==destinationMint) {"
+        //txt += "            console.log('FOUND IT: '+destinationMint);"
+        txt += "            return(pulseEntry);"
+        txt += "        }"
+        txt += "    } return null"
+        txt += "}"
+*/
         txt += "setTimeout(fetchState,1000);";
         txt += '</script> ';
         txt += '</head>';
