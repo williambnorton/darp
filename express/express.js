@@ -262,10 +262,10 @@ function handleShowState(req, res) {
         txt += '                var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
         txt += '                console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);';
         //
+        txt += '               if (!isNaN(owl)) owl="";';
+        txt += '               ';
+        txt += '               var owlHTML=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ "&group=" + "' + me.group + '"+ \'">\' + owl + "ms </a>";';
         /*
-                txt += '               if (!isNaN(owl)) owl="";'
-                txt += '               '
-                txt += '               var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'"/graph?srcMint="+ srcMint + "&dstMint=" + dstMint+ "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
                 txt += '               console.log("owlHTML="+owlHTML);'
                 txt += '               $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value
         
