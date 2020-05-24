@@ -244,7 +244,7 @@ function handleShowState(req, res) {
         txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
         txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
         txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-        txt += '           $("."+pulse.geo+"_owls").html("<span style="text-align:left>"+pulse.owls+"</span>");'; //TODO : Align left for this text field
+        txt += '           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'; //TODO : Align left for this text field
         txt += '     }';
         //Note: we are measuring relative latency so there IS NO ABSOLUTE latency - 0 and -# are valid latency measures
         //
