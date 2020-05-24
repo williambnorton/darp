@@ -288,12 +288,24 @@ function handleShowState(req, res) {
         txt +='                console.log("Idevitation=:"+Ideviation);'
         //
 
-        txt += '               if (srcMint!=dstMint && (owl!=0)) '
-        txt += '                  if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
-        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
-        txt += '                       else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
 
-        txt +='           '
+
+
+
+        txt += '               if (!isNaN(owl)) owl="";'
+        txt += '               '
+        txt += '                  var linkToMe=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\';';
+        txt += '                  linkToMe += pulse.srcMint + "&dstMint=" + "'+me.mint+'" + "&group=" + "'+me.group+'"+ \'">\' + owl + "ms </a>";'
+        txt += '                  $("."+pulse.srcMint+"-"+"'+me.mint+'").html(linkToMe);'  
+
+
+        txt += '                  if (!isNaN(owl) || !isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
+        txt += '                  else if (srcMint!=dstMint) '
+        txt += '                       if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
+        txt += '                       else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
+        txt += '                            else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
+
+        txt +='                '
         txt +='           '
         txt +='           '
         txt +='         }'
