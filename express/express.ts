@@ -296,7 +296,7 @@ function handleShowState(req, res) {
         txt += '          var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;'
         txt += '          owlHTML+=\'">\' ;'
         txt += '          if (owl!="?") owlHTML += owl + "ms</a>";'
-        txt += '          else owlHTML += "???</a>";'
+        txt += '          else owlHTML += "|_|</a>";'
 
         //txt += '          console.log("owlHTML="+owlHTML);'
 
@@ -442,7 +442,7 @@ function handleShowState(req, res) {
                txt += "<th>pulseTimestamp</th>"
                txt += "<th>srcMint</th>"
                txt += "<th>owl</th>"
-               txt += "<th>median</th>"
+               //txt += "<th>median</th>"
                //txt+="<th>owls</th>"
                txt += "<th>inOctets</th>"
                txt += "<th>outOctets</th>"
@@ -487,7 +487,7 @@ function handleShowState(req, res) {
 
 
                    txt += '<td class="'+pulseEntry.geo+'_owl"'+'>'+'<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo+'&dst='+me.geo +  "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>"
-                   txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
+                   //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
 
 
 
