@@ -294,9 +294,9 @@ function handleShowState(req, res) {
         txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
         txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
         txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+s+" percentOfMedian="+percentOfMedian);';
-        txt += '               if (percentOfMedian>10) $("."+srcMint+"-"+dstMint).css("border-color","yellow");';
-        txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("border-color","orange");';
-        txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("border-color","red");';
+        txt += '               if (percentOfMedian>10) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
+        txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");';
+        txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");';
         /*
                 txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("background-color","purple");'
                 txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
@@ -305,6 +305,7 @@ function handleShowState(req, res) {
         txt += '         }';
         txt += '      }';
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;';
+        txt += '    if (arrayWidthLastTime!=arrayWidth) ;';
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
