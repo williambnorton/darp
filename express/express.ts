@@ -319,6 +319,7 @@ function handleShowState(req, res) {
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {'
+        /*
 //
 //                      Highlight extraordinary paths
 //
@@ -337,7 +338,7 @@ function handleShowState(req, res) {
         txt +='                        highlightedCell=1;'
         txt +='                    }'
         txt +='                }'
-
+*/
 //
 //      highlight variations 
 //

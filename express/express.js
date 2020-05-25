@@ -285,24 +285,26 @@ function handleShowState(req, res) {
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {';
-        //
-        //                      Highlight extraordinary paths
-        //
-        txt += '                var highlightedCell=0;'; //first color extraordinary relays
-        txt += '                for (var altSR in config.mintTable) {'; //first color extraordinary relays
-        txt += '                    var altEntry=config.mintTable[altSR];';
-        txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
-        txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
-        txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
-        txt += '                        console.log( "Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));';
-        txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");';
-        txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");';
-        txt += '                    } else {';
-        txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","1px");'; //reset
-        txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","1px");'; //reset
-        txt += '                        highlightedCell=1;';
-        txt += '                    }';
-        txt += '                }';
+        /*
+//
+//                      Highlight extraordinary paths
+//
+        txt +='                var highlightedCell=0;'   //first color extraordinary relays
+        txt +='                for (var altSR in config.mintTable) {'   //first color extraordinary relays
+        txt +='                    var altEntry=config.mintTable[altSR];'
+        txt +='                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);'
+        txt +='                    var altToDst=getOWL(config,altEntry.mint,dstMint);'
+        txt +='                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {'
+        txt +='                        console.log( "Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));'
+        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");'
+        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");'
+        txt +='                    } else {'
+        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","1px");'  //reset
+        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","1px");'  //reset
+        txt +='                        highlightedCell=1;'
+        txt +='                    }'
+        txt +='                }'
+*/
         //
         //      highlight variations 
         //
