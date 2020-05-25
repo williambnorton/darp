@@ -292,7 +292,7 @@ function handleShowState(req, res) {
         txt += "               const n = owls.length;";
         txt += '               const mean = owls.reduce((a,b) => a+b)/n;';
         txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
-        txt += '               console.log("stddev="+s+" owls="+JSON.stringify((owls,null,2));';
+        txt += '               console.log("stddev="+s+" owls="+JSON.stringify(owls,null,2));';
         /*        txt += '               if (s>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
         */
         txt += '            }';
