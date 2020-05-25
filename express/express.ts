@@ -346,7 +346,7 @@ function handleShowState(req, res) {
         txt +='                    var altToDst=getOWL(config,altEntry.mint,dstMint);'
         txt +='                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {'
         txt +='                    var improvement=owl-(srcToAlt+altToDst);'
-        txt +='                        console.log( improvement+" ms Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
+        txt +='                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
         txt +='                        if (improvement>5) {'
         txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");'
         txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");' //highlight better path
