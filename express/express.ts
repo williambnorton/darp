@@ -342,7 +342,7 @@ function handleShowState(req, res) {
         txt +='         }'
         txt +='      }'
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;'
-        txt += '    if (arrayWidthLastTime!=arrayWidth) ;'
+        txt += '    if (arrayWidthLastTime>1 && arrayWidthLastTime!=arrayWidth) window.location.reload(true);'
         
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
