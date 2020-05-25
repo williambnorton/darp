@@ -13,7 +13,6 @@ import { setWireguard } from "../wireguard/wireguard";
 
 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
-var arrayWidthLastTime=1;
 
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -227,7 +226,7 @@ function handleShowState(req, res) {
        txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
        txt += '<script>'
        txt += "var URL='http://"+me.ipaddr+":"+me.port+"/state';"
-       txt += "var configs=[];"
+       txt += "var configs=[],arrayWidthLastTime=1;"
 
 
        txt += 'function fetchState() {'
@@ -405,7 +404,7 @@ function handleShowState(req, res) {
                for (var col in pulses) {
                    var colEntry = pulses[col];
                    //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                   if (count <=10) txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " " + colEntry.srcMint + "</a> </th>"
+                   if (count <=40) txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " <b>" + colEntry.srcMint + "<b></a> </th>"
                    else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.srcMint + "</a></th>"
                }
                txt += "</tr>"
