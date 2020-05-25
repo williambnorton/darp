@@ -8,10 +8,6 @@ import {
   makeYYMMDD
 } from '../lib/lib.js';
 
-
-//var jstat = require('/jstat/dist/jstat.js')
-
-
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
 var OWLEXPIRES = 2; //seconds should match polling cycle time
@@ -182,10 +178,7 @@ server.on('message', function(message, remote) {
                  console.log(err);
                  return;
                 }
-
-                //var newData=data.toString().split`,`.map(x=>+x)
-                //pulse.median = "" + Math.round(jstat(newData).median());
-                
+               
                 //console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median+" pulse="+dump(pulse));
                 redisClient.publish("pulses", msg);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
