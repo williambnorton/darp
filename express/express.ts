@@ -331,8 +331,8 @@ function handleShowState(req, res) {
         txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");'
         txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");'
         txt +='                    } else {'
-        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","0px");'  //reset
-        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","0px");'  //reset
+        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","1px");'  //reset
+        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","1px");'  //reset
         txt +='                    }'
         txt +='                }'
 
