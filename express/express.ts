@@ -338,7 +338,11 @@ function handleShowState(req, res) {
         txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
         txt +='                for (var altSR in config.mintTable) {'
         txt +='                    var altEntry=config.mintTable[altSR];'
-        txt +='                    if (getOWL(config,srcMint,altEntry.mint)+getOWL(config,altEntry.mint,dstMint)<owl) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");'
+        txt +='                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);'
+        txt +='                    var altToDst=getOWL(config,altEntry.mint,dstMint);'
+        txt +='                    console.log("srcMint+"-"+dstMint+"="+owl+" alt="+altEntry.geo+" srcToAlt="+srcToAlt+" altToDst="+altToDst);'
+
+        txt +='                    if ((srcToAlt!=0) && (altToDst!=0) && (srcToAlt+altToDst < owl)) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");'
         txt +='                }'
 /*        
         txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
