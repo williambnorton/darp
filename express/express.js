@@ -294,8 +294,8 @@ function handleShowState(req, res) {
         txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
         txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
         txt += '               console.log("stddev="+s+" percentOfMedian="+percentOfMedian);';
+        txt += '               if (percentOfMedian>10) $("."+srcMint+"-"+dstMint).css("background-color","pink");';
         /*
-                txt += '               if (percentOfMedian>10) $("."+srcMint+"-"+dstMint).css("background-color","pink");'
                 txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("background-color","purple");'
                 txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
         */
