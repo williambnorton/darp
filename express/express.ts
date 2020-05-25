@@ -347,7 +347,7 @@ function handleShowState(req, res) {
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
 
-        /*
+    
 //
 //      highlight bad standard deviations 
 //
@@ -371,7 +371,7 @@ function handleShowState(req, res) {
         txt +='         }'
         txt +='      }'
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;'
-        txt += '    console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidthLastTime-arrayWidth );'
+        txt += '    console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidth-arrayWidthLastTime));'
         txt += '    if (arrayWidthLastTime!=arrayWidth) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
         
         txt += "    };"
