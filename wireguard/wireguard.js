@@ -44,7 +44,7 @@ function setWireguard() {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0012";
     }
     //for each group in me.pulseGroups
-    console.log(lib_1.ts() + "TODO: Here we would ....Set up wireguard files ");
+    console.log(lib_1.ts() + "setWireguard(): TODO: Here we would ....Set up wireguard files and docker forever script...");
     return;
     redisClient.hgetall("gSRlist", function (err, gSRlist) {
         redisClient.hgetall("mint:0", function (err, me) {

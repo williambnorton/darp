@@ -200,6 +200,7 @@ function getMatrixTable(config,darp, callback) {
 };
 
 
+var arrayWidthLastTime=1;
 //
 //      handleShowState(req,res) - show the node state
 //
@@ -277,7 +278,10 @@ function handleShowState(req, res) {
 //
 //                  FILL MATRIX
 //
+        txt += '     var arrayWidth=0;'
         txt +='      for(var src in config.mintTable) {'
+        txt += '        arrayWidth++;'
+      
         txt +='         for(var dst in config.mintTable) {'
         txt +='           var srcMint=config.mintTable[src].mint;'
         txt +='           var dstMint=config.mintTable[dst].mint;'
@@ -313,7 +317,7 @@ function handleShowState(req, res) {
 
         
         txt += "    };"
-       txt += '    if ((configs[0]!=null) && (configs[1])) console.log("configs[0].pulses.length=" + configs[0].pulses.length + " configs[1].pulses.length=" + configs[1].pulses.length );'
+       txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);'
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
     
