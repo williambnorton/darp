@@ -285,10 +285,32 @@ function handleShowState(req, res) {
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {';
+        //
+        //                      Highlight extraordinary paths
+        //
+        txt += '                for (var altSR in config.mintTable) {'; //first color extraordinary relays
+        txt += '                    var altEntry=config.mintTable[altSR];';
+        txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
+        txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
+        txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
+        txt += '                        console.log( "Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));';
+        txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");';
+        txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");';
+        txt += '                    } else {';
+        txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","0px");'; //reset
+        txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","0px");'; //reset
+        txt += '                    }';
+        txt += '                }';
+        //
+        //      highlight variations 
+        //
         txt += '               if ((typeof Ideviation == "number") && (Ideviation>' + RED_TRIGGER + '))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
         txt += '               else if ((typeof Ideviation == "number") && (Ideviation>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
+        //
+        //      highlight bad standard deviations 
+        //
         txt += "               const n = owls.length;";
         txt += '               const mean = owls.reduce((a,b) => a+b)/n;';
         txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
@@ -298,16 +320,6 @@ function handleShowState(req, res) {
         txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");';
         txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");';
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
-        txt += '                for (var altSR in config.mintTable) {';
-        txt += '                    var altEntry=config.mintTable[altSR];';
-        txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
-        txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
-        txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
-        txt += '                        console.log( "Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));';
-        txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");';
-        txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");';
-        txt += '                    }';
-        txt += '                }';
         /*
                 txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
         */
