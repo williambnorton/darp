@@ -302,7 +302,7 @@ function handleShowState(req, res) {
         txt += '                    var altEntry=config.mintTable[altSR];';
         txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
         txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
-        txt += '                    console.log("srcMint+"-"+dstMint+"="+owl+" alt="+altEntry.geo+" srcToAlt="+srcToAlt+" altToDst="+altToDst);';
+        txt += '                    console.log( srcMint + "-" + dstMint + "=" + owl + " alt=" + altEntry.geo + " srcToAlt=" + srcToAlt + " altToDst=" + altToDst );';
         txt += '                    if ((srcToAlt!=0) && (altToDst!=0) && (srcToAlt+altToDst < owl)) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");';
         txt += '                }';
         /*
