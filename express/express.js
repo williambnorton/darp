@@ -213,7 +213,7 @@ function handleShowState(req, res) {
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += '<script>';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
-        txt += "var configs=[],arrayWidthLastTime=1;";
+        txt += "var configs=[],startingArrayWidth=1;";
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
         txt += '      configs.unshift(config);'; //push onto front of stack
@@ -328,10 +328,10 @@ function handleShowState(req, res) {
         txt += '            }';
         txt += '         }';
         txt += '      }';
-        //txt += '     console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);'
-        //txt += '     console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidth-arrayWidthLastTime));'
-        //txt += '     if (arrayWidthLastTime<arrayWidth+5) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
-        txt += '      arrayWidthLastTime=arrayWidth;';
+        txt += '     console.log("arrayWidth="+arrayWidth +"startingArrayWidth="+startingArrayWidth);';
+        txt += '     console.log("arrayWidth-startingArrayWidth=" + ( arrayWidth-startingArrayWidth));';
+        txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }';
+        txt += '      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;';
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
