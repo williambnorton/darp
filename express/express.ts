@@ -368,7 +368,7 @@ function handleShowState(req, res) {
         txt += '               for (var owl in owls) {'
         txt += '                  var owlMint=owls[owl].split("=")[0];'
         txt += '                  var owl=owls[owl].split("=")[1];'   
-        txt += '                  if (typeof owl == "undefined") {console.log("getOWL-returned empty bucket for "+src+" - "+owlMint+"");return null;}'
+        txt += '                  if (typeof owl == "undefined") {return null;}'
         txt += '                  if (owlMint==src) {'
         //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
         txt += '                     return parseInt(owl);'
