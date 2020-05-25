@@ -347,13 +347,13 @@ function handleShowState(req, res) {
         txt +='         }'
         txt +='      }'
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;'
-        txt += '    if ((arrayWidthLastTime>1) && (arrayWidthLastTime!=arrayWidth)) {console.log("RELOADING BROWSER for bigger matrix");location.reload();}'
+        txt += '    if (arrayWidthLastTime!=arrayWidth) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
         
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
         txt += "function getOWL(config,src,dst) { "
-        txt += "            var pulseEntry=configs[config].pulses[pulse];"  //convenience
+        txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
         txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");'
         txt += '              '
