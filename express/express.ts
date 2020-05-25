@@ -313,6 +313,7 @@ function handleShowState(req, res) {
 
         
         txt += "    };"
+        txt += '    console.log("config[0].pulses.length="+config[0].pulses.length," config[1].pulses.length="+config[1].pulses.length));'
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
     
@@ -431,7 +432,7 @@ function handleShowState(req, res) {
                //
                //  Externalize pulse structures 
                //
-               txt += '<br><h2>pulseTable'+'</h2><table>';
+               txt += '<br><h2>'+me.group+' pulseGroup'+'</h2><table>';
                txt += "<tr>"
                txt += "<th>geo</th>"
                txt += "<th>group</th>"
