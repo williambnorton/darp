@@ -311,9 +311,9 @@ function handleShowState(req, res) {
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {'
-        txt += '               if ((typeof Ideviation == "number") && (Ideviation>RED_TRIGGER))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
-        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>ORANGE_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
-        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>YELLOW_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
+        txt += '               if ((typeof Ideviation == "number") && (Ideviation>'+RED_TRIGGER+'))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
+        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
+        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
         txt += '               if (stdev(owls)>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
         txt +='            }'
