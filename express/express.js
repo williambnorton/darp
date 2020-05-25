@@ -269,7 +269,7 @@ function handleShowState(req, res) {
         txt += '           var owls=getOwls(configs,srcMint,dstMint);'; //return array of owls
         txt += '           var owl=owls[0];'; //recent measure is first
         txt += '           var myMedian=Math.round(median(owls));';
-        txt += '           $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px").css("background-color","white");'; //reset cell markings
+        txt += '           $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px").css("background-color","white").html("");'; //reset cell markings
         txt += '           ';
         // txt +='           console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
         txt += '           var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
