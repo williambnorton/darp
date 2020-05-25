@@ -23,6 +23,7 @@ function wgdump() {
 }
 
 export function setWireguard() {
+
     //we assume these file were set by configWG
     console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
     var BASECONFIG="";
