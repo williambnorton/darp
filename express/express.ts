@@ -251,7 +251,7 @@ function handleShowState(req, res) {
 
 
 
-       txt += "function stddev(array) {"
+       txt += "function mystddev(array) {"
        txt += "   const n = array.length;"
        txt += '   const mean = array.reduce((a,b) => a+b)/n;'
        txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
@@ -325,7 +325,7 @@ function handleShowState(req, res) {
         txt += '               else if ((typeof Ideviation == "number") && (Ideviation>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
-        txt += '               if (stdev(owls)>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
+        txt += '               if (mystdev(owls)>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
         txt +='            }'
         txt +='         }'
         txt +='      }'
