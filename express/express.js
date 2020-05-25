@@ -12,7 +12,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
-var YELLOW_TRIGGER = 10; //when we show yellow warning 
+var YELLOW_TRIGGER = 10; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 var ORANGE_TRIGGER = 20; //when we show orange warning 
 var RED_TRIGGER = 30; //when we show red warning 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
@@ -278,16 +278,23 @@ function handleShowState(req, res) {
         //        txt += '          $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
-        txt += '          else if (srcMint!=dstMint) ';
+        txt += '          else if (srcMint!=dstMint) {';
         txt += '               if ((typeof Ideviation == "number") && (Ideviation>RED_TRIGGER))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
         txt += '               else if ((typeof Ideviation == "number") && (Ideviation>ORANGE_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>YELLOW_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
+        txt += '               if (stdev(owls)>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");';
+        txt += '            }';
         txt += '         }';
         txt += '      }';
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);arrayWidthLastTime=arrayWidth;';
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
+        txt += "}";
+        txt += "function stddev(array) {";
+        txt += "   const n = array.length;";
+        txt += '   const mean = array.reduce((a,b) => a+b)/n;';
+        txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
         txt += "}";
         txt += "function getOwls(configs,src,dst) { ";
         txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
