@@ -14,7 +14,7 @@ import {
 
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
-var OWLEXPIRES = 1; //seconds should match polling cycle time
+var OWLEXPIRES = 2; //seconds should match polling cycle time
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
@@ -174,7 +174,8 @@ server.on('message', function(message, remote) {
                       process.exit(36); //SOFTWARE RELOAD
               };
 
-              redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING")
+              redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
+
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
               redisClient.lrange(pulse.geo + "-" + me.geo+"-history", -300, -1, (err, data) => {
                 if (err) {
