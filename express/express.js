@@ -297,17 +297,24 @@ function handleShowState(req, res) {
         txt += '               if (percentOfMedian>10) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
         txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");';
         txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");';
+        txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");';
+        txt += '                for (var altSR in config.mintTable) {';
+        txt += '                    var altEntry=config.mintTable[altSR];';
+        txt += '                    if (getOWL(srcMint,altEntry.mint)+getOWL(altEntry.mint,dstMint)<owl) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");';
+        txt += '                }';
         /*
-                txt += '               if (percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("background-color","purple");'
                 txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
         */
         txt += '            }';
         txt += '         }';
         txt += '      }';
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;';
-        txt += '    if (arrayWidthLastTime>1 && arrayWidthLastTime!=arrayWidth) window.location.reload(true);';
+        txt += '    if ((arrayWidthLastTime>1) && (arrayWidthLastTime!=arrayWidth)) {console.log("RELOADING BROWSER for bigger matrix");window.location.reload(true);}';
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
+        txt += "}";
+        txt += "function getOwl(config,src,dst) { ";
+        txt += "    return 0;";
         txt += "}";
         txt += "function getOwls(configs,src,dst) { ";
         txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
