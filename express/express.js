@@ -288,7 +288,7 @@ function handleShowState(req, res) {
         //
         //                      Highlight extraordinary paths
         //
-        txt += '                var highlightedCell=false;'; //first color extraordinary relays
+        txt += '                var highlightedCell=0;'; //first color extraordinary relays
         txt += '                for (var altSR in config.mintTable) {'; //first color extraordinary relays
         txt += '                    var altEntry=config.mintTable[altSR];';
         txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
@@ -300,7 +300,7 @@ function handleShowState(req, res) {
         txt += '                    } else {';
         txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","1px");'; //reset
         txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","1px");'; //reset
-        txt += '                        highlightedCell=true;';
+        txt += '                        highlightedCell=1;';
         txt += '                    }';
         txt += '                }';
         //
@@ -318,9 +318,9 @@ function handleShowState(req, res) {
         txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
         txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
         txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);';
-        txt += '               if ((!highlightedCell) && percentOfMedian>10) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
-        txt += '               if ((!highlightedCell) && percentOfMedian>20) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");';
-        txt += '               if ((!highlightedCell) && percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");';
+        txt += '               if ((!highlightedCell) && (percentOfMedian>10)) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
+        txt += '               if ((!highlightedCell) && (percentOfMedian>20)) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");';
+        txt += '               if ((!highlightedCell) && (percentOfMedian>30)) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");';
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
         /*
                 txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
