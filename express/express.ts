@@ -347,7 +347,7 @@ function handleShowState(req, res) {
         txt +='         }'
         txt +='      }'
         txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;'
-        txt += '    if ((arrayWidthLastTime>1) && (arrayWidthLastTime!=arrayWidth)) {console.log("RELOADING BROWSER for bigger matrix");window.location.reload(true);}'
+        txt += '    if ((arrayWidthLastTime>1) && (arrayWidthLastTime!=arrayWidth)) {console.log("RELOADING BROWSER for bigger matrix");location.reload();}'
         
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
