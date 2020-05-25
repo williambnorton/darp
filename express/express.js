@@ -226,12 +226,12 @@ function handleShowState(req, res) {
         txt += '    return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;';
         txt += '  };';
         //TODO: This should be a full mesh of unique active mints from gSRlist
-        txt += "function mystddev(array) {";
-        txt += "   const n = array.length;";
-        txt += '   const mean = array.reduce((a,b) => a+b)/n;';
-        txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
-        txt += '   return s;';
-        txt += "}";
+        //txt += "function mystddev(array) {"
+        //txt += "   const n = array.length;"
+        //txt += '   const mean = array.reduce((a,b) => a+b)/n;'
+        //txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+        //txt += '   return s;'
+        //txt += "}"
         txt += '   function renderPage(config) {';
         txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
         //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
@@ -289,7 +289,11 @@ function handleShowState(req, res) {
         txt += '               else if ((typeof Ideviation == "number") && (Ideviation>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
-        txt += '               if (mystdev(owls)>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");';
+        txt += "   const n = owls.length;";
+        txt += '   const mean = owls.reduce((a,b) => a+b)/n;';
+        txt += '   const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
+        txt += '               console.log("stddev="+s+" owls="+dump(owls));';
+        txt += '               if (s>1) $("."+srcMint+"-"+dstMint).css("background-color","grey");';
         txt += '            }';
         txt += '         }';
         txt += '      }';
