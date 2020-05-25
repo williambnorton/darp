@@ -226,13 +226,13 @@ function handleShowState(req, res) {
         txt += '    return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;';
         txt += '  };';
         //TODO: This should be a full mesh of unique active mints from gSRlist
-        txt += '   function renderPage(config) {';
         txt += "function mystddev(array) {";
         txt += "   const n = array.length;";
         txt += '   const mean = array.reduce((a,b) => a+b)/n;';
         txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
         txt += '   return s;';
         txt += "}";
+        txt += '   function renderPage(config) {';
         txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
         //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
         //

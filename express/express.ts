@@ -247,16 +247,21 @@ function handleShowState(req, res) {
        txt += '  };'
 
         //TODO: This should be a full mesh of unique active mints from gSRlist
-       txt += '   function renderPage(config) {'
+
+        txt += "function mystddev(array) {"
+        txt += "   const n = array.length;"
+        txt += '   const mean = array.reduce((a,b) => a+b)/n;'
+        txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+        txt += '   return s;'
+        txt += "}"
 
 
 
-       txt += "function mystddev(array) {"
-       txt += "   const n = array.length;"
-       txt += '   const mean = array.reduce((a,b) => a+b)/n;'
-       txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
-       txt += '   return s;'
-       txt += "}"
+        txt += '   function renderPage(config) {'
+
+
+
+
 
 
 
