@@ -12,6 +12,9 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
+var YELLOW_TRIGGER = 10; //when we show yellow warning 
+var ORANGE_TRIGGER = 20; //when we show orange warning 
+var RED_TRIGGER = 30; //when we show red warning 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -276,8 +279,9 @@ function handleShowState(req, res) {
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) ';
-        txt += '               if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
-        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
+        txt += '               if ((typeof Ideviation == "number") && (Ideviation>RED_TRIGGER))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
+        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>ORANGE_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
+        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>YELLOW_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
         txt += '         }';
         txt += '      }';

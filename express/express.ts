@@ -11,6 +11,9 @@
 import {   dump,   now,   mintList,   SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION } from '../lib/lib';
 import { setWireguard } from "../wireguard/wireguard";
 
+const YELLOW_TRIGGER=10;  //when we show yellow warning 
+const ORANGE_TRIGGER=20;  //when we show orange warning 
+const RED_TRIGGER=30;  //when we show red warning 
 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 
@@ -308,8 +311,9 @@ function handleShowState(req, res) {
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) '
-        txt += '               if ((typeof Ideviation == "number") && (Ideviation>30))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
-        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>20)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
+        txt += '               if ((typeof Ideviation == "number") && (Ideviation>RED_TRIGGER))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");'
+        txt += '               else if ((typeof Ideviation == "number") && (Ideviation>ORANGE_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
+        txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>YELLOW_TRIGGER)) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
         txt +='         }'
         txt +='      }'
