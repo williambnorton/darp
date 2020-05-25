@@ -302,8 +302,11 @@ function handleShowState(req, res) {
         txt += '                    var altEntry=config.mintTable[altSR];';
         txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
         txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
-        txt += '                    console.log( srcMint + "-" + dstMint + "=" + owl + " alt=" + altEntry.geo + " srcToAlt=" + srcToAlt + " altToDst=" + altToDst );';
-        txt += '                    if ((srcToAlt!=0) && (altToDst!=0) && (srcToAlt+altToDst < owl)) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");';
+        txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
+        txt += '                        console.log( srcMint + "-" + dstMint + "=" + owl + "ms alt=" + altEntry.geo + " srcToAlt=" + srcToAlt + " altToDst=" + altToDst );';
+        txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");';
+        txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");';
+        txt += '                    }';
         txt += '                }';
         /*
                 txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
@@ -319,16 +322,14 @@ function handleShowState(req, res) {
         txt += "function getOWL(config,src,dst) { ";
         txt += "        for (var pulse in config.pulses) {";
         txt += "            var pulseEntry=config.pulses[pulse];"; //convenience
-        txt += "            if (pulseEntry==null) return 0;"; //
+        txt += "            if (pulseEntry==null) {console.log('getOWL-could not find pulseEntry');return null;}"; //
         txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");';
         txt += '              ';
         txt += '               for (var owl in owls) {';
         txt += '                  var owlMint=owls[owl].split("=")[0];';
         txt += '                  var owl=owls[owl].split("=")[1];';
-        txt += '                  if (typeof owl == "undefined") {';
-        txt += '                     owl="";';
-        txt += '                  }';
+        txt += '                  if (typeof owl == "undefined") {console.log("getOWL-returned empty bucket");return null;}';
         txt += '                  if (owlMint==src) {';
         //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
         txt += '                     return parseInt(owl);';
@@ -337,7 +338,7 @@ function handleShowState(req, res) {
         txt += '               }';
         txt += '            }';
         txt += '       }';
-        txt += "    return 0;";
+        txt += "    return null;";
         txt += "}";
         txt += "function getOwls(configs,src,dst) { ";
         txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
