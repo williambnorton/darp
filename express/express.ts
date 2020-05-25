@@ -331,10 +331,10 @@ function handleShowState(req, res) {
         txt +='                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {'
         txt +='                        console.log( "Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));'
         txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");'
-        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");'
+        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");' //highlight better path
         txt +='                    } else {'
-        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","1px");'  //reset
-        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","1px");'  //reset
+        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px");'  //reset
+        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","grey").css("border-width","1px");'  //reset
         txt +='                        highlightedCell=1;'
         txt +='                    }'
         txt +='                }'
