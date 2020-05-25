@@ -314,10 +314,9 @@ function handleShowState(req, res) {
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
         txt +='         }'
         txt +='      }'
-
+        txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);arrayWidthLastTime=arrayWidth;'
         
         txt += "    };"
-       txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);'
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
     
