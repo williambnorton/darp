@@ -338,7 +338,7 @@ function handleShowState(req, res) {
         txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
         txt +='                for (var altSR in config.mintTable) {'
         txt +='                    var altEntry=config.mintTable[altSR];'
-        txt +='                    if (getOWL(srcMint,altEntry.mint)+getOWL(altEntry.mint,dstMint)<owl) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");'
+        txt +='                    if (getOWL(config,srcMint,altEntry.mint)+getOWL(config,altEntry.mint,dstMint)<owl) $("."+srcMint+"-"+dstMint).css("border-color","green").css("border-width","8px");'
         txt +='                }'
 /*        
         txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
@@ -352,7 +352,27 @@ function handleShowState(req, res) {
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-        txt += "function getOwl(config,src,dst) { "
+        txt += "function getOWL(config,src,dst) { "
+        txt += "        for (var pulse in configs[config].pulses) {"
+        txt += "            var pulseEntry=configs[config].pulses[pulse];"  //convenience
+        txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
+        txt += '               var owls=pulseEntry.owls.split(",");'
+        txt += '              '
+        txt += '               for (var owl in owls) {'
+        txt += '                  var owlMint=owls[owl].split("=")[0];'
+        txt += '                  var owl=owls[owl].split("=")[1];'   
+        txt += '                  if (typeof owl == "undefined") {'
+        txt += '                     owl="";'
+        txt += '                  }'
+        txt += '                  if (owlMint==src) {'
+        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+        txt += '                     return parseInt(owl);'
+        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+        txt += '                  }'
+        txt += '               }'
+        txt += '            }'
+        txt += "         }"
+
         txt += "    return 0;"
         txt += "}"
     
