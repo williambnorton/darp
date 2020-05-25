@@ -325,9 +325,9 @@ function handleShowState(req, res) {
         txt += '            }';
         txt += '         }';
         txt += '      }';
-        txt += '     console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);';
-        txt += '     console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidth-arrayWidthLastTime));';
-        txt += '     if (arrayWidthLastTime!=arrayWidth) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }';
+        //txt += '     console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);'
+        //txt += '     console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidth-arrayWidthLastTime));'
+        //txt += '     if (arrayWidthLastTime<arrayWidth+5) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
         txt += '      arrayWidthLastTime=arrayWidth;';
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
