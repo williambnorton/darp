@@ -298,6 +298,7 @@ function handleShowState(req, res) {
         txt +='           var owls=getOwls(configs,srcMint,dstMint);' //return array of owls
         txt +='           var owl=owls[0];'                            //recent measure is first
         txt +='           var myMedian=Math.round(median(owls));'
+        txt +='           $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px").css("background-color","white");'  //reset cell markings
         txt +='           '
        // txt +='           console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
 
@@ -320,23 +321,23 @@ function handleShowState(req, res) {
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {'
 
-        //
+//
 //      highlight bad standard deviations 
 //
-txt += "               const n = owls.length;"
-txt += '               const mean = owls.reduce((a,b) => a+b)/n;'
-txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+        txt += "               const n = owls.length;"
+        txt += '               const mean = owls.reduce((a,b) => a+b)/n;'
+        txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
 
-txt += '               var percentOfMedian=Math.round((s/myMedian)*100);'
-txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
+        txt += '               var percentOfMedian=Math.round((s/myMedian)*100);'
+        //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
 
-txt += '               if ((!highlightedCell) && (percentOfMedian>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");'
-txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");'
-txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");'
+        txt += '               if ((!highlightedCell) && (percentOfMedian>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");'
+        txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","5px");'
+        txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","8px");'
 
 
 //
-//                      Highlight extraordinary paths
+//                      Highlight (overWrite) extraordinary paths
 //
         txt +='                var highlightedCell=0;'   //first color extraordinary relays
         txt +='                for (var altSR in config.mintTable) {'   //first color extraordinary relays
@@ -347,11 +348,7 @@ txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+
         txt +='                        console.log( "Better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));'
         txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");'
         txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");' //highlight better path
-        txt +='                    } else {'
-        txt +='                        $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px");'  //reset
-        txt +='                        $("."+srcMint+"-"+altEntry.mint).css("border-color","grey").css("border-width","1px");'  //reset
-        txt +='                        highlightedCell=1;'
-        txt +='                    }'
+        txt +='                    } '
         txt +='                }'
 
 
@@ -373,9 +370,10 @@ txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+
         txt +='            }'
         txt +='         }'
         txt +='      }'
-        txt += '    console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime); arrayWidthLastTime=arrayWidth;'
-        txt += '    console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidth-arrayWidthLastTime));'
-        txt += '    if (arrayWidthLastTime!=arrayWidth) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
+        txt += '     console.log("arrayWidth="+arrayWidth +" arrayWidthLastTime="+arrayWidthLastTime);'
+        txt += '     console.log("arrayWidth-arrayWidthLastTime=" + ( arrayWidth-arrayWidthLastTime));'
+        txt += '     if (arrayWidthLastTime!=arrayWidth) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
+        txt +='      arrayWidthLastTime=arrayWidth;'
         
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
