@@ -280,7 +280,7 @@ function handleShowState(req, res) {
         txt += '         }';
         txt += '      }';
         txt += "    };";
-        txt += '    if (configs[0] && configs[1]) console.log("configs[0].pulses.length="+configs[0].pulses.length," configs[1].pulses.length="+configs[1].pulses.length));';
+        // txt += '    if (configs[0] && configs[1]) console.log("configs[0].pulses.length="+configs[0].pulses.length," configs[1].pulses.length="+configs[1].pulses.length));'
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
         txt += "function getOwls(configs,src,dst) { ";
