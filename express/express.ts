@@ -248,10 +248,19 @@ function handleShowState(req, res) {
 
         //TODO: This should be a full mesh of unique active mints from gSRlist
        txt += '   function renderPage(config) {'
+
+
+
+       txt += "function stddev(array) {"
+       txt += "   const n = array.length;"
+       txt += '   const mean = array.reduce((a,b) => a+b)/n;'
+       txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+       txt += "}"
+
+       
+
        txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-
-
 
 //
 //      Render table from information in the state fetched from node
@@ -324,11 +333,7 @@ function handleShowState(req, res) {
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-        txt += "function stddev(array) {"
-        txt += "   const n = array.length;"
-        txt += '   const mean = array.reduce((a,b) => a+b)/n;'
-        txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
-        txt += "}"
+
     
         txt += "function getOwls(configs,src,dst) { "
         txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
