@@ -353,6 +353,7 @@ function handleShowState(req, res) {
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
         txt += "function getOWL(config,src,dst) { "
+        txt += "        for (var pulse in config.pulses) {"
         txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
         txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");'
@@ -370,6 +371,7 @@ function handleShowState(req, res) {
         txt += '                  }'
         txt += '               }'
         txt += '            }'
+        txt += '       }'
 
         txt += "    return 0;"
         txt += "}"
