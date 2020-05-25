@@ -141,12 +141,15 @@ server.on('message', function (message, remote) {
             var pktDrops = "" + (parseInt(pulse.seq) - parseInt(pulse.inMsgs));
             pulse.pktDrops = pktDrops;
             authenticatedPulse(pulse, function (pulse, authenticated) {
-                if (pulse.srcMint == "1" && pulse.version != MYBUILD) {
+                if ((pulse.srcMint == 1) && (pulse.version != MYBUILD)) {
+                    console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
+                    console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                     console.log(lib_js_1.ts() + " ******** HANDLEPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                     console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
                     process.exit(36); //SOFTWARE RELOAD
                 }
                 ;
+                redisClient.hset("mint:" + pulse.srcMint, "state", "RUNNING");
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + OWL); //store incoming pulse
                 redisClient.lrange(pulse.geo + "-" + me.geo + "-history", -300, -1, function (err, data) {
                     if (err) {
