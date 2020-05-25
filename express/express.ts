@@ -13,6 +13,7 @@ import { setWireguard } from "../wireguard/wireguard";
 
 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
+var arrayWidthLastTime=1;
 
 const expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -200,7 +201,6 @@ function getMatrixTable(config,darp, callback) {
 };
 
 
-var arrayWidthLastTime=1;
 //
 //      handleShowState(req,res) - show the node state
 //

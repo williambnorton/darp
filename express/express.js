@@ -13,6 +13,7 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
+var arrayWidthLastTime = 1;
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
 expressRedisClient.flushall(); //clean slate
@@ -186,7 +187,6 @@ function getMatrixTable(config, darp, callback) {
     }
 }
 ;
-var arrayWidthLastTime = 1;
 //
 //      handleShowState(req,res) - show the node state
 //
