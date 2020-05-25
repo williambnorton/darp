@@ -339,6 +339,7 @@ function handleShowState(req, res) {
         txt +='                    }'
         txt +='                }'
 
+        
 //
 //      highlight variations 
 //
