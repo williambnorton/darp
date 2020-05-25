@@ -47,8 +47,8 @@ export function setWireguard() {
     }
 
     //for each group in me.pulseGroups
-    console.log(ts()+"Setting up wireguard files ");
-
+    console.log(ts()+"TODO: Here we would ....Set up wireguard files ");
+    return;
     redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
