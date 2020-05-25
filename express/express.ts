@@ -355,6 +355,7 @@ function handleShowState(req, res) {
         txt += "function getOWL(config,src,dst) { "
         txt += "        for (var pulse in config.pulses) {"
         txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
+        txt += "            if (pulseEntry==null) return 0;"  //
         txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");'
         txt += '              '
