@@ -303,7 +303,7 @@ function handleShowState(req, res) {
         txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
         txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
         txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
-        txt += '                        console.log( srcMint + "-" + dstMint + "=" + owl + "ms alt=" + altEntry.geo + " srcToAlt=" + srcToAlt + " altToDst=" + altToDst );';
+        txt += '                        console.log( srcMint + "-" + dstMint + "=" + owl + "ms alt=" + altEntry.geo + " srcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst));';
         txt += '                        $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","8px");';
         txt += '                        $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","8px");';
         txt += '                    }';
@@ -329,7 +329,7 @@ function handleShowState(req, res) {
         txt += '               for (var owl in owls) {';
         txt += '                  var owlMint=owls[owl].split("=")[0];';
         txt += '                  var owl=owls[owl].split("=")[1];';
-        txt += '                  if (typeof owl == "undefined") {console.log("getOWL-returned empty bucket");return null;}';
+        txt += '                  if (typeof owl == "undefined") {console.log("getOWL-returned empty bucket for "+src+" - "+owlMint+"");return null;}';
         txt += '                  if (owlMint==src) {';
         //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
         txt += '                     return parseInt(owl);';
