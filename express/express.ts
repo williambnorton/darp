@@ -363,8 +363,6 @@ function handleShowState(req, res) {
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
 
-    
-
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
 
 /*        
@@ -377,17 +375,17 @@ function handleShowState(req, res) {
         //txt += '     console.log("arrayWidth-startingArrayWidth=" + ( arrayWidth-startingArrayWidth));'
         //txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
         //txt +='      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;'
-        
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
+/*
         txt += "function getOWL(config,src,dst) { "
         txt += "        for (var pulse in config.pulses) {"
         txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
         txt += "            if (pulseEntry==null) {console.log('getOWL-could not find pulseEntry');return null;}"  //
         txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
         txt += '               var owls=pulseEntry.owls.split(",");'
-        txt += '              '
+        //txt += '              '
         txt += '               for (var owl in owls) {'
         txt += '                  var owlMint=owls[owl].split("=")[0];'
         txt += '                  var owl=owls[owl].split("=")[1];'   
@@ -433,7 +431,7 @@ function handleShowState(req, res) {
         //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
         txt += '    return values;'
         txt += "}"
-
+*/
 
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '

@@ -335,55 +335,60 @@ function handleShowState(req, res) {
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
-        txt += "function getOWL(config,src,dst) { ";
-        txt += "        for (var pulse in config.pulses) {";
-        txt += "            var pulseEntry=config.pulses[pulse];"; //convenience
-        txt += "            if (pulseEntry==null) {console.log('getOWL-could not find pulseEntry');return null;}"; //
-        txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
-        txt += '               var owls=pulseEntry.owls.split(",");';
-        txt += '              ';
-        txt += '               for (var owl in owls) {';
-        txt += '                  var owlMint=owls[owl].split("=")[0];';
-        txt += '                  var owl=owls[owl].split("=")[1];';
-        txt += '                  if (typeof owl == "undefined") {return null;}';
-        txt += '                  if (owlMint==src) {';
-        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                     return parseInt(owl);';
-        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '                  }';
-        txt += '               }';
-        txt += '            }';
-        txt += '       }';
-        txt += "    return null;";
-        txt += "}";
-        txt += "function getOwls(configs,src,dst) { ";
-        txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
-        txt += '    if (typeof configs == "undefined" || configs==null ) return 0;';
-        txt += "    for (var config in configs) {";
-        txt += "        for (var pulse in configs[config].pulses) {";
-        txt += "            var pulseEntry=configs[config].pulses[pulse];"; //convenience
-        txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
-        txt += '               var owls=pulseEntry.owls.split(",");';
-        txt += '              ';
-        txt += '               for (var owl in owls) {';
-        txt += '                  var owlMint=owls[owl].split("=")[0];';
-        txt += '                  var owl=owls[owl].split("=")[1];';
-        txt += '                  if (typeof owl == "undefined") {';
-        txt += '                     owl="";';
-        txt += '                  }';
-        txt += '                  if (owlMint==src) {';
-        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-        txt += '                     values.push( parseInt(owl) );';
-        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-        txt += '                  }';
-        txt += '               }';
-        txt += '            }';
-        txt += "         }";
-        txt += "    }";
-        //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
-        //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
-        txt += '    return values;';
-        txt += "}";
+        /*
+                txt += "function getOWL(config,src,dst) { "
+                txt += "        for (var pulse in config.pulses) {"
+                txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
+                txt += "            if (pulseEntry==null) {console.log('getOWL-could not find pulseEntry');return null;}"  //
+                txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
+                txt += '               var owls=pulseEntry.owls.split(",");'
+                //txt += '              '
+                txt += '               for (var owl in owls) {'
+                txt += '                  var owlMint=owls[owl].split("=")[0];'
+                txt += '                  var owl=owls[owl].split("=")[1];'
+                txt += '                  if (typeof owl == "undefined") {return null;}'
+                txt += '                  if (owlMint==src) {'
+                //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+                txt += '                     return parseInt(owl);'
+                //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+                txt += '                  }'
+                txt += '               }'
+                txt += '            }'
+                txt += '       }'
+        
+                txt += "    return null;"
+                txt += "}"
+            
+                txt += "function getOwls(configs,src,dst) { "
+                txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
+                txt += '    if (typeof configs == "undefined" || configs==null ) return 0;'
+                txt += "    for (var config in configs) {"
+                txt += "        for (var pulse in configs[config].pulses) {"
+        
+                txt += "            var pulseEntry=configs[config].pulses[pulse];"  //convenience
+                txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
+                txt += '               var owls=pulseEntry.owls.split(",");'
+                txt += '              '
+                txt += '               for (var owl in owls) {'
+                txt += '                  var owlMint=owls[owl].split("=")[0];'
+                txt += '                  var owl=owls[owl].split("=")[1];'
+                txt += '                  if (typeof owl == "undefined") {'
+                txt += '                     owl="";'
+                txt += '                  }'
+                txt += '                  if (owlMint==src) {'
+                //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+                txt += '                     values.push( parseInt(owl) );'
+                //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+                txt += '                  }'
+                txt += '               }'
+                txt += '            }'
+                txt += "         }"
+                txt += "    }"
+                //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
+                //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
+                txt += '    return values;'
+                txt += "}"
+        */
         txt += "setTimeout(fetchState,1000);";
         txt += '</script> ';
         txt += '</head>';
