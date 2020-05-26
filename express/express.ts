@@ -373,10 +373,10 @@ function handleShowState(req, res) {
         txt +='            }'
         txt +='         }'
         txt +='      }'
-        txt += '     console.log("arrayWidth="+arrayWidth +"startingArrayWidth="+startingArrayWidth);'
-        txt += '     console.log("arrayWidth-startingArrayWidth=" + ( arrayWidth-startingArrayWidth));'
-        txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
-        txt +='      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;'
+        //txt += '     console.log("arrayWidth="+arrayWidth +"startingArrayWidth="+startingArrayWidth);'
+        //txt += '     console.log("arrayWidth-startingArrayWidth=" + ( arrayWidth-startingArrayWidth));'
+        //txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
+        //txt +='      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;'
         
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
