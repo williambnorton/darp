@@ -320,7 +320,7 @@ function handleShowState(req, res) {
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {'
-
+/*
 //
 //      highlight bad standard deviations 
 //
@@ -354,7 +354,7 @@ function handleShowState(req, res) {
         txt +='                    }'
         txt +='                }'
 
-
+*/
 //
 //      highlight variations 
 //
@@ -378,7 +378,7 @@ function handleShowState(req, res) {
         txt += "    };"
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
-/*
+
         txt += "function getOWL(config,src,dst) { "
         txt += "        for (var pulse in config.pulses) {"
         txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
@@ -431,7 +431,7 @@ function handleShowState(req, res) {
         //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
         txt += '    return values;'
         txt += "}"
-*/
+
 
         txt += "setTimeout(fetchState,1000);"
         txt += '</script> '

@@ -286,34 +286,41 @@ function handleShowState(req, res) {
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {';
+        /*
         //
-        //      highlight bad standard deviations 
+        //      highlight bad standard deviations
         //
-        txt += "               const n = owls.length;";
-        txt += '               const mean = owls.reduce((a,b) => a+b)/n;';
-        txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
-        txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
-        //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");';
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");';
+                txt += "               const n = owls.length;"
+                txt += '               const mean = owls.reduce((a,b) => a+b)/n;'
+                txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+        
+                txt += '               var percentOfMedian=Math.round((s/myMedian)*100);'
+                //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
+        
+                txt += '               if ((!highlightedCell) && (percentOfMedian>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");'
+                txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");'
+                txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");'
+        
+        
         //
         //                      Highlight (overWrite) extraordinary paths
         //
-        txt += '                var highlightedCell=0;'; //first color extraordinary relays
-        txt += '                for (var altSR in config.mintTable) {'; //first color extraordinary relays
-        txt += '                    var altEntry=config.mintTable[altSR];';
-        txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
-        txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
-        txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
-        txt += '                        var improvement=owl-(srcToAlt+altToDst);';
-        txt += '                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
-        txt += '                        if (improvement>5) {';
-        txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");';
-        txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");'; //highlight better path
-        txt += '                        }';
-        txt += '                    }';
-        txt += '                }';
+                txt +='                var highlightedCell=0;'   //first color extraordinary relays
+                txt +='                for (var altSR in config.mintTable) {'   //first color extraordinary relays
+                txt +='                    var altEntry=config.mintTable[altSR];'
+                txt +='                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);'
+                txt +='                    var altToDst=getOWL(config,altEntry.mint,dstMint);'
+                txt +='                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {'
+                txt +='                        var improvement=owl-(srcToAlt+altToDst);'
+                txt +='                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
+                txt +='                        if (improvement>5) {'
+                txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");'
+                txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");' //highlight better path
+                txt +='                        }'
+                txt +='                    }'
+                txt +='                }'
+        
+        */
         //
         //      highlight variations 
         //
@@ -335,60 +342,55 @@ function handleShowState(req, res) {
         txt += "    };";
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
-        /*
-                txt += "function getOWL(config,src,dst) { "
-                txt += "        for (var pulse in config.pulses) {"
-                txt += "            var pulseEntry=config.pulses[pulse];"  //convenience
-                txt += "            if (pulseEntry==null) {console.log('getOWL-could not find pulseEntry');return null;}"  //
-                txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
-                txt += '               var owls=pulseEntry.owls.split(",");'
-                //txt += '              '
-                txt += '               for (var owl in owls) {'
-                txt += '                  var owlMint=owls[owl].split("=")[0];'
-                txt += '                  var owl=owls[owl].split("=")[1];'
-                txt += '                  if (typeof owl == "undefined") {return null;}'
-                txt += '                  if (owlMint==src) {'
-                //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-                txt += '                     return parseInt(owl);'
-                //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-                txt += '                  }'
-                txt += '               }'
-                txt += '            }'
-                txt += '       }'
-        
-                txt += "    return null;"
-                txt += "}"
-            
-                txt += "function getOwls(configs,src,dst) { "
-                txt += "    var values=[];"   //receiver pulse tells us measured latency and median to it
-                txt += '    if (typeof configs == "undefined" || configs==null ) return 0;'
-                txt += "    for (var config in configs) {"
-                txt += "        for (var pulse in configs[config].pulses) {"
-        
-                txt += "            var pulseEntry=configs[config].pulses[pulse];"  //convenience
-                txt += "            if (pulseEntry.srcMint==dst) { "   //find receiver and check owls
-                txt += '               var owls=pulseEntry.owls.split(",");'
-                txt += '              '
-                txt += '               for (var owl in owls) {'
-                txt += '                  var owlMint=owls[owl].split("=")[0];'
-                txt += '                  var owl=owls[owl].split("=")[1];'
-                txt += '                  if (typeof owl == "undefined") {'
-                txt += '                     owl="";'
-                txt += '                  }'
-                txt += '                  if (owlMint==src) {'
-                //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
-                txt += '                     values.push( parseInt(owl) );'
-                //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
-                txt += '                  }'
-                txt += '               }'
-                txt += '            }'
-                txt += "         }"
-                txt += "    }"
-                //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
-                //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
-                txt += '    return values;'
-                txt += "}"
-        */
+        txt += "function getOWL(config,src,dst) { ";
+        txt += "        for (var pulse in config.pulses) {";
+        txt += "            var pulseEntry=config.pulses[pulse];"; //convenience
+        txt += "            if (pulseEntry==null) {console.log('getOWL-could not find pulseEntry');return null;}"; //
+        txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
+        txt += '               var owls=pulseEntry.owls.split(",");';
+        //txt += '              '
+        txt += '               for (var owl in owls) {';
+        txt += '                  var owlMint=owls[owl].split("=")[0];';
+        txt += '                  var owl=owls[owl].split("=")[1];';
+        txt += '                  if (typeof owl == "undefined") {return null;}';
+        txt += '                  if (owlMint==src) {';
+        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+        txt += '                     return parseInt(owl);';
+        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+        txt += '                  }';
+        txt += '               }';
+        txt += '            }';
+        txt += '       }';
+        txt += "    return null;";
+        txt += "}";
+        txt += "function getOwls(configs,src,dst) { ";
+        txt += "    var values=[];"; //receiver pulse tells us measured latency and median to it
+        txt += '    if (typeof configs == "undefined" || configs==null ) return 0;';
+        txt += "    for (var config in configs) {";
+        txt += "        for (var pulse in configs[config].pulses) {";
+        txt += "            var pulseEntry=configs[config].pulses[pulse];"; //convenience
+        txt += "            if (pulseEntry.srcMint==dst) { "; //find receiver and check owls
+        txt += '               var owls=pulseEntry.owls.split(",");';
+        txt += '              ';
+        txt += '               for (var owl in owls) {';
+        txt += '                  var owlMint=owls[owl].split("=")[0];';
+        txt += '                  var owl=owls[owl].split("=")[1];';
+        txt += '                  if (typeof owl == "undefined") {';
+        txt += '                     owl="";';
+        txt += '                  }';
+        txt += '                  if (owlMint==src) {';
+        //txt += '                     console.log("getOWL() FOUND: "+src+"-"+dst+"="+owl);'
+        txt += '                     values.push( parseInt(owl) );';
+        //txt += '                   console.log("src="+src+" to dst: "+dst+" pulseEntry.geo="+pulseEntry.geo+" pulseEntry.owl="+pulseEntry.owl);'
+        txt += '                  }';
+        txt += '               }';
+        txt += '            }';
+        txt += "         }";
+        txt += "    }";
+        //txt += "    var median = values.sort() [ Math.round(values.length/2) ];"
+        //txt += '    console.log("values="+JSON.stringify(values,null,2));'; //get middlish value
+        txt += '    return values;';
+        txt += "}";
         txt += "setTimeout(fetchState,1000);";
         txt += '</script> ';
         txt += '</head>';
