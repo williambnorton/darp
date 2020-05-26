@@ -286,22 +286,18 @@ function handleShowState(req, res) {
         txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {';
+        //
+        //      highlight bad standard deviations 
+        //
+        txt += "               const n = owls.length;";
+        txt += '               const mean = owls.reduce((a,b) => a+b)/n;';
+        txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
+        txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
+        //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
+        txt += '               if ((!highlightedCell) && (percentOfMedian>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
+        txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");';
+        txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");';
         /*
-        //
-        //      highlight bad standard deviations
-        //
-                txt += "               const n = owls.length;"
-                txt += '               const mean = owls.reduce((a,b) => a+b)/n;'
-                txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
-        
-                txt += '               var percentOfMedian=Math.round((s/myMedian)*100);'
-                //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
-        
-                txt += '               if ((!highlightedCell) && (percentOfMedian>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");'
-                txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");'
-                txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");'
-        
-        
         //
         //                      Highlight (overWrite) extraordinary paths
         //

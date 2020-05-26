@@ -320,7 +320,7 @@ function handleShowState(req, res) {
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {'
-/*
+
 //
 //      highlight bad standard deviations 
 //
@@ -335,7 +335,7 @@ function handleShowState(req, res) {
         txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");'
         txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");'
 
-
+/*
 //
 //                      Highlight (overWrite) extraordinary paths
 //
