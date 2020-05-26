@@ -295,28 +295,26 @@ function handleShowState(req, res) {
         txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
         //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
         txt += '               if ((!highlightedCell) && (percentOfMedian>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");';
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");';
-        /*
+        txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");';
+        txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + '))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");';
+        //-------------
         //
         //                      Highlight (overWrite) extraordinary paths
         //
-                txt +='                var highlightedCell=0;'   //first color extraordinary relays
-                txt +='                for (var altSR in config.mintTable) {'   //first color extraordinary relays
-                txt +='                    var altEntry=config.mintTable[altSR];'
-                txt +='                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);'
-                txt +='                    var altToDst=getOWL(config,altEntry.mint,dstMint);'
-                txt +='                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {'
-                txt +='                        var improvement=owl-(srcToAlt+altToDst);'
-                txt +='                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
-                txt +='                        if (improvement>5) {'
-                txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");'
-                txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");' //highlight better path
-                txt +='                        }'
-                txt +='                    }'
-                txt +='                }'
-        
-        */
+        txt += '                var highlightedCell=0;'; //first color extraordinary relays
+        txt += '                for (var altSR in config.mintTable) {'; //first color extraordinary relays
+        txt += '                    var altEntry=config.mintTable[altSR];';
+        txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
+        txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
+        txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
+        txt += '                        var improvement=owl-(srcToAlt+altToDst);';
+        txt += '                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
+        txt += '                        if (improvement>5) {';
+        txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");';
+        txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");'; //highlight better path
+        txt += '                        }';
+        txt += '                    }';
+        txt += '                }';
         //
         //      highlight variations 
         //

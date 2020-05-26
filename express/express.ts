@@ -332,10 +332,10 @@ function handleShowState(req, res) {
         //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
 
         txt += '               if ((!highlightedCell) && (percentOfMedian>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");'
-        txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width",3px");'
-        txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","red").css("border-width","3px");'
+        txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");'
+        txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+'))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");'
 
-/*
+//-------------
 //
 //                      Highlight (overWrite) extraordinary paths
 //
@@ -354,7 +354,7 @@ function handleShowState(req, res) {
         txt +='                    }'
         txt +='                }'
 
-*/
+
 //
 //      highlight variations 
 //
