@@ -212,11 +212,11 @@ function handleShowState(req, res) {
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += '<script>';
-        txt += 'var FREEZE=0;';
+        txt += 'var FREEZE="FREEZE;';
         txt += '$(document).ready(function() {';
         txt += '  $("#btnSubmit").click(function(){';
-        txt += '      if (FREEZE==1) FREEZE=0; else FREEZE=1;';
-        txt += '      $("#btnSubmit").value("UNFREEZE");';
+        txt += '      if (FREEZE=="FREEZE") FREEZE="UNFREEZE"; else FREEZE="FREEZE";';
+        txt += '      $("#btnSubmit").val(FREEZE);';
         txt += '   }); ';
         txt += ' });';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
