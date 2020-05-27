@@ -212,6 +212,12 @@ function handleShowState(req, res) {
         txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
         txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
         txt += '<script>';
+        txt += 'var FREEZE=0;';
+        txt += '$(document).ready(function() {';
+        txt += '  $("#btnSubmit").click(function(){';
+        txt += '      FREEZE=1;';
+        txt += '   }); ';
+        txt += ' });';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += "var configs=[],startingArrayWidth=1;";
         txt += 'function fetchState() {';
@@ -417,7 +423,7 @@ function handleShowState(req, res) {
                 txt += "<h3>AdminControl: " + me.adminControl + "</h3>";
             txt += '<p id="dateTime">Updated: ' + dateTime + ' </p>';
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
-            txt += '<input id = "btnSubmit" type="submit" value="Release"/>';
+            txt += '<input id = "btnSubmit" type="submit" value="Freeze"/>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
                 //
