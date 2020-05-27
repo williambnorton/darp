@@ -215,7 +215,7 @@ function handleShowState(req, res) {
         txt += 'var FREEZE=0;';
         txt += '$(document).ready(function() {';
         txt += '  $("#btnSubmit").click(function(){';
-        txt += '      FREEZE=1;';
+        txt += '      if (FREEZE==1) FREEZE=0; else FREEZE=1;';
         txt += '   }); ';
         txt += ' });';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
@@ -224,7 +224,7 @@ function handleShowState(req, res) {
         txt += '   $.getJSON(URL, function(config) {';
         txt += '      configs.unshift(config);'; //push onto front of stack
         txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
-        txt += '      renderPage(config);';
+        txt += '      if (!FREEZE) renderPage(config);';
         txt += '   });';
         txt += 'const median = arr => {';
         txt += '    const mid = Math.floor(arr.length / 2),';
