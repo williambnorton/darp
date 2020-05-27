@@ -233,6 +233,7 @@ function handleShowState(req, res) {
        txt += '$(document).ready(function() {'
        txt += '  $("#btnSubmit").click(function(){'
        txt += '      if (FREEZE==1) FREEZE=0; else FREEZE=1;'
+       txt += '      $("#btnSubmit").value("UNFREEZE");'
        txt += '   }); '
        txt += ' });'
 
@@ -246,6 +247,7 @@ function handleShowState(req, res) {
        txt += '      configs.unshift(config);'; //push onto front of stack
        txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
        txt += '      if (!FREEZE) renderPage(config);'
+       txt += '      '
        txt += '   });'
 
        txt +='const median = arr => {'
