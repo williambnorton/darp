@@ -231,10 +231,22 @@ function handleShowState(req, res) {
        txt += 'var FREEZEBTN="FREEZE";'
        
        txt += '$(document).ready(function() {'
+       
        txt += '  $("#btnSubmit").click(function(){'
        txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";'
        txt += '      $("#btnSubmit").val(FREEZEBTN);'
        txt += '   }); '
+       //wbnwbnwbn
+       txt += '  $("#btnBack").click(function(){'
+       txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";'
+       txt += '      $("#btnBack").val(FREEZEBTN);'
+       txt += '   }); '
+       
+       txt += '  $("#btnForward").click(function(){'
+       txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";'
+       txt += '      $("#btnBack").val(FREEZEBTN);'
+       txt += '   }); '
+
        txt += ' });'
 
        txt += "var URL='http://"+me.ipaddr+":"+me.port+"/state';"
