@@ -425,9 +425,9 @@ function handleShowState(req, res) {
                 txt += "<h3>AdminControl: " + me.adminControl + "</h3>";
             txt += '<p id="dateTime">Updated: ' + dateTime + ' </p>';
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
-            txt += '<input id = "btnBack" type="submit" value="⇤"/>';
+            txt += '<input id = "btnBack" type="submit" value="<"/>';
             txt += '<input id = "btnSubmit" type="submit" value="Freeze"/>';
-            txt += '<input id = "btnForward" type="submit" value="⇥"/>';
+            txt += '<input id = "btnForward" type="submit" value=">"/>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
                 //
