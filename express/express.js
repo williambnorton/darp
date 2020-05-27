@@ -297,7 +297,6 @@ function handleShowState(req, res) {
         txt += '               if ((!highlightedCell) && (percentOfMedian>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
         txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");';
         txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + '))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");';
-        //-------------
         //
         //                      Highlight (overWrite) extraordinary paths
         //
@@ -309,9 +308,9 @@ function handleShowState(req, res) {
         txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
         txt += '                        var improvement=owl-(srcToAlt+altToDst);';
         txt += '                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
-        txt += '                        if (improvement>5) {';
-        txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");';
-        txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");'; //highlight better path
+        txt += '                        if (improvement>1) {';
+        txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","3px");';
+        txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","3px");'; //highlight better path
         txt += '                        }';
         txt += '                    }';
         txt += '                }';
@@ -418,6 +417,7 @@ function handleShowState(req, res) {
                 txt += "<h3>AdminControl: " + me.adminControl + "</h3>";
             txt += '<p id="dateTime">Updated: ' + dateTime + ' </p>';
             txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
+            txt += '<input id = "btnSubmit" type="submit" value="Release"/>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
                 //
