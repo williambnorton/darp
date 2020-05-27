@@ -228,12 +228,12 @@ function handleShowState(req, res) {
        txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> '
        txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
        txt += '<script>'
-       txt += 'var FREEZE="FREEZE;'
+       txt += 'var FREEZEBTN="FREEZE";'
        
        txt += '$(document).ready(function() {'
        txt += '  $("#btnSubmit").click(function(){'
-       txt += '      if (FREEZE=="FREEZE") FREEZE="UNFREEZE"; else FREEZE="FREEZE";'
-       txt += '      $("#btnSubmit").val(FREEZE);'
+       txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";'
+       txt += '      $("#btnSubmit").val(FREEZEBTN);'
        txt += '   }); '
        txt += ' });'
 
