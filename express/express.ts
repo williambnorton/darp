@@ -246,7 +246,7 @@ function handleShowState(req, res) {
        txt += '   $.getJSON(URL, function(config) {'
        txt += '      configs.unshift(config);'; //push onto front of stack
        txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
-       txt += '      if (FREEZE=="FREEZE") renderPage(config);'
+       txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);'
        txt += '      '
        txt += '   });'
 
