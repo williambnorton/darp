@@ -251,33 +251,7 @@ function handleShowState(req, res) {
        txt += "var URL='http://"+me.ipaddr+":"+me.port+"/state';"
        txt += "var configs=[],startingArrayWidth=1;"
 
-
-       txt += 'function fetchState() {'
-
-       txt += '   $.getJSON(URL, function(config) {'
-       txt += '      configs.unshift(config);'; //push onto front of stack
-       txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
-       txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);'
-       txt += '      '
-       txt += '   });'
-
-       txt +='const median = arr => {'
-       txt +='    const mid = Math.floor(arr.length / 2),'
-       txt +='      nums = [...arr].sort((a, b) => a - b);'
-       txt +='    return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;'
-       txt += '  };'
-
-        //TODO: This should be a full mesh of unique active mints from gSRlist
-
-        //txt += "function mystddev(array) {"
-        //txt += "   const n = array.length;"
-        //txt += '   const mean = array.reduce((a,b) => a+b)/n;'
-        //txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
-        //txt += '   return s;'
-        //txt += "}"
-
-
-        txt += '   function renderPage(config) {'
+       txt += '   function renderPage(config) {'
 
        txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
 //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
@@ -293,51 +267,51 @@ function handleShowState(req, res) {
        txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
        // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
        //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-        txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
-        txt += '         }'
+       txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+       txt += '          }'
 
        //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-        txt += '          if (pulse.pulseTimestamp!="0")'
-        txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
-        txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
-        txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
-        txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
+       txt += '          if (pulse.pulseTimestamp!="0")'
+       txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+       txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
+       txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
+       txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
 //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
-        txt += '     }'        
+       txt += '       }'        
 
 //Note: we are measuring relative latency so there IS NO ABSOLUTE latency - 0 and -# are valid latency measures
 //
 //                  FILL MATRIX
 //
-        txt += '     var arrayWidth=0;'
-        txt +='      for(var src in config.mintTable) {'
-        txt += '        arrayWidth++;'
+        txt += '      var arrayWidth=0;'
+        txt +='       for(var src in config.mintTable) {'
+        txt += '         arrayWidth++;'
       
-        txt +='         for(var dst in config.mintTable) {'
-        txt +='           var srcMint=config.mintTable[src].mint;'
-        txt +='           var dstMint=config.mintTable[dst].mint;'
-        txt +='           var owls=getOwls(configs,srcMint,dstMint);' //return array of owls
-        txt +='           var owl=owls[0];'                            //recent measure is first
-        txt +='           var myMedian=Math.round(median(owls));'
-        txt +='           $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px").css("background-color","white").html("_");'  //reset cell markings
-        txt +='           '
-       // txt +='           console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
+        txt +='          for(var dst in config.mintTable) {'
+        txt +='              var srcMint=config.mintTable[src].mint;'
+        txt +='              var dstMint=config.mintTable[dst].mint;'
+        txt +='              var owls=getOwls(configs,srcMint,dstMint);' //return array of owls
+        txt +='              var owl=owls[0];'                            //recent measure is first
+        txt +='              var myMedian=Math.round(median(owls));'
+        txt +='              $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px").css("background-color","white").html("_");'  //reset cell markings
+        txt +='              '
+       // txt +='            console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
 
-        txt +='           var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
-        //txt +='           console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
+        txt +='              var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));'
+        //txt +='            console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
         //
 
-        txt += '          if (isNaN(owl)) owl="?";'
+        txt += '             if (isNaN(owl)) owl="?";'
         //txt += '               '
-        txt += '          var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;'
-        txt += '          owlHTML+=\'">\' ;'
-        txt += '          if (owl!="?") owlHTML += owl + "ms</a>";'
-        txt += '          else owlHTML += "|_|</a>";'
+        txt += '                 var owlHTML=\'<a target="_blank" href="http://'+me.ipaddr+':'+me.port+'/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;'
+        txt += '                 owlHTML+=\'">\' ;'
+        txt += '                 if (owl!="?") owlHTML += owl + "ms</a>";'
+        txt += '                 else owlHTML += "|_|</a>";'
 
-        //txt += '          console.log("owlHTML="+owlHTML);'
+        //txt += '               console.log("owlHTML="+owlHTML);'
 
-//        txt += '          $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
-        txt += '          $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value *******************
+//        txt += '               $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
+        txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value *******************
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
         txt += '          else if (srcMint!=dstMint) {'
@@ -397,6 +371,37 @@ function handleShowState(req, res) {
         //txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
         //txt +='      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;'
         txt += "    };"
+
+
+
+
+        
+       txt += 'function fetchState() {'
+
+       txt += '   $.getJSON(URL, function(config) {'
+       txt += '      configs.unshift(config);'; //push onto front of stack
+       txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
+       txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);'
+       txt += '      '
+       txt += '   });'
+
+       txt +='    const median = arr => {'
+       txt +='       const mid = Math.floor(arr.length / 2),'
+       txt +='       nums = [...arr].sort((a, b) => a - b);'
+       txt +='      return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;'
+       txt += '   };'
+
+        //TODO: This should be a full mesh of unique active mints from gSRlist
+
+        //txt += "function mystddev(array) {"
+        //txt += "   const n = array.length;"
+        //txt += '   const mean = array.reduce((a,b) => a+b)/n;'
+        //txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+        //txt += '   return s;'
+        //txt += "}"
+
+
+
         txt += "    setTimeout(fetchState,1000);"
         txt += "}"
 
