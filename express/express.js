@@ -228,6 +228,11 @@ function handleShowState(req, res) {
         txt += ' });';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
         txt += "var configs=[],startingArrayWidth=1;";
+        txt += 'const median = arr => {';
+        txt += '       const mid = Math.floor(arr.length / 2),';
+        txt += '       nums = [...arr].sort((a, b) => a - b);';
+        txt += '      return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;';
+        txt += '};';
         txt += '   function renderPage(config) {';
         txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
         //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
@@ -336,11 +341,6 @@ function handleShowState(req, res) {
         txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);';
         txt += '      ';
         txt += '   });';
-        txt += '    const median = arr => {';
-        txt += '       const mid = Math.floor(arr.length / 2),';
-        txt += '       nums = [...arr].sort((a, b) => a - b);';
-        txt += '      return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;';
-        txt += '   };';
         //TODO: This should be a full mesh of unique active mints from gSRlist
         //txt += "function mystddev(array) {"
         //txt += "   const n = array.length;"
