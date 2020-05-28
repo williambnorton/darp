@@ -220,12 +220,10 @@ function handleShowState(req, res) {
         txt += '   }); ';
         //wbnwbnwbn
         txt += '  $("#btnBack").click(function(){';
-        txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";';
-        txt += '      $("#btnBack").val(FREEZEBTN);';
+        txt += '      renderPage(configs.pop());';
         txt += '   }); ';
         txt += '  $("#btnForward").click(function(){';
-        txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";';
-        txt += '      $("#btnBack").val(FREEZEBTN);';
+        txt += '      renderPage(config.pop());';
         txt += '   }); ';
         txt += ' });';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
