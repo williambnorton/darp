@@ -757,7 +757,7 @@ function handleShowState(req, res) {
                res.setHeader('Content-Type', 'text/html');
                res.setHeader("Access-Control-Allow-Origin", "*");
 
-               res.end(txt + "<p>" + /*"RAW /CONFIG: "+JSON.stringify(config, null, 2)+ */ "</p></body></html>");
+               res.end(txt + "<p>Legend: Color is deviation from median (last 30 seconds) Yellow/Orange/Red: " +YELLOW_TRIGGER+"% /"+ORANGE_TRIGGER+"% /"+RED_TRIGGER+"% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>");  //wbnwbnwbn
                return
            });
        });
