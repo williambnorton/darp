@@ -13,9 +13,9 @@ import { setWireguard } from "../wireguard/wireguard";
 
 const MAX_CONFIG_FRAMES=30;  //How many config snapshot to store for mdeian variance calaucltions
 
-const YELLOW_TRIGGER=10;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
-const ORANGE_TRIGGER=20;  //when we show orange warning 
-const RED_TRIGGER=30;  //when we show red warning 
+const YELLOW_TRIGGER=30;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
+const ORANGE_TRIGGER=40;  //when we show orange warning 
+const RED_TRIGGER=50;  //when we show red warning 
 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 
