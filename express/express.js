@@ -1209,7 +1209,8 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                     var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0.port, incomingTimestamp, version);
                     expressRedisClient.hmset(mint1.geo + ":" + mint1.group, genesisPulseGroupEntry, function (err, reply) {
                         expressRedisClient.hmset("gSRlist", mint1.geo + ":" + mint1.group, "1", function (err, reply) {
-                            makeConfig(function (config) {
+                            //makeConfig(function(config) {
+                            makeConfigAll(function (config) {
                                 //console.log(ts()+"makeConfig");
                                 config.mintTable["mint:0"] = mint0; //    Install this new guy's mint0 into config
                                 config.rc = "0";
