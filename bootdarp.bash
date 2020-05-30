@@ -155,7 +155,7 @@ do
     sleep 1
 
     cd $DARPDIR
-    if [ $rc -ne 0 ]; then
+    if [ $? -ne 0 ]; then
         echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
         exit 86;
     fi
@@ -176,7 +176,7 @@ do
 
     sleep 1
 
-    if [ $rc -eq 86 ]; then exit 86; fi     #STOP COMMAND
+    if [ $rc -eq 86 ]; then echo "STOP STOP STOP"; exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 1 ]; then
         echo "rc=1"
