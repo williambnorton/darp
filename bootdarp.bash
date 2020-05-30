@@ -155,6 +155,10 @@ do
     sleep 1
 
     cd $DARPDIR
+    if [ $rc -ne 0 ]; then
+        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
+        exit 86;
+    fi
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`

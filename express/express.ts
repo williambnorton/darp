@@ -29,7 +29,7 @@ var mintStack = 1;
 const DEFAULT_SHOWPULSES = "0"
 
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
-const DEFAULT_START_STATE = "CONFIGURED"; //for single stepping through network protocol code
+const DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
 //const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
