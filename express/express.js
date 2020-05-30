@@ -12,6 +12,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
+var MAX_CONFIGS_KEPT = 30; //How many config snapshot to store for mdeian variance calaucltions
 var YELLOW_TRIGGER = 10; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 var ORANGE_TRIGGER = 20; //when we show orange warning 
 var RED_TRIGGER = 30; //when we show red warning 
@@ -220,10 +221,10 @@ function handleShowState(req, res) {
         txt += '   }); ';
         //wbnwbnwbn
         txt += '  $("#btnBack").click(function(){';
-        txt += '      renderPage(configs.pop());';
+        txt += '      renderPage(configs.pop());'; //DOES NOT WORK YET
         txt += '   }); ';
         txt += '  $("#btnForward").click(function(){';
-        txt += '      renderPage(config.pop());';
+        txt += '      renderPage(config.pop());'; //TO DO: DOES NOT WORK YET
         txt += '   }); ';
         txt += ' });';
         txt += "var URL='http://" + me.ipaddr + ":" + me.port + "/state';";
@@ -337,7 +338,7 @@ function handleShowState(req, res) {
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
         txt += '      configs.unshift(config);'; //push onto front of stack
-        txt += '      if (configs.length>60) configs.pop();'; //pop off end of stack (60 seconds worth kept)
+        txt += '      if ( configs.length > ' + MAX_CONFIG_FRAMES + ' ) configs.pop();'; //pop off end of stack (60 seconds worth kept)
         txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);';
         txt += '      ';
         txt += '   });';
