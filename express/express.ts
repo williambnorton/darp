@@ -11,7 +11,7 @@
 import {   dump,   now,   mintList,   SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION } from '../lib/lib';
 import { setWireguard } from "../wireguard/wireguard";
 
-const MAX_CONFIGS_KEPT=30;  //How many config snapshot to store for mdeian variance calaucltions
+const MAX_CONFIG_FRAMES=30;  //How many config snapshot to store for mdeian variance calaucltions
 
 const YELLOW_TRIGGER=10;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 const ORANGE_TRIGGER=20;  //when we show orange warning 
