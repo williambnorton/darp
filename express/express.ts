@@ -1381,6 +1381,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                    expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function(err, reply) { //Add our Entry to the genesisGroup in gSRlist
                                        genesisGroupEntry.owls = genesisGroupEntry.owls + "," + newMint
 
+                                       expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);  //wbn
 
 
 
@@ -1417,6 +1418,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
                                             setWireguard();
                                             callback(config); //parent routine's callback
+     
                                         })
         
 
@@ -1424,7 +1426,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
 
                                        //console.log(ts()+"newMint="+newMint+" "+dump(config));
 
-                                       expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
+//wbn                                       expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
                                        //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
 
 //wbn                                       setWireguard();  //new mint so add the mint to our GENESIS wireguard config
