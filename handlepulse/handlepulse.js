@@ -271,6 +271,15 @@ function checkSWversion() {
                 console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
                 process.exit(36);
             }
+            //
+            //  use this opportunity to reboot if group owner is AWOL for 20 seconds
+            //
+            var elapsedSecondsSinceOwnerPulse = Math.round(((lib_js_1.now() - genesis.pulseTimestamp) / 1000));
+            console.log("elapsedSecondsSinceOwnerPulse=" + elapsedSecondsSinceOwnerPulse);
+            if (elapsedSecondsSinceOwnerPulse > 20) {
+                console.log("HANDLEPULSE(): elapsedSecondsSinceOwnerPulse > 20 so forcing reload and reconnect");
+                process.exit(36);
+            }
             var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
             //console.log("checkSWversion(): url="+url);
             http.get(url, function (res) {
