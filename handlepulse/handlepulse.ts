@@ -175,7 +175,7 @@ server.on('message', function(message, remote) {
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
               redisClient.lrange(pulse.geo + "-" + me.geo+"-history", -300, -1, (err, data) => {
                 if (err) {
-                 console.log(err);
+                 console.log("ihandlepulse() history lookup ERROR:"+err);
                  return;
                 }
                
