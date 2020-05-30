@@ -209,7 +209,7 @@ function getMatrixTable(config,darp, callback) {
 function handleShowState(req, res) {
 
     var dateTime = new Date();
-   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 120 + '">';
+   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 120 + '">'; //TODO: dynamic refresh based on new node adds
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
        if (me == null) return console.log("handleShowState(): WEIRD: NULL mint:0");
@@ -489,7 +489,7 @@ function handleShowState(req, res) {
            if (mint1) genesisPort=mint1.port; 
 
            if (me.isGenesisNode == "1") txt += '<h1>GENESIS NODE for pulseGroup <a href="http://' + me.ipaddr+":"+me.port + '">' + me.geo + " (" + me.ipaddr + ":" + me.port + " ) </a>" + me.state + " " + me.version.split(".")[2];
-           else txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Mint#" + me.mint + " " + me.state + " " + me.version + " under "+genesisIP+":"+genesisPort;
+           else txt += "<h1>" + me.geo + "(" + me.ipaddr + ":" + me.port + ") Wireguard 10.10.0." + me.mint + " " + me.state + " " + me.version + " under "+genesisIP+":"+genesisPort;
            txt += "</h1>"
            if (me.adminControl) txt += "<h3>AdminControl: " + me.adminControl+"</h3>";
 
