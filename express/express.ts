@@ -1417,7 +1417,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             config.mintTable["mint:0"] = mint0; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:"+newMint] = mintN; //    Install this new guy's mint0 into config
 
-//                                            config.pulses[mint1.geo + ":" + mint1.group]=genesisGroupEntry;
+                                            config.pulses[mint1.geo + ":" + mint1.group]=genesisGroupEntry;
 
                                             config.rc = "0";
                                             config.isGenesisNode = "0";
