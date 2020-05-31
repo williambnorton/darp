@@ -1263,11 +1263,15 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
                                             console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
                                             config.gSRlist[geo + ":" + mint1.group] = "" + newMint;
-                                            config.mintTable["mint:0"] = mint0; //    Install this new guy's mint0 into config
+                                            config.gSRlist[mint1.geo + ":" + mint1.group] = "1";
+                                            config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
+                                            config.mintTable["mint:1"] = mint1;
                                             config.mintTable["mint:" + newMint] = mintN; //    Install this new guy's mint0 into config
                                             config.pulses[mint1.geo + ":" + mint1.group] = genesisGroupEntry;
+                                            config.pulses[geo + ":" + mint1.group] = newNodePulseEntry;
                                             config.rc = "0";
                                             config.isGenesisNode = "0";
+                                            config.ts = "" + lib_1.now();
                                             //config.ts = now(); //give other side a notion of my clock when I sent this
                                             //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
                                             //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
