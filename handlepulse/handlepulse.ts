@@ -295,10 +295,12 @@ function nth_occurrence(string, char, nth) {
 //  TODO: Version is based on date: Build.YYMMDD.HHMMSS
 //      Only listen to genesis pulse version#'s, Ignore all others
 //      And only check SWversion if not gnesis version, and use > comparison
-setTimeout(checkSWversion, 20 * 1000);; // see if we need new SW
+
+const SW_CHECK_FREQ=20;
+setTimeout(checkSWversion, SW_CHECK_FREQ * 1000);; // see if we need new SW
 //checkSWversion();
 function checkSWversion() {
-  setTimeout(checkSWversion, 20 * 1000);;
+  setTimeout(checkSWversion, SW_CHECK_FREQ * 1000);;
   //console.log("checkSWversion() - currentSW="+MYBUILD);
   const http = require("http");
   redisClient.hgetall("mint:0", function(err, me) {
@@ -313,8 +315,8 @@ function checkSWversion() {
 
             var elapsedSecondsSinceOwnerPulse=Math.round(  ((now()-genesis.pulseTimestamp)/1000) );
             console.log("elapsedSecondsSinceOwnerPulse="+elapsedSecondsSinceOwnerPulse);
-            if (elapsedSecondsSinceOwnerPulse> 20 ) {
-                    console.log("HANDLEPULSE(): elapsedSecondsSinceOwnerPulse > 20 so forcing reload and reconnect");
+            if (elapsedSecondsSinceOwnerPulse> 10 ) {
+                    console.log("HANDLEPULSE(): elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
                     process.exit(36);
             }
             const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
