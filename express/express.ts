@@ -1352,8 +1352,9 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                    var genesisPulseGroupEntry = makePulseEntry(newMint, geo, geo + ".1", mint0.ipaddr, mint0.port, incomingTimestamp, version);
                    expressRedisClient.hmset(mint1.geo + ":" + mint1.group, genesisPulseGroupEntry, function(err, reply) { // genesisGroupPulseEntry
                        expressRedisClient.hmset("gSRlist", mint1.geo + ":" + mint1.group, "1", function(err, reply) { //Add our Genesis Group Entry to the gSRlist
-                           makeConfig(function(config) {
-                               //console.log(ts()+"makeConfig");
+                            //makeConfig(function(config) {
+                            makeConfig(function(config) {
+                                //console.log(ts()+"makeConfig");
                                config.mintTable["mint:0"] = mint0; //    Install this new guy's mint0 into config
                                config.rc = "0";
                                config.isGenesisNode = "1";
@@ -1379,6 +1380,14 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                expressRedisClient.hmset(geo + ":" + mint1.group, newNodePulseEntry, function(err, reply) {
                                    expressRedisClient.hmset("gSRlist", geo + ":" + mint1.group, "" + newMint, function(err, reply) { //Add our Entry to the genesisGroup in gSRlist
                                        genesisGroupEntry.owls = genesisGroupEntry.owls + "," + newMint
+
+                                       expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);  //wbn
+
+
+
+
+/* wbn
+
                                        var config = {
                                            gSRlist: {
                                                [mint1.geo + ":" + mint1.group]: "1",
@@ -1397,14 +1406,36 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                            isGenesisNode: "0",
                                            ts: "" + now()
                                        }
+*/
+
+                                       makeConfigAll(function(config) {
+                                            console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
+                                            console.log(ts()+"makeConfig now replaces genesis node info with mint0");
+
+                                            config.mintTable["mint:0"] = mint0; //    Install this new guy's mint0 into config
+                                            config.mintTable["mint:"+newMint] = mintN; //    Install this new guy's mint0 into config
+
+                                            config.rc = "0";
+                                            config.isGenesisNode = "0";
+                                            //config.ts = now(); //give other side a notion of my clock when I sent this
+                                            //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
+                                            //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+                                            setWireguard();
+                                            console.log("EXPRESS(): about to launch config="+dump(config));
+                                            callback(config); //parent routine's callback
+     
+                                        })
+        
+
+
 
                                        //console.log(ts()+"newMint="+newMint+" "+dump(config));
 
-                                       expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
+//wbn                                       expressRedisClient.hmset(mint1.geo + ":" + mint1.group, "owls", genesisGroupEntry.owls);
                                        //expressRedisClient.hmset(geo+":"+mint1.group, "owls",genesisGroupEntry.owls);
 
-                                       setWireguard();  //new mint so add the mint to our GENESIS wireguard config
-                                       callback(config);
+//wbn                                       setWireguard();  //new mint so add the mint to our GENESIS wireguard config
+//wbn                                       callback(config);
 
                                        /*
                                        makeConfig(function (config) {
