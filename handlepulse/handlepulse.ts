@@ -329,6 +329,10 @@ function checkSWversion() {
                     body += data;
                 });
 
+                res.on('error', function(error) {
+                    console.log("HANDLEPULSE: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here
+                  });
+
                 res.on("end", () => {
                     var version = JSON.parse(body);
                     
