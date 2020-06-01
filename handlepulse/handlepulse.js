@@ -278,7 +278,9 @@ function checkSWversion() {
             var elapsedSecondsSinceOwnerPulse = Math.round(((lib_js_1.now() - genesis.pulseTimestamp) / 1000));
             console.log("elapsedSecondsSinceOwnerPulse=" + elapsedSecondsSinceOwnerPulse);
             if (elapsedSecondsSinceOwnerPulse > 10) {
-                console.log("HANDLEPULSE(): elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
                 process.exit(36);
             }
             var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";

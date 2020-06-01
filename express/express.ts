@@ -1412,15 +1412,14 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
                                             console.log(ts()+"makeConfig now replaces genesis node info with mint0");
 
-                                            var myMint=geo.split("_")[0];
-                                            var myGeo=geo.split("_")[1];
-                                            
-                                            var gMint= mint1.geo.split("_")[0];
-                                            var gGeo= mint1.geo.split("_")[1];
-                                            console.log(":myMint="+myMint+" myGeo="+myGeo+" gMint="+gMint+" gGeo="+gGeo);
-                                            config.gSRlist[ myGeo + ":" + mint1.group ]       = "" + newMint;
-                                            config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
-
+                                            for (var g in config.gSRlist) {
+                                                var entry=config.gSRlist[g];
+                                                var myMint=entry.split("_")[0];
+                                                var pulseLabel=entry.split("_")[1];
+                                                console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
+                                                config.gSRlist[ pulseLabel ]       = "" + parseInt(myMint); //get rid of leading 0
+                                                //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
+                                            }
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
                                             config.mintTable["mint:"+newMint] = mintN; //    Install this new guy's mint0 into config

@@ -316,8 +316,11 @@ function checkSWversion() {
             var elapsedSecondsSinceOwnerPulse=Math.round(  ((now()-genesis.pulseTimestamp)/1000) );
             console.log("elapsedSecondsSinceOwnerPulse="+elapsedSecondsSinceOwnerPulse);
             if (elapsedSecondsSinceOwnerPulse> 10 ) {
-                    console.log("HANDLEPULSE(): elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
-                    process.exit(36);
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+
+                process.exit(36);
             }
             const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
             //console.log("checkSWversion(): url="+url);
