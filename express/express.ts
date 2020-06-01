@@ -1417,11 +1417,11 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                 var myMint=parseInt(entry.split("_")[0]);
                                                 var pulseLabel=entry.split("_")[1];
                                                 console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
-                                                new_gSRlist[ pulseLabel ]       = "" + myMint; //get rid of leading 0
+                                                new_gSRlist.push({ [ pulseLabel ] : "" + myMint });    //get rid of leading 0
                                                 //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
                                             }
                                             config.gSRlist=new_gSRlist;
-                                            
+
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
                                             config.mintTable["mint:"+newMint] = mintN; //    Install this new guy's mint0 into config

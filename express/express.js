@@ -1260,6 +1260,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                                                }
                                         */
                                         makeConfigAll(function (config) {
+                                            var _a;
                                             console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
                                             console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
                                             var new_gSRlist = [];
@@ -1268,7 +1269,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                 var myMint = parseInt(entry.split("_")[0]);
                                                 var pulseLabel = entry.split("_")[1];
                                                 console.log("myMint=" + myMint + " pulseLabel=" + pulseLabel);
-                                                new_gSRlist[pulseLabel] = "" + myMint; //get rid of leading 0
+                                                new_gSRlist.push((_a = {}, _a[pulseLabel] = "" + myMint, _a)); //get rid of leading 0
                                                 //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
                                             }
                                             config.gSRlist = new_gSRlist;
