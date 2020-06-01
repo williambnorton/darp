@@ -1411,16 +1411,16 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                        makeConfigAll(function(config) {
                                             console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
                                             console.log(ts()+"makeConfig now replaces genesis node info with mint0");
-                                            var new_gSRlist=[];
-                                            for (var g in config.gSRlist) {  
-                                                var entry=config.gSRlist[g];
+                                            var old_gSRlist=config.gSRlist;
+                                            for (var g in old_gSRlist) {  
+                                                var entry=old_gSRlist[g];
                                                 var myMint=parseInt(entry.split("_")[0]);
                                                 var pulseLabel=entry.split("_")[1];
                                                 console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
-                                                new_gSRlist[ pulseLabel ] = "" + myMint ;    //get rid of leading 0
+                                                config.gSRlist[ pulseLabel ] = "" + myMint ;    //get rid of leading 0
                                                 //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
                                             }
-                                            config.gSRlist={new_gSRlist};
+                                            //config.gSRlist={[new_gSRlist]};
 
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
