@@ -1412,8 +1412,12 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
                                             console.log(ts()+"makeConfig now replaces genesis node info with mint0");
 
-                                            config.gSRlist[geo + ":" + mint1.group] = "" + newMint;
-                                            config.gSRlist[mint1.geo + ":" + mint1.group] = "1";
+                                            var myMint=geo.split("_")[0];
+                                            var myGeo=geo.split("_")[1];
+                                            var gMint= mint1.geo.split("_")[0];
+                                            var gGeo= mint1.geo.split("_")[1];
+                                            config.gSRlist[ myGeo + ":" + mint1.group ]       = "" + newMint;
+                                            config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
 
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
