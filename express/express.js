@@ -1217,7 +1217,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                 config.isGenesisNode = "1";
                                 config.ts = lib_1.now(); //give other side a notion of my clock when I sent this
                                 //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-                                //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+                                console.log(lib_1.ts() + "EXPRESS:  Sending GENESIS NODE config:" + lib_1.dump(config));
                                 callback(config); //parent routine's callback
                             });
                         });
@@ -1279,7 +1279,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             config.ts = "" + lib_1.now();
                                             //config.ts = now(); //give other side a notion of my clock when I sent this
                                             //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
-                                            //console.log(ts()+"EXPRESS:  Sending config:"+dump(config));
+                                            console.log(lib_1.ts() + "EXPRESS:  Sending NON-GENESIS config:" + lib_1.dump(config));
                                             wireguard_1.setWireguard();
                                             console.log("EXPRESS(): about to launch config=" + lib_1.dump(config));
                                             callback(config); //parent routine's callback
