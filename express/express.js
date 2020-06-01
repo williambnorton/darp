@@ -1262,12 +1262,13 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                         makeConfigAll(function (config) {
                                             console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
                                             console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
+                                            var new_gSRlist = [];
                                             for (var g in config.gSRlist) {
                                                 var entry = config.gSRlist[g];
                                                 var myMint = entry.split("_")[0];
                                                 var pulseLabel = entry.split("_")[1];
                                                 console.log("myMint=" + myMint + " pulseLabel=" + pulseLabel);
-                                                config.gSRlist[pulseLabel] = "" + parseInt(myMint); //get rid of leading 0
+                                                new_gSRlist[pulseLabel] = "" + parseInt(myMint); //get rid of leading 0
                                                 //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
                                             }
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
