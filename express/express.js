@@ -341,9 +341,9 @@ function handleShowState(req, res) {
         txt += '      configs.unshift(config);'; //push onto front of stack
         txt += '      if ( configs.length > ' + MAX_CONFIG_FRAMES + ' ) configs.pop();'; //pop off end of stack (60 seconds worth kept)
         txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);';
-        txt += '      if ( nodeCountLastTime > 1 ) {';
         txt += '         var nodeCountNow=config.gSRlist.length;';
-        txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+        txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere in: "dump(config) );';
+        txt += '      if ( nodeCountLastTime > 1 ) {';
         txt += '         if (nodeCountLastTime!=nodeCountNow) {';
         txt += '             console.log("HERE I WOULD RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
         txt += '         }';
