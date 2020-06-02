@@ -402,7 +402,7 @@ function handleShowState(req, res) {
        txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );'
 
        txt += '         if (nodeCountLastTime!=nodeCountNow) {'
-//       txt += '             console.log("HERE I WOULD RELOAD(): nodeCountNow="+nodeCountNow"+" nodeCountLastTime="+nodeCountLastTime );'
+       txt += '             console.log("HERE I WOULD RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );'
 
        txt += '         }'
        txt += '      '
