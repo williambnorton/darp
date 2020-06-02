@@ -348,8 +348,8 @@ function handleShowState(req, res) {
         txt += '             console.log("HERE I WOULD RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
         txt += '         }';
         txt += '      ';
-        txt += '         nodeCountLastTime=nodeCountNow;';
         txt += '      }';
+        txt += '         nodeCountLastTime=nodeCountNow;';
         txt += '   });';
         //TODO: This should be a full mesh of unique active mints from gSRlist
         //txt += "function mystddev(array) {"

@@ -407,8 +407,8 @@ function handleShowState(req, res) {
        txt += '         }'
        txt += '      '
 
-       txt += '         nodeCountLastTime=nodeCountNow;'
        txt += '      }'
+       txt += '         nodeCountLastTime=nodeCountNow;'
 
 
 
