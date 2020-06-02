@@ -219,7 +219,7 @@ function handleShowState(req, res) {
         txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";';
         txt += '      $("#btnSubmit").val(FREEZEBTN);';
         txt += '   }); ';
-        //wbnwbnwbn
+        //
         txt += '  $("#btnBack").click(function(){';
         txt += '      renderPage(configs.pop());'; //DOES NOT WORK YET
         txt += '   }); ';
@@ -651,7 +651,7 @@ function handleShowState(req, res) {
                 txt += "</table>";
                 res.setHeader('Content-Type', 'text/html');
                 res.setHeader("Access-Control-Allow-Origin", "*");
-                res.end(txt + "<p>Legend: Color is deviation from median (last 30 seconds) Yellow/Orange/Red: " + YELLOW_TRIGGER + "% /" + ORANGE_TRIGGER + "% /" + RED_TRIGGER + "% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>"); //wbnwbnwbn
+                res.end(txt + "<p>Legend: Color is deviation from median (last 30 seconds) Yellow/Orange/Red: " + YELLOW_TRIGGER + "% /" + ORANGE_TRIGGER + "% /" + RED_TRIGGER + "% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>"); //
                 return;
             });
         });
@@ -1026,7 +1026,7 @@ function fetchConfigAll(gSRlist, config, callback) {
                 gSRlist[sEntryLabel] = "0" + gSRlist[sEntryLabel];
             allStack.push(gSRlist[sEntryLabel] + "_" + sEntryLabel);
         }
-        allStack.sort();
+        allStack.sort(); //TODO: This should be done using sorted redis list
         //we need srlist to be an array of objects we can sort
         // { "mint" : mint, "entryLabel" : entryLabel }
         // sort(compareBy('mint'))
@@ -1260,18 +1260,33 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                                                }
                                         */
                                         makeConfigAll(function (config) {
+                                            var _a;
                                             console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
-                                            console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
-                                            var old_gSRlist = config.gSRlist;
-                                            for (var g in old_gSRlist) {
-                                                var entry = old_gSRlist[g];
-                                                var myMint = parseInt(entry.split("_")[0]);
-                                                var pulseLabel = entry.split("_")[1];
-                                                console.log("myMint=" + myMint + " pulseLabel=" + pulseLabel);
-                                                config.gSRlist[pulseLabel] = "" + myMint; //get rid of leading 0
-                                                //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
+                                            var sortedGSRlist = new Array();
+                                            var allStack = [];
+                                            for (var sEntryLabel in config.gSRlist) {
+                                                var mint = config.gSRlist[sEntryLabel].split("_")[0];
+                                                ;
+                                                var entryLabel = config.gSRlist[sEntryLabel].split("_")[1];
+                                                ;
+                                                allStack.push((_a = {}, _a[entryLabel] = mint, _a));
                                             }
-                                            //config.gSRlist={[new_gSRlist]};
+                                            config.gSRlist = allStack.sort(); //TODO: This should be done using sorted redis list
+                                            //replace this next bit
+                                            /*
+                                                                          var old_gSRlist=config.gSRlist;
+                                                                          for (var g in old_gSRlist) {
+                                                                              var entry=old_gSRlist[g];
+                                                                              var myMint=parseInt(entry.split("_")[0]);
+                                                                              var pulseLabel=entry.split("_")[1];
+                                                                              console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
+                                                                              config.gSRlist[ pulseLabel ] = "" + myMint ;    //get rid of leading 0
+                                                                              //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
+                                                                          }
+                                                                          //config.gSRlist={[new_gSRlist]};
+                              
+                              */
+                                            console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
                                             config.mintTable["mint:" + newMint] = mintN; //    Install this new guy's mint0 into config
