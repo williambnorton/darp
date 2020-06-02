@@ -1036,6 +1036,7 @@ function fetchConfigAll(gSRlist, config, callback) {
             allStack.push(gSRlist[sEntryLabel] + "_" + sEntryLabel);
         }
         allStack.sort(); //TODO: This should be done using sorted redis list
+        console.log("fetchConfigAll(): nodeCount=" + allStack.length);
         //we need srlist to be an array of objects we can sort
         // { "mint" : mint, "entryLabel" : entryLabel }
         // sort(compareBy('mint'))
