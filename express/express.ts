@@ -900,7 +900,7 @@ app.get('/forever', function(req, res) {
 
 app.get('/state', function(req, res) {
     //console.log("EXPRess fetching '/state' state");
-    makeConfig(function(config) {
+    makeConfigAll(function(config) {
         //console.log("app.get('/state' callback config="+dump(config));
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
