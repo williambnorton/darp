@@ -335,7 +335,7 @@ function checkSWversion() {
                 });
 
                 res.on('error', function(error) {
-                    console.log("HANDLEPULSE: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here
+                    console.log("HANDLEPULSE: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
                   });
 
                 res.on("end", () => {
