@@ -13,9 +13,9 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
 var MAX_CONFIG_FRAMES = 30; //How many config snapshot to store for mdeian variance calaucltions
-var YELLOW_TRIGGER = 30; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
-var ORANGE_TRIGGER = 40; //when we show orange warning 
-var RED_TRIGGER = 50; //when we show red warning 
+var YELLOW_TRIGGER = 20; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
+var ORANGE_TRIGGER = 30; //when we show orange warning 
+var RED_TRIGGER = 40; //when we show red warning 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
