@@ -393,7 +393,7 @@ function handleShowState(req, res) {
        txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);'
 
        txt += '         var nodeCountNow=config.gSRlist.length;'
-       txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere in: "dump(config) );'
+       txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere in: "+dump(config) );'
 
 
        txt += '      if ( nodeCountLastTime > 1 ) {'
