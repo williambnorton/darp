@@ -1260,32 +1260,33 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                                                }
                                         */
                                         makeConfigAll(function (config) {
-                                            var _a;
                                             console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
-                                            var sortedGSRlist = new Array();
-                                            var allStack = [];
-                                            for (var sEntryLabel in config.gSRlist) {
-                                                var mint = config.gSRlist[sEntryLabel].split("_")[0];
-                                                ;
-                                                var entryLabel = config.gSRlist[sEntryLabel].split("_")[1];
-                                                ;
-                                                allStack.push((_a = {}, _a[entryLabel] = mint, _a));
-                                            }
-                                            config.gSRlist = allStack.sort(); //TODO: This should be done using sorted redis list
-                                            //replace this next bit
                                             /*
-                                                                          var old_gSRlist=config.gSRlist;
-                                                                          for (var g in old_gSRlist) {
-                                                                              var entry=old_gSRlist[g];
-                                                                              var myMint=parseInt(entry.split("_")[0]);
-                                                                              var pulseLabel=entry.split("_")[1];
-                                                                              console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
-                                                                              config.gSRlist[ pulseLabel ] = "" + myMint ;    //get rid of leading 0
-                                                                              //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
-                                                                          }
-                                                                          //config.gSRlist={[new_gSRlist]};
-                              
-                              */
+                                                                                        var sortedGSRlist=new Array();
+                                                                                        var allStack=[];
+                                                                                        for (var sEntryLabel in config.gSRlist) {
+                                                                                            var mint      =config.gSRlist[sEntryLabel].split("_")[0];
+                                                                                            var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
+                                                                                            allStack.push( { [entryLabel] : mint } );
+                                                                                        }
+                                                                                        config.gSRlist=allStack.sort(); //TODO: This should be done using sorted redis list
+                                            
+                                                                                                    //replaces this next bit
+                                            
+                                            
+                                                                                        var old_gSRlist=config.gSRlist;
+                                                                                        for (var g in old_gSRlist) {
+                                                                                            var entry=old_gSRlist[g];
+                                                                                            var myMint=parseInt(entry.split("_")[0]);
+                                                                                            var pulseLabel=entry.split("_")[1];
+                                                                                            console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
+                                                                                            config.gSRlist[ pulseLabel ] = "" + myMint ;    //get rid of leading 0
+                                                                                            //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
+                                                                                        }
+                                                                                        //config.gSRlist={[new_gSRlist]};
+                                            
+                                            */
+                                            console.log("EXPRESS(): STARTING WITH config.gSRlist=" + config.gSRlist);
                                             console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;

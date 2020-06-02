@@ -1410,19 +1410,19 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
 
                                        makeConfigAll(function(config) {
                                             console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
-
+/*
                                             var sortedGSRlist=new Array();
                                             var allStack=[];
                                             for (var sEntryLabel in config.gSRlist) {
-                                                var mint      =config.gSRlist[sEntryLabel].split("_")[0];;
-                                                var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];;
+                                                var mint      =config.gSRlist[sEntryLabel].split("_")[0];
+                                                var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
                                                 allStack.push( { [entryLabel] : mint } );
                                             }
                                             config.gSRlist=allStack.sort(); //TODO: This should be done using sorted redis list
 
-                                                        //replace this next bit
+                                                        //replaces this next bit
 
-              /*
+
                                             var old_gSRlist=config.gSRlist;   
                                             for (var g in old_gSRlist) {  
                                                 var entry=old_gSRlist[g];
@@ -1435,7 +1435,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             //config.gSRlist={[new_gSRlist]};
 
 */
-
+                                            console.log("EXPRESS(): STARTING WITH config.gSRlist="+config.gSRlist);
 
 
                                             console.log(ts()+"makeConfig now replaces genesis node info with mint0");

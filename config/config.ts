@@ -106,7 +106,26 @@ function getConfiguration() {
                 //dumpState();
             } else {
                 console.log(ts()+"CONFIG Configuring non-genesis node ... config.isGenesisNode="+config.isGenesisNode);
-                redisClient.hmset("gSRlist", config.gSRlist );
+
+
+
+
+
+
+                var sortedGSRlist=new Array();
+                var allStack=[];
+                for (var sEntryLabel in config.gSRlist) {
+                    var mint      =config.gSRlist[sEntryLabel].split("_")[0];
+                    var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
+                    redisClient.hset("gSRlist", entryLabel, mint );
+                }
+
+
+
+
+
+
+                
                 //install config
                 for (var mint in config.mintTable) {
                     var mintEntry=config.mintTable[mint];
