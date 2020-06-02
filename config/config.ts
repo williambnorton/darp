@@ -112,12 +112,10 @@ function getConfiguration() {
 
 
 
-                var sortedGSRlist=new Array();
-                var allStack=[];
                 for (var sEntryLabel in config.gSRlist) {
-                    var mint      =config.gSRlist[sEntryLabel].split("_")[0];
+                    var smint      =config.gSRlist[sEntryLabel].split("_")[0];
                     var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
-                    redisClient.hset("gSRlist", entryLabel, mint );
+                    redisClient.hset("gSRlist", entryLabel, smint );
                 }
 
 
