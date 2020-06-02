@@ -342,7 +342,7 @@ function handleShowState(req, res) {
         txt += '      if ( configs.length > ' + MAX_CONFIG_FRAMES + ' ) configs.pop();'; //pop off end of stack (60 seconds worth kept)
         txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);';
         txt += '         var nodeCountNow=config.nodeCount;';
-        txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere in: "+JSON.stringify(config,null,2) );';
+        txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );';
         txt += '      if ( nodeCountLastTime > 1 ) {';
         txt += '         if (nodeCountLastTime!=nodeCountNow) {';
         txt += '             console.log("HERE I WOULD RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
@@ -746,7 +746,7 @@ app.get('/reload', function (req, res) {
 app.get('/config', function (req, res) {
     //console.log("EXPRess wbn fetching '/config' ");
     makeConfigAll(function (config) {
-        //  console.log("app.get(/config pulseRecordTable=" + dump(config));
+        console.log("app.get(/config =" + lib_1.dump(config));
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.end(JSON.stringify(config, null, 2));
