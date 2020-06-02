@@ -92,9 +92,9 @@ function getConfiguration() {
             else {
                 console.log(lib_js_1.ts() + "CONFIG Configuring non-genesis node ... config.isGenesisNode=" + config.isGenesisNode);
                 for (var sEntryLabel in config.gSRlist) {
-                    var smint = config.gSRlist[sEntryLabel].split("_")[0];
+                    var smint = parseInt(config.gSRlist[sEntryLabel].split("_")[0]);
                     var entryLabel = config.gSRlist[sEntryLabel].split("_")[1];
-                    redisClient.hset("gSRlist", entryLabel, smint);
+                    redisClient.hset("gSRlist", entryLabel, "" + smint);
                 }
                 //install config
                 for (var mint in config.mintTable) {

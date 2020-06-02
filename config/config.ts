@@ -113,9 +113,9 @@ function getConfiguration() {
 
 
                 for (var sEntryLabel in config.gSRlist) {
-                    var smint      =config.gSRlist[sEntryLabel].split("_")[0];
+                    var smint      =parseInt(config.gSRlist[sEntryLabel].split("_")[0]);
                     var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
-                    redisClient.hset("gSRlist", entryLabel, smint );
+                    redisClient.hset("gSRlist", entryLabel, ""+smint );
                 }
 
 
