@@ -1042,6 +1042,7 @@ function fetchConfigAll(gSRlist, config, callback) {
         //console.log("allStack: "+dump(allStack));
         config = {
             //gSRlist: gSRlist,
+            nodeCount: allStack.length,
             gSRlist: allStack,
             mintTable: {},
             pulses: {},

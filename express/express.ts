@@ -1200,6 +1200,7 @@ function fetchConfigAll(gSRlist, config, callback) {
 
         config = {
             //gSRlist: gSRlist,
+            nodeCount : allStack.length,
             gSRlist: allStack,
             mintTable: {},
             pulses: {},
