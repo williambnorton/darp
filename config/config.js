@@ -96,6 +96,10 @@ function getConfiguration() {
                     var entryLabel = config.gSRlist[sEntryLabel].split("_")[1];
                     redisClient.hset("gSRlist", entryLabel, "" + smint);
                 }
+                //wbnwbnwbn
+                redisClient.hgetall("gSRlist", function (err, gSRlist) {
+                    console.log("gSRlist=" + lib_js_1.dump(gSRlist));
+                });
                 //install config
                 for (var mint in config.mintTable) {
                     var mintEntry = config.mintTable[mint];

@@ -118,8 +118,10 @@ function getConfiguration() {
                     redisClient.hset("gSRlist", entryLabel, ""+smint );
                 }
 
-
-
+                //wbnwbnwbn
+                redisClient.hgetall("gSRlist", function(err, gSRlist) {
+                    console.log("gSRlist="+dump(gSRlist));
+                });
 
 
 
