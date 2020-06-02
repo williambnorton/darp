@@ -311,8 +311,8 @@ function handleShowState(req, res) {
         txt += '                        var improvement=owl-(srcToAlt+altToDst);';
         txt += '                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
         txt += '                        if (improvement>5) {';
-        txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","3px");';
-        txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","3px");'; //highlight better path
+        txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");';
+        txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");'; //highlight better path
         txt += '                        }';
         txt += '                    }';
         txt += '                }';
@@ -330,10 +330,6 @@ function handleShowState(req, res) {
         txt += '            }';
         txt += '         }';
         txt += '      }';
-        //txt += '     console.log("arrayWidth="+arrayWidth +"startingArrayWidth="+startingArrayWidth);'
-        //txt += '     console.log("arrayWidth-startingArrayWidth=" + ( arrayWidth-startingArrayWidth));'
-        //txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
-        //txt +='      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;'
         txt += "    };";
         txt += 'var nodeCountLastTime=0;';
         txt += 'function fetchState() {';
@@ -351,13 +347,6 @@ function handleShowState(req, res) {
         txt += '      }';
         txt += '         nodeCountLastTime=nodeCountNow;';
         txt += '   });';
-        //TODO: This should be a full mesh of unique active mints from gSRlist
-        //txt += "function mystddev(array) {"
-        //txt += "   const n = array.length;"
-        //txt += '   const mean = array.reduce((a,b) => a+b)/n;'
-        //txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
-        //txt += '   return s;'
-        //txt += "}"
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
         txt += "function getOWL(config,src,dst) { ";
