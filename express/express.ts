@@ -392,7 +392,7 @@ function handleShowState(req, res) {
        txt += '      if ( configs.length > '+MAX_CONFIG_FRAMES+' ) configs.pop();'; //pop off end of stack (60 seconds worth kept)
        txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);'
 
-       txt += '         var nodeCountNow=config.gSRlist.length;'
+       txt += '         var nodeCountNow=config.nodeCount;'
        txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere in: "+JSON.stringify(config,null,2) );'
 
 
