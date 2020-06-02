@@ -393,7 +393,7 @@ function handleShowState(req, res) {
        txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);'
 
        txt += '         var nodeCountNow=config.nodeCount;'
-       txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+       txt += '         //console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
 
 
        txt += '      if ( nodeCountLastTime > 1 ) {'
@@ -401,7 +401,7 @@ function handleShowState(req, res) {
 
 
        txt += '         if (nodeCountLastTime!=nodeCountNow) {'
-       txt += '             console.log("HERE I WOULD RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );'
+       txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );location.reload();'
 
        txt += '         }'
        txt += '      '
