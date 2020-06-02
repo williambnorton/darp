@@ -1434,7 +1434,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
 */
 
                                        makeConfigAll(function(config) {
-                                            console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
+                                            //console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
 /*
                                             var sortedGSRlist=new Array();
                                             var allStack=[];
@@ -1460,10 +1460,10 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             //config.gSRlist={[new_gSRlist]};
 
 */
-                                            console.log("EXPRESS(): STARTING WITH config.gSRlist="+config.gSRlist);
+                                            //console.log("EXPRESS(): STARTING WITH config.gSRlist="+config.gSRlist);
 
 
-                                            console.log(ts()+"makeConfig now replaces genesis node info with mint0");
+                                            //console.log(ts()+"makeConfig now replaces genesis node info with mint0");
 
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
@@ -1479,7 +1479,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
                                             console.log(ts()+"EXPRESS:  Sending NON-GENESIS config:"+dump(config));
                                             setWireguard();
-                                            console.log("EXPRESS(): about to launch config="+dump(config));
+                                            //console.log("EXPRESS(): about to launch config="+dump(config));
                                             callback(config); //parent routine's callback
      
                                         })

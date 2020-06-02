@@ -1271,7 +1271,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                                                }
                                         */
                                         makeConfigAll(function (config) {
-                                            console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
+                                            //console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
                                             /*
                                                                                         var sortedGSRlist=new Array();
                                                                                         var allStack=[];
@@ -1297,8 +1297,8 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                                                         //config.gSRlist={[new_gSRlist]};
                                             
                                             */
-                                            console.log("EXPRESS(): STARTING WITH config.gSRlist=" + config.gSRlist);
-                                            console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
+                                            //console.log("EXPRESS(): STARTING WITH config.gSRlist="+config.gSRlist);
+                                            //console.log(ts()+"makeConfig now replaces genesis node info with mint0");
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
                                             config.mintTable["mint:" + newMint] = mintN; //    Install this new guy's mint0 into config
@@ -1311,7 +1311,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
                                             console.log(lib_1.ts() + "EXPRESS:  Sending NON-GENESIS config:" + lib_1.dump(config));
                                             wireguard_1.setWireguard();
-                                            console.log("EXPRESS(): about to launch config=" + lib_1.dump(config));
+                                            //console.log("EXPRESS(): about to launch config="+dump(config));
                                             callback(config); //parent routine's callback
                                         });
                                         //console.log(ts()+"newMint="+newMint+" "+dump(config));
