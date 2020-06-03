@@ -13,6 +13,8 @@ import { setWireguard } from "../wireguard/wireguard";
 
 const MAX_CONFIG_FRAMES=30;  //How many config snapshot to store for mdeian variance calaucltions
 
+
+const ACTIVE_INSTRUMENTATION=1;
 const YELLOW_TRIGGER=20;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 const ORANGE_TRIGGER=30;  //when we show orange warning 
 const RED_TRIGGER=40;  //when we show red warning 
@@ -324,7 +326,7 @@ function handleShowState(req, res) {
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").text(" ");'  //no owl or median - blank white
 
-        txt += '          else if (srcMint!=dstMint) {'
+        txt += '          else if ((srcMint!=dstMint) && ('+ACTIVE_INSTRUMENTATION+')) {'
 
 //
 //      highlight bad standard deviations 
