@@ -323,7 +323,7 @@ function handleShowState(req, res) {
 
 
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").text(" ");'  //no owl or median - blank white
-/***
+
         txt += '          else if (srcMint!=dstMint) {'
 
 //
@@ -372,7 +372,7 @@ function handleShowState(req, res) {
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
 
         txt +='            }'
-*/
+
 
         txt +='         }'
         txt +='      }'
