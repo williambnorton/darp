@@ -241,7 +241,7 @@ function handleShowState(req, res) {
         //
         //      Render table from information in the state fetched from node
         //
-        txt += '      $("#dateTime").html( "<h1>*Updated: " + timeStr + "</h1>" );'; //we show this epoch
+        txt += '      $("#dateTime").html( "<h1 class="fade-out">*Updated: " + timeStr + "</h1>" );'; //we show this epoch
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
         txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
