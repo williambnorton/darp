@@ -13,7 +13,7 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
 var MAX_CONFIG_FRAMES = 30; //How many config snapshot to store for mdeian variance calaucltions
-var ACTIVE_INSTRUMENTATION = 1;
+var ACTIVE_INSTRUMENTATION = true;
 var YELLOW_TRIGGER = 20; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 var ORANGE_TRIGGER = 30; //when we show orange warning 
 var RED_TRIGGER = 40; //when we show red warning 
@@ -438,7 +438,7 @@ function handleShowState(req, res) {
                 //
                 //   show OWL Matrix table
                 //
-                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table>';
+                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + ' ACTIVE_INSTRUMENTATION:' + ACTIVE_INSTRUMENTATION + '</h2><table>';
                 txt += '<tr><th></th>';
                 var lastEntry = "";
                 var count = 0;

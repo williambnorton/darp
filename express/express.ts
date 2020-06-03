@@ -14,7 +14,7 @@ import { setWireguard } from "../wireguard/wireguard";
 const MAX_CONFIG_FRAMES=30;  //How many config snapshot to store for mdeian variance calaucltions
 
 
-const ACTIVE_INSTRUMENTATION=1;
+const ACTIVE_INSTRUMENTATION=true;
 const YELLOW_TRIGGER=20;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 const ORANGE_TRIGGER=30;  //when we show orange warning 
 const RED_TRIGGER=40;  //when we show red warning 
@@ -502,7 +502,7 @@ function handleShowState(req, res) {
                //
                //   show OWL Matrix table
                //
-               txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table>';
+               txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + ' ACTIVE_INSTRUMENTATION:'+ACTIVE_INSTRUMENTATION+'</h2><table>';
                txt += '<tr><th></th>'
                var lastEntry = "";
                var count=0;
