@@ -286,7 +286,7 @@ function handleShowState(req, res) {
         txt += '                 else owlHTML += "|_|</a>";';
         //txt += '               console.log("owlHTML="+owlHTML);'
         //        txt += '               $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
-        txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
+        txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML).addClass("fade-out");'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").text(" ");'; //no owl or median - blank white
         txt += '          else if ((srcMint!=dstMint) && (' + ACTIVE_INSTRUMENTATION + ')) {';
         //
