@@ -321,8 +321,9 @@ function handleShowState(req, res) {
 //        txt += '               $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
         txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML);'  //set owl value *******************
 
-        /***
-        txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'  //no owl or median - blank white
+
+        txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").text(" ");'  //no owl or median - blank white
+/***
         txt += '          else if (srcMint!=dstMint) {'
 
 //
@@ -370,8 +371,9 @@ function handleShowState(req, res) {
 
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
 
-*/
         txt +='            }'
+*/
+
         txt +='         }'
         txt +='      }'
 
