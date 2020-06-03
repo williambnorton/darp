@@ -566,6 +566,7 @@ function handleShowState(req, res) {
                txt+="<th>owls</th>"
                txt+="<th>bootTimestamp</th>"
                txt+="<th>version</th>"
+               txt+="<th>Wallet Balance</th>"
                txt += "</tr>"
 
 
@@ -626,6 +627,9 @@ function handleShowState(req, res) {
                    txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'>' + deltaSeconds2 + "</td>";
 
                    txt += '<td class="'+pulseEntry.geo+'_version"'+'>' + pulseEntry.version + "</td>";
+
+                   var balance=pulseEntry.inOctets-pulseEntry.outOctets;
+                   txt += '<td class="'+pulseEntry.geo+'_balance"' + '> $' + balance + "</td>";
 
                    //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                    txt += "</tr>"
