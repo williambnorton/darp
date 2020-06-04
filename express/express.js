@@ -553,7 +553,7 @@ function handleShowState(req, res) {
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
-                    var balance = (Math.min(parseInt(pulseEntry.inOctets), parseInt(pulseEntry.outOctets)) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
+                    var balance = (Math.min(parseInt(pulseEntry.inOctets), parseInt(pulseEntry.outOctets)) / (1000000 * 1)) * .5; //GB=1000 MB @ 50 cents per
                     total = total + balance;
                     txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
