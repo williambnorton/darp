@@ -213,7 +213,7 @@ function getMatrixTable(config,darp, callback) {
 function handleShowState(req, res) {
 
     var dateTime = new Date();
-   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 120 + '">'; //TODO: dynamic refresh based on new node adds
+   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 300 + '">'; //TODO: dynamic refresh based on new node adds
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
        if (me == null) return console.log("handleShowState(): WEIRD: NULL mint:0");
@@ -717,26 +717,14 @@ function handleShowState(req, res) {
                    if (mintEntry.adminControl) txt += "<td>" + mintEntry.adminControl + "</td>"
                     else txt += "<td>" + "</td>"
 
-
-
-
                     //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                     //if (pulseEntry.bootTimestamp == 0) delta = "0";
                     //txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
-
-
 
                     var deltaSeconds2 = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                     if (mintEntry.bootTimestamp == 0) deltaSeconds2 = "0";
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += '<td class="'+mintEntry.geo+'_bootTimestamp"'+'>' + deltaSeconds2 + "</td>";
-
-
-
-
-
-
-
 
                     txt += "</tr>"
                }
