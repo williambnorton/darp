@@ -327,7 +327,7 @@ function handleShowState(req, res) {
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").text(" ");'  //no owl or median - blank white
 
         txt += '          else if ((srcMint!=dstMint) && ('+ACTIVE_INSTRUMENTATION+')) {'
-/*
+
 //
 //      highlight bad standard deviations 
 //
@@ -370,7 +370,7 @@ function handleShowState(req, res) {
         txt += '               else if ((typeof Ideviation == "number") && (Ideviation>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","orange");'
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");'
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");'
-*/
+
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
 
         txt +='            }'
