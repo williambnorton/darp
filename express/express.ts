@@ -628,7 +628,7 @@ function handleShowState(req, res) {
 
                    txt += '<td class="'+pulseEntry.geo+'_version"'+'>' + pulseEntry.version + "</td>";
 
-                   var balance=(pulseEntry.inOctets+pulseEntry.outOctets)/1000000;
+                   var balance=(parseInt(pulseEntry.inOctets)+parseInt(pulseEntry.outOctets))/(1000000**2);
                    txt += '<td class="'+pulseEntry.geo+'_balance"' + '> $' + balance + "</td>";
 
                    //txt+="<td>"+pulseEntry.lastMsg+"</td>"
