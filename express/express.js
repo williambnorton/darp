@@ -552,7 +552,7 @@ function handleShowState(req, res) {
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
-                    var balance = pulseEntry.inOctets - pulseEntry.outOctets;
+                    var balance = (pulseEntry.inOctets + pulseEntry.outOctets) / 1000000;
                     txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance + "</td>";
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
