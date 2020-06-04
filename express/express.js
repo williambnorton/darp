@@ -559,7 +559,7 @@ function handleShowState(req, res) {
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
-                txt + '"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$' + total + '</td>';
+                txt + '"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$' + total + '</td></tr>';
                 txt += "</table>";
                 //
                 //  Externalize mintTable 
@@ -646,8 +646,8 @@ function handleShowState(req, res) {
                 txt += '<br><h2>gSRlist</h2><table>';
                 txt += "<tr><th>pulse</th><th>mint</th></tr>";
                 for (var entry in gSRlist) {
-                    var mint = gSRlist[entry].split("_")[0];
-                    var gEntryLabel = gSRlist[entry].split("_")[1];
+                    var mint = gSRlist[entry].split("_")[1];
+                    var gEntryLabel = gSRlist[entry].split("_")[0];
                     //console.log(ts()+"mint="+mint);
                     txt += '<tr><td><a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mint + "</a></td><td><a>" + gEntryLabel + "</a></td></tr>";
                 }
