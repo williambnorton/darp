@@ -13,11 +13,11 @@ import { setWireguard } from "../wireguard/wireguard";
 
 const MAX_CONFIG_FRAMES=30;  //How many config snapshot to store for mdeian variance calaucltions
 
-
+const THRESHOLD=10;       // x ms or better
 const ACTIVE_INSTRUMENTATION=true;
 const YELLOW_TRIGGER=20;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 const ORANGE_TRIGGER=30;  //when we show orange warning 
-const RED_TRIGGER=40;  //when we show red warning 
+const RED_TRIGGER=40;     //when we show red warning 
 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 
@@ -353,7 +353,7 @@ function handleShowState(req, res) {
         txt +='                    var altToDst=getOWL(config,altEntry.mint,dstMint);'
         txt +='                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {'
         txt +='                        var improvement=owl-(srcToAlt+altToDst);'
-        txt +='                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
+        txt +='                        console.log( ">5"'+THRESHOLD+'" ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
 
         txt +='                        if (improvement>5) {'
         txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");'
