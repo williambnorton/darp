@@ -503,6 +503,7 @@ function handleShowState(req, res) {
                 txt += "<th>version</th>";
                 txt += "<th>Wallet Balance</th>";
                 txt += "</tr>";
+                var total = 0; //Add up total balance of all pulses
                 //console.log(ts()+"                            pulses="+dump(pulses));
                 for (var a in pulses) {
                     var pulseEntry = pulses[a];
@@ -553,10 +554,12 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
                     var balance = (Math.min(parseInt(pulseEntry.inOctets), parseInt(pulseEntry.outOctets)) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
+                    total = total + balance;
                     txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
+                txt + '"<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$' + total + '</td>';
                 txt += "</table>";
                 //
                 //  Externalize mintTable 
