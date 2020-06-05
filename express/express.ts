@@ -639,7 +639,7 @@ function handleShowState(req, res) {
                    txt += "</tr>"
                }
                
-               txt+='<tr><td>Total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$'+total+'</td></tr>';
+               txt += '<tr><td>Total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$'+total+'</td></tr>';
                txt += "</table>";
                //
                //  Externalize mintTable 
