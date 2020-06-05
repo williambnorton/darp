@@ -13,6 +13,7 @@ import { setWireguard } from "../wireguard/wireguard";
 
 const MAX_CONFIG_FRAMES=10;  //How many config snapshot to store for mdeian variance calaucltions
 
+const INSTRUMENTATION_REFRESH=300;  //how often instrumentation web page gets meta refreshed
 const BETTER_THRESHOLD=10;
 const ACTIVE_INSTRUMENTATION=true;
 const YELLOW_TRIGGER=20;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median
@@ -213,7 +214,7 @@ function getMatrixTable(config,darp, callback) {
 function handleShowState(req, res) {
 
     var dateTime = new Date();
-   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 60 + '">'; //TODO: dynamic refresh based on new node adds
+   var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + INSTRUMENTATION_REFRESH + '">'; //TODO: dynamic refresh based on new node adds
 
    expressRedisClient.hgetall("mint:0", function(err, me) {
        if (me == null) return console.log("handleShowState(): WEIRD: NULL mint:0");
@@ -356,8 +357,8 @@ function handleShowState(req, res) {
         txt +='                        console.log( ">'+BETTER_THRESHOLD+' ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
 
         txt +='                        if (improvement>'+BETTER_THRESHOLD+') {'
-        txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","4px");'
-        txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","4px");' //highlight better path
+        txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","3px");'
+        txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","3px");' //highlight better path
         txt +='                        }'
         txt +='                    }'
         txt +='                }'
