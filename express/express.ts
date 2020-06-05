@@ -541,7 +541,7 @@ function handleShowState(req, res) {
                    txt += "</tr>"
                }
                txt += "</table>";
-
+               txt += "<p>Legend: Color highlights deviation from median (over last "+MAX_CONFIG_FRAMES+" seconds).</p><p>Background color shows Yellow " +YELLOW_TRIGGER+"% / Orange "+ORANGE_TRIGGER+"% / Red "+RED_TRIGGER+"% off the median.</p><p>GREEN border is intermediary better than a direct path (border BLACK).</p></body></html>";
 
                //
                //  Externalize pulse structures 
