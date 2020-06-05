@@ -13,7 +13,7 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
 var MAX_CONFIG_FRAMES = 30; //How many config snapshot to store for mdeian variance calaucltions
-var BETTERPATH = 10; //THRESHOLD TO HIGHLIGHT BETTER ROUTE
+var BETTER_PATH_THRESHOLD = 10; //THRESHOLD TO HIGHLIGHT BETTER ROUTE
 var ACTIVE_INSTRUMENTATION = true;
 var YELLOW_TRIGGER = 20; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
 var ORANGE_TRIGGER = 30; //when we show orange warning 
@@ -312,7 +312,7 @@ function handleShowState(req, res) {
         txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
         txt += '                        var improvement=owl-(srcToAlt+altToDst);';
         txt += '                        console.log( ">' + BETTER_PATH_THRESHOLD + '" ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
-        txt += '                        if (improvement>5) {';
+        txt += '                        if (improvement>BETTER_PATH_THRESHOLD) {';
         txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");';
         txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");'; //highlight better path
         txt += '                        }';
@@ -657,7 +657,7 @@ function handleShowState(req, res) {
                 txt += "</table>";
                 res.setHeader('Content-Type', 'text/html');
                 res.setHeader("Access-Control-Allow-Origin", "*");
-                res.end(txt + "<p>Legend: Color is deviation from median (last 30 seconds) Yellow/Orange/Red: " + YELLOW_TRIGGER + "% /" + ORANGE_TRIGGER + "% /" + RED_TRIGGER + "% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>"); //
+                res.end(txt + "<p>Legend: Color is deviation from median -last " + MAX_CONFIG_FRAMES + " seconds -  Yellow/Orange/Red: " + YELLOW_TRIGGER + "% /" + ORANGE_TRIGGER + "% /" + RED_TRIGGER + "% . GREEN border is a preferred path ->" + BETTER_PATH_THRESHOLD + "ms relaying - instead of direct path with border BLACK.</p></body></html>"); //
                 return;
             });
         });
