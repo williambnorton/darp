@@ -561,8 +561,7 @@ function handleShowState(req, res) {
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
-                console.log("total=$" + total);
-                txt + '<tr><td>Total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$' + total + '</td></tr>';
+                txt += '<tr><td>Total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$' + total + '</td></tr>';
                 txt += "</table>";
                 //
                 //  Externalize mintTable 
