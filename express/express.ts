@@ -750,7 +750,7 @@ function handleShowState(req, res) {
                res.setHeader('Content-Type', 'text/html');
                res.setHeader("Access-Control-Allow-Origin", "*");
 
-               res.end(txt + "<p>Legend: Color is deviation from median -last "+MAX_CONFIG_FRAMES+" seconds -  Yellow/Orange/Red: " +YELLOW_TRIGGER+"% /"+ORANGE_TRIGGER+"% /"+RED_TRIGGER+"% . GREEN border is a preferred path ->"+BETTER_PATH_THRESHOLD+"ms relaying - instead of direct path with border BLACK.</p></body></html>");  //
+//               res.end(txt + "<p>Legend: Color is deviation from median -last "+MAX_CONFIG_FRAMES+" seconds -  Yellow/Orange/Red: " +YELLOW_TRIGGER+"% /"+ORANGE_TRIGGER+"% /"+RED_TRIGGER+"% . GREEN border is a preferred path ->"+BETTER_PATH_THRESHOLD+"ms relaying - instead of direct path with border BLACK.</p></body></html>");  //
                return
            });
        });
