@@ -12,7 +12,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
-var MAX_CONFIG_FRAMES = 5; //How many config snapshot to store for mdeian variance calaucltions
+var MAX_CONFIG_FRAMES = 30; //How many config snapshot to store for mdeian variance calaucltions
 var BETTER_PATH_THRESHOLD = 10; //THRESHOLD TO HIGHLIGHT BETTER ROUTE
 var ACTIVE_INSTRUMENTATION = true;
 var YELLOW_TRIGGER = 20; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
