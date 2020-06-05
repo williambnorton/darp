@@ -433,6 +433,7 @@ function handleShowState(req, res) {
             txt += '<input id = "btnBack" type="submit" value="<"/>';
             txt += '<input id = "btnSubmit" type="submit" value="Freeze"/>';
             txt += '<input id = "btnForward" type="submit" value=">"/>';
+            txt += '<input id = "btnSubmit" type="submit" value="JOIN MY PULSEGROUP"/>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
                 //
@@ -472,7 +473,7 @@ function handleShowState(req, res) {
                             (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                             owl = OWLMatrix[rowEntry.geo][colEntry.geo];
                         }
-                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + "</td>";
+                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + ' fade-out">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + "</td>";
                     }
                     txt += "</tr>";
                 }
@@ -525,7 +526,8 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_owl"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+                    // OWL
+                    txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
                     //txt+="<td>"+pulseEntry.owls+"</td>"
                     txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
@@ -610,7 +612,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += '<td class="' + mintEntry.geo + '_owl"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
+                    txt += '<td class="' + mintEntry.geo + '_owl fde-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
