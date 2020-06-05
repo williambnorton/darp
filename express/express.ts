@@ -356,8 +356,8 @@ function handleShowState(req, res) {
         txt +='                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );'
 
         txt +='                        if (improvement>5) {'
-        txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","3px");'
-        txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","3px");' //highlight better path
+        txt +='                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","5px");'
+        txt +='                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","5px");' //highlight better path
         txt +='                        }'
         txt +='                    }'
         txt +='                }'
