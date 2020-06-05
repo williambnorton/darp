@@ -11,7 +11,7 @@
 import {   dump,   now,   mintList,   SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION } from '../lib/lib';
 import { setWireguard } from "../wireguard/wireguard";
 
-const MAX_CONFIG_FRAMES=30;  //How many config snapshot to store for mdeian variance calaucltions
+const MAX_CONFIG_FRAMES=10;  //How many config snapshot to store for mdeian variance calaucltions
 
 const BETTER_THRRESHOLD=10;
 const ACTIVE_INSTRUMENTATION=true;
