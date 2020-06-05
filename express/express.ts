@@ -639,7 +639,7 @@ function handleShowState(req, res) {
                    txt += "</tr>"
                }
                
-               txt +='<tr><td>Total</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$'+total.toFixed(6)+'</td></tr>';
+               txt +='<tr><td>Node Total Earnings</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$'+total.toFixed(6)+'</td></tr>';
                txt += "</table>";
                //
                //  Externalize mintTable 
@@ -750,7 +750,7 @@ function handleShowState(req, res) {
                res.setHeader('Content-Type', 'text/html');
                res.setHeader("Access-Control-Allow-Origin", "*");
 
-               res.end(txt + "<p>Legend: Color is deviation from median (last 30 seconds) Yellow/Orange/Red: " +YELLOW_TRIGGER+"% /"+ORANGE_TRIGGER+"% /"+RED_TRIGGER+"% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>");  //
+               res.end(txt + "<p>Legend: Color is deviation from median (last "+MAX_CONFIG_FRAMES+" seconds) Yellow/Orange/Red: " +YELLOW_TRIGGER+"% /"+ORANGE_TRIGGER+"% /"+RED_TRIGGER+"% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>");  //
                return
            });
        });
