@@ -206,6 +206,18 @@ do
 
     ps aux
     echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
-
+    cd $DARPDIR
+    if [ $? -ne 0 ]; then
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        exit 86
+    fi
     sleep 5
 done
