@@ -7,6 +7,8 @@
 #include <sys/socket.h> 
 #include <sys/types.h> 
 #include <sys/time.h> 
+
+     #include <unistd.h>
 #define PORT "65013"
 #define MAXLINE 1400 
 
