@@ -853,7 +853,7 @@ function grapher(res, SRC, DST) {
         //expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
         //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
         //if (srcEntry!=null && dstEntry!=null) {
-        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + "=" + lib_1.YYMMDD() + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + " " + lib_1.YYMMDD() + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
         expressRedisClient.lrange(DST + "-" + SRC, -1 * 60 * 60, -1, function (err, samples) {
             //console.log("EXPRESS: DumpSamples:"+dump(samples));                   
             for (var sample in samples) {
