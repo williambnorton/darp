@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 char* message = "0,Build.200527.1810,DEVOPS,DEVOPS.1,508,1590689309646,1590688799453,1,1=2,2=78,3=115,4=171,5=10,"; 
 
 	if (argc <=2) {
-		printf("Usage: %s msg ip[:port] ... [ip[:port]]",argv[0]);
+		printf("Usage: %s msg ip[:port] ... [ip[:port]]\n",argv[0]);
 		 exit(0);
 	}
 
