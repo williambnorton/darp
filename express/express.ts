@@ -633,14 +633,14 @@ function handleShowState(req, res) {
                    txt += '<td class="'+pulseEntry.geo+'_version"'+'>' + pulseEntry.version + "</td>";
 
                    var balance=(Math.min(parseInt(pulseEntry.inOctets),parseInt(pulseEntry.outOctets))/(1000000*1000))*.5; //GB=1000 MB @ 50 cents per
-                   total=total+balance+parseInt(pulseEntry.inOctets)*0.5/1000;  //give credit for inbound measurement pkts
+                   total=total+balance;
                    txt += '<td class="'+pulseEntry.geo+'_balance"' + '> $' + balance.toFixed(6) + "</td>";
 
                    //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                    txt += "</tr>"
                }
-               
-               txt +='<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $'+total.toFixed(6)+'</td></tr>';
+               var measurementPay=total+parseInt(pulseEntry.inOctets)*0.5/1000000;  //give credit for inbound measurement pkts               
+               txt +='<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $'+measurementPay.toFixed(6)+'</td></tr>';
                txt += "</table>";
                //
                //  Externalize mintTable 
