@@ -206,7 +206,7 @@ do
 
     ps aux
     echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
-    cd $DARPDIR
+    cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
     if [ $? -ne 0 ]; then
         echo `date` cd DARPDIR failed with rc= $? EXITTING
         echo `date` cd DARPDIR failed with rc= $? EXITTING

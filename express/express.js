@@ -564,7 +564,7 @@ function handleShowState(req, res) {
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
-                txt += '<tr><td>Node Total Earnings</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>$' + total.toFixed(6) + '</td></tr>';
+                txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $' + total.toFixed(6) + '</td></tr>';
                 txt += "</table>";
                 //
                 //  Externalize mintTable 
@@ -745,7 +745,7 @@ app.get('/reload', function (req, res) {
 app.get('/config', function (req, res) {
     //console.log("EXPRess wbn fetching '/config' ");
     makeConfigAll(function (config) {
-        console.log("app.get(/config =" + lib_1.dump(config));
+        //console.log("app.get(/config =" + dump(config));
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.end(JSON.stringify(config, null, 2));
