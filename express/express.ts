@@ -8,7 +8,7 @@
 //    HOSTNAME - human readable text name - we use this for "geo"
 //    PUBLICKEY - Public key 
 //
-import {   dump,   now,   mintList,   SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION } from '../lib/lib';
+import {   dump,   now,   mintList,   SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION, YYMMDD } from '../lib/lib';
 import { setWireguard } from "../wireguard/wireguard";
 
 const MAX_CONFIG_FRAMES=10;  //How many config snapshot to store for mdeian variance calaucltions
@@ -969,7 +969,7 @@ function grapher(res,SRC,DST) {
         //expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
             //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
                 //if (srcEntry!=null && dstEntry!=null) {
-                    txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+SRC+"-"+DST+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+                    txt+='var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "'+SRC+"-"+DST+"="+YYMMDD()+'" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
 
                     expressRedisClient.lrange(DST+"-"+SRC, -1*60*60, -1, function(err, samples) {         
                         //console.log("EXPRESS: DumpSamples:"+dump(samples));                   

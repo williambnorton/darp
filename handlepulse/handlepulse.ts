@@ -5,7 +5,7 @@ import {
   now,
   ts,
   dump,
-  makeYYMMDD
+  YYMMDD
 } from '../lib/lib.js';
 
 console.log("Starting HANDLEPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
