@@ -27,9 +27,6 @@ void poll(int s) {
 */
 
 
-
-
-
 unsigned long long now() {
 struct timeval tv;
         gettimeofday(&tv, NULL);
@@ -41,11 +38,6 @@ struct timeval tv;
         //printf("%llu\n", millisecondsSinceEpoch);
         return millisecondsSinceEpoch;
 }
-
-
-
-
-
 
 
 int sockfd; 
@@ -66,6 +58,8 @@ int pulse(char *message, char *ipaddr, int port) {
 	// Filling server information 
 	servaddr.sin_family = AF_INET; 
 	servaddr.sin_port = htons(port); 
+    servaddr.sin_addr.s_addr = inet_addr(ipaddr); 
+
 	printf("pulse() sending %s:%d  buf=%s \n",ipaddr,port,buf);
 	// send pulse to peer 
 	sendto(sockfd, (const char*)buf, strlen(buf), 
