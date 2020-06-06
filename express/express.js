@@ -564,8 +564,7 @@ function handleShowState(req, res) {
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
-                var measurementPay = total + parseInt(pulseEntry.inOctets) * 0.5 / 1000000; //give credit for inbound measurement pkts               
-                txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $' + measurementPay.toFixed(6) + '</td></tr>';
+                txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $' + total.toFixed(6) + '</td></tr>';
                 txt += "</table>";
                 //
                 //  Externalize mintTable 
