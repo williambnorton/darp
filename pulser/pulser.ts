@@ -1,11 +1,11 @@
+//
+// pulser.ts - as quickly as possible, get pulse into redis
+//
+
 import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
 console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
-//
-//  pulse - send my owl measurements to my pulseGroups
-//
-//var HOST='127.0.0.1';
 var CYCLETIME=1; //poll every ____ seconds
 
 var dgram = require('dgram');
@@ -53,6 +53,7 @@ setTimeout(checkAdminControl,1000);
 setTimeout(pulse,1000);
 var datagramClient=dgram.createSocket('udp4');
 
+/*
 //
 //  publish the one-way latecy matrix - make a object: indexes, followed by owl[srcGeo:srcMint-destGeo:destMint]
 //  --> Move this to the matrix display application so the handlePulse is lightweight glue
@@ -146,7 +147,7 @@ function publishMatrix() {
   });
 }
 
-
+*/
 //
 //  newMint() - We received a new Mint in an announcement
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
@@ -248,7 +249,7 @@ function newMint(mint) {
 function pulse(oneTime) {
 if (typeof oneTime == "undefined") {
     setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
-    setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
+    //setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
     oneTime=0;
 } 
 //  get all my pulseGroups
