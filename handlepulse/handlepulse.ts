@@ -105,7 +105,7 @@ function authenticatedPulse(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 server.on('message', function(message, remote) {
-//  if (SHOWPULSES == "1")
+  if (SHOWPULSES == "1")
       console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
   var msg = message.toString();
   var ary = msg.split(",");
