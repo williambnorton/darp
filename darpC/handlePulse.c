@@ -1,4 +1,6 @@
-// Server program 
+// 	handlePulse.c
+//		- print out each message
+//
 #include <arpa/inet.h> 
 #include <errno.h> 
 #include <netinet/in.h> 
@@ -88,7 +90,7 @@ int main(int argc, char *argv[])
 		if (FD_ISSET(udpfd, &rset)) { 
 			len = sizeof(cliaddr); 
 			bzero(buffer, sizeof(buffer)); 
-			//printf("\nMessage from UDP client: "); 
+			printf("\nMessage from UDP client: "); 
 			n = recvfrom(udpfd, buffer, sizeof(buffer), 0, 
 						(struct sockaddr*)&cliaddr, &len); 
 

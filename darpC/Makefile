@@ -1,12 +1,16 @@
+#
+#	Makefile - two low level measurement "C" modules
+#
 all:
 	make clean
-	make udpcli
+	make pulser
+	make handlePulse
 
 clean:
-	-rm *.o ser udpcli 
+	-rm *.o pulser handlePulse  
 
-udpcli:
-	gcc -o udpcli UDP_client.c
+pulser:
+	gcc -o pulser pulser.c
 
-ser: 
-	gcc -o ser server.c
+handlePulse: 
+	gcc -o handlePulse handlePulse.c

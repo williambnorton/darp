@@ -90,7 +90,7 @@ function authenticatedPulse(pulse, callback) {
 //
 server.on('message', function (message, remote) {
     //  if (SHOWPULSES == "1")
-    console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message + lib_js_1.dump(remote));
+    console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message /*+dump(remote)*/);
     var msg = message.toString();
     var ary = msg.split(",");
     //try {
