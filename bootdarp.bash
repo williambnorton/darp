@@ -67,6 +67,7 @@ echo GENESISIP=$GENESISIP
 #
 #The order of startup is important here
 echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
+CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
@@ -226,7 +227,11 @@ do
         echo `date` cd DARPDIR failed with rc= $? EXITTING
         exit 86
     fi
-    echo `date` "...................BOTTOM OF LOOP................... SLEEPING "$SLEEPTIME 
-
+    CYCLES=`expr $CYCLES + 1`
+    echo `date` "...................BOTTOM OF LOOP #$CYCLES ............. SLEEPING "$SLEEPTIME 
+    if [ $CYCLES -gt 100 ]; then    
+        echo `date` "RAN 100 CYCLES - $0 EXiTTING"
+        exit 86;
+    fi
     sleep $SLEEPTIME
 done
