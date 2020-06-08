@@ -107,7 +107,8 @@ server.on('message', function (message, remote) {
     console.log(lib_js_1.ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message /*+dump(remote)*/);
     console.log("pushing onto msgQ : -> " + JSON.stringify({ incomingTimestamp: "" + lib_js_1.now(), message: strMsg }));
     redisClient.publish('pulses', JSON.stringify({ incomingTimestamp: "" + lib_js_1.now(), message: strMsg }), function (err, reply) {
-        console.log("handlepulse: ERROR reply=" + reply); //prints 2
+        if (err)
+            console.log("handlepulse: onm message into data store ERROR reply=" + reply); //prints
     });
 });
 /****

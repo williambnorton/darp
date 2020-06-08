@@ -88,15 +88,15 @@ function waitForPush () {
       });
 }
     
-redisClient.subscribe("pulseMsgQ", function (listName, item) {
+redisClient.subscribe("pulses", function (listName, item) {
     console.log("listname="+listName+"");
 //  if (SHOWPULSES == "1")
 //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
       console.log(ts() + "PROCESSPULSE: received pulse " + dump(item));
 
-      var msg = item;
+      var message = item;
 //      var msg = message.toString();
-  var ary = msg.split(",");
+  var ary = message.split(",");
   //try {
   var pulseTimestamp = ary[5]; //1583783486546
   var OWL = now() - pulseTimestamp;
@@ -104,8 +104,8 @@ redisClient.subscribe("pulseMsgQ", function (listName, item) {
   //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
   var pulseLabel = ary[2] + ":" + ary[3];
 
-  var owlsStart = nth_occurrence(msg, ',', 8); //owls start after the 7th comma
-  var pulseOwls = msg.substring(owlsStart + 1, msg.length-1);
+  var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
+  var pulseOwls = message.substring(owlsStart + 1, message.length-1);
 
   //console.log(ts()+"**************************PROCESSPULSE(): owls="+owls);  //INSTRUMENTAITON POINT
 
@@ -140,7 +140,7 @@ redisClient.subscribe("pulseMsgQ", function (listName, item) {
               srcMint: ary[7],
               owls: pulseOwls,
               owl: "" + OWL,
-              lastMsg: msg,
+              lastMsg: message,
               inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
               inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1),
               median: "0",
@@ -168,7 +168,7 @@ redisClient.subscribe("pulseMsgQ", function (listName, item) {
                 }
                
                 //console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median+" pulse="+dump(pulse));
-                redisClient.publish("pulses", msg);
+                //redisClient.publish("pulses", message);
                 redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
   
                 //redisClient.hgetall(pulseLabel,function (err, writtenPulse){  //INSTRUMENTATIOJ POINT
