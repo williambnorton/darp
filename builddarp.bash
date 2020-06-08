@@ -12,7 +12,7 @@ ls -l "Build."`date +%y%m%d.%H%M`
 #
 #	The same flow should work on boot darp - simple extensible loop
 #
-for darpModule in config express pulser handlepulse wireguard
+for darpModule in config express pulser handlepulse processpulse wireguard
 do
 	if [ $darpModule/$darpModule.ts -nt $darpModule/$darpModule.js ]; then
 		cd $darpModule
