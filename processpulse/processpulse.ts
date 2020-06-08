@@ -99,29 +99,31 @@ function waitForPush () {
     
 waitForPush();
 
-function processpulse(incomingTimestamp, message) {
-    console.log("processpulse(): incomingTimestamp="+incomingTimestamp+" message: "+message);
-//  if (SHOWPULSES == "1")
-    waitForPush();
-//      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
+function processpulse(incomingTimestamp, messagebuffer) {
+    console.log("processpulse(): incomingTimestamp="+incomingTimestamp+" messagebuffer: "+messagebuffer);
+    var message=messagebuffer.toString();
+    //  if (SHOWPULSES == "1")
+    //waitForPush();
+    //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
     console.log(ts() + "PROCESSPULSE: received pulse " + message);
 
-      //var message = item;
-//      var msg = message.toString();
-    var ary = message.split(",");
-  //try {
+    //var message = item;
+    //      var msg = message.toString();
+    var ary = message.toString().split(",");
+    //try {
     var pulseTimestamp = ary[5]; //1583783486546
-    var OWL = now() - pulseTimestamp;
+    var OWL = incomingTimestamp - pulseTimestamp;
+    console.log("measured OWL="+OWL+" for message="+message);
     //if (OWL <= -999) OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
- //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
-  var pulseLabel = ary[2] + ":" + ary[3];
+    //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
+    var pulseLabel = ary[2] + ":" + ary[3];
 
-  var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
-  var pulseOwls = message.substring(owlsStart + 1, message.length-1);
+    var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
+    var pulseOwls = message.substring(owlsStart + 1, message.length-1);
 
-  //console.log(ts()+"**************************PROCESSPULSE(): owls="+owls);  //INSTRUMENTAITON POINT
+    //console.log(ts()+"**************************PROCESSPULSE(): owls="+owls);  //INSTRUMENTAITON POINT
 
-  redisClient.hgetall(pulseLabel, function(err, lastPulse) {
+    redisClient.hgetall(pulseLabel, function(err, lastPulse) {
       //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
       redisClient.hgetall("mint:0", function(err, me) {
           if (me == null) {

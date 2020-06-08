@@ -80,18 +80,20 @@ function waitForPush() {
     });
 }
 waitForPush();
-function processpulse(incomingTimestamp, message) {
-    console.log("processpulse(): incomingTimestamp=" + incomingTimestamp + " message: " + message);
+function processpulse(incomingTimestamp, messagebuffer) {
+    console.log("processpulse(): incomingTimestamp=" + incomingTimestamp + " messagebuffer: " + messagebuffer);
+    var message = messagebuffer.toString();
     //  if (SHOWPULSES == "1")
-    waitForPush();
+    //waitForPush();
     //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
     console.log(lib_js_1.ts() + "PROCESSPULSE: received pulse " + message);
     //var message = item;
     //      var msg = message.toString();
-    var ary = message.split(",");
+    var ary = message.toString().split(",");
     //try {
     var pulseTimestamp = ary[5]; //1583783486546
-    var OWL = lib_js_1.now() - pulseTimestamp;
+    var OWL = incomingTimestamp - pulseTimestamp;
+    console.log("measured OWL=" + OWL + " for message=" + message);
     //if (OWL <= -999) OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
     //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
     var pulseLabel = ary[2] + ":" + ary[3];
