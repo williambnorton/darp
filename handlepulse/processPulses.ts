@@ -82,7 +82,7 @@ function authenticatedPulse(pulse, callback) {
 
 function waitForPush () {
     console.log("waitForPulse(): ");
-    redisClient.brpop(['pulses','otherlist',0], function (listName, item) {
+    redisClient.brpop(['rawpulses','otherlist',0], function (listName, item) {
         // do stuff
         console.log("waitForPop(): "+listName+" "+item);
         waitForPush();
