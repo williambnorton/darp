@@ -81,6 +81,7 @@ function authenticatedPulse(pulse, callback) {
 //server.on('message', function(message, remote) {
 
 function waitForPush () {
+    console.log("waitForPulse(): ");
     redisClient.brpop(['pulseMsgQ','otherlist',0], function (listName, item) {
         // do stuff
         console.log("waitForPop(): "+listName+" "+item);
