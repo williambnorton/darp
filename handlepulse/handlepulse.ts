@@ -114,7 +114,7 @@ function authenticatedPulse(pulse, callback) {
 server.on('message', function(message, remote) {
   //if (SHOWPULSES == "1")
       console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
-      console.log("pushing onto msgQ : "+message);
+      console.log("pushing onto msgQ : "+message+JSON.stringify({ incomingTimestamp : ""+now(), message : message }));
     redisClient.rpush( [ 'pulseMsgQ', JSON.stringify({ incomingTimestamp : ""+now(), message : message }) ]  );
 });
 
