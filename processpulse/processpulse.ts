@@ -27,24 +27,24 @@ var isGenesisNode = false;
 redisClient.hgetall("mint:0", function(err, me) {
   console.log("PROCESSPULSE starting with me=" + dump(me));
   redisClient.hgetall("mint:1", function(err, genesis) {
-      if (me == null) {
+      if (genesis == null) {
           console.log(ts() + "PROCESSPULSE started with no genesis mint:1 EXITTING...");
           process.exit(36)
       } else {
           SHOWPULSES = me.SHOWPULSES
           console.log(ts() + "PROCESSPULSE started with genesis=" + dump(genesis));
-          if (genesis == null) {
-              for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - exitting - another loop around");
-              process.exit(36)
-          }
-          for (var i = 10; i > 0; i--) console.log(ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
+          //if (genesis == null) {
+          //    for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - exitting - another loop around");
+          //    process.exit(36)
+          // }
+          for (var i = 10; i > 0; i--) console.log(ts() + "DARP COMPONENTS STARTED - instrumentation at http://" + me.ipaddr + ":" + me.port + "/");
 
       }
   });
 });
 
 
-console.log(ts() + "PROCESSPULSE: Starting");
+console.log(ts() + "PROCESSPULSE: Starting....");
 
 
 //
@@ -80,30 +80,38 @@ function authenticatedPulse(pulse, callback) {
 //
 //server.on('message', function(message, remote) {
 
+redisClient.subscribe("rawpulses", waitForPush);
 function waitForPush () {
     console.log("waitForPulse(): ");
     redisClient.brpop(['rawpulses','otherlist',0], function (listName, item) {
         // do stuff
+        console.log("waitForPush(): listName="+listName+" item="+item);
+        var incomingTimestamp=item;
+        var message=item;
+
+        processpulse(incomingTimestamp, message);
         console.log("waitForPop(): "+listName+" "+item);
         waitForPush();
       });
 }
     
-redisClient.subscribe("rawpulses", function (listName, item) {
-    console.log("listname="+listName+" subscription channel: "+item);
+
+
+function processpulse(incomingTimestamp, message) {
+    console.log("processpulse(): incomingTimestamp="+incomingTimestamp+" message: "+message);
 //  if (SHOWPULSES == "1")
     waitForPush();
 //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
-      console.log(ts() + "PROCESSPULSE: received pulse " + dump(item));
+    console.log(ts() + "PROCESSPULSE: received pulse " + message);
 
-      var message = item;
+      //var message = item;
 //      var msg = message.toString();
-  var ary = message.split(",");
+    var ary = message.split(",");
   //try {
-  var pulseTimestamp = ary[5]; //1583783486546
-  var OWL = now() - pulseTimestamp;
-  //if (OWL <= -999) OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
-  //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
+    var pulseTimestamp = ary[5]; //1583783486546
+    var OWL = now() - pulseTimestamp;
+    //if (OWL <= -999) OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
+ //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
   var pulseLabel = ary[2] + ":" + ary[3];
 
   var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
@@ -215,7 +223,7 @@ redisClient.subscribe("rawpulses", function (listName, item) {
           });
       });
   });
-});``
+};
 
 function storeOWLs(srcMint, owls, memint) {
 //console.log("PROCESSPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);

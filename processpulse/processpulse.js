@@ -17,24 +17,23 @@ var isGenesisNode = false;
 redisClient.hgetall("mint:0", function (err, me) {
     console.log("PROCESSPULSE starting with me=" + lib_js_1.dump(me));
     redisClient.hgetall("mint:1", function (err, genesis) {
-        if (me == null) {
+        if (genesis == null) {
             console.log(lib_js_1.ts() + "PROCESSPULSE started with no genesis mint:1 EXITTING...");
             process.exit(36);
         }
         else {
             SHOWPULSES = me.SHOWPULSES;
             console.log(lib_js_1.ts() + "PROCESSPULSE started with genesis=" + lib_js_1.dump(genesis));
-            if (genesis == null) {
-                for (var i = 10; i > 0; i--)
-                    console.log(lib_js_1.ts() + "Genesis not connected - exitting - another loop around");
-                process.exit(36);
-            }
+            //if (genesis == null) {
+            //    for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - exitting - another loop around");
+            //    process.exit(36)
+            // }
             for (var i = 10; i > 0; i--)
-                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
+                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED - instrumentation at http://" + me.ipaddr + ":" + me.port + "/");
         }
     });
 });
-console.log(lib_js_1.ts() + "PROCESSPULSE: Starting");
+console.log(lib_js_1.ts() + "PROCESSPULSE: Starting....");
 //
 //  only callback if authenticated
 //
@@ -65,21 +64,26 @@ function authenticatedPulse(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 //server.on('message', function(message, remote) {
+redisClient.subscribe("rawpulses", waitForPush);
 function waitForPush() {
     console.log("waitForPulse(): ");
     redisClient.brpop(['rawpulses', 'otherlist', 0], function (listName, item) {
         // do stuff
+        console.log("waitForPush(): listName=" + listName + " item=" + item);
+        var incomingTimestamp = item;
+        var message = item;
+        processpulse(incomingTimestamp, message);
         console.log("waitForPop(): " + listName + " " + item);
         waitForPush();
     });
 }
-redisClient.subscribe("rawpulses", function (listName, item) {
-    console.log("listname=" + listName + " subscription channel: " + item);
+function processpulse(incomingTimestamp, message) {
+    console.log("processpulse(): incomingTimestamp=" + incomingTimestamp + " message: " + message);
     //  if (SHOWPULSES == "1")
     waitForPush();
     //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
-    console.log(lib_js_1.ts() + "PROCESSPULSE: received pulse " + lib_js_1.dump(item));
-    var message = item;
+    console.log(lib_js_1.ts() + "PROCESSPULSE: received pulse " + message);
+    //var message = item;
     //      var msg = message.toString();
     var ary = message.split(",");
     //try {
@@ -178,8 +182,8 @@ redisClient.subscribe("rawpulses", function (listName, item) {
             });
         });
     });
-});
-"";
+}
+;
 function storeOWLs(srcMint, owls, memint) {
     //console.log("PROCESSPULSE(): storeOWLs srcMint="+srcMint+" owls="+owls);
     //
