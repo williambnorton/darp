@@ -67,7 +67,6 @@ function authenticatedPulse(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 //server.on('message', function(message, remote) {
-redisClient.subscribe("rawpulses", waitForPush);
 function waitForPush() {
     console.log("waitForPulse(): ");
     redisClient.brpop(['rawpulses', 'otherlist', 0], function (listName, item) {
@@ -80,6 +79,7 @@ function waitForPush() {
         waitForPush();
     });
 }
+waitForPush();
 function processpulse(incomingTimestamp, message) {
     console.log("processpulse(): incomingTimestamp=" + incomingTimestamp + " message: " + message);
     //  if (SHOWPULSES == "1")

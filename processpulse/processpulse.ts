@@ -83,7 +83,6 @@ function authenticatedPulse(pulse, callback) {
 //
 //server.on('message', function(message, remote) {
 
-redisClient.subscribe("rawpulses", waitForPush);
 function waitForPush () {
     console.log("waitForPulse(): ");
     redisClient.brpop(['rawpulses','otherlist',0], function (listName, item) {
@@ -98,7 +97,7 @@ function waitForPush () {
     });
 }
     
-
+waitForPush();
 
 function processpulse(incomingTimestamp, message) {
     console.log("processpulse(): incomingTimestamp="+incomingTimestamp+" message: "+message);
