@@ -18,7 +18,7 @@ echo `date` "------------------ $0 STARTING --------------------"
 echo `date` "------------------ $0 STARTING --------------------" 
 echo `date` "------------------ $0 STARTING --------------------" 
 echo `date` "------------------ $0 STARTING --------------------" 
-
+SLEEPTIME=13
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -205,7 +205,6 @@ do
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
 
     ps aux
-    echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
     if [ $? -ne 0 ]; then
         echo `date` cd DARPDIR failed with rc= $? EXITTING
@@ -219,5 +218,7 @@ do
         echo `date` cd DARPDIR failed with rc= $? EXITTING
         exit 86
     fi
-    sleep 5
+    echo `date` "...................BOTTOM OF LOOP................... SLEEPING "$SLEEPTIME 
+
+    sleep $SLEEPTIME
 done

@@ -115,8 +115,10 @@ server.on('message', function(message, remote) {
     var strMsg=message.toString();
   //if (SHOWPULSES == "1")
       console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
-      console.log("pushing onto msgQ : "+strMsg+JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }));
-    redisClient.rpush( [ 'pulseMsgQ', JSON.stringify({ incomingTimestamp : ""+now(), message : message }) ]  );
+      console.log("pushing onto msgQ : -> "+JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }));
+    redisClient.publish( 'pulseMsg', JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }), function(err, reply) {
+        console.log("handlepulse: ERROR reply="+reply); //prints 2
+    }); 
 });
 
 /**** 
