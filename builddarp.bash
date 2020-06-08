@@ -3,7 +3,7 @@
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="Version 1.0 - basic pulses and instrumentation of OWL Matrix in Redis"
+MESSAGE="Version 0.1 - Moving to platform layer model- messageBus on Redis,stats calc out of browser"
 date>"Build."`date +%y%m%d.%H%M`
 ls -l "Build."`date +%y%m%d.%H%M`
 

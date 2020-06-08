@@ -4,7 +4,7 @@ exports.__esModule = true;
 //  PROCESSPULSE - receive incoming pulses and store in redis
 //
 var lib_js_1 = require("../lib/lib.js");
-console.log("Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
+console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 //subscribe to feed - print it out.
 var OWLEXPIRES = 2; //seconds should match polling cycle time
 var SHOWPULSES = "0";
@@ -66,15 +66,17 @@ function authenticatedPulse(pulse, callback) {
 //
 //server.on('message', function(message, remote) {
 function waitForPush() {
-    redisClient.brpop(['pulseMsgQ', 'otherlist', 0], function (listName, item) {
+    console.log("waitForPulse(): ");
+    redisClient.brpop(['rawpulses', 'otherlist', 0], function (listName, item) {
         // do stuff
         console.log("waitForPop(): " + listName + " " + item);
         waitForPush();
     });
 }
 redisClient.subscribe("rawpulses", function (listName, item) {
-    console.log("listname=" + listName + "");
+    console.log("listname=" + listName + " subscription channel: " + item);
     //  if (SHOWPULSES == "1")
+    waitForPush();
     //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
     console.log(lib_js_1.ts() + "PROCESSPULSE: received pulse " + lib_js_1.dump(item));
     var message = item;
