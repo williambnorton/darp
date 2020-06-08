@@ -13,11 +13,11 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
+echo `date` "------------------ $0 STARTING v0.1 --------------------" 
+echo `date` "------------------ $0 STARTING v0.1--------------------" 
+echo `date` "------------------ $0 STARTING v0.1--------------------" 
+echo `date` "------------------ $0 STARTING v0.1--------------------" 
+echo `date` "------------------ $0 STARTING v0.1--------------------" 
 SLEEPTIME=13
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -154,11 +154,13 @@ do
     echo `date` 'Starting pulser...'
     sleep 1
 
-    cd $DARPDIR
-    if [ $? -ne 0 ]; then
-        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
-        exit 86;
-    fi
+    cd $DARPDIR/handlepulse
+    node processPulses &
+    echo $$ > $DARPDIR/processPulses.pid
+    echo `date` 'Starting processPulses...'
+    sleep 1
+
+
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
@@ -174,6 +176,12 @@ do
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
 
+    cd $DARPDIR
+    if [ $? -ne 0 ]; then
+        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
+        exit 86;
+    fi
+    
     sleep 1
 
     if [ $rc -eq 86 ]; then echo "STOP STOP STOP"; exit 86; fi     #STOP COMMAND
