@@ -115,7 +115,7 @@ server.on('message', function(message, remote) {
   //if (SHOWPULSES == "1")
       console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
       console.log("pushing onto msgQ : "+message);
-    redisClient.lpush("pulseMsgQ",{incomingTimestamp : ""+now(), message : message});
+    redisClient.lpush(['pulseMsgQ',{incomingTimestamp : ""+now(), message : message}]);
 });
 
 /**** 
