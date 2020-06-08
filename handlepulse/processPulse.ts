@@ -88,9 +88,10 @@ function waitForPush () {
       });
 }
     
-redisClient.subscribe("pulses", function (listName, item) {
-    console.log("listname="+listName+"");
+redisClient.subscribe("rawpulses", function (listName, item) {
+    console.log("listname="+listName+" subscription channel: "+item);
 //  if (SHOWPULSES == "1")
+    waitForPush();
 //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
       console.log(ts() + "PROCESSPULSE: received pulse " + dump(item));
 

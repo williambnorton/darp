@@ -72,7 +72,7 @@ function waitForPush() {
         waitForPush();
     });
 }
-redisClient.subscribe("pulses", function (listName, item) {
+redisClient.subscribe("rawpulses", function (listName, item) {
     console.log("listname=" + listName + "");
     //  if (SHOWPULSES == "1")
     //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
