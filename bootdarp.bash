@@ -207,6 +207,9 @@ do
             fi
         fi
     fi
+    #
+    #   could simply - for app in list, and in this order, start or stop them all
+    #
     echo "ABOUT TO KILL TASKS --- ubuntu docker has pid in field #1, native might be #2   :  ps aux |grep -v grep | grep node | awk '{ print $1}'"
     ps aux |grep -v grep | grep node | awk '{ print $1}'
     echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
