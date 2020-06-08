@@ -113,10 +113,10 @@ function authenticatedPulse(pulse, callback) {
 //
 server.on('message', function(message, remote) {
     var strMsg=message.toString();
-  //if (SHOWPULSES == "1")
-      console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
-      console.log("pushing onto msgQ : -> "+JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }));
-    redisClient.publish( 'pulseMsg', JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }), function(err, reply) {
+    //if (SHOWPULSES == "1")
+    console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
+    console.log("pushing onto msgQ : -> "+JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }));
+    redisClient.publish( 'pulses', JSON.stringify({ incomingTimestamp : ""+now(), message : strMsg }), function(err, reply) {
         console.log("handlepulse: ERROR reply="+reply); //prints 2
     }); 
 });
