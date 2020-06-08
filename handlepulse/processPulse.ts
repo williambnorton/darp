@@ -83,6 +83,7 @@ function authenticatedPulse(pulse, callback) {
 function waitForPush () {
     redisClient.brpop(['pulseMsgQ','otherlist',0], function (listName, item) {
         // do stuff
+        console.log("waitForPop(): "+listName+" "+item);
         waitForPush();
       });
 }
