@@ -17,6 +17,9 @@ var isGenesisNode = false;
 redisClient.hgetall("mint:0", function (err, me) {
     console.log("PROCESSPULSE starting with me=" + lib_js_1.dump(me));
     redisClient.hgetall("mint:1", function (err, genesis) {
+        console.log(lib_js_1.ts() + "PROCESSPULSE started with genesis=" + lib_js_1.dump(genesis));
+        if (err)
+            console.log("no genesis - error=" + err);
         if (genesis == null) {
             console.log(lib_js_1.ts() + "PROCESSPULSE started with no genesis mint:1 EXITTING...");
             process.exit(36);
