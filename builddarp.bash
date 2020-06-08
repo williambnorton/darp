@@ -9,14 +9,18 @@ ls -l "Build."`date +%y%m%d.%H%M`
 
 #tsc config/config && tsc express/express && tsc pulser/pulser && tsc handlepulse/handlepulse && git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
 
-for file in config express pulser handlepulse wireguard
+#
+#	The same flow should work on boot darp - simple extensible loop
+#
+for darpModule in config express pulser handlepulse wireguard
 do
-	if [ $file/$file.ts -nt $file/$file.js ]; then
-		cd $file
-		tsc $file
+	if [ $darpModule/$darpModule.ts -nt $darpModule/$darpModule.js ]; then
+		cd $darpModule
+		tsc $darpModule
 		cd ..
 	fi
 done
+
 git add *.bash
 git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
 echo `date` Completed compiles + git push for `ls Build*`

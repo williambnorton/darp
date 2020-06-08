@@ -155,8 +155,8 @@ do
     sleep 1
 
     cd $DARPDIR/handlepulse
-    node processPulses &
-    echo $$ > $DARPDIR/processPulses.pid
+    node processpulse &
+    echo $$ > $DARPDIR/processpulse.pid
     echo `date` 'Starting processPulses...'
     sleep 1
 
