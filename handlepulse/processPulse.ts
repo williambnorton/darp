@@ -89,10 +89,12 @@ function waitForPush () {
     
 redisClient.subscribe("pulseMsgQ", function (listName, item) {
     console.log("listname="+listName+"");
-  if (SHOWPULSES == "1")
-      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
+//  if (SHOWPULSES == "1")
+//      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
+      console.log(ts() + "PROCESSPULSE: received pulse " + dump(item));
 
-      var msg = message.toString();
+      var msg = item;
+//      var msg = message.toString();
   var ary = msg.split(",");
   //try {
   var pulseTimestamp = ary[5]; //1583783486546
