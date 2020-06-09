@@ -113,7 +113,7 @@ function waitForPush() {
             console.log("structured pulse=" + lib_js_1.dump(pulse));
             //            processpulse(incomingTimestamp, message);
             processpulse(pulse, message.length);
-            redisClient.publish("pulses", JSON.stringify(pulse));
+            redisClient.publish("pulses", JSON.stringify(pulse, null, 2));
         }
         waitForPush();
     });
@@ -132,6 +132,7 @@ function processpulse(incomingPulse, messageLength) {
                 console.log(lib_js_1.ts() + "PROCESSPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
                 process.exit(36);
             }
+            var MYBUILD = me.version;
             //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
             //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
             if (lastPulse == null) { //first time we see this entry, include stats to increment
