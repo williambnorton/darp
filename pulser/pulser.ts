@@ -335,17 +335,17 @@ if (typeof oneTime == "undefined") {
 //  sendToAry - a stack of IP:Port to get this msg
 //
 function buildPulsePkt(mints, pulseMsg, sendToAry) {
-  if ( sendToAry == null) sendToAry=new Array();
-  //console.log("buildPulsePkt(): mints="+mints);
-  if (typeof mints == "undefined" || !mints || mints=="") 
+   if ( sendToAry == null) sendToAry=new Array();
+   //console.log("buildPulsePkt(): mints="+mints);
+   if (typeof mints == "undefined" || !mints || mints=="") 
       return console.log("buildPulsePkt(): bad mints parm - ignoring mints="+mints+" pulseMsg was to be "+pulseMsg);
-  var mint=mints.pop(); //get our mint to add to the msg
+   var mint=mints.pop(); //get our mint to add to the msg
 
-  //console.log("buildPulsePkt() mint="+mint+" mints="+mints+" pulseMsg="+pulseMsg);
-  redisClient.hgetall("mint:"+mint, function (err, mintEntry) {
-    if (err) {
-      console.log("buildPulsePkt(): ERROR - ");
-    } else {
+   console.log("buildPulsePkt() mint="+mint+" mints="+mints+" pulseMsg="+pulseMsg);
+   redisClient.hgetall("mint:"+mint, function (err, mintEntry) {
+      if (err) {
+         console.log("buildPulsePkt(): ERROR - ");
+      } else {
 
       if (mintEntry!=null) {
         //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));

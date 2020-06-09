@@ -136,6 +136,9 @@ function waitForPush () {
     
 waitForPush();
 
+//
+//  processpulse - update pulseTable from incoming pulseObject
+//
 //function processpulse(incomingTimestamp, messagebuffer) {
 function processpulse( incomingPulse, messageLength) {
     console.log("processpulse(): pulse="+dump(pulse));
@@ -143,13 +146,12 @@ function processpulse( incomingPulse, messageLength) {
     var pulseLabel = pulse.geo + ":" + pulse.group;
 
     redisClient.hgetall(pulseLabel, function(err, lastPulse) {  //get stats from last time
-       if (lastPulse) console.log("lastPulse="+dump(lastPulse));
+       //if (lastPulse) console.log("lastPulse="+dump(lastPulse));
        redisClient.hgetall("mint:0", function(err, me) {
           if (me == null) {
               console.log(ts() + "PROCESSPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
               process.exit(36);
           }
-          var MYBUILD=me.version;
           //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
           //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
 
@@ -167,12 +169,12 @@ function processpulse( incomingPulse, messageLength) {
 
           authenticatedPulse(pulse, function(pulse, authenticated) { 
 
-              if ((pulse.srcMint==1) && (pulse.version != MYBUILD)) {
+              if ((pulse.srcMint==1) && (pulse.version != me.version)) {
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + dump(pulse));
-                      process.exit(36); //SOFTWARE RELOAD
+                console.log("Genesis node pulsed us as " + pulse.version + " me.version=" + me.version + " dump pulse=" + dump(pulse));
+                process.exit(36); //SOFTWARE RELOAD
               };
 
               redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it

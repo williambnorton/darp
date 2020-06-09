@@ -119,20 +119,21 @@ function waitForPush() {
     });
 }
 waitForPush();
+//
+//  processpulse - update pulseTable from incoming pulseObject
+//
 //function processpulse(incomingTimestamp, messagebuffer) {
 function processpulse(incomingPulse, messageLength) {
     console.log("processpulse(): pulse=" + lib_js_1.dump(pulse));
     var pulse = incomingPulse;
     var pulseLabel = pulse.geo + ":" + pulse.group;
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
-        if (lastPulse)
-            console.log("lastPulse=" + lib_js_1.dump(lastPulse));
+        //if (lastPulse) console.log("lastPulse="+dump(lastPulse));
         redisClient.hgetall("mint:0", function (err, me) {
             if (me == null) {
                 console.log(lib_js_1.ts() + "PROCESSPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
                 process.exit(36);
             }
-            var MYBUILD = me.version;
             //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
             //if (me.state=="STOP") process.exit(86);  //this is set when reload button is pressed in express
             if (lastPulse == null) { //first time we see this entry, include stats to increment
@@ -146,11 +147,11 @@ function processpulse(incomingPulse, messageLength) {
             pulse.inMsgs = "" + (parseInt(lastPulse.inMsgs) + 1);
             pulse.pktDrops = "" + (parseInt(pulse.seq) - parseInt(pulse.inMsgs));
             authenticatedPulse(pulse, function (pulse, authenticated) {
-                if ((pulse.srcMint == 1) && (pulse.version != MYBUILD)) {
+                if ((pulse.srcMint == 1) && (pulse.version != me.version)) {
                     console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                     console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                     console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
-                    console.log("Genesis node pulsed us as " + pulse.version + " MYBUILD=" + MYBUILD + " dump pulse=" + lib_js_1.dump(pulse));
+                    console.log("Genesis node pulsed us as " + pulse.version + " me.version=" + me.version + " dump pulse=" + lib_js_1.dump(pulse));
                     process.exit(36); //SOFTWARE RELOAD
                 }
                 ;
