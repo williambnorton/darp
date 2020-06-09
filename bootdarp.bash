@@ -18,7 +18,7 @@ echo `date` "------------------ $0 STARTING v0.1--------------------"
 echo `date` "------------------ $0 STARTING v0.1--------------------" 
 echo `date` "------------------ $0 STARTING v0.1--------------------" 
 echo `date` "------------------ $0 STARTING v0.1--------------------" 
-SLEEPTIME=13
+SLEEPTIME=7
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
