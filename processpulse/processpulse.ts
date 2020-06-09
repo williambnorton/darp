@@ -92,29 +92,28 @@ function waitForPush () {
         if (err) throw err;
         console.log("waitForPush(): incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
-            var ary=incomingPulse.toString().split(",");
-            var channel=ary.pop();
-            var message=ary.join(",");
+            var message=incomingPulse.toString();
+            var ary=message.split(",");
 
-            var incomingTimestamp=ary[0];
+            var channel=ary[0];
+            var incomingTimestamp=ary[1];
             console.log("channel="+channel+" incomingTimestamp="+incomingTimestamp+" message="+message);
             // FIX THESE
-//            console.log("message="+dump(message));
-            var incomingPulseTimestamp=incomingTimestamp;//find this
-            var pulseTimestamp = ary[5]; //1583783486546
-            var OWL = incomingPulseTimestamp - pulseTimestamp;
+            //A couple calculations before filling the pulse structure
+            var pulseTimestamp = ary[7]; //1583783486546
+            var OWL = incomingTimestamp - pulseTimestamp;
 //            console.log("measured OWL="+OWL+" for message="+message);
 
-            var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
+            var owlsStart = nth_occurrence(message, ',', 10); //owls start after the 9th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length-1);
             var pulse = {
-                version: ary[1],
-                geo: ary[2],
-                group: ary[3],
-                seq: ary[4],
-                pulseTimestamp: ary[5],
-                bootTimestamp: ary[6],   //if genesis node reboots --> all node reload SW too
-                srcMint: ary[7],
+                version: ary[3],
+                geo: ary[4],
+                group: ary[5],
+                seq: ary[6],
+                pulseTimestamp: ary[7],
+                bootTimestamp: ary[8],   //if genesis node reboots --> all node reload SW too
+                srcMint: ary[9],
                 owls: pulseOwls,
                 owl: "" + OWL,
                 lastMsg: message,
@@ -124,7 +123,7 @@ function waitForPush () {
                 pktDrops: "0"
             };;
             console.log("structured pulse="+dump(pulse));
-            processpulse(incomingPulseTimestamp, message);
+            processpulse(incomingTimestamp, message);
             redisClient.publish("pulses",pulse);
         }
         waitForPush();
