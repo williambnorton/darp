@@ -98,7 +98,7 @@ function waitForPush () {
             var channel=ary[0];
             var incomingTimestamp=ary[1];
             message=message.substring(nth_occurrence(message, ',', 2)+1,message.length-1)
-            console.log("channel="+channel+" incomingTimestamp="+incomingTimestamp+" message="+message);
+            //console.log("channel="+channel+" incomingTimestamp="+incomingTimestamp+" message="+message);
             // FIX THESE
             //A couple calculations before filling the pulse structure
             var pulseTimestamp = ary[7]; //1583783486546
@@ -107,7 +107,7 @@ function waitForPush () {
 
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length);
-            console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+            //console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
             console.log("message="+message+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
             var pulse = {
                 version: ary[3],
@@ -126,8 +126,9 @@ function waitForPush () {
                 pktDrops: "0"
             };;
             console.log("structured pulse="+dump(pulse));
-            processpulse(incomingTimestamp, message);
-            redisClient.publish("pulses",pulse);
+//            processpulse(incomingTimestamp, message);
+            processpulse(pulse,message.length);
+            redisClient.publish("pulses",JSON.stringify(pulse));
         }
         waitForPush();
     });
@@ -135,36 +136,18 @@ function waitForPush () {
     
 waitForPush();
 
-function processpulse(incomingTimestamp, messagebuffer) {
-    console.log("processpulse(): incomingTimestamp="+incomingTimestamp+" messagebuffer: "+messagebuffer);
-    var message=messagebuffer.toString();
-    //  if (SHOWPULSES == "1")
-    //waitForPush();
-    //      console.log(ts() + "PROCESSPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
-    console.log(ts() + "PROCESSPULSE: received pulse " + message);
+//function processpulse(incomingTimestamp, messagebuffer) {
+function processpulse( incomingPulse, messageLength) {
+    console.log("processpulse(): pulse="+dump(pulse));
+    var pulse=incomingPulse;
+    var pulseLabel = pulse.geo + ":" + pulse.group;
 
-    //var message = item;
-    //      var msg = message.toString();
-    var ary = message.toString().split(",");
-    //try {
-    var pulseTimestamp = ary[5]; //1583783486546
-    var OWL = incomingTimestamp - pulseTimestamp;
-    console.log("measured OWL="+OWL+" for message="+message);
-    //if (OWL <= -999) OWL = -99999; //FOR DEBUGGING ... we can filter out clocks greater than +/- 99 seconds off
-    //if (OWL >= 999) OWL = 99999;  //bad clocks lead to really large OWL pulses 
-    var pulseLabel = ary[2] + ":" + ary[3];
-
-    var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
-    var pulseOwls = message.substring(owlsStart + 1, message.length-1);
-
-    //console.log(ts()+"**************************PROCESSPULSE(): owls="+owls);  //INSTRUMENTAITON POINT
-
-    redisClient.hgetall(pulseLabel, function(err, lastPulse) {
-      //console.log("oldPulse.inMsgs="+oldPulse.inMsgs+" oldPulse.inOctets"+oldPulse.inOctets);
-      redisClient.hgetall("mint:0", function(err, me) {
+    redisClient.hgetall(pulseLabel, function(err, lastPulse) {  //get stats from last time
+       if (lastPulse) console.log("lastPulse="+dump(lastPulse));
+       redisClient.hgetall("mint:0", function(err, me) {
           if (me == null) {
               console.log(ts() + "PROCESSPULSE(): mint:0 does not exist - Genesis node not up yet...exitting");
-              process.exit(36)
+              process.exit(36);
           }
 
           //if (me.state=="RELOAD") process.exit(36);  //this is set when reload button is pressed in express
@@ -173,31 +156,15 @@ function processpulse(incomingTimestamp, messagebuffer) {
           if (lastPulse == null) { //first time we see this entry, include stats to increment
               lastPulse = {
                   "inOctets": "0",
-                  "inMsgs": "0"
+                  "inMsgs": "0",
+                  "seq":"0"
               }
           }
-          if (err) {
-              console.log("ERROR in on.message handling");
-              process.exit(36);
-          }
-          var pulse = {
-              version: ary[1],
-              geo: ary[2],
-              group: ary[3],
-              seq: ary[4],
-              pulseTimestamp: pulseTimestamp,
-              bootTimestamp: ary[6],   //if genesis node reboots --> all node reload SW too
-              srcMint: ary[7],
-              owls: pulseOwls,
-              owl: "" + OWL,
-              lastMsg: message,
-              inOctets: "" + (parseInt(lastPulse.inOctets) + message.length),
-              inMsgs: "" + (parseInt(lastPulse.inMsgs) + 1),
-              median: "0",
-              pktDrops: "0"
-          };
-          var pktDrops=""+ (parseInt(pulse.seq)-parseInt(pulse.inMsgs));
-          pulse.pktDrops=pktDrops;
+
+          pulse.inOctets="" + (parseInt(lastPulse.inOctets) + messageLength);
+          pulse.inMsgs="" + parseInt(lastPulse.inMsgs) + 1;
+          pulse.pktDrops=""+ (parseInt(pulse.seq)-parseInt(pulse.inMsgs));
+
           authenticatedPulse(pulse, function(pulse, authenticated) { 
 
               if ((pulse.srcMint==1) && (pulse.version != MYBUILD)) {
