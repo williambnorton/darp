@@ -144,7 +144,7 @@ function processpulse(incomingPulse, messageLength) {
             incomingPulse.inOctets = "" + (parseInt(lastPulse.inOctets) + messageLength);
             incomingPulse.inMsgs = "" + (parseInt(lastPulse.inMsgs) + 1);
             incomingPulse.pktDrops = "" + (parseInt(incomingPulse.seq) - parseInt(incomingPulse.inMsgs));
-            authenticatedPulse(pulse, function (pulse, authenticated) {
+            authenticatedPulse(incomingPulse, function (pulse, authenticated) {
                 if ((pulse.srcMint == 1) && (pulse.version != me.version)) {
                     console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                     console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
