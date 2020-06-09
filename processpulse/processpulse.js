@@ -72,7 +72,7 @@ function authenticatedPulse(pulse, callback) {
 //
 //server.on('message', function(message, remote) {
 function waitForPush() {
-    console.log("waitForPush(): STARTING");
+    console.log("waitForPush(): Waiting for raw pulse...");
     redisClient.brpop('rawpulses', 0, function (err, incomingPulse) {
         if (err)
             throw err;
@@ -113,7 +113,6 @@ function waitForPush() {
             console.log("structured pulse=" + lib_js_1.dump(pulse));
             //            processpulse(incomingTimestamp, message);
             processpulse(pulse, message.length);
-            redisClient.publish("pulses", JSON.stringify(pulse));
         }
         waitForPush();
     });
@@ -124,9 +123,8 @@ waitForPush();
 //
 //function processpulse(incomingTimestamp, messagebuffer) {
 function processpulse(incomingPulse, messageLength) {
-    console.log("processpulse(): pulse=" + lib_js_1.dump(pulse));
-    var pulse = incomingPulse;
-    var pulseLabel = pulse.geo + ":" + pulse.group;
+    console.log("processpulse(): incomingPulse=" + lib_js_1.dump(incomingPulse));
+    var pulseLabel = incomingPulse.geo + ":" + incomingPulse.group;
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //if (lastPulse) console.log("lastPulse="+dump(lastPulse));
         redisClient.hgetall("mint:0", function (err, me) {
@@ -143,9 +141,9 @@ function processpulse(incomingPulse, messageLength) {
                     "seq": "0"
                 };
             }
-            pulse.inOctets = "" + (parseInt(lastPulse.inOctets) + messageLength);
-            pulse.inMsgs = "" + (parseInt(lastPulse.inMsgs) + 1);
-            pulse.pktDrops = "" + (parseInt(pulse.seq) - parseInt(pulse.inMsgs));
+            incomingPulse.inOctets = "" + (parseInt(lastPulse.inOctets) + messageLength);
+            incomingPulse.inMsgs = "" + (parseInt(lastPulse.inMsgs) + 1);
+            incomingPulse.pktDrops = "" + (parseInt(incomingPulse.seq) - parseInt(incomingPulse.inMsgs));
             authenticatedPulse(pulse, function (pulse, authenticated) {
                 if ((pulse.srcMint == 1) && (pulse.version != me.version)) {
                     console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
@@ -157,6 +155,9 @@ function processpulse(incomingPulse, messageLength) {
                 ;
                 redisClient.hset("mint:" + pulse.srcMint, "state", "RUNNING"); //GREEN-RUNNING means we received a pulse from it
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + pulse.owl); //store incoming pulse
+                //
+                //    update stats for pulseEntry by reviewing last data points
+                //
                 redisClient.lrange(pulse.geo + "-" + me.geo + "-history", -300, -1, function (err, data) {
                     if (err) {
                         console.log("PROCESSPULSE() history lookup ERROR:" + err);
@@ -193,6 +194,7 @@ function processpulse(incomingPulse, messageLength) {
                         "pulseTimestamp": lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
                     });
                 });
+                redisClient.publish("pulses", JSON.stringify(pulse));
             });
         });
     });
