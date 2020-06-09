@@ -128,7 +128,7 @@ function waitForPush () {
             console.log("structured pulse="+dump(pulse));
 //            processpulse(incomingTimestamp, message);
             processpulse(pulse,message.length);
-            redisClient.publish("pulses",JSON.stringify(pulse,null,2));
+            redisClient.publish("pulses",JSON.stringify(pulse));
         }
         waitForPush();
     });
