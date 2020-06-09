@@ -162,7 +162,7 @@ function processpulse( incomingPulse, messageLength) {
           }
 
           pulse.inOctets="" + (parseInt(lastPulse.inOctets) + messageLength);
-          pulse.inMsgs="" + parseInt(lastPulse.inMsgs) + 1;
+          pulse.inMsgs="" + (parseInt(lastPulse.inMsgs) + 1);
           pulse.pktDrops=""+ (parseInt(pulse.seq)-parseInt(pulse.inMsgs));
 
           authenticatedPulse(pulse, function(pulse, authenticated) { 
