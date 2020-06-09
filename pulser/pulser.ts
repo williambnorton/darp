@@ -153,7 +153,7 @@ function publishMatrix() {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-  //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
+  console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
   if (isNaN(mint)) {
     console.log("newMint("+mint+"): bad mint: "+mint);
     process.exit(86);
@@ -368,7 +368,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 
                 console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
               
-                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
+                networkClient.send(pulseMsg,node.port,node.ipaddr, function(error){     //*** send Message
 
                   if(error) {
                     console.log(ts()+"pulser NetSend error");

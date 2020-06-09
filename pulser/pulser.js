@@ -145,7 +145,7 @@ function publishMatrix() {
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-    //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
+    console.log("newMint(): mint=" + mint + " isNaN(x)=" + isNaN(mint));
     if (isNaN(mint)) {
         console.log("newMint(" + mint + "): bad mint: " + mint);
         process.exit(86);
