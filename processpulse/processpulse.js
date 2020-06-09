@@ -91,6 +91,7 @@ function waitForPush() {
             //            console.log("measured OWL="+OWL+" for message="+message);
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length - 1);
+            console.log("message=" + message + " owlstart=" + owlsStart, " pulseOwls=" + pulseOwls);
             var pulse = {
                 version: ary[3],
                 geo: ary[4],
