@@ -154,7 +154,7 @@ function publishMatrix() {
 //
 function newMint(mint) {
   console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
-  if (isNaN(mint)) {
+  if ((typeof mint == "undefined") || mint=="" || isNaN(mint)) {
     console.log("newMint("+mint+"): bad mint: "+mint);
     process.exit(86);
     return;
