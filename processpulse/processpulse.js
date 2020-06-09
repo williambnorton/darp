@@ -78,14 +78,17 @@ function waitForPush() {
             throw err;
         console.log("waitForPush(): incomingPulse=" + incomingPulse);
         if (incomingPulse != null) {
-            // FIX THESE
-            var message = JSON.parse(incomingPulse);
-            console.log("message=" + lib_js_1.dump(message));
-            var incomingPulseTimestamp = 0; //find this
             var ary = incomingPulse.split(",");
+            var channel = ary.pop();
+            var message = ary.join(",");
+            var incomingTimestamp = ary[0];
+            console.log("channel=" + channel + " incomingTimestamp=" + incomingTimestamp + " message=" + message);
+            // FIX THESE
+            //            console.log("message="+dump(message));
+            var incomingPulseTimestamp = incomingTimestamp; //find this
             var pulseTimestamp = ary[5]; //1583783486546
             var OWL = incomingPulseTimestamp - pulseTimestamp;
-            console.log("measured OWL=" + OWL + " for message=" + message);
+            //            console.log("measured OWL="+OWL+" for message="+message);
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length - 1);
             var pulse = {
@@ -93,7 +96,7 @@ function waitForPush() {
                 geo: ary[2],
                 group: ary[3],
                 seq: ary[4],
-                pulseTimestamp: incomingPulseTimestamp,
+                pulseTimestamp: ary[5],
                 bootTimestamp: ary[6],
                 srcMint: ary[7],
                 owls: pulseOwls,
