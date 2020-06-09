@@ -92,6 +92,7 @@ function waitForPush () {
         if (err) throw err;
         console.log("waitForPush(): incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
+            
             // FIX THESE
             var message=JSON.parse(incomingPulse);
             console.log("message="+dump(message));
