@@ -15,6 +15,10 @@ var server = dgram.createSocket('udp4');
 var MYBUILD = "";
 var isGenesisNode = false;
 redisClient.hgetall("mint:0", function (err, me) {
+    if (err)
+        console.log("processpulse(): error fetching mint:0 me");
+    if (me == null)
+        return console.log("processpulse() me==null returning");
     console.log("PROCESSPULSE starting with me=" + lib_js_1.dump(me));
     redisClient.hgetall("mint:1", function (err, genesis) {
         console.log(lib_js_1.ts() + "PROCESSPULSE started with genesis=" + lib_js_1.dump(genesis));
