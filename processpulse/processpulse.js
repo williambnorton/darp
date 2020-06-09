@@ -73,39 +73,41 @@ function authenticatedPulse(pulse, callback) {
 //server.on('message', function(message, remote) {
 function waitForPush() {
     console.log("waitForPulse(): ");
-    redisClient.brpop('rawpulses', 1, function (err, incomingPulse) {
+    redisClient.brpop('rawpulses', 3, function (err, incomingPulse) {
         if (err)
             throw err;
         console.log("waitForPush(): incomingPulse=" + incomingPulse);
-        // FIX THESE
-        var message = JSON.parse(incomingPulse);
-        console.log("message=" + lib_js_1.dump(message));
-        var incomingPulseTimestamp = 0; //find this
-        var ary = incomingPulse.split(",");
-        var pulseTimestamp = ary[5]; //1583783486546
-        var OWL = incomingPulseTimestamp - pulseTimestamp;
-        console.log("measured OWL=" + OWL + " for message=" + message);
-        var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
-        var pulseOwls = message.substring(owlsStart + 1, message.length - 1);
-        var pulse = {
-            version: ary[1],
-            geo: ary[2],
-            group: ary[3],
-            seq: ary[4],
-            pulseTimestamp: incomingPulseTimestamp,
-            bootTimestamp: ary[6],
-            srcMint: ary[7],
-            owls: pulseOwls,
-            owl: "" + OWL,
-            lastMsg: message,
-            inOctets: "" + message.length,
-            inMsgs: "" + 1,
-            median: "0",
-            pktDrops: "0"
-        };
-        ;
-        processpulse(incomingPulseTimestamp, message);
-        redisClient.publish("pulses", pulse);
+        if (incomingPulse != null) {
+            // FIX THESE
+            var message = JSON.parse(incomingPulse);
+            console.log("message=" + lib_js_1.dump(message));
+            var incomingPulseTimestamp = 0; //find this
+            var ary = incomingPulse.split(",");
+            var pulseTimestamp = ary[5]; //1583783486546
+            var OWL = incomingPulseTimestamp - pulseTimestamp;
+            console.log("measured OWL=" + OWL + " for message=" + message);
+            var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
+            var pulseOwls = message.substring(owlsStart + 1, message.length - 1);
+            var pulse = {
+                version: ary[1],
+                geo: ary[2],
+                group: ary[3],
+                seq: ary[4],
+                pulseTimestamp: incomingPulseTimestamp,
+                bootTimestamp: ary[6],
+                srcMint: ary[7],
+                owls: pulseOwls,
+                owl: "" + OWL,
+                lastMsg: message,
+                inOctets: "" + message.length,
+                inMsgs: "" + 1,
+                median: "0",
+                pktDrops: "0"
+            };
+            ;
+            processpulse(incomingPulseTimestamp, message);
+            redisClient.publish("pulses", pulse);
+        }
         waitForPush();
     });
 }
