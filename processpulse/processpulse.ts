@@ -92,7 +92,7 @@ function waitForPush () {
         if (err) throw err;
         console.log("waitForPush(): incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
-            var ary=incomingPulse.split(",");
+            var ary=incomingPulse.toString().split(",");
             var channel=ary.pop();
             var message=ary.join(",");
 
