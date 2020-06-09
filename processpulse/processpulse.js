@@ -73,10 +73,13 @@ function authenticatedPulse(pulse, callback) {
 //server.on('message', function(message, remote) {
 function waitForPush() {
     console.log("waitForPulse(): ");
-    redisClient.brpop(['rawpulses', 'otherlist', 0], function (err, incomingPulse) {
+    redisClient.brpop('rawpulses', 1, function (err, incomingPulse) {
+        if (err)
+            throw err;
         console.log("waitForPush(): incomingPulse=" + incomingPulse);
         // FIX THESE
-        var message = incomingPulse;
+        var message = JSON.parse(incomingPulse);
+        console.log("message=" + lib_js_1.dump(message));
         var incomingPulseTimestamp = 0; //find this
         var ary = incomingPulse.split(",");
         var pulseTimestamp = ary[5]; //1583783486546

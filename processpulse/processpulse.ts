@@ -88,11 +88,12 @@ function authenticatedPulse(pulse, callback) {
 
 function waitForPush () {
     console.log("waitForPulse(): ");
-    redisClient.brpop(['rawpulses','otherlist',0], function (err, incomingPulse) {
-
+    redisClient.brpop('rawpulses',1, function (err, incomingPulse) {
+        if (err) throw err;
         console.log("waitForPush(): incomingPulse="+incomingPulse);
         // FIX THESE
-        var message=incomingPulse;
+        var message=JSON.parse(incomingPulse);
+        console.log("message="+dump(message));
         var incomingPulseTimestamp=0;//find this
 
         var ary=incomingPulse.split(",");
