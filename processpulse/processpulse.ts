@@ -94,13 +94,14 @@ function waitForPush () {
         // FIX THESE
         var message=incomingPulse;
         var incomingPulseTimestamp=0;//find this
+
+        var ary=incomingPulse.split(",");
         var pulseTimestamp = ary[5]; //1583783486546
         var OWL = incomingPulseTimestamp - pulseTimestamp;
         console.log("measured OWL="+OWL+" for message="+message);
 
         var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
         var pulseOwls = message.substring(owlsStart + 1, message.length-1);
-        var ary=incomingPulse.split(",");
         var pulse = {
             version: ary[1],
             geo: ary[2],
