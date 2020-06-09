@@ -82,7 +82,7 @@ function waitForPush() {
             var ary = message.split(",");
             var channel = ary[0];
             var incomingTimestamp = ary[1];
-            message = message.substring(nth_occurrence(message, ',', 2) + 1, message.length - 1);
+            message = message.substring(nth_occurrence(message, ',', 2) + 1, message.length);
             //console.log("channel="+channel+" incomingTimestamp="+incomingTimestamp+" message="+message);
             // FIX THESE
             //A couple calculations before filling the pulse structure
