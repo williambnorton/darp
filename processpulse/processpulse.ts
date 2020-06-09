@@ -87,8 +87,8 @@ function authenticatedPulse(pulse, callback) {
 //server.on('message', function(message, remote) {
 
 function waitForPush () {
-    console.log("waitForPulse(): ");
-    redisClient.brpop('rawpulses',3, function (err, incomingPulse) {
+    console.log("waitForPush(): STARTING");
+    redisClient.brpop('rawpulses',0, function (err, incomingPulse) {
         if (err) throw err;
         console.log("waitForPush(): incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
@@ -123,7 +123,7 @@ function waitForPush () {
                 median: "0",
                 pktDrops: "0"
             };;
-
+            console.log("structured pulse="+dump(pulse));
             processpulse(incomingPulseTimestamp, message);
             redisClient.publish("pulses",pulse);
         }
