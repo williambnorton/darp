@@ -108,7 +108,7 @@ function waitForPush () {
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length);
             //console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-            console.log("message="+message+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
+            console.log("waitForPush(): message="+message+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
             var pulse = {
                 version: ary[3],
                 geo: ary[4],
@@ -180,8 +180,8 @@ function processpulse( incomingPulse, messageLength) {
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
               redisClient.lrange(pulse.geo + "-" + me.geo+"-history", -300, -1, (err, data) => {
                 if (err) {
-                 console.log("iPROCESSPULSE() history lookup ERROR:"+err);
-                 return;
+                   console.log("PROCESSPULSE() history lookup ERROR:"+err);
+                   return;
                 }
                
                 //console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median+" pulse="+dump(pulse));
