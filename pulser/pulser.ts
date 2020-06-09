@@ -292,12 +292,12 @@ if (typeof oneTime == "undefined") {
               //console.log("emptyOwls="+emptyOwls);
 
             //make a pulse message
-            //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
+            console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
               redisClient.hgetall(pulseLabel, function(err,pulseLabelEntry) {
                 //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
                 pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
-                //console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
+                console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
                 redisClient.hmset(pulseLabel, {
                   "seq" : pulseLabelEntry.seq
                 }, function(err,reply) {
