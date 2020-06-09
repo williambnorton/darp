@@ -177,8 +177,8 @@ function processpulse( incomingPulse, messageLength) {
 
               redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
 
-              redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+OWL );  //store incoming pulse
-              redisClient.lrange(pulse.geo + "-" + me.geo+"-history", -300, -1, (err, data) => {
+              redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
+              redisClient.lrange(pulse.geo + "-" + me.geo+"-history", -300, -1, (err, data) => {  //get 300 seconds worth of OWLs
                 if (err) {
                    console.log("PROCESSPULSE() history lookup ERROR:"+err);
                    return;
