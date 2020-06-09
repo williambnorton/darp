@@ -290,7 +290,7 @@ if (typeof oneTime == "undefined") {
             //make a pulse message
             //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-              redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
+              redisClient.hgetall(pulseLabel, function(err,pulseLabelEntry) {
                 //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
                 pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
                 //console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
@@ -298,11 +298,9 @@ if (typeof oneTime == "undefined") {
                   "seq" : pulseLabelEntry.seq
                 }, function(err,reply) {
 
-
                   //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
                   //and needed for additional groups
                   //console.log("pulseLabelEntry="+dump(pulseLabelEntry));
-
 
                   var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+pulseLabelEntry.bootTimestamp+","+me.mint+",";  //MAZORE:MAZJAP.1
 
@@ -368,7 +366,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 //});
                 //sending msg
                 
-                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+                console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
               
                 networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
 
