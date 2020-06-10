@@ -266,7 +266,7 @@ function pulse(oneTime) {
                             }, function (err, reply) {
                                 //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
                                 //and needed for additional groups
-                                //console.log("pulseLabelEntry="+dump(pulseLabelEntry));
+                                console.log("pulseLabelEntry=" + lib_1.dump(pulseLabelEntry));
                                 var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + pulseLabelEntry.seq + "," + lib_1.now() + "," + pulseLabelEntry.bootTimestamp + "," + me.mint + ","; //MAZORE:MAZJAP.1
                                 //get mintTable to get credentials   
                                 var owls = "";
@@ -274,7 +274,7 @@ function pulse(oneTime) {
                                     // get nodes' list of mints to send pulse to,
                                     // and send pulse
                                     console.log("PULSER(): " + ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
-                                    sendPulsePackets(mints, pulseMessage, null);
+                                    sendPulsePackets(mints, pulseMessage, null); //send these mints my OWLs
                                 });
                             });
                         });
@@ -292,16 +292,16 @@ function pulse(oneTime) {
 //  sendPulsePackets() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
 //
-function sendPulsePackets(incomingMintList, pulseMsg, sendToAry) {
+function sendPulsePackets(ownerMintList, pulseMsg, sendToAry) {
     if (sendToAry == null)
         sendToAry = new Array();
     //console.log("sendPulsePackets(): mints="+mints);
-    if (typeof incomingMintList == "undefined" || !incomingMintList || incomingMintList == "")
-        return console.log("sendPulsePackets(): bad mints parm - ignoring mints=" + incomingMintList + " pulseMsg was to be " + pulseMsg);
+    if (typeof ownerMintList == "undefined" || !ownerMintList || ownerMintList == "")
+        return console.log("sendPulsePackets(): bad mints parm - ignoring mints=" + ownerMintList + " pulseMsg was to be " + pulseMsg);
     //console.log("mints before pop:"+incomingMintList+" mint="+mint+" pulseMsg="+pulseMsg);
-    var mint = incomingMintList.pop(); //get our mint to add to the msg
+    var mint = ownerMintList.pop(); //get our mint to add to the msg
     //console.log("mints after pop:"+incomingMintList+" mint="+mint);
-    console.log("sendPulsePackets() mint=" + mint + " mints=" + incomingMintList + " pulseMsg=" + pulseMsg);
+    console.log("sendPulsePackets() mint=" + mint + " mints=" + ownerMintList + " pulseMsg=" + pulseMsg);
     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
         if (err) {
             console.log("sendPulsePackets(): ERROR - ");
@@ -317,8 +317,8 @@ function sendPulsePackets(incomingMintList, pulseMsg, sendToAry) {
                 var pulseLabel = GEO + ":" + mintEntry.group; //all of my state announcements are marked from me
                 if (mint != null) {
                     //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
-                    if (incomingMintList != "")
-                        sendPulsePackets(incomingMintList, pulseMsg, sendToAry);
+                    if (ownerMintList != "")
+                        sendPulsePackets(ownerMintList, pulseMsg, sendToAry);
                     else {
                         var _loop_1 = function (node) {
                             if (typeof node != "undefined" && node != null) {
@@ -326,7 +326,7 @@ function sendPulsePackets(incomingMintList, pulseMsg, sendToAry) {
                                 //  "statsPulseMessageLength" : ""+pulseMsg.length
                                 //});
                                 //sending msg
-                                console.log("networkClient.send(pulseMsg=" + pulseMsg + " node.port=" + node.port + " node.ipaddr=" + node.ipaddr);
+                                console.log("sendPulsePackets(): networkClient.send(pulseMsg=" + pulseMsg + " node.port=" + node.port + " node.ipaddr=" + node.ipaddr);
                                 networkClient.send(pulseMsg, node.port, node.ipaddr, function (error) {
                                     if (error) {
                                         console.log(lib_1.ts() + "pulser NetSend error");
@@ -337,7 +337,7 @@ function sendPulsePackets(incomingMintList, pulseMsg, sendToAry) {
                                         //console.log("sent dump node="+dump(node))
                                         var message = pulseMsg + " sent to " + node.ipaddr + ":" + node.port + " ->" + node.pulseLabel;
                                         //console.log(message);
-                                        redisClient.publish("pulses", message);
+                                        //redisClient.publish("pulses",message);
                                         //console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
                                         //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
                                         //var pulseLabel=mintEntry.geo+":"+mintEntry.group;
@@ -387,7 +387,7 @@ function sendPulsePackets(incomingMintList, pulseMsg, sendToAry) {
             }
             else { //Go fetch the mint associated with this guy we re supposed to pulse
                 if (mint != "") {
-                    console.log("pulser(): NEW MINT sendPulsePackets(mints=" + incomingMintList + ", pulseMsg=" + pulseMsg + ", sendToAry=" + sendToAry + ") We don't have this mint: " + mint + "  fetching mint from genesis node w/newMint()...");
+                    console.log("pulser(): NEW MINT sendPulsePackets(mints=" + ownerMintList + ", pulseMsg=" + pulseMsg + ", sendToAry=" + sendToAry + ") We don't have this mint: " + mint + "  fetching mint from genesis node w/newMint()...");
                     newMint(mint); //go fetch 
                 }
             }
