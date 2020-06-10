@@ -319,13 +319,13 @@ function checkSWversion() {
             //  use this opportunity to reboot if group owner is AWOL for 20 seconds
             //
             var elapsedSecondsSinceOwnerPulse = Math.round(((lib_js_1.now() - genesis.pulseTimestamp) / 1000));
-            //console.log("elapsedSecondsSinceOwnerPulse="+elapsedSecondsSinceOwnerPulse);
+            console.log("elapsedSecondsSinceOwnerPulse=" + elapsedSecondsSinceOwnerPulse);
             //TODO: This doesn't work - the genesis node goes away and thenode dies connection refused
             //doen't matter - the reload of software will force a rejoin.
-            if (elapsedSecondsSinceOwnerPulse > 10) {
-                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
-                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
-                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > 10 so forcing reload and reconnect");
+            if (elapsedSecondsSinceOwnerPulse > SW_CHECK_FREQ) {
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > SW_CHECK_FREQ so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > SW_CHECK_FREQ so forcing reload and reconnect");
+                console.log("HANDLEPULSE(): The Genesis Group went away... elapsedSecondsSinceOwnerPulse > SW_CHECK_FREQ so forcing reload and reconnect");
                 process.exit(36);
             }
             var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
