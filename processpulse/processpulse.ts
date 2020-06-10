@@ -13,7 +13,7 @@ console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=
 //subscribe to feed - print it out.
 
 
-var OWLEXPIRES = 2; //seconds should match polling cycle time
+var OWLEXPIRES = 10; //seconds should match polling cycle time - expir
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
