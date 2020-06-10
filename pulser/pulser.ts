@@ -328,21 +328,21 @@ if (typeof oneTime == "undefined") {
 //  buildPulsePkt() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
 //
-function buildPulsePkt(mints, pulseMsg, sendToAry) {
+function buildPulsePkt(incomingMintList, pulseMsg, sendToAry) {
    if ( sendToAry == null) sendToAry=new Array();
    //console.log("buildPulsePkt(): mints="+mints);
-   if (typeof mints == "undefined" || !mints || mints=="") 
-      return console.log("buildPulsePkt(): bad mints parm - ignoring mints="+mints+" pulseMsg was to be "+pulseMsg);
+   if (typeof incomingMintList == "undefined" || !incomingMintList || incomingMintList=="") 
+      return console.log("buildPulsePkt(): bad mints parm - ignoring mints="+incomingMintList+" pulseMsg was to be "+pulseMsg);
    
    
-  console.log("mints before pop:"+mints+" mint="+mint);
+  console.log("mints before pop:"+incomingMintList+" mint="+mint+" pulseMsg="+pulseMsg);
 
-   var mint=mints.pop(); //get our mint to add to the msg
-  console.log("mints after pop:"+mints+" mint="+mint);
+   var mint=incomingMintList.pop(); //get our mint to add to the msg
+  console.log("mints after pop:"+incomingMintList+" mint="+mint);
 
 
 
-   console.log("buildPulsePkt() mint="+mint+" mints="+mints+" pulseMsg="+pulseMsg);
+   console.log("buildPulsePkt() mint="+mint+" mints="+incomingMintList+" pulseMsg="+pulseMsg);
    redisClient.hgetall("mint:"+mint, function (err, mintEntry) {
       if (err) {
          console.log("buildPulsePkt(): ERROR - ");
@@ -357,7 +357,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
 
         if (mint!=null) {
           //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
-          if (mints!="") buildPulsePkt(mints,pulseMsg,sendToAry);
+          if (incomingMintList!="") buildPulsePkt(incomingMintList,pulseMsg,sendToAry);
           else {
             //
             //      message ready - pulse
@@ -425,7 +425,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
           console.log("NOT GETTING HERE EEVR PULSER sendToAry="+dump(sendToAry)); 
         }
       } else {  //Go fetch the mint associated with this guy we re supposed to pulse
-          console.log("pulser(): buildPulsePkt(mints="+mints+", pulseMsg="+pulseMsg+", sendToAry="+sendToAry+") We don't have this mint: "+mint+"  fetching mint from genesis node w/newMint()...");
+          console.log("pulser(): buildPulsePkt(mints="+incomingMintList+", pulseMsg="+pulseMsg+", sendToAry="+sendToAry+") We don't have this mint: "+mint+"  fetching mint from genesis node w/newMint()...");
           newMint(mint); //go fetch 
       }
     }
