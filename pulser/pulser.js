@@ -288,7 +288,7 @@ function pulse(oneTime) {
                                     // get nodes' list of mints to send pulse to,
                                     // and send pulse
                                     console.log("PULSER(): " + ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
-                                    buildPulsePkt(mints, pulseMessage, null);
+                                    sendPulsePackets(mints, pulseMessage, null);
                                 });
                             });
                         });
@@ -306,15 +306,15 @@ function pulse(oneTime) {
 //  buildPulsePkt() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
 //
-function buildPulsePkt(incomingMintList, pulseMsg, sendToAry) {
+function sendPulsePackets(incomingMintList, pulseMsg, sendToAry) {
     if (sendToAry == null)
         sendToAry = new Array();
     //console.log("buildPulsePkt(): mints="+mints);
     if (typeof incomingMintList == "undefined" || !incomingMintList || incomingMintList == "")
         return console.log("buildPulsePkt(): bad mints parm - ignoring mints=" + incomingMintList + " pulseMsg was to be " + pulseMsg);
-    console.log("mints before pop:" + incomingMintList + " mint=" + mint + " pulseMsg=" + pulseMsg);
+    //console.log("mints before pop:"+incomingMintList+" mint="+mint+" pulseMsg="+pulseMsg);
     var mint = incomingMintList.pop(); //get our mint to add to the msg
-    console.log("mints after pop:" + incomingMintList + " mint=" + mint);
+    //console.log("mints after pop:"+incomingMintList+" mint="+mint);
     console.log("buildPulsePkt() mint=" + mint + " mints=" + incomingMintList + " pulseMsg=" + pulseMsg);
     redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
         if (err) {
@@ -400,8 +400,10 @@ function buildPulsePkt(incomingMintList, pulseMsg, sendToAry) {
                 }
             }
             else { //Go fetch the mint associated with this guy we re supposed to pulse
-                console.log("pulser(): buildPulsePkt(mints=" + incomingMintList + ", pulseMsg=" + pulseMsg + ", sendToAry=" + sendToAry + ") We don't have this mint: " + mint + "  fetching mint from genesis node w/newMint()...");
-                newMint(mint); //go fetch 
+                if (mint != "") {
+                    console.log("pulser(): NEW MINT buildPulsePkt(mints=" + incomingMintList + ", pulseMsg=" + pulseMsg + ", sendToAry=" + sendToAry + ") We don't have this mint: " + mint + "  fetching mint from genesis node w/newMint()...");
+                    newMint(mint); //go fetch 
+                }
             }
         }
     });
