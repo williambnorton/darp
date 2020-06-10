@@ -1,6 +1,6 @@
 "use strict";
 //
-// pulser.ts - as quickly as possible, get pulse into redis
+// pulser.ts - as quickly as possible, get out
 //
 exports.__esModule = true;
 var lib_1 = require("../lib/lib");

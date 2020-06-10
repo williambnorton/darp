@@ -1,12 +1,7 @@
 //
 //  PROCESSPULSE - receive incoming pulses and store in redis
 //
-import {
-  now,
-  ts,
-  dump,
-  YYMMDD
-} from '../lib/lib.js';
+import {  now,  ts,  dump,  YYMMDD } from '../lib/lib.js';
 
 console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 

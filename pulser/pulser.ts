@@ -1,5 +1,5 @@
 //
-// pulser.ts - as quickly as possible, get pulse into redis
+// pulser.ts - as quickly as possible, get out
 //
 
 import { dump, getGenesis, now, forEachMint, getMints, mintList, ts } from "../lib/lib";
