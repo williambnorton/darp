@@ -288,7 +288,7 @@ function pulse(oneTime) {
                                     // get nodes' list of mints to send pulse to
                                     // and send pulse
                                     console.log("PULSER(): " + ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs
-                                    buildPulsePkt(mints, pulseMessage, null);
+                                    buildPulsePkt([mints], pulseMessage, null);
                                 });
                             });
                         });
