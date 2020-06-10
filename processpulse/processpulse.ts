@@ -57,8 +57,8 @@ console.log(ts() + "PROCESSPULSE: Starting....");
 //  only callback if authenticated
 //
 function authenticatedPulse(pulse, callback) {
-    console.log(authenti":");
-  redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
+   console.log("authenticatedPulse: " + dump(pulse));
+   redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
 
       if (senderMintEntry == null) {
           console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
