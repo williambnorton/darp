@@ -294,7 +294,7 @@ if (typeof oneTime == "undefined") {
             //make a pulse message
             console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-              redisClient.hgetall(pulseLabel, function(err,pulseLabelEntry) {
+            redisClient.hgetall(pulseLabel, function(err,pulseLabelEntry) {
                 //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
                 pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
                 console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
@@ -302,28 +302,24 @@ if (typeof oneTime == "undefined") {
                   "seq" : pulseLabelEntry.seq
                 }, function(err,reply) {
 
-                  //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
-                  //and needed for additional groups
+                   //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
+                   //and needed for additional groups
                   //console.log("pulseLabelEntry="+dump(pulseLabelEntry));
 
                   var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+pulseLabelEntry.bootTimestamp+","+me.mint+",";  //MAZORE:MAZJAP.1
-
-               
-                  //get mintTable to get credentials   
+                
+                    //get mintTable to get credentials   
                   var owls=""
                   mintList(redisClient, ownerPulseLabel, function(err,mints) {
-                    // get nodes' list of mints to send pulse to
+                    // get nodes' list of mints to send pulse to,
                     // and send pulse
                     console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
-                    buildPulsePkt([mints],pulseMessage,null);
-                  
+                    buildPulsePkt(mints,pulseMessage,null);
                   });
-                });
-
               });
             });
-
-          }
+          });
+        }
       } else {
         console.log(ts()+"WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
       }
@@ -343,9 +339,10 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
       return console.log("buildPulsePkt(): bad mints parm - ignoring mints="+mints+" pulseMsg was to be "+pulseMsg);
    
    
-   
-   var mint=mints.pop(); //get our mint to add to the msg
+  console.log("mints before pop:"+mints+" mint="+mint);
 
+   var mint=mints.pop(); //get our mint to add to the msg
+  console.log("mints after pop:"+mints+" mint="+mint);
 
 
 
