@@ -45,6 +45,7 @@ console.log(lib_js_1.ts() + "PROCESSPULSE: Starting....");
 //  only callback if authenticated
 //
 function authenticatedPulse(pulse, callback) {
+    console.log(authenti, ":");
     redisClient.hgetall("mint:" + pulse.srcMint, function (err, senderMintEntry) {
         if (senderMintEntry == null) {
             console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint " + pulse.srcMint + " this pulse:" + lib_js_1.dump(pulse));
@@ -153,6 +154,7 @@ function processpulse(incomingPulse, messageLength) {
                     process.exit(36); //SOFTWARE RELOAD
                 }
                 ;
+                console.log("process[pulse(): incoming pulse authenticated. Writing  " + lib_js_1.dump(pulse));
                 redisClient.hset("mint:" + pulse.srcMint, "state", "RUNNING"); //GREEN-RUNNING means we received a pulse from it
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + pulse.owl); //store incoming pulse
                 //
@@ -163,12 +165,7 @@ function processpulse(incomingPulse, messageLength) {
                         console.log("PROCESSPULSE() history lookup ERROR:" + err);
                         return;
                     }
-                    //console.log("      * * * * * STATS pulse.geo="+pulse.geo+" newData="+newData+" median="+pulse.median+" pulse="+dump(pulse));
-                    //redisClient.publish("pulses", message);
-                    redisClient.hmset(pulseLabel, pulse); //store the RAW PULSE EXPIRE ENTRY???
-                    //redisClient.hgetall(pulseLabel,function (err, writtenPulse){  //INSTRUMENTATIOJ POINT
-                    //  console.log("wrote :"+dump(writtenPulse));
-                    //})
+                    redisClient.hmset(pulseLabel, pulse); //store the PULSE 
                     //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
                     redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES); //This pulse came to me - store OWL my latency measure
                     var d = new Date();
@@ -181,7 +178,6 @@ function processpulse(incomingPulse, messageLength) {
                     //    Store the measured latency for this pulse message to me
                     //
                     //console.log("PROCESSPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
-                    //console.log("PROCESSPULSE:");
                     //
                     //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
                     //
