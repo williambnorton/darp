@@ -284,7 +284,7 @@ function pulse(oneTime) {
                                 var pulseMessage = "0," + me.version + "," + me.geo + "," + pulseGroup + "," + pulseLabelEntry.seq + "," + lib_1.now() + "," + pulseLabelEntry.bootTimestamp + "," + me.mint + ","; //MAZORE:MAZJAP.1
                                 //get mintTable to get credentials   
                                 var owls = "";
-                                lib_1.mintList(redisClient, ownerPulseLabel, function (err, mints) {
+                                lib_1.getMints(redisClient, ownerPulseLabel, function (mints) {
                                     // get nodes' list of mints to send pulse to,
                                     // and send pulse
                                     console.log("PULSER(): " + ownerPulseLabel + " tells us mints=" + mints + " pulseMessage=" + pulseMessage); //use this list to faetch my OWLs

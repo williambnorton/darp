@@ -2,7 +2,7 @@
 // pulser.ts - as quickly as possible, get pulse into redis
 //
 
-import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
+import { dump, getGenesis, now, forEachMint, getMints, mintList, ts } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
 console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
@@ -306,7 +306,7 @@ if (typeof oneTime == "undefined") {
                 
                     //get mintTable to get credentials   
                   var owls=""
-                  mintList(redisClient, ownerPulseLabel, function(err,mints) {
+                  getMints(redisClient, ownerPulseLabel, function(mints) {
                     // get nodes' list of mints to send pulse to,
                     // and send pulse
                     console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
