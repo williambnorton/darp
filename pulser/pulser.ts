@@ -219,10 +219,6 @@ function newMint(mint) {
               console.log("PULSER newMint(): New mint in place - so set up wireguard ");
               setWireguard();  //re-create a new wireguard config
 
-
-
-
-
               //
               //  if Genesis node, expire in 1 minute before removing it
               //  else 5 minutes
