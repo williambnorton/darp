@@ -52,7 +52,6 @@ console.log(ts() + "PROCESSPULSE: Starting....");
 //  only callback if authenticated
 //
 function authenticatedPulse(pulse, callback) {
-   console.log("authenticatedPulse: " + dump(pulse));
    redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
 
       if (senderMintEntry == null) {
@@ -162,6 +161,7 @@ function processpulse( incomingPulse, messageLength) {
           incomingPulse.pktDrops="" + (parseInt(incomingPulse.seq)-parseInt(incomingPulse.inMsgs));
 
           authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
+            console.log("authenticatedPulse: " + dump(pulse));
 
               if ((pulse.srcMint==1) && (pulse.version != me.version)) {
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
@@ -174,6 +174,8 @@ function processpulse( incomingPulse, messageLength) {
               console.log("process[pulse(): incoming pulse authenticated. Writing  "+dump(pulse));
               redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
 
+              console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
+
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
               //
               //    update stats for pulseEntry by reviewing last data points
@@ -183,10 +185,11 @@ function processpulse( incomingPulse, messageLength) {
                     console.log("PROCESSPULSE() history lookup ERROR:"+err);
                     return;
                   }
-                
+
+                  console.log("processpulse(): saving pulse  " + pulseLabel );
                   redisClient.hmset(pulseLabel, pulse);    //store the PULSE 
 
-                    //console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
+                    console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
                     redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
 
                     var d = new Date();
@@ -199,7 +202,7 @@ function processpulse( incomingPulse, messageLength) {
                     //
                     //    Store the measured latency for this pulse message to me
                     //
-                    //console.log("PROCESSPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
+                    console.log("PROCESSPULSE: storeOWL setting group-"+pulse.geo + "-" + me.geo+" owl="+pulse.owl);
 
                     //
                     //  Store the OWL measures received in the OWLs field and save for 1 pulse cycle 
