@@ -85,7 +85,7 @@ function waitForPush () {
     console.log("waitForPush(): Waiting for raw pulse...");
     redisClient.brpop('rawpulses',0, function (err, incomingPulse) {
         if (err) throw err;
-        console.log("waitForPush(): incomingPulse="+incomingPulse);
+        console.log("waitForPush(): Pop'd incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
             var message=incomingPulse.toString();
             var ary=message.split(",");
@@ -161,7 +161,7 @@ function processpulse( incomingPulse, messageLength) {
           incomingPulse.pktDrops="" + (parseInt(incomingPulse.seq)-parseInt(incomingPulse.inMsgs));
 
           authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
-            console.log("authenticatedPulse: " + dump(pulse));
+            console.log("********  * * * * * * * * * * *  authenticatedPulse: " + dump(pulse));
 
               if ((pulse.srcMint==1) && (pulse.version != me.version)) {
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
