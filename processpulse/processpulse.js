@@ -125,7 +125,8 @@ processPulseWorker();
 //
 //function processpulse(incomingTimestamp, messagebuffer) {
 function processpulse(incomingPulse, messageLength) {
-    console.log("processpulse(): incomingPulse=" + lib_js_1.dump(incomingPulse));
+    console.log("processpulse(): incomingPulse=" + lib_js_1.dump(incomingPulse)) + " pulseTimestamp=" + incomingPulse.pulseTimestamp;
+    ;
     var pulseLabel = incomingPulse.geo + ":" + incomingPulse.group;
     redisClient.hgetall(pulseLabel, function (err, lastPulse) {
         //if (lastPulse) console.log("lastPulse="+dump(lastPulse));
