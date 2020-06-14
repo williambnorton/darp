@@ -81,11 +81,11 @@ function authenticatedPulse(pulse, callback) {
 //
 //server.on('message', function(message, remote) {
 
-function waitForPush () {
-    console.log("waitForPush(): Waiting for raw pulse...");
+function processPulseWorker () {
+    console.log("processPulseWorker(): Waiting for handlePulse to queue up a raw pulse...");
     redisClient.brpop('rawpulses',0, function (err, incomingPulse) {
         if (err) throw err;
-        console.log("waitForPush(): Pop'd incomingPulse="+incomingPulse);
+        console.log("processPulseWorker(): Pop'd incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
             var message=incomingPulse.toString();
             var ary=message.split(",");
@@ -103,7 +103,7 @@ function waitForPush () {
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length);
             //console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-            console.log("waitForPush(): message="+message+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
+            console.log("processPulseWorker(): message="+message+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
             var pulse = {
                 version: ary[3],
                 geo: ary[4],
@@ -123,12 +123,12 @@ function waitForPush () {
             console.log("structured pulse="+dump(pulse));
 //            processpulse(incomingTimestamp, message);
             processpulse(pulse,message.length);
-        }
-        waitForPush();
+        } else console.log("processPulseWorker(): incomingPulse==null - probably time out");
+        processPulseWorker();  //go get (or wait for) the next pulse
     });
 }
     
-waitForPush();
+processPulseWorker();
 
 //
 //  processpulse - update pulseTable from incoming pulseObject
