@@ -175,9 +175,10 @@ function processpulse( incomingPulse, messageLength) {
               redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
               console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
-
-              console.log("processpulse(): saving pulse  " + pulseLabel );
-              redisClient.hmset(pulseLabel, pulse);    //store the PULSE 
+              console.log("===============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
+              redisClient.hmset(pulseLabel, pulse, function(drr,reply) {
+                  if (err) console.log("ERROR storing pulse");
+              });    //store the PULSE 
 
               console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
