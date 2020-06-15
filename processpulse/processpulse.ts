@@ -108,22 +108,23 @@ function processPulseWorker () {
 //  only callback if authenticated
 //
 function authenticatedPulse(pulse, callback) {
+    console.log("authenticatedPulse(pulse="+dump(pulse));
     redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
-
+        if (err) throw Error;
         if (senderMintEntry == null) {
             console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
-            //callback(null,false);
+            callback(null,false);
         } else {
             //simple authentication matches piulse mint to other resources
-            if ((senderMintEntry.geo == pulse.geo)&&(senderMintEntry.mint == pulse.srcMint)) {
-            pulse.ipaddr=senderMintEntry.ipaddr; //
-            pulse.port=senderMintEntry.port;     //
-
-            callback(pulse, true)
+            if ((senderMintEntry.geo == pulse.geo) && (senderMintEntry.mint == pulse.srcMint) ) {
+                pulse.ipaddr=senderMintEntry.ipaddr; //
+                pulse.port=senderMintEntry.port;     //
+                console.log("authenticatedPulse(): returning pulse: "+dump(pulse));
+                callback(pulse, true);              //we have an aithenticated packet
             }
             else {
                 console.log("PROCESSPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for "+pulse.srcMint+" in our mint table...we had: "+senderMintEntry.geo+" mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
-                //callback(null,false)
+                callback(null,false)
             }
         }
     });
@@ -162,7 +163,11 @@ function processpulse( incomingPulse, messageLength) {
           incomingPulse.pktDrops="" + (parseInt(incomingPulse.seq)-parseInt(incomingPulse.inMsgs));
 
           authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
-            console.log("********  * * * * * * * * * * *  authenticatedPulse: " + dump(pulse));
+              if (!authenticated) {
+                  console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
+                  return;
+              } 
+              console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *   authenticatedPulse: " + dump(pulse));
 
               if ((pulse.srcMint==1) && (pulse.version != me.version)) {
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
