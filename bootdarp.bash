@@ -146,23 +146,21 @@ do
     echo `date` 'Starting processpulse...'
     node processpulse &
     echo $$ > $DARPDIR/processpulse.pid
-    sleep 1
+    sleep 2
 
     cd $DARPDIR
     cd $DARPDIR/pulser
     if [ -f  $DARPDIR/pulser.pid ]; then
         kill `cat $DARPDIR/pulser.pid`
     fi
+    echo `date` 'Starting pulser...'
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
-    echo `date` 'Starting pulser...'
-    sleep 1
-
 
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
-        sleep 1
+        sleep 1 #give a t time for task to die
     fi
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
