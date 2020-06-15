@@ -7,6 +7,7 @@ console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=
 
 //subscribe to feed - print it out.
 
+var POLL_CYCLE=1;  //poll every __ second so timeout read every __ second
 
 var OWLEXPIRES = 100; //seconds should match polling cycle time - expir
 

@@ -6,6 +6,7 @@ exports.__esModule = true;
 var lib_js_1 = require("../lib/lib.js");
 console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 //subscribe to feed - print it out.
+var POLL_CYCLE = 1; //poll every __ second so timeout read every __ second
 var OWLEXPIRES = 100; //seconds should match polling cycle time - expir
 var SHOWPULSES = "0";
 var pulseRedis = require('redis');
