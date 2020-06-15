@@ -58,11 +58,11 @@ function authenticatedPulse(pulse, callback) {
           console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
           //callback(null,false);
       } else {
-          //simple authentication matches mint to other resources
+          //simple authentication matches piulse mint to other resources
           if ((senderMintEntry.geo == pulse.geo)&&(senderMintEntry.mint == pulse.srcMint)) {
-            pulse.ipaddr=senderMintEntry.ipaddr; //for convenience
-            pulse.port=senderMintEntry.port;  //for convenience
-
+            pulse.ipaddr=senderMintEntry.ipaddr; //
+            pulse.port=senderMintEntry.port;     //
+            
             callback(pulse, true)
           }
           else {
