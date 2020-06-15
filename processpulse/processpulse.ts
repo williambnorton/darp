@@ -163,9 +163,9 @@ function processpulse( incomingPulse, messageLength) {
               }
             }
 
-          incomingPulse.inOctets="" + (parseInt(lastPulse.inOctets) + messageLength);
-          incomingPulse.inMsgs  ="" + (parseInt(lastPulse.inMsgs) + 1);
-          incomingPulse.pktDrops="" + (parseInt(incomingPulse.seq)-parseInt(incomingPulse.inMsgs));
+            incomingPulse.inOctets="" + (parseInt(lastPulse.inOctets) + messageLength);
+            incomingPulse.inMsgs  ="" + (parseInt(lastPulse.inMsgs) + 1);
+            incomingPulse.pktDrops="" + (parseInt(incomingPulse.seq)-parseInt(incomingPulse.inMsgs));
 
 //          authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
             var pulse=incomingPulse; var authenticated=true; //testing
@@ -205,8 +205,8 @@ function processpulse( incomingPulse, messageLength) {
                 "owl": pulse.owl,
                 "pulseTimestamp" : now()  //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
               });
+              redisClient.hmset(pulse.geo+":"+pulse.group,pulse);//THIS SHOULD EXPIRE
               redisClient.publish("pulses",JSON.stringify(pulse));
-
               //
               //    update stats for pulseEntry by reviewing last data points
               //
