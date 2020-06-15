@@ -167,7 +167,8 @@ function processpulse( incomingPulse, messageLength) {
           incomingPulse.inMsgs  ="" + (parseInt(lastPulse.inMsgs) + 1);
           incomingPulse.pktDrops="" + (parseInt(incomingPulse.seq)-parseInt(incomingPulse.inMsgs));
 
-          authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
+//          authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
+            var pulse=incomingPulse; var authenticated=true; //testing
               if (!authenticated) {
                 console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
                 return;
@@ -238,7 +239,7 @@ function processpulse( incomingPulse, messageLength) {
                 });
 
 
-          });
+        //  });
       });
   });
 };
