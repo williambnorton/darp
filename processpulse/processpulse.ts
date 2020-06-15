@@ -110,7 +110,7 @@ function processPulseWorker () {
 function authenticatedPulse(pulse, callback) {
     console.log("authenticatedPulse(pulse="+dump(pulse));
     redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
-        if (err) throw Error;
+        if (err) {console.log("authenticatedpulse: ERROR lloking up mint pulse.srcMint="+pulse.srcMint+"<");return;}
         if (senderMintEntry == null) {
             console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
             callback(null,false);
@@ -177,7 +177,7 @@ function processpulse( incomingPulse, messageLength) {
                 process.exit(36); //SOFTWARE RELOAD
               };
 
-              console.log("process[pulse(): incoming pulse authenticated. Writing  "+dump(pulse));
+              console.log("processpulse(): incoming pulse authenticated. Writing  "+dump(pulse));
 
               redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
               console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
