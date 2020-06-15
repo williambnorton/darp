@@ -6,7 +6,7 @@ import { dump, getGenesis, now, forEachMint, getMints, mintList, ts } from "../l
 import { setWireguard } from "../wireguard/wireguard";
 console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
-var CYCLETIME=100; //poll every ____ seconds
+var CYCLETIME=120; //poll every ____ seconds
 
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');

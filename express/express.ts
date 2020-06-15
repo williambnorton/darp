@@ -13,7 +13,8 @@ import { setWireguard } from "../wireguard/wireguard";
 
 const MAX_CONFIG_FRAMES=10;  //How many config snapshot to store for mdeian variance calaucltions
 
-const INSTRUMENTATION_REFRESH=300;  //how often instrumentation web page gets meta refreshed
+const INSTRUMENTATION_REFRESH=300;  //BROWSER REFRESH ____ seconds
+
 const BETTER_THRESHOLD=10;
 const ACTIVE_INSTRUMENTATION=true;
 const YELLOW_TRIGGER=20;  //when we show yellow warning when meaurement is  +/- _ 10 _% from median

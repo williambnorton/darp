@@ -169,6 +169,7 @@ function processpulse( incomingPulse, messageLength) {
 
 //          authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
             var pulse=incomingPulse; var authenticated=true; //testing
+
               if (!authenticated) {
                 console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
                 return;
