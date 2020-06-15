@@ -176,8 +176,8 @@ function processpulse( incomingPulse, messageLength) {
               console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
               console.log("===============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-              redisClient.hmset(pulseLabel, pulse, function(drr,reply) {
-                  if (err) console.log("ERROR storing pulse");
+              redisClient.hmset(pulseLabel, pulse, function(err,reply) {
+                  if (err) console.log("ERROR storing pulse "+err);
               });    //store the PULSE 
 
               console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
