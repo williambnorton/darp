@@ -48,30 +48,6 @@ redisClient.hgetall("mint:0", function(err, me) {
 console.log(ts() + "PROCESSPULSE: Starting....");
 
 
-//
-//  only callback if authenticated
-//
-function authenticatedPulse(pulse, callback) {
-   redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
-
-      if (senderMintEntry == null) {
-          console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
-          //callback(null,false);
-      } else {
-          //simple authentication matches piulse mint to other resources
-          if ((senderMintEntry.geo == pulse.geo)&&(senderMintEntry.mint == pulse.srcMint)) {
-            pulse.ipaddr=senderMintEntry.ipaddr; //
-            pulse.port=senderMintEntry.port;     //
-
-            callback(pulse, true)
-          }
-          else {
-              console.log("PROCESSPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for "+pulse.srcMint+" in our mint table...we had: "+senderMintEntry.geo+" mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
-              //callback(null,false)
-          }
-      }
-  });
-}
 
 //
 //  message format: 0,56,1583783486546,MAZORE,MAZORE.1,1>1=0,2>1=0
@@ -80,7 +56,7 @@ function authenticatedPulse(pulse, callback) {
 //var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+seq+","+now()+","+me.mint+",";  //MAZORE:MAZJAP.1
 //
 //server.on('message', function(message, remote) {
-
+    
 function processPulseWorker () {
     console.log("processPulseWorker(): Waiting for handlePulse to queue up a raw pulse...");
     redisClient.brpop('rawpulses',0, function (err, incomingPulse) {
@@ -89,7 +65,7 @@ function processPulseWorker () {
         if (incomingPulse!=null) {
             var message=incomingPulse.toString();
             var ary=message.split(",");
-
+            
             var channel=ary[0];
             var incomingTimestamp=ary[1];
             message=message.substring(nth_occurrence(message, ',', 2)+1,message.length)
@@ -98,8 +74,8 @@ function processPulseWorker () {
             //A couple calculations before filling the pulse structure
             var pulseTimestamp = ary[7]; //1583783486546
             var OWL = incomingTimestamp - pulseTimestamp;
-//            console.log("measured OWL="+OWL+" for message="+message);
-
+            //            console.log("measured OWL="+OWL+" for message="+message);
+            
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length);
             //console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
@@ -121,10 +97,35 @@ function processPulseWorker () {
             };;
             console.log("****** processPulseWorker(): message="+message+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
             console.log("structured pulse="+dump(pulse));
-//            processpulse(incomingTimestamp, message);
+            //            processpulse(incomingTimestamp, message);
             processpulse(pulse,message.length);
         } else console.log("processPulseWorker(): incomingPulse==null - probably time out");
         processPulseWorker();  //go get (or wait for) the next pulse
+    });
+}
+
+//
+//  only callback if authenticated
+//
+function authenticatedPulse(pulse, callback) {
+    redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
+
+        if (senderMintEntry == null) {
+            console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
+            //callback(null,false);
+        } else {
+            //simple authentication matches piulse mint to other resources
+            if ((senderMintEntry.geo == pulse.geo)&&(senderMintEntry.mint == pulse.srcMint)) {
+            pulse.ipaddr=senderMintEntry.ipaddr; //
+            pulse.port=senderMintEntry.port;     //
+
+            callback(pulse, true)
+            }
+            else {
+                console.log("PROCESSPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for "+pulse.srcMint+" in our mint table...we had: "+senderMintEntry.geo+" mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
+                //callback(null,false)
+            }
+        }
     });
 }
     

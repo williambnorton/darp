@@ -42,29 +42,6 @@ redisClient.hgetall("mint:0", function (err, me) {
 });
 console.log(lib_js_1.ts() + "PROCESSPULSE: Starting....");
 //
-//  only callback if authenticated
-//
-function authenticatedPulse(pulse, callback) {
-    redisClient.hgetall("mint:" + pulse.srcMint, function (err, senderMintEntry) {
-        if (senderMintEntry == null) {
-            console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint " + pulse.srcMint + " this pulse:" + lib_js_1.dump(pulse));
-            //callback(null,false);
-        }
-        else {
-            //simple authentication matches piulse mint to other resources
-            if ((senderMintEntry.geo == pulse.geo) && (senderMintEntry.mint == pulse.srcMint)) {
-                pulse.ipaddr = senderMintEntry.ipaddr; //
-                pulse.port = senderMintEntry.port; //
-                callback(pulse, true);
-            }
-            else {
-                console.log("PROCESSPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for " + pulse.srcMint + " in our mint table...we had: " + senderMintEntry.geo + " mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
-                //callback(null,false)
-            }
-        }
-    });
-}
-//
 //  message format: 0,56,1583783486546,MAZORE,MAZORE.1,1>1=0,2>1=0
 //
 //    from pulser.ts:
@@ -117,6 +94,29 @@ function processPulseWorker() {
         else
             console.log("processPulseWorker(): incomingPulse==null - probably time out");
         processPulseWorker(); //go get (or wait for) the next pulse
+    });
+}
+//
+//  only callback if authenticated
+//
+function authenticatedPulse(pulse, callback) {
+    redisClient.hgetall("mint:" + pulse.srcMint, function (err, senderMintEntry) {
+        if (senderMintEntry == null) {
+            console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint " + pulse.srcMint + " this pulse:" + lib_js_1.dump(pulse));
+            //callback(null,false);
+        }
+        else {
+            //simple authentication matches piulse mint to other resources
+            if ((senderMintEntry.geo == pulse.geo) && (senderMintEntry.mint == pulse.srcMint)) {
+                pulse.ipaddr = senderMintEntry.ipaddr; //
+                pulse.port = senderMintEntry.port; //
+                callback(pulse, true);
+            }
+            else {
+                console.log("PROCESSPULSE(): authenticatedPulse(): unauthenticated packet - geo " + pulse.geo + " was not a match for " + pulse.srcMint + " in our mint table...we had: " + senderMintEntry.geo + " mint= " + senderMintEntry.mint); //+dump(pulse)+dump(senderMintEntry.geo));
+                //callback(null,false)
+            }
+        }
     });
 }
 processPulseWorker();
