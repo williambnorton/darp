@@ -13,12 +13,9 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-echo `date` "------------------ $0 STARTING v0.1 --------------------" 
-echo `date` "------------------ $0 STARTING v0.1--------------------" 
-echo `date` "------------------ $0 STARTING v0.1--------------------" 
-echo `date` "------------------ $0 STARTING v0.1--------------------" 
-echo `date` "------------------ $0 STARTING v0.1--------------------" 
-SLEEPTIME=7
+echo `date` "------------------ $0 STARTING DARP v0.2 --------------------" 
+
+SLEEPTIME=7 #time between software runs in forever loop
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -145,6 +142,12 @@ do
     echo `date` Starting config to fetch config and code from genesis node
     sleep 1
 
+    cd $DARPDIR/processpulse
+    echo `date` 'Starting processpulse...'
+    node processpulse &
+    echo $$ > $DARPDIR/processpulse.pid
+    sleep 1
+
     cd $DARPDIR
     cd $DARPDIR/pulser
     if [ -f  $DARPDIR/pulser.pid ]; then
@@ -153,12 +156,6 @@ do
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
     echo `date` 'Starting pulser...'
-    sleep 1
-
-    cd $DARPDIR/processpulse
-    node processpulse &
-    echo $$ > $DARPDIR/processpulse.pid
-    echo `date` 'Starting processpulse...'
     sleep 1
 
 
