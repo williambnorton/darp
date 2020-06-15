@@ -92,7 +92,7 @@ function processPulseWorker() {
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length);
             //console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-            console.log("processPulseWorker(): message=" + message + " owlstart=" + owlsStart, " pulseOwls=" + pulseOwls);
+            console.log("****** processPulseWorker(): message=" + message + " owlstart=" + owlsStart, " pulseOwls=" + pulseOwls);
             var pulse = {
                 version: ary[3],
                 geo: ary[4],
