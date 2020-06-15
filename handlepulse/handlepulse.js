@@ -5,7 +5,7 @@ exports.__esModule = true;
 //
 var lib_js_1 = require("../lib/lib.js");
 console.log("Starting PROCESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
-var SW_CHECK_FREQ = 120; //how many seconds between software checks
+var SW_CHECK_FREQ = 1200; //how many seconds between software checks
 var SHOWPULSES = "0";
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client

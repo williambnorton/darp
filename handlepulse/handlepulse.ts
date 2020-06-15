@@ -5,7 +5,7 @@ import {  now,  ts,  dump,  YYMMDD } from '../lib/lib.js';
 
 console.log("Starting PROCESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
-const SW_CHECK_FREQ=120; //how many seconds between software checks
+const SW_CHECK_FREQ=1200; //how many seconds between software checks
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
