@@ -35,8 +35,8 @@ redisClient.hgetall("mint:0", function (err, me) {
             //    for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - exitting - another loop around");
             //    process.exit(36)
             // }
-            for (var i = 10; i > 0; i--)
-                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED - instrumentation at http://" + me.ipaddr + ":" + me.port + "/");
+            for (var i = 3; i > 0; i--)
+                console.log(lib_js_1.ts() + "PROCESS PULSE STARTED - instrumentation at http://" + me.ipaddr + ":" + me.port + "/");
         }
     });
 });
@@ -92,7 +92,6 @@ function processPulseWorker() {
             var owlsStart = nth_occurrence(message, ',', 8); //owls start after the 7th comma
             var pulseOwls = message.substring(owlsStart + 1, message.length);
             //console.log("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-            console.log("****** processPulseWorker(): message=" + message + " owlstart=" + owlsStart, " pulseOwls=" + pulseOwls);
             var pulse = {
                 version: ary[3],
                 geo: ary[4],
@@ -110,6 +109,7 @@ function processPulseWorker() {
                 pktDrops: "0"
             };
             ;
+            console.log("****** processPulseWorker(): message=" + message + " owlstart=" + owlsStart, " pulseOwls=" + pulseOwls);
             console.log("structured pulse=" + lib_js_1.dump(pulse));
             //            processpulse(incomingTimestamp, message);
             processpulse(pulse, message.length);
@@ -160,7 +160,11 @@ function processpulse(incomingPulse, messageLength) {
                 redisClient.hset("mint:" + pulse.srcMint, "state", "RUNNING"); //GREEN-RUNNING means we received a pulse from it
                 console.log("process[pulse(): pushing  " + pulse.geo + "-" + me.geo + "-history=" + pulse.owl);
                 redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + pulse.owl); //store incoming pulse
-                console.log("===============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
+                console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
+                console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
+                console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
+                console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
+                console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
                 redisClient.hmset(pulseLabel, pulse, function (err, reply) {
                     if (err)
                         console.log("ERROR storing pulse " + err);
