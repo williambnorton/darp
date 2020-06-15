@@ -6,7 +6,7 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
 console.log("Starting PULSER GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
-var CYCLETIME = 1; //poll every ____ seconds
+var CYCLETIME = 100; //poll every ____ seconds
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
 var networkClient = dgram.createSocket('udp4');

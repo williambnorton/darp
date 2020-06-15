@@ -8,7 +8,7 @@ console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=
 //subscribe to feed - print it out.
 
 
-var OWLEXPIRES = 10; //seconds should match polling cycle time - expir
+var OWLEXPIRES = 100; //seconds should match polling cycle time - expir
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
@@ -164,8 +164,8 @@ function processpulse( incomingPulse, messageLength) {
 
           authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
               if (!authenticated) {
-                  console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
-                  return;
+                console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
+                return;
               } 
               console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *   authenticatedPulse: " + dump(pulse));
 
@@ -178,6 +178,7 @@ function processpulse( incomingPulse, messageLength) {
               };
 
               console.log("process[pulse(): incoming pulse authenticated. Writing  "+dump(pulse));
+
               redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
               console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
