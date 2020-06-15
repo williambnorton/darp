@@ -5,6 +5,7 @@ import {  now,  ts,  dump,  YYMMDD } from '../lib/lib.js';
 
 console.log("Starting PROCESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
 
+const SW_CHECK_FREQ=120; //how many seconds between software checks
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
@@ -95,7 +96,6 @@ server.on('message', function(message, remote) {
 //      Only listen to genesis pulse version#'s, Ignore all others
 //      And only check SWversion if not gnesis version, and use > comparison
 
-const SW_CHECK_FREQ=20;
 setTimeout(checkSWversion, SW_CHECK_FREQ * 1000);; // see if we need new SW
 //checkSWversion();
 function checkSWversion() {
