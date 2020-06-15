@@ -110,11 +110,16 @@ function processPulseWorker () {
 function authenticatedPulse(pulse, callback) {
     console.log("authenticatedPulse(pulse="+dump(pulse));
     redisClient.hgetall("mint:" + pulse.srcMint, function(err, senderMintEntry) {  //find its mint entry
+        console.log("@wbn1:");
         if (err) {console.log("authenticatedpulse: ERROR lloking up mint pulse.srcMint="+pulse.srcMint+"<");return;}
+        console.log("@wbn2:");
+
         if (senderMintEntry == null) {
             console.log("authenticatedPulse(): DROPPING MESSAGE We don't (yet) have a mint entry for mint "+pulse.srcMint+" this pulse:" + dump(pulse));
             callback(null,false);
         } else {
+            console.log("@wbn3:");
+
             //simple authentication matches piulse mint to other resources
             if ((senderMintEntry.geo == pulse.geo) && (senderMintEntry.mint == pulse.srcMint) ) {
                 pulse.ipaddr=senderMintEntry.ipaddr; //
