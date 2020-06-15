@@ -51,7 +51,7 @@ console.log(lib_js_1.ts() + "PROCESSPULSE: Starting....");
 //server.on('message', function(message, remote) {
 function processPulseWorker() {
     console.log("processPulseWorker(): Waiting for handlePulse to queue up a raw pulse...");
-    redisClient.brpop('rawpulses', 1, function (err, incomingPulse) {
+    redisClient.brpop('rawpulses', 10 /*secs*/, function (err, incomingPulse) {
         if (err)
             throw err;
         console.log("processPulseWorker(): Pop'd incomingPulse=" + incomingPulse);
