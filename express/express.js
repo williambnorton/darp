@@ -83,10 +83,8 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //from 
 //FAT MODEL expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"version",process.env.VERSION,"hotname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
 expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "version", process.env.VERSION, "hostname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
-/*
 //uncomment this to enter protocol single step mode for pulsing manually
-//expressRedisClient.hmset("mint:0","adminControl","SINGLESTEP");
-
+expressRedisClient.hmset("mint:0", "adminControl", "SINGLESTEP");
 /**** CONFIGURATION SET ****/
 expressRedisClient.hgetall("mint:0", function (err, me) {
     console.log("EXPRESS DARP " + me.version);
