@@ -173,21 +173,22 @@ function processpulse(incomingPulse, messageLength) {
                 process.exit(36); //SOFTWARE RELOAD
             }
             ;
-            console.log("processpulse(): incoming pulse authenticated. Writing  " + lib_js_1.dump(pulse));
+            console.log("-------->>>>>>>>>>processpulse(): incoming pulse authenticated. Writing  to REDIS" + lib_js_1.dump(pulse));
             redisClient.hmset(pulseLabel, pulse, function (err, reply) {
                 if (err)
                     console.log("ERROR storing pulse " + err);
-                redisClient.hgetall("pulseLabel", function (err, storedPulse) {
-                    console.log("stored pulse=" + lib_js_1.dump(storedPulse));
-                });
-                console.log("pulse write reply=" + lib_js_1.dump(reply));
+                else {
+                    redisClient.hgetall("pulseLabel", function (err, storedPulse) {
+                        console.log("stored pulse=" + lib_js_1.dump(storedPulse));
+                    });
+                    console.log("pulse write reply=" + lib_js_1.dump(reply));
+                }
             }); //store the PULSE 
             // redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
             console.log("process[pulse(): pushing  " + pulse.geo + "-" + me.geo + "-history=" + pulse.owl);
             redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + pulse.owl); //store incoming pulse
-            console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
             console.log("STORING incoming OWL : " + pulse.geo + " -> " + me.geo + "=" + pulse.owl + "stored as " + me.geo + " field");
-            redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES); //This pulse came to me - store OWL my latency measure
+            //redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
             redisClient.hmset("mint:" + pulse.srcMint, {
                 "owl": pulse.owl,
                 "pulseTimestamp": lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
