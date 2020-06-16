@@ -43,10 +43,7 @@ redisClient.hgetall("mint:0", function(err, me) {
   });
 });
 
-
 console.log(ts() + "PROCESSPULSE: Starting....");
-
-
 
 //
 //  message format: 0,56,1583783486546,MAZORE,MAZORE.1,1>1=0,2>1=0
@@ -173,7 +170,11 @@ function processpulse( incomingPulse, messageLength) {
                 console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
                 return;
             } 
-              console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *   authenticatedPulse: " + dump(pulse));
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *   authenticatedPulse: " + dump(pulse));
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  " );
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  " );
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  " );
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  " );
 
               if ((pulse.srcMint==1) && (pulse.version != me.version)) {
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");

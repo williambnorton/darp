@@ -161,6 +161,10 @@ function processpulse(incomingPulse, messageLength) {
                 return;
             }
             console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *   authenticatedPulse: " + lib_js_1.dump(pulse));
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  ");
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  ");
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  ");
+            console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  ");
             if ((pulse.srcMint == 1) && (pulse.version != me.version)) {
                 console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                 console.log(lib_js_1.ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
