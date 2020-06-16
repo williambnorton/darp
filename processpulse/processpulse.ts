@@ -197,12 +197,7 @@ function processpulse( incomingPulse, messageLength) {
               console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
               console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-              console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-              console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-              console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-              console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-
-
+ 
               console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
 
