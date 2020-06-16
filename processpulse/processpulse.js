@@ -173,7 +173,7 @@ function processpulse(incomingPulse, messageLength) {
                 process.exit(36); //SOFTWARE RELOAD
             }
             ;
-            console.log("-------->>>>>>>>>>processpulse(): incoming pulse authenticated. Writing  to REDIS" + lib_js_1.dump(pulse));
+            console.log("-------->>>>>>>>>>processpulse(): incoming pulse authenticated. Writing  " + pulseLabel + " to REDIS" + lib_js_1.dump(pulse));
             redisClient.hmset(pulseLabel, pulse, function (err, reply) {
                 if (err)
                     console.log("ERROR storing pulse " + err);

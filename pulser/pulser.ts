@@ -50,7 +50,7 @@ function checkAdminControl() {
 }
 setTimeout(checkAdminControl,1000);
 
-setTimeout(pulse,1000);
+setTimeout(pulse,1000);  //start pulser after a second
 var datagramClient=dgram.createSocket('udp4');
 
 /*
