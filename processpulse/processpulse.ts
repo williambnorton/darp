@@ -204,7 +204,7 @@ function processpulse( incomingPulse, messageLength) {
 
               redisClient.hmset("mint:" + pulse.srcMint, { //store this OWL in the mintTable for convenience
                 "owl": pulse.owl,
-                "pulseTimestamp" : now()  //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
+                "pulseTimestamp" : ""+now()  //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
               });
               redisClient.hmset(pulse.geo+":"+pulse.group,pulse);//THIS SHOULD EXPIRE
               redisClient.publish("pulses",JSON.stringify(pulse));

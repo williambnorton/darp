@@ -191,7 +191,7 @@ function processpulse(incomingPulse, messageLength) {
             //redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure
             redisClient.hmset("mint:" + pulse.srcMint, {
                 "owl": pulse.owl,
-                "pulseTimestamp": lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
+                "pulseTimestamp": "" + lib_js_1.now() //mark we just saw this --> we should also keep pushing EXP time out for mintEntry....
             });
             redisClient.hmset(pulse.geo + ":" + pulse.group, pulse); //THIS SHOULD EXPIRE
             redisClient.publish("pulses", JSON.stringify(pulse));
