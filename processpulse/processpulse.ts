@@ -171,10 +171,10 @@ function processpulse( incomingPulse, messageLength) {
 //          authenticatedPulse(incomingPulse, function(pulse, authenticated) { 
             var pulse=incomingPulse; var authenticated=true; //testing
 
-              if (!authenticated) {
+            if (!authenticated) {
                 console.log("IGNORING UNAUTHENTICATED PULSE: "+dump(pulse));
                 return;
-              } 
+            } 
               console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *   authenticatedPulse: " + dump(pulse));
 
               if ((pulse.srcMint==1) && (pulse.version != me.version)) {
@@ -186,8 +186,12 @@ function processpulse( incomingPulse, messageLength) {
               };
 
               console.log("processpulse(): incoming pulse authenticated. Writing  "+dump(pulse));
+              redisClient.hmset(pulseLabel, pulse, function(err,reply) {
+                if (err) console.log("ERROR storing pulse "+err);
+                console.log("pulse write reply="+dump(reply));
+              });    //store the PULSE 
 
-              redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
+             // redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
               console.log("process[pulse(): pushing  "+pulse.geo + "-" + me.geo+"-history="+pulse.owl);
               redisClient.lpush(pulse.geo + "-" + me.geo+"-history", ""+pulse.owl );  //store incoming pulse
               console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
@@ -195,9 +199,7 @@ function processpulse( incomingPulse, messageLength) {
               console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
               console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
               console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse="+dump(pulse));
-              redisClient.hmset(pulseLabel, pulse, function(err,reply) {
-                  if (err) console.log("ERROR storing pulse "+err);
-              });    //store the PULSE 
+
 
               console.log("STORING incoming OWL : " +  pulse.geo +  " -> "+me.geo + "=" + pulse.owl + "stored as "+me.geo+" field");
               redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES);  //This pulse came to me - store OWL my latency measure

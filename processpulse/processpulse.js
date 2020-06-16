@@ -171,7 +171,12 @@ function processpulse(incomingPulse, messageLength) {
             }
             ;
             console.log("processpulse(): incoming pulse authenticated. Writing  " + lib_js_1.dump(pulse));
-            redisClient.hset("mint:" + pulse.srcMint, "state", "RUNNING"); //GREEN-RUNNING means we received a pulse from it
+            redisClient.hmset(pulseLabel, pulse, function (err, reply) {
+                if (err)
+                    console.log("ERROR storing pulse " + err);
+                console.log("pulse write reply=" + lib_js_1.dump(reply));
+            }); //store the PULSE 
+            // redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it
             console.log("process[pulse(): pushing  " + pulse.geo + "-" + me.geo + "-history=" + pulse.owl);
             redisClient.lpush(pulse.geo + "-" + me.geo + "-history", "" + pulse.owl); //store incoming pulse
             console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
@@ -179,10 +184,6 @@ function processpulse(incomingPulse, messageLength) {
             console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
             console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
             console.log("                  ==*=============> processpulse(): saving pulse  " + pulseLabel + " pulse=" + lib_js_1.dump(pulse));
-            redisClient.hmset(pulseLabel, pulse, function (err, reply) {
-                if (err)
-                    console.log("ERROR storing pulse " + err);
-            }); //store the PULSE 
             console.log("STORING incoming OWL : " + pulse.geo + " -> " + me.geo + "=" + pulse.owl + "stored as " + me.geo + " field");
             redisClient.hset(me.geo, pulse.geo, pulse.owl, 'EX', OWLEXPIRES); //This pulse came to me - store OWL my latency measure
             redisClient.hmset("mint:" + pulse.srcMint, {
