@@ -174,6 +174,9 @@ function processpulse(incomingPulse, messageLength) {
             redisClient.hmset(pulseLabel, pulse, function (err, reply) {
                 if (err)
                     console.log("ERROR storing pulse " + err);
+                redisClient.hgetall("pulseLabel", function (err, storedPulse) {
+                    console.log("stored pulse=" + lib_js_1.dump(storedPulse));
+                });
                 console.log("pulse write reply=" + lib_js_1.dump(reply));
             }); //store the PULSE 
             // redisClient.hset("mint:"+pulse.srcMint, "state", "RUNNING");  //GREEN-RUNNING means we received a pulse from it

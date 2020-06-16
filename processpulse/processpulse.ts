@@ -188,6 +188,9 @@ function processpulse( incomingPulse, messageLength) {
               console.log("processpulse(): incoming pulse authenticated. Writing  "+dump(pulse));
               redisClient.hmset(pulseLabel, pulse, function(err,reply) {
                 if (err) console.log("ERROR storing pulse "+err);
+                redisClient.hgetall("pulseLabel",function (err,storedPulse){
+                    console.log("stored pulse="+dump(storedPulse));
+                })
                 console.log("pulse write reply="+dump(reply));
               });    //store the PULSE 
 
