@@ -7,6 +7,7 @@
 #     every directory in this directory will have a same samed microservice to launch
 # 2) Killing off should also use the same process
 #	
+# NOT COMPLETE YET - DO NOT USE - Come back to this.
 
 microservices=`cd microservices;ls;cd ..`
 echo `date` $0 launching $microservices
@@ -21,10 +22,15 @@ else
 	MODE=Killing
 	echo `date` Killing DARP microservices
 fi
+//
+//	first launch the pre requisite services:
+//	IN ORDER
+
 if [ "$MODE" == "Launching" ]; then
-	echo `date` launching redis
+	echo `date` launching redis data store and msg bus
 	redis-server &
 	sleep 1; #wait to let redis start
+	
 else
 	pid=`ps aux | grep redis-server | grep -v grep | awk '{ print $2 }'`
 	echo `date` Killing redis server pid=$pid
