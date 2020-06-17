@@ -125,13 +125,13 @@ do
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
-    sleep 2
+    sleep 2     #allow server to start up to distribute code and config
 
     #echo `date` Launching forever script
     #cd /darp/scripts
     #./forever.bash  #Start the system
     cd $DARPDIR
-    echo `date` Connecting to GENESIS node to get my configuration
+    echo `date` Connecting to GENESIS node to get my code and configuration
     cd $DARPDIR/config
     if [ -f  $DARPDIR/config.pid ]; then
         kill `cat $DARPDIR/config.pid`
@@ -146,7 +146,7 @@ do
     echo `date` 'Starting processpulse...'
     node processpulse &
     echo $$ > $DARPDIR/processpulse.pid
-    sleep 10
+    sleep 1
 
     cd $DARPDIR
     cd $DARPDIR/pulser

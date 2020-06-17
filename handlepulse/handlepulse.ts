@@ -11,42 +11,53 @@ var SHOWPULSES = "0";
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
+
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
+function checkForConfig() {
 //
-//  First make sure my context is set - REDIS and Genesis node connected
+//  First make sure my context is set - REDIS up, and Genesis node connected
+//  
 //
-var MYBUILD = "";
-var isGenesisNode = false;
+
 redisClient.hgetall("mint:0", function(err, me) {
+  if ((err) || (me==null)) {
+    console.log(ts() + "HANDLEPULSE started with no mint:0 retrying in a few seconds");
+    setTimeout(checkForConfig,2000);
+    return;
+  }
   console.log("HANDLEPULSE starting with me=" + dump(me));
   redisClient.hgetall("mint:1", function(err, genesis) {
       if (me == null) {
-          console.log(ts() + "HANDLEPULSE started with no genesis mint:1 EXITTING...");
+          console.log(ts() + "HANDLEPULSE started with no genesis mint:1 ");
           process.exit(36)
       } else {
           SHOWPULSES = me.SHOWPULSES
           console.log(ts() + "HANDLEPULSE started with genesis=" + dump(genesis));
           if (genesis == null) {
-              for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - exitting - another loop around");
-              process.exit(36)
+              for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - retrying in a few seconds ");
+              setTimeout(checkForConfig,2000); 
           }
           for (var i = 10; i > 0; i--) console.log(ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
-
+          main();
       }
   });
 });
+}
+checkForConfig();
 
-
+function main() {
 console.log(ts() + "handlePulse: Starting");
 //
 //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
 //
 redisClient.hgetall("mint:0", function(err, me) {
+  if ((err) || (me==null)) {
+    console.log("handlepulse: can't find self - exitting");
+    process.exit(36); //reload software and try again
+  }
   //console.log("handlePulse(): Configuration  me="+dump(me));
-  MYBUILD = me.version;
-  isGenesisNode = me.isGenesisNode;
   console.log(ts() + "handlepulse(): Binding pulsePort on UDP port " + me.port);
   server.bind(me.port, "0.0.0.0");
 });
@@ -141,9 +152,9 @@ function checkSWversion() {
                     var version = JSON.parse(body);
                     
                     //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
-                    if ((version != MYBUILD) ) {
+                    if ((version != me.version) ) {
                         if (me.ipaddr==genesis.ipaddr) return console.log("ignoring this software version - I am genesis node");
-                        console.log(ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + MYBUILD + " .......process exitting");
+                        console.log(ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
                     }
                 });
@@ -171,3 +182,4 @@ process.on('SIGTERM', () => {
   console.info('handlePulse SIGTERM signal received.');
   process.exit(36);
 });
+}
