@@ -300,7 +300,7 @@ if (typeof oneTime == "undefined") {
                   getMints(redisClient, ownerPulseLabel, function(mints) {   //we drive pulses off of pulseOwner's population
                     // get nodes' list of mints to send pulse to,
                     // and send pulse
-                    console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
+                    console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" SENDING PULSE PACKETS pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
                     sendPulsePackets(mints,pulseMessage,null);   //send these mints my OWLs
                   });
               });

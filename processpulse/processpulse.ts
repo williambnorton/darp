@@ -55,7 +55,7 @@ console.log(ts() + "PROCESSPULSE: Starting....");
     
 function processPulseWorker () {
     console.log("processPulseWorker(): Waiting for handlePulse to queue up a raw pulse...");
-    redisClient.brpop('rawpulses',10/*secs*/, function (err, incomingPulse) {
+    redisClient.brpop('rawpulses',0/*secs*/, function (err, incomingPulse) {
         if (err) throw err;
         console.log("processPulseWorker(): Pop'd incomingPulse="+incomingPulse);
         if (incomingPulse!=null) {
@@ -176,13 +176,13 @@ function processpulse( incomingPulse, messageLength) {
             console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  " );
             console.log("********  * * * * * * * * * * *   * * * * * * * * * * * * * * * * *  " );
 
-              if ((pulse.srcMint==1) && (pulse.version != me.version)) {
+            if ((pulse.srcMint==1) && (pulse.version != me.version)) {
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                 console.log(ts() + " ******** PROCESSPULSE(): GENESIS SAID NEW SOFTWARE AVAILABLE isGenesisNode=" + isGenesisNode + " - GroupOwner said " + pulse.version + " we are running " + MYBUILD + " .......process exitting");
                 console.log("Genesis node pulsed us as " + pulse.version + " me.version=" + me.version + " dump pulse=" + dump(pulse));
                 process.exit(36); //SOFTWARE RELOAD
-              };
+            };
 
               console.log("-------->>>>>>>>>>processpulse(): incoming pulse authenticated. Writing  "+pulseLabel+" to REDIS"+dump(pulse));
               redisClient.hmset(pulseLabel, pulse, function(err,reply) {

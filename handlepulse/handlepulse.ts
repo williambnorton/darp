@@ -11,11 +11,10 @@ var SHOWPULSES = "0";
 const pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 
-
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 
-function checkForConfig() {
+//function checkForConfig() {
 //
 //  First make sure my context is set - REDIS up, and Genesis node connected
 //  
@@ -23,9 +22,10 @@ function checkForConfig() {
 
 redisClient.hgetall("mint:0", function(err, me) {
   if ((err) || (me==null)) {
-    console.log(ts() + "HANDLEPULSE started with no mint:0 retrying in a few seconds");
-    setTimeout(checkForConfig,2000);
-    return;
+    console.log(ts() + "HANDLEPULSE started with no mint:0 ... failing");
+    process.exit(36);
+    //setTimeout(checkForConfig,2000);
+    //return;
   }
   console.log("HANDLEPULSE starting with me=" + dump(me));
   redisClient.hgetall("mint:1", function(err, genesis) {
@@ -37,17 +37,17 @@ redisClient.hgetall("mint:0", function(err, me) {
           console.log(ts() + "HANDLEPULSE started with genesis=" + dump(genesis));
           if (genesis == null) {
               for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - retrying in a few seconds ");
-              setTimeout(checkForConfig,2000); 
+              //setTimeout(checkForConfig,2000); 
           }
           for (var i = 10; i > 0; i--) console.log(ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
-          main();
+//          main();
       }
   });
 });
-}
-checkForConfig();
+//}
+//checkForConfig();
 
-function main() {
+//function main() {
   console.log(ts() + "handlePulse: Starting");
   //
   //  mint:0 is me and my configuration, mint:1 is the groupOwner - a Genesis node
@@ -182,4 +182,4 @@ function main() {
     console.info('handlePulse SIGTERM signal received.');
     process.exit(36);
   });
-}
+//}
