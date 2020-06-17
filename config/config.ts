@@ -4,6 +4,13 @@
 import { now, ts ,dump} from '../lib/lib.js';
 import { setWireguard } from "../wireguard/wireguard";
 
+if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME='localhost'
+if (typeof process.env.GENESIS == "undefined") process.env.GENESIS='127.0.0.1'
+if (typeof process.env.MYIP == "undefined") process.env.MYIP='127.0.0.1'
+if (typeof process.env.VERSION == "undefined") process.env.VERSION='Build.'
+if (typeof process.env.WALLET == "undefined") process.env.WALLET='auto'
+if (typeof process.env.PUBLICKEY == "undefined") process.env.PUBLICKEY='auto'
+
 
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
@@ -126,7 +133,7 @@ function getConfiguration() {
 
 
                 
-                //install config
+                //install config 
                 for (var mint in config.mintTable) {
                     var mintEntry=config.mintTable[mint];
                     //console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));
