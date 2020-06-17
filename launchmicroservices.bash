@@ -29,15 +29,34 @@ fi
 if [ "$MODE" == "Launching" ]; then
 	echo `date` launching redis data store and msg bus
 	redis-server &
+	sleep 1
+	cd express ; node express &; cd ..
+	sleep 1
+	cd config; node config &; cd ..
 	sleep 1; #wait to let redis start
-	
+	cd processpulse; node processpulse &; cd ..
+	sleep 1
+	cd pulser; node pulser &; cd ..
+	sleep 1
+	cd handlepulser; node handlepulse &; cd ..
+	sleep 1
 else
 	pid=`ps aux | grep redis-server | grep -v grep | awk '{ print $2 }'`
 	echo `date` Killing redis server pid=$pid
 	kill $pid
+	pid=`ps aux | grep express | grep -v grep | awk '{ print $2 }'`
+	echo `date` Killing express service pid=$pid
+	kill $pid
+	pid=`ps aux | grep config | grep -v grep | awk '{ print $2 }'`
+	echo `date` Killing config service pid=$pid
+	kill $pid
+	pid=`ps aux | grep | grep -v grep | awk '{ print $2 }'`
+	echo `date` Killing config service pid=$pid
+	kill $pid
+
 fi
 
-for microservice in $microservices
+for microservice in express config processpulse pulser
 do
   #
   #   cd into microserviuce directory and launch service as independent backgorund process
