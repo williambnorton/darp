@@ -38,7 +38,7 @@ redisClient.hgetall("mint:0", function (err, me) {
                 //setTimeout(checkForConfig,2000); 
             }
             for (var i = 10; i > 0; i--)
-                console.log(lib_js_1.ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
+                console.log(lib_js_1.ts() + __dirname + " DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
             //          main();
         }
     });

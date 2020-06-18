@@ -39,7 +39,7 @@ redisClient.hgetall("mint:0", function(err, me) {
               for (var i = 10; i > 0; i--) console.log(ts() + "Genesis not connected - retrying in a few seconds ");
               //setTimeout(checkForConfig,2000); 
           }
-          for (var i = 10; i > 0; i--) console.log(ts() + "DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
+          for (var i = 10; i > 0; i--) console.log(ts() + __dirname+" DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
 //          main();
       }
   });
