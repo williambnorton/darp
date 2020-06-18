@@ -12,10 +12,13 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
-var MAX_CONFIG_FRAMES = 30; //How many config snapshot to store for mdeian variance calaucltions
-var YELLOW_TRIGGER = 30; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
-var ORANGE_TRIGGER = 40; //when we show orange warning 
-var RED_TRIGGER = 50; //when we show red warning 
+var MAX_CONFIG_FRAMES = 10; //How many config snapshot to store for mdeian variance calaucltions
+var INSTRUMENTATION_REFRESH = 300; //BROWSER REFRESH ____ seconds
+var BETTER_THRESHOLD = 10;
+var ACTIVE_INSTRUMENTATION = true;
+var YELLOW_TRIGGER = 20; //when we show yellow warning when meaurement is  +/- _ 10 _% from median
+var ORANGE_TRIGGER = 30; //when we show orange warning 
+var RED_TRIGGER = 40; //when we show red warning 
 console.log("Starting EXPRESS GENESIS=" + process.env.GENESIS + " PORT=" + process.env.PORT + " HOSTNAME=" + process.env.HOSTNAME + " VERSION=" + process.env.VERSION);
 var expressRedis = require('redis');
 var expressRedisClient = expressRedis.createClient(); //creates a new client
@@ -25,9 +28,10 @@ var app = express();
 var mintStack = 1;
 var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
-var DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
+//const DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
 //const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
-//const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
+var DEFAULT_START_STATE = "SINGLESTEP";
+console.log(lib_1.ts() + "EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
 //      Environment is way for environment to control the code
 if (!process.env.DARPDIR) {
@@ -79,10 +83,8 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //from 
 //FAT MODEL expressRedisClient.hmset("mint:0","geo",GEO,"port",PORT,"wallet",WALLET,"version",process.env.VERSION,"hotname",process.env.HOSTNAME,"genesis",process.env.GENESIS,"publickey",PUBLICKEY);
 expressRedisClient.hmset("mint:0", "geo", GEO, "port", PORT, "wallet", WALLET, "version", process.env.VERSION, "hostname", process.env.HOSTNAME, "genesis", process.env.GENESIS, "publickey", PUBLICKEY);
-/*
 //uncomment this to enter protocol single step mode for pulsing manually
-//expressRedisClient.hmset("mint:0","adminControl","SINGLESTEP");
-
+expressRedisClient.hmset("mint:0", "adminControl", "SINGLESTEP");
 /**** CONFIGURATION SET ****/
 expressRedisClient.hgetall("mint:0", function (err, me) {
     console.log("EXPRESS DARP " + me.version);
@@ -195,7 +197,7 @@ function getMatrixTable(config, darp, callback) {
 //
 function handleShowState(req, res) {
     var dateTime = new Date();
-    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 120 + '">'; //TODO: dynamic refresh based on new node adds
+    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + INSTRUMENTATION_REFRESH + '">'; //TODO: dynamic refresh based on new node adds
     expressRedisClient.hgetall("mint:0", function (err, me) {
         if (me == null)
             return console.log("handleShowState(): WEIRD: NULL mint:0");
@@ -219,7 +221,7 @@ function handleShowState(req, res) {
         txt += '      if (FREEZEBTN=="FREEZE") FREEZEBTN="UNFREEZE"; else FREEZEBTN="FREEZE";';
         txt += '      $("#btnSubmit").val(FREEZEBTN);';
         txt += '   }); ';
-        //wbnwbnwbn
+        //
         txt += '  $("#btnBack").click(function(){';
         txt += '      renderPage(configs.pop());'; //DOES NOT WORK YET
         txt += '   }); ';
@@ -240,7 +242,7 @@ function handleShowState(req, res) {
         //
         //      Render table from information in the state fetched from node
         //
-        txt += '      $("#dateTime").html( "<h1>Updated: " + timeStr + "</h1>" );'; //we show this epoch
+        txt += '      $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
         txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
         //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
         txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
@@ -279,15 +281,15 @@ function handleShowState(req, res) {
         //
         txt += '             if (isNaN(owl)) owl="?";';
         //txt += '               '
-        txt += '                 var owlHTML=\'<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;';
+        txt += '                 var owlHTML=\'<div class="fade-out"><a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;';
         txt += '                 owlHTML+=\'">\' ;';
-        txt += '                 if (owl!="?") owlHTML += owl + "ms</a>";';
-        txt += '                 else owlHTML += "|_|</a>";';
+        txt += '                 if (owl!="?") owlHTML += owl + "ms</a></div>";';
+        txt += '                 else owlHTML += "?</a></div>";';
         //txt += '               console.log("owlHTML="+owlHTML);'
         //        txt += '               $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
         txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
-        txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white");'; //no owl or median - blank white
-        txt += '          else if (srcMint!=dstMint) {';
+        txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").html(" ");'; //no owl or median - blank white
+        txt += '          else if ((srcMint!=dstMint) && (' + ACTIVE_INSTRUMENTATION + ')) {';
         //
         //      highlight bad standard deviations 
         //
@@ -309,8 +311,8 @@ function handleShowState(req, res) {
         txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
         txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
         txt += '                        var improvement=owl-(srcToAlt+altToDst);';
-        txt += '                        console.log( ">5 ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
-        txt += '                        if (improvement>5) {';
+        txt += '                        console.log( ">' + BETTER_THRESHOLD + ' ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
+        txt += '                        if (improvement>' + BETTER_THRESHOLD + ') {';
         txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","3px");';
         txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","3px");'; //highlight better path
         txt += '                        }';
@@ -324,31 +326,27 @@ function handleShowState(req, res) {
         txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
         txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
         //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
-        /*
-                txt += '               if (percentOfMedian>30) $("."+srcMint+"-"+dstMint).css("background-color","grey");'
-        */
         txt += '            }';
         txt += '         }';
         txt += '      }';
-        //txt += '     console.log("arrayWidth="+arrayWidth +"startingArrayWidth="+startingArrayWidth);'
-        //txt += '     console.log("arrayWidth-startingArrayWidth=" + ( arrayWidth-startingArrayWidth));'
-        //txt += '     if (startingArrayWidth<arrayWidth+4) { console.log("RELOADING BROWSER for bigger matrix");    location.reload(true); }'
-        //txt +='      if (startingArrayWidth==0) startingArrayWidth=arrayWidth;'
         txt += "    };";
+        txt += 'var nodeCountLastTime=0;';
         txt += 'function fetchState() {';
         txt += '   $.getJSON(URL, function(config) {';
         txt += '      configs.unshift(config);'; //push onto front of stack
         txt += '      if ( configs.length > ' + MAX_CONFIG_FRAMES + ' ) configs.pop();'; //pop off end of stack (60 seconds worth kept)
         txt += '      if (FREEZEBTN=="FREEZE") renderPage(config);';
+        txt += '         var nodeCountNow=config.nodeCount;';
+        //txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+        txt += '      if ( nodeCountLastTime >= 1 ) {';
+        txt += '         if (nodeCountLastTime!=nodeCountNow) {';
+        txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+        txt += '             location.reload();';
+        txt += '         }';
         txt += '      ';
+        txt += '      }';
+        txt += '         nodeCountLastTime=nodeCountNow;';
         txt += '   });';
-        //TODO: This should be a full mesh of unique active mints from gSRlist
-        //txt += "function mystddev(array) {"
-        //txt += "   const n = array.length;"
-        //txt += '   const mean = array.reduce((a,b) => a+b)/n;'
-        //txt += '   const s = Math.sqrt(array.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
-        //txt += '   return s;'
-        //txt += "}"
         txt += "    setTimeout(fetchState,1000);";
         txt += "}";
         txt += "function getOWL(config,src,dst) { ";
@@ -436,12 +434,13 @@ function handleShowState(req, res) {
             txt += '<input id = "btnBack" type="submit" value="<"/>';
             txt += '<input id = "btnSubmit" type="submit" value="Freeze"/>';
             txt += '<input id = "btnForward" type="submit" value=">"/>';
+            txt += '<input id = "btnSubmit" type="submit" value="JOIN MY PULSEGROUP"/>';
             //         var OWLMatrix=getLiveMatrixTable();
             getMatrixTable(config, null, function (OWLMatrix) {
                 //
                 //   show OWL Matrix table
                 //
-                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + '</h2><table>';
+                txt += '<br><h2>' + me.group + ' OWL Matrix for pulseGroup: ' + me.group + ' ACTIVE_INSTRUMENTATION:' + ACTIVE_INSTRUMENTATION + '</h2><table>';
                 txt += '<tr><th></th>';
                 var lastEntry = "";
                 var count = 0;
@@ -475,11 +474,12 @@ function handleShowState(req, res) {
                             (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                             owl = OWLMatrix[rowEntry.geo][colEntry.geo];
                         }
-                        txt += '<td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + "</td>";
+                        txt += '<div class="fade-out"><td class="' + rowEntry.srcMint + "-" + colEntry.srcMint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + me.group + '" >' + owl + "ms</a>" + "</td></div>";
                     }
                     txt += "</tr>";
                 }
                 txt += "</table>";
+                txt += "<p>Legend: Color highlights deviation from median (over last " + MAX_CONFIG_FRAMES + " seconds).</p><p>Background color shows Yellow " + YELLOW_TRIGGER + "% / Orange " + ORANGE_TRIGGER + "% / Red " + RED_TRIGGER + "% off the median.</p><p>GREEN border is intermediary >" + BETTER_THRESHOLD + "ms better than a direct path (border BLACK).</p></body></html>";
                 //
                 //  Externalize pulse structures 
                 //
@@ -504,7 +504,9 @@ function handleShowState(req, res) {
                 txt += "<th>owls</th>";
                 txt += "<th>bootTimestamp</th>";
                 txt += "<th>version</th>";
+                txt += "<th>Wallet Balance</th>";
                 txt += "</tr>";
+                var total = 0; //Add up total balance of all pulses
                 //console.log(ts()+"                            pulses="+dump(pulses));
                 for (var a in pulses) {
                     var pulseEntry = pulses[a];
@@ -526,7 +528,8 @@ function handleShowState(req, res) {
                     txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
                     //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
                     txt += "<td>" + pulseEntry.srcMint + "</td>";
-                    txt += '<td class="' + pulseEntry.geo + '_owl"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+                    // OWL
+                    txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                     //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
                     //txt+="<td>"+pulseEntry.owls+"</td>"
                     txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
@@ -554,9 +557,13 @@ function handleShowState(req, res) {
                     //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                     txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
+                    var balance = (Math.min(parseInt(pulseEntry.inOctets), parseInt(pulseEntry.outOctets)) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
+                    total = total + balance;
+                    txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
                     //txt+="<td>"+pulseEntry.lastMsg+"</td>"
                     txt += "</tr>";
                 }
+                txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $' + total.toFixed(6) + '</td></tr>';
                 txt += "</table>";
                 //
                 //  Externalize mintTable 
@@ -607,7 +614,7 @@ function handleShowState(req, res) {
                     txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
                     //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                     //txt += "<td>" + mintEntry.owl + " ms</td>"
-                    txt += '<td class="' + mintEntry.geo + '_owl"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
+                    txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + me.group + '" >' + mintEntry.owl + "</a> ms</td>";
                     //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                     //            txt+="<td>"+mintEntry.rtt+"</td>"
                     var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
@@ -643,15 +650,15 @@ function handleShowState(req, res) {
                 txt += '<br><h2>gSRlist</h2><table>';
                 txt += "<tr><th>pulse</th><th>mint</th></tr>";
                 for (var entry in gSRlist) {
-                    var mint = gSRlist[entry].split("_")[0];
-                    var gEntryLabel = gSRlist[entry].split("_")[1];
+                    var mint = gSRlist[entry].split("_")[1];
+                    var gEntryLabel = gSRlist[entry].split("_")[0];
                     //console.log(ts()+"mint="+mint);
                     txt += '<tr><td><a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mint + "</a></td><td><a>" + gEntryLabel + "</a></td></tr>";
                 }
                 txt += "</table>";
                 res.setHeader('Content-Type', 'text/html');
                 res.setHeader("Access-Control-Allow-Origin", "*");
-                res.end(txt + "<p>Legend: Color is deviation from median (last 30 seconds) Yellow/Orange/Red: " + YELLOW_TRIGGER + "% /" + ORANGE_TRIGGER + "% /" + RED_TRIGGER + "% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>"); //wbnwbnwbn
+                res.end(txt + "<p>Legend: Color is deviation from median (last " + MAX_CONFIG_FRAMES + " seconds) Yellow/Orange/Red: " + YELLOW_TRIGGER + "% /" + ORANGE_TRIGGER + "% /" + RED_TRIGGER + "% . GREEN border is a preferred path for relaying instead of a direct path with border BLACK.</p></body></html>"); //
                 return;
             });
         });
@@ -663,7 +670,7 @@ function handleShowState(req, res) {
 app.get('/state', function (req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res);
-    makeConfig(function (config) {
+    makeConfigAll(function (config) {
         //console.log("app.get('/state' callback config="+dump(config));
         expressRedisClient.hgetall("mint:0", function (err, me) {
             config.mintTable["mint:0"] = me;
@@ -737,7 +744,7 @@ app.get('/reload', function (req, res) {
 app.get('/config', function (req, res) {
     //console.log("EXPRess wbn fetching '/config' ");
     makeConfigAll(function (config) {
-        //  console.log("app.get(/config pulseRecordTable=" + dump(config));
+        //console.log("app.get(/config =" + dump(config));
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.end(JSON.stringify(config, null, 2));
@@ -757,7 +764,7 @@ app.get('/forever', function(req, res) {
 **/
 app.get('/state', function (req, res) {
     //console.log("EXPRess fetching '/state' state");
-    makeConfig(function (config) {
+    makeConfigAll(function (config) {
         //console.log("app.get('/state' callback config="+dump(config));
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
@@ -845,7 +852,7 @@ function grapher(res, SRC, DST) {
         //expressRedisClient.hgetall("mint:"+SRC, function(err, srcEntry) {
         //expressRedisClient.hgetall("mint:"+DST, function(err, dstEntry) {
         //if (srcEntry!=null && dstEntry!=null) {
-        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
+        txt += 'var chart = new CanvasJS.Chart("chartContainer", { animationEnabled: true, theme: "light2", title:{ text: "' + SRC + "-" + DST + " " + lib_1.YYMMDD() + '" }, axisY:{ includeZero: false }, data: [{        type: "line",       dataPoints: [ ';
         expressRedisClient.lrange(DST + "-" + SRC, -1 * 60 * 60, -1, function (err, samples) {
             //console.log("EXPRESS: DumpSamples:"+dump(samples));                   
             for (var sample in samples) {
@@ -1026,13 +1033,15 @@ function fetchConfigAll(gSRlist, config, callback) {
                 gSRlist[sEntryLabel] = "0" + gSRlist[sEntryLabel];
             allStack.push(gSRlist[sEntryLabel] + "_" + sEntryLabel);
         }
-        allStack.sort();
+        allStack.sort(); //TODO: This should be done using sorted redis list
+        //console.log("fetchConfigAll(): nodeCount="+allStack.length);
         //we need srlist to be an array of objects we can sort
         // { "mint" : mint, "entryLabel" : entryLabel }
         // sort(compareBy('mint'))
         //console.log("allStack: "+dump(allStack));
         config = {
             //gSRlist: gSRlist,
+            nodeCount: allStack.length,
             gSRlist: allStack,
             mintTable: {},
             pulses: {},
@@ -1260,15 +1269,34 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                                                                }
                                         */
                                         makeConfigAll(function (config) {
-                                            console.log("EXPRESS(): makeConfigAll gave us config=" + lib_1.dump(config));
-                                            console.log(lib_1.ts() + "makeConfig now replaces genesis node info with mint0");
-                                            var myMint = geo.split("_")[0];
-                                            var myGeo = geo.split("_")[1];
-                                            var gMint = mint1.geo.split("_")[0];
-                                            var gGeo = mint1.geo.split("_")[1];
-                                            console.log(":myMint=" + myMint + " myGeo=" + myGeo + " gMint=" + gMint + " gGeo=" + gGeo);
-                                            config.gSRlist[myGeo + ":" + mint1.group] = "" + newMint;
-                                            config.gSRlist[gGeo + ":" + mint1.group] = "1";
+                                            //console.log("EXPRESS(): makeConfigAll gave us config="+dump(config));
+                                            /*
+                                                                                        var sortedGSRlist=new Array();
+                                                                                        var allStack=[];
+                                                                                        for (var sEntryLabel in config.gSRlist) {
+                                                                                            var mint      =config.gSRlist[sEntryLabel].split("_")[0];
+                                                                                            var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
+                                                                                            allStack.push( { [entryLabel] : mint } );
+                                                                                        }
+                                                                                        config.gSRlist=allStack.sort(); //TODO: This should be done using sorted redis list
+                                            
+                                                                                                    //replaces this next bit
+                                            
+                                            
+                                                                                        var old_gSRlist=config.gSRlist;
+                                                                                        for (var g in old_gSRlist) {
+                                                                                            var entry=old_gSRlist[g];
+                                                                                            var myMint=parseInt(entry.split("_")[0]);
+                                                                                            var pulseLabel=entry.split("_")[1];
+                                                                                            console.log("myMint="+myMint+" pulseLabel="+pulseLabel);
+                                                                                            config.gSRlist[ pulseLabel ] = "" + myMint ;    //get rid of leading 0
+                                                                                            //config.gSRlist[ gGeo + ":" + mint1.group ] = "1";
+                                                                                        }
+                                                                                        //config.gSRlist={[new_gSRlist]};
+                                            
+                                            */
+                                            //console.log("EXPRESS(): STARTING WITH config.gSRlist="+config.gSRlist);
+                                            //console.log(ts()+"makeConfig now replaces genesis node info with mint0");
                                             config.mintTable["mint:0"] = mintN; //    Install this new guy's mint0 into config
                                             config.mintTable["mint:1"] = mint1;
                                             config.mintTable["mint:" + newMint] = mintN; //    Install this new guy's mint0 into config
@@ -1281,7 +1309,7 @@ function provisionNode(newMint, geo, port, incomingIP, publickey, version, walle
                                             //config.isGenesisNode=(config.mintTable["mint:0"].mint==1)
                                             console.log(lib_1.ts() + "EXPRESS:  Sending NON-GENESIS config:" + lib_1.dump(config));
                                             wireguard_1.setWireguard();
-                                            console.log("EXPRESS(): about to launch config=" + lib_1.dump(config));
+                                            //console.log("EXPRESS(): about to launch config="+dump(config));
                                             callback(config); //parent routine's callback
                                         });
                                         //console.log(ts()+"newMint="+newMint+" "+dump(config));

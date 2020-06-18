@@ -5,6 +5,18 @@ exports.__esModule = true;
 //
 var lib_js_1 = require("../lib/lib.js");
 var wireguard_1 = require("../wireguard/wireguard");
+if (typeof process.env.HOSTNAME == "undefined")
+    process.env.HOSTNAME = 'localhost';
+if (typeof process.env.GENESIS == "undefined")
+    process.env.GENESIS = '127.0.0.1';
+if (typeof process.env.MYIP == "undefined")
+    process.env.MYIP = '127.0.0.1';
+if (typeof process.env.VERSION == "undefined")
+    process.env.VERSION = 'Build.';
+if (typeof process.env.WALLET == "undefined")
+    process.env.WALLET = 'auto';
+if (typeof process.env.PUBLICKEY == "undefined")
+    process.env.PUBLICKEY = 'auto';
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
 console.log("Starting CONFIG GENESIS=" + process.env.GENESIS + " HOSTNAME=" + process.env.HOSTNAME + " PORT=" + process.env.PORT + " VERSION=" + process.env.VERSION + " MYIP=" + process.env.MYIP);
@@ -91,8 +103,16 @@ function getConfiguration() {
             }
             else {
                 console.log(lib_js_1.ts() + "CONFIG Configuring non-genesis node ... config.isGenesisNode=" + config.isGenesisNode);
-                redisClient.hmset("gSRlist", config.gSRlist);
-                //install config
+                for (var sEntryLabel in config.gSRlist) {
+                    var smint = parseInt(config.gSRlist[sEntryLabel].split("_")[0]);
+                    var entryLabel = config.gSRlist[sEntryLabel].split("_")[1];
+                    redisClient.hset("gSRlist", entryLabel, "" + smint);
+                }
+                //wbnwbnwbn
+                redisClient.hgetall("gSRlist", function (err, gSRlist) {
+                    console.log("gSRlist=" + lib_js_1.dump(gSRlist));
+                });
+                //install config 
                 for (var mint in config.mintTable) {
                     var mintEntry = config.mintTable[mint];
                     //console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));

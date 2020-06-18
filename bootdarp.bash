@@ -13,12 +13,9 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
-echo `date` "------------------ $0 STARTING --------------------" 
+echo `date` "------------------ $0 STARTING DARP v0.2 --------------------" 
 
+SLEEPTIME=7 #time between software runs in forever loop
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -39,8 +36,8 @@ export PORT
 echo PORT=$PORT
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
-#MYIP=`curl ifconfig.io`
-MYIP=`curl https://ip.noia.network/|sed '1,$s/\"//g'`  #NOIA has extra "surrounding"
+MYIP=`curl ifconfig.io`
+#MYIP=`curl https://ip.noia.network/|sed '1,$s/\"//g'`  #NOIA has extra "surrounding"
 echo `date` "MYIP fetch rc=$? MYIP=$MYIP"
 export MYIP=$MYIP
 echo `date` MYIP=$MYIP
@@ -67,6 +64,7 @@ echo GENESISIP=$GENESISIP
 #
 #The order of startup is important here
 echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
+CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
@@ -127,13 +125,13 @@ do
     cd $DARPDIR/express
     node express &
     echo $$ > $DARPDIR/express.pid
-    sleep 2
+    sleep 2     #allow server to start up to distribute code and config
 
     #echo `date` Launching forever script
     #cd /darp/scripts
     #./forever.bash  #Start the system
     cd $DARPDIR
-    echo `date` Connecting to GENESIS node to get my configuration
+    echo `date` Connecting to GENESIS node to get my code and configuration
     cd $DARPDIR/config
     if [ -f  $DARPDIR/config.pid ]; then
         kill `cat $DARPDIR/config.pid`
@@ -144,25 +142,25 @@ do
     echo `date` Starting config to fetch config and code from genesis node
     sleep 1
 
+    cd $DARPDIR/processpulse
+    echo `date` 'Starting processpulse...'
+    node processpulse &
+    echo $$ > $DARPDIR/processpulse.pid
+    sleep 1
+
     cd $DARPDIR
     cd $DARPDIR/pulser
     if [ -f  $DARPDIR/pulser.pid ]; then
         kill `cat $DARPDIR/pulser.pid`
     fi
+    echo `date` 'Starting pulser...'
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
-    echo `date` 'Starting pulser...'
-    sleep 1
 
-    cd $DARPDIR
-    if [ $? -ne 0 ]; then
-        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
-        exit 86;
-    fi
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`
-        sleep 1
+        sleep 1 #give a t time for task to die
     fi
     echo `date` Starting handlepulse
     node handlepulse #this will stop when handlepulse receives reload msg
@@ -174,6 +172,12 @@ do
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
 
+    cd $DARPDIR
+    if [ $? -ne 0 ]; then
+        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
+        exit 86;
+    fi
+    
     sleep 1
 
     if [ $rc -eq 86 ]; then echo "STOP STOP STOP"; exit 86; fi     #STOP COMMAND
@@ -198,6 +202,9 @@ do
             fi
         fi
     fi
+    #
+    #   could simply - for app in list, and in this order, start or stop them all
+    #
     echo "ABOUT TO KILL TASKS --- ubuntu docker has pid in field #1, native might be #2   :  ps aux |grep -v grep | grep node | awk '{ print $1}'"
     ps aux |grep -v grep | grep node | awk '{ print $1}'
     echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
@@ -205,7 +212,24 @@ do
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
 
     ps aux
-    echo `date` "...................BOTTOM OF LOOP................... SLEEPING" 
-
-    sleep 5
+    cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
+    if [ $? -ne 0 ]; then
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        echo `date` cd DARPDIR failed with rc= $? EXITTING
+        exit 86
+    fi
+    CYCLES=`expr $CYCLES + 1`
+    echo `date` "...................BOTTOM OF LOOP #$CYCLES ............. SLEEPING "$SLEEPTIME 
+    if [ $CYCLES -gt 100 ]; then    
+        echo `date` "RAN 100 CYCLES - $0 EXiTTING"
+        exit 86;
+    fi
+    sleep $SLEEPTIME
 done

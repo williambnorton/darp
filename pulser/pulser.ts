@@ -1,12 +1,12 @@
-import { dump, getGenesis, now, mintList, ts } from "../lib/lib";
+//
+// pulser.ts - as quickly as possible, get out
+//
+
+import { dump, getGenesis, now, forEachMint, getMints, mintList, ts } from "../lib/lib";
 import { setWireguard } from "../wireguard/wireguard";
 console.log("Starting PULSER GENESIS="+process.env.GENESIS+" PORT="+process.env.PORT+" HOSTNAME="+process.env.HOSTNAME+" VERSION="+process.env.VERSION+" MYIP="+process.env.MYIP);
 
-//
-//  pulse - send my owl measurements to my pulseGroups
-//
-//var HOST='127.0.0.1';
-var CYCLETIME=1; //poll every ____ seconds
+var CYCLETIME=120; //poll every ____ seconds
 
 var dgram = require('dgram');
 var message = new Buffer('message pulseGoesHere');
@@ -50,9 +50,10 @@ function checkAdminControl() {
 }
 setTimeout(checkAdminControl,1000);
 
-setTimeout(pulse,1000);
+setTimeout(pulse,1000);  //start pulser after a second
 var datagramClient=dgram.createSocket('udp4');
 
+/*
 //
 //  publish the one-way latecy matrix - make a object: indexes, followed by owl[srcGeo:srcMint-destGeo:destMint]
 //  --> Move this to the matrix display application so the handlePulse is lightweight glue
@@ -146,14 +147,18 @@ function publishMatrix() {
   });
 }
 
-
+*/
 //
 //  newMint() - We received a new Mint in an announcement
 //              fetch the mintEntry from the group Owner and create a pulseGroup node entry
 //
 function newMint(mint) {
-  //console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
-  if (isNaN(mint)) {
+  console.log("newMint(): mint="+mint+" isNaN(x)="+isNaN(mint));
+  if ((typeof mint == "undefined") || mint=="" || isNaN(mint)) {
+    console.log("newMint("+mint+"): bad mint: "+mint);
+    console.log("newMint("+mint+"): bad mint: "+mint);
+    console.log("newMint("+mint+"): bad mint: "+mint);
+    console.log("newMint("+mint+"): bad mint: "+mint);
     console.log("newMint("+mint+"): bad mint: "+mint);
     process.exit(86);
     return;
@@ -204,35 +209,17 @@ function newMint(mint) {
             redisClient.hmset(mintEntry.geo+":"+mintEntry.group, newSegmentEntry);
             //console.log("Past first set");
             redisClient.hgetall(mintEntry.geo+":"+mintEntry.group, function (err,newSegment) {
-              console.log("FETCHED MINT - NOW MAKE AN ENTRY "+mintEntry.geo+":"+mintEntry.group+" -----> ADDED New Segment: "+dump(newSegment));
-              redisClient.hmset("gSRlist", {
-                [mintEntry.geo+":"+mintEntry.group] : mint
+                console.log("FETCHED MINT - NOW MAKE AN ENTRY "+mintEntry.geo+":"+mintEntry.group+" -----> ADDED New Segment: "+dump(newSegment));
+                redisClient.hmset("gSRlist", {
+                  [mintEntry.geo+":"+mintEntry.group] : mint
 
-              });
-              redisClient.hmset("mint:0", "state", "RUNNING");  //We received a mint we are in RUNNING state
+                });
+                redisClient.hmset("mint:0", "state", "RUNNING");  //We received a mint we are in RUNNING state
 
-              console.log("PULSER newMint(): New mint in place - so set up wireguard ");
-              setWireguard();  //re-create a new wireguard config
+                console.log("PULSER newMint(): New mint in place - so set up wireguard ");
+                setWireguard();  //re-create a new wireguard config
 
-
-
-
-
-              //
-              //  if Genesis node, expire in 1 minute before removing it
-              //  else 5 minutes
-              //redisClient.ttl(mintEntry.geo+":"+mintEntry.group, function(err,ttl) {
-              //  console.log("ttl="+ttl);
-              //});
-
-              if (mintEntry.geo==mintEntry.group.split(".")[0]) {
-                //GENESIS NODE RECORD
-                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,60*3)  //expire genesis record 
-                //by removing this entry, the owls don't exist, noone will get pulsed
-              } else {
-                //redisClient.expire(mintEntry.geo+":"+mintEntry.group,2*60)  //expire non-genesis record 
-              }
-              redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group)
+                redisClient.publish("members","ADDED pulseGroup member mint:"+newSegmentEntry.srcMint+" "+newSegmentEntry.geo+":"+newSegmentEntry.group);
             });
           });
         }
@@ -248,7 +235,7 @@ function newMint(mint) {
 function pulse(oneTime) {
 if (typeof oneTime == "undefined") {
     setTimeout(pulse, CYCLETIME * 1000);  //10 second pollingfrequency
-    setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
+    //setTimeout(publishMatrix,(CYCLETIME * 1000)/2);  // In 5 seconds call it
     oneTime=0;
 } 
 //  get all my pulseGroups
@@ -287,40 +274,39 @@ if (typeof oneTime == "undefined") {
               //console.log("emptyOwls="+emptyOwls);
 
             //make a pulse message
-            //console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
+            console.log("pulse(): Make a pulse Message, pulseLabel="+pulseLabel+" pulseGroup="+pulseGroup+" pulseGroupOwner="+pulseGroupOwner+" ownerPulseLabel="+ownerPulseLabel+" pulseSrc="+pulseSrc);
             //in the format OWL,1,MAZORE,MAZORE.1,seq#,pulseTimestamp,OWLS=1>2=23,3>1=46
-              redisClient.hgetall(pulseLabel,function(err,pulseLabelEntry){
+            redisClient.hgetall(pulseLabel, function(err,pulseLabelEntry) {
                 //console.log("***********************     PULSER()getting pulseLabelEntrty err="+err+" pulseLabelEntry="+dump(pulseLabelEntry)+" seq="+pulseLabelEntry.seq);
                 pulseLabelEntry.seq=""+(parseInt(pulseLabelEntry.seq)+1);
-                //console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
+                console.log("-------------------------------------------->    pulseLabelEntry.seq="+pulseLabelEntry.seq);
                 redisClient.hmset(pulseLabel, {
                   "seq" : pulseLabelEntry.seq
                 }, function(err,reply) {
 
+                   //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
+                   //and needed for additional groups
+                  console.log("pulseLabelEntry="+dump(pulseLabelEntry));
 
-                  //here use the pulseEntry data , not mint<-- stuff determined when entry was created, not changing
-                  //and needed for additional groups
-                  //console.log("pulseLabelEntry="+dump(pulseLabelEntry));
+
 
 
                   var pulseMessage="0,"+me.version+","+me.geo+","+pulseGroup+","+pulseLabelEntry.seq+","+now()+","+pulseLabelEntry.bootTimestamp+","+me.mint+",";  //MAZORE:MAZJAP.1
 
-               
-                  //get mintTable to get credentials   
-                  var owls=""
-                  mintList(redisClient, ownerPulseLabel, function(err,mints) {
-                    // get nodes' list of mints to send pulse to
-                    // and send pulse
-                    //console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
-                    buildPulsePkt(mints,pulseMessage,null);
-                  
-                  });
-                });
 
+                  
+                    //get mintTable to get credentials   
+                  var owls=""
+                  getMints(redisClient, ownerPulseLabel, function(mints) {   //we drive pulses off of pulseOwner's population
+                    // get nodes' list of mints to send pulse to,
+                    // and send pulse
+                    console.log("PULSER(): "+ownerPulseLabel+" tells us mints="+mints+" SENDING PULSE PACKETS pulseMessage="+pulseMessage);  //use this list to faetch my OWLs
+                    sendPulsePackets(mints,pulseMessage,null);   //send these mints my OWLs
+                  });
               });
             });
-
-          }
+          });
+        }
       } else {
         console.log(ts()+"WEIRD - HSCAN RETURNED non-Zero cursos!!!!!- UNHANDLED ERROR");
       }
@@ -330,21 +316,23 @@ if (typeof oneTime == "undefined") {
 }
 
 //
-//  buildPulsePkt() - build and send pulse
+//  sendPulsePackets() - build and send pulse
 //  sendToAry - a stack of IP:Port to get this msg
 //
-function buildPulsePkt(mints, pulseMsg, sendToAry) {
-  if ( sendToAry == null) sendToAry=new Array();
-  //console.log("buildPulsePkt(): mints="+mints);
-  if (typeof mints == "undefined" || !mints || mints=="") 
-      return console.log("buildPulsePkt(): bad mints parm - ignoring mints="+mints+" pulseMsg was to be "+pulseMsg);
-  var mint=mints.pop(); //get our mint to add to the msg
+function sendPulsePackets(ownerMintList, pulseMsg, sendToAry) {
+   if ( sendToAry == null) sendToAry=new Array();
+   //console.log("sendPulsePackets(): mints="+mints);
+   if (typeof ownerMintList == "undefined" || !ownerMintList || ownerMintList=="") 
+      return console.log("sendPulsePackets(): bad mints parm - ignoring mints="+ownerMintList+" pulseMsg was to be "+pulseMsg);
 
-  //console.log("buildPulsePkt() mint="+mint+" mints="+mints+" pulseMsg="+pulseMsg);
-  redisClient.hgetall("mint:"+mint, function (err, mintEntry) {
-    if (err) {
-      console.log("buildPulsePkt(): ERROR - ");
-    } else {
+  //console.log("mints before pop:"+incomingMintList+" mint="+mint+" pulseMsg="+pulseMsg);
+   var mint=ownerMintList.pop(); //get our mint to add to the msg
+  //console.log("mints after pop:"+incomingMintList+" mint="+mint);
+   console.log("sendPulsePackets() mint="+mint+" mints="+ownerMintList+" pulseMsg="+pulseMsg);
+   redisClient.hgetall("mint:"+mint, function (err, mintEntry) {
+      if (err) {
+         console.log("sendPulsePackets(): ERROR - ");
+      } else {
 
       if (mintEntry!=null) {
         //console.log("* * ** * * * * * * * * * * * * * * * * * * *       get my measurement from mintEntry="+dump(mintEntry));
@@ -355,7 +343,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
 
         if (mint!=null) {
           //console.log("mint popped="+mint+" mints="+mints+" sendToAry="+sendToAry+" pulseMsg="+pulseMsg);
-          if (mints!="") buildPulsePkt(mints,pulseMsg,sendToAry);
+          if (ownerMintList!="") sendPulsePackets(ownerMintList,pulseMsg,sendToAry);
           else {
             //
             //      message ready - pulse
@@ -367,9 +355,12 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                 //});
                 //sending msg
                 
-                //console.log("networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
+
+
+
+                console.log("sendPulsePackets(): networkClient.send(pulseMsg="+pulseMsg+" node.port="+node.port+" node.ipaddr="+node.ipaddr);
               
-                networkClient.send(pulseMsg,node.port,node.ipaddr,function(error){     //*** send Message
+                networkClient.send(pulseMsg,node.port,node.ipaddr, function(error){     //*** send Message
 
                   if(error) {
                     console.log(ts()+"pulser NetSend error");
@@ -379,7 +370,7 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
                     //console.log("sent dump node="+dump(node))
                     var message=pulseMsg+" sent to "+node.ipaddr+":"+node.port+" ->"+node.pulseLabel
                     //console.log(message);
-                    redisClient.publish("pulses",message);
+                    //redisClient.publish("pulses",message);
                     //console.log(ts()+"PULSER LOOP: pulseLabel="+pulseLabel+" node="+dump(node));
 
                   //update stats on this groupPulse (DEVOPS:DEVOPS.1) record
@@ -423,8 +414,10 @@ function buildPulsePkt(mints, pulseMsg, sendToAry) {
           console.log("NOT GETTING HERE EEVR PULSER sendToAry="+dump(sendToAry)); 
         }
       } else {  //Go fetch the mint associated with this guy we re supposed to pulse
-          console.log("pulser(): buildPulsePkt(mints="+mints+", pulseMsg="+pulseMsg+", sendToAry="+sendToAry+") We don't have this mint: "+mint+"  fetching mint from genesis node w/newMint()...");
-          newMint(mint); //go fetch 
+          if (mint!="") {
+            console.log("pulser(): NEW MINT sendPulsePackets(mints="+ownerMintList+", pulseMsg="+pulseMsg+", sendToAry="+sendToAry+") We don't have this mint: "+mint+"  fetching mint from genesis node w/newMint()...");
+            newMint(mint); //go fetch 
+          }
       }
     }
   });

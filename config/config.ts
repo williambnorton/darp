@@ -4,6 +4,13 @@
 import { now, ts ,dump} from '../lib/lib.js';
 import { setWireguard } from "../wireguard/wireguard";
 
+if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME='localhost'
+if (typeof process.env.GENESIS == "undefined") process.env.GENESIS='127.0.0.1'
+if (typeof process.env.MYIP == "undefined") process.env.MYIP='127.0.0.1'
+if (typeof process.env.VERSION == "undefined") process.env.VERSION='Build.'
+if (typeof process.env.WALLET == "undefined") process.env.WALLET='auto'
+if (typeof process.env.PUBLICKEY == "undefined") process.env.PUBLICKEY='auto'
+
 
 var http = require('http');
 //      Configuration parameters - agreed to by all in the pulseGroup
@@ -100,14 +107,34 @@ function getConfiguration() {
 
             if (config.isGenesisNode==true) {
                 console.log(ts()+"CONFIG GENESIS node already configured");
+                
                 redisClient.hset("mint:0", "state", "RUNNING" );    //we are genesis completed our auth
                 redisClient.hset("mint:1", "state", "RUNNING" );    //for members, RUNNING is when all mints from genesis are in mintTable
 
                 //dumpState();
             } else {
                 console.log(ts()+"CONFIG Configuring non-genesis node ... config.isGenesisNode="+config.isGenesisNode);
-                redisClient.hmset("gSRlist", config.gSRlist );
-                //install config
+
+
+
+
+
+
+                for (var sEntryLabel in config.gSRlist) {
+                    var smint      =parseInt(config.gSRlist[sEntryLabel].split("_")[0]);
+                    var entryLabel=config.gSRlist[sEntryLabel].split("_")[1];
+                    redisClient.hset("gSRlist", entryLabel, ""+smint );
+                }
+
+                //wbnwbnwbn
+                redisClient.hgetall("gSRlist", function(err, gSRlist) {
+                    console.log("gSRlist="+dump(gSRlist));
+                });
+
+
+
+                
+                //install config 
                 for (var mint in config.mintTable) {
                     var mintEntry=config.mintTable[mint];
                     //console.log("add mint:"+mint+" mintEntry="+dump(mintEntry));
