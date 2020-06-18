@@ -203,7 +203,7 @@ function newMint(mint) {
                             redisClient.hmset("gSRlist", (_a = {},
                                 _a[mintEntry.geo + ":" + mintEntry.group] = mint,
                                 _a));
-                            redisClient.hmset("mint:0", "state", "RUNNING"); //We received a mint we are in RUNNING state
+                            //redisClient.hmset("mint:0", "state", "RUNNING");  //We received a mint we are in RUNNING state
                             console.log("PULSER newMint(): New mint in place - so set up wireguard ");
                             wireguard_1.setWireguard(); //re-create a new wireguard config
                             redisClient.publish("members", "ADDED pulseGroup member mint:" + newSegmentEntry.srcMint + " " + newSegmentEntry.geo + ":" + newSegmentEntry.group);

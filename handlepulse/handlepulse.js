@@ -18,15 +18,15 @@ var server = dgram.createSocket('udp4');
 //
 redisClient.hgetall("mint:0", function (err, me) {
     if ((err) || (me == null)) {
-        console.log(lib_js_1.ts() + "HANDLEPULSE started with no mint:0 ... failing");
+        console.log(lib_js_1.ts() + "HANDLEPULSE started with no mint:0 ... exitting");
         process.exit(36);
         //setTimeout(checkForConfig,2000);
         //return;
     }
     console.log("HANDLEPULSE starting with me=" + lib_js_1.dump(me));
     redisClient.hgetall("mint:1", function (err, genesis) {
-        if ((err) || (genesis == null)) {
-            console.log(lib_js_1.ts() + "HANDLEPULSE started with no genesis mint:1 - exitting to reload to try reconnect");
+        if (me == null) {
+            console.log(lib_js_1.ts() + "HANDLEPULSE started with no genesis mint:1 ");
             process.exit(36);
         }
         else {
