@@ -34,7 +34,7 @@ redisClient.hgetall("mint:0", function (err, me) {
             console.log(lib_js_1.ts() + "HANDLEPULSE started with genesis=" + lib_js_1.dump(genesis));
             if (genesis == null) {
                 for (var i = 10; i > 0; i--)
-                    console.log(lib_js_1.ts() + "Genesis not connected - retrying in a few seconds ");
+                    console.log(lib_js_1.ts() + "Genesis not connected - exitting ");
                 //setTimeout(checkForConfig,2000); 
             }
             for (var i = 10; i > 0; i--)
