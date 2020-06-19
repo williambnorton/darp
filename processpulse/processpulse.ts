@@ -9,7 +9,7 @@ console.log("^^^^Starting PROCESSPULSE GENESIS=" + process.env.GENESIS + " PORT=
 
 var POLL_CYCLE=1;  //poll every __ second so timeout read every __ second
 
-var OWLEXPIRES = 1000; //seconds should match polling cycle time - expir
+var OWLEXPIRES = 1000; //seconds should match polling cycle time - expire
 
 var SHOWPULSES = "0";
 const pulseRedis = require('redis');
