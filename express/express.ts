@@ -11,7 +11,7 @@
 import {   dump,   now,    SRList,   ts,   getMints,   getOwls,   dumpState,   oneTimePulse,   MYIP,   MYVERSION, YYMMDD } from '../lib/lib';
 import { setWireguard } from "../wireguard/wireguard";
 
-const MAX_CONFIG_FRAMES=10;  //How many config snapshot to store for mdeian variance calaucltions
+const MAX_CONFIG_FRAMES=1;  //How many config snapshot to store for mdeian variance calaucltions
 
 const INSTRUMENTATION_REFRESH=300;  //BROWSER REFRESH ____ seconds
 
@@ -329,7 +329,7 @@ function handleShowState(req, res) {
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").html(" ");'  //no owl or median - blank white
 
         txt += '          else if ((srcMint!=dstMint) && ('+ACTIVE_INSTRUMENTATION+')) {'
-
+/*
 //
 //      highlight bad standard deviations 
 //
@@ -344,7 +344,7 @@ function handleShowState(req, res) {
         txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");'
         txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+'))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");'
 
- 
+ */
 //
 //                      Highlight (overWrite) extraordinary paths
 //

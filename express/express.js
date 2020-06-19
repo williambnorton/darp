@@ -12,7 +12,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var wireguard_1 = require("../wireguard/wireguard");
-var MAX_CONFIG_FRAMES = 10; //How many config snapshot to store for mdeian variance calaucltions
+var MAX_CONFIG_FRAMES = 1; //How many config snapshot to store for mdeian variance calaucltions
 var INSTRUMENTATION_REFRESH = 300; //BROWSER REFRESH ____ seconds
 var BETTER_THRESHOLD = 10;
 var ACTIVE_INSTRUMENTATION = true;
@@ -290,17 +290,22 @@ function handleShowState(req, res) {
         txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
         txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").html(" ");'; //no owl or median - blank white
         txt += '          else if ((srcMint!=dstMint) && (' + ACTIVE_INSTRUMENTATION + ')) {';
+        /*
         //
-        //      highlight bad standard deviations 
+        //      highlight bad standard deviations
         //
-        txt += "               const n = owls.length;";
-        txt += '               const mean = owls.reduce((a,b) => a+b)/n;';
-        txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
-        txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
-        //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");';
-        txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + '))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");';
+                txt += "               const n = owls.length;"
+                txt += '               const mean = owls.reduce((a,b) => a+b)/n;'
+                txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);'
+        
+                txt += '               var percentOfMedian=Math.round((s/myMedian)*100);'
+                //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
+        
+                txt += '               if ((!highlightedCell) && (percentOfMedian>'+YELLOW_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");'
+                txt += '               if ((!highlightedCell) && (percentOfMedian>'+ORANGE_TRIGGER+')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");'
+                txt += '               if ((!highlightedCell) && (percentOfMedian>'+RED_TRIGGER+'))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");'
+        
+         */
         //
         //                      Highlight (overWrite) extraordinary paths
         //
