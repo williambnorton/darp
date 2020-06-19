@@ -671,7 +671,7 @@ app.get('/state', function (req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res);
     makeConfigAll(function (config) {
-        //console.log("app.get('/state' callback config="+dump(config));
+        console.log("app.get('/state' callback config=" + lib_1.dump(config));
         expressRedisClient.hgetall("mint:0", function (err, me) {
             config.mintTable["mint:0"] = me;
             //var html="<html>"
@@ -742,7 +742,7 @@ app.get('/reload', function (req, res) {
     res.redirect(req.get('referer'));
 });
 app.get('/config', function (req, res) {
-    //console.log("EXPRess wbn fetching '/config' ");
+    console.log("EXPRess wbn fetching '/config' ");
     makeConfigAll(function (config) {
         //console.log("app.get(/config =" + dump(config));
         res.setHeader('Content-Type', 'application/json');

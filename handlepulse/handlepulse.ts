@@ -90,7 +90,7 @@ redisClient.hgetall("mint:0", function(err, me) {
   //
   //  incoming message - stuff it into quque right away
   //
-  server.on('message', function(message, remote) {
+  server.on('message', function(message:string, remote:any) {
       var strMsg=message.toString();
       //if (SHOWPULSES == "1")
       console.log(ts() + "HANDLEPULSE: received pulse " + message.length + " bytes from " + remote.address + ':' + remote.port + ' - ' + message/*+dump(remote)*/);
