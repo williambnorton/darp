@@ -36,6 +36,7 @@ redisClient.hgetall("mint:0", function (err, me) {
                 for (var i = 10; i > 0; i--)
                     console.log(lib_js_1.ts() + "Genesis not connected - exitting ");
                 //setTimeout(checkForConfig,2000); 
+                process.exit(36);
             }
             for (var i = 10; i > 0; i--)
                 console.log(lib_js_1.ts() + __dirname + " DARP COMPONENTS STARTED-Point browser to http://" + me.ipaddr + ":" + me.port + "/");
