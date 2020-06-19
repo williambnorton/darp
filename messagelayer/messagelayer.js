@@ -30,14 +30,17 @@ exports.send = send;
 //
 redisClient.hgetall("mint:0", function (err, whoami) {
     if ((err) || (whoami == null)) {
-        console.log("messagelayer: can't find mint:0 self - is redis started??? - exitting");
-        process.exit(36); //reload software and try again
+        console.log("messagelayer: can't find mint:0 self - is redis started??? - use default port 65013");
+        myipaddr = "?";
+        myport = "65013";
     }
-    console.log(":" + lib_js_1.dump(whoami));
-    myipaddr = whoami.ipaddr;
-    myport = whoami.port;
-    console.log(lib_js_1.ts() + "messagelayer(): Binding pulsePort on UDP port " + whoami.port);
-    server.bind(whoami.port, "0.0.0.0");
+    else {
+        console.log("send() me=" + lib_js_1.dump(whoami));
+        myipaddr = whoami.ipaddr;
+        myport = whoami.port;
+    }
+    console.log(lib_js_1.ts() + "messagelayer(): Binding pulsePort on UDP port " + myport);
+    server.bind(myport, "0.0.0.0");
     if (TEST)
         testModule(); //UNCOMMENT TO BENCH TEST MESSAGE LAYER. REDIS MUST BE RUNNING !!!
 });

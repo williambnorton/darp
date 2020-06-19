@@ -33,12 +33,12 @@ redisClient.hgetall("mint:0", function(err:string, whoami:any) {
         myipaddr="?";
         myport="65013"
     } else {
+        console.log("send() me="+dump(whoami));
         myipaddr=whoami.ipaddr;
         myport=whoami.port;
     }
-    console.log(":"+dump(whoami));
-    console.log(ts() + "messagelayer(): Binding pulsePort on UDP port " + whoami.port);
-    server.bind(whoami.port, "0.0.0.0");
+    console.log(ts() + "messagelayer(): Binding pulsePort on UDP port " + myport);
+    server.bind(myport, "0.0.0.0");
     
     if (TEST) testModule(); //UNCOMMENT TO BENCH TEST MESSAGE LAYER. REDIS MUST BE RUNNING !!!
 
