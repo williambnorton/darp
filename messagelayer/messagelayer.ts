@@ -7,6 +7,17 @@ var PORT="65013"
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
 
+//misc. routines
+function ts() {
+  return new Date().toLocaleTimeString() + " ";
+}
+function now() {
+  var d = new Date();
+  return d.getTime();
+}
+
+
+
 //  RECEIVER CODE
 server.on('error', (err) => {
   console.log(`server error:\n${err.stack}`);
@@ -49,13 +60,7 @@ function send(rawmsg:string,nodelist:string[]) {
 
 var pulseMessage="incomingTimestamp="+now()+",0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
 
-function ts() {
-  return new Date().toLocaleTimeString() + " ";
-}
-function now() {
-  var d = new Date();
-  return d.getTime();
-}
+
 
 /************************/
 // launch with TEST=1 to get automatic pulser and catcher
