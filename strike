@@ -6,7 +6,7 @@ do
 	echo ""
 	echo ""
 	echo ""
-	echo `date` Strike a key to launch $*
+	echo -n `date` Strike a key to launch $* ...
 	read x
 	clear
 done
