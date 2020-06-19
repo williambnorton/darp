@@ -1,17 +1,18 @@
 "use strict";
-exports.__esModule = true;
 //
 //  messagelayer - receive incoming messages and queue them in redis
 //
-var lib_js_1 = require("../lib/lib.js");
+//import {  now,  ts,  dump } from '../lib/lib.js';
+exports.__esModule = true;
 console.log("Starting Message Layer");
 var pulseRedis = require('redis');
 var redisClient = pulseRedis.createClient(); //creates a new client
 var TEST = false;
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
-var myipaddr = "";
-var myport = "";
+var myipaddr = process.env.MYIP || MYIP();
+var myport = process.env.PORT || "65013";
+;
 //
 //  send message call
 //
@@ -31,15 +32,15 @@ exports.send = send;
 redisClient.hgetall("mint:0", function (err, whoami) {
     if ((err) || (whoami == null)) {
         console.log("messagelayer: can't find mint:0 self - is redis started??? - use default port 65013");
-        myipaddr = "?";
+        MYIP();
         myport = "65013";
     }
     else {
-        console.log("send() me=" + lib_js_1.dump(whoami));
-        myipaddr = whoami.ipaddr;
+        console.log("send() setting to internal redis IPADDR and PORT me.geo=" + whoami.geo);
+        myipaddr = whoami.ipaddr; //overwrite with config
         myport = whoami.port;
     }
-    console.log(lib_js_1.ts() + "messagelayer(): Binding pulsePort on UDP port " + myport);
+    console.log("messagelayer(): Binding pulsePort on UDP port " + myport);
     server.bind(myport, "0.0.0.0");
     if (TEST)
         testModule(); //UNCOMMENT TO BENCH TEST MESSAGE LAYER. REDIS MUST BE RUNNING !!!
@@ -71,9 +72,9 @@ function testModule() {
 //
 server.on('message', function (message, remote) {
     var strMsg = message.toString();
-    console.log(lib_js_1.ts() + "messagelayer: received message: " + message + message.length + " bytes from " + remote.address + ':' + remote.port);
-    console.log(lib_js_1.ts() + "PUSHING " + lib_js_1.now() + "," + strMsg + " onto messages queue");
-    redisClient.lpush('messages', "" + lib_js_1.now() + "," + strMsg, function (err, reply) {
+    console.log("messagelayer: received message: " + message + message.length + " bytes from " + remote.address + ':' + remote.port);
+    console.log("PUSHING " + now() + "," + strMsg + " onto messages queue");
+    redisClient.lpush('messages', "" + now() + "," + strMsg, function (err, reply) {
         if (err)
             console.log("ERROR pushing message onto messages queue: " + err);
         else
@@ -85,13 +86,35 @@ server.on('message', function (message, remote) {
 //
 server.on('listening', function () {
     var address = server.address();
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + 'UDP Server listening for pulses on ' + address.address + ':' + address.port);
-    console.log(lib_js_1.ts() + "");
-    console.log(lib_js_1.ts() + "");
+    console.log("");
+    console.log("");
+    console.log('UDP Server listening for pulses on ' + address.address + ':' + address.port);
+    console.log("");
+    console.log("");
 });
 process.on('SIGTERM', function () {
     console.info('messagelayer SIGTERM signal received.');
     process.exit(36);
 });
+function now() {
+    var d = new Date();
+    return d.getTime();
+}
+function MYIP() {
+    var http = require('http');
+    var options = {
+        host: 'ipv4bot.whatismyipaddress.com',
+        port: 80,
+        path: '/'
+    };
+    http.get(options, function (res) {
+        console.log("status: " + res.statusCode);
+        res.on("data", function (chunk) {
+            console.log("SETTING MYIP to: " + chunk);
+            process.env.MYIP = myipaddr = "" + chunk;
+        });
+    }).on('error', function (e) {
+        console.log("error: " + e.message);
+    });
+    return "";
+}
