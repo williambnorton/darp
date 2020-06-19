@@ -29,12 +29,14 @@ export function send(message:string, ipaddr:string, port:string) {
 //
 redisClient.hgetall("mint:0", function(err:string, whoami:any) {
     if ((err) || (whoami==null)) {
-      console.log("messagelayer: can't find mint:0 self - is redis started??? - exitting");
-      process.exit(36); //reload software and try again
+      console.log("messagelayer: can't find mint:0 self - is redis started??? - use default port 65013");
+        myipaddr="?";
+        myport="65013"
+    } else {
+        myipaddr=whoami.ipaddr;
+        myport=whoami.port;
     }
     console.log(":"+dump(whoami));
-    myipaddr=whoami.ipaddr;
-    myport=whoami.port;
     console.log(ts() + "messagelayer(): Binding pulsePort on UDP port " + whoami.port);
     server.bind(whoami.port, "0.0.0.0");
     
