@@ -766,7 +766,7 @@ app.get('/state', function(req, res) {
    //console.log("fetching '/state'");
    //handleShowState(req, res);
    makeConfigAll(function(config) {
-       console.log("app.get('/state' callback config="+dump(config));
+       //console.log("app.get('/state' callback config="+dump(config));
        expressRedisClient.hgetall("mint:0", function(err, me) {
            config.mintTable["mint:0"] = me;
            //var html="<html>"
