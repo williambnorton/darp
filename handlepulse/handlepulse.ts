@@ -115,7 +115,8 @@ redisClient.hgetall("mint:0", function(err, me) {
     //console.log("checkSWversion() - currentSW="+MYBUILD);
     const http = require("http");
     redisClient.hgetall("mint:0", function(err, me) {
-          redisClient.hgetall("mint:1", function(err, genesis) {
+      if (me.state=="SINGLESTEP") return;
+      redisClient.hgetall("mint:1", function(err, genesis) {
               if (err || genesis == null) {
                   console.log("checkSWversion(): WE HAVE NO Genesis Node mint:1 pulse error=" + err + " RELOAD");
                   process.exit(36);
