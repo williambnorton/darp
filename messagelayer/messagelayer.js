@@ -8,7 +8,7 @@ var TEST = true;
 //
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
-exports.stats = {
+exports.messagelayer_stats = {
     port: "",
     inMsgs: 0,
     outMsgs: 0,
@@ -27,15 +27,15 @@ server.on('listening', function () {
     console.log("server listening " + address.address + ":" + address.port);
 });
 function recvMsg(port, callback) {
-    exports.stats.port = port;
+    exports.messagelayer_stats.port = port;
     server.bind(port);
     // Prints: server listening 0.0.0.0:41234
     server.on('message', function (msg, rinfo) {
-        var incomingTimestamp = exports.stats.lastInTimestamp = now();
-        exports.stats.inMsgs++;
-        console.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
+        var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = now();
+        exports.messagelayer_stats.inMsgs++;
+        console.log("Server received: " + msg + " from " + rinfo.address + ":" + rinfo.port);
         var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
-        exports.stats.lastInMsg = incomingMessage;
+        exports.messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);
     });
 }
@@ -53,9 +53,9 @@ function sendMsg(outgoingMessage, nodelist) {
         var port = node.split(":")[1] || "65013";
         var timestampedMsg = "" + now() + "," + outgoingMessage;
         var message = Buffer.from(timestampedMsg);
-        exports.stats.outMsgs++;
-        exports.stats.lastOutTimestamp = now();
-        exports.stats.lastOutMsg = timestampedMsg;
+        exports.messagelayer_stats.outMsgs++;
+        exports.messagelayer_stats.lastOutTimestamp = now();
+        exports.messagelayer_stats.lastOutMsg = timestampedMsg;
         console.log(ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
@@ -66,24 +66,25 @@ function sendMsg(outgoingMessage, nodelist) {
     });
 }
 exports.sendMsg = sendMsg;
-/************************/
+/************ TEST AREA ************
 // launch with TEST=1 to get automatic pulser and catcher
-var hostname = process.env.HOSTNAME;
-if (typeof process.env.HOSTNAME == "undefined")
-    process.env.HOSTNAME = require("os").hostname();
-var pulseMessage = "incomingTimestamp=" + now() + ",0,Build.200619.1110," + process.env.HOSTNAME + ",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
-console.log("pulseMessage=" + pulseMessage);
-process.argv.shift(); //ignore rid of node
-process.argv.shift(); //ignore rid of path to mthis code
-recvMsg("65013", function (incomingMessage) {
-    console.log("test_app_pulser(): recvMsg callback incomingMessage ------> " + incomingMessage);
+var hostname=process.env.HOSTNAME;
+if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];
+var pulseMessage="incomingTimestamp="+now()+",0,Build.200619.1110,"+process.env.HOSTNAME+",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
+console.log("pulseMessage="+pulseMessage);
+process.argv.shift();  //ignore rid of node
+process.argv.shift();  //ignore rid of path to mthis code
+
+recvMsg("65013",function(incomingMessage:string) {  //one-time set up of message handler callback
+  console.log(`test_app_pulser(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
 });
-function test_app_pulser() {
-    sendMsg(pulseMessage, process.argv);
-    setTimeout(test_app_pulser, 1000); //do it again in a few seconds
+
+function test_app_pulser() {    //sample test app
+  sendMsg(pulseMessage, process.argv);
+  setTimeout(test_app_pulser,1000);  //do it again in a few seconds
 }
-if (TEST)
-    test_app_pulser(); //bench test - uncomment to run a test
+if (TEST) test_app_pulser();  //bench test - uncomment to run a test
+/*************  TEST AREA **********/
 //==============
 //misc. routines
 function ts() {

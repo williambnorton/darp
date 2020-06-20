@@ -27,4 +27,5 @@ done
 
 git add *.bash
 git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
+echo `ls Build*`>Version.js
 echo `date` Completed compiles + git push for `ls Build*`

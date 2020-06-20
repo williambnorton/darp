@@ -7,7 +7,7 @@ const TEST=true;
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
 
-export var stats={
+export var messagelayer_stats={
   port: "",
   inMsgs : 0,
   outMsgs : 0,
@@ -30,15 +30,15 @@ server.on('listening', () => {
 });
 
 export function recvMsg(port:string,callback:any) {   //API routine
-  stats.port=port;
+  messagelayer_stats.port=port;
   server.bind(port);
   // Prints: server listening 0.0.0.0:41234
   server.on('message', (msg, rinfo) => {
-    var incomingTimestamp=stats.lastInTimestamp=now();
-    stats.inMsgs++;
-    console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
+    var incomingTimestamp=messagelayer_stats.lastInTimestamp=now();
+    messagelayer_stats.inMsgs++;
+    console.log(`Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);
     var incomingMessage=`${incomingTimestamp},${msg}` //prepend our timeStamp
-    stats.lastInMsg=incomingMessage;
+    messagelayer_stats.lastInMsg=incomingMessage;
     callback(incomingMessage);
   });
 }
@@ -58,9 +58,9 @@ export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routi
     const port=node.split(":")[1]||"65013";
     const timestampedMsg=""+now()+","+outgoingMessage;
     const message = Buffer.from(timestampedMsg);
-    stats.outMsgs++;
-    stats.lastOutTimestamp=now();
-    stats.lastOutMsg=timestampedMsg;
+    messagelayer_stats.outMsgs++;
+    messagelayer_stats.lastOutTimestamp=now();
+    messagelayer_stats.lastOutMsg=timestampedMsg;
     console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
     client.send(message, 0, message.length, port, ipaddr, (err:string) => {
       if (err) { console.log(`sendMessage(): ERROR`); client.close(); }
@@ -69,10 +69,10 @@ export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routi
 }
 
 
-/************************/
+/************ TEST AREA ************
 // launch with TEST=1 to get automatic pulser and catcher
-var hostname=process.env.HOSTNAME
-if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname();
+var hostname=process.env.HOSTNAME;
+if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];
 var pulseMessage="incomingTimestamp="+now()+",0,Build.200619.1110,"+process.env.HOSTNAME+",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
 console.log("pulseMessage="+pulseMessage);
 process.argv.shift();  //ignore rid of node
@@ -83,12 +83,11 @@ recvMsg("65013",function(incomingMessage:string) {  //one-time set up of message
 });
 
 function test_app_pulser() {    //sample test app 
-
   sendMsg(pulseMessage, process.argv);
   setTimeout(test_app_pulser,1000);  //do it again in a few seconds
 }
 if (TEST) test_app_pulser();  //bench test - uncomment to run a test
-
+/*************  TEST AREA **********/
 
 
 //==============
