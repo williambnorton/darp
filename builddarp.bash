@@ -9,7 +9,7 @@ rm Build.??????.????
 find . -name '*.pid' -delete
 MESSAGE="Version 0.1 - Moving to platform layer model- messageBus on Redis,stats calc out of browser"
 date>"Build."`date +%y%m%d.%H%M`
-ls Build* > SWVersion
+echo `ls Build*` > SWVersion
 ls -l Build.*
 
 #tsc config/config && tsc express/express && tsc pulser/pulser && tsc handlepulse/handlepulse && git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
