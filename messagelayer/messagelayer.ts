@@ -6,7 +6,6 @@ import {   dump,   now,      ts } from '../lib/lib';
 //  -create the UDP message bus for communication with all nodes
 // all others only have to deal with message, we timestamp and queue it here
 const PORT=process.env.PORT||"65013"
-const TEST=true;
 //
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
@@ -79,7 +78,7 @@ export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routi
 }
 
 
-/************ TEST AREA ************
+/************ TEST AREA ***********   add space here to comment test---> */
 // launch with TEST=1 to get automatic pulser and catcher
 var hostname=process.env.HOSTNAME;
 if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];
@@ -96,19 +95,6 @@ function test_app_pulser() {    //sample test app
   sendMsg(pulseMessage, process.argv);
   setTimeout(test_app_pulser,1000);  //do it again in a few seconds
 }
-if (TEST) test_app_pulser();  //bench test - uncomment to run a test
+test_app_pulser();  //bench test - uncomment to run a test
 /*************  TEST AREA **********/
 
-
-/***
-//==============
-//misc. routines
-function ts() {
-  return new Date().toLocaleTimeString() + " ";
-}
-function now() {
-  var d = new Date();
-  return d.getTime();
-}
-
-***/
