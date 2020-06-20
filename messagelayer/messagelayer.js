@@ -68,7 +68,7 @@ function sendMsg(outgoingMessage, nodelist) {
 exports.sendMsg = sendMsg;
 /************************/
 // launch with TEST=1 to get automatic pulser and catcher
-var pulseMessage = "incomingTimestamp=" + now() + ",0,Build.200619.1110," + require("os").hostname() + ",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
+var pulseMessage = "incomingTimestamp=" + now() + ",0,Build.200619.1110," + process.env.HOSTNAME || require("os").hostname() + ",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
 process.argv.shift(); //ignore rid of node
 process.argv.shift(); //ignore rid of path to mthis code
 recvMsg("65013", function (incomingMessage) {
