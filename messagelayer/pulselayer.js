@@ -1,4 +1,5 @@
 "use strict";
+var _a;
 exports.__esModule = true;
 //
 //  pulselayer - use the underlying message object to send the same UDP message to multiple nodes
@@ -6,10 +7,10 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var messagelayer_1 = require("./messagelayer");
 // launch with TEST=1 to get automatic pulser and catcher
-var hostname = process.env.HOSTNAME;
 if (typeof process.env.HOSTNAME == "undefined")
     process.env.HOSTNAME = require("os").hostname().split(".")[0];
-var version = require('fs').readFileSync('../SWVersion', { encoding: 'utf8', flag: 'r' });
+var hostname = (_a = process.env.HOSTNAME) === null || _a === void 0 ? void 0 : _a.toUpperCase();
+var version = require('fs').readFileSync('../SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
 console.log("version=" + lib_1.dump(version));
 var pulseMessage = ",0," + version + "," + hostname + ",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
 console.log("pulseMessage=" + pulseMessage);
