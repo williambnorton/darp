@@ -27,6 +27,9 @@ server.on('listening', function () {
     var address = server.address();
     console.log("server listening " + address.address + ":" + address.port);
 });
+//
+//  recvMsg(): bind port and start callbacks for incoming messages
+//
 function recvMsg(port, callback) {
     exports.messagelayer_stats.port = port;
     server.bind(port);
