@@ -169,7 +169,8 @@ do
         kill `cat $DARPDIR/messagelayer.pid`
     fi
     echo `date` 'Starting messagelayer...'
-    node messagelayer 
+    #node messagelayer 
+	node messagelayer 71.202.2.184 104.42.192.234
     echo `date` messagelayer done
     exit 1
 
