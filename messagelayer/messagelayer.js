@@ -1,5 +1,8 @@
 "use strict";
 exports.__esModule = true;
+//
+//  messagelayer -  send and receive message to group of nodes
+//
 var lib_1 = require("../lib/lib");
 //
 //  -create the UDP message bus for communication with all nodes
@@ -15,6 +18,8 @@ exports.messagelayer_stats = {
     outMsgs: 0,
     lastInTimestamp: 0,
     lastOutTimestamp: 0,
+    inOctets: 0,
+    OutOctets: 0,
     lastInMsg: "",
     lastOutMsg: ""
 };
@@ -36,6 +41,7 @@ function recvMsg(port, callback) {
     // Prints: server listening 0.0.0.0:41234
     server.on('message', function (msg, rinfo) {
         var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = lib_1.now();
+        exports.messagelayer_stats.inOctets += msg.length;
         exports.messagelayer_stats.inMsgs++;
         console.log("Server received: " + msg + " from " + rinfo.address + ":" + rinfo.port);
         var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
@@ -60,6 +66,7 @@ function sendMsg(outgoingMessage, nodelist) {
         exports.messagelayer_stats.outMsgs++;
         exports.messagelayer_stats.lastOutTimestamp = lib_1.now();
         exports.messagelayer_stats.lastOutMsg = timestampedMsg;
+        exports.messagelayer_stats.inOctets += message.length;
         console.log(lib_1.ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
