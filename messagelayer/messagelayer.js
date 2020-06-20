@@ -9,7 +9,7 @@ var TEST = true;
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 exports.stats = {
-    port: 0,
+    port: "",
     inMsgs: 0,
     outMsgs: 0,
     lastInTimestamp: 0,
@@ -27,7 +27,8 @@ server.on('listening', function () {
     console.log("server listening " + address.address + ":" + address.port);
 });
 function recvMsg(port, callback) {
-    server.bind(PORT);
+    exports.stats.port = port;
+    server.bind(port);
     // Prints: server listening 0.0.0.0:41234
     server.on('message', function (msg, rinfo) {
         var incomingTimestamp = exports.stats.lastInTimestamp = now();
@@ -70,13 +71,11 @@ var pulseMessage = "incomingTimestamp=" + now() + ",0,Build.200619.1110,DEVOPS,D
 // launch with TEST=1 to get automatic pulser and catcher
 process.argv.shift(); //ignore rid of node
 process.argv.shift(); //ignore rid of path to mthis code
+recvMsg("65013", function (incomingMessage) {
+    console.log("test_app_pulser(): recvMsg callback incomingMessage: " + incomingMessage);
+});
 function test_app_pulser() {
-    //process.argv.forEach(function (val) {
-    //const ipaddr=val.split(":")[0];
-    //const port=val.split(":")[1]||"65013";
-    //const message = Buffer.from(pulseMessage);
     sendMsg(pulseMessage, process.argv);
-    //});
     setTimeout(test_app_pulser, 1000); //do it again in a few seconds
 }
 if (TEST)

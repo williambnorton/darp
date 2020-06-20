@@ -157,6 +157,26 @@ do
     node pulser &
     echo $$ > $DARPDIR/pulser.pid
 
+
+
+
+    cd $DARPDIR
+    cd $DARPDIR/messagelayer
+    if [ -f  $DARPDIR/messagelayer.pid ]; then
+        kill `cat $DARPDIR/messagelayer.pid`
+    fi
+    echo `date` 'Starting messagelayer...'
+    node messagelayer &
+    echo $$ > $DARPDIR/messagelayer.pid
+
+
+
+
+
+
+
+
+
     cd $DARPDIR/handlepulse
     if [ -f  $DARPDIR/handlepulse.pid ]; then
         kill `cat $DARPDIR/handlepulse.pid`

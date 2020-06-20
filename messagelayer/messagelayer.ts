@@ -7,11 +7,8 @@ const TEST=true;
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
 
-
-
-
 export var stats={
-  port: 0,
+  port: "",
   inMsgs : 0,
   outMsgs : 0,
   lastInTimestamp: 0,
@@ -19,21 +16,22 @@ export var stats={
   lastInMsg :"",
   lastOutMsg :""
 };
+
+
 //  RECEIVER CODE
 server.on('error', (err) => {
   console.log(`server error:\n${err.stack}`);
   server.close();
 });
 
-
-
 server.on('listening', () => {
   const address = server.address();
   console.log(`server listening ${address.address}:${address.port}`);
 });
 
-export function recvMsg(port:string,callback:any) {
-  server.bind(PORT);
+export function recvMsg(port:string,callback:any) {   //API routine
+  stats.port=port;
+  server.bind(port);
   // Prints: server listening 0.0.0.0:41234
   server.on('message', (msg, rinfo) => {
     var incomingTimestamp=stats.lastInTimestamp=now();
@@ -53,7 +51,7 @@ const client = dgram.createSocket('udp4');
 //
 //   sendMsg(): Send same message to all nodes in nodelist 
 //
-export function sendMsg(outgoingMessage:string,nodelist:string[]) {
+export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routine
 
   nodelist.forEach(function (node:string) {
     const ipaddr=node.split(":")[0];
@@ -77,13 +75,13 @@ var pulseMessage="incomingTimestamp="+now()+",0,Build.200619.1110,DEVOPS,DEVOPS.
 process.argv.shift();  //ignore rid of node
 process.argv.shift();  //ignore rid of path to mthis code
 
+recvMsg("65013",function(incomingMessage:string) {  //one-time set up of message handler callback
+  console.log(`test_app_pulser(): recvMsg callback incomingMessage: ${incomingMessage}`);
+});
+
 function test_app_pulser() {    //sample test app 
-  //process.argv.forEach(function (val) {
-    //const ipaddr=val.split(":")[0];
-    //const port=val.split(":")[1]||"65013";
-    //const message = Buffer.from(pulseMessage);
-    sendMsg(pulseMessage, process.argv);
-  //});
+
+  sendMsg(pulseMessage, process.argv);
   setTimeout(test_app_pulser,1000);  //do it again in a few seconds
 }
 if (TEST) test_app_pulser();  //bench test - uncomment to run a test
