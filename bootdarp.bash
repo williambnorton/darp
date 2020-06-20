@@ -15,7 +15,7 @@
 #
 echo `date` "------------------ $0 STARTING DARP v0.2 --------------------" 
 
-SLEEPTIME=7 #time between software runs in forever loop
+SLEEPTIME=700 #time between software runs in forever loop
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -160,15 +160,18 @@ do
 
 
 
+
+
+
     cd $DARPDIR
     cd $DARPDIR/messagelayer
     if [ -f  $DARPDIR/messagelayer.pid ]; then
         kill `cat $DARPDIR/messagelayer.pid`
     fi
     echo `date` 'Starting messagelayer...'
-    node messagelayer &
-    echo $$ > $DARPDIR/messagelayer.pid
-
+    node messagelayer 
+    echo `date` messagelayer done
+    exit 1
 
 
 
