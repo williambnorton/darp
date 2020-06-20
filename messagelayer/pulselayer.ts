@@ -7,7 +7,7 @@ import {   sendMsg, recvMsg, messagelayer_stats } from './messagelayer';
 // launch with TEST=1 to get automatic pulser and catcher
 var hostname=process.env.HOSTNAME;
 if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];
-var version=require('../Version.js');
+const version = require('fs').readFileSync('../SWVersion', {encoding:'utf8', flag:'r'});
 console.log("version="+dump(version));
 var pulseMessage=",0,"+version+","+hostname+",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
 console.log("pulseMessage="+pulseMessage);
