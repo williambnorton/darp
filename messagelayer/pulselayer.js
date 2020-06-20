@@ -10,6 +10,7 @@ var hostname = process.env.HOSTNAME;
 if (typeof process.env.HOSTNAME == "undefined")
     process.env.HOSTNAME = require("os").hostname().split(".")[0];
 var version = require('../Version.js');
+console.log("version=" + lib_1.dump(version));
 var pulseMessage = ",0," + version + "," + hostname + ",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
 console.log("pulseMessage=" + pulseMessage);
 process.argv.shift(); //ignore rid of node

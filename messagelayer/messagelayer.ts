@@ -1,3 +1,4 @@
+import {   dump,   now,      ts } from '../lib/lib';
 //
 //  -create the UDP message bus for communication with all nodes
 // all others only have to deal with message, we timestamp and queue it here
@@ -90,6 +91,7 @@ if (TEST) test_app_pulser();  //bench test - uncomment to run a test
 /*************  TEST AREA **********/
 
 
+/***
 //==============
 //misc. routines
 function ts() {
@@ -99,3 +101,5 @@ function now() {
   var d = new Date();
   return d.getTime();
 }
+
+***/

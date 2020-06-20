@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var lib_1 = require("../lib/lib");
 //
 //  -create the UDP message bus for communication with all nodes
 // all others only have to deal with message, we timestamp and queue it here
@@ -31,7 +32,7 @@ function recvMsg(port, callback) {
     server.bind(port);
     // Prints: server listening 0.0.0.0:41234
     server.on('message', function (msg, rinfo) {
-        var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = now();
+        var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = lib_1.now();
         exports.messagelayer_stats.inMsgs++;
         console.log("Server received: " + msg + " from " + rinfo.address + ":" + rinfo.port);
         var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
@@ -51,12 +52,12 @@ function sendMsg(outgoingMessage, nodelist) {
     nodelist.forEach(function (node) {
         var ipaddr = node.split(":")[0];
         var port = node.split(":")[1] || "65013";
-        var timestampedMsg = "" + now() + "," + outgoingMessage;
+        var timestampedMsg = "" + lib_1.now() + "," + outgoingMessage;
         var message = Buffer.from(timestampedMsg);
         exports.messagelayer_stats.outMsgs++;
-        exports.messagelayer_stats.lastOutTimestamp = now();
+        exports.messagelayer_stats.lastOutTimestamp = lib_1.now();
         exports.messagelayer_stats.lastOutMsg = timestampedMsg;
-        console.log(ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
+        console.log(lib_1.ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
                 console.log("sendMessage(): ERROR");
@@ -85,12 +86,15 @@ function test_app_pulser() {    //sample test app
 }
 if (TEST) test_app_pulser();  //bench test - uncomment to run a test
 /*************  TEST AREA **********/
+/***
 //==============
 //misc. routines
 function ts() {
-    return new Date().toLocaleTimeString() + " ";
+  return new Date().toLocaleTimeString() + " ";
 }
 function now() {
-    var d = new Date();
-    return d.getTime();
+  var d = new Date();
+  return d.getTime();
 }
+
+***/ 
