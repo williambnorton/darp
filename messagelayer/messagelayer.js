@@ -22,14 +22,14 @@ exports.messagelayer_stats = {
     lastInMsg: "",
     lastOutMsg: ""
 };
-//  RECEIVER CODE
+//             RECEIVER CODE
 server.on('error', function (err) {
-    console.log("server error:\n" + err.stack);
+    console.log("messagelayer server error:\n" + err.stack);
     server.close();
 });
 server.on('listening', function () {
     var address = server.address();
-    console.log("server listening " + address.address + ":" + address.port);
+    console.log("messagelayer server listening " + address.address + ":" + address.port);
 });
 //
 //  recvMsg(): bind port and start callbacks for incoming messages
@@ -42,7 +42,7 @@ function recvMsg(port, callback) {
         var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = lib_1.now();
         exports.messagelayer_stats.inOctets += msg.length;
         exports.messagelayer_stats.inMsgs++;
-        console.log("Server received: " + msg + " from " + rinfo.address + ":" + rinfo.port);
+        console.log("messagelayer Server received: " + msg + " from " + rinfo.address + ":" + rinfo.port);
         var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
         exports.messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);
@@ -58,8 +58,8 @@ var client = dgram.createSocket('udp4');
 //
 function sendMsg(outgoingMessage, nodelist) {
     nodelist.forEach(function (node) {
-        var ipaddr = node.split(":")[0];
-        var port = node.split(":")[1] || "65013";
+        var ipaddr = node.split("_")[0];
+        var port = node.split("_")[1] || "65013";
         var timestampedMsg = "" + lib_1.now() + "," + outgoingMessage;
         var message = Buffer.from(timestampedMsg);
         exports.messagelayer_stats.outMsgs++;
@@ -69,28 +69,29 @@ function sendMsg(outgoingMessage, nodelist) {
         console.log(lib_1.ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
-                console.log("sendMessage(): ERROR");
+                console.log("messagelayer sendMessage(): ERROR");
                 client.close();
             }
         });
     });
 }
 exports.sendMsg = sendMsg;
-/************ TEST AREA ***********   add space here to comment test---> */
+/************ TEST AREA ***********   add space here to comment test---> * /
 // launch with TEST=1 to get automatic pulser and catcher
-var hostname = process.env.HOSTNAME;
-if (typeof process.env.HOSTNAME == "undefined")
-    process.env.HOSTNAME = require("os").hostname().split(".")[0];
-var pulseMessage = "incomingTimestamp=" + lib_1.now() + ",0,Build.200619.1110," + process.env.HOSTNAME + ",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
-console.log("pulseMessage=" + pulseMessage);
-process.argv.shift(); //ignore rid of node
-process.argv.shift(); //ignore rid of path to mthis code
-recvMsg("65013", function (incomingMessage) {
-    console.log("test_app_pulser(): recvMsg callback incomingMessage ------> " + incomingMessage);
+var hostname=process.env.HOSTNAME;
+if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];
+var pulseMessage="incomingTimestamp="+now()+",0,Build.200619.1110,"+process.env.HOSTNAME+",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
+console.log("pulseMessage="+pulseMessage);
+process.argv.shift();  //ignore rid of node
+process.argv.shift();  //ignore rid of path to mthis code
+
+recvMsg("65013",function(incomingMessage:string) {  //one-time set up of message handler callback
+  console.log(`test_app_pulser(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
 });
-function test_app_pulser() {
-    sendMsg(pulseMessage, process.argv);
-    setTimeout(test_app_pulser, 1000); //do it again in a few seconds
+
+function test_app_pulser() {    //sample test app
+  sendMsg(pulseMessage, process.argv);
+  setTimeout(test_app_pulser,1000);  //do it again in a few seconds
 }
-test_app_pulser(); //bench test - uncomment to run a test
+test_app_pulser();  //bench test - uncomment to run a test
 /*************  TEST AREA **********/

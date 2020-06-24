@@ -170,7 +170,7 @@ do
     fi
     echo `date` 'Starting messagelayer...'
     #node messagelayer 
-	node messagelayer 71.202.2.184 104.42.192.234
+	node nodefactory 71.202.2.184 104.42.192.234
     echo `date` messagelayer done
     exit 1
 

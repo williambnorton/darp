@@ -22,15 +22,15 @@ export var messagelayer_stats={
   lastOutMsg :""
 };
 
-//  RECEIVER CODE
+//             RECEIVER CODE
 server.on('error', (err) => {
-  console.log(`server error:\n${err.stack}`);
+  console.log(`messagelayer server error:\n${err.stack}`);
   server.close();
 });
 
 server.on('listening', () => {
   const address = server.address();
-  console.log(`server listening ${address.address}:${address.port}`);
+  console.log(`messagelayer server listening ${address.address}:${address.port}`);
 });
 
 //
@@ -44,7 +44,7 @@ export function recvMsg(port:string,callback:any) {   //API routine
     var incomingTimestamp=messagelayer_stats.lastInTimestamp=now();
     messagelayer_stats.inOctets+=msg.length;
     messagelayer_stats.inMsgs++;
-    console.log(`Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);
+    console.log(`messagelayer Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);
     var incomingMessage=`${incomingTimestamp},${msg}` //prepend our timeStamp
     messagelayer_stats.lastInMsg=incomingMessage;
     callback(incomingMessage);
@@ -62,8 +62,8 @@ const client = dgram.createSocket('udp4');
 export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routine
 
   nodelist.forEach(function (node:string) {
-    const ipaddr=node.split(":")[0];
-    const port=node.split(":")[1]||"65013";
+    const ipaddr=node.split("_")[0];
+    const port=node.split("_")[1]||"65013";
     const timestampedMsg=""+now()+","+outgoingMessage;
     const message = Buffer.from(timestampedMsg);
     messagelayer_stats.outMsgs++;
@@ -72,13 +72,13 @@ export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routi
     messagelayer_stats.inOctets+=message.length;
     console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
     client.send(message, 0, message.length, port, ipaddr, (err:string) => {
-      if (err) { console.log(`sendMessage(): ERROR`); client.close(); }
+      if (err) { console.log(`messagelayer sendMessage(): ERROR`); client.close(); }
     });
   });
 }
 
 
-/************ TEST AREA ***********   add space here to comment test---> */
+/************ TEST AREA ***********   add space here to comment test---> * / 
 // launch with TEST=1 to get automatic pulser and catcher
 var hostname=process.env.HOSTNAME;
 if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];

@@ -89,7 +89,7 @@ function getConfiguration() {
     console.log("****CONFIG: getConfiguration() Fetching config from URL: "+URL);
 
 
-    //FETCH CONFIG
+    //FETCH our pulseGroup
     var req = http.get(URL, function (res) {
         var data = '', json_data;
         res.on('data', function (stream) {
