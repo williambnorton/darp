@@ -513,6 +513,7 @@ if (TEST) {
                     owls+=""+owls+nodeEntry.mint+"="+nodeEntry.owl+","
                 }
             });
+            owls=owls.replace(/,+$/, ""); //remove trailing comma 
             var myEntry=pulseGroup.pulses[GEO+":"+pulseGroup.groupName];
             var pulseMessage="0,"+VERSION+","+GEO+","+pulseGroup.groupName+","+ (myEntry.seq++) +","+pulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
             console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));
@@ -525,10 +526,15 @@ if (TEST) {
                 console.log("pulseGroup.incomingPulse(): "+dump(incomingPulse));
                 var pulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
                 console.log("pulseEntry is :"+dump(pulseEntry));
-                pulseEntry.inPulses++;
-                pulseEntry.lastMsg=incomingPulse.lastMsg;
-                pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
-                pulseEntry.owl=incomingPulse.owl;
+                if (pulseEntry!=null) {
+                    pulseEntry.inPulses++;
+                    pulseEntry.lastMsg=incomingPulse.lastMsg;
+                    pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
+                    pulseEntry.owl=incomingPulse.owl;
+                    pulseEntry.owls=incomingPulse.owls;
+                } else {
+                    console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
+                }0
             });
         };
 
@@ -553,8 +559,8 @@ if (TEST) {
         console.log("===* * * * * * * * * * * * * * * * * * DARP NODE STARTED: pulseGroup="+dump(pulseGroup));
 //        pulseGroup.forEachNode(function(index:string,node:PulseEntry){console.log("pulseNode: "+index+" node="+dump(node));});
 //        pulseGroup.forEachMint(function(index:string,mint:MintEntry){console.log("MINT:"+index+" mint="+dump(mint));});
-        console.log("pulseGroup="+dump(pulseGroup));
-        console.log("pulse():");
+        //console.log("pulseGroup="+dump(pulseGroup));
+        //console.log("pulse():");
         pulseGroup.recvPulses();
         pulseGroup.pulse();
 

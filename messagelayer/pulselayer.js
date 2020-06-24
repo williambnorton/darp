@@ -21,7 +21,7 @@ function recvPulses(port, callback) {
         var pulseTimestamp = parseInt(ary[0]);
         var senderTimestamp = parseInt(ary[1]);
         var OWL = pulseTimestamp - senderTimestamp;
-        var owlsStart = lib_1.nth_occurrence(incomingMessage, ',', 10); //owls start after the 7th comma
+        var owlsStart = lib_1.nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
         var pulse = {
             pulseTimestamp: ary[0],
@@ -31,10 +31,10 @@ function recvPulses(port, callback) {
             geo: ary[4],
             group: ary[5],
             seq: ary[6],
-            bootTimestamp: ary[8],
-            srcMint: ary[9],
+            bootTimestamp: ary[7],
+            srcMint: ary[8],
             owls: pulseOwls,
-            owl: "" + OWL,
+            owl: OWL,
             lastMsg: incomingMessage
         };
         ;

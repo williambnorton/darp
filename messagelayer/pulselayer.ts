@@ -21,7 +21,7 @@ export function recvPulses(port,callback) {
           const pulseTimestamp=parseInt(ary[0]);
           const senderTimestamp=parseInt(ary[1]);
           const OWL=pulseTimestamp-senderTimestamp;
-          var owlsStart = nth_occurrence(incomingMessage, ',', 10); //owls start after the 7th comma
+          var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
           var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
           var pulse = {
             pulseTimestamp : ary[0],
@@ -31,10 +31,10 @@ export function recvPulses(port,callback) {
               geo: ary[4],
               group: ary[5],
               seq: ary[6],
-              bootTimestamp: ary[8],   //if genesis node reboots --> all node reload SW too
-              srcMint: ary[9],
+              bootTimestamp: ary[7],   //if genesis node reboots --> all node reload SW too
+              srcMint: ary[8],
               owls: pulseOwls,
-              owl: "" + OWL,
+              owl: OWL,
               lastMsg:incomingMessage
           };;
           console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
