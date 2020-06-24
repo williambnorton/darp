@@ -78,15 +78,7 @@ do
         echo `date` " - - - - - - - - - -     CURRENT $VERSION SOFTWARE        - - - - - - - - - - - - - - "
         echo  ""
     sleep 2
-    echo `date` STARTING redis
-    ( redis-cli shutdown 2>&1 ) >/dev/null #stop server if runniung
-    ( redis-server --save "" --appendonly no 2>&1 ) >/dev/null &  #store nothing
-    echo `date`" redis started"
-    sleep 1
-
-    #echo `date` $0 : killing old processes to be restarted
-    #kill `cat $DARPDIR/*.pid`
-    #sleep 1
+  
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
@@ -105,10 +97,6 @@ do
     fi
     sleep 1
 
-    #npm update
-    #npm i @types/node
-    #npm install redis express
-
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
@@ -117,47 +105,7 @@ do
     echo PUBLICKEY=$PUBLICKEY
     sleep 1
 
-    #
-    #   need express (TCP/65013) before config
-    #
-    cd $DARPDIR
-    echo `date` "Starting express for nodeFactory and externalize stats"
-    cd $DARPDIR/express
-    node express &
-    echo $$ > $DARPDIR/express.pid
-    sleep 2     #allow server to start up to distribute code and config
-
-    #echo `date` Launching forever script
-    #cd /darp/scripts
-    #./forever.bash  #Start the system
-    cd $DARPDIR
-    echo `date` Connecting to GENESIS node to get my code and configuration
-    cd $DARPDIR/config
-    if [ -f  $DARPDIR/config.pid ]; then
-        kill `cat $DARPDIR/config.pid`
-        sleep 1
-    fi
-    node config &
-    echo $$ > $DARPDIR/config.pid
-    echo `date` Starting config to fetch config and code from genesis node
-    sleep 1
-
-    cd $DARPDIR/processpulse
-    echo `date` 'Starting processpulse...'
-    node processpulse &
-    echo $$ > $DARPDIR/processpulse.pid
-    sleep 1
-
-    cd $DARPDIR
-    cd $DARPDIR/pulser
-    if [ -f  $DARPDIR/pulser.pid ]; then
-        kill `cat $DARPDIR/pulser.pid`
-    fi
-    echo `date` 'Starting pulser...'
-    node pulser &
-    echo $$ > $DARPDIR/pulser.pid
-
-
+   
 
 
 
@@ -170,24 +118,10 @@ do
     fi
     echo `date` 'Starting messagelayer...'
     #node messagelayer 
-	node nodefactory 71.202.2.184 104.42.192.234
+	node nodefactory 
     echo `date` messagelayer done
-    exit 1
 
 
-
-
-
-
-
-
-    cd $DARPDIR/handlepulse
-    if [ -f  $DARPDIR/handlepulse.pid ]; then
-        kill `cat $DARPDIR/handlepulse.pid`
-        sleep 1 #give a t time for task to die
-    fi
-    echo `date` Starting handlepulse
-    node handlepulse #this will stop when handlepulse receives reload msg
 
     rc=$?
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
