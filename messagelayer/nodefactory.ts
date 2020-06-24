@@ -488,14 +488,15 @@ if (TEST) {
             var myEntry=pulseGroup.pulses[GEO+":"+pulseGroup.groupName];
             var pulseMessage="0,"+VERSION+","+GEO+","+pulseGroup.groupName+","+ (myEntry.seq++) +","+pulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
             console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));
-            sendPulses(pulseMessage,ipary)
-            setTimeout(this.pulse,5000)
+            sendPulses(pulseMessage,ipary);
         };
+
         pulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
                 console.log("pulseGroup.incomingPulse(): "+dump(incomingPulse));
             });
         };
+
         pulseGroup.getMint=function(mint:number) {
             this.forEachMint(function (mintEntry:MintEntry) {
                 if (mintEntry.mint==mint) return mintEntry

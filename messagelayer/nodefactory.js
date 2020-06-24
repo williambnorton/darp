@@ -424,7 +424,6 @@ if (TEST) {
             var pulseMessage = "0," + VERSION + "," + GEO + "," + pulseGroup.groupName + "," + (myEntry.seq++) + "," + pulseGroup.mintTable[0].bootTimestamp + "," + myEntry.mint + "," + owls;
             console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary));
             pulselayer_1.sendPulses(pulseMessage, ipary);
-            setTimeout(this.pulse, 5000);
         };
         pulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {

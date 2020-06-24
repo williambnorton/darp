@@ -7,25 +7,18 @@
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="Version 0.1 - Moving to platform layer model- messageBus on Redis,stats calc out of browser"
+MESSAGE="Version 2 - simple javascript pulseGroup object model"
 date>"Build."`date +%y%m%d.%H%M`
 echo `ls Build*` > SWVersion
 ls -l Build.*
 
-#tsc config/config && tsc express/express && tsc pulser/pulser && tsc handlepulse/handlepulse && git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
-
 #
 #	The same flow should work on boot darp - simple extensible loop
 #
-for darpModule in messagelayer config express pulser handlepulse processpulse wireguard
-do
-	if [ $darpModule/$darpModule.ts -nt $darpModule/$darpModule.js ]; then
-		cd $darpModule
-		tsc $darpModule
-		cd ..
-	fi
-done
+cd messagelayer
+tsc *.ts
+cd ..
 
 git add *.bash
-git add . && git commit -m "$MESSAGE + stabliizing base platform for launch" && git push
+git add . && git commit -m "$MESSAGE + " && git push
 echo `date` Completed compiles + git push for `ls Build*`
