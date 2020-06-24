@@ -256,8 +256,6 @@ app.get('/nodefactory', function(req, res) {
 
     bootTimestamp:number;
     version:string;
-    inOctets:number;
-    outOctets:number;
     inPulses:number;
     outPulses:number;
     pktDrops:number;
@@ -281,8 +279,6 @@ app.get('/nodefactory', function(req, res) {
         bootTimestamp: now(), //RemoteClock on startup  **** - we abandon the pulse when this changes
         version: version, //software version running on sender's node    
         //
-        inOctets: 0,
-        outOctets: 0,
         inPulses: 0,
         outPulses: 0,
         pktDrops:0,  
@@ -506,9 +502,11 @@ if (TEST) {
        //pulseGroup.pulse = function() {
 
         pulseGroup.pulse=function() {
-            var ipary:string[]=[], owls="1,";
+            var ipary:string[]=[], owls="";
             pulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
                 ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
+                nodeEntry.outPulses++;
+                
                 if ( nodeEntry.owl == -99999) owls=""+owls+nodeEntry.mint+",";
                 else {
                     //if pulseTimestamp within a second (POLLING CYCLE)
@@ -525,6 +523,12 @@ if (TEST) {
         pulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
                 console.log("pulseGroup.incomingPulse(): "+dump(incomingPulse));
+                var pulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
+                console.log("pulseEntry is :"+dump(pulseEntry));
+                pulseEntry.inPulses++;
+                pulseEntry.lastMsg=incomingPulse.lastMsg;
+                pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
+                pulseEntry.owl=incomingPulse.owl;
             });
         };
 

@@ -34,7 +34,8 @@ export function recvPulses(port,callback) {
               bootTimestamp: ary[8],   //if genesis node reboots --> all node reload SW too
               srcMint: ary[9],
               owls: pulseOwls,
-              owl: "" + OWL
+              owl: "" + OWL,
+              lastMsg:incomingMessage
           };;
           console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
           console.log("structured pulse="+dump(pulse));

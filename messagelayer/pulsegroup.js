@@ -214,8 +214,6 @@ function makePulseEntry(mint, geo, group, ipaddr, port, version) {
         bootTimestamp: lib_1.now(),
         version: version,
         //
-        inOctets: 0,
-        outOctets: 0,
         inPulses: 0,
         outPulses: 0,
         pktDrops: 0,
@@ -430,9 +428,10 @@ if (TEST) {
         };
         //pulseGroup.pulse = function() {
         pulseGroup.pulse = function () {
-            var ipary = [], owls = "1,";
+            var ipary = [], owls = "";
             pulseGroup.forEachNode(function (index, nodeEntry) {
                 ipary.push(nodeEntry.ipaddr + "_" + nodeEntry.port);
+                nodeEntry.outPulses++;
                 if (nodeEntry.owl == -99999)
                     owls = "" + owls + nodeEntry.mint + ",";
                 else {
@@ -449,6 +448,12 @@ if (TEST) {
         pulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
                 console.log("pulseGroup.incomingPulse(): " + lib_1.dump(incomingPulse));
+                var pulseEntry = pulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+                console.log("pulseEntry is :" + lib_1.dump(pulseEntry));
+                pulseEntry.inPulses++;
+                pulseEntry.lastMsg = incomingPulse.lastMsg;
+                pulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
+                pulseEntry.owl = incomingPulse.owl;
             });
         };
         pulseGroup.getMint = function (mint) {
