@@ -102,7 +102,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
-
+    cycleTime : 10      //number of seconds between polling cycles
 };
 
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -161,19 +161,49 @@ app.get('/nodefactory', function(req, res) {
     var version = req.query.version;
     //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
     //console.log("req="+dump(req.connection));
-
-    if (publickey==PUBLICKEY) {
+    //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
+    
+    if (publickey==PUBLICKEY) {         //GENESIS NODE instantiating itself - don't need to add anything
         console.log("Group Owner already configured");
         //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pulseGroup)); 
         return;
     }
-    // On Startup, only accept connections from me, and the test is that we have matching publickeys
+//
+//  Add mint and pulse to this piulsegroup
+//
+    var newMint=pulseGroup.nextMint++;
+    //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
+    //TO ADD a PULSE: 
+    pulseGroup.pulses[geo + ":" + pulseGroup.groupName] = makePulseEntry(newMint, geo, pulseGroup.groupName, incomingIP, port, VERSION);
+    //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
+    //TO ADD A MINT:
+    var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
+    pulseGroup.mintTable[newMint] = newNode;
+    //console.log(`addNode() adding mint# ${newMint} = ${geo}:${ipaddr}:${port}:${newMint} added to ${group}`);
+    //console.log("After adding node, pulseGroup="+dump(pulseGroup));
+    pulseGroup.nodeCount++;
+
+            //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
+
+
+
+    
+    var newNodePulseGroup=pulseGroup;   //make a copy of the pulseGroup for the new node and set its passed-in startup variables
+    newNodePulseGroup.mintTable[0]=newNode;
+ 
+
+    console.log("********************************* newNode="+dump(newNode));
+
+
+
+    //                              //pulseNode MEMBER NODE
+    //
+
     console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
     console.log("nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
 
-    //pulseGroup.addNode( GEO,GEO+".1", IP, PORT,PUBLICKEY, VERSION, WALLET); //adds mint and pulse to the group
     
     console.log(ts() + " nodeFactory sending config=" + dump(pulseGroup));
     res.setHeader('Content-Type', 'application/json');
@@ -423,7 +453,7 @@ function getPulseGroup(ipaddr:string,port:string,callback) {
             console.log("getPulseGroup(): from node factory:"+dump(pulseGroup));
 
             if (pulseGroup.isGenesisNode==true) {
-                console.log(ts()+"getPulseGroup(): GENESIS node configured");
+                console.log(ts()+"getPulseGroup(): GENESIS node alrerady configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
                 callback(pulseGroup);            
                 return;
@@ -476,8 +506,8 @@ if (TEST) {
        //pulseGroup.pulse = function() {
 
         pulseGroup.pulse=function() {
-            var ipary:string[]=[], owls="";
-            this.forEachNode(function(index:string,nodeEntry:PulseEntry) {
+            var ipary:string[]=[], owls="1,";
+            pulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
                 ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
                 if ( nodeEntry.owl == -99999) owls=""+owls+nodeEntry.mint+",";
                 else {
@@ -489,6 +519,7 @@ if (TEST) {
             var pulseMessage="0,"+VERSION+","+GEO+","+pulseGroup.groupName+","+ (myEntry.seq++) +","+pulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
             console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));
             sendPulses(pulseMessage,ipary);
+            setTimeout(pulseGroup.pulse,pulseGroup.cycleTime*1000);
         };
 
         pulseGroup.recvPulses=function (){
@@ -512,15 +543,17 @@ if (TEST) {
         pulseGroup.addNode("MAZLON",GEO+".1","51.105.5.246",  65013,PUBLICKEY,VERSION,WALLET);
         pulseGroup.addNode("MAZAMS",GEO+".1","13.73.182.162", 65013,PUBLICKEY,VERSION,WALLET);
         pulseGroup.addNode("MAZIND",GEO+".1","104.211.95.109",65013,PUBLICKEY,VERSION,WALLET);
-    */    pulseGroup.addNode("MAZCAP",GEO+".1","40.127.4.79",   65013,PUBLICKEY,VERSION,WALLET);
+       pulseGroup.addNode("MAZCAP",GEO+".1","40.127.4.79",   65013,PUBLICKEY,VERSION,WALLET);
         pulseGroup.addNode("MAZSYD",GEO+".1","52.187.248.162",65013,PUBLICKEY,VERSION,WALLET);
-        
+    /* */    
         console.log("===* * * * * * * * * * * * * * * * * * DARP NODE STARTED: pulseGroup="+dump(pulseGroup));
 //        pulseGroup.forEachNode(function(index:string,node:PulseEntry){console.log("pulseNode: "+index+" node="+dump(node));});
 //        pulseGroup.forEachMint(function(index:string,mint:MintEntry){console.log("MINT:"+index+" mint="+dump(mint));});
         console.log("pulseGroup="+dump(pulseGroup));
         console.log("pulse():");
+        pulseGroup.recvPulses();
         pulseGroup.pulse();
+
     });
 }
 //----------------- sender 
