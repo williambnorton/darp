@@ -98,12 +98,12 @@ do
     sleep 1
 
     #Now we are running in the new code /darp directory
-    echo `date` Configuring Wireguard
-    cd $DARPDIR/scripts/
-    ./configWG.bash #>/dev/null
-    export PUBLICKEY=`cat $WGDIR/publickey`
-    echo PUBLICKEY=$PUBLICKEY
-    sleep 1
+ #   echo `date` Configuring Wireguard
+ #   cd $DARPDIR/scripts/
+ #   ./configWG.bash #>/dev/null
+ #   export PUBLICKEY=`cat $WGDIR/publickey`
+ #   echo PUBLICKEY=$PUBLICKEY
+ #   sleep 1
 
    
 
@@ -118,7 +118,7 @@ do
     fi
     echo `date` 'Starting messagelayer...'
     #node messagelayer 
-	node nodefactory 
+	node pulsegroup 
     echo `date` messagelayer done
 
 
