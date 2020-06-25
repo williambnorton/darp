@@ -486,7 +486,6 @@ if (TEST) {
                 else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: " + incomingPulse.geo);
                 }
-                0;
             });
         };
         newPulseGroup.getMint = function (mint) {

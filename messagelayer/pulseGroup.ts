@@ -549,6 +549,7 @@ if (TEST) {
                 console.log("recvPulseGroup incomingPulse="+dump(incomingPulse));
                 var pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
                 console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(pulseEntry));
+
                 if (pulseEntry!=null) {
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg=incomingPulse.lastMsg;
@@ -557,7 +558,7 @@ if (TEST) {
                     pulseEntry.owls=incomingPulse.owls;
                 } else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
-                }0
+                }
             });
         };
 
