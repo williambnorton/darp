@@ -170,9 +170,7 @@ app.get('/nodefactory', function (req, res) {
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     if (me.ipaddr == incomingIP) { //GENESIS NODE instantiating itself - don't need to add anything
-        //pulseGroup.me=pulseGroup.genesis=pulseGroup.mintTable[0];
         console.log("GENESIS NODE CONFIGURED configured");
-        //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pulseGroup));
         return;
@@ -278,16 +276,17 @@ function joinPulseGroup(ipaddr, port, callback) {
         });
         res.on('end', function () {
             //console.log("********* *******           data="+data);
-            var pulseGroup = JSON.parse(data);
+            var newPulseGroup = JSON.parse(data);
             console.log("getPulseGroup(): from node factory:" + lib_1.dump(pulseGroup));
-            if (pulseGroup.isGenesisNode == true) {
+            if (newPulseGroup.me.publickey == PUBLICKEY) {
                 console.log(lib_1.ts() + "getPulseGroup(): GENESIS node alrerady configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
-                callback(pulseGroup);
+                pulseGroups = [newPulseGroup];
+                callback(newPulseGroup);
                 return;
             }
             console.log(lib_1.ts() + "getPulseGroup(): Configuring non-genesis node ... ");
-            callback(pulseGroup);
+            callback(newPulseGroup);
             console.log("getPulseGroup():- call setWireguard to generate wireguard config for me and genesis node:");
             //        setWireguard(); //set up initial wireguard comfig
         });
@@ -352,7 +351,7 @@ if (TEST) {
                 console.log("recvPulseGroup incomingPulse=" + lib_1.dump(incomingPulse));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("My pulseEntry for " + incomingPulse.geo + ":" + incomingPulse.group + "=" + lib_1.dump(pulseEntry));
-                if (pulseEntry != null) {
+                if (pulseEntry != null) { //copy incoming pulse into my record
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg = incomingPulse.lastMsg;
                     pulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;

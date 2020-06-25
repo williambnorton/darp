@@ -183,16 +183,13 @@ app.get('/nodefactory', function(req, res) {
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     
     if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
-        //pulseGroup.me=pulseGroup.genesis=pulseGroup.mintTable[0];
-        
-
         console.log("GENESIS NODE CONFIGURED configured");
-        //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pulseGroup)); 
         return;
     }
     console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
+
     //
     //  Add mint and pulse to this piulsegroup
     //
@@ -210,6 +207,7 @@ app.get('/nodefactory', function(req, res) {
     console.log(`adding mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} added to ${pulseGroup.groupName}`);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
+
 
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
@@ -343,18 +341,19 @@ function joinPulseGroup(ipaddr:string,port:string,callback) {
 
         res.on('end', function () {
             //console.log("********* *******           data="+data);
-            var pulseGroup = JSON.parse(data);            
+            var newPulseGroup = JSON.parse(data);            
             console.log("getPulseGroup(): from node factory:"+dump(pulseGroup));
 
-            if (pulseGroup.isGenesisNode==true) {
+            if (newPulseGroup.me.publickey==PUBLICKEY) {
                 console.log(ts()+"getPulseGroup(): GENESIS node alrerady configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
-                callback(pulseGroup);            
+                pulseGroups=[newPulseGroup];
+                callback(newPulseGroup);            
                 return;
             } 
             console.log(ts()+"getPulseGroup(): Configuring non-genesis node ... ");
 
-            callback(pulseGroup);            
+            callback(newPulseGroup);            
             console.log("getPulseGroup():- call setWireguard to generate wireguard config for me and genesis node:");
     //        setWireguard(); //set up initial wireguard comfig
         });
@@ -425,7 +424,7 @@ if (TEST) {
                 var pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
                 console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(pulseEntry));
 
-                if (pulseEntry!=null) {
+                if (pulseEntry!=null) {     //copy incoming pulse into my record
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg=incomingPulse.lastMsg;
                     pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
