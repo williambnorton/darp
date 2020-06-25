@@ -77,7 +77,8 @@ var server = app.listen(PORT, '0.0.0.0', function () {
 //  Making of my own pulseGroup for members to connect to
 //
 //
-var me = makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
+var me = makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All nodes can count on 'me' always being present
+//All nodes also start out ready to be a genesis node for others
 var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
 var pulse = makePulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var pulseGroup = {
@@ -108,7 +109,7 @@ var pulseGroup = {
 //       Configuration for node - allocate a mint
 //
 app.get('/nodefactory', function (req, res) {
-    console.log(lib_1.ts() + "NODEFACTORY");
+    //console.log(ts() + "NODEFACTORY");
     //
     //  additional nodes adding to pulseGroup
     //
@@ -149,7 +150,7 @@ app.get('/nodefactory', function (req, res) {
     //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
-    if (publickey == PUBLICKEY) { //GENESIS NODE instantiating itself - don't need to add anything
+    if (me.ipaddr == incomingIP) { //GENESIS NODE instantiating itself - don't need to add anything
         console.log("Group Owner already configured");
         //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
         res.setHeader('Content-Type', 'application/json');
@@ -173,14 +174,14 @@ app.get('/nodefactory', function (req, res) {
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     var newNodePulseGroup = pulseGroup; //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     newNodePulseGroup.mintTable[0] = newNode;
-    console.log("********************************* newNode=" + lib_1.dump(newNode));
+    console.log("********************************* newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     //                              //pulseNode MEMBER NODE
     //
     console.log(lib_1.ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
     console.log("nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
-    console.log(lib_1.ts() + " nodeFactory sending config=" + lib_1.dump(pulseGroup));
+    console.log(lib_1.ts() + " nodeFactory sending newNodeConfig =" + lib_1.dump(newNodePulseGroup));
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(pulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
+    res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
 });
 function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
     return {
