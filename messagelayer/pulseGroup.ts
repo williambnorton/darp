@@ -91,6 +91,8 @@ var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEnt
 var pulseGroup = {                 //my pulseGroup Configuration
     groupName : me.geo+".1",
     groupOwner : me.geo,
+    me : {},
+    genesis:{},
     mintTable: [
        me
     ],           
@@ -98,13 +100,11 @@ var pulseGroup = {                 //my pulseGroup Configuration
         [genesis.geo + ":" + genesis.geo+".1"]: pulse
     },
     rc: 0,
-    whoami: 1,   //true if I own this group & control population   
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
     cycleTime : 60,      //pulseGroup-wide setting: number of seconds between pulses
-    me : {},
-    genesis:{}
+
 };
 pulseGroup.me=me;
 pulseGroup.genesis=genesis;
@@ -219,7 +219,6 @@ app.get('/nodefactory', function(req, res) {
     let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
     //newNodePulseGroup.mintTable[0]=newNode;
-    newNodePulseGroup.whoami=newMint;
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
     //  this means mintTable[0]  
 
