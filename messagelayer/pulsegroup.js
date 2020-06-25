@@ -94,7 +94,7 @@ var pulseGroup = {
     whoami: 1,
     ts: lib_1.now(),
     nodeCount: 1,
-    nextMint: 1,
+    nextMint: 2,
     cycleTime: 60 //pulseGroup-wide setting: number of seconds between pulses
 };
 var pulseGroups = [pulseGroup];

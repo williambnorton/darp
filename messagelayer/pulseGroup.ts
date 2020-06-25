@@ -101,7 +101,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     whoami: 1,   //true if I own this group & control population   
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
-    nextMint : 1,      //assign IP. Allocate IP out of 10.10.0.<mint>
+    nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
     cycleTime : 60      //pulseGroup-wide setting: number of seconds between pulses
 };
 var pulseGroups=[pulseGroup];
