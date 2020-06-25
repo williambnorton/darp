@@ -27,11 +27,13 @@ esac
 export MACHINE
 echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
 
-export WGDIR=/etc/wireguard
+
 export DARPDIR=$HOME/darp
 if [ "$PORT" == "" ]; then 
     PORT=65013; 
 fi
+#export WGDIR=/etc/wireguard
+export WGDIR=$DARPDIR/wireguard
 export PORT
 echo PORT=$PORT
 
