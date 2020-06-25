@@ -179,7 +179,14 @@ app.get('/nodefactory', function(req, res) {
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     
-
+    if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
+        console.log("Group Owner already configured");
+        //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(pulseGroup)); 
+        return;
+    }
+    console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
     //
     //  Add mint and pulse to this piulsegroup
     //
@@ -199,14 +206,6 @@ app.get('/nodefactory', function(req, res) {
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
-    if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
-    console.log("Group Owner already configured");
-    //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(pulseGroup)); 
-    return;
-}
-console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
     let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    
     
     newNodePulseGroup.mintTable[0]=newNode;
