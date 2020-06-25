@@ -192,6 +192,9 @@ app.get('/nodefactory', function(req, res) {
         res.end(JSON.stringify(pulseGroup)); 
         return;
     }
+
+
+
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
@@ -206,16 +209,15 @@ app.get('/nodefactory', function(req, res) {
     //TO ADD a PULSE: 
     pulseGroup.pulses[geo + ":" + pulseGroup.groupName] = makePulseEntry(newMint, geo, pulseGroup.groupName, incomingIP, port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
-    //TO ADD A MINT:
+
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
-    
-//    pulseGroup.mintTable[newMint] = newNode;
-    pulseGroup.mintTable.unshift(newNode);  //put new node in the mint table
+    pulseGroup.mintTable.push(newNode);  //put new node in the mint table
  
-    console.log(`adding mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} added to ${pulseGroup.groupName}`);
+    console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${pulseGroup.groupName}`);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
 
+    console.log("BeforeCloning, pulseGroup="+dump(pulseGroup));
 
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
@@ -380,7 +382,7 @@ if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
 
     joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
-       //console.log("===*Before: pulseGroup="+dump(pulseGroup));
+       console.log("callback from my or someone else's pulseGroup="+dump(pulseGroup));
        //
        //       attach convenience routines to the downloaded pulseGroup assignment
        //

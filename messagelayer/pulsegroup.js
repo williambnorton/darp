@@ -192,13 +192,12 @@ app.get('/nodefactory', function (req, res) {
     //TO ADD a PULSE: 
     pulseGroup.pulses[geo + ":" + pulseGroup.groupName] = makePulseEntry(newMint, geo, pulseGroup.groupName, incomingIP, port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
-    //TO ADD A MINT:
     var newNode = makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
-    //    pulseGroup.mintTable[newMint] = newNode;
-    pulseGroup.mintTable.unshift(newNode); //put new node in the mint table
-    console.log("adding mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " added to " + pulseGroup.groupName);
+    pulseGroup.mintTable.push(newNode); //put new node in the mint table
+    console.log("added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + pulseGroup.groupName);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
+    console.log("BeforeCloning, pulseGroup=" + lib_1.dump(pulseGroup));
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));
@@ -308,7 +307,7 @@ function joinPulseGroup(ipaddr, port, callback) {
 if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
     joinPulseGroup("71.202.2.184", "65013", function (newPulseGroup) {
-        //console.log("===*Before: pulseGroup="+dump(pulseGroup));
+        console.log("callback from my or someone else's pulseGroup=" + lib_1.dump(pulseGroup));
         //
         //       attach convenience routines to the downloaded pulseGroup assignment
         //
