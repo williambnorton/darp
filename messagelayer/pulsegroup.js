@@ -98,6 +98,7 @@ var pulseGroup = {
     nextMint: 2,
     cycleTime: 60 //pulseGroup-wide setting: number of seconds between pulses
 };
+var pulseGroups = [pulseGroup];
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
@@ -110,7 +111,7 @@ app.get('/', function (req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroup, null, 2));
+    res.end(JSON.stringify(pulseGroups, null, 2));
     return;
 });
 app.get('/state', function (req, res) {
@@ -118,7 +119,7 @@ app.get('/state', function (req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroup, null, 2));
+    res.end(JSON.stringify(pulseGroups, null, 2));
     return;
 });
 //// nodeFactory
@@ -387,7 +388,7 @@ console.log("getting pulseGroup from url=" + url);
 //
 //  getPulseGroup() - 
 //
-function getPulseGroup(ipaddr, port, callback) {
+function joinPulseGroup(ipaddr, port, callback) {
     console.log("getPulseGroup(): ipaddr=" + ipaddr + ":" + port);
     var http = require('http');
     var req = http.get(url, function (res) {
@@ -423,17 +424,17 @@ function getPulseGroup(ipaddr, port, callback) {
 /***************** TEST AREA ****************/
 if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
-    getPulseGroup("71.202.2.184", "65013", function (pulseGroup) {
+    joinPulseGroup("71.202.2.184", "65013", function (newPulseGroup) {
         //console.log("===*Before: pulseGroup="+dump(pulseGroup));
         //
         //       attach convenience routines to the downloaded pulseGroup assignment
         //
-        pulseGroup.forEachNode = function (callback) { for (var node in this.pulses)
+        newPulseGroup.forEachNode = function (callback) { for (var node in this.pulses)
             callback(node, this.pulses[node]); };
-        pulseGroup.forEachMint = function (callback) { for (var mint in this.mintTable)
+        newPulseGroup.forEachMint = function (callback) { for (var mint in this.mintTable)
             callback(mint, this.mintTable[mint]); };
-        pulseGroup.addNode = function (geo, group, ipaddr, port, publickey, version, wallet) {
-            var newMint = pulseGroup.nextMint++;
+        newPulseGroup.addNode = function (geo, group, ipaddr, port, publickey, version, wallet) {
+            var newMint = newPulseGroup.nextMint++;
             //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
             //TO ADD a PULSE: 
             this.pulses[geo + ":" + group] = makePulseEntry(newMint, geo, group, ipaddr, port, VERSION);
@@ -443,17 +444,17 @@ if (TEST) {
             this.mintTable[newMint] = newNode;
             //console.log(`addNode() adding mint# ${newMint} = ${geo}:${ipaddr}:${port}:${newMint} added to ${group}`);
             //console.log("After adding node, pulseGroup="+dump(pulseGroup));
-            pulseGroup.nodeCount++;
+            newPulseGroup.nodeCount++;
             return this.mintTable[newMint];
         };
-        pulseGroup.deleteNode = function (geo, group, ipaddr, port, mint) {
+        newPulseGroup.deleteNode = function (geo, group, ipaddr, port, mint) {
             delete this.pulses[geo + ":" + group];
             delete this.mintTable[mint];
         };
         //pulseGroup.pulse = function() {
-        pulseGroup.pulse = function () {
+        newPulseGroup.pulse = function () {
             var ipary = [], owls = "";
-            pulseGroup.forEachNode(function (index, nodeEntry) {
+            newPulseGroup.forEachNode(function (index, nodeEntry) {
                 ipary.push(nodeEntry.ipaddr + "_" + nodeEntry.port);
                 nodeEntry.outPulses++;
                 if (nodeEntry.owl == -99999)
@@ -464,16 +465,16 @@ if (TEST) {
                 }
             });
             owls = owls.replace(/,+$/, ""); //remove trailing comma 
-            var myEntry = pulseGroup.pulses[GEO + ":" + pulseGroup.groupName];
-            var pulseMessage = "0," + VERSION + "," + GEO + "," + pulseGroup.groupName + "," + (myEntry.seq++) + "," + pulseGroup.mintTable[0].bootTimestamp + "," + myEntry.mint + "," + owls;
+            var myEntry = newPulseGroup.pulses[GEO + ":" + newPulseGroup.groupName];
+            var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + (myEntry.seq++) + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myEntry.mint + "," + owls;
             console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary));
             pulselayer_1.sendPulses(pulseMessage, ipary);
-            setTimeout(pulseGroup.pulse, pulseGroup.cycleTime * 1000);
+            setTimeout(newPulseGroup.pulse, newPulseGroup.cycleTime * 1000);
         };
-        pulseGroup.recvPulses = function () {
+        newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
                 console.log("pulseGroup.incomingPulse(): " + lib_1.dump(incomingPulse));
-                var pulseEntry = pulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+                var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("pulseEntry is :" + lib_1.dump(pulseEntry));
                 if (pulseEntry != null) {
                     pulseEntry.inPulses++;
@@ -488,7 +489,7 @@ if (TEST) {
                 0;
             });
         };
-        pulseGroup.getMint = function (mint) {
+        newPulseGroup.getMint = function (mint) {
             this.forEachMint(function (mintEntry) {
                 if (mintEntry.mint == mint)
                     return mintEntry;
@@ -506,13 +507,13 @@ if (TEST) {
              pulseGroup.addNode("MAZCAP",GEO+".1","40.127.4.79",   65013,PUBLICKEY,VERSION,WALLET);
               pulseGroup.addNode("MAZSYD",GEO+".1","52.187.248.162",65013,PUBLICKEY,VERSION,WALLET);
           /* */
-        console.log("===* * * * * * * * * * * * * * * * * * DARP NODE STARTED: pulseGroup=" + lib_1.dump(pulseGroup));
+        console.log("===* * * * * * * * * * * * * * * * * * DARP NODE STARTED: pulseGroup=" + lib_1.dump(newPulseGroup));
         //        pulseGroup.forEachNode(function(index:string,node:PulseEntry){console.log("pulseNode: "+index+" node="+dump(node));});
         //        pulseGroup.forEachMint(function(index:string,mint:MintEntry){console.log("MINT:"+index+" mint="+dump(mint));});
         //console.log("pulseGroup="+dump(pulseGroup));
         //console.log("pulse():");
-        pulseGroup.recvPulses();
-        pulseGroup.pulse();
+        newPulseGroup.recvPulses();
+        newPulseGroup.pulse();
     });
 }
 //----------------- sender 
