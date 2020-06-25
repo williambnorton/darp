@@ -105,6 +105,14 @@ var pulseGroup = {
 //pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
 //console.log("-********************** AFTER pulseGroup="+dump(pulseGroup));
 //process.exit(36);
+app.get('/', function (req, res) {
+    //console.log("fetching '/state'");
+    //handleShowState(req, res); 
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(pulseGroup, null, 2));
+    return;
+});
 //// nodeFactory
 //       Configuration for node - allocate a mint
 //
