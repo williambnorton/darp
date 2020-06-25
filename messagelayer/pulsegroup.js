@@ -191,7 +191,7 @@ app.get('/nodefactory', function (req, res) {
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));
-    newNodePulseGroup.mintTable.pop(); //get rid of groupOwner mint[0]
+    newNodePulseGroup.mintTable.shift(); //get rid of groupOwner mint[0]
     //newNodePulseGroup.mintTable[0]=newNode;
     newNodePulseGroup.whoami = newMint;
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
