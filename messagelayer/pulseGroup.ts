@@ -83,7 +83,7 @@ var server = app.listen(PORT, '0.0.0.0', function() {
 //
 //
 
-const me:MintEntry=makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
+const me:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
         //All nodes also start out ready to be a genesis node for others
 const genesis:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); 
 var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
@@ -101,7 +101,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     whoami: 1,   //true if I own this group & control population   
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
-    nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
+    nextMint : 1,      //assign IP. Allocate IP out of 10.10.0.<mint>
     cycleTime : 60      //pulseGroup-wide setting: number of seconds between pulses
 };
 var pulseGroups=[pulseGroup];
@@ -207,7 +207,8 @@ app.get('/nodefactory', function(req, res) {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    
     
-    newNodePulseGroup.mintTable[0]=newNode;
+    //newNodePulseGroup.mintTable[0]=newNode;
+    newNodePulseGroup.whoami=newMint;
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
     //  this means mintTable[0]  
 
