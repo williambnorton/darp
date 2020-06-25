@@ -174,6 +174,7 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(pulseGroup));
         return;
     }
+    console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
     //
     //  Add mint and pulse to this piulsegroup
     //

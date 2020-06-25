@@ -186,9 +186,10 @@ app.get('/nodefactory', function(req, res) {
         res.end(JSON.stringify(pulseGroup)); 
         return;
     }
-//
-//  Add mint and pulse to this piulsegroup
-//
+    console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
+    //
+    //  Add mint and pulse to this piulsegroup
+    //
     var newMint=pulseGroup.nextMint++;
     //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
     //TO ADD a PULSE: 
