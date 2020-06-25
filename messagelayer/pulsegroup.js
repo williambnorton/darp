@@ -514,7 +514,8 @@ if (TEST) {
         //console.log("pulse():");
         newPulseGroup.recvPulses();
         newPulseGroup.pulse();
-        pulseGroups.push(newPulseGroup);
+        if (!pulseGroup.isGenesisNode)
+            pulseGroups.push(newPulseGroup);
     });
 }
 //----------------- sender 
