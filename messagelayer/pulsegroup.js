@@ -95,8 +95,12 @@ var pulseGroup = {
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
-    cycleTime: 60 //pulseGroup-wide setting: number of seconds between pulses
+    cycleTime: 60,
+    me: {},
+    genesis: {}
 };
+pulseGroup.me = pulseGroup.mintTable[0];
+pulseGroup.genesis = pulseGroup.mintTable[0];
 var pulseGroups = [pulseGroup];
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
@@ -167,7 +171,8 @@ app.get('/nodefactory', function (req, res) {
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     if (me.ipaddr == incomingIP) { //GENESIS NODE instantiating itself - don't need to add anything
-        console.log("Group Owner already configured");
+        pulseGroup.me = pulseGroup.genesis = pulseGroup.mintTable[0];
+        console.log("GENESIS NODE CONFIGURED configured");
         //console.log(ts() + "EXPRESS nodeFactory sending config=" + dump(pulseGroup));
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pulseGroup));
@@ -184,7 +189,8 @@ app.get('/nodefactory', function (req, res) {
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
     //TO ADD A MINT:
     var newNode = makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
-    pulseGroup.mintTable[newMint] = newNode;
+    //    pulseGroup.mintTable[newMint] = newNode;
+    pulseGroup.mintTable.unshift(newNode);
     console.log("adding mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " added to " + pulseGroup.groupName);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
@@ -366,6 +372,10 @@ if (TEST) {
             });
             return null;
         };
+        //
+        // TODO: assign a mew and genesis convenience reference as part of pulseGroup
+        newPulseGroup.me = newPulseGroup.getMint(newPulseGroup.whoami);
+        newPulseGroup.genesis = newPulseGroup.getMint(1);
         /*      pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
               pulseGroup.addNode("MAZDAL",GEO+".1","23.102.167.37", 65013,PUBLICKEY,VERSION,WALLET);
               pulseGroup.addNode("MAZASH",GEO+".1","52.251.39.60",  65013,PUBLICKEY,VERSION,WALLET);
