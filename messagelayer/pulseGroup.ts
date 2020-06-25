@@ -106,8 +106,8 @@ var pulseGroup = {                 //my pulseGroup Configuration
     me : {},
     genesis:{}
 };
-pulseGroup.me=pulseGroup.mintTable[0];
-pulseGroup.genesis=pulseGroup.mintTable[0];
+pulseGroup.me=me;
+pulseGroup.genesis=genesis;
 var pulseGroups=[pulseGroup];
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
@@ -183,7 +183,7 @@ app.get('/nodefactory', function(req, res) {
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     
     if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
-        pulseGroup.me=pulseGroup.genesis=pulseGroup.mintTable[0];
+        //pulseGroup.me=pulseGroup.genesis=pulseGroup.mintTable[0];
         
 
         console.log("GENESIS NODE CONFIGURED configured");
@@ -448,7 +448,7 @@ if (TEST) {
         }
         //
         // TODO: assign a mew and genesis convenience reference as part of pulseGroup
-        newPulseGroup.me=newPulseGroup.getMint(newPulseGroup.whoami);newPulseGroup.genesis=newPulseGroup.getMint(1);
+        //newPulseGroup.me=newPulseGroup.getMint(newPulseGroup.whoami);newPulseGroup.genesis=newPulseGroup.getMint(1);
 
   /*      pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);        
         pulseGroup.addNode("MAZDAL",GEO+".1","23.102.167.37", 65013,PUBLICKEY,VERSION,WALLET);
