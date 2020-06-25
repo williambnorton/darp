@@ -188,8 +188,11 @@ app.get('/nodefactory', function (req, res) {
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
-    var newNodePulseGroup = pulseGroup; //make a copy of the pulseGroup for the new node and set its passed-in startup variables
+    //var newNodePulseGroup=pulseGroup;   //make a copy of the pulseGroup for the new node and set its passed-in startup variables
+    var newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));
     newNodePulseGroup.mintTable[0] = newNode;
+    //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
+    //  this means mintTable[0]  
     console.log("********************************* newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     console.log("********************************* newNodePulseGroup=");
     console.log("********************************* newNodePulseGroup=");
