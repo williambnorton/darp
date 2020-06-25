@@ -12,7 +12,7 @@ var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
 var DEFAULT_START_STATE = "RUNNING";
-console.log(lib_1.ts() + "EXPRESS: ALL NODES START IN RUNNING Mode");
+console.log(lib_1.ts() + "pulsegroup.ts(): ALL NODES START IN RUNNING Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
 //      Environment is way for environment to control the code
@@ -96,7 +96,7 @@ var pulseGroup = {
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
-    cycleTime: 10 //number of seconds between polling cycles
+    cycleTime: 60 //pulseGroup-wide setting: number of seconds between pulses
 };
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
@@ -106,6 +106,14 @@ var pulseGroup = {
 //console.log("-********************** AFTER pulseGroup="+dump(pulseGroup));
 //process.exit(36);
 app.get('/', function (req, res) {
+    //console.log("fetching '/state'");
+    //handleShowState(req, res); 
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(pulseGroup, null, 2));
+    return;
+});
+app.get('/state', function (req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
@@ -183,6 +191,10 @@ app.get('/nodefactory', function (req, res) {
     var newNodePulseGroup = pulseGroup; //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     newNodePulseGroup.mintTable[0] = newNode;
     console.log("********************************* newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
     //                              //pulseNode MEMBER NODE
     //
     console.log(lib_1.ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);

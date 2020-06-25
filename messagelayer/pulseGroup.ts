@@ -10,7 +10,7 @@ const DEFAULT_SHOWPULSES = "0"
 
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
-const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"EXPRESS: ALL NODES START IN RUNNING Mode");
+const DEFAULT_START_STATE="RUNNING"; console.log(ts()+"pulsegroup.ts(): ALL NODES START IN RUNNING Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
 
@@ -103,7 +103,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
-    cycleTime : 10      //number of seconds between polling cycles
+    cycleTime : 60      //pulseGroup-wide setting: number of seconds between pulses
 };
 
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -116,6 +116,14 @@ var pulseGroup = {                 //my pulseGroup Configuration
 
 //process.exit(36);
 app.get('/', function(req, res) {
+    //console.log("fetching '/state'");
+    //handleShowState(req, res); 
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(pulseGroup, null, 2));
+    return
+});
+app.get('/state', function(req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
@@ -193,16 +201,17 @@ app.get('/nodefactory', function(req, res) {
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
 
-            //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
-
-
-
+    //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
     var newNodePulseGroup=pulseGroup;   //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     newNodePulseGroup.mintTable[0]=newNode;
  
 
     console.log("********************************* newNodePulseGroup="+dump(newNodePulseGroup));
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
 
 
 

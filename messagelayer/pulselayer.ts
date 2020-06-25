@@ -43,7 +43,6 @@ export function recvPulses(port,callback) {
           //ary.shift();ary.shift();
           //const pulse=ary.join(",");
           console.log("Message Layer Statistics: :"+dump(messagelayer_stats));
-          console.log("WOULD CALL HANDLEPULSE MESSAGE HERE: OWL="+OWL+" pulse="+dump(pulse));
           callback(pulse);
     });
 };
