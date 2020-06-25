@@ -11,7 +11,7 @@
 #	startsWith=$startsWith$startsWith 
 #	echo `date` Get a publicKey that starts with $startsWith
 #fi
-WGDIR=/etc/wireguard   #in the docker and natively we will interact with this directory 
+WGDIR=$DARPDIR/wireguard   #in the docker and natively we will interact with this directory 
 
 echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
 
