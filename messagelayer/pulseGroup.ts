@@ -196,6 +196,7 @@ app.get('/nodefactory', function(req, res) {
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
     //TO ADD A MINT:
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
+    
     pulseGroup.mintTable[newMint] = newNode;
     console.log(`adding mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} added to ${pulseGroup.groupName}`);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
@@ -203,15 +204,12 @@ app.get('/nodefactory', function(req, res) {
 
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
-    
-    
-    
-    //var newNodePulseGroup=pulseGroup;   //make a copy of the pulseGroup for the new node and set its passed-in startup variables
+    //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    
     
     newNodePulseGroup.mintTable[0]=newNode;
-//wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
-//  this means mintTable[0]  
+    //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
+    //  this means mintTable[0]  
 
     console.log("********************************* newNodePulseGroup="+dump(newNodePulseGroup));
     console.log("********************************* newNodePulseGroup=");
@@ -559,6 +557,7 @@ if (TEST) {
                 } else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
                 }
+
             });
         };
 
@@ -587,8 +586,10 @@ if (TEST) {
         //console.log("pulse():");
         newPulseGroup.recvPulses();
         newPulseGroup.pulse();
-        if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
-        else pulseGroups=[newPulseGroup];  //for now genesis node has no others
+        //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
+        //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
+        //else 
+        pulseGroups=[newPulseGroup];  //for now genesis node has no others
     });
 }
 //----------------- sender 
