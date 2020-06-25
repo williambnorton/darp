@@ -206,7 +206,7 @@ app.get('/nodefactory', function(req, res) {
     
 //    pulseGroup.mintTable[newMint] = newNode;
     pulseGroup.mintTable.unshift(newNode);
-
+    pulseGroup.me=newNode;
  
  
     console.log(`adding mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} added to ${pulseGroup.groupName}`);
