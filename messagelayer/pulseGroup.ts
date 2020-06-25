@@ -205,8 +205,7 @@ app.get('/nodefactory', function(req, res) {
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
     
 //    pulseGroup.mintTable[newMint] = newNode;
-    pulseGroup.mintTable.unshift(newNode);
-    pulseGroup.me=newNode;
+    pulseGroup.mintTable.unshift(newNode);  //put new node in the mint table
  
     console.log(`adding mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} added to ${pulseGroup.groupName}`);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
@@ -216,6 +215,8 @@ app.get('/nodefactory', function(req, res) {
     
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    
+    newNodePulseGroup.me=newNode;
+
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
     //newNodePulseGroup.mintTable[0]=newNode;
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
@@ -232,7 +233,6 @@ app.get('/nodefactory', function(req, res) {
 
     console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
     console.log("nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
-
     
     console.log(ts() + " nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
     res.setHeader('Content-Type', 'application/json');
