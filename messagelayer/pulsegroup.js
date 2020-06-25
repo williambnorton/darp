@@ -473,7 +473,7 @@ if (TEST) {
         };
         newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
-                console.log("pulseGroup.incomingPulse(): " + lib_1.dump(incomingPulse));
+                console.log("recvPulseGroup incomingPulse=" + lib_1.dump(incomingPulse));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("pulseEntry is :" + lib_1.dump(pulseEntry));
                 if (pulseEntry != null) {
@@ -514,6 +514,7 @@ if (TEST) {
         //console.log("pulse():");
         newPulseGroup.recvPulses();
         newPulseGroup.pulse();
+        pulseGroups.push(newPulseGroup);
     });
 }
 //----------------- sender 

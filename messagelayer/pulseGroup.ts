@@ -546,7 +546,7 @@ if (TEST) {
 
         newPulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
-                console.log("pulseGroup.incomingPulse(): "+dump(incomingPulse));
+                console.log("recvPulseGroup incomingPulse="+dump(incomingPulse));
                 var pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
                 console.log("pulseEntry is :"+dump(pulseEntry));
                 if (pulseEntry!=null) {
@@ -586,7 +586,7 @@ if (TEST) {
         //console.log("pulse():");
         newPulseGroup.recvPulses();
         newPulseGroup.pulse();
-
+        pulseGroups.push(newPulseGroup);
     });
 }
 //----------------- sender 
