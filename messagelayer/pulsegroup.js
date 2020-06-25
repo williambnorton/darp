@@ -277,11 +277,11 @@ function joinPulseGroup(ipaddr, port, callback) {
         res.on('end', function () {
             //console.log("********* *******           data="+data);
             var newPulseGroup = JSON.parse(data);
-            console.log("getPulseGroup(): from node factory:" + lib_1.dump(pulseGroup));
+            console.log("getPulseGroup(): from node factory:" + lib_1.dump(newPulseGroup));
             if (newPulseGroup.me.publickey == PUBLICKEY) {
-                console.log(lib_1.ts() + "getPulseGroup(): GENESIS node alrerady configured ");
+                console.log(lib_1.ts() + "getPulseGroup(): GENESIS node already configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
-                pulseGroups = [newPulseGroup];
+                //pulseGroups=[newPulseGroup];
                 callback(newPulseGroup);
                 return;
             }
