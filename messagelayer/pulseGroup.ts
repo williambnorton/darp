@@ -103,7 +103,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
-    cycleTime : 60,      //pulseGroup-wide setting: number of seconds between pulses
+    cycleTime : 600,      //pulseGroup-wide setting: number of seconds between pulses
 
 };
 pulseGroup.me=me;
@@ -183,12 +183,20 @@ app.get('/nodefactory', function(req, res) {
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     
     if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
-        console.log("GENESIS NODE CONFIGURED configured");
-        res.setHeader('Content-Type', 'application/json');
+    console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+    console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+    console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+    console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+    console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+    res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pulseGroup)); 
         return;
     }
-    console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
     //
     //  Add mint and pulse to this piulsegroup

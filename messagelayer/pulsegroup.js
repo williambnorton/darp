@@ -96,7 +96,7 @@ var pulseGroup = {
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
-    cycleTime: 60
+    cycleTime: 600
 };
 pulseGroup.me = me;
 pulseGroup.genesis = genesis;
@@ -170,12 +170,20 @@ app.get('/nodefactory', function (req, res) {
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     if (me.ipaddr == incomingIP) { //GENESIS NODE instantiating itself - don't need to add anything
-        console.log("GENESIS NODE CONFIGURED configured");
+        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(pulseGroup));
         return;
     }
-    console.log(".................................... SETTING UP NON_GENESIS PULSE NODE--------------");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     //
     //  Add mint and pulse to this piulsegroup
     //
