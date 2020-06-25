@@ -18,7 +18,7 @@ exports.messagelayer_stats = {
     lastInTimestamp: 0,
     lastOutTimestamp: 0,
     inOctets: 0,
-    OutOctets: 0,
+    outOctets: 0,
     lastInMsg: "",
     lastOutMsg: ""
 };
@@ -65,7 +65,7 @@ function sendMsg(outgoingMessage, nodelist) {
         exports.messagelayer_stats.outMsgs++;
         exports.messagelayer_stats.lastOutTimestamp = lib_1.now();
         exports.messagelayer_stats.lastOutMsg = timestampedMsg;
-        exports.messagelayer_stats.inOctets += message.length;
+        exports.messagelayer_stats.outOctets += message.length;
         console.log(lib_1.ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {

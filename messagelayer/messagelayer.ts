@@ -17,7 +17,7 @@ export var messagelayer_stats={
   lastInTimestamp: 0,
   lastOutTimestamp :0,
   inOctets :0,
-  OutOctets :0,
+  outOctets :0,
   lastInMsg :"",
   lastOutMsg :""
 };
@@ -69,7 +69,7 @@ export function sendMsg(outgoingMessage:string,nodelist:string[]) {  //API routi
     messagelayer_stats.outMsgs++;
     messagelayer_stats.lastOutTimestamp=now();
     messagelayer_stats.lastOutMsg=timestampedMsg;
-    messagelayer_stats.inOctets+=message.length;
+    messagelayer_stats.outOctets+=message.length;
     console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
     client.send(message, 0, message.length, port, ipaddr, (err:string) => {
       if (err) { console.log(`messagelayer sendMessage(): ERROR`); client.close(); }
