@@ -208,7 +208,6 @@ app.get('/nodefactory', function(req, res) {
     pulseGroup.mintTable.unshift(newNode);
     pulseGroup.me=newNode;
  
- 
     console.log(`adding mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} added to ${pulseGroup.groupName}`);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
