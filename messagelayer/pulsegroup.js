@@ -475,7 +475,7 @@ if (TEST) {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
                 console.log("recvPulseGroup incomingPulse=" + lib_1.dump(incomingPulse));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
-                console.log("pulseEntry is :" + lib_1.dump(pulseEntry));
+                console.log("My pulseEntry for " + incomingPulse.geo + ":" + incomingPulse.group + "=" + lib_1.dump(pulseEntry));
                 if (pulseEntry != null) {
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg = incomingPulse.lastMsg;

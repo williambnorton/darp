@@ -548,7 +548,7 @@ if (TEST) {
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
                 console.log("recvPulseGroup incomingPulse="+dump(incomingPulse));
                 var pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
-                console.log("pulseEntry is :"+dump(pulseEntry));
+                console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(pulseEntry));
                 if (pulseEntry!=null) {
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg=incomingPulse.lastMsg;
