@@ -429,9 +429,9 @@ if (TEST) {
         };
 
         newPulseGroup.getMint=function(mint:number) {
-            this.forEachMint(function (mintEntry:MintEntry) {
-                if (mintEntry.mint==mint) return mintEntry
-            });
+            for (var m in this.mintTable) {
+                if (this.mintTable[m].mint==mint) return this.mintTable[m].mint
+            }
             return null;
         }
 

@@ -355,10 +355,10 @@ if (TEST) {
             setTimeout(newPulseGroup.pulse, newPulseGroup.cycleTime * 1000);
         };
         newPulseGroup.getMint = function (mint) {
-            this.forEachMint(function (mintEntry) {
-                if (mintEntry.mint == mint)
-                    return mintEntry;
-            });
+            for (var m in this.mintTable) {
+                if (this.mintTable[m].mint == mint)
+                    return this.mintTable[m].mint;
+            }
             return null;
         };
         newPulseGroup.recvPulses = function () {
