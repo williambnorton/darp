@@ -386,14 +386,14 @@ if (TEST) {
                 }
                 else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: " + incomingPulse.geo);
-                    newPulseGroup.fetchMintTable(); //this should be done only when group owner sends a pulse with mint we havn't seen
+                    //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
                     //maybe also add empty pulse records for each that don't have a pulse record
                 }
             });
         };
         newPulseGroup.fetchMintTable = function () {
             var http = require("http");
-            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/mintTable";
+            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/config";
             //console.log("FETCHMINT              fetchMint(): url="+url);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
@@ -402,13 +402,15 @@ if (TEST) {
                     body += data;
                 });
                 res.on("end", function () {
-                    var mintTable = JSON.parse(body);
+                    var groupOwnerPulseGroup = JSON.parse(body);
+                    var mintTable = groupOwnerPulseGroup.mintTable;
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
                         console.log("Genesis node says no mintTable");
                     }
                     else {
                         newPulseGroup.mintTable = mintTable;
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table=" + lib_1.dump(mintTable));
+                        console.log("    instead of straight assignment....Better to do add/del mint-and-pulse based on this list     ");
                     }
                 });
             });
