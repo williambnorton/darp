@@ -171,14 +171,7 @@ app.get('/nodefactory', function(req, res) {
     if (typeof incomingIP == "undefined")
         return console.log(ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);;
 
-    if (octetCount != 4) {
-        console.log("EXPRESS(): nodefactory called with bad IP address:" + incomingIP + " returning rc=-1 to config geo=" + geo);
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({
-            "rc": "-1 nodeFactory called with BAD IP addr: " + incomingIP
-        }));
-        return;
-    }
+
 
     //console.log("req="+dump(req));
     var version = req.query.version;
