@@ -140,14 +140,6 @@ app.get('/nodefactory', function (req, res) {
     var port = req.query.port || 65013;
     var wallet = req.query.wallet || "";
     var incomingTimestamp = req.query.ts;
-    var incomingIP = req.query.myip; /// for now we believe the node's IP
-    var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (incomingIP == "noMYIP")
-        incomingIP = clientIncomingIP;
-    if (typeof incomingIP == "undefined")
-        return console.log(lib_1.ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
-    ;
-    var octetCount = incomingIP.split(".").length;
     if (typeof incomingTimestamp == "undefined") {
         console.log("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
@@ -156,6 +148,16 @@ app.get('/nodefactory', function (req, res) {
         }));
         return;
     }
+    var incomingIP = req.query.myip; // for now we believe the node's IP
+    var octetCount = incomingIP.split(".").length; //but validate as IP, not error msg
+    if (octetCount != 4)
+        incomingIP = "noMYIP";
+    var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (incomingIP == "noMYIP")
+        incomingIP = clientIncomingIP;
+    if (typeof incomingIP == "undefined")
+        return console.log(lib_1.ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
+    ;
     if (octetCount != 4) {
         console.log("EXPRESS(): nodefactory called with bad IP address:" + incomingIP + " returning rc=-1 to config geo=" + geo);
         res.setHeader('Content-Type', 'application/json');
