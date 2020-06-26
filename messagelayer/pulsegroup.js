@@ -185,11 +185,10 @@ app.get('/nodefactory', function (req, res) {
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     //
-    //  Add mint and pulse to this piulsegroup
+    //  Add mint and pulse to my pulsegroup
     //
     var newMint = pulseGroup.nextMint++;
-    //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
-    //TO ADD a PULSE: 
+    console.log(geo + ": mint=" + newMint + " publickey=" + publickey + "version=" + version + "wallet=" + wallet);
     pulseGroup.pulses[geo + ":" + pulseGroup.groupName] = makePulseEntry(newMint, geo, pulseGroup.groupName, incomingIP, port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
     var newNode = makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
@@ -218,6 +217,7 @@ app.get('/nodefactory', function (req, res) {
     console.log(lib_1.ts() + " nodeFactory sending newNodeConfig =" + lib_1.dump(newNodePulseGroup));
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
+    console.log("After Cloning and delivery of member config, my genesis pulseGroup=" + lib_1.dump(pulseGroup));
 });
 function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
     return {
