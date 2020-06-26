@@ -172,6 +172,9 @@ app.get('/nodefactory', function(req, res) {
         return console.log(ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);;
     console.log("incomingIP="+incomingIP+" clientIncomingIP="+clientIncomingIP+" req.myip="+req.query.myip);
 
+    function filter(incomingIP) {
+        //here we filter (ignore) incoming IPs with global blacklist/whitelist
+    }
 
     //console.log("req="+dump(req));
     var version = req.query.version;
