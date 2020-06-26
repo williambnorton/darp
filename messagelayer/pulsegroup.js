@@ -96,7 +96,7 @@ var pulseGroup = {
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
-    cycleTime: 600
+    cycleTime: 1
 };
 pulseGroup.me = me;
 pulseGroup.genesis = genesis;
