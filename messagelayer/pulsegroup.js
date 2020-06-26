@@ -413,8 +413,9 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
-                    console.log("groupOwnerPulseGroup=" + groupOwnerPulseGroup);
+                    console.log("groupOwnerPulseGroup=" + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
+                    console.log("mintTable=" + lib_1.dump(groupOwnerPulseGroup.mintTable));
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
                         console.log("Genesis node has no mintTable");
                     }
