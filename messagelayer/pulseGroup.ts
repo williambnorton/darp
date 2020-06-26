@@ -458,15 +458,18 @@ if (TEST) {
                     myPulseEntry.owl=incomingPulse.owl;
                     myPulseEntry.owls=incomingPulse.owls;
                     //console.log("owls="+pulseEntry.owls);
-                    var ary=myPulseEntry.owls.split(",");
-                    for(var owlEntry in ary) {
-                        console.log("processing owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
-                        var m=ary[owlEntry].split("=")[0];
-                        console.log("Searching for mint "+m);
-                        if (newPulseGroup.getMint(m)==null) {
-                            console.log("getMint - no match - syncing with genesis node for config");
-                            return newPulseGroup.syncGenesisPulseGroup();
+                    if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
+                        var ary=myPulseEntry.owls.split(",");
+                        for(var owlEntry in ary) {
+                            console.log("processing groupOwner owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
+                            var m=ary[owlEntry].split("=")[0];
+                            console.log("Searching for mint "+m);
+                            if (newPulseGroup.getMint(m)==null) {
+                                console.log("getMint - no match - syncing with genesis node for config");
+                                return newPulseGroup.syncGenesisPulseGroup();
+                            }
                         }
+                        console.log("recvPulses - group owner population is in tact");
                     }
                 } else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
