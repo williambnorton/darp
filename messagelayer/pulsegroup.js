@@ -401,7 +401,7 @@ if (TEST) {
             });
         };
         newPulseGroup.syncGenesisPulseGroup = function () {
-            console.log("fetchGenesisPulseGroup()");
+            console.log("syncGenesisPulseGroup()");
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup";
             //console.log("FETCHMINT              fetchMint(): url="+url);
@@ -418,8 +418,8 @@ if (TEST) {
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
                     console.log("mintTable=" + lib_1.dump(mintTable));
-                    if (mintTable == null || typeof mintTable.geo == "undefined") {
-                        console.log("Genesis node has no mintTable");
+                    if (mintTable == null) {
+                        console.log("syncGenesisPulseGroup(): Genesis node has no mintTable");
                     }
                     else {
                         newPulseGroup.mintTable = mintTable;
@@ -427,14 +427,14 @@ if (TEST) {
                         for (var pulse in pulses) {
                             var genesisPulseEntry = pulses[pulse];
                             if (typeof newPulseGroup.pulses[pulse] == "undefined") {
-                                console.log("saving new pulse entry as my own: " + pulse);
+                                console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
                                 newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
                             }
                         }
                         for (var pulse in newPulseGroup.pulses) {
                             var myPulseEntry = newPulseGroup.pulses[pulse];
                             if (typeof pulses[pulse] == "undefined") {
-                                console.log("removing pulse entry that genesis node does not have: " + pulse);
+                                console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                                 newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
                             }
                         }
