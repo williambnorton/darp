@@ -415,7 +415,8 @@ if (TEST) {
                     var groupOwnerPulseGroup = JSON.parse(body);
                     console.log("groupOwnerPulseGroup=" + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
-                    console.log("mintTable=" + lib_1.dump(groupOwnerPulseGroup.mintTable));
+                    console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
+                    console.log("mintTable=" + lib_1.dump(mintTable));
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
                         console.log("Genesis node has no mintTable");
                     }
