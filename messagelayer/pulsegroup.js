@@ -373,6 +373,7 @@ if (TEST) {
                     pulseEntry.owl = incomingPulse.owl;
                     pulseEntry.owls = incomingPulse.owls;
                     for (var owlEntry in incomingPulse.owls.split(",")) {
+                        console.log("processing owls=" + pulseEntry.owls + " ownEntry=" + owlEntry);
                         var m = owlEntry.split("=")[0];
                         console.log("Searching for mint " + m);
                         if (newPulseGroup.getMint(m) == null) {
