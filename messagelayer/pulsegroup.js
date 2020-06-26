@@ -412,7 +412,8 @@ if (TEST) {
                     body += data;
                 });
                 res.on("end", function () {
-                    var groupOwnerPulseGroup = JSON.parse(body);
+                    var groupOwnerPulseGroups = JSON.parse(body);
+                    var groupOwnerPulseGroup = groupOwnerPulseGroups[0];
                     console.log("groupOwnerPulseGroup=" + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
