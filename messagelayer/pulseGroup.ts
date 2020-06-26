@@ -172,7 +172,7 @@ app.get('/nodefactory', function(req, res) {
         return console.log(ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);;
     console.log("incomingIP="+incomingIP+" clientIncomingIP="+clientIncomingIP+" req.myip="+req.query.myip);
 
-    function filter(incomingIP) {
+    function filter(incomingIP:string) {
         //here we filter (ignore) incoming IPs with global blacklist/whitelist
     }
 
@@ -247,6 +247,7 @@ app.get('/nodefactory', function(req, res) {
 });
 
 app.get('/mint', function (req, res) {
+    console.log("DELIVERING MINT TABLE: "+dump(pulseGroups[0].mintTable));
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(pulseGroups[0].mintTable, null, 2));
 });
