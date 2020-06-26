@@ -403,15 +403,17 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
+                    console.log("groupOwnerPulseGroup=" + body);
+                    /*
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
                         console.log("Genesis node says no mintTable");
-                    }
-                    else {
-                        newPulseGroup.mintTable = mintTable;
-                        console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table=" + lib_1.dump(mintTable));
+                    } else {
+                        newPulseGroup.mintTable=mintTable;
+                        console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table="+dump(mintTable));
                         console.log("    instead of straight assignment....Better to do add/del mint-and-pulse based on this list     ");
                     }
+                    */
                 });
             });
         };

@@ -432,6 +432,7 @@ if (TEST) {
             sendPulses(pulseMessage,ipary);
             setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
         };
+
         newPulseGroup.getMint=function(mint:number) {
             this.forEachMint(function (mintEntry:MintEntry) {
                 if (mintEntry.mint==mint) return mintEntry
@@ -479,7 +480,8 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
-
+                    console.log("groupOwnerPulseGroup="+body);
+                    /*
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
                         console.log("Genesis node says no mintTable");
@@ -488,6 +490,7 @@ if (TEST) {
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table="+dump(mintTable));
                         console.log("    instead of straight assignment....Better to do add/del mint-and-pulse based on this list     ");
                     }
+                    */
                 });
             });
         };
