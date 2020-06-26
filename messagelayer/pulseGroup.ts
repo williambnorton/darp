@@ -450,7 +450,7 @@ if (TEST) {
                         myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                     }
                 }
-                console.log("My pulseEntry for this pulse="+dump(pulseEntry));
+                console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
                 if (myPulseEntry!=null) {     //copy incoming pulse into my record
                     myPulseEntry.inPulses++;
                     myPulseEntry.lastMsg=incomingPulse.lastMsg;
