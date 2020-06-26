@@ -218,6 +218,7 @@ app.get('/nodefactory', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     console.log("After Cloning and delivery of member config, my genesis pulseGroup=" + lib_1.dump(pulseGroup));
+    pulseGroups = [pulseGroup];
 });
 function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
     return {
