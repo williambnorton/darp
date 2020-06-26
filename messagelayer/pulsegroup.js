@@ -372,6 +372,7 @@ if (TEST) {
                     pulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
                     pulseEntry.owl = incomingPulse.owl;
                     pulseEntry.owls = incomingPulse.owls;
+                    console.log("owls=" + pulseEntry.owls);
                     for (var owlEntry in incomingPulse.owls.split(",")) {
                         console.log("processing owls=" + pulseEntry.owls + " ownEntry=" + owlEntry);
                         var m = owlEntry.split("=")[0];
