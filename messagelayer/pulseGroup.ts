@@ -248,8 +248,9 @@ app.get('/nodefactory', function(req, res) {
     pulseGroups=[pulseGroup];
 });
 
-app.get('/mint/:mint', function (req, res) {
-        res.end(JSON.stringify(pulseGroups[0].mintTable, null, 2));
+app.get('/mint', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(pulseGroups[0].mintTable, null, 2));
 });
  interface MintEntry {
     mint: number;
@@ -457,9 +458,9 @@ if (TEST) {
             });
             return null;
         }
-        newPulseGroup.fetchMint=function (mint:number) {   //miont is absent - fetch it from genesis node
+        newPulseGroup.fetchMintTable=function () {   //miont is absent - fetch it from genesis node
             var http = require("http");
-            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/mint/" + mint;
+            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/mintTable";
             //console.log("FETCHMINT              fetchMint(): url="+url);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
@@ -468,13 +469,12 @@ if (TEST) {
                     body += data;
                 });
                 res.on("end", function () {
-                    var mintEntry = JSON.parse(body);
-                    if (mintEntry == null || typeof mintEntry.geo == "undefined") {
-                        console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
-                    }
-                    else {
-                        newPulseGroup.mintTable.push(mintEntry);
-                        console.log(`Added new mint#:${mint}`+dump(mintEntry));
+                    var mintTable = JSON.parse(body);
+                    if (mintTable == null || typeof mintTable.geo == "undefined") {
+                        console.log("Genesis node says no mintTable");
+                    } else {
+                        newPulseGroup.mintTable=mintTable;
+                        console.log("Added new mintTable="+dump(mintTable));
                     }
                 });
             });
