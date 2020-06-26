@@ -170,7 +170,7 @@ app.get('/nodefactory', function(req, res) {
     if (incomingIP == "noMYIP") incomingIP = clientIncomingIP;
     if (typeof incomingIP == "undefined")
         return console.log(ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);;
-
+    console.log("incomingIP="+incomingIP+" clientIncomingIP="+clientIncomingIP+" req.myip="+req.query.myip);
 
 
     //console.log("req="+dump(req));

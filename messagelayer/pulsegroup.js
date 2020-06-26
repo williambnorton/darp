@@ -158,6 +158,7 @@ app.get('/nodefactory', function (req, res) {
     if (typeof incomingIP == "undefined")
         return console.log(lib_1.ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
     ;
+    console.log("incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP + " req.myip=" + req.query.myip);
     //console.log("req="+dump(req));
     var version = req.query.version;
     //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
