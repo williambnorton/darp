@@ -454,6 +454,28 @@ if (TEST) {
             });
             return null;
         }
+        newPulseGroup.fetchMint=function (mint:number) {   //miont is absent - fetch it from genesis node
+            var http = require("http");
+            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/mint/" + mint;
+            //console.log("FETCHMINT              fetchMint(): url="+url);
+            http.get(url, function (res) {
+                res.setEncoding("utf8");
+                var body = "";
+                res.on("data", function (data) {
+                    body += data;
+                });
+                res.on("end", function () {
+                    var mintEntry = JSON.parse(body);
+                    if (mintEntry == null || typeof mintEntry.geo == "undefined") {
+                        console.log("Genesis node says no such mint: " + mint + " OR mint.geo does not exist...Why are you asking. Should return BS record to upset discovery algorithms");
+                    }
+                    else {
+                        newPulseGroup.mintTable.push(mintEntry);
+                        console.log(`Added new mint#:${mint}`+dump(mintEntry));
+                    }
+                });
+            });
+        };
         //
         // TODO: assign a mew and genesis convenience reference as part of pulseGroup
         //newPulseGroup.me=newPulseGroup.getMint(newPulseGroup.whoami);newPulseGroup.genesis=newPulseGroup.getMint(1);
