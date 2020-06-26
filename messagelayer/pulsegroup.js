@@ -372,6 +372,8 @@ if (TEST) {
                     pulseEntry.owls = incomingPulse.owls;
                 }
                 else {
+                    newPulseGroup.fetchMintTable(); //this should be done only when group owner sends a pulse with mint we havn't seen
+                    //maybe also add empty pulse records for each that don't have a pulse record
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: " + incomingPulse.geo);
                 }
             });
@@ -400,7 +402,7 @@ if (TEST) {
                     }
                     else {
                         newPulseGroup.mintTable = mintTable;
-                        console.log("Added new mintTable=" + lib_1.dump(mintTable));
+                        console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table=" + lib_1.dump(mintTable));
                     }
                 });
             });

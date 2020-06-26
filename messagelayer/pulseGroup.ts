@@ -446,6 +446,8 @@ if (TEST) {
                     pulseEntry.owl=incomingPulse.owl;
                     pulseEntry.owls=incomingPulse.owls;
                 } else {
+                    newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
+                                                    //maybe also add empty pulse records for each that don't have a pulse record
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
                 }
 
@@ -474,7 +476,7 @@ if (TEST) {
                         console.log("Genesis node says no mintTable");
                     } else {
                         newPulseGroup.mintTable=mintTable;
-                        console.log("Added new mintTable="+dump(mintTable));
+                        console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table="+dump(mintTable));
                     }
                 });
             });
