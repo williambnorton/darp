@@ -29,11 +29,12 @@ if (!process.env.PORT) {
     process.env.PORT = "65013";
     console.log("No PORT enviropnmental variable specified - setting my DEFAULT PORT " + process.env.PORT);
 }
+var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
 if (!process.env.GENESIS) {
     process.env.GENESIS = "71.202.2.184";
-    process.env.PORT = "65013";
     console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to " + process.env.GENESIS + ":" + process.env.PORT);
 }
+var GENESIS = process.env.GENESIS;
 if (!process.env.VERSION) {
     process.env.VERSION = require('fs').readFileSync('../SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
     console.log("No VERSION enviropnmental variable specified - setting to " + process.env.VERSION);
@@ -60,7 +61,6 @@ if (!PUBLICKEY)
     }
 var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
-var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //------------------------ Environmentals loaded -----------------------
 //             start config/instrumentation web server
@@ -306,7 +306,8 @@ function joinPulseGroup(ipaddr, port, callback) {
 /***************** TEST AREA ****************/
 if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
-    joinPulseGroup("71.202.2.184", "65013", function (newPulseGroup) {
+    joinPulseGroup(GENESIS, PORT, function (newPulseGroup) {
+        //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
         console.log("callback from my or someone else's pulseGroup=" + lib_1.dump(pulseGroup));
         //
         //       attach convenience routines to the downloaded pulseGroup assignment
