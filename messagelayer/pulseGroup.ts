@@ -439,27 +439,28 @@ if (TEST) {
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
                 console.log("recvPulses incomingPulse="+dump(incomingPulse)+" newPulseGroup="+dump(newPulseGroup));
                 console.log("myPulseGroup="+dump(pulseGroup));
-                var pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
-                console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(pulseEntry));
-                if (typeof pulseEntry == "undefined" || pulseEntry==null) {
+                var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
+
+                console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
+                if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {
                     var mintEntry=newPulseGroup.getMint(incomingPulse.mint);
 
                     if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {
                         console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
-                        pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
+                        myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                     }
                 }
                 console.log("My pulseEntry for this pulse="+dump(pulseEntry));
-                if (pulseEntry!=null) {     //copy incoming pulse into my record
-                    pulseEntry.inPulses++;
-                    pulseEntry.lastMsg=incomingPulse.lastMsg;
-                    pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
-                    pulseEntry.owl=incomingPulse.owl;
-                    pulseEntry.owls=incomingPulse.owls;
+                if (myPulseEntry!=null) {     //copy incoming pulse into my record
+                    myPulseEntry.inPulses++;
+                    myPulseEntry.lastMsg=incomingPulse.lastMsg;
+                    myPulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
+                    myPulseEntry.owl=incomingPulse.owl;
+                    myPulseEntry.owls=incomingPulse.owls;
                     //console.log("owls="+pulseEntry.owls);
-                    var ary=pulseEntry.owls.split(",");
+                    var ary=myPulseEntry.owls.split(",");
                     for(var owlEntry in ary) {
-                        console.log("processing owls="+pulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
+                        console.log("processing owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                         var m=ary[owlEntry].split("=")[0];
                         console.log("Searching for mint "+m);
                         if (newPulseGroup.getMint(m)==null) {
