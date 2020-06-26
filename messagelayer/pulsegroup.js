@@ -366,6 +366,14 @@ if (TEST) {
                 console.log("recvPulses incomingPulse=" + lib_1.dump(incomingPulse) + " newPulseGroup=" + lib_1.dump(newPulseGroup));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("My pulseEntry for " + incomingPulse.geo + ":" + incomingPulse.group + "=" + lib_1.dump(pulseEntry));
+                if (pulseEntry == null) {
+                    var mintEntry = newPulseGroup.getMint(incomingPulse.mint);
+                    if (mintEntry != null) {
+                        console.log("recvPulses - adding entry cause I found s mint for this node: " + incomingPulse.geo + ":" + incomingPulse.group);
+                        newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group] = makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version);
+                        //TODO: match up the incoming mint and geo and group 
+                    }
+                }
                 if (pulseEntry != null) { //copy incoming pulse into my record
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg = incomingPulse.lastMsg;
@@ -426,8 +434,7 @@ if (TEST) {
                                 newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
                             }
                         }
-                        console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table=" + lib_1.dump(mintTable));
-                        console.log("    instead of straight assignment....Better to do add/del mint-and-pulse based on this list     ");
+                        console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = " + lib_1.dump(pulseGroup));
                     }
                 });
             });
