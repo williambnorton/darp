@@ -455,8 +455,10 @@ if (TEST) {
                     for(var owlEntry in incomingPulse.owls.split(",")) {
                         var m=owlEntry.split("=")[0];
                         console.log("Searching for mint "+m);
-                        if (newPulseGroup.getMint(m)==null) 
+                        if (newPulseGroup.getMint(m)==null) {
+                            console.log("getMint - no match");
                             return newPulseGroup.fetchMintTable();
+                        }
                     }
                 } else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
@@ -469,6 +471,7 @@ if (TEST) {
         };
 
         newPulseGroup.fetchMintTable=function () {   //miont is absent - fetch it from genesis node
+            console.log("fetchMintTable()");
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/config";
             //console.log("FETCHMINT              fetchMint(): url="+url);
