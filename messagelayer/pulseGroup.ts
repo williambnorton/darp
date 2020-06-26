@@ -214,7 +214,7 @@ app.get('/nodefactory', function(req, res) {
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
 
-    console.log("BeforeCloning, pulseGroup="+dump(pulseGroup));
+    //console.log("BeforeCloning, pulseGroup="+dump(pulseGroup));
 
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
@@ -227,22 +227,23 @@ app.get('/nodefactory', function(req, res) {
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
     //  this means mintTable[0]  
 
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
+    console.log("********************************* newNodePulseGroup=");
     console.log("********************************* newNodePulseGroup="+dump(newNodePulseGroup));
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup=");
 
-    //                              //pulseNode MEMBER NODE
+    //
+    //                              pulseNode MEMBER NODE
     //
 
     console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
-    console.log("nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
+    console.log(ts() + "nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
+    console.log(ts() + "nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
     
-    console.log(ts() + " nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
-    console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
+    //console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
     pulseGroups=[pulseGroup];
 });
 
@@ -431,6 +432,12 @@ if (TEST) {
             sendPulses(pulseMessage,ipary);
             setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
         };
+        newPulseGroup.getMint=function(mint:number) {
+            this.forEachMint(function (mintEntry:MintEntry) {
+                if (mintEntry.mint==mint) return mintEntry
+            });
+            return null;
+        }
 
         newPulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
@@ -444,21 +451,22 @@ if (TEST) {
                     pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
                     pulseEntry.owl=incomingPulse.owl;
                     pulseEntry.owls=incomingPulse.owls;
+                    for(var owlEntry in incomingPulse.owls.split(",")) {
+                        var m=owlEntry.split("=")[0];
+                        console.log("Searching for mint "+m);
+                        if (newPulseGroup.getMint(m)==null) 
+                            return newPulseGroup.fetchMintTable();
+                    }
                 } else {
+                    console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
+
                     newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
                                                     //maybe also add empty pulse records for each that don't have a pulse record
-                    console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);
                 }
 
             });
         };
 
-        newPulseGroup.getMint=function(mint:number) {
-            this.forEachMint(function (mintEntry:MintEntry) {
-                if (mintEntry.mint==mint) return mintEntry
-            });
-            return null;
-        }
         newPulseGroup.fetchMintTable=function () {   //miont is absent - fetch it from genesis node
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/mintTable";
