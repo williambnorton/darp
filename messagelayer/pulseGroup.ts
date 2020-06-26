@@ -447,15 +447,15 @@ if (TEST) {
                     pulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
                     pulseEntry.owl=incomingPulse.owl;
                     pulseEntry.owls=incomingPulse.owls;
-                    console.log("owls="+pulseEntry.owls);
+                    //console.log("owls="+pulseEntry.owls);
                     var ary=pulseEntry.owls.split(",");
                     for(var owlEntry in ary) {
                         console.log("processing owls="+pulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                         var m=ary[owlEntry].split("=")[0];
                         console.log("Searching for mint "+m);
                         if (newPulseGroup.getMint(m)==null) {
-                            console.log("getMint - no match");
-                            return newPulseGroup.fetchMintTable();
+                            console.log("getMint - no match - syncing with genesis node for config");
+                            return newPulseGroup.syncGenesisPulseGroup();
                         }
                     }
                 } else {
@@ -468,8 +468,8 @@ if (TEST) {
             });
         };
 
-        newPulseGroup.fetchMintTable=function () {   //miont is absent - fetch it from genesis node
-            console.log("fetchMintTable()");
+        newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
+            console.log("fetchGenesisPulseGroup()");
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup";
             //console.log("FETCHMINT              fetchMint(): url="+url);
@@ -482,16 +482,31 @@ if (TEST) {
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
                     console.log("groupOwnerPulseGroup="+groupOwnerPulseGroup);
-                    /*
+                    
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
-                        console.log("Genesis node says no mintTable");
+                        console.log("Genesis node has no mintTable");
                     } else {
                         newPulseGroup.mintTable=mintTable;
+                        var pulses=groupOwnerPulseGroup.pulses;
+                        for (var pulse in pulses) {
+                            var genesisPulseEntry=pulses[pulse];
+                            if (typeof newPulseGroup.pulses[pulse] == "undefined") {
+                                console.log("saving new pulse entry as my own: "+pulse);
+                                newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
+                            }
+                        }
+                        for (var pulse in newPulseGroup.pulses) {
+                            var myPulseEntry=newPulseGroup.pulses[pulse];
+                            if (typeof pulses[pulse] == "undefined") {
+                                console.log("removing pulse entry that genesis node does not have: "+pulse);
+                                newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
+                            }
+                        }
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW MINTTABLE Table="+dump(mintTable));
                         console.log("    instead of straight assignment....Better to do add/del mint-and-pulse based on this list     ");
                     }
-                    */
+                    
                 });
             });
         };
