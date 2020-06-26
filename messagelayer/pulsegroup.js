@@ -363,7 +363,7 @@ if (TEST) {
         };
         newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
-                console.log("recvPulseGroup incomingPulse=" + lib_1.dump(incomingPulse));
+                console.log("recvPulses incomingPulse=" + lib_1.dump(incomingPulse) + " newPulseGroup=" + lib_1.dump(newPulseGroup));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("My pulseEntry for " + incomingPulse.geo + ":" + incomingPulse.group + "=" + lib_1.dump(pulseEntry));
                 if (pulseEntry != null) { //copy incoming pulse into my record
