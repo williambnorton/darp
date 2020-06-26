@@ -116,8 +116,8 @@ app.get('/', function (req, res) {
     res.end(JSON.stringify(pulseGroups, null, 2));
     return;
 });
-app.get('/state', function (req, res) {
-    //console.log("fetching '/state'");
+app.get('/pulseGroup', function (req, res) {
+    //console.log("fetching '/pulseGroup'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -218,11 +218,6 @@ app.get('/nodefactory', function (req, res) {
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     //console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
     pulseGroups = [pulseGroup];
-});
-app.get('/mint', function (req, res) {
-    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++ DELIVERING MINT TABLE: " + lib_1.dump(pulseGroups[0].mintTable));
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(pulseGroups[0].mintTable, null, 2));
 });
 function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
     return {
@@ -396,7 +391,7 @@ if (TEST) {
         newPulseGroup.fetchMintTable = function () {
             console.log("fetchMintTable()");
             var http = require("http");
-            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/config";
+            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup";
             //console.log("FETCHMINT              fetchMint(): url="+url);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
@@ -406,7 +401,7 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
-                    console.log("groupOwnerPulseGroup=" + body);
+                    console.log("groupOwnerPulseGroup=" + groupOwnerPulseGroup);
                     /*
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (mintTable == null || typeof mintTable.geo == "undefined") {
