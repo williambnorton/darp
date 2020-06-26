@@ -220,6 +220,9 @@ app.get('/nodefactory', function (req, res) {
     console.log("After Cloning and delivery of member config, my genesis pulseGroup=" + lib_1.dump(pulseGroup));
     pulseGroups = [pulseGroup];
 });
+app.get('/mint/:mint', function (req, res) {
+    res.end(JSON.stringify(pulseGroups[0].mintTable, null, 2));
+});
 function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
     return {
         mint: mint,

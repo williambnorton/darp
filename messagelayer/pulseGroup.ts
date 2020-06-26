@@ -248,6 +248,9 @@ app.get('/nodefactory', function(req, res) {
     pulseGroups=[pulseGroup];
 });
 
+app.get('/mint/:mint', function (req, res) {
+        res.end(JSON.stringify(pulseGroups[0].mintTable, null, 2));
+});
  interface MintEntry {
     mint: number;
     geo: string;
