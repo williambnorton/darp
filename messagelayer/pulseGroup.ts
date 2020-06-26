@@ -438,10 +438,12 @@ if (TEST) {
         newPulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
                 console.log("recvPulses incomingPulse="+dump(incomingPulse)+" newPulseGroup="+dump(newPulseGroup));
+                console.log("myPulseGroup="+dump(pulseGroup));
                 var pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
                 console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(pulseEntry));
-                if (typeof pulseEntry == "undefined") {
+                if (typeof pulseEntry == "undefined" || pulseEntry==null) {
                     var mintEntry=newPulseGroup.getMint(incomingPulse.mint);
+
                     if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {
                         console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
                         pulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 

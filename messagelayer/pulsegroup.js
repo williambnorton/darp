@@ -364,9 +364,10 @@ if (TEST) {
         newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
                 console.log("recvPulses incomingPulse=" + lib_1.dump(incomingPulse) + " newPulseGroup=" + lib_1.dump(newPulseGroup));
+                console.log("myPulseGroup=" + lib_1.dump(pulseGroup));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("My pulseEntry for " + incomingPulse.geo + ":" + incomingPulse.group + "=" + lib_1.dump(pulseEntry));
-                if (typeof pulseEntry == "undefined") {
+                if (typeof pulseEntry == "undefined" || pulseEntry == null) {
                     var mintEntry = newPulseGroup.getMint(incomingPulse.mint);
                     if (mintEntry != null && (mintEntry.geo == incomingPulse.geo)) {
                         console.log("recvPulses - adding entry cause I found s mint for this node: " + incomingPulse.geo + ":" + incomingPulse.group);
