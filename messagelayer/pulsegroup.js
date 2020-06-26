@@ -373,6 +373,7 @@ if (TEST) {
                         pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group] = makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version);
                     }
                 }
+                console.log("My pulseEntry for this pulse=" + lib_1.dump(pulseEntry));
                 if (pulseEntry != null) { //copy incoming pulse into my record
                     pulseEntry.inPulses++;
                     pulseEntry.lastMsg = incomingPulse.lastMsg;
