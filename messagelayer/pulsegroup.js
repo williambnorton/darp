@@ -366,12 +366,11 @@ if (TEST) {
                 console.log("recvPulses incomingPulse=" + lib_1.dump(incomingPulse) + " newPulseGroup=" + lib_1.dump(newPulseGroup));
                 var pulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 console.log("My pulseEntry for " + incomingPulse.geo + ":" + incomingPulse.group + "=" + lib_1.dump(pulseEntry));
-                if (pulseEntry == null) {
+                if (typeof pulseEntry == "undefined") {
                     var mintEntry = newPulseGroup.getMint(incomingPulse.mint);
-                    if (mintEntry != null) {
+                    if (mintEntry != null && (mintEntry.geo == incomingPulse.geo)) {
                         console.log("recvPulses - adding entry cause I found s mint for this node: " + incomingPulse.geo + ":" + incomingPulse.group);
                         newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group] = makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version);
-                        //TODO: match up the incoming mint and geo and group 
                     }
                 }
                 if (pulseEntry != null) { //copy incoming pulse into my record
