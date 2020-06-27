@@ -308,7 +308,7 @@ if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
     joinPulseGroup(GENESIS, PORT, function (newPulseGroup) {
         //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
-        console.log("callback from my or someone else's pulseGroup=" + lib_1.dump(pulseGroup));
+        console.log("callback from my or someone else's pulseGroup=" + lib_1.dump(newPulseGroup));
         //
         //       attach convenience routines to the downloaded pulseGroup assignment
         //
@@ -383,6 +383,7 @@ if (TEST) {
                     myPulseEntry.owls = incomingPulse.owls;
                     //console.log("owls="+pulseEntry.owls);
                     if (myPulseEntry.mint == 1) { //if pulseGroup owner, make sure I have all of his mints
+                        console.log("recvPulse handling owner's pulse and managing population to match his");
                         var ary = myPulseEntry.owls.split(",");
                         for (var owlEntry in ary) {
                             console.log("processing groupOwner owls=" + myPulseEntry.owls + " ary[ownEntry]=" + ary[owlEntry]);
@@ -397,7 +398,7 @@ if (TEST) {
                     }
                 }
                 else {
-                    console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: " + incomingPulse.geo);
+                    console.log("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: " + incomingPulse.geo);
                     //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
                     //maybe also add empty pulse records for each that don't have a pulse record
                 }
