@@ -391,9 +391,9 @@ if (TEST) {
                         for (var owlEntry in ary) {
                             console.log("processing groupOwner owls=" + myPulseEntry.owls + " ary[ownEntry]=" + ary[owlEntry]);
                             var m = ary[owlEntry].split("=")[0];
-                            console.log("Searching for mint " + m);
+                            //console.log("Searching for mint "+m);
                             if (newPulseGroup.getMint(m) == null) {
-                                console.log("getMint - no match - syncing with genesis node for config");
+                                console.log("Owner announced a new mint - syncing with genesis node for config");
                                 return newPulseGroup.syncGenesisPulseGroup();
                             }
                         }
@@ -407,6 +407,10 @@ if (TEST) {
                 }
             });
         };
+        //
+        //syncGenesisPulseGroup-sync this pulseGorup object with genesis node pulseGroup object
+        //  copy mint table and update (add/del) pulseObject pulse entries so we match the genesis node
+        //
         newPulseGroup.syncGenesisPulseGroup = function () {
             console.log("syncGenesisPulseGroup()");
             var http = require("http");
