@@ -47,7 +47,13 @@ export function recvPulses(port,callback) {
     });
 };
 
-var seq=1;
+export function sendPulses(msg,nodelist) {   //nodelist may be null, which means same pulsegourp sent
+    
+    sendMsg(msg, nodelist);
+}
+
+/***************** TEST AREA **************** /
+ var seq=1;
 function buildPulseMessage() {
     var pulseMessage="0,"+VERSION+","+HOSTNAME+",DEVOPS.1,"+seq+",0,1592590923743,1,2,1,";
     seq++;
@@ -55,15 +61,6 @@ function buildPulseMessage() {
     return pulseMessage;
 }
 
-
-
-export function sendPulses(msg,nodelist) {   //nodelist may be null, which means same pulsegourp sent
-
-    
-    sendMsg(msg, nodelist);
-}
-
-/***************** TEST AREA **************** /
 if (TEST) {
     process.argv.shift();  //ignore rid of node
     process.argv.shift();  //ignore rid of path to mthis code

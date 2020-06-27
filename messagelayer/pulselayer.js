@@ -48,18 +48,19 @@ function recvPulses(port, callback) {
 }
 exports.recvPulses = recvPulses;
 ;
-var seq = 1;
-function buildPulseMessage() {
-    var pulseMessage = "0," + VERSION + "," + HOSTNAME + ",DEVOPS.1," + seq + ",0,1592590923743,1,2,1,";
-    seq++;
-    console.log("buildPulseMessage() : pulseMessage=" + pulseMessage);
-    return pulseMessage;
-}
 function sendPulses(msg, nodelist) {
     messagelayer_1.sendMsg(msg, nodelist);
 }
 exports.sendPulses = sendPulses;
 /***************** TEST AREA **************** /
+ var seq=1;
+function buildPulseMessage() {
+    var pulseMessage="0,"+VERSION+","+HOSTNAME+",DEVOPS.1,"+seq+",0,1592590923743,1,2,1,";
+    seq++;
+    console.log("buildPulseMessage() : pulseMessage="+pulseMessage);
+    return pulseMessage;
+}
+
 if (TEST) {
     process.argv.shift();  //ignore rid of node
     process.argv.shift();  //ignore rid of path to mthis code

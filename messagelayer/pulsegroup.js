@@ -117,11 +117,11 @@ app.get('/', function (req, res) {
     return;
 });
 app.get('/pulseGroup/:pulsegroup', function (req, res) {
-    //console.log("fetching '/pulseGroup'");
+    console.log("fetching '/pulseGroup' &pulsegroup=" + req.params.pulsegroup);
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    if (req.params.pulsegroup)
+    if (typeof req.params.pulsegroup != "undefined")
         res.end(JSON.stringify(pulseGroups[req.params.pulsegroup], null, 2));
     else
         res.end(JSON.stringify(pulseGroups, null, 2));
@@ -415,7 +415,7 @@ if (TEST) {
             console.log("syncGenesisPulseGroup()");
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup" + "/" + this.groupName;
-            //console.log("FETCHMINT              fetchMint(): url="+url);
+            console.log("syncGenesisPulseGroup(): url=" + url);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
                 var body = "";
