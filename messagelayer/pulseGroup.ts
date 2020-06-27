@@ -445,7 +445,7 @@ if (TEST) {
                 console.log("myPulseGroup="+dump(pulseGroup));
                 var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
 
-                console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
+                //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
                 if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {
                     var mintEntry=newPulseGroup.getMint(incomingPulse.mint);
 
@@ -454,7 +454,7 @@ if (TEST) {
                         myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                     }
                 }
-                console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
+                //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
                 if (myPulseEntry!=null) {     //copy incoming pulse into my record
                     myPulseEntry.inPulses++;
                     myPulseEntry.lastMsg=incomingPulse.lastMsg;
