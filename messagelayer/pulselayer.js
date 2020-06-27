@@ -42,7 +42,7 @@ function recvPulses(port, callback) {
         console.log("structured pulse=" + lib_1.dump(pulse));
         //ary.shift();ary.shift();
         //const pulse=ary.join(",");
-        console.log("Message Layer Statistics: :" + lib_1.dump(messagelayer_1.messagelayer_stats));
+        //console.log("Message Layer Statistics: :"+dump(messagelayer_stats));  //INSTRUMENTATION POINT
         callback(pulse);
     });
 }
