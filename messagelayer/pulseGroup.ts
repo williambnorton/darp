@@ -383,7 +383,7 @@ if (TEST) {
     joinPulseGroup(GENESIS, PORT, function (newPulseGroup) {
 //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
        console.log("callback from my or someone else's pulseGroup="+dump(newPulseGroup));
-       
+
        //
        //       attach convenience routines to the downloaded pulseGroup assignment
        //
@@ -552,7 +552,8 @@ if (TEST) {
         newPulseGroup.pulse();
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
-        //else 
+        //else
+        pulseGroup=newPulseGroup; 
         pulseGroups=[newPulseGroup];  //for now genesis node has no others
     });
 }

@@ -470,7 +470,8 @@ if (TEST) {
         newPulseGroup.pulse();
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
-        //else 
+        //else
+        pulseGroup = newPulseGroup;
         pulseGroups = [newPulseGroup]; //for now genesis node has no others
     });
 }
