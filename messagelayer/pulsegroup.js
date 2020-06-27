@@ -121,8 +121,12 @@ app.get('/pulseGroup/:pulsegroup', function (req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    if (typeof req.params.pulsegroup != "undefined")
-        res.end(JSON.stringify(pulseGroups[req.params.pulsegroup], null, 2));
+    if (typeof req.params.pulsegroup != "undefined") {
+        for (var pulseGroup in pulseGroups)
+            if (pulseGroups[pulseGroup].groupName == req.params.pulsegroup)
+                res.end(JSON.stringify(pulseGroups[req.params.pulsegroup], null, 2));
+        res.end(JSON.stringify(null));
+    }
     else
         res.end(JSON.stringify(pulseGroups, null, 2));
     return;
