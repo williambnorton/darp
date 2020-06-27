@@ -442,7 +442,7 @@ if (TEST) {
         newPulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
                 console.log("recvPulses incomingPulse="+dump(incomingPulse)+" newPulseGroup="+dump(newPulseGroup));
-                console.log("myPulseGroup="+dump(pulseGroup));
+                //console.log("myPulseGroup="+dump(pulseGroup));
                 var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
 
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));

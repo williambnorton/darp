@@ -367,7 +367,7 @@ if (TEST) {
         newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
                 console.log("recvPulses incomingPulse=" + lib_1.dump(incomingPulse) + " newPulseGroup=" + lib_1.dump(newPulseGroup));
-                console.log("myPulseGroup=" + lib_1.dump(pulseGroup));
+                //console.log("myPulseGroup="+dump(pulseGroup));
                 var myPulseEntry = pulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
                 if (typeof myPulseEntry == "undefined" || myPulseEntry == null) {
