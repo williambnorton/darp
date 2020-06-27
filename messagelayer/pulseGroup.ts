@@ -128,6 +128,11 @@ app.get('/', function(req, res) {
     res.end(JSON.stringify(pulseGroups, null, 2));
     return
 });
+
+//
+//  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
+//  or update your specific pulseGroup to the group owner's 
+//
 app.get('/pulseGroup/:pulsegroup', function(req, res) {
     console.log("fetching '/pulseGroup' &pulsegroup="+req.params.pulsegroup);
     //handleShowState(req, res); 
@@ -157,6 +162,11 @@ app.get('/nodefactory', function(req, res) {
     //  additional nodes adding to pulseGroup
     //
     console.log('EXPRESS nodeFactory: config requested with params: ' + dump(req.query));
+
+    //
+    //  Marshall incoming parameters
+    //  
+
     //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
     //marshall variables
     var geo = req.query.geo;
@@ -193,6 +203,10 @@ app.get('/nodefactory', function(req, res) {
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
     
+//
+//  Handle Geneis Node case - first to start up
+//
+
     if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
@@ -204,6 +218,9 @@ app.get('/nodefactory', function(req, res) {
         return;
     }
 
+//
+//  Or - Handle pulseGroup member case
+//
 
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
@@ -212,7 +229,7 @@ app.get('/nodefactory', function(req, res) {
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
     //
-    //  Add mint and pulse to my pulsegroup
+    //  Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     //
     var newMint=pulseGroup.nextMint++;
     console.log(geo+": mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
@@ -220,17 +237,17 @@ app.get('/nodefactory', function(req, res) {
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
     pulseGroup.mintTable.push(newNode);  //put new node in the mint table
- 
     console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${pulseGroup.groupName}`);
     //console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
+    //TODO: check for duplicates - search for ipaddr:port that matches
 
     //console.log("BeforeCloning, pulseGroup="+dump(pulseGroup));
 
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
-    let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    
+    let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    //clone my pulseGroup obecjt 
     newNodePulseGroup.me=newNode;
 
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
@@ -562,14 +579,14 @@ if (TEST) {
 //        pulseGroup.forEachNode(function(index:string,node:PulseEntry){console.log("pulseNode: "+index+" node="+dump(node));});
 //        pulseGroup.forEachMint(function(index:string,mint:MintEntry){console.log("MINT:"+index+" mint="+dump(mint));});
         //console.log("pulseGroup="+dump(pulseGroup));
-        //console.log("pulse():");
+        console.log("Starting pulseGroup "+newPulseGroup.groupName);
         newPulseGroup.recvPulses();
         newPulseGroup.pulse();
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //else
         pulseGroup=newPulseGroup; 
-        pulseGroups=[newPulseGroup];  //for now genesis node has no others
+        pulseGroups.push(newPulseGroup);  //for now genesis node has no others
     });
 }
 //----------------- sender 
