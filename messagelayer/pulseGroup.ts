@@ -586,7 +586,7 @@ if (TEST) {
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //else
         pulseGroup=newPulseGroup; 
-        pulseGroups.push(newPulseGroup);  //for now genesis node has no others
+        pulseGroups[newPulseGroup.groupName]=newPulseGroup;  //for now genesis node has no others
     });
 }
 //----------------- sender 
