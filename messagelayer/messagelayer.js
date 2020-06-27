@@ -42,7 +42,7 @@ function recvMsg(port, callback) {
         var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = lib_1.now();
         exports.messagelayer_stats.inOctets += msg.length;
         exports.messagelayer_stats.inMsgs++;
-        console.log("messagelayer Server received: " + msg + " from " + rinfo.address + ":" + rinfo.port);
+        //console.log(`messagelayer Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
         var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
         exports.messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);

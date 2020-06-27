@@ -44,7 +44,7 @@ export function recvMsg(port:string,callback:any) {   //API routine
     var incomingTimestamp=messagelayer_stats.lastInTimestamp=now();
     messagelayer_stats.inOctets+=msg.length;
     messagelayer_stats.inMsgs++;
-    console.log(`messagelayer Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);
+    //console.log(`messagelayer Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
     var incomingMessage=`${incomingTimestamp},${msg}` //prepend our timeStamp
     messagelayer_stats.lastInMsg=incomingMessage;
     callback(incomingMessage);
