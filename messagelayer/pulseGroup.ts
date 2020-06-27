@@ -136,8 +136,10 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
     if (typeof req.params.pulsegroup != "undefined") { 
         for (var pulseGroup in pulseGroups) {
             console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
-            if (pulseGroups[pulseGroup].groupName==req.params.pulsegroup)
+            if (pulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
                 res.end(JSON.stringify(pulseGroups[pulseGroup], null, 2));
+                return; //we sent the more specific
+            }
         }
         res.end(JSON.stringify(null));
     }
