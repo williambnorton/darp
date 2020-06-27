@@ -410,7 +410,7 @@ if (TEST) {
         newPulseGroup.syncGenesisPulseGroup = function () {
             console.log("syncGenesisPulseGroup()");
             var http = require("http");
-            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup";
+            var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup" + "/" + this.groupName;
             //console.log("FETCHMINT              fetchMint(): url="+url);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
