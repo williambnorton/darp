@@ -27,15 +27,15 @@ export function recvPulses(port,callback) {
             pulseTimestamp : ary[0],
             senderTimestamp : ary[1],
             msgType : ary[2],
-              version: ary[3],
-              geo: ary[4],
-              group: ary[5],
-              seq: ary[6],
-              bootTimestamp: ary[7],   //if genesis node reboots --> all node reload SW too
-              srcMint: ary[8],
-              owls: pulseOwls,
-              owl: OWL,
-              lastMsg:incomingMessage
+            version: ary[3],
+            geo: ary[4],
+            group: ary[5],
+            seq: ary[6],
+            bootTimestamp: ary[7],   //if genesis node reboots --> all node reload SW too
+            srcMint: ary[8],
+            owls: pulseOwls,
+            owl: OWL,
+            lastMsg:incomingMessage
           };;
           console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
           console.log("structured pulse="+dump(pulse));

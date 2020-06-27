@@ -415,7 +415,7 @@ if (TEST) {
                             var m = ary[owlEntry].split("=")[0];
                             //console.log("Searching for mint "+m);
                             if (newPulseGroup.getMint(m) == null) {
-                                console.log("Owner announced a new mint - syncing with genesis node for config");
+                                console.log("Owner announced a NEW MINT ENTRY - syncing with genesis node for config");
                                 return newPulseGroup.syncGenesisPulseGroup();
                             }
                         }
