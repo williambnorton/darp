@@ -469,7 +469,7 @@ if (TEST) {
                                 return newPulseGroup.syncGenesisPulseGroup();
                             }
                         }
-                        console.log("recvPulses - group owner population is in tact");
+                        //console.log("recvPulses - group owner population is in tact");
                     }
                 } else {
                     console.log("Received pulse but could not find our pulseRecord for it. Ignoring until group owner sends us a new list: "+incomingPulse.geo);

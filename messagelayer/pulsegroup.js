@@ -393,7 +393,7 @@ if (TEST) {
                                 return newPulseGroup.syncGenesisPulseGroup();
                             }
                         }
-                        console.log("recvPulses - group owner population is in tact");
+                        //console.log("recvPulses - group owner population is in tact");
                     }
                 }
                 else {
