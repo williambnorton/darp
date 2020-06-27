@@ -128,12 +128,15 @@ app.get('/', function(req, res) {
     res.end(JSON.stringify(pulseGroups, null, 2));
     return
 });
-app.get('/pulseGroup', function(req, res) {
+app.get('/pulseGroup/:pulsegroup', function(req, res) {
     //console.log("fetching '/pulseGroup'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroups, null, 2));
+    if (req.params.pulsegroup)  
+        res.end(JSON.stringify(pulseGroups[req.params.pulsegroup], null, 2));
+    else    
+        res.end(JSON.stringify(pulseGroups, null, 2));
     return
 });
 //// nodeFactory
