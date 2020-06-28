@@ -122,9 +122,11 @@ function instrumentation() {
     txt += JSON.stringify(pulseGroups, null, 2);
     txt += "</body>";
     txt += "</html>";
+    console.log("txt=" + txt);
+    return txt;
 }
 app.get('/', function (req, res) {
-    //console.log("fetching '/state'");
+    console.log("********************** fetching '/'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");

@@ -146,15 +146,16 @@ function instrumentation() {    //this should get its own file
     txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
     txt += '</head>';
     txt += '<body>';
-    txt+=JSON.stringify(pulseGroups,null,2);
-    txt+="</body>";
-    txt+="</html>"
-
+    txt += JSON.stringify(pulseGroups,null,2);
+    txt += "</body>";
+    txt += "</html>"
+    console.log("txt="+txt);
+    return txt;
 }
 
 app.get('/', function(req, res) {
 
-    //console.log("fetching '/state'");
+    console.log("********************** fetching '/'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
