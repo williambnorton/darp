@@ -1,5 +1,5 @@
 "use strict";
-var _a;
+var _a, _b;
 exports.__esModule = true;
 //
 //  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
@@ -92,7 +92,7 @@ var pulseGroup = {
     pulses: (_a = {},
         _a[genesis.geo + ":" + genesis.geo + ".1"] = pulse,
         _a),
-    rc: 0,
+    rc: "",
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
@@ -100,7 +100,7 @@ var pulseGroup = {
 };
 pulseGroup.me = me;
 pulseGroup.genesis = genesis;
-var pulseGroups = [pulseGroup];
+var pulseGroups = [(_b = {}, _b[me.geo + ".1"] = pulseGroup, _b)];
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;

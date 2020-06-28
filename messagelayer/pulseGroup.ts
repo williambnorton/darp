@@ -90,7 +90,21 @@ const me:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); 
 const genesis:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); 
 var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 
-var pulseGroup = {                 //my pulseGroup Configuration
+interface PulseGroup {
+    groupName: string;
+    groupOwner: string;
+    me: MintEntry;
+    genesis:MintEntry;
+    mintTable:MintEntry[];
+    pulses:PulseEntry[];
+    rc:string;
+    ts:string;
+    nodeCount:number;
+    nextMint:number;
+    cycleTime:number;
+} 
+
+var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
     groupName : me.geo+".1",
     groupOwner : me.geo,
     me : {},
@@ -101,7 +115,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     pulses: {               //store statistics for this network segment
         [genesis.geo + ":" + genesis.geo+".1"]: pulse
     },
-    rc: 0,
+    rc: "",
     ts: now(), 
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
@@ -110,7 +124,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
 };
 pulseGroup.me=me;
 pulseGroup.genesis=genesis;
-var pulseGroups=[pulseGroup];
+var pulseGroups=[{[me.geo+".1"] : pulseGroup}];
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
