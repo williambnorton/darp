@@ -168,6 +168,7 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
         res.end(JSON.stringify(pulseGroups, null, 2));
     return
 });
+
 //// nodeFactory
 //       Configuration for node - allocate a mint
 //
@@ -547,6 +548,7 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroups = JSON.parse(body);
+                    console.log("genesis node gave us this: "+dump(groupOwnerPulseGroups));
                     var groupOwnerPulseGroup=groupOwnerPulseGroups[thisGroup];
                     console.log("groupOwnerPulseGroup="+dump(groupOwnerPulseGroup));
                     

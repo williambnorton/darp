@@ -451,6 +451,7 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroups = JSON.parse(body);
+                    console.log("genesis node gave us this: " + lib_1.dump(groupOwnerPulseGroups));
                     var groupOwnerPulseGroup = groupOwnerPulseGroups[thisGroup];
                     console.log("groupOwnerPulseGroup=" + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
