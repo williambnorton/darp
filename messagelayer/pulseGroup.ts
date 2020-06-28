@@ -536,6 +536,7 @@ if (TEST) {
             console.log("syncGenesisPulseGroup()");
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup"+"/"+this.groupName;
+            var thisGroup=this.groupName;
             console.log("syncGenesisPulseGroup(): url="+url);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
@@ -545,7 +546,7 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroups = JSON.parse(body);
-                    var groupOwnerPulseGroup=groupOwnerPulseGroups[0];
+                    var groupOwnerPulseGroup=groupOwnerPulseGroups[thisGroup];
                     console.log("groupOwnerPulseGroup="+dump(groupOwnerPulseGroup));
                     
                     var mintTable = groupOwnerPulseGroup.mintTable;
