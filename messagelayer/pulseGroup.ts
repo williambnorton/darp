@@ -462,10 +462,10 @@ if (TEST) {
                 ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
                 nodeEntry.outPulses++;
                 
-                if ( nodeEntry.owl == -99999) owls=""+owls+nodeEntry.mint+",";
+                if ( nodeEntry.owl == -99999) owls+=nodeEntry.mint+",";
                 else {
                     //if pulseTimestamp within a second (POLLING CYCLE)
-                    owls+=""+owls+nodeEntry.mint+"="+nodeEntry.owl+","
+                    owls+=nodeEntry.mint+"="+nodeEntry.owl+","
                 }
             });
             owls=owls.replace(/,+$/, ""); //remove trailing comma 
