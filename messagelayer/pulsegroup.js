@@ -450,9 +450,9 @@ if (TEST) {
                     body += data;
                 });
                 res.on("end", function () {
-                    var groupOwnerPulseGroups = JSON.parse(body);
-                    console.log("genesis node gave us this: " + lib_1.dump(groupOwnerPulseGroups));
-                    var groupOwnerPulseGroup = groupOwnerPulseGroups[thisGroup];
+                    var groupOwnerPulseGroup = JSON.parse(body);
+                    console.log("genesis node gave us this: " + lib_1.dump(groupOwnerPulseGroup));
+                    var groupOwnerPulseGroup = groupOwnerPulseGroup[thisGroup];
                     console.log("groupOwnerPulseGroup=" + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
