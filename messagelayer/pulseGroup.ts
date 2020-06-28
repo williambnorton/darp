@@ -104,11 +104,12 @@ interface PulseGroup {
     cycleTime:number;
 } 
 
-var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
-    groupName : me.geo+".1",
+var pulseGroup = {                 //my pulseGroup Configuration
+//    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
+        groupName : me.geo+".1",
     groupOwner : me.geo,
-    me : {},
-    genesis:{},
+    me : me,
+    genesis: genesis,
     mintTable: [
        me
     ],           
@@ -124,7 +125,7 @@ var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
 };
 pulseGroup.me=me;
 pulseGroup.genesis=genesis;
-var pulseGroups=[{[me.geo+".1"] : pulseGroup}];
+var pulseGroups={[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
@@ -286,7 +287,9 @@ app.get('/nodefactory', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     //console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
-    pulseGroups=[pulseGroup];
+//    pulseGroups=[pulseGroup];
+    var pulseGroups={[me.geo+".1"] : pulseGroup};
+
 });
 
  interface MintEntry {

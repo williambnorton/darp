@@ -82,10 +82,11 @@ var me = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All node
 var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
 var pulse = makePulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var pulseGroup = {
+    //    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
     groupName: me.geo + ".1",
     groupOwner: me.geo,
-    me: {},
-    genesis: {},
+    me: me,
+    genesis: genesis,
     mintTable: [
         me
     ],
@@ -100,7 +101,7 @@ var pulseGroup = {
 };
 pulseGroup.me = me;
 pulseGroup.genesis = genesis;
-var pulseGroups = [(_b = {}, _b[me.geo + ".1"] = pulseGroup, _b)];
+var pulseGroups = (_b = {}, _b[me.geo + ".1"] = pulseGroup, _b);
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
@@ -144,6 +145,7 @@ app.get('/pulseGroup/:pulsegroup', function (req, res) {
 //
 app.get('/nodefactory', function (req, res) {
     //console.log(ts() + "NODEFACTORY");
+    var _a;
     //
     //  additional nodes adding to pulseGroup
     //
@@ -242,7 +244,8 @@ app.get('/nodefactory', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     //console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
-    pulseGroups = [pulseGroup];
+    //    pulseGroups=[pulseGroup];
+    var pulseGroups = (_a = {}, _a[me.geo + ".1"] = pulseGroup, _a);
 });
 function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
     return {
