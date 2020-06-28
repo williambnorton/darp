@@ -511,9 +511,17 @@ if (TEST) {
                     //console.log("owls="+pulseEntry.owls);
                     if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
                         console.log("recvPulse handling owner's pulse and managing population to match his");
+                        if (incomingPulse.version != me.version) {
+                            console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                            console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                            console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                            console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                            console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                            process.exit(36); //SOFTWARE RELOAD and RECONNECT
+                        }
                         var ary=myPulseEntry.owls.split(",");
                         for(var owlEntry in ary) {
-                            console.log("processing groupOwner owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
+                            //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                             var m=ary[owlEntry].split("=")[0];
                             //console.log("Searching for mint "+m);
                             if (newPulseGroup.getMint(m)==null) {
