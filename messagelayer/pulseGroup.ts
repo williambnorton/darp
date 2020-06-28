@@ -510,7 +510,9 @@ if (TEST) {
                     myPulseEntry.owls=incomingPulse.owls;
                     //console.log("owls="+pulseEntry.owls);
                     if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
-                        console.log("recvPulse handling owner's pulse and managing population to match his");
+                        console.log("recvPulse handling owner's pulse and managing population to match his");                            
+                        console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
+
                         if (incomingPulse.version != me.version) {
                             console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
                             console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
