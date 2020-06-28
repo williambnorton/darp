@@ -393,6 +393,8 @@ if (TEST) {
             return null;
         };
         newPulseGroup.checkSWversion = function () {
+            if (newPulseGroup.groupOwner == me.geo)
+                return console.log("checkSWversion - genesis node never checks its own version");
             var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
             //console.log("checkSWversion(): url="+url);
             var http = require("http");
@@ -408,10 +410,8 @@ if (TEST) {
                 res.on("end", function () {
                     var version = JSON.parse(body);
                     //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
-                    if ((version != me.version)) {
-                        if (me.ipaddr == genesis.ipaddr)
-                            return console.log("ignoring this software version - I am genesis node");
-                        console.log(lib_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
+                    if (version != me.version) {
+                        console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
                     }
                 });

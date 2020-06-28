@@ -484,8 +484,11 @@ if (TEST) {
                 if (this.mintTable[m].mint==mint) return this.mintTable[m].mint
             }
             return null;
-        }
+        };
+
         newPulseGroup.checkSWversion=function () {
+            if (newPulseGroup.groupOwner==me.geo) 
+                return console.log("checkSWversion - genesis node never checks its own version");
             const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
             //console.log("checkSWversion(): url="+url);
             var http = require("http");
@@ -499,21 +502,20 @@ if (TEST) {
 
                 res.on('error', function(error) {
                     console.log("HANDLEPULSE: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
-                  });
+                });
 
                 res.on("end", () => {
                     var version = JSON.parse(body);
                     
                     //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
-                    if ((version != me.version) ) {
-                        if (me.ipaddr==genesis.ipaddr) return console.log("ignoring this software version - I am genesis node");
-                        console.log(ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
+                    if (version != me.version) {
+                        console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
                     }
                 });
             });
             setTimeout(newPulseGroup.checkSWversion,60*1000);  //Every 60 seconds check we have the best software
-        }
+        };
 
         newPulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
