@@ -110,12 +110,25 @@ pulseGroups = {}; //[me.geo+".1"] : pulseGroup};
 //pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
 //console.log("-********************** AFTER pulseGroup="+dump(pulseGroup));
 //process.exit(36);
+//instrument the pulseGroup
+function instrumentation() {
+    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 30 + '">'; //TODO: dynamic refresh based on new node adds
+    txt += '<head title="DARP">';
+    txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
+    txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
+    txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
+    txt += '</head>';
+    txt += '<body>';
+    txt += JSON.stringify(pulseGroups, null, 2);
+    txt += "</body>";
+    txt += "</html>";
+}
 app.get('/', function (req, res) {
     //console.log("fetching '/state'");
     //handleShowState(req, res); 
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroups, null, 2));
+    res.end(instrumentation());
     return;
 });
 app.get('/version', function (req, res) {
