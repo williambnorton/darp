@@ -126,6 +126,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
 pulseGroup.me=me;
 pulseGroup.genesis=genesis;
 var pulseGroups={[me.geo+".1"] : pulseGroup};
+pulseGroups={}; //[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
