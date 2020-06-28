@@ -568,7 +568,7 @@ if (TEST) {
         //else
         pulseGroup = newPulseGroup;
         pulseGroups[newPulseGroup.groupName] = newPulseGroup; //for now genesis node has no others
-        setTimeout(newPulseGroup.checkSWversion, 60 * 1000); //Every 60 seconds check we have the best software
+        setTimeout(newPulseGroup.checkSWversion, 5 * 1000); //check that we have the best software
     });
 }
 //----------------- sender 
