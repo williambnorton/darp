@@ -392,6 +392,32 @@ if (TEST) {
             }
             return null;
         };
+        newPulseGroup.checkSWversion = function () {
+            var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+            //console.log("checkSWversion(): url="+url);
+            var http = require("http");
+            http.get(url, function (res) {
+                res.setEncoding("utf8");
+                var body = "";
+                res.on("data", function (data) {
+                    body += data;
+                });
+                res.on('error', function (error) {
+                    console.log("HANDLEPULSE: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
+                });
+                res.on("end", function () {
+                    var version = JSON.parse(body);
+                    //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
+                    if ((version != me.version)) {
+                        if (me.ipaddr == genesis.ipaddr)
+                            return console.log("ignoring this software version - I am genesis node");
+                        console.log(lib_1.ts() + " HANDLEPULSE checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
+                        process.exit(36); //SOFTWARE RELOAD
+                    }
+                });
+            });
+            setTimeout(newPulseGroup.checkSWversion, 60 * 1000); //Every 60 seconds check we have the best software
+        };
         newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
                 console.log("----------> recvPulses incomingPulse=" + lib_1.dump(incomingPulse)); //+" newPulseGroup="+dump(newPulseGroup));
