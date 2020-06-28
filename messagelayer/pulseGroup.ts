@@ -144,9 +144,42 @@ function instrumentation() {    //this should get its own file
     txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
     txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> '
     txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
+    txt += "<script>"
+    txt += 'var nodeCountLastTime=0;'
+    txt += 'function fetchState() {'
+
+   txt += '   $.getJSON(URL, function(config) {'
+   txt += '         var nodeCountNow=config.nodeCount;'
+   //txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+   txt += '      if ( nodeCountLastTime >= 1 ) {'
+   txt += '         if (nodeCountLastTime!=nodeCountNow) {'
+   txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );'
+   txt += '             location.reload();' 
+   txt += '         }'
+   txt += '      '
+   txt += '      }'
+   txt += '      nodeCountLastTime=nodeCountNow;'
+   txt += '   });'
+
+    txt += "    setTimeout(fetchState,1000);"
+    txt += "}"
+    txt += '</script>';
+
     txt += '</head>';
     txt += '<body>';
+    
+    
+    
+    
+    
+    
+    txt += ""
     txt += JSON.stringify(pulseGroups,null,2);
+    
+    
+    
+    
+    
     txt += "</body>";
     txt += "</html>"
     console.log("txt="+txt);
