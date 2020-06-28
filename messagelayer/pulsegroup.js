@@ -118,6 +118,30 @@ app.get('/', function (req, res) {
     res.end(JSON.stringify(pulseGroups, null, 2));
     return;
 });
+app.get('/version', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(me.version));
+    return;
+});
+app.get('/stop', function (req, res) {
+    //console.log("EXPRess fetching '/state' state");
+    console.log("EXITTING and Stopping the node");
+    res.redirect(req.get('referer'));
+    process.exit(86);
+});
+app.get('/reboot', function (req, res) {
+    //console.log("EXPRess fetching '/state' state");
+    console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER");
+    res.redirect(req.get('referer'));
+    process.exit(99999);
+});
+app.get('/reload', function (req, res) {
+    //console.log("EXPRess fetching '/state' state");
+    console.log("EXITTING to reload the system");
+    res.redirect(req.get('referer'));
+    process.exit(36);
+});
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
