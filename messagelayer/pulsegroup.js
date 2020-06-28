@@ -417,6 +417,7 @@ if (TEST) {
             return null;
         };
         newPulseGroup.checkSWversion = function () {
+            console.log(":=checkSWversion()");
             if (newPulseGroup.groupOwner == me.geo)
                 return console.log("checkSWversion - genesis node never checks its own version");
             var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
@@ -567,6 +568,7 @@ if (TEST) {
         //else
         pulseGroup = newPulseGroup;
         pulseGroups[newPulseGroup.groupName] = newPulseGroup; //for now genesis node has no others
+        setTimeout(newPulseGroup.checkSWversion, 60 * 1000); //Every 60 seconds check we have the best software
     });
 }
 //----------------- sender 

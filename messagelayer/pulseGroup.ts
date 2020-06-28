@@ -518,6 +518,7 @@ if (TEST) {
         };
 
         newPulseGroup.checkSWversion=function () {
+            console.log(":=checkSWversion()");
             if (newPulseGroup.groupOwner==me.geo) 
                 return console.log("checkSWversion - genesis node never checks its own version");
             const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
@@ -676,11 +677,14 @@ if (TEST) {
         console.log("Starting pulseGroup "+newPulseGroup.groupName);
         newPulseGroup.recvPulses();
         newPulseGroup.pulse();
+
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
         //else
         pulseGroup=newPulseGroup; 
         pulseGroups[newPulseGroup.groupName]=newPulseGroup;  //for now genesis node has no others
+        setTimeout(newPulseGroup.checkSWversion,60*1000);  //Every 60 seconds check we have the best software
+
     });
 }
 //----------------- sender 
