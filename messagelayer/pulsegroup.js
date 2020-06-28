@@ -452,8 +452,6 @@ if (TEST) {
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
                     console.log("genesis node gave us this: " + lib_1.dump(groupOwnerPulseGroup));
-                    var groupOwnerPulseGroup = groupOwnerPulseGroup[thisGroup];
-                    console.log("groupOwnerPulseGroup=" + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
                     console.log("mintTable=" + lib_1.dump(mintTable));
@@ -463,14 +461,14 @@ if (TEST) {
                     else {
                         newPulseGroup.mintTable = mintTable;
                         var pulses = groupOwnerPulseGroup.pulses;
-                        for (var pulse in pulses) {
+                        for (var pulse in pulses) { //Add all mints that we don't have
                             var genesisPulseEntry = pulses[pulse];
                             if (typeof newPulseGroup.pulses[pulse] == "undefined") {
                                 console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
                                 newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
                             }
                         }
-                        for (var pulse in newPulseGroup.pulses) {
+                        for (var pulse in newPulseGroup.pulses) { //Delete all node we have that the group owner does not
                             var myPulseEntry = newPulseGroup.pulses[pulse];
                             if (typeof pulses[pulse] == "undefined") {
                                 console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
