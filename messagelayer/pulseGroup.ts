@@ -473,7 +473,10 @@ if (TEST) {
             var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ (myEntry.seq++) +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
             console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));
             sendPulses(pulseMessage,ipary);
-            setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
+
+            setTimeout(newPulseGroup.pulse,newPulseGroup. cycleTime*1000);
+            //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
+            //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
         };
 
         newPulseGroup.getMint=function(mint:number) {

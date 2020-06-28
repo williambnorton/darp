@@ -382,6 +382,8 @@ if (TEST) {
             console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary));
             pulselayer_1.sendPulses(pulseMessage, ipary);
             setTimeout(newPulseGroup.pulse, newPulseGroup.cycleTime * 1000);
+            //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
+            //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
         };
         newPulseGroup.getMint = function (mint) {
             for (var m in this.mintTable) {
