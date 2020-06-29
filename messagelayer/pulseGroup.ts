@@ -149,6 +149,7 @@ function instrumentation() {    //this should get its own file
     txt += "<script>"
     
     txt += 'var nodeCountLastTime=0;'
+    /*
     txt += 'function fetchState() {'
     txt += 'var url="http://"'+me.ipaddr+':'+me.port+'/pulseGroups"';
    txt += '   $.getJSON(url, function(config) {'
@@ -167,6 +168,7 @@ function instrumentation() {    //this should get its own file
     txt += "    setTimeout(fetchState,1000);";
     txt += "}";
     txt += "setTimeout(fetchState,1000);" ;  
+*/
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
