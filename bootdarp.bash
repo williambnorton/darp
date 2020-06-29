@@ -91,15 +91,17 @@ do
     echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * $GENESISIP $MYIP"
 
 
-//    if [ "$GENESISIP" = "$MYIP" ]; then
 
-//        echo `date` "I AM GENESIS NODE - Starting up auto-updater"
-        ( ./updateSW.bash -deamon 2>&1 ) //>/dev/null & #keep it checking every 30 seconds
-//        echo `date` "I AM GENESIS NODE"
-//        echo `date` "I AM GENESIS NODE ----->  Get others to join GENESIS="$GENESIS
-//        echo `date` "I AM GENESIS NODE"
-//    fi
+    if [ "$GENESISIP" = "$MYIP  KILLING THIS" ]; then
+        echo CODE WILL CHECK GENESIS EVERY 20 secs amd Genesis reloads manaually
+        echo `date` "I AM GENESIS NODE - Starting up auto-updater"
+        ( ./updateSW.bash -deamon 2>&1 ) >/dev/null & #keep it checking every 30 seconds
+        echo `date` "I AM GENESIS NODE"
+        echo `date` "I AM GENESIS NODE ----->  Get others to join GENESIS="$GENESIS
+        echo `date` "I AM GENESIS NODE"
+    fi
     sleep 1
+
 
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
