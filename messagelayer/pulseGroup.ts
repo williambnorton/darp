@@ -169,7 +169,7 @@ function instrumentation() {    //this should get its own file
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
-    
+    /*
     for (var p in pulseGroups) {
         var pulseGroup=pulseGroups[p];
             //
