@@ -358,6 +358,14 @@ app.get('/reload', function (req, res) {
     res.redirect(req.get('referer'));
     process.exit(36);
 });
+app.get('/asset-manifest.json', function (req, res) {
+    //console.log("EXPRess fetching '/state' state");
+    //console.log("app.get('/state' callback config="+dump(config));
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify({}, null, 2));
+    return;
+});
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
