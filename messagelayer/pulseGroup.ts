@@ -5,6 +5,7 @@
 import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 
+const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
@@ -149,7 +150,7 @@ function instrumentation() {    //this should get its own file
     txt += 'var nodeCountLastTime=0;'
     txt += 'function fetchState() {'
 
-   txt += '   $.getJSON(URL, function(config) {'
+   txt += '   $.getJSON("http://"'+me.ipaddr+':'+me.port+"/pulseGroups"+', function(config) {'
    txt += '         var nodeCountNow=config.nodeCount;'
    txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
    txt += '      if ( nodeCountLastTime >= 1 ) {'
@@ -787,7 +788,7 @@ if (TEST) {
                     }
                 });
             });
-            setTimeout(newPulseGroup.checkSWversion,60*1000);  //Every 60 seconds check we have the best software
+            setTimeout(newPulseGroup.checkSWversion,CHECK_SW_VERSION_CYCLE_TIME*1000);  //Every 60 seconds check we have the best software
         };
 
         newPulseGroup.recvPulses=function (){

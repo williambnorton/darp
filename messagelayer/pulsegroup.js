@@ -7,6 +7,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var pulselayer_1 = require("./pulselayer");
+var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
 var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
@@ -121,7 +122,7 @@ function instrumentation() {
     txt += "<script>";
     txt += 'var nodeCountLastTime=0;';
     txt += 'function fetchState() {';
-    txt += '   $.getJSON(URL, function(config) {';
+    txt += '   $.getJSON("http://"' + me.ipaddr + ':' + me.port + "/pulseGroups" + ', function(config) {';
     txt += '         var nodeCountNow=config.nodeCount;';
     txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );';
     txt += '      if ( nodeCountLastTime >= 1 ) {';
@@ -649,7 +650,7 @@ if (TEST) {
                     }
                 });
             });
-            setTimeout(newPulseGroup.checkSWversion, 60 * 1000); //Every 60 seconds check we have the best software
+            setTimeout(newPulseGroup.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); //Every 60 seconds check we have the best software
         };
         newPulseGroup.recvPulses = function () {
             pulselayer_1.recvPulses(me.port, function (incomingPulse) {
