@@ -796,14 +796,16 @@ if (TEST) {
                 var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
 
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
-                if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {
-                    var mintEntry=newPulseGroup.getMint(incomingPulse.mint);
+                if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
+                    var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look for the pulse claimed mint
 
-                    if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {
+                    if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
                         console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
-                        myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
+                        //TODO: Explore this - we should not need to do this. New Mint leads to genesisSync
+/* wbnwbn */            myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                     }
                 }
+
                 //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
                 if (myPulseEntry!=null) {     //copy incoming pulse into my record
                     myPulseEntry.inPulses++;
@@ -811,6 +813,11 @@ if (TEST) {
                     myPulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
                     myPulseEntry.owl=incomingPulse.owl;
                     myPulseEntry.owls=incomingPulse.owls;
+ 
+                    //update mint entry
+                    mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;
+                    mintEntry.lastOWL=myPulseEntry.owl;
+                    
                     //console.log("owls="+pulseEntry.owls);
                     if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
                         console.log("recvPulse handling owner's pulse and managing population to match his");                            
