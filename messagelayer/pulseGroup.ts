@@ -147,7 +147,7 @@ function instrumentation() {    //this should get its own file
     txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> '
     txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
     txt += "<script>"
-    /*
+    
     txt += 'var nodeCountLastTime=0;'
     txt += 'function fetchState() {'
 
