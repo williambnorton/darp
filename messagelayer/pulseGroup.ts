@@ -153,7 +153,7 @@ function instrumentation() {    //this should get its own file
     txt += 'function fetchState() {'
     
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';
-    txt += 'console.log("url="+url);';
+    //txt += 'console.log("url="+url);';
    
     txt += '   $.getJSON(url, function(config) {'
    txt += '         var nodeCountNow=config.nodeCount;'
@@ -168,7 +168,7 @@ function instrumentation() {    //this should get its own file
    txt += '      nodeCountLastTime=nodeCountNow;';
    txt += '   });';
 
-    txt += "    setTimeout(fetchState,1000);";
+    txt += "    setTimeout(fetchState,1000);";  
     txt += "}";
     txt += 'setTimeout(fetchState,1000);';  
 
@@ -281,11 +281,11 @@ function instrumentation() {    //this should get its own file
         txt += "<th>ipaddr</th>";
         txt += "<th>publickey</th>";
         txt += "<th>state</th>";
-        txt += "<th>pulseTimestamp</th>";
         txt += "<th>version</th>";
         txt += "<th>wallet</th>";
-        //txt+="<th>S</th>"
-        txt += "<th>owl</th>";
+        txt += "<th>lastPulseTimestamp</th>";
+        txt += "<th>lastOWL</th>";
+
         //txt+="<th>G</th>"
         //<th>rtt</th>"
         txt += "<th>CONTROLS</th>";
@@ -313,12 +313,12 @@ function instrumentation() {    //this should get its own file
                 deltaSeconds = "0";
             //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
             txt += '<td class="' + mintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
+            txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
             //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
             txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
             txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
             //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
             //txt += "<td>" + mintEntry.owl + " ms</td>"
-            txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
             //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
             //            txt+="<td>"+mintEntry.rtt+"</td>"
             var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
