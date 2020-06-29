@@ -656,6 +656,7 @@ if (TEST) {
                 //console.log("myPulseGroup="+dump(pulseGroup));
                 var myPulseEntry = pulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 var mintEntry = newPulseGroup.getMint(incomingPulse.mint); // look up the pulse claimed mint
+                console.log("associated " + incomingPulse.mint + " mintEntry=" + lib_1.dump(mintEntry));
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
                 if (typeof myPulseEntry == "undefined" || myPulseEntry == null) { //If we don't have this pulseEntry yet
                     if (mintEntry != null && (mintEntry.geo == incomingPulse.geo)) { //we found mint and matches incoming geo - should we check incomingIP also? We can.
@@ -665,7 +666,8 @@ if (TEST) {
                     }
                 }
                 //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
-                if (myPulseEntry != null) { //copy incoming pulse into my record
+                if (myPulseEntry != null) {
+                    //copy incoming pulse into my pulse record
                     myPulseEntry.inPulses++;
                     myPulseEntry.lastMsg = incomingPulse.lastMsg;
                     myPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
