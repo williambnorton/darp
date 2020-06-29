@@ -123,7 +123,6 @@ function instrumentation() {
     txt += 'var nodeCountLastTime=0;';
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";';
-    console.log("txt so far=" + txt);
     txt += 'console.log("url="+url);';
     txt += '   $.getJSON(url, function(config) {';
     txt += '         var nodeCountNow=config.nodeCount;';
