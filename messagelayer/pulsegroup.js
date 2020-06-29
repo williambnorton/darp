@@ -619,7 +619,7 @@ if (TEST) {
         newPulseGroup.getMint = function (mint) {
             for (var m in this.mintTable) {
                 if (this.mintTable[m].mint == mint)
-                    return this.mintTable[m].mint;
+                    return this.mintTable[m];
             }
             return null;
         };

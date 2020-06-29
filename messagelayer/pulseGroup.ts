@@ -750,9 +750,9 @@ if (TEST) {
             //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
         };
 
-        newPulseGroup.getMint=function(mint:number) {
+        newPulseGroup.getMint=function(mint:number):MintEntry|null {
             for (var m in this.mintTable) {
-                if (this.mintTable[m].mint==mint) return this.mintTable[m].mint
+                if (this.mintTable[m].mint==mint) return this.mintTable[m];
             }
             return null;
         };
@@ -838,7 +838,7 @@ if (TEST) {
                             //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                             var m=ary[owlEntry].split("=")[0];
                             //console.log("Searching for mint "+m);
-                            if (newPulseGroup.getMint(m)==null) {
+                            if (newPulseGroup.getMint(m) == null) {
                                 console.log("Owner announced a NEW MINT ENTRY - syncing with genesis node for config");
                                 return newPulseGroup.syncGenesisPulseGroup();
                             }
