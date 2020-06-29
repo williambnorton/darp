@@ -386,7 +386,6 @@ app.get('/', function(req, res) {
 });
 
 app.get('/version', function(req, res) {
-
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.end(JSON.stringify(me.version));
