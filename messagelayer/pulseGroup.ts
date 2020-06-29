@@ -259,7 +259,7 @@ function instrumentation() {    //this should get its own file
         txt += "</table>";
     }
 
-
+/*
 
     for (var p in pulseGroups) {
         var pulseGroup=pulseGroups[p];
@@ -349,7 +349,7 @@ function instrumentation() {    //this should get its own file
 
 
 
-
+*/
 
 
 
