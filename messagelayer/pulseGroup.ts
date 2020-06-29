@@ -434,7 +434,12 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
+
+    //
+    //  pulseGroup 
+    //
     if (typeof req.params.pulsegroup != "undefined") { 
+        console.log("/pulseGroup/:pulsegroup pulseGroup specified");
         for (var pulseGroup in pulseGroups) {
             console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (pulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
@@ -442,11 +447,24 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
                 return; //we sent the more specific
             }
         }
+        console.log("/pulseGroup/:pulsegroup returning pulseGroup specified "+req.params.pulsegroup);
         res.end(JSON.stringify(null));
     }
     else    
+        console.log("No pulseGroup specified");
         res.end(JSON.stringify(pulseGroups, null, 2));
     return
+});
+app.get('/pulseGroups', function(req, res) {
+    console.log("fetching '/pulseGroups' ");
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    //
+    //  pulseGroup 
+    //
+        console.log("/pulseGroups");
+        res.end(JSON.stringify(pulseGroups, null, 2));
 });
 
 //// nodeFactory
@@ -795,7 +813,7 @@ if (TEST) {
                 res.on("end", () => {
                     var version = JSON.parse(body);
                     var currentSWversion=MYVERSION(); //find the Build.*
-                    console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+currentSWversion);
+                    console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+currentSWversion);
                     if (version != me.version) {
                         console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD

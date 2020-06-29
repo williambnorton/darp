@@ -383,7 +383,11 @@ app.get('/pulseGroup/:pulsegroup', function (req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
+    //
+    //  pulseGroup 
+    //
     if (typeof req.params.pulsegroup != "undefined") {
+        console.log("/pulseGroup/:pulsegroup pulseGroup specified");
         for (var pulseGroup in pulseGroups) {
             console.log("req.params.pulsegroup=" + req.params.pulsegroup + " pulseGroups[pulseGroup].groupName=" + pulseGroups[pulseGroup].groupName);
             if (pulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
@@ -391,11 +395,23 @@ app.get('/pulseGroup/:pulsegroup', function (req, res) {
                 return; //we sent the more specific
             }
         }
+        console.log("/pulseGroup/:pulsegroup returning pulseGroup specified " + req.params.pulsegroup);
         res.end(JSON.stringify(null));
     }
     else
-        res.end(JSON.stringify(pulseGroups, null, 2));
+        console.log("No pulseGroup specified");
+    res.end(JSON.stringify(pulseGroups, null, 2));
     return;
+});
+app.get('/pulseGroups', function (req, res) {
+    console.log("fetching '/pulseGroups' ");
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    //
+    //  pulseGroup 
+    //
+    console.log("/pulseGroups");
+    res.end(JSON.stringify(pulseGroups, null, 2));
 });
 //// nodeFactory
 //       Configuration for node - allocate a mint
@@ -672,7 +688,7 @@ if (TEST) {
                 res.on("end", function () {
                     var version = JSON.parse(body);
                     var currentSWversion = lib_1.MYVERSION(); //find the Build.*
-                    console.log(lib_1.ts() + "HANDLEPULSE: checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " currentSW=" + currentSWversion);
+                    console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " currentSW=" + currentSWversion);
                     if (version != me.version) {
                         console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
