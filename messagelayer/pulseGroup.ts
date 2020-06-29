@@ -154,7 +154,7 @@ function instrumentation() {    //this should get its own file
     
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';
     console.log("txt so far="+txt);
-    /*txt += 'console.log("url="+url);';
+    txt += 'console.log("url="+url);';
    /*
     txt += '   $.getJSON(url, function(config) {'
    txt += '         var nodeCountNow=config.nodeCount;'
