@@ -32,7 +32,7 @@ export function recvPulses(port,callback) {
             group: ary[5],
             seq: ary[6],
             bootTimestamp: ary[7],   //if genesis node reboots --> all node reload SW too
-            srcMint: ary[8],
+            mint: ary[8],
             owls: pulseOwls,
             owl: OWL,
             lastMsg:incomingMessage
