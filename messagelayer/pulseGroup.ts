@@ -794,10 +794,10 @@ if (TEST) {
                 console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
                 //console.log("myPulseGroup="+dump(pulseGroup));
                 var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
+                var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
 
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
                 if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
-                    var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look for the pulse claimed mint
 
                     if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
                         console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
