@@ -122,7 +122,7 @@ function instrumentation() {
     txt += "<script>";
     txt += 'var nodeCountLastTime=0;';
     txt += 'function fetchState() {';
-    txt += 'var url="http://"' + me.ipaddr + ':' + me.port + '/pulseGroups"';
+    txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups"';
     txt += 'console.log("url="+url);';
     /*
      txt += '   $.getJSON(url, function(config) {'
@@ -141,7 +141,7 @@ function instrumentation() {
      txt += "    setTimeout(fetchState,1000);";
      */
     txt += "}";
-    txt += "setTimeout(fetchState,1000);";
+    txt += 'setTimeout(fetchState,1000);';
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
