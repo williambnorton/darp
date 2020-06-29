@@ -122,7 +122,7 @@ function instrumentation() {
     txt += "<script>";
     txt += 'var nodeCountLastTime=0;';
     txt += 'function fetchState() {';
-    txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups"';
+    txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";';
     txt += 'console.log("url="+url);';
     /*
      txt += '   $.getJSON(url, function(config) {'
