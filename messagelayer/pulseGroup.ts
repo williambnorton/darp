@@ -457,12 +457,7 @@ app.get('/pulseGroups', function(req, res) {
     console.log("fetching '/pulseGroups' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-
-    //
-    //  pulseGroup 
-    //
-        console.log("/pulseGroups");
-        res.end(JSON.stringify(pulseGroups, null, 2));
+    res.end(JSON.stringify(pulseGroups, null, 2));
 });
 
 //// nodeFactory
