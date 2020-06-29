@@ -122,7 +122,8 @@ function instrumentation() {
     txt += "<script>";
     txt += 'var nodeCountLastTime=0;';
     txt += 'function fetchState() {';
-    txt += '   $.getJSON("http://"' + me.ipaddr + ':' + me.port + "/pulseGroups" + ', function(config) {';
+    txt += 'var url="http://"' + me.ipaddr + ':' + me.port + '/pulseGroups"';
+    txt += '   $.getJSON(url, function(config) {';
     txt += '         var nodeCountNow=config.nodeCount;';
     txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );';
     txt += '      if ( nodeCountLastTime >= 1 ) {';
