@@ -244,10 +244,10 @@ function instrumentation() {
         txt += "<th>ipaddr</th>";
         txt += "<th>publickey</th>";
         txt += "<th>state</th>";
-        txt += "<th>version</th>";
-        txt += "<th>wallet</th>";
         txt += "<th>lastPulseTimestamp</th>";
         txt += "<th>lastOWL</th>";
+        txt += "<th>version</th>";
+        txt += "<th>wallet</th>";
         //txt+="<th>G</th>"
         //<th>rtt</th>"
         txt += "<th>CONTROLS</th>";
