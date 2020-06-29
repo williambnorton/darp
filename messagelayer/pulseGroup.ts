@@ -155,7 +155,7 @@ function instrumentation() {    //this should get its own file
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';
     console.log("txt so far="+txt);
     txt += 'console.log("url="+url);';
-   /*
+   
     txt += '   $.getJSON(url, function(config) {'
    txt += '         var nodeCountNow=config.nodeCount;'
    txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
@@ -170,7 +170,6 @@ function instrumentation() {    //this should get its own file
    txt += '   });';
 
     txt += "    setTimeout(fetchState,1000);";
-    */
     txt += "}";
     txt += 'setTimeout(fetchState,1000);';  
 
