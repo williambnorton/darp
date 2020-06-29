@@ -123,23 +123,23 @@ function instrumentation() {
     txt += 'var nodeCountLastTime=0;';
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";';
-    txt += 'console.log("url="+url);';
-    /*
-     txt += '   $.getJSON(url, function(config) {'
-    txt += '         var nodeCountNow=config.nodeCount;'
-    txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-    txt += '      if ( nodeCountLastTime >= 1 ) {'
-    txt += '         if (nodeCountLastTime!=nodeCountNow) {'
-    txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '             location.reload();' ;
-    txt += '         }'
-    txt += '      '
-    txt += '      }'
-    txt += '      nodeCountLastTime=nodeCountNow;';
-    txt += '   });';
- 
-     txt += "    setTimeout(fetchState,1000);";
-     */
+    /*txt += 'console.log("url="+url);';
+   /*
+    txt += '   $.getJSON(url, function(config) {'
+   txt += '         var nodeCountNow=config.nodeCount;'
+   txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+   txt += '      if ( nodeCountLastTime >= 1 ) {'
+   txt += '         if (nodeCountLastTime!=nodeCountNow) {'
+   txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '             location.reload();' ;
+   txt += '         }'
+   txt += '      '
+   txt += '      }'
+   txt += '      nodeCountLastTime=nodeCountNow;';
+   txt += '   });';
+
+    txt += "    setTimeout(fetchState,1000);";
+    */
     txt += "}";
     txt += 'setTimeout(fetchState,1000);';
     txt += '</script>';
