@@ -646,9 +646,10 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var version = JSON.parse(body);
-                    //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
+                    var currentSWversion = lib_1.MYVERSION(); //find the Build.*
+                    console.log(lib_1.ts() + "HANDLEPULSE: checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " currentSW=" + currentSWversion);
                     if (version != me.version) {
-                        console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
+                        console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
                     }
                 });

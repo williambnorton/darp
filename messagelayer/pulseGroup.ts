@@ -783,10 +783,10 @@ if (TEST) {
 
                 res.on("end", () => {
                     var version = JSON.parse(body);
-                    
-                    //console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+MYBUILD);
+                    var currentSWversion=MYVERSION(); //find the Build.*
+                    console.log(ts()+"HANDLEPULSE: checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+currentSWversion);
                     if (version != me.version) {
-                        console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + me.version + " .......process exitting");
+                        console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
                     }
                 });
