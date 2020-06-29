@@ -120,23 +120,26 @@ function instrumentation() {
     txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
     txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
     txt += "<script>";
-    txt += 'var nodeCountLastTime=0;';
-    txt += 'function fetchState() {';
-    txt += '   $.getJSON("http://"' + me.ipaddr + ':' + me.port + "/pulseGroups" + ', function(config) {';
-    txt += '         var nodeCountNow=config.nodeCount;';
-    txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );';
-    txt += '      if ( nodeCountLastTime >= 1 ) {';
-    txt += '         if (nodeCountLastTime!=nodeCountNow) {';
-    txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '             location.reload();';
-    txt += '         }';
-    txt += '      ';
-    txt += '      }';
-    txt += '      nodeCountLastTime=nodeCountNow;';
-    txt += '   });';
+    /*
+    txt += 'var nodeCountLastTime=0;'
+    txt += 'function fetchState() {'
+
+   txt += '   $.getJSON("http://"'+me.ipaddr+':'+me.port+"/pulseGroups"+', function(config) {'
+   txt += '         var nodeCountNow=config.nodeCount;'
+   txt += '         console.log("nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+   txt += '      if ( nodeCountLastTime >= 1 ) {'
+   txt += '         if (nodeCountLastTime!=nodeCountNow) {'
+   txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '             location.reload();' ;
+   txt += '         }'
+   txt += '      '
+   txt += '      }'
+   txt += '      nodeCountLastTime=nodeCountNow;';
+   txt += '   });';
+
     txt += "    setTimeout(fetchState,1000);";
     txt += "}";
-    txt += "setTimeout(fetchState,1000);";
+    txt += "setTimeout(fetchState,1000);" ;
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
