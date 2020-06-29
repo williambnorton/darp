@@ -135,6 +135,7 @@ function instrumentation() {
     txt += '   });';
     txt += "    setTimeout(fetchState,1000);";
     txt += "}";
+    txt += "setTimeout(fetchState,1000);";
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';

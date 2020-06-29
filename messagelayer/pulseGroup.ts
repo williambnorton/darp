@@ -164,6 +164,7 @@ function instrumentation() {    //this should get its own file
 
     txt += "    setTimeout(fetchState,1000);"
     txt += "}"
+    txt += "setTimeout(fetchState,1000);"   
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
