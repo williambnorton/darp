@@ -5,6 +5,7 @@
 import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 
+const NO_OWL=-99999;
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
 
@@ -258,6 +259,95 @@ function instrumentation() {    //this should get its own file
 
 
 
+    for (var p in pulseGroups) {
+        var pulseGroup=pulseGroups[p];
+        //
+        //  Externalize mintTable 
+        //
+        //console.log(ts()+"config.mintTable="+dump(config.mintTable));
+        txt += '<br><h2>mintTable</h2><table>';
+        txt += "<tr>";
+        txt += "<th>mint</th>";
+        txt += "<th>geo</th>";
+        txt += "<th>port</th>";
+        txt += "<th>ipaddr</th>";
+        txt += "<th>publickey</th>";
+        txt += "<th>state</th>";
+        txt += "<th>pulseTimestamp</th>";
+        txt += "<th>version</th>";
+        txt += "<th>wallet</th>";
+        //txt+="<th>S</th>"
+        txt += "<th>owl</th>";
+        //txt+="<th>G</th>"
+        //<th>rtt</th>"
+        txt += "<th>CONTROLS</th>";
+        txt += "<th>adminControl</th>";
+        txt += "<th>bootTimestamp</th>";
+        txt += "</tr>";
+        //console.log(ts()+"                            mintTable="+dump(mintTable));
+        for (var a in pulseGroup.mintTable) {
+            var mintEntry = pulseGroup.mintTable[a];
+            //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
+            txt += "<tr>";
+            //txt+="<td>"+mintEntry+"</td>"
+            txt += "<td>" + mintEntry.mint + "</td>";
+            txt += '<td class="' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>";
+            txt += "<td>" + mintEntry.port + "</td>";
+            txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >' + mintEntry.ipaddr + "</a></td>";
+            txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
+            txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" >' + mintEntry.state + '</a>' + "</td>";
+            //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
+            //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
+            //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
+            //txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
+            var deltaSeconds = Math.round((now() - mintEntry.lastPulseTimestamp) / 1000) + " secs ago";
+            if (mintEntry.lastPulseTimestamp == 0)
+                deltaSeconds = "0";
+            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+            txt += '<td class="' + mintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
+            //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
+            txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
+            txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
+            //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
+            //txt += "<td>" + mintEntry.owl + " ms</td>"
+            txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
+            //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
+            //            txt+="<td>"+mintEntry.rtt+"</td>"
+            var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
+            var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
+            var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
+            var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
+            var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+            txt += "<td>" + '<FORM>';
+            txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+            txt += '</FORM>' + "</td>";
+            //if (mintEntry.adminControl)
+            //    txt += "<td>" + mintEntry.adminControl + "</td>";
+            //else
+                txt += "<td>" + "</td>";
+            //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+            //if (pulseEntry.bootTimestamp == 0) delta = "0";
+            //txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
+            var deltaSeconds2 = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+            if (mintEntry.bootTimestamp == 0)
+                deltaSeconds2 = "0";
+            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+            txt += '<td class="' + mintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
+            txt += "</tr>";
+        }
+        txt += "</table>";
+
+
+    }
+
+
+
+
+
 
 
 
@@ -481,6 +571,8 @@ app.get('/nodefactory', function(req, res) {
     bootTimestamp:number;
     version:string;
     wallet:string;
+    lastPulseTimestamp:number;
+    lastOWL:number;
 } 
  function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     return { //mint:0 is always "me"
@@ -493,7 +585,9 @@ app.get('/nodefactory', function(req, res) {
         state: DEFAULT_START_STATE,
         bootTimestamp: now(), //RemoteClock on startup  ****
         version: version,   //software version running on remote system ********
-        wallet: wallet     // ** 
+        wallet: wallet,     // ** 
+        lastPulseTimestamp:0,
+        lastOWL:NO_OWL
     }
  }
 
@@ -532,7 +626,7 @@ app.get('/nodefactory', function(req, res) {
         ipaddr: ipaddr, //DEVPOS:DEVOP.1 for genesis node start
         port: port, //DEVPOS:DEVOP.1 for genesis node start
         seq: 1, //last sequence number heard
-        owl: -99999,     //delete this when pulseTimestamp is >2 secs old
+        owl: NO_OWL,     //delete this when pulseTimestamp is >2 secs old
         pulseTimestamp:0,
         owls: "1", //Startup - I am the only one here
         // stats
@@ -639,7 +733,7 @@ if (TEST) {
                 ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
                 nodeEntry.outPulses++;
                 
-                if ( nodeEntry.owl == -99999) owls+=nodeEntry.mint+",";
+                if ( nodeEntry.owl == NO_OWL) owls+=nodeEntry.mint+",";
                 else {
                     //if pulseTimestamp within a second (POLLING CYCLE)
                     owls+=nodeEntry.mint+"="+nodeEntry.owl+","
