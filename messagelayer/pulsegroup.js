@@ -363,23 +363,22 @@ app.get('/asset-manifest.json', function (req, res) {
 //  or update your specific pulseGroup to the group owner's 
 //
 app.get('/pulseGroup/:pulsegroup', function (req, res) {
-    console.log("fetching '/pulseGroup' &pulsegroup=" + req.params.pulsegroup);
-    //handleShowState(req, res); 
+    //console.log("fetching '/pulseGroup' &pulsegroup="+req.params.pulsegroup);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //
     //  pulseGroup 
     //
     if (typeof req.params.pulsegroup != "undefined") {
-        console.log("/pulseGroup/:pulsegroup pulseGroup specified");
+        //console.log("/pulseGroup/:pulsegroup pulseGroup specified");
         for (var pulseGroup in pulseGroups) {
-            console.log("req.params.pulsegroup=" + req.params.pulsegroup + " pulseGroups[pulseGroup].groupName=" + pulseGroups[pulseGroup].groupName);
+            //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (pulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
                 res.end(JSON.stringify(pulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
         }
-        console.log("/pulseGroup/:pulsegroup returning pulseGroup specified " + req.params.pulsegroup);
+        //console.log("/pulseGroup/:pulsegroup returning pulseGroup specified "+req.params.pulsegroup);
         res.end(JSON.stringify(null));
     }
     else
