@@ -145,7 +145,7 @@ function instrumentation() {
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
-    txt += '<h1>' + me.geo + ':' + me.ipaddr + ":" + me.port + '</h1>';
+    //    txt += '<h1>'+me.geo+':'+me.ipaddr+":"+me.port+'</h1>';
     for (var p in pulseGroups) {
         var pulseGroup = pulseGroups[p];
         //
