@@ -634,7 +634,7 @@ if (TEST) {
             owls = owls.replace(/,+$/, ""); //remove trailing comma 
             var myEntry = newPulseGroup.pulses[GEO + ":" + newPulseGroup.groupName];
             var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + (myEntry.seq++) + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myEntry.mint + "," + owls;
-            console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary));
+            //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
             pulselayer_1.sendPulses(pulseMessage, ipary);
             setTimeout(newPulseGroup.pulse, newPulseGroup.cycleTime * 1000);
             //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES

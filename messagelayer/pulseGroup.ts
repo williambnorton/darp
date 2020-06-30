@@ -765,7 +765,7 @@ if (TEST) {
             owls=owls.replace(/,+$/, ""); //remove trailing comma 
             var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
             var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ (myEntry.seq++) +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
-            console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));
+            //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
             sendPulses(pulseMessage,ipary);
 
             setTimeout(newPulseGroup.pulse,newPulseGroup. cycleTime*1000);
