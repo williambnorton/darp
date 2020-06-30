@@ -157,8 +157,8 @@ function instrumentation() {    //this should get its own file
    txt += 'var nodeCountLastTime=0;'
     txt += '   $.getJSON(url, function(config) {'
    txt += '         for (var n in config) { ';
-   txt+=  '            var pulseGroup=config[n]';
-   txt += '            var nodeCountNow=pulseGroup.nodeCount;'
+   txt+=  '            var pulseGroup=config[n];';
+   txt += '            var nodeCountNow=pulseGroup.nodeCount;';
    txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
    //txt += '         console.log("**count="+config.pulses.length+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
