@@ -124,6 +124,107 @@ function instrumentation() {
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";';
     //txt += 'console.log("url="+url);';
+    txt += '$(document).ready(function() {';
+    txt += "var configs=[],startingArrayWidth=1;";
+    txt += 'const median = arr => {';
+    txt += '       const mid = Math.floor(arr.length / 2),';
+    txt += '       nums = [...arr].sort((a, b) => a - b);';
+    txt += '      return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;';
+    txt += '};';
+    txt += '   function renderPage(config) {';
+    txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
+    //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+    //
+    //      Render table from information in the state fetched from node
+    //
+    txt += '      $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+    txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
+    //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+    txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
+    txt += '          var pulse=value;'; //
+    txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
+    // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+    //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+    txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
+    txt += '          }';
+    //txt += '          console.log("config="+JSON.stringify(config,null,2));'
+    txt += '          if (pulse.pulseTimestamp!="0")';
+    txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
+    txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
+    txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
+    txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
+    //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
+    txt += '       }';
+    //Note: we are measuring relative latency so there IS NO ABSOLUTE latency - 0 and -# are valid latency measures
+    //
+    //                  FILL MATRIX
+    //
+    txt += '      var arrayWidth=0;';
+    txt += '       for(var src in config.mintTable) {';
+    txt += '         arrayWidth++;';
+    txt += '          for(var dst in config.mintTable) {';
+    txt += '              var srcMint=config.mintTable[src].mint;';
+    txt += '              var dstMint=config.mintTable[dst].mint;';
+    txt += '              var owls=getOwls(configs,srcMint,dstMint);'; //return array of owls
+    txt += '              var owl=owls[0];'; //recent measure is first
+    txt += '              var myMedian=Math.round(median(owls));';
+    txt += '              $("."+srcMint+"-"+dstMint).css("border-color","grey").css("border-width","1px").css("background-color","white").html("_");'; //reset cell markings
+    txt += '              ';
+    // txt +='            console.log("owls="+owls+" srcMint="+srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian);'
+    txt += '              var Ideviation=Math.round(100*(Math.abs(myMedian-owl)/myMedian));';
+    //txt +='            console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation);'
+    //
+    txt += '             if (isNaN(owl)) owl="?";';
+    //txt += '               '
+    txt += '                 var owlHTML=\'<div class="fade-out"><a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?srcMint=\'+ srcMint + "&dstMint=" + dstMint;';
+    txt += '                 owlHTML+=\'">\' ;';
+    txt += '                 if (owl!="?") owlHTML += owl + "ms</a></div>";';
+    txt += '                 else owlHTML += "?</a></div>";';
+    //txt += '               console.log("owlHTML="+owlHTML);'
+    //        txt += '               $("."+dstMint+"-"+srcMint).html(owlHTML);'  //set owl value *******************
+    txt += '                 $("."+srcMint+"-"+dstMint).html(owlHTML);'; //set owl value *******************
+    txt += '          if (isNaN(owl) || isNaN(myMedian)) $("."+srcMint+"-"+dstMint).css("background-color","white").html(" ");'; //no owl or median - blank white
+    txt += '          else if ((srcMint!=dstMint) && (' + ACTIVE_INSTRUMENTATION + ')) {';
+    //
+    //      highlight bad standard deviations 
+    //
+    txt += "               const n = owls.length;";
+    txt += '               const mean = owls.reduce((a,b) => a+b)/n;';
+    txt += '               const s = Math.sqrt(owls.map(x => Math.pow(x-mean,2)).reduce((a,b) => a+b)/n);';
+    txt += '               var percentOfMedian=Math.round((s/myMedian)*100);';
+    //txt += '               console.log(srcMint+"-"+dstMint+" owl="+owl+" myMedian="+myMedian+" Idevitation=:"+Ideviation+" stddev="+Math.round(s,2)+" percentOfMedian="+percentOfMedian);'
+    txt += '               if ((!highlightedCell) && (percentOfMedian>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","yellow").css("border-width","3px");';
+    txt += '               if ((!highlightedCell) && (percentOfMedian>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("border-color","orange").css("border-width","3px");';
+    txt += '               if ((!highlightedCell) && (percentOfMedian>' + RED_TRIGGER + '))    $("."+srcMint+"-"+dstMint).css("border-color",   "red").css("border-width","3px");';
+    //
+    //                      Highlight (overWrite) extraordinary paths
+    //
+    txt += '                var highlightedCell=0;'; //first color extraordinary relays
+    txt += '                for (var altSR in config.mintTable) {'; //first color extraordinary relays
+    txt += '                    var altEntry=config.mintTable[altSR];';
+    txt += '                    var srcToAlt=getOWL(config,srcMint,altEntry.mint);';
+    txt += '                    var altToDst=getOWL(config,altEntry.mint,dstMint);';
+    txt += '                    if ((srcToAlt!=null) && (altToDst!=null) && (srcToAlt+altToDst < owl)) {';
+    txt += '                        var improvement=owl-(srcToAlt+altToDst);';
+    txt += '                        console.log( ">' + BETTER_THRESHOLD + ' ms better than " + srcMint + "-" + dstMint + "=" + owl + "ms  is through " + altEntry.geo + " ms   --->   rcToAlt=" + srcToAlt + " altToDst=" + altToDst + "=" + (srcToAlt+altToDst) + " a savings of " + owl-(srcToAlt+altToDst) + "ms" );';
+    txt += '                        if (improvement>' + BETTER_THRESHOLD + ') {';
+    txt += '                            $("."+srcMint+"-"+dstMint).css("border-color","black").css("border-width","3px");';
+    txt += '                            $("."+srcMint+"-"+altEntry.mint).css("border-color","green").css("border-width","3px");'; //highlight better path
+    txt += '                        }';
+    txt += '                    }';
+    txt += '                }';
+    //
+    //      highlight variations 
+    //
+    txt += '               if ((typeof Ideviation == "number") && (Ideviation>' + RED_TRIGGER + '))      $("."+srcMint+"-"+dstMint).css("background-color","lightred");';
+    txt += '               else if ((typeof Ideviation == "number") && (Ideviation>' + ORANGE_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","orange");';
+    txt += '                  else if ((typeof Ideviation == "number") && (Ideviation>' + YELLOW_TRIGGER + ')) $("."+srcMint+"-"+dstMint).css("background-color","yellow");';
+    txt += '                    else $("."+srcMint+"-"+dstMint).css("background-color","lightGreen");';
+    //txt += '               console.log("FIND EFFICIENCIES - is it faster to go through intermediary for this src-dst pair?");'
+    txt += '            }';
+    txt += '         }';
+    txt += '      }';
+    txt += "    };";
     txt += 'var nodeCountLastTime=0;';
     txt += '   $.getJSON(url, function(config) {';
     txt += '         var nodeCountNow=config.nodeCount;';
