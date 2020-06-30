@@ -816,7 +816,7 @@ if (TEST) {
 
             if (newPulseGroup.groupOwner==me.geo) 
                 return console.log("checkSWversion - genesis node never checks its own version");
-            const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version?ts="+now();  //add garbage to avoid caches
+            const url = encodeURI("http://" + genesis.ipaddr + ":" + genesis.port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
             console.log("checkSWversion(): url="+url);
             var http = require("http");
             http.get(url, res => {
@@ -834,7 +834,7 @@ if (TEST) {
                 res.on("end", () => {
                     var version = JSON.parse(body);
                     var currentSWversion='"'+MYVERSION()+'"'; //find the Build.*
-                    console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(version)+" currentSW="+currentSWversion);
+                    console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(version)+" MY SW Version="+currentSWversion);
                     if (version != me.version) {
                         console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
