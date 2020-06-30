@@ -779,6 +779,22 @@ if (TEST) {
             return null;
         };
 
+        newPulseGroup.timeout=function() {
+            for (var m in this.mintTable) {
+                if (now()-this.mintTable[m].lastPulseTimestamp>15*1000) {
+                    console.log("Timing out mint entry"+this.mintTable[m].geo);
+                    delete this.mintTable[m];
+                }
+            }
+            for (var p in this.pulses) {
+                if (now()-this.pulses[p].pulseTimestamp> 5*1000) {
+                    console.log("Timingout pulse entry"+this.pulses[p].geo);
+                    delete this.pulses[p];
+                }
+            }
+        }
+
+
         newPulseGroup.checkSWversion=function () {
             console.log("=================================> checkSWversion()");
             console.log("=================================> checkSWversion()");
