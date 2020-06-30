@@ -24,14 +24,14 @@ export function recvPulses(port,callback) {
           var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
           var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
           var pulse = {
-            pulseTimestamp : ary[0],
-            senderTimestamp : ary[1],
+            pulseTimestamp : pulseTimestamp,
+            senderTimestamp : senderTimestamp,
             msgType : ary[2],
             version: ary[3],
             geo: ary[4],
             group: ary[5],
             seq: ary[6],
-            bootTimestamp: ary[7],   //if genesis node reboots --> all node reload SW too
+            bootTimestamp: parseInt(ary[7]),   //if genesis node reboots --> all node reload SW too
             mint: ary[8],
             owls: pulseOwls,
             owl: OWL,
