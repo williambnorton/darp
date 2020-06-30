@@ -156,17 +156,19 @@ function instrumentation() {    //this should get its own file
     //txt += 'console.log("url="+url);';
    txt += 'var nodeCountLastTime=0;'
     txt += '   $.getJSON(url, function(config) {'
-   txt += '         var nodeCountNow=config.nodeCount;'
-   //txt += '         for (var n in config) { console.log("pulseGroup="+JSON.stringify(config[n],null,2)); console.log("pulseGroup.pulses.length="+pulseGroup.pulses.length);}'
-   txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+   txt += '         for (var n in config) { ';
+   txt+=  '            var pulseGroup=config[n]';
+   txt += '            var nodeCountNow=pulseGroup.nodeCount;'
+   txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+   //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
    //txt += '         console.log("**count="+config.pulses.length+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-   txt += '      if ( nodeCountLastTime > 1 ) {'
-   txt += '         if (nodeCountLastTime!=nodeCountNow) {'
-   txt += '             console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '             location.reload();' ;
+   txt += '             if ( nodeCountLastTime > 1 ) {'
+   txt += '                if (nodeCountLastTime!=nodeCountNow) {'
+   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                   location.reload();' ;
+   txt += '                }'
+   txt += '             }'
    txt += '         }'
-   txt += '      '
-   txt += '      }'
    txt += '      nodeCountLastTime=nodeCountNow;';
 
     //update the dateTime so people know the updates re coming in
