@@ -178,7 +178,7 @@ function instrumentation() {    //this should get its own file
     txt += '</head>';
     txt += '<body>';
     txt += '<h1>DARP Node '+me.geo+' @ '+me.ipaddr+":"+me.port+'</h1>';
-    txt += '<script> $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );</script>' //we show this epoch
+    txt += '<p id="dateTime">Updated: '+ new Date() +' </p>'
 
     for (var p in pulseGroups) {
         var pulseGroup=pulseGroups[p];
