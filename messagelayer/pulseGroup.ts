@@ -169,6 +169,10 @@ function instrumentation() {    //this should get its own file
    txt += '      }'
    txt += '      nodeCountLastTime=nodeCountNow;';
    txt += '   });';
+    //update the dateTime so people know the updates re coming in
+   txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+   //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+   txt += '      $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
 
     txt += "    setTimeout(fetchState,1000);";  
     txt += "}";
