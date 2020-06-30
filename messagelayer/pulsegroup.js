@@ -317,7 +317,7 @@ function instrumentation() {
     txt += JSON.stringify(pulseGroups, null, 2);
     txt += "</body>";
     txt += "</html>";
-    console.log("txt=" + txt);
+    //console.log("txt="+txt);
     return txt;
 }
 app.get('/', function (req, res) {

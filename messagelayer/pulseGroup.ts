@@ -371,7 +371,7 @@ function instrumentation() {    //this should get its own file
     
     txt += "</body>";
     txt += "</html>"
-    console.log("txt="+txt);
+    //console.log("txt="+txt);
     return txt;
 }
 
