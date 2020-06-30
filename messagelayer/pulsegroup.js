@@ -689,11 +689,11 @@ if (TEST) {
                     console.log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
                 });
                 res.on("end", function () {
-                    var version = JSON.parse(body);
-                    var currentSWversion = '"' + lib_1.MYVERSION() + '"'; //find the Build.*
-                    console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " MY SW Version=" + currentSWversion + " me.version=" + me.version);
-                    if (version != me.version) {
-                        console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
+                    var genesisVersion = JSON.parse(body);
+                    var mySWversion = '"' + lib_1.MYVERSION() + '"'; //find the Build.*
+                    console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + me.version);
+                    if (genesisVersion != mySWversion) {
+                        console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
                     }
                 });
