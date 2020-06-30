@@ -690,7 +690,7 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var genesisVersion = JSON.parse(body);
-                    var mySWversion = '"' + lib_1.MYVERSION() + '"'; //find the Build.*
+                    var mySWversion = lib_1.MYVERSION(); //find the Build.*
                     console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + me.version);
                     if (genesisVersion != mySWversion) {
                         console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + " .......process exitting");

@@ -833,7 +833,7 @@ if (TEST) {
 
                 res.on("end", () => {
                     var genesisVersion = JSON.parse(body);
-                    var mySWversion='"'+MYVERSION()+'"'; //find the Build.*
+                    var mySWversion=MYVERSION(); //find the Build.*
                     console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(genesisVersion)+" MY SW Version="+mySWversion+" me.version="+me.version);
                     if (genesisVersion != mySWversion) {
                         console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + " .......process exitting");
