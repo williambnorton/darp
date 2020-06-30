@@ -127,6 +127,7 @@ function instrumentation() {
     txt += 'var nodeCountLastTime=0;';
     txt += '   $.getJSON(url, function(config) {';
     txt += '         var nodeCountNow=config.nodeCount;';
+    txt += '         for (var n in config) {console.log("pulseGroup="+JSON.stringify(config[n],null,2);}';
     txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );';
     //txt += '         console.log("**count="+config.pulses.length+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     txt += '      if ( nodeCountLastTime > 1 ) {';
@@ -144,6 +145,7 @@ function instrumentation() {
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
+    txt += '<h1>' + me.geo + ':' + me.ipaddr + ":" + me.port + '</h1>';
     for (var p in pulseGroups) {
         var pulseGroup = pulseGroups[p];
         //
