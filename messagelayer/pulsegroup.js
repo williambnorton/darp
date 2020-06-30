@@ -127,7 +127,7 @@ function instrumentation() {
     txt += 'var nodeCountLastTime=0;';
     txt += '   $.getJSON(url, function(config) {';
     txt += '         var nodeCountNow=config.nodeCount;';
-    txt += '         for (var n in config) { console.log("pulseGroup="+JSON.stringify(config[n],null,2)); console.log("pulseGroup.pulses.length="+pulseGroup.pulses.length);}';
+    //txt += '         for (var n in config) { console.log("pulseGroup="+JSON.stringify(config[n],null,2)); console.log("pulseGroup.pulses.length="+pulseGroup.pulses.length);}'
     txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );';
     //txt += '         console.log("**count="+config.pulses.length+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     txt += '      if ( nodeCountLastTime > 1 ) {';
