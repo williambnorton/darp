@@ -9,7 +9,6 @@ rm Build.??????.????
 find . -name '*.pid' -delete
 MESSAGE="Version 2 - simple javascript pulseGroup object model"
 date>"Build."`date +%y%m%d.%H%M`
-echo `ls Build*` > SWVersion
 ls -l Build.*
 
 #

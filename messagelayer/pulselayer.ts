@@ -2,13 +2,13 @@
 //  pulselayer - send "pulse" UDP message to all nodes
 //
 //
-import {   dump,   now,      ts, nth_occurrence } from '../lib/lib';
+import {   dump,   now,      ts, nth_occurrence, MYVERSION } from '../lib/lib';
 import {   sendMsg, recvMsg, messagelayer_stats } from './messagelayer';
 
 const TEST=true; // launch with TEST=1 to get automatic pulser and catcher
 var h=process.env.HOSTNAME||require("os").hostname().split(".")[0];
 const HOSTNAME=h.toUpperCase();
-const VERSION = require('fs').readFileSync('../SWVersion', {encoding:'utf8', flag:'r'}).trim();
+const VERSION = MYVERSION();
 
 //
 //  recvPulses() - bind the port and send incoming pulses as structured data

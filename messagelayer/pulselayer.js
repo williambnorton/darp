@@ -9,7 +9,7 @@ var messagelayer_1 = require("./messagelayer");
 var TEST = true; // launch with TEST=1 to get automatic pulser and catcher
 var h = process.env.HOSTNAME || require("os").hostname().split(".")[0];
 var HOSTNAME = h.toUpperCase();
-var VERSION = require('fs').readFileSync('../SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
+var VERSION = lib_1.MYVERSION();
 //
 //  recvPulses() - bind the port and send incoming pulses as structured data
 //
