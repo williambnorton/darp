@@ -138,12 +138,14 @@ function instrumentation() {
     txt += '                   location.reload();';
     txt += '                }';
     txt += '             }';
-    txt += '         }';
-    txt += '      nodeCountLastTime=nodeCountNow;';
+    txt += '             nodeCountLastTime=nodeCountNow;';
     //update the dateTime so people know the updates re coming in
-    txt += "      var d = new Date(parseInt(config.ts)); var now=d.getTime();var timeStr=d.toString().split(' ')[4];";
+    txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
+    txt += "             var now=d.getTime();";
+    txt += "             var timeStr=d.toString().split(' ')[4];";
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-    txt += '      $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+    txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+    txt += '         }';
     txt += '   });';
     txt += "    setTimeout(fetchState,1000);";
     txt += "}";
