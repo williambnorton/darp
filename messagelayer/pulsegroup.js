@@ -321,7 +321,7 @@ function instrumentation() {
     return txt;
 }
 app.get('/', function (req, res) {
-    console.log("********************** fetching '/'");
+    //console.log("********************** fetching '/'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -582,7 +582,7 @@ function joinPulseGroup(ipaddr, port, callback) {
             //        setWireguard(); //set up initial wireguard comfig
         });
     });
-    console.log("http fetch done");
+    //console.log("http fetch done");
 }
 //
 //

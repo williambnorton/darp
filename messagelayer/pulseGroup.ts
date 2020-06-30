@@ -377,7 +377,7 @@ function instrumentation() {    //this should get its own file
 
 app.get('/', function(req, res) {
 
-    console.log("********************** fetching '/'");
+    //console.log("********************** fetching '/'");
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -708,7 +708,7 @@ function joinPulseGroup(ipaddr:string,port:number,callback) {
     //        setWireguard(); //set up initial wireguard comfig
         });
     });
-    console.log("http fetch done");
+    //console.log("http fetch done");
 }
 
 //
