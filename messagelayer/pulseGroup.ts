@@ -832,17 +832,17 @@ if (TEST) {
 
         newPulseGroup.recvPulses=function (){
             recvPulses(me.port,function(incomingPulse:PulseEntry) {
-                console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
+                //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
                 //console.log("myPulseGroup="+dump(pulseGroup));
                 var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
                 var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
-                console.log(`associated ${incomingPulse.mint} mintEntry=`+dump(mintEntry));
+                //console.log(`associated ${incomingPulse.mint} mintEntry=`+dump(mintEntry));
 
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
                 if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
 
                     if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
-                        console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
+                        //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
                         //TODO: Explore this - we should not need to do this. New Mint leads to genesisSync
 /* wbnwbn */            myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                     }
@@ -863,8 +863,8 @@ if (TEST) {
                     
                     //console.log("owls="+pulseEntry.owls);
                     if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
-                        console.log("recvPulse handling owner's pulse and managing population to match his");                            
-                        console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
+                        //console.log("recvPulse handling owner's pulse and managing population to match his");                            
+                        //console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
 
                         if (incomingPulse.version != me.version) {
                             console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
