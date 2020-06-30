@@ -16,7 +16,7 @@ var VERSION = lib_1.MYVERSION();
 function recvPulses(port, callback) {
     //console.log(`recvPulses(port=${port}):`);
     messagelayer_1.recvMsg("" + port, function (incomingMessage) {
-        console.log("****** pulselayer(): recvMsg callback incomingMessage ------> " + incomingMessage);
+        //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
         var ary = incomingMessage.split(",");
         var pulseTimestamp = parseInt(ary[0]);
         var senderTimestamp = parseInt(ary[1]);

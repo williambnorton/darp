@@ -16,7 +16,7 @@ const VERSION = MYVERSION();
 export function recvPulses(port,callback) {
     //console.log(`recvPulses(port=${port}):`);
     recvMsg(""+port,function(incomingMessage:string) {  //one-time set up of message handler callback
-        console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
+        //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
           var ary=incomingMessage.split(",");
           const pulseTimestamp=parseInt(ary[0]);
           const senderTimestamp=parseInt(ary[1]);
