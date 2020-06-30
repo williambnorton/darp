@@ -663,9 +663,6 @@ if (TEST) {
         };
         newPulseGroup.checkSWversion = function () {
             console.log("=================================> checkSWversion()");
-            console.log("=================================> checkSWversion()");
-            console.log("=================================> checkSWversion()");
-            console.log("=================================> checkSWversion()");
             if (newPulseGroup.groupOwner == me.geo)
                 return console.log("checkSWversion - genesis node never checks its own version");
             var url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
@@ -682,7 +679,7 @@ if (TEST) {
                 });
                 res.on("end", function () {
                     var version = JSON.parse(body);
-                    var currentSWversion = lib_1.MYVERSION(); //find the Build.*
+                    var currentSWversion = '"' + lib_1.MYVERSION() + '"'; //find the Build.*
                     console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " currentSW=" + currentSWversion);
                     if (version != me.version) {
                         console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
