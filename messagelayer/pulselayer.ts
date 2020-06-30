@@ -14,7 +14,7 @@ const VERSION = MYVERSION();
 //  recvPulses() - bind the port and send incoming pulses as structured data
 //
 export function recvPulses(port,callback) {
-    console.log(`recvPulses(port=${port}):`);
+    //console.log(`recvPulses(port=${port}):`);
     recvMsg(""+port,function(incomingMessage:string) {  //one-time set up of message handler callback
         console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
           var ary=incomingMessage.split(",");
@@ -37,8 +37,8 @@ export function recvPulses(port,callback) {
             owl: OWL,
             lastMsg:incomingMessage
           };;
-          console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
-          console.log("structured pulse="+dump(pulse));
+          //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
+          //console.log("structured pulse="+dump(pulse));
 
           //ary.shift();ary.shift();
           //const pulse=ary.join(",");

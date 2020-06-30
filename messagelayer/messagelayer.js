@@ -66,7 +66,7 @@ function sendMsg(outgoingMessage, nodelist) {
         exports.messagelayer_stats.lastOutTimestamp = lib_1.now();
         exports.messagelayer_stats.lastOutMsg = timestampedMsg;
         exports.messagelayer_stats.outOctets += message.length;
-        console.log(lib_1.ts() + "messagelayer.sendMsg() sending " + timestampedMsg + " to " + ipaddr + ":" + port);
+        //console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
                 console.log("messagelayer sendMessage(): ERROR");
