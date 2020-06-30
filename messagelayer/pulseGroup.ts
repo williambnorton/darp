@@ -938,7 +938,11 @@ if (TEST) {
                                 newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
                             }
                         }
+                        newPulseGroup.nodeCount=0;
+                        for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
+                        console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+pulseGroup.pulses.length);
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(pulseGroup));
+
                     }
                     
                 });
