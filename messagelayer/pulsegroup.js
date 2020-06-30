@@ -686,12 +686,12 @@ if (TEST) {
                     body += data;
                 });
                 res.on('error', function (error) {
-                    console.log("HANDLEPULSE: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
+                    console.log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
                 });
                 res.on("end", function () {
                     var version = JSON.parse(body);
                     var currentSWversion = '"' + lib_1.MYVERSION() + '"'; //find the Build.*
-                    console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " MY SW Version=" + currentSWversion);
+                    console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(version) + " MY SW Version=" + currentSWversion + " me.version=" + me.version);
                     if (version != me.version) {
                         console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + version + " we are running " + currentSWversion + " .......process exitting");
                         process.exit(36); //SOFTWARE RELOAD
