@@ -801,7 +801,7 @@ if (TEST) {
 
             if (newPulseGroup.groupOwner==me.geo) 
                 return console.log("checkSWversion - genesis node never checks its own version");
-            const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version";
+            const url = "http://" + genesis.ipaddr + ":" + genesis.port + "/version&ts="+now();  //add garbage to avoid caches
             //console.log("checkSWversion(): url="+url);
             var http = require("http");
             http.get(url, res => {
