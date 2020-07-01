@@ -278,7 +278,7 @@ function instrumentation() {
             txt += "<td>" + mintEntry.port + "</td>";
             txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >' + mintEntry.ipaddr + "</a></td>";
             txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-            txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" >' + mintEntry.state + '</a>' + "</td>";
+            txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/mintTable" >' + mintEntry.state + '</a>' + "</td>";
             //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
             //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
             //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
@@ -513,16 +513,16 @@ function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) 
     return {
         mint: mint,
         geo: geo,
-        // wireguard configuration details
-        port: port,
-        ipaddr: incomingIP,
-        publickey: publickey,
         state: DEFAULT_START_STATE,
         bootTimestamp: lib_1.now(),
         version: version,
         wallet: wallet,
         lastPulseTimestamp: 0,
-        lastOWL: NO_OWL
+        lastOWL: NO_OWL,
+        // wireguard configuration details
+        port: port,
+        ipaddr: incomingIP,
+        publickey: publickey
     };
 }
 //

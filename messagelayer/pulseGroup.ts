@@ -319,7 +319,7 @@ function instrumentation() {    //this should get its own file
             txt += "<td>" + mintEntry.port + "</td>";
             txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >' + mintEntry.ipaddr + "</a></td>";
             txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-            txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/state" >' + mintEntry.state + '</a>' + "</td>";
+            txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/mintTable" >' + mintEntry.state + '</a>' + "</td>";
             //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
             //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
             //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
@@ -610,19 +610,19 @@ app.get('/nodefactory', function(req, res) {
     lastOWL:number;
 } 
  function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
-    return { //mint:0 is always "me"
-        mint: mint, //mint:1 is always genesis node
+    return { 
+        mint: mint, 
         geo: geo,
-        // wireguard configuration details
-        port: port,
-        ipaddr: incomingIP,     //set by genesis node on connection
-        publickey: publickey,
         state: DEFAULT_START_STATE,
         bootTimestamp: now(), //RemoteClock on startup  ****
         version: version,   //software version running on remote system ********
         wallet: wallet,     // ** 
-        lastPulseTimestamp:0,
-        lastOWL:NO_OWL
+        lastPulseTimestamp:0, //for timing out and validating lastOWL
+        lastOWL:NO_OWL,     //most recent OWL measurement
+        // wireguard configuration details
+        port: port,
+        ipaddr: incomingIP,     //set by genesis node on connection
+        publickey: publickey
     }
  }
 
