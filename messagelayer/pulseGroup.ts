@@ -729,7 +729,7 @@ function joinPulseGroup(ipaddr:string,port:number,callback) {
 
 
 
-/***************** TEST AREA ****************/
+/***************** MAIN ****************/
 if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
 
@@ -742,6 +742,8 @@ if (TEST) {
        //
        newPulseGroup.forEachNode = function(callback) {for (var node in this.pulses) callback(node,this.pulses[node]);};
        newPulseGroup.forEachMint = function(callback) {for (var mint in this.mintTable) callback(mint,this.mintTable[mint]);};
+       
+       //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
        newPulseGroup.addNode = function(geo:string,group:string,ipaddr:string,port:number, publickey:string, version:string, wallet:string):MintEntry {
            var newMint=newPulseGroup.nextMint++;
            //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
