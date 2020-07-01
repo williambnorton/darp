@@ -776,7 +776,7 @@ if (TEST) {
        
        //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
        newPulseGroup.addNode = function(geo:string,group:string,ipaddr:string,port:number, publickey:string, version:string, wallet:string):MintEntry {
-            newPulseGroup.deletePublickey(publickey);  //remove any other entries with this publickey
+            newPulseGroup.deleteNode(ipaddr,port);  //remove any preexisting entries with this ipaddr:port
             var newMint=newPulseGroup.nextMint++;
            //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
            //TO ADD a PULSE: 
@@ -805,7 +805,7 @@ if (TEST) {
        //pulseGroup.pulse = function() {
 
 
-       
+
 
         newPulseGroup.pulse=function() {
             var ipary:string[]=[], owls="";

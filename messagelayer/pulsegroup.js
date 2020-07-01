@@ -635,7 +635,7 @@ if (TEST) {
             callback(mint, this.mintTable[mint]); };
         //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
         newPulseGroup.addNode = function (geo, group, ipaddr, port, publickey, version, wallet) {
-            newPulseGroup.deletePublickey(publickey); //remove any other entries with this publickey
+            newPulseGroup.deleteNode(ipaddr, port); //remove any preexisting entries with this ipaddr:port
             var newMint = newPulseGroup.nextMint++;
             //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
             //TO ADD a PULSE: 
