@@ -144,10 +144,7 @@ function instrumentation() {
     txt += "             var now=d.getTime();";
     txt += "             var timeStr=d.toString().split(' ')[4];";
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-    if (lib_1.now() % 1 == 0)
-        txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "*</h1></div>" );'; //we show this epoch
-    else
-        txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+    txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
     txt += '         }';
     txt += '   });';
     txt += "    setTimeout(fetchState,1000);";
