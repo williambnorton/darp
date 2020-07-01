@@ -648,6 +648,9 @@ if (TEST) {
             //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
             //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
         };
+        newPulseGroup.isGenesisNode = function () {
+            return newPulseGroup.me.geo == newPulseGroup.owner;
+        };
         newPulseGroup.getMint = function (mint) {
             for (var m in this.mintTable) {
                 //genesis node should timeout old mints

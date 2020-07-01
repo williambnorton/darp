@@ -785,6 +785,10 @@ if (TEST) {
             //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
         };
 
+        newPulseGroup.isGenesisNode=function():Boolean {
+            return newPulseGroup.me.geo==newPulseGroup.owner;
+        }
+
         newPulseGroup.getMint=function(mint:number):MintEntry|null {
             for (var m in this.mintTable) {
                 //genesis node should timeout old mints
@@ -796,6 +800,7 @@ if (TEST) {
             }
             return null;
         };
+
 
         newPulseGroup.timeout=function() {
             for (var m in this.mintTable) {
