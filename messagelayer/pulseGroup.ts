@@ -804,6 +804,9 @@ if (TEST) {
         };
        //pulseGroup.pulse = function() {
 
+
+       
+
         newPulseGroup.pulse=function() {
             var ipary:string[]=[], owls="";
             newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
