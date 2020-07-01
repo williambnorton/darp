@@ -234,7 +234,7 @@ function instrumentation() {
             //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
             txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
             txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
-            var balance = (Math.min(pulseEntry.inPulses, pulseEntry.outPulses) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
+            var balance = (Math.min(pulseEntry.inPulses * 1500, pulseEntry.outPulses * 1500) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
             total = total + balance;
             txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
             //txt+="<td>"+pulseEntry.lastMsg+"</td>"
@@ -720,6 +720,7 @@ if (TEST) {
                     myPulseEntry.lastMsg = incomingPulse.lastMsg;
                     myPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
                     myPulseEntry.owl = incomingPulse.owl;
+                    myPulseEntry.seq = incomingPulse.seq;
                     myPulseEntry.owls = incomingPulse.owls;
                     //update mint entry
                     mintEntry.lastPulseTimestamp = myPulseEntry.pulseTimestamp;
