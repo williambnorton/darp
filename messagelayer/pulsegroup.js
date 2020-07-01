@@ -147,7 +147,7 @@ function instrumentation() {
     txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
     //      Render table from information in the state fetched from node
     //
-    txt += '      for (let [key, value] of Object.entries(config.pulses)) {';
+    txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
     //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
     txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
     txt += '          var pulse=value;'; //
