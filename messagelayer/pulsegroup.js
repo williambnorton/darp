@@ -670,7 +670,7 @@ if (TEST) {
             }
         };
         newPulseGroup.checkSWversion = function () {
-            console.log("=================================> checkSWversion()");
+            //console.log("=================================> checkSWversion()");
             if (newPulseGroup.groupOwner == me.geo)
                 return console.log("checkSWversion - genesis node never checks its own version");
             var url = encodeURI("http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/version?ts=" + lib_1.now() + "&x=" + lib_1.now() % 2000); //add garbage to avoid caches

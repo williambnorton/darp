@@ -809,7 +809,7 @@ if (TEST) {
 
 
         newPulseGroup.checkSWversion=function () {
-            console.log("=================================> checkSWversion()");
+            //console.log("=================================> checkSWversion()");
 
             if (newPulseGroup.groupOwner==me.geo) 
                 return console.log("checkSWversion - genesis node never checks its own version");
