@@ -177,6 +177,32 @@ function instrumentation() {    //this should get its own file
    //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
    txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
    
+
+//      Render table from information in the state fetched from node
+//
+   txt += '      for (let [key, value] of Object.entries(config.pulses)) {'
+   //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+   txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
+   txt += '          var pulse=value;'      //
+   txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
+   // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+   //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+   txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+   txt += '          }'
+
+   //txt += '          console.log("config="+JSON.stringify(config,null,2));'
+   txt += '          if (pulse.pulseTimestamp!="0")'
+   txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+   txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
+   txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
+   txt +='           $("."+pulse.geo+"_owls").html(pulse.owls);'  //TODO : Align left for this text field
+//        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
+   txt += '       }'   
+
+
+
+
+
    txt += '         }'
 
    txt += '   });';
@@ -750,7 +776,8 @@ if (TEST) {
        
        //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
        newPulseGroup.addNode = function(geo:string,group:string,ipaddr:string,port:number, publickey:string, version:string, wallet:string):MintEntry {
-           var newMint=newPulseGroup.nextMint++;
+            newPulseGroup.deletePublickey(publickey);  //remove any other entries with this publickey
+            var newMint=newPulseGroup.nextMint++;
            //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
            //TO ADD a PULSE: 
            this.pulses[geo + ":" + group] = makePulseEntry(newMint, geo, group, ipaddr, port, VERSION);
@@ -763,10 +790,18 @@ if (TEST) {
            newPulseGroup.nodeCount++;
            return this.mintTable[newMint];
        };
-       newPulseGroup.deleteNode = function(geo:string,group:string,ipaddr:string,port:number,mint:number) {
-           delete this.pulses[geo + ":" + group];
-           delete this.mintTable[mint];
-       };
+//       newPulseGroup.deleteNode = function(geo:string,group:string,ipaddr:string,port:number,mint:number) {
+//           delete this.pulses[geo + ":" + group];
+//           delete this.mintTable[mint];
+//       };
+
+        newPulseGroup.deleteNode = function(ipaddr:string,port:number) {
+            this.mintTable.forEach(element => {
+                if (element.ipaddr==ipaddr && element.port==port) {
+                    console.log("delete old mint "+element.mint);
+                }
+            });
+        };
        //pulseGroup.pulse = function() {
 
         newPulseGroup.pulse=function() {
