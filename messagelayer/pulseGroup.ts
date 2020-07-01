@@ -787,6 +787,11 @@ if (TEST) {
 
         newPulseGroup.getMint=function(mint:number):MintEntry|null {
             for (var m in this.mintTable) {
+                //genesis node should timeout old mints
+                if ((newPulseGroup.isGenesisNode()) && (now()-this.mintTable.lastPulseTimestamp>5)) {
+                    console.log("timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
+                    delete this.mintTable[m];
+                }
                 if (this.mintTable[m].mint==mint) return this.mintTable[m];
             }
             return null;
@@ -856,8 +861,15 @@ if (TEST) {
                         //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
                         //TODO: Explore this - we should not need to do this. New Mint leads to genesisSync
 /* wbnwbn */            myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
+                    } else {
+                        mintEntry=null;
+                        return ;  //we are done 
                     }
+                } else {
+                    if (mintEntry==null) return console.log("recvPulse(): We are corrupt:  found my pulse Entry but we have no mintEntry for this...should TODO force sync herew");
                 }
+
+                    //we expect mintEntry to be set
 
                 //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
                 if (myPulseEntry!=null) {     
@@ -872,7 +884,7 @@ if (TEST) {
                     myPulseEntry.owls=incomingPulse.owls;
  
                     //update mint entry
-                    mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;
+                    mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
                     mintEntry.lastOWL=myPulseEntry.owl;
                     //console.log("owls="+pulseEntry.owls);
 
