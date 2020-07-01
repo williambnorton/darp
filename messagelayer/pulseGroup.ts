@@ -470,7 +470,12 @@ app.get('/pulseGroups', function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(pulseGroups, null, 2)); 
 });
-
+app.get('/mintTable', function(req, res) {
+    console.log("fetching '/mintTable' ");
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(pulseGroups, null, 2)); 
+});
 //// nodeFactory
 //       Configuration for node - allocate a mint
 //
