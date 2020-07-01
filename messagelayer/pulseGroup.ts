@@ -409,21 +409,18 @@ app.get('/version', function(req, res) {
  });
  
  app.get('/stop', function(req, res) {
-    //console.log("EXPRess fetching '/state' state");
     console.log("EXITTING and Stopping the node");
     res.redirect(req.get('referer'));
     process.exit(86);
 });
  
  app.get('/reboot', function(req, res) {
-    //console.log("EXPRess fetching '/state' state");
     console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER");
     res.redirect(req.get('referer'));
     process.exit(99999) 
  });
  
  app.get('/reload', function(req, res) {
-    //console.log("EXPRess fetching '/state' state");
     console.log("EXITTING to reload the system")
     res.redirect(req.get('referer'));
     process.exit(36);
@@ -455,6 +452,7 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
         for (var pulseGroup in pulseGroups) {
             //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (pulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
+                pulseGroups[pulseGroup].ts=now(); //give this config a ts
                 res.end(JSON.stringify(pulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
