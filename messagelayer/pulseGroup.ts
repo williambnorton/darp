@@ -452,7 +452,6 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
         for (var pulseGroup in pulseGroups) {
             //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (pulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
-                pulseGroups[pulseGroup].ts=now(); //give this config a ts
                 res.end(JSON.stringify(pulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
@@ -469,7 +468,7 @@ app.get('/pulseGroups', function(req, res) {
     //console.log("fetching '/pulseGroups' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroups, null, 2));
+    res.end(JSON.stringify(pulseGroups, null, 2)); 
 });
 
 //// nodeFactory
@@ -862,6 +861,8 @@ if (TEST) {
 
                 //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
                 if (myPulseEntry!=null) {     
+                    newPulseGroup.ts=now(); //We got a pulse - update the pulseGroup timestamp
+
                     //copy incoming pulse into my pulse record
                     myPulseEntry.inPulses++;
                     myPulseEntry.lastMsg=incomingPulse.lastMsg;
@@ -872,8 +873,8 @@ if (TEST) {
                     //update mint entry
                     mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;
                     mintEntry.lastOWL=myPulseEntry.owl;
-                    
                     //console.log("owls="+pulseEntry.owls);
+
                     if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
                         //console.log("recvPulse handling owner's pulse and managing population to match his");                            
                         //console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);

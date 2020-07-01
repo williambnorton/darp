@@ -384,7 +384,6 @@ app.get('/pulseGroup/:pulsegroup', function (req, res) {
         for (var pulseGroup in pulseGroups) {
             //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (pulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
-                pulseGroups[pulseGroup].ts = lib_1.now(); //give this config a ts
                 res.end(JSON.stringify(pulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
@@ -715,6 +714,7 @@ if (TEST) {
                 }
                 //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
                 if (myPulseEntry != null) {
+                    newPulseGroup.ts = lib_1.now(); //We got a pulse - update the pulseGroup timestamp
                     //copy incoming pulse into my pulse record
                     myPulseEntry.inPulses++;
                     myPulseEntry.lastMsg = incomingPulse.lastMsg;
