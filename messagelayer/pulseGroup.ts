@@ -313,7 +313,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             //txt+="<td>"+pulseEntry.lastMsg+"</td>"
             txt += "</tr>";
         }
-        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">Node Total Earnings $' + total.toFixed(6) + '</td></tr>';
+        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">'+pulseGroup.groupName+' Earnings $' + total.toFixed(6) + '</td></tr>';
         txt += "</table>";
     }
 
