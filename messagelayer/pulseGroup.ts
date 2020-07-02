@@ -180,7 +180,7 @@ function instrumentation() {    //this should get its own file
 
 //      Render table from information in the state fetched from node
 //
-txt += '      var totalEarn=0;'
+txt += '      var totalEarn=0.000000;'
 txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
 //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
    txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
@@ -200,6 +200,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt +='          pulse.inPulses=parseInt(pulse.inPulses);'
    txt +='          pulse.outPulses=parseInt(pulse.outPulses);'
    txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
+   txt += 'console.log("balance="+balance);'
    txt += '          balance=balance.toFixed(6);';
    txt += '          totalEarn+=balance;';
 
