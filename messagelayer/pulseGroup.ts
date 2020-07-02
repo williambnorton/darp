@@ -847,18 +847,37 @@ if (TEST) {
             return null;
         };
 
-
-        newPulseGroup.timeout=function() {
-            for (var m in this.mintTable) {
-                if (now()-this.mintTable[m].lastPulseTimestamp>15*1000) {
-                    console.log("Timing out mint entry"+this.mintTable[m].geo);
-                    delete this.mintTable[m];
+        //  two different timeouts
+        //  1) update packetLoss counters and clear OWLs in pulseEntry
+        //  2) remove nodes that timeout (Genesis manages group population) 
+        //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
+        //
+        newPulseGroup.timeout=function() {      //developing here - do not refactor yet
+            if (newPulseGroup.isGenesisNode()) {    //GENESIS TIMNG OUT ENTRIES
+                for (var m in this.mintTable) {
+                    if (now()-this.mintTable[m].lastPulseTimestamp>5*newPulseGroup.cycleTime*1000) {
+                        console.log("Timing out mint entry"+this.mintTable[m].geo);
+                        delete this.mintTable[m];
+                    }
                 }
-            }
-            for (var p in this.pulses) {
-                if (now()-this.pulses[p].pulseTimestamp> 5*1000) {
-                    console.log("Timingout pulse entry"+this.pulses[p].geo);
-                    delete this.pulses[p];
+                for (var p in this.pulses) {
+                    if (now()-this.pulses[p].pulseTimestamp> 5*newPulseGroup.cycleTime*1000) {
+                        console.log("Timingout pulse entry"+this.pulses[p].geo);
+                        delete this.pulses[p];
+                    }
+                }
+            } else {
+                for (var m in this.mintTable) {
+                    if (now()-this.mintTable[m].lastPulseTimestamp>15*1000) {
+                        console.log("Timing out mint entry"+this.mintTable[m].geo);
+                        delete this.mintTable[m];
+                    }
+                }
+                for (var p in this.pulses) {
+                    if (now()-this.pulses[p].pulseTimestamp> 5*1000) {
+                        console.log("Timingout pulse entry"+this.pulses[p].geo);
+                        delete this.pulses[p];
+                    }
                 }
             }
         }
