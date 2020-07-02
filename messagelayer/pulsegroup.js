@@ -147,6 +147,7 @@ function instrumentation() {
     txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
     //      Render table from information in the state fetched from node
     //
+    txt += '      var totalCoin=0;';
     txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
     //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
     txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
@@ -162,10 +163,12 @@ function instrumentation() {
     txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
     txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
     txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
-    txt += 'var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;balance=balance.toFixed(6);';
+    txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;balance=balance.toFixed(6);';
+    txt += '          total+=balance;';
     txt += '           $("."+pulse.geo+"_balance").html("$" + balance);'; //TODO : Align left for this text field
     //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
     txt += '       }';
+    txt += '           $(".total_earn").html("$" + total);'; //TODO : Align left for this text field
     txt += '         }';
     txt += '   });';
     txt += "    setTimeout(fetchState,1000);";
@@ -174,7 +177,7 @@ function instrumentation() {
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
-    txt += '<h1>DARP Node ' + me.geo + ' @ ' + me.ipaddr + ":" + me.port + '</h1>';
+    txt += '<h1>DARP Node ' + me.geo + ' http://' + me.ipaddr + ":" + me.port + '</h1>';
     txt += '<p id="dateTime">Updated: ' + new Date() + ' </p>';
     for (var p in pulseGroups) {
         var pulseGroup = pulseGroups[p];
@@ -261,7 +264,7 @@ function instrumentation() {
             //txt+="<td>"+pulseEntry.lastMsg+"</td>"
             txt += "</tr>";
         }
-        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>Node Total Earnings $' + total.toFixed(6) + '</td></tr>';
+        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">Node Total Earnings $' + total.toFixed(6) + '</td></tr>';
         txt += "</table>";
     }
     for (var p in pulseGroups) {
