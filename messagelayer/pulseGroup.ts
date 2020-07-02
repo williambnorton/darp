@@ -839,16 +839,20 @@ if (TEST) {
             });
             owls=owls.replace(/,+$/, ""); //remove trailing comma 
             var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
-            myEntry.seq++;
-            var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
-            //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
-            sendPulses(pulseMessage,ipary);
+            if (typeof myEntry=="undefined") {
+                console.log(`pulse() can not find pulseEntry ${GEO}:${newPulseGroup.groupName} NOT PULSING");
+            } else {
+                myEntry.seq++;
+                var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
+                //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
+                sendPulses(pulseMessage,ipary);
 
-            setTimeout(newPulseGroup.pulse,newPulseGroup. cycleTime*1000);
-            //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
-            //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
+                setTimeout(newPulseGroup.pulse,newPulseGroup. cycleTime*1000);
+                //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
+                //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
 
-            newPulseGroup.timeout(); //and timeout the non-responders
+                newPulseGroup.timeout(); //and timeout the non-responders
+            }
         };
 
         newPulseGroup.isGenesisNode=function():Boolean {
