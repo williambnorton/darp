@@ -718,6 +718,7 @@ if (TEST) {
         //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         //  all pulseTimes are assumed accurate to my local clock
         newPulseGroup.timeout = function () {
+            return; //wbnwbnwbn for now
             if (newPulseGroup.isGenesisNode()) { //GENESIS TIMNG OUT ENTRIES
                 var nodeipy = [];
                 for (var m in this.mintTable) {
