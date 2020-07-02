@@ -207,7 +207,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
 
 //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
    txt += '       }'   
-   txt += '          totalEarn = "$"+totalEarn.substring(12);'
+   txt += '          totalEarn = totalEarn.substring(12);'
    txt +='           $(".total_earn").html(totalEarn);'  //TODO : Align left for this text field
 //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
 
