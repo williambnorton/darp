@@ -163,7 +163,7 @@ function instrumentation() {
     txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
     txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
     txt += 'var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-    txt += '           $("."+pulse.geo+"_balance").html(balance);'; //TODO : Align left for this text field
+    txt += '           $("."+pulse.geo+"_balance").html("> $" + balance.toFixed(6));'; //TODO : Align left for this text field
     //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
     txt += '       }';
     txt += '         }';
