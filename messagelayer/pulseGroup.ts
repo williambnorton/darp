@@ -197,8 +197,10 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
    txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
    txt +='           $("."+pulse.geo+"_owls").html(pulse.owls.substring(0,20));'  //TODO : Align left for this text field
-
-   txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;balance=balance.toFixed(6);';
+   txt +='          pulse.inPulses=parseInt(pulse.inPulses);'
+   txt +='          pulse.outPulses=parseInt(pulse.outPulses);'
+   txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
+   txt += '          balance=balance.toFixed(6);';
    txt += '          totalEarn+=balance;';
 
    txt +='           $("."+pulse.geo+"_balance").html("$" + balance);'  //TODO : Align left for this text field
