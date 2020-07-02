@@ -174,7 +174,7 @@ function instrumentation() {
     txt += '       }';
     txt += 'console.log("totalEarn coming in =:"+totalEarn);';
     txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);';
-    txt += '        $(".total_earn").html("totalEarn: $"+totalEarn);';
+    txt += '        $(".total_earn").text("totalEarn: $"+totalEarn);';
     //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
     //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
     txt += '         }';
@@ -695,6 +695,7 @@ if (TEST) {
             setTimeout(newPulseGroup.pulse, newPulseGroup.cycleTime * 1000);
             //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
             //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
+            newPulseGroup.timeout(); //and timeout the non-responders
         };
         newPulseGroup.isGenesisNode = function () {
             return newPulseGroup.me.geo == newPulseGroup.owner;
@@ -715,9 +716,10 @@ if (TEST) {
         //  1) update packetLoss counters and clear OWLs in pulseEntry
         //  2) remove nodes that timeout (Genesis manages group population) 
         //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
-        //
+        //  all pulseTimes are assumed accurate to my local clock
         newPulseGroup.timeout = function () {
             if (newPulseGroup.isGenesisNode()) { //GENESIS TIMNG OUT ENTRIES
+                var nodeipy = [];
                 for (var m in this.mintTable) {
                     if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 5 * newPulseGroup.cycleTime * 1000) {
                         console.log("Timing out mint entry" + this.mintTable[m].geo);
@@ -731,7 +733,7 @@ if (TEST) {
                     }
                 }
             }
-            else {
+            else { //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
                 for (var m in this.mintTable) {
                     if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 15 * 1000) {
                         console.log("Timing out mint entry" + this.mintTable[m].geo);
@@ -740,7 +742,7 @@ if (TEST) {
                 }
                 for (var p in this.pulses) {
                     if (lib_1.now() - this.pulses[p].pulseTimestamp > 5 * 1000) {
-                        console.log("Timingout pulse entry" + this.pulses[p].geo);
+                        console.log("Timing out pulse entry" + this.pulses[p].geo);
                         delete this.pulses[p];
                     }
                 }
