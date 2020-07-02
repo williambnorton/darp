@@ -840,7 +840,7 @@ if (TEST) {
             owls=owls.replace(/,+$/, ""); //remove trailing comma 
             var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
             if (typeof myEntry=="undefined") {
-                console.log(`pulse() can not find pulseEntry ${GEO}:${newPulseGroup.groupName} NOT PULSING");
+                console.log(`pulse() can not find pulseEntry ${GEO}:${newPulseGroup.groupName} NOT PULSING`);
             } else {
                 myEntry.seq++;
                 var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
