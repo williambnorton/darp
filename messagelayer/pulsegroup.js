@@ -169,7 +169,7 @@ function instrumentation() {
     //txt += '          balance=balance.toFixed(6);';
     txt += '          totalEarn+=balance;';
     txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);';
-    txt += '           $("."+pulse.geo+"_balance").html("$" + balance);'; //TODO : Align left for this text field
+    txt += '           $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
     //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
     txt += '       }';
     txt += 'console.log("totalEarn coming in =:"+totalEarn);';

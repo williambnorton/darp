@@ -204,7 +204,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt += '          totalEarn+=balance;';
    txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
 
-   txt +='           $("."+pulse.geo+"_balance").html("$" + balance);'  //TODO : Align left for this text field
+   txt +='           $("."+pulse.geo+"_balance").text("$" + balance);'  //TODO : Align left for this text field
  
    
 
