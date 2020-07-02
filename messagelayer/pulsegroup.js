@@ -166,8 +166,8 @@ function instrumentation() {
     txt += '          pulse.inPulses=parseInt(pulse.inPulses);';
     txt += '          pulse.outPulses=parseInt(pulse.outPulses);';
     txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-    //txt += '          balance=balance.toFixed(6);';
     txt += '          totalEarn+=balance;';
+    txt += '          balance=balance.toFixed(6);';
     txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);';
     txt += '           $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
     //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
