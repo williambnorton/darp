@@ -147,7 +147,7 @@ function instrumentation() {
     txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
     //      Render table from information in the state fetched from node
     //
-    txt += '      var totalCoin=0;';
+    txt += '      var totalEarn=0;';
     txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
     //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
     txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
@@ -164,11 +164,11 @@ function instrumentation() {
     txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
     txt += '           $("."+pulse.geo+"_owls").html(pulse.owls);'; //TODO : Align left for this text field
     txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;balance=balance.toFixed(6);';
-    txt += '          total+=balance;';
+    txt += '          totalEarn+=balance;';
     txt += '           $("."+pulse.geo+"_balance").html("$" + balance);'; //TODO : Align left for this text field
     //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
     txt += '       }';
-    txt += '           $(".total_earn").html("$" + total);'; //TODO : Align left for this text field
+    txt += '           $(".total_earn").html("$" + totalEarn);'; //TODO : Align left for this text field
     txt += '         }';
     txt += '   });';
     txt += "    setTimeout(fetchState,1000);";
