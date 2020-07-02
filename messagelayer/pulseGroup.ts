@@ -200,9 +200,9 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt +='          pulse.inPulses=parseInt(pulse.inPulses);'
    txt +='          pulse.outPulses=parseInt(pulse.outPulses);'
    txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-   txt += 'console.log("balance="+balance);'
    txt += '          balance=balance.toFixed(6);';
    txt += '          totalEarn+=balance;';
+   txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
 
    txt +='           $("."+pulse.geo+"_balance").html("$" + balance);'  //TODO : Align left for this text field
  
