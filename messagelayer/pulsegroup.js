@@ -723,23 +723,31 @@ if (TEST) {
         //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         //  all pulseTimes are assumed accurate to my local clock
         newPulseGroup.timeout = function () {
-            return; //wbnwbnwbn for now
+            //return; //wbnwbnwbn for now
             if (newPulseGroup.isGenesisNode()) { //GENESIS TIMNG OUT ENTRIES
                 var nodeipy = [];
                 for (var m in this.mintTable) {
-                    if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 5 * newPulseGroup.cycleTime * 1000) {
-                        console.log("Timing out mint entry" + this.mintTable[m].geo);
-                        delete this.mintTable[m];
+                    if (this.mintTable[m].lastPulseTimestamp != 0) {
+                        if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                            console.log("Clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
+                            this.mintTable[p].owl = -99999;
+                            //delete this.mintTable[m];
+                        }
                     }
                 }
                 for (var p in this.pulses) {
-                    if (lib_1.now() - this.pulses[p].pulseTimestamp > 5 * newPulseGroup.cycleTime * 1000) {
-                        console.log("Timingout pulse entry" + this.pulses[p].geo);
-                        delete this.pulses[p];
+                    if (this.mintTable[m].lastPulseTimestamp != 0) {
+                        if (lib_1.now() - this.pulses[p].pulseTimestamp > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                            console.log("Clearing OWL in pulse entry" + this.pulses[p].geo);
+                            this.pulses[p].owl = -99999;
+                            this.pulses[p].owls = "1";
+                            //delete this.pulses[p];
+                        }
                     }
                 }
             }
             else { //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
+                return;
                 for (var m in this.mintTable) {
                     if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 15 * 1000) {
                         console.log("Timing out mint entry" + this.mintTable[m].geo);
