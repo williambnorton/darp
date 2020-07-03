@@ -878,7 +878,7 @@ if (TEST) {
         //  all pulseTimes are assumed accurate to my local clock
         newPulseGroup.timeout=function() {      //developing here - do not refactor yet
             //return; //wbnwbnwbn for now
-            if (newPulseGroup.isGenesisNode()) {    //GENESIS TIMNG OUT ENTRIES
+            //if (newPulseGroup.isGenesisNode()) {    //GENESIS TIMNG OUT ENTRIES
                 var nodeipy=[];
                 for (var m in this.mintTable) {
                     if (this.mintTable[m].lastPulseTimestamp!=0) {
@@ -895,11 +895,12 @@ if (TEST) {
                             console.log("Clearing OWL in pulse entry"+this.pulses[p].geo);
                             this.pulses[p].owl=-99999;
                             this.pulses[p].owls="1";
+                            this.pulses[p].pktLoss++;
                             //delete this.pulses[p];
                         }
                     }
                 }
-            } else {                        //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
+            //} else {                        //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
               return;
                 for (var m in this.mintTable) {
                     if (now()-this.mintTable[m].lastPulseTimestamp>15*1000) {
@@ -913,7 +914,7 @@ if (TEST) {
                         delete this.pulses[p];
                     }
                 }
-            }
+            //}
         }
 
 
