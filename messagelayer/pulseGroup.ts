@@ -154,7 +154,6 @@ function instrumentation() {    //this should get its own file
     
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';
     //txt += 'console.log("url="+url);';
-   txt += 'var nodeCountLastTime=0;'
     txt += '   $.getJSON(url, function(config) {'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
