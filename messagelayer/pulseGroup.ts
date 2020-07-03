@@ -621,7 +621,7 @@ app.get('/nodefactory', function(req, res) {
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
     pulseGroup.mintTable.push(newNode);  //put new node in the mint table
     console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${pulseGroup.groupName}`);
-    //console.log("After adding node, pulseGroup="+dump(pulseGroup));
+    console.log("After adding node, pulseGroup="+dump(pulseGroup));
     pulseGroup.nodeCount++;
     //TODO: check for duplicates - search for ipaddr:port that matches
 
