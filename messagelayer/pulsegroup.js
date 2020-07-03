@@ -734,8 +734,6 @@ if (TEST) {
         //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         //  all pulseTimes are assumed accurate to my local clock
         newPulseGroup.timeout = function () {
-            //return; //wbnwbnwbn for now
-            //if (newPulseGroup.isGenesisNode()) {    //GENESIS TIMNG OUT ENTRIES
             var nodeipy = [];
             for (var m in this.mintTable) {
                 console.log("checking for a pre-existing: " + lib_1.dump(this.mintTable[m]));
@@ -760,21 +758,10 @@ if (TEST) {
                     }
                 }
             }
-            //} else {                        //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
-            return;
-            for (var m in this.mintTable) {
-                if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 15 * 1000) {
-                    console.log("Timing out mint entry" + this.mintTable[m].geo);
-                    delete this.mintTable[m];
-                }
-            }
+            newPulseGroup.nodeCount = 0; //update nodeCount since we may have deleted
             for (var p in this.pulses) {
-                if (lib_1.now() - this.pulses[p].pulseTimestamp > 5 * 1000) {
-                    console.log("Timing out pulse entry" + this.pulses[p].geo);
-                    delete this.pulses[p];
-                }
+                newPulseGroup.nodeCount++;
             }
-            //}
         };
         newPulseGroup.checkSWversion = function () {
             //console.log("=================================> checkSWversion()");

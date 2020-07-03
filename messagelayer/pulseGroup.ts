@@ -890,48 +890,35 @@ if (TEST) {
         //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         //  all pulseTimes are assumed accurate to my local clock
         newPulseGroup.timeout=function() {      //developing here - do not refactor yet
-            //return; //wbnwbnwbn for now
-            //if (newPulseGroup.isGenesisNode()) {    //GENESIS TIMNG OUT ENTRIES
-                var nodeipy=[];
-                for (var m in this.mintTable) {
-                    console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
-                    if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {
-                        if (now()-this.mintTable[m].lastPulseTimestamp>1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                            console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
-                            this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
-                            this.mintTable[m].state="NR";  //We don't know this node's state
-                            //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
-                            
-                            //delete this.mintTable[m];
-                        }
+            var nodeipy=[];
+            for (var m in this.mintTable) {
+                console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
+                if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {
+                    if (now()-this.mintTable[m].lastPulseTimestamp>1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
+                        console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
+                        this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
+                        this.mintTable[m].state="NR";  //We don't know this node's state
+                        //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
+                        
+                        //delete this.mintTable[m];
                     }
                 }
-                for (var p in this.pulses) {
-                    if (this.pulses[p]&& this.pulses[p].lastPulseTimestamp!=0) {
-                        if (now()-this.pulses[p].pulseTimestamp> 1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                            console.log("Clearing OWL in pulse entry"+this.pulses[p].geo);
-                            this.pulses[p].owl=NO_OWL;
-                            this.pulses[p].owls="1";
-                            this.pulses[p].pktLoss++;
-                            //delete this.pulses[p];
-                        }
+            }
+            for (var p in this.pulses) {
+                if (this.pulses[p]&& this.pulses[p].lastPulseTimestamp!=0) {
+                    if (now()-this.pulses[p].pulseTimestamp> 1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
+                        console.log("Clearing OWL in pulse entry"+this.pulses[p].geo);
+                        this.pulses[p].owl=NO_OWL;
+                        this.pulses[p].owls="1";
+                        this.pulses[p].pktLoss++;
+                        //delete this.pulses[p];
                     }
                 }
-            //} else {                        //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
-              return;
-                for (var m in this.mintTable) {
-                    if (now()-this.mintTable[m].lastPulseTimestamp>15*1000) {
-                        console.log("Timing out mint entry"+this.mintTable[m].geo);
-                        delete this.mintTable[m];
-                    }
-                }
-                for (var p in this.pulses) {
-                    if (now()-this.pulses[p].pulseTimestamp> 5*1000) {
-                        console.log("Timing out pulse entry"+this.pulses[p].geo);
-                        delete this.pulses[p];
-                    }
-                }
-            //}
+            }
+            newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
+            for (var p in this.pulses) {
+                newPulseGroup.nodeCount++;
+            }
         }
 
 
