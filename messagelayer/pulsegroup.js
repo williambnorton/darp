@@ -717,14 +717,16 @@ if (TEST) {
             return newPulseGroup.me.geo == newPulseGroup.owner;
         };
         newPulseGroup.getMint = function (mint) {
-            for (var m in this.mintTable) {
-                //genesis node should timeout old mints
-                if ((newPulseGroup.isGenesisNode()) && (lib_1.now() - this.mintTable.lastPulseTimestamp > 5)) {
-                    console.log("timing out :" + this.mintTable[m].geo + " mint " + this.mintTable[m].mint);
-                    delete this.mintTable[m];
+            for (var m in newPulseGroup.mintTable) {
+                if (newPulseGroup.mintTable[m] != null) {
+                    //genesis node should timeout old mints
+                    //if ((newPulseGroup.isGenesisNode()) && (now()-this.mintTable.lastPulseTimestamp>5)) {
+                    //    console.log("getMint() SHOULD BE timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
+                    //delete this.mintTable[m];
+                    //}
+                    if (this.mintTable[m].mint == mint)
+                        return this.mintTable[m];
                 }
-                if (this.mintTable[m].mint == mint)
-                    return this.mintTable[m];
             }
             return null;
         };
