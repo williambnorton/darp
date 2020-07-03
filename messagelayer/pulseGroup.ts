@@ -897,7 +897,7 @@ if (TEST) {
                 //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
                 if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {
                     if (now()-this.mintTable[m].lastPulseTimestamp>1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                        console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
+                        //console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                         this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
                         this.mintTable[m].state="NR";  //We don't know this node's state
                         //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
@@ -909,7 +909,7 @@ if (TEST) {
             for (var p in this.pulses) {
                 if (this.pulses[p]&& this.pulses[p].lastPulseTimestamp!=0) {
                     if (now()-this.pulses[p].pulseTimestamp> 1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                        console.log("Clearing OWL in pulse entry"+this.pulses[p].geo);
+                        //console.log("Clearing OWL in pulse entry"+this.pulses[p].geo);
                         this.pulses[p].owl=NO_OWL;
                         this.pulses[p].owls="1";
                         this.pulses[p].pktLoss++;
