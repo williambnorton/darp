@@ -191,7 +191,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt += '          }'
 
    //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_owl").addClass("BAD");'
+   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("BAD");'
    txt += '          if (pulse.pulseTimestamp!="0")'
    txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
    txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
