@@ -272,7 +272,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             var mint = pulseEntry.mint;
             //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
             //console.log("pulseEntry="+dump(pulseEntry));
-            txt += "<tr>";
+            txt += '<tr class="' + pulseEntry.geo + '" >';
             //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
             txt += '<td class="' + pulseEntry.geo + ' ' + pulseEntry.mint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
             //txt+="<td>"+pulseEntry.geo+"</td>"
@@ -1002,6 +1002,7 @@ if (TEST) {
                     //update mint entry
                     mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
                     mintEntry.lastOWL=myPulseEntry.owl;
+                    mintEntry.state="UP";
                     //console.log("owls="+pulseEntry.owls);
 
                     if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
