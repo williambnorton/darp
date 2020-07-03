@@ -733,6 +733,7 @@ if (TEST) {
             //if (newPulseGroup.isGenesisNode()) {    //GENESIS TIMNG OUT ENTRIES
             var nodeipy = [];
             for (var m in this.mintTable) {
+                console.log("checking for a pre-existing: " + lib_1.dump(this.mintTable[m]));
                 if (this.mintTable[m].lastPulseTimestamp != 0) {
                     if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                         console.log("Clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
