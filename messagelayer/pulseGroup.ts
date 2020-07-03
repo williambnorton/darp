@@ -894,7 +894,7 @@ if (TEST) {
         newPulseGroup.timeout=function() {      //developing here - do not refactor yet
             var nodeipy=[];
             for (var m in this.mintTable) {
-                console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
+                //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
                 if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {
                     if (now()-this.mintTable[m].lastPulseTimestamp>1.3*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
                         console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
