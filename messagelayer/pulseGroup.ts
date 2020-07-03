@@ -594,6 +594,13 @@ app.get('/nodefactory', function(req, res) {
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
+    console.log("looking for incomingIP="+incomingIP+" port="+port);
+    for (var mint in pulseGroup.mintTable) {
+        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
+        if (pulseGroup.mintTable[mint].ipaddr==incomingIP &&  pulseGroup.mintTable[mint].port==port) {
+            delete pulseGroup.mintTable[mint];  //delete any old record for a rejoining node
+        }
+    }
     //
     //  Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     //
