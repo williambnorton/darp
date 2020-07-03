@@ -135,6 +135,9 @@ function instrumentation() {
     txt += '             if ( nodeCountLastTime > 1 ) {';
     txt += '                if (nodeCountLastTime!=nodeCountNow) {';
     txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
     txt += '                   location.reload();';
     txt += '                }';
     txt += '             }';
@@ -158,7 +161,7 @@ function instrumentation() {
     txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
     txt += '          }';
     //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-    txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("BAD");';
+    txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
     txt += '          if (pulse.pulseTimestamp!="0")';
     txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
     txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';

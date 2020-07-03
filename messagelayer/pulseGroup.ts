@@ -166,6 +166,9 @@ function instrumentation() {    //this should get its own file
    txt += '             if ( nodeCountLastTime > 1 ) {'
    txt += '                if (nodeCountLastTime!=nodeCountNow) {'
    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
    txt += '                   location.reload();' ;
    txt += '                }'
    txt += '             }'
@@ -193,7 +196,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt += '          }'
 
    //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("BAD");'
+   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
    txt += '          if (pulse.pulseTimestamp!="0")'
    txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
    txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
@@ -273,6 +276,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             var mint = pulseEntry.mint;
             //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
             //console.log("pulseEntry="+dump(pulseEntry));
+            
             txt += '<tr class="' + pulseEntry.geo + '" >';
             //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
             txt += '<td class="' + pulseEntry.geo + ' ' + pulseEntry.mint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
