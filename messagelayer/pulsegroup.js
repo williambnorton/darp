@@ -13,8 +13,8 @@ var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
-var DEFAULT_START_STATE = "RUNNING";
-console.log(lib_1.ts() + "pulsegroup.ts(): ALL NODES START IN RUNNING Mode");
+var DEFAULT_START_STATE = "NR";
+console.log(lib_1.ts() + "pulsegroup.ts(): ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 /****  NODE SITE CONFIGURATION  ****/
 //      Environment is way for environment to control the code
@@ -739,6 +739,7 @@ if (TEST) {
                     if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                         console.log("Clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                         this.mintTable[m].owl = NO_OWL; //wbnwbnwbnwbnwbn
+                        this.mintTable[m].state = "BUSY"; //wbnwbnwbnwbnwbn
                         //delete this.mintTable[m];
                     }
                 }
