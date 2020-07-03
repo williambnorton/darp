@@ -129,9 +129,9 @@ function instrumentation() {
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
     txt += '            var nodeCountNow=pulseGroup.nodeCount;';
-    txt += '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));';
+    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-    //txt += '         console.log("**count="+config.pulses.length+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+    txt += '             console.log(" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
     txt += '             if ( nodeCountLastTime > 1 ) {';
     txt += '                if (nodeCountLastTime!=nodeCountNow) {';
     txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
@@ -168,11 +168,11 @@ function instrumentation() {
     txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
     txt += '          totalEarn+=balance;';
     txt += '          balance=balance.toFixed(6);';
-    txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);';
+    //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
     txt += '           $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
     //        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
     txt += '       }';
-    txt += 'console.log("totalEarn coming in =:"+totalEarn);';
+    //txt += 'console.log("totalEarn coming in =:"+totalEarn);'
     txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);';
     txt += '        $(".total_earn").text("totalEarn: $"+totalEarn);';
     //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
