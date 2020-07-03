@@ -519,6 +519,7 @@ app.get('/nodefactory', function (req, res) {
     for (var mint in pulseGroup.mintTable) {
         console.log("looking at mint=" + lib_1.dump(pulseGroup.mintTable[mint]));
         if (pulseGroup.mintTable[mint].ipaddr == incomingIP && pulseGroup.mintTable[mint].port == port) {
+            console.log("deletiung previous mint: " + mint);
             delete pulseGroup.mintTable[mint]; //delete any old record for a rejoining node
         }
     }
