@@ -891,9 +891,10 @@ if (TEST) {
                         delete this.pulses[p];
                     }
                 }
-            } else {                        //non-genesis node timing out - only timeout the genesis node and delete the group, reload and reconnet
+            } else {                        //non-genesis node timing out - only timeout the non-genesis nodes can do is delete the group
                 if (now()-this.genesis.pulseTimestamp>15*1000)
-                    console.log(ts()+"Out genesis node disappear. RELOADING SOFTWARE. TO DO: this should delete the pulseGroup from the array of pulseGroups");
+                    console.log(ts()+"Our genesis node disappear. RELOADING SOFTWARE. TO DO: instead delete the pulseGroup from the array of pulseGroups");
+                    delete this.newPulseGroup;  //not sure what this will do
                     process.exit(36);
             }
         }
