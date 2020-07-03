@@ -247,7 +247,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             //
         //  Externalize pulse structures 
         //
-        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table>';
+        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulseTable">';
         txt += "<tr>";
         txt += "<th>geo</th>";
         txt += "<th>group</th>";
@@ -280,7 +280,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             
             txt += '<tr class="' + pulseEntry.geo + '" >';
             //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-            txt += '<td class="' + pulseEntry.geo + ' ' + pulseEntry.mint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+            txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
             //txt+="<td>"+pulseEntry.geo+"</td>"
             txt += "<td >" + pulseEntry.group + "</td>";
             txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
