@@ -9,6 +9,7 @@ var lib_1 = require("../lib/lib");
 var pulselayer_1 = require("./pulselayer");
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
+var REFRESH = 120;
 var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
@@ -114,7 +115,7 @@ pulseGroups = {}; //[me.geo+".1"] : pulseGroup};
 //process.exit(36);
 //instrument the pulseGroup
 function instrumentation() {
-    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + 30 + '">'; //TODO: dynamic refresh based on new node adds
+    var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + REFRESH + '">'; //TODO: dynamic refresh based on new node adds
     txt += '<head title="DARP">';
     txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
     txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> ';
