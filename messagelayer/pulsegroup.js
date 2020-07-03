@@ -736,7 +736,7 @@ if (TEST) {
                 if (this.mintTable[m].lastPulseTimestamp != 0) {
                     if (lib_1.now() - this.mintTable[m].lastPulseTimestamp > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                         console.log("Clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                        this.mintTable[p].owl = -99999;
+                        this.mintTable[m].owl = NO_OWL; //wbnwbnwbnwbnwbn
                         //delete this.mintTable[m];
                     }
                 }
@@ -745,7 +745,7 @@ if (TEST) {
                 if (this.mintTable[m].lastPulseTimestamp != 0) {
                     if (lib_1.now() - this.pulses[p].pulseTimestamp > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                         console.log("Clearing OWL in pulse entry" + this.pulses[p].geo);
-                        this.pulses[p].owl = -99999;
+                        this.pulses[p].owl = NO_OWL;
                         this.pulses[p].owls = "1";
                         this.pulses[p].pktLoss++;
                         //delete this.pulses[p];
