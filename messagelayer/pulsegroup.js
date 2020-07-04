@@ -824,7 +824,7 @@ if (TEST) {
                 }
                 else {
                     if (mintEntry == null)
-                        return console.log("recvPulse(): We are corrupt:  found my pulse Entry but we have no mintEntry for this...should TODO force sync herew");
+                        return console.log("recvPulse(): We are corrupt:  found my pulse Entry " + incomingPulse.geo + " but we have no mintEntry for this...should TODO force sync herew");
                 }
                 //we expect mintEntry to be set
                 //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
