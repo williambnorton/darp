@@ -280,7 +280,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             
             txt += '<tr class="' + pulseEntry.geo + '" >';
             //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-            txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+            txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
             //txt+="<td>"+pulseEntry.geo+"</td>"
             txt += "<td >" + pulseEntry.group + "</td>";
             txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
@@ -604,12 +604,12 @@ app.get('/nodefactory', function(req, res) {
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
-    console.log("looking for incomingIP="+incomingIP+" port="+port);
+//    console.log("looking for incomingIP="+incomingIP+" port="+port);
     for (var mint in pulseGroup.mintTable) {
-        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
-        if (pulseGroup.mintTable[mint].ipaddr==incomingIP &&  pulseGroup.mintTable[mint].port==port) {
-            console.log("deletiung previous mint: "+mint);
-            delete pulseGroup.mintTable[mint];  //delete any old record for a rejoining node
+//        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
+        if (pulseGroup.mintTable[mint] && pulseGroup.mintTable[mint].ipaddr==incomingIP &&  pulseGroup.mintTable[mint].port==port) {
+            console.log("deleting previous mint for this node: "+incomingIP+":"+port+" mint #"+mint);
+            delete pulseGroup.mintTable[mint];  //will make it null in the mint table
         }
     }
     //
