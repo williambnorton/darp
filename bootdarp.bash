@@ -125,28 +125,24 @@ do
     echo `date` 'Starting pulsegroup...'
     #node messagelayer 
 	node pulsegroup 
-    echo `date` messagelayer done
-
-
-
-
-
     rc=$?
+    echo `date` pulseGroup done rc=$rc
+
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
 
-    cd $DARPDIR
-    if [ $? -ne 0 ]; then
-        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
-        exit 86;
-    fi
+#    cd $DARPDIR
+#    if [ $? -ne 0 ]; then
+#        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
+#        exit 86;
+#    fi
     
-    sleep 1
+#    sleep 1
 
-    if [ $rc -eq 86 ]; then echo "STOP STOP STOP"; exit 86; fi     #STOP COMMAND
+    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED"; exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 1 ]; then
         echo "rc=1"
