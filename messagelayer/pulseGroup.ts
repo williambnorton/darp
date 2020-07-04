@@ -987,9 +987,11 @@ if (TEST) {
                         return ;  //we are done 
                     }
                 } else {
-                    if (mintEntry==null) 
-                        return console.log("recvPulse(): We are corrupt:  found my pulse Entry "+incomingPulse.geo+" but we have no mintEntry for this...should TODO force sync herew");
-
+                    if (mintEntry==null) {
+                        console.log("recvPulse(): We are out of sync with genesis node:  found my pulse Entry "+incomingPulse.geo+" but we have no mintEntry for this...should TODO force sync herew");
+                        return newPulseGroup.syncGenesisPulseGroup();
+                        return; //TODO - mybe let this pass through?
+                    }
                 }
 
                     //we expect mintEntry to be set
@@ -1091,7 +1093,7 @@ if (TEST) {
                         }
                         newPulseGroup.nodeCount=0;
                         for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
-                        console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+pulseGroup.pulses.length);
+                        console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(pulseGroup));
 
                     }
