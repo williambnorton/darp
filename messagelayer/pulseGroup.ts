@@ -611,7 +611,8 @@ app.get('/nodefactory', function(req, res) {
 //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
         if (pulseGroup.mintTable[mint] && pulseGroup.mintTable[mint].ipaddr==incomingIP &&  pulseGroup.mintTable[mint].port==port) {
             console.log("deleting previous mint for this node: "+incomingIP+":"+port+" mint #"+mint);
-            delete pulseGroup.mintTable[mint];  //will make it null in the mint table
+            pulseGroup.mintTable.splice(parseInt(mint));
+            //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
         }
     }
     //
