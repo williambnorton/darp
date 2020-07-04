@@ -387,7 +387,8 @@ app.get('/version', function (req, res) {
     return;
 });
 app.get('/stop', function (req, res) {
-    console.log("EXITTING and Stopping the node");
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("EXITTING and Stopping the node from " + ip);
     res.redirect(req.get('referer'));
     process.exit(86);
 });
@@ -397,7 +398,8 @@ app.get('/reboot', function (req, res) {
     process.exit(99999);
 });
 app.get('/reload', function (req, res) {
-    console.log("EXITTING to reload the system");
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("EXITTING to reload the system from: " + ip);
     res.redirect(req.get('referer'));
     process.exit(36);
 });
