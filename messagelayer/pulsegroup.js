@@ -388,18 +388,19 @@ app.get('/version', function (req, res) {
 });
 app.get('/stop', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("EXITTING and Stopping the node from " + ip);
+    console.log("EXITTING and Stopping the node request from " + ip);
     res.redirect(req.get('referer'));
     process.exit(86);
 });
 app.get('/reboot', function (req, res) {
-    console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER");
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from " + ip);
     res.redirect(req.get('referer'));
     process.exit(99999);
 });
 app.get('/reload', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("EXITTING to reload the system from: " + ip);
+    console.log("EXITTING to reload the system request from: " + ip);
     res.redirect(req.get('referer'));
     process.exit(36);
 });
