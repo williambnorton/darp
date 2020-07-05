@@ -1008,18 +1008,19 @@ if (TEST) {
 
                 //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
                 if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
-
+                    //TODO: This is where authentication to this pulseGroup happens
                     if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
                         //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
-                        //TODO: Explore this - we should not need to do this. New Mint leads to genesisSync
+                        //TODO: Explore this - we should not need to do this.
 /* wbnwbn */            myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                     } else {
-                        mintEntry=null;
+                        console.log(ts()+"recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis"+incomingPulse.geo);
+                        return newPulseGroup.syncGenesisPulseGroup();
                         return ;  //we are done 
                     }
                 } else {
-                    if (mintEntry==null) {
-                        console.log("recvPulse(): We are out of sync with genesis node:  found my pulse Entry "+incomingPulse.geo+" but we have no mintEntry for this...should TODO force sync herew");
+                    if (mintEntry==null) {      //we have a pulse entry but no corresponding mint entry-->sync with genesis
+                        console.log(ts()+"recvPulse(): We are out of sync with genesis node:  found my pulse Entry "+incomingPulse.geo+" but we have no mintEntry for this...should TODO force sync herew");
                         return newPulseGroup.syncGenesisPulseGroup();
                         return; //TODO - mybe let this pass through?
                     }
@@ -1106,7 +1107,15 @@ if (TEST) {
                     if (mintTable == null) {
                         console.log("syncGenesisPulseGroup(): Genesis node has no mintTable");
                     } else {
-                        newPulseGroup.mintTable=mintTable;
+                        console.log("****mintTable="+dump(mintTable));
+                        mintTable.pop(); //pop off the genesis mint0
+                        console.log("****after POP mintTable="+dump(mintTable));
+
+                        mintTable.push(pulseGroup.me);
+                        console.log("**** after Push() mintTable="+dump(mintTable));
+
+                        var newMintTable=mintTable;
+
                         var pulses=groupOwnerPulseGroup.pulses;
                         for (var pulse in pulses) {             //Add all mints that we don't have
                             var genesisPulseEntry=pulses[pulse];
