@@ -919,11 +919,11 @@ if (TEST) {
                     }
                     else {
                         console.log("****mintTable=" + lib_1.dump(mintTable));
-                        mintTable.pop(); //pop off the genesis mint0
-                        console.log("****after POP mintTable=" + lib_1.dump(mintTable));
-                        mintTable.push(pulseGroup.me);
-                        console.log("**** after Push() mintTable=" + lib_1.dump(mintTable));
-                        var newMintTable = mintTable;
+                        //                        mintTable.pop(); //pop off the genesis mint0
+                        //                        console.log("****after POP mintTable="+dump(mintTable));
+                        //                        mintTable.push(pulseGroup.me);
+                        //                        console.log("**** after Push() mintTable="+dump(mintTable));
+                        mintTable[0] = me; //wbnwbnwbn <-- but also need to set group
                         var pulses = groupOwnerPulseGroup.pulses;
                         for (var pulse in pulses) { //Add all mints that we don't have
                             var genesisPulseEntry = pulses[pulse];
