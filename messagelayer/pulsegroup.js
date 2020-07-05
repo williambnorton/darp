@@ -80,6 +80,10 @@ var server = app.listen(PORT, '0.0.0.0', function () {
 //  Making of my own pulseGroup for members to connect to
 //
 //
+//Simplification - don't have separate genesis and me object from mintTable
+//  genesis node should always be mintTable[1]
+//  me should always be mintTable[0] (first item)
+//pulseGroup.me and pulseGroup.genesis should be there for convenience though
 var me = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All nodes can count on 'me' always being present
 //All nodes also start out ready to be a genesis node for others
 var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
@@ -520,12 +524,14 @@ app.get('/nodefactory', function (req, res) {
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    //    console.log("looking for incomingIP="+incomingIP+" port="+port);
+    //
+    //  First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
+    //
     for (var mint in pulseGroup.mintTable) {
         //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
         if (pulseGroup.mintTable[mint] && pulseGroup.mintTable[mint].ipaddr == incomingIP && pulseGroup.mintTable[mint].port == port) {
             console.log("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint);
-            pulseGroup.mintTable.splice(parseInt(mint));
+            pulseGroup.mintTable.splice(parseInt(mint)); //make sure not do delete me or genesis node
             //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
         }
     }
@@ -536,6 +542,9 @@ app.get('/nodefactory', function (req, res) {
     console.log(geo + ": mint=" + newMint + " publickey=" + publickey + "version=" + version + "wallet=" + wallet);
     pulseGroup.pulses[geo + ":" + pulseGroup.groupName] = makePulseEntry(newMint, geo, pulseGroup.groupName, incomingIP, port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
+    //
+    //  mintTable - first [0] is me and [1] is genesis
+    // Here is a little code
     var newNode = makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
     pulseGroup.mintTable.push(newNode); //put new node in the mint table
     console.log("added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + pulseGroup.groupName);
@@ -657,6 +666,10 @@ function joinPulseGroup(ipaddr, port, callback) {
 /***************** MAIN ****************/
 if (TEST) {
     //console.log("* * * * * * * * * Starting  pulseGroup="+dump(pulseGroup));
+    //
+    //  This is really a pulseGroup object creator - should instead return an object woith attached methods and config from genesis node
+    //
+    //      as in, when incoming JOIN message comes in, pulseGroups[n++]=new pulseGroup(GENESIS, PORT, [PUBLICKEY], ... )
     joinPulseGroup(GENESIS, PORT, function (newPulseGroup) {
         //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
         console.log("callback from my or someone else's pulseGroup=" + lib_1.dump(newPulseGroup));
