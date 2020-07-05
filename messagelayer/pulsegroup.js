@@ -582,7 +582,7 @@ function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) 
     return {
         mint: mint,
         geo: geo,
-        state: mint ? DEFAULT_START_STATE : "G",
+        state: mint ? DEFAULT_START_STATE : "ME",
         bootTimestamp: lib_1.now(),
         version: version,
         wallet: wallet,
