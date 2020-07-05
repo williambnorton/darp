@@ -711,7 +711,7 @@ app.get('/nodefactory', function(req, res) {
     return { 
         mint: mint, 
         geo: geo,
-        state: DEFAULT_START_STATE,
+        state: mint?DEFAULT_START_STATE:"G",
         bootTimestamp: now(), //RemoteClock on startup  ****
         version: version,   //software version running on remote system ********
         wallet: wallet,     // ** 
