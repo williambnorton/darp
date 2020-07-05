@@ -122,7 +122,7 @@ var pulseGroup = {                 //my pulseGroup Configuration
     me : me,
     genesis: genesis,
     mintTable: [
-       me
+       me,genesis
     ],           
     pulses: {               //store statistics for this network segment
         [genesis.geo + ":" + genesis.geo+".1"]: pulse

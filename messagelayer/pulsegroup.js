@@ -95,7 +95,7 @@ var pulseGroup = {
     me: me,
     genesis: genesis,
     mintTable: [
-        me
+        me, genesis
     ],
     pulses: (_a = {},
         _a[genesis.geo + ":" + genesis.geo + ".1"] = pulse,
