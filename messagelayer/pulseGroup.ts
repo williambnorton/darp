@@ -1085,7 +1085,7 @@ if (TEST) {
         //  copy mint table and update (add/del) pulseObject pulse entries so we match the genesis node
         //
         newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
-            console.log("syncGenesisPulseGroup()");
+            console.log("syncGenesisPulseGroup() - SHOULD RETURN IF GENESIS NODE ITSELF?");
             var http = require("http");
             var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup"+"/"+this.groupName;
             var thisGroup=this.groupName;
@@ -1104,17 +1104,18 @@ if (TEST) {
                     console.log("groupName="+dump(groupOwnerPulseGroup.groupName));
                     console.log("mintTable="+dump(mintTable));
 
-                    if (mintTable == null) {
-                        console.log("syncGenesisPulseGroup(): Genesis node has no mintTable");
-                    } else {
-                        console.log("****mintTable="+dump(mintTable));
+                        console.log("****mintTable from genesis node="+dump(mintTable));
+
+                        if (groupOwnerPulseGroup.groupOwner!=me.geo) 
+                            mintTable[0]=me;//wbnwbnwbn <-- but also need to set group
+
+                        console.log("**** after installing my me entry mintTable="+dump(mintTable));
 //                        mintTable.pop(); //pop off the genesis mint0
 //                        console.log("****after POP mintTable="+dump(mintTable));
 
 //                        mintTable.push(pulseGroup.me);
 //                        console.log("**** after Push() mintTable="+dump(mintTable));
 
-                        mintTable[0]=me;//wbnwbnwbn <-- but also need to set group
 
                         var pulses=groupOwnerPulseGroup.pulses;
                         for (var pulse in pulses) {             //Add all mints that we don't have
@@ -1136,7 +1137,6 @@ if (TEST) {
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
                         console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(pulseGroup));
 
-                    }
                     
                 });
             });
