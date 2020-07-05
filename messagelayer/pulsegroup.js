@@ -84,7 +84,7 @@ var server = app.listen(PORT, '0.0.0.0', function () {
 //  genesis node should always be mintTable[1]
 //  me should always be mintTable[0] (first item)
 //pulseGroup.me and pulseGroup.genesis should be there for convenience though
-var me = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All nodes can count on 'me' always being present
+var me = makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All nodes can count on 'me' always being present
 //All nodes also start out ready to be a genesis node for others
 var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
 var pulse = makePulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
