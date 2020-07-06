@@ -594,7 +594,7 @@ app.get('/nodefactory', function (req, res) {
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); //clone my pulseGroup obecjt 
-    newNodePulseGroup.me = newNode;
+    //newNodePulseGroup.me=newNode;
     newNodePulseGroup.mintTable[0] = newNode;
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
     //newNodePulseGroup.mintTable[0]=newNode;
@@ -855,6 +855,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         });
         setTimeout(newPulseGroup.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); //Every 60 seconds check we have the best software
     };
+    //
+    //  recvPulses - 
+    //
     newPulseGroup.recvPulses = function () {
         pulselayer_1.recvPulses(me.port, function (incomingPulse) {
             //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
@@ -880,10 +883,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 if (mintEntry == null) { //we have a pulse entry but no corresponding mint entry-->sync with genesis
                     console.log(lib_1.ts() + "recvPulse(): We are out of sync with genesis node:  found my pulse Entry " + incomingPulse.geo + " but we have no mintEntry for this...should TODO force sync herew");
                     return newPulseGroup.syncGenesisPulseGroup();
-                    return; //TODO - mybe let this pass through?
                 }
             }
-            //we expect mintEntry to be set
+            //we expect mintEntry to be set to our mint entry
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
             if (myPulseEntry != null) {
                 newPulseGroup.ts = lib_1.now(); //We got a pulse - update the pulseGroup timestamp
