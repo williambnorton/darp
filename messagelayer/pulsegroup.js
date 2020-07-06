@@ -597,7 +597,7 @@ app.get('/nodefactory', function (req, res) {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); //clone my pulseGroup obecjt 
     //newNodePulseGroup.me=newNode;
-    newNodePulseGroup.mintTable[0] = newNode;
+    newNodePulseGroup.mintTable[0] = newNode; //assign him his mint and config
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
     //newNodePulseGroup.mintTable[0]=newNode;
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
@@ -788,7 +788,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //    console.log("getMint() SHOULD BE timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
                 //delete this.mintTable[m];
                 //}
-                if (this.mintTable[m].mint == mint)
+                if ((this.mintTable[m].mint != 0) && (this.mintTable[m].mint == mint))
                     return this.mintTable[m];
             }
         }

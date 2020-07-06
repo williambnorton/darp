@@ -699,7 +699,7 @@ app.get('/nodefactory', function(req, res) {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));    //clone my pulseGroup obecjt 
     //newNodePulseGroup.me=newNode;
-    newNodePulseGroup.mintTable[0]=newNode;
+    newNodePulseGroup.mintTable[0]=newNode;  //assign him his mint and config
 
 
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
@@ -957,7 +957,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //    console.log("getMint() SHOULD BE timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
                     //delete this.mintTable[m];
                 //}
-                if (this.mintTable[m].mint==mint) return this.mintTable[m];
+                if ((this.mintTable[m].mint!=0) && (this.mintTable[m].mint==mint)) return this.mintTable[m];
             }
         }
         return null;
@@ -1051,7 +1051,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
                     //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
                     //TODO: Explore this - we should not need to do this.
-/* wbnwbn */            myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
+/* wbnwbn */        myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                 } else {
                     console.log(ts()+"recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis"+incomingPulse.geo);
                     return newPulseGroup.syncGenesisPulseGroup();
@@ -1065,7 +1065,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             }
 
             //we expect mintEntry to be set to our mint entry
-
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
             if (myPulseEntry!=null) {     
                 newPulseGroup.ts=now(); //We got a pulse - update the pulseGroup timestamp
