@@ -221,7 +221,7 @@ function instrumentation() {    //this should get its own file
    txt += '                     }'     
    txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;'   
    txt += '             }'
-   txt += '             nodeCountLastTime=nodeCountNow;';
+   txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
    
                        //update the dateTime so people know the updates re coming in
    txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
