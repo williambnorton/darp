@@ -485,7 +485,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     
     
     txt += ""
-    txt += JSON.stringify(myPulseGroups,null,2);
+    txt += '<p class="raw">'+JSON.stringify(myPulseGroups,null,2)+'</p>';
     
     txt += "</body>";
     txt += "</html>"

@@ -410,7 +410,7 @@ function instrumentation() {
         txt += "</table>";
     }
     txt += "";
-    txt += JSON.stringify(myPulseGroups, null, 2);
+    txt += '<p class="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
     txt += "</body>";
     txt += "</html>";
     //console.log("txt="+txt);
