@@ -642,12 +642,7 @@ app.get('/nodefactory', function(req, res) {
     //  mintTable - first [0] is me and [1] is genesis
     // Here is a little code
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
-
-
-//    pulseGroup.mintTable.push(newNode);  //put new node in the mint table
-    pulseGroup.mintTable=[newNode,genesis];  //put new node in the mint table
-    
-    
+    pulseGroup.mintTable[newMint]=newNode;  //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${pulseGroup.groupName}`);
     console.log("After adding node, pulseGroup="+dump(pulseGroup));
@@ -661,7 +656,7 @@ app.get('/nodefactory', function(req, res) {
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    //clone my pulseGroup obecjt 
     newNodePulseGroup.me=newNode;
-
+    
 
 
 
