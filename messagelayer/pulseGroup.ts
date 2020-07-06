@@ -198,7 +198,7 @@ function instrumentation() {    //this should get its own file
 
     txt += "<script>"
     
-    txt += 'var nodeCountLastTime=2;' //We start out with ourselves only
+    txt += 'var nodeCountLastTime=0;' //We start out with ourselves only
     
     txt += 'function fetchState() {'
     
@@ -207,18 +207,19 @@ function instrumentation() {    //this should get its own file
     txt += '   $.getJSON(url, function(config) {'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
-   txt += '            var nodeCountNow=pulseGroup.nodeCount;';
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-   txt += '             console.log(" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );'
-   txt += '             if ( pulseGroup.nodeCount > 2 ) {'
-   txt += '                if ( pulseGroup.lastTime != pulseGroup.nodeCount ) {'
-   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                   location.reload();' ;
-   txt += '                }'
+   txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
+   txt += '             if ( pulseGroup.nodeCount > 1 ) {'
+   txt += '                if (nodeCountLastTime!=0) {'
+   txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {'
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         location.reload();' ;
+   txt += '                     }'     
+   txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;'   
    txt += '             }'
    txt += '             nodeCountLastTime=nodeCountNow;';
    
