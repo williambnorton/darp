@@ -810,14 +810,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                if ((lib_1.now() - this.mintTable[m].lastPulseTimestamp) > newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                if ((lib_1.now() - this.mintTable[m].lastPulseTimestamp) > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     //console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) {
                         if ((lib_1.now() - this.mintTable[m].lastPulseTimestamp) > newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                             console.log("DELETEING MINT with old timestamp " + this.mintTable[m].geo);
-                            this.mintTable[m] = null;
+                            //this.mintTable[m]=null;
                         }
                     }
                     //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
@@ -829,7 +829,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             if (this.pulses[p] && this.pulses[p].lastPulseTimestamp != 0) {
                 var elapsedSecondsSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp) / 1000;
                 console.log(this.pulses[p].geo + " elapsedSecondsSincePulse=" + elapsedSecondsSincePulse);
-                if (elapsedSecondsSincePulse > newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                if (elapsedSecondsSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     console.log("Non-respondong node Clearing OWL in pulse entry" + this.pulses[p].geo);
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
@@ -837,7 +837,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) {
                         if (lib_1.now() - this.pulses[p].pulseTimestamp > 10 * newPulseGroup.cycleTime * 1000) {
                             console.log("DELETEING PULSE with old timestamp " + this.pulses[p].geo);
-                            delete this.pulses[p];
+                            //delete this.pulses[p];
                         }
                     }
                     //delete this.pulses[p];
