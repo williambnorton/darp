@@ -903,7 +903,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     };
 
     newPulseGroup.isGenesisNode=function():Boolean {
-        return newPulseGroup.me.geo==newPulseGroup.owner;
+        return newPulseGroup.mintTable[0].geo==newPulseGroup.owner;
     }
 
     newPulseGroup.getMint=function(mint:number):MintEntry|null {
@@ -963,7 +963,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
         if (newPulseGroup.groupOwner==me.geo) 
             return console.log("checkSWversion - genesis node never checks its own version");
-        const url = encodeURI("http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
+        const url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);
         var http = require("http");
         http.get(url, res => {
@@ -1080,7 +1080,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
         console.log("syncGenesisPulseGroup() - SHOULD RETURN IF GENESIS NODE ITSELF?");
         var http = require("http");
-        var url = "http://" + newPulseGroup.genesis.ipaddr + ":" + newPulseGroup.genesis.port + "/pulseGroup"+"/"+this.groupName;
+        var url = "http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulseGroup"+"/"+this.groupName;
         var thisGroup=this.groupName;
         console.log("syncGenesisPulseGroup(): url="+url);
         http.get(url, function (res) {
@@ -1100,7 +1100,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 console.log("****mintTable from genesis node="+dump(mintTable));
 
                 if (groupOwnerPulseGroup.groupOwner!=me.geo) {
-                    mintTable[0]=newPulseGroup.me;  //wbnwbnwbn INSTALL MY mintTable[0]
+                    mintTable[0]=newPulseGroup.mintTable[0];  //wbnwbnwbn INSTALL MY mintTable[0]
                 }
                 console.log("**** after installing my me entry mintTable="+dump(mintTable));
 //                        mintTable.pop(); //pop off the genesis mint0
@@ -1136,7 +1136,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     };
     //
     // TODO: assign a mew and genesis convenience reference as part of pulseGroup
-    //newPulseGroup.me=newPulseGroup.getMint(newPulseGroup.whoami);newPulseGroup.genesis=newPulseGroup.getMint(1);
 
 /*      pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);        
     pulseGroup.addNode("MAZDAL",GEO+".1","23.102.167.37", 65013,PUBLICKEY,VERSION,WALLET);
