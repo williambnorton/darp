@@ -231,7 +231,6 @@ function instrumentation() {    //this should get its own file
    //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
    txt += '             $("#dateTime").html( "<div class=\'updated\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
    txt += '             $("#raw").text( JSON.stringify(myPulseGroups,null,2));';  //wbnwbnwbnwbnwbnwnbn
-   txt += '<p class="raw">'+JSON.stringify(myPulseGroups,null,2)+'</p>';
 
 
 //      Render table from information in the state fetched from node
