@@ -198,7 +198,7 @@ function instrumentation() {    //this should get its own file
 
     txt += "<script>"
     
-    txt += 'var nodeCountLastTime=0;'
+    txt += 'var nodeCountLastTime=1;' //We start out with ourselves only
     
     txt += 'function fetchState() {'
     
@@ -211,8 +211,8 @@ function instrumentation() {    //this should get its own file
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
    txt += '             console.log(" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );'
-   txt += '             if ( nodeCountLastTime > 1 ) {'
-   txt += '                if (nodeCountLastTime!=nodeCountNow) {'
+   txt += '             if ( pulseGroup.nodeCount > 1 ) {'
+   txt += '                if ( pulseGroup.lastTime != pulseGroup.nodeCount ) {'
    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
    txt += '                   console.log("NEW NODE: HERE I LOCATION RELOAD(): nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime );';
@@ -1104,7 +1104,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         var m=ary[owlEntry].split("=")[0];
                         //console.log("Searching for mint "+m);
                         if (newPulseGroup.getMint(m) == null) {
-                            console.log("Owner announced a NEW MINT ENTRY - syncing with genesis node for config");
+                            console.log(`Owner announced a NEW MINT ENTRY ${m} - syncing with genesis node for config`);
                             return newPulseGroup.syncGenesisPulseGroup();
                         }
                         owlCount++;
@@ -1128,7 +1128,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  copy mint table and update (add/del) pulseObject pulse entries so we match the genesis node
     //
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
-        console.log("syncGenesisPulseGroup() - SHOULD RETURN IF GENESIS NODE ITSELF?");
         var http = require("http");
         var url = "http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulseGroup"+"/"+this.groupName;
         var thisGroup=this.groupName;
