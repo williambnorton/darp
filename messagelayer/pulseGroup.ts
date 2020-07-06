@@ -1107,7 +1107,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         }
                         owlCount++;
                     }
-                    console.log(`groupOwner tells us there are ${owlCount} nodes in thie pulseGroup and we have ${newPulseGroup.nodeCount}`);
+                    //console.log(`groupOwner tells us there are ${owlCount} nodes in thie pulseGroup and we have ${newPulseGroup.nodeCount}`);
                     //TODO: Also resync if the groupOwner has removed an item
                     //console.log("recvPulses - group owner population is in tact");
                 }
