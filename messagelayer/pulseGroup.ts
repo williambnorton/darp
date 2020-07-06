@@ -1088,7 +1088,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
 
                     if (incomingPulse.version != me.version) {
-                        console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                        console.log(`Group Owner has newer software than we do me: ${me.version} vs genesis: ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
                         console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
                         console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
                         console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
