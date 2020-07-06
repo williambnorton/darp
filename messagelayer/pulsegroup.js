@@ -462,7 +462,7 @@ app.get('/asset-manifest.json', function (req, res) {
 //  or update your specific pulseGroup to the group owner's 
 //
 app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
-    console.log("fetching '/pulseGroup' &pulsegroup=" + req.params.pulsegroup + "req.params.mint=" + req.params.mint);
+    console.log("fetching '/pulseGroup' pulsegroup=" + req.params.pulsegroup + " req.params.mint=" + req.params.mint);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //
@@ -953,7 +953,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup = function () {
         var http = require("http");
-        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulseGroup" + "/" + this.groupName + "?mint=" + newPulseGroup.mintTable[0].mint);
+        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "?pulseGroup=" + "/" + this.groupName + "&mint=" + newPulseGroup.mintTable[0].mint);
         var thisGroup = this.groupName;
         console.log("syncGenesisPulseGroup(): url=" + url);
         http.get(url, function (res) {
