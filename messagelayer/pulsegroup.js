@@ -193,7 +193,7 @@ function instrumentation() {
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
     //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
     txt += '             $("#dateTime").html( "<div class=\'updated\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
-    txt += '             $("#raw").text( JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
+    txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
     //      Render table from information in the state fetched from node
     //
     txt += '      var totalEarn=0.000000;';
@@ -953,7 +953,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup = function () {
         var http = require("http");
-        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "?pulsegroup=" + "/" + this.groupName + "&mint=" + newPulseGroup.mintTable[0].mint);
+        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "?pulsegroup=" + this.groupName + "&mint=" + newPulseGroup.mintTable[0].mint);
         var thisGroup = this.groupName;
         console.log("syncGenesisPulseGroup(): url=" + url);
         http.get(url, function (res) {
