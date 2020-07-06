@@ -958,15 +958,15 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             });
             res.on("end", function () {
                 var groupOwnerPulseGroup = JSON.parse(body);
-                console.log("genesis node gave us this: " + lib_1.dump(groupOwnerPulseGroup));
+                //console.log("genesis node gave us this: "+dump(groupOwnerPulseGroup));
                 var mintTable = groupOwnerPulseGroup.mintTable;
-                console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
-                console.log("mintTable=" + lib_1.dump(mintTable));
-                console.log("****mintTable from genesis node=" + lib_1.dump(mintTable));
+                //console.log("groupName="+dump(groupOwnerPulseGroup.groupName));
+                //console.log("mintTable="+dump(mintTable));
+                //console.log("****mintTable from genesis node="+dump(mintTable));
                 if (groupOwnerPulseGroup.groupOwner != me.geo) {
                     mintTable[0] = newPulseGroup.mintTable[0]; //wbnwbnwbn INSTALL MY mintTable[0]
                 }
-                console.log("**** after installing my me entry mintTable=" + lib_1.dump(mintTable));
+                //console.log("**** after installing my me entry mintTable="+dump(mintTable));
                 //                        mintTable.pop(); //pop off the genesis mint0
                 //                        console.log("****after POP mintTable="+dump(mintTable));
                 //                        mintTable.push(pulseGroup.me);
@@ -991,7 +991,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     newPulseGroup.nodeCount++;
                 }
                 ///console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
-                console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = " + lib_1.dump(myPulseGroup));
+                console.log("* * Synchronized pulseGroup = " + lib_1.dump(myPulseGroup));
             });
         });
     };
