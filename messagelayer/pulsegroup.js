@@ -814,6 +814,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
+                    if (newPulseGroup.isGenesisNode()) {
+                        if ((lib_1.now() - this.mintTable[m].lastPulseTimestamp) > newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                            console.log("DELETEING MINT with old timestamp " + this.mintTable[m].geo);
+                            this.mintTable[m] = null;
+                        }
+                    }
                     //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                     //delete this.mintTable[m];
                 }
