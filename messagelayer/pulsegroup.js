@@ -826,6 +826,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
                     this.pulses[p].pktLoss++;
+                    if (newPulseGroup.isGenesisNode()) {
+                        if (lib_1.now() - this.pulses[p].pulseTimestamp > 10 * newPulseGroup.cycleTime * 1000) {
+                            console.log("DELETEING PULSE with old timestamp " + this.pulses[p].geo);
+                            delete this.pulses[p];
+                        }
+                    }
                     //delete this.pulses[p];
                 }
             }
