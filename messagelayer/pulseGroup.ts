@@ -1138,7 +1138,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
         var http = require("http");
-        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/?pulsegroup="+this.groupName+"&mint="+newPulseGroup.mintTable[0].mint);
+        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup?pulsegroup="+this.groupName+"&mint="+newPulseGroup.mintTable[0].mint);
         var thisGroup=this.groupName;
         console.log("syncGenesisPulseGroup(): url="+url);
 
