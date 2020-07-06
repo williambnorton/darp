@@ -806,7 +806,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     //  all pulseTimes are assumed accurate to my local clock
     newPulseGroup.timeout = function () {
-        var nodeipy = [];
+        //var nodeipy=[];
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
@@ -827,8 +827,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         }
         for (var p in this.pulses) {
             if (this.pulses[p] && this.pulses[p].lastPulseTimestamp != 0) {
-                if (lib_1.now() - this.pulses[p].pulseTimestamp > newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
-                    //console.log("Clearing OWL in pulse entry"+this.pulses[p].geo);
+                var elapsedSecondsSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp) / 1000;
+                console.log(this.pulses[p].geo + " elapsedSecondsSincePulse=" + elapsedSecondsSincePulse);
+                if (elapsedSecondsSincePulse > newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                    console.log("Non-respondong node Clearing OWL in pulse entry" + this.pulses[p].geo);
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
                     this.pulses[p].pktLoss++;
