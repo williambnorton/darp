@@ -92,8 +92,8 @@ var pulseGroup = {
     //    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
     groupName: me.geo + ".1",
     groupOwner: me.geo,
-    me: me,
-    genesis: genesis,
+    //    me : me,
+    //    genesis: genesis,
     mintTable: [
         me, genesis
     ],
@@ -106,8 +106,8 @@ var pulseGroup = {
     nextMint: 2,
     cycleTime: 1
 };
-pulseGroup.me = me;
-pulseGroup.genesis = genesis;
+//pulseGroup.me=me;
+//pulseGroup.genesis=genesis;
 var pulseGroups = (_b = {}, _b[me.geo + ".1"] = pulseGroup, _b);
 pulseGroups = {}; //[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -915,7 +915,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 console.log("mintTable=" + lib_1.dump(mintTable));
                 console.log("****mintTable from genesis node=" + lib_1.dump(mintTable));
                 if (groupOwnerPulseGroup.groupOwner != me.geo)
-                    mintTable[0] = me; //wbnwbnwbn <-- but also need to set group
+                    mintTable[0] = newPulseGroup.me; //wbnwbnwbn INSTALL MY mintTable[0]
                 console.log("**** after installing my me entry mintTable=" + lib_1.dump(mintTable));
                 //                        mintTable.pop(); //pop off the genesis mint0
                 //                        console.log("****after POP mintTable="+dump(mintTable));

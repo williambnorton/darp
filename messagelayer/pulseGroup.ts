@@ -119,8 +119,8 @@ var pulseGroup = {                 //my pulseGroup Configuration
 //    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
         groupName : me.geo+".1",    //
     groupOwner : me.geo,
-    me : me,
-    genesis: genesis,
+//    me : me,
+//    genesis: genesis,
     mintTable: [
        me,genesis
     ],           
@@ -134,8 +134,8 @@ var pulseGroup = {                 //my pulseGroup Configuration
     cycleTime : 1,      //pulseGroup-wide setting: number of seconds between pulses
 
 };
-pulseGroup.me=me;
-pulseGroup.genesis=genesis;
+//pulseGroup.me=me;
+//pulseGroup.genesis=genesis;
 var pulseGroups={[me.geo+".1"] : pulseGroup};
 pulseGroups={}; //[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -659,8 +659,6 @@ app.get('/nodefactory', function(req, res) {
     newNodePulseGroup.mintTable[0]=newNode;
 
 
-
-
     //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
     //newNodePulseGroup.mintTable[0]=newNode;
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
@@ -1099,12 +1097,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 console.log("groupName="+dump(groupOwnerPulseGroup.groupName));
                 console.log("mintTable="+dump(mintTable));
 
-                    console.log("****mintTable from genesis node="+dump(mintTable));
+                console.log("****mintTable from genesis node="+dump(mintTable));
 
-                    if (groupOwnerPulseGroup.groupOwner!=me.geo) 
-                        mintTable[0]=me;//wbnwbnwbn <-- but also need to set group
+                if (groupOwnerPulseGroup.groupOwner!=me.geo) 
+                    mintTable[0]=newPulseGroup.me;  //wbnwbnwbn INSTALL MY mintTable[0]
 
-                    console.log("**** after installing my me entry mintTable="+dump(mintTable));
+                console.log("**** after installing my me entry mintTable="+dump(mintTable));
 //                        mintTable.pop(); //pop off the genesis mint0
 //                        console.log("****after POP mintTable="+dump(mintTable));
 
@@ -1112,25 +1110,25 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 //                        console.log("**** after Push() mintTable="+dump(mintTable));
 
 
-                    var pulses=groupOwnerPulseGroup.pulses;
-                    for (var pulse in pulses) {             //Add all mints that we don't have
-                        var genesisPulseEntry=pulses[pulse];
-                        if (typeof newPulseGroup.pulses[pulse] == "undefined") {
-                            console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
-                            newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
-                        }
+                var pulses=groupOwnerPulseGroup.pulses;
+                for (var pulse in pulses) {             //Add all mints that we don't have
+                    var genesisPulseEntry=pulses[pulse];
+                    if (typeof newPulseGroup.pulses[pulse] == "undefined") {
+                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
+                        newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
                     }
-                    for (var pulse in newPulseGroup.pulses) {  //Delete all node we have that the group owner does not
-                        var myPulseEntry=newPulseGroup.pulses[pulse];
-                        if (typeof pulses[pulse] == "undefined") {
-                            console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
-                            newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
-                        }
+                }
+                for (var pulse in newPulseGroup.pulses) {  //Delete all node we have that the group owner does not
+                    var myPulseEntry=newPulseGroup.pulses[pulse];
+                    if (typeof pulses[pulse] == "undefined") {
+                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
+                        newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
                     }
-                    newPulseGroup.nodeCount=0;
-                    for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
-                    console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
-                    console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(pulseGroup));
+                }
+                newPulseGroup.nodeCount=0;
+                for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
+                console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
+                console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(pulseGroup));
 
                 
             });
