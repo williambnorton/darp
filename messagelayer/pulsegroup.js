@@ -914,8 +914,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 console.log("groupName=" + lib_1.dump(groupOwnerPulseGroup.groupName));
                 console.log("mintTable=" + lib_1.dump(mintTable));
                 console.log("****mintTable from genesis node=" + lib_1.dump(mintTable));
-                if (groupOwnerPulseGroup.groupOwner != me.geo)
+                if (groupOwnerPulseGroup.groupOwner != me.geo) {
                     mintTable[0] = newPulseGroup.me; //wbnwbnwbn INSTALL MY mintTable[0]
+                }
                 console.log("**** after installing my me entry mintTable=" + lib_1.dump(mintTable));
                 //                        mintTable.pop(); //pop off the genesis mint0
                 //                        console.log("****after POP mintTable="+dump(mintTable));
