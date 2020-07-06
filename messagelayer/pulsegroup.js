@@ -461,7 +461,7 @@ app.get('/asset-manifest.json', function (req, res) {
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
 //
-app.get('/pulseGroup/:pulsegroup', function (req, res) {
+app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
     //console.log("fetching '/pulseGroup' &pulsegroup="+req.params.pulsegroup);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -473,6 +473,12 @@ app.get('/pulseGroup/:pulsegroup', function (req, res) {
         for (var pulseGroup in myPulseGroups) {
             //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (myPulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
+                var mint = 0;
+                if (typeof req.params.mint == "undefined") //use our mint 0
+                    mint = parseInt(req.params.mint); //or send mint0 of caller
+                var clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup])); //clone my pulseGroup obecjt 
+                //newNodePulseGroup.me=newNode;
+                clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; //assign him his mint and config
                 res.end(JSON.stringify(myPulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
@@ -947,7 +953,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup = function () {
         var http = require("http");
-        var url = "http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulseGroup" + "/" + this.groupName;
+        var url = encodeURI('http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulseGroup"+"/"+this.groupName+"?mint="+newPulseGroup.mintTable[0].mint');
         var thisGroup = this.groupName;
         console.log("syncGenesisPulseGroup(): url=" + url);
         http.get(url, function (res) {
@@ -966,6 +972,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 if (groupOwnerPulseGroup.groupOwner != me.geo) {
                     mintTable[0] = newPulseGroup.mintTable[0]; //wbnwbnwbn INSTALL MY mintTable[0]
                 }
+                newPulseGroup.mintTable = mintTable; //with us as #0, we have the new PulseGroup mintTable
                 //console.log("**** after installing my me entry mintTable="+dump(mintTable));
                 //                        mintTable.pop(); //pop off the genesis mint0
                 //                        console.log("****after POP mintTable="+dump(mintTable));
