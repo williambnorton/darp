@@ -469,9 +469,8 @@ app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
     //  pulseGroup 
     //
     if (typeof req.params.pulsegroup != "undefined") {
-        //console.log("/pulseGroup/:pulsegroup pulseGroup specified");
+        console.log("pulsegroup=" + req.params.pulsegroup + " mint=" + req.params.mint);
         for (var pulseGroup in myPulseGroups) {
-            //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
             if (myPulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
                 var mint = 0;
                 if (typeof req.params.mint == "undefined") //use our mint 0
@@ -479,6 +478,7 @@ app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
                 var clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup])); //clone my pulseGroup obecjt 
                 //newNodePulseGroup.me=newNode;
                 clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; //assign him his mint and config
+                console.log("pulsegroup delivering cloned pulseGroup with customer mint0" + lib_1.dump(clonedPulseGroup));
                 res.end(JSON.stringify(myPulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
