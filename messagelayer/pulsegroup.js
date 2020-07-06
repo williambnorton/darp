@@ -479,7 +479,8 @@ app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
                 //newNodePulseGroup.me=newNode;
                 clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; //assign him his mint and config
                 console.log("pulsegroup delivering cloned pulseGroup with customer mint0" + lib_1.dump(clonedPulseGroup));
-                res.end(JSON.stringify(myPulseGroups[pulseGroup], null, 2));
+                //res.end(JSON.stringify(myPulseGroups[pulseGroup], null, 2));
+                res.end(JSON.stringify(clonedPulseGroup, null, 2)); //send the cloned group with his mint as mint0
                 return; //we sent the more specific
             }
         }
@@ -830,7 +831,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedSecondsSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp) / 1000;
                 console.log(this.pulses[p].geo + " elapsedSecondsSincePulse=" + elapsedSecondsSincePulse);
                 if (elapsedSecondsSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
-                    console.log("Non-respondong node Clearing OWL in pulse entry" + this.pulses[p].geo);
+                    console.log("Non-respondong node Clearing OWL in pulse entry " + this.pulses[p].geo);
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
                     this.pulses[p].pktLoss++;
@@ -1012,7 +1013,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     newPulseGroup.nodeCount++;
                 }
                 ///console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
-                console.log("* * Synchronized pulseGroup = " + lib_1.dump(myPulseGroup));
+                //console.log("* * Synchronized pulseGroup = "+dump(myPulseGroup));
             });
         });
     };
