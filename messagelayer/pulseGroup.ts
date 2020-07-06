@@ -157,6 +157,18 @@ function instrumentation() {    //this should get its own file
 //    txt += '<link rel = "stylesheet" type = "text/css" href = "http://'+me.ipaddr+':'+me.port+'/darp.css" /> '
     txt += "<style>"
     txt += ' \
+    p,hr,tr,th { font-size: 10px } \
+  \
+    .right { text-align: right;display: inline-block; } \
+    .left{ text-align: left;display: inline-block; } \
+\
+    h1 { font-size: 14px; text-align: center;;display: inline-block; } \
+    h2 { font-size: 12px; text-align: center;;display: inline-block; } \
+    \
+    table, th, td { \
+      border: 1px solid black; \
+      padding: 2px; \
+    } \
     .mintTable tr:first-child td { \
         vertical-align: top; \
     } \
