@@ -157,10 +157,10 @@ function instrumentation() {    //this should get its own file
 //    txt += '<link rel = "stylesheet" type = "text/css" href = "http://'+me.ipaddr+':'+me.port+'/darp.css" /> '
     txt += "<style>"
     txt += ' \
-    .srlist tr:first-child td { \
+    .mintTable tr:first-child td { \
         vertical-align: top; \
     } \
-    .srlist tr:first-child { \
+    .mintTable tr:first-child { \
         color: blue; \
     } \
      \
@@ -374,7 +374,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
         //  Externalize mintTable 
         //
         //console.log(ts()+"config.mintTable="+dump(config.mintTable));
-        txt += '<br><h2>mintTable</h2><table>';
+        txt += '<br><h2>mintTable</h2><table class="mintTable">';
         txt += "<tr>";
         txt += "<th>mint</th>";
         txt += "<th>geo</th>";
