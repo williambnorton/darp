@@ -115,7 +115,7 @@ interface PulseGroup {
     cycleTime:number;
 } 
 
-var pulseGroup = {                 //my pulseGroup Configuration
+var myPulseGroup = {                 //my pulseGroup Configuration
 //    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
         groupName : me.geo+".1",    //
     groupOwner : me.geo,
@@ -136,8 +136,8 @@ var pulseGroup = {                 //my pulseGroup Configuration
 };
 //pulseGroup.me=me;
 //pulseGroup.genesis=genesis;
-var pulseGroups={[me.geo+".1"] : pulseGroup};
-pulseGroups={}; //[me.geo+".1"] : pulseGroup};
+var myPulseGroups={[me.geo+".1"] : myPulseGroup};
+myPulseGroups={}; //[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
@@ -249,8 +249,8 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     txt += '<h1>DARP Node '+me.geo+' http://'+me.ipaddr+":"+me.port+'</h1>';
     txt += '<p id="dateTime">Updated: '+ new Date() +' </p>'
 
-    for (var p in pulseGroups) {
-        var pulseGroup=pulseGroups[p];
+    for (var p in myPulseGroups) {
+        var pulseGroup=myPulseGroups[p];
             //
         //  Externalize pulse structures 
         //
@@ -341,8 +341,8 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     }
 
 
-    for (var p in pulseGroups) {
-        var pulseGroup=pulseGroups[p];
+    for (var p in myPulseGroups) {
+        var pulseGroup=myPulseGroups[p];
         //
         //  Externalize mintTable 
         //
@@ -443,7 +443,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     
     
     txt += ""
-    txt += JSON.stringify(pulseGroups,null,2);
+    txt += JSON.stringify(myPulseGroups,null,2);
     
     txt += "</body>";
     txt += "</html>"
@@ -513,10 +513,10 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
     //
     if (typeof req.params.pulsegroup != "undefined") { 
         //console.log("/pulseGroup/:pulsegroup pulseGroup specified");
-        for (var pulseGroup in pulseGroups) {
+        for (var pulseGroup in myPulseGroups) {
             //console.log("req.params.pulsegroup="+req.params.pulsegroup+" pulseGroups[pulseGroup].groupName="+pulseGroups[pulseGroup].groupName);
-            if (pulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
-                res.end(JSON.stringify(pulseGroups[pulseGroup], null, 2));
+            if (myPulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
+                res.end(JSON.stringify(myPulseGroups[pulseGroup], null, 2));
                 return; //we sent the more specific
             }
         }
@@ -525,20 +525,20 @@ app.get('/pulseGroup/:pulsegroup', function(req, res) {
     }
     else    
         console.log("No pulseGroup specified");
-        res.end(JSON.stringify(pulseGroups, null, 2));
+        res.end(JSON.stringify(myPulseGroups, null, 2));
     return
 });
 app.get(['/pulseGroups','/state','/me'], function(req, res) {
     //console.log("fetching '/pulseGroups' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroups, null, 2)); 
+    res.end(JSON.stringify(myPulseGroups, null, 2)); 
 });
 app.get('/mintTable', function(req, res) {
     console.log("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(pulseGroups, null, 2)); 
+    res.end(JSON.stringify(myPulseGroups, null, 2)); 
 });
 //// nodeFactory
 //       Configuration for node - allocate a mint
@@ -602,7 +602,7 @@ app.get('/nodefactory', function(req, res) {
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(pulseGroup)); 
+        res.end(JSON.stringify(myPulseGroup)); 
         return;
     }
 
@@ -619,20 +619,20 @@ app.get('/nodefactory', function(req, res) {
 //
 //  First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
 //
-    for (var mint in pulseGroup.mintTable) {
+    for (var mint in myPulseGroup.mintTable) {
 //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
-        if (pulseGroup.mintTable[mint] && pulseGroup.mintTable[mint].ipaddr==incomingIP &&  pulseGroup.mintTable[mint].port==port) {
+        if (myPulseGroup.mintTable[mint] && myPulseGroup.mintTable[mint].ipaddr==incomingIP &&  myPulseGroup.mintTable[mint].port==port) {
             console.log("deleting previous mint for this node: "+incomingIP+":"+port+" mint #"+mint);
-            pulseGroup.mintTable.splice(parseInt(mint));   //make sure not do delete me or genesis node
+            myPulseGroup.mintTable.splice(parseInt(mint));   //make sure not do delete me or genesis node
             //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
         }
     }
     //
     //  Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     //
-    var newMint=pulseGroup.nextMint++;
+    var newMint=myPulseGroup.nextMint++;
     console.log(geo+": mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
-    pulseGroup.pulses[geo + ":" + pulseGroup.groupName] = makePulseEntry(newMint, geo, pulseGroup.groupName, incomingIP, port, VERSION);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = makePulseEntry(newMint, geo, myPulseGroup.groupName, incomingIP, port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
 
 
@@ -642,11 +642,11 @@ app.get('/nodefactory', function(req, res) {
     //  mintTable - first [0] is me and [1] is genesis
     // Here is a little code
     var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
-    pulseGroup.mintTable[newMint]=newNode;  //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+    myPulseGroup.mintTable[newMint]=newNode;  //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
-    console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${pulseGroup.groupName}`);
-    console.log("After adding node, pulseGroup="+dump(pulseGroup));
-    pulseGroup.nodeCount++;
+    console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
+    console.log("After adding node, pulseGroup="+dump(myPulseGroup));
+    myPulseGroup.nodeCount++;
     //TODO: check for duplicates - search for ipaddr:port that matches
 
     //console.log("BeforeCloning, pulseGroup="+dump(pulseGroup));
@@ -654,7 +654,7 @@ app.get('/nodefactory', function(req, res) {
     //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
     
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
-    let newNodePulseGroup = JSON.parse(JSON.stringify(pulseGroup));    //clone my pulseGroup obecjt 
+    let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));    //clone my pulseGroup obecjt 
     newNodePulseGroup.me=newNode;
     newNodePulseGroup.mintTable[0]=newNode;
 
@@ -682,7 +682,7 @@ app.get('/nodefactory', function(req, res) {
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
     //console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
 //    pulseGroups=[pulseGroup];
-    var pulseGroups={[me.geo+".1"] : pulseGroup};
+    var pulseGroups={[me.geo+".1"] : myPulseGroup};
 
 });
 
@@ -995,7 +995,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         recvPulses(me.port,function(incomingPulse:PulseEntry) {
             //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
             //console.log("myPulseGroup="+dump(pulseGroup));
-            var myPulseEntry=pulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
+            var myPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
             var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
             //console.log(`associated ${incomingPulse.mint} mintEntry=`+dump(mintEntry));
 
@@ -1128,7 +1128,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 newPulseGroup.nodeCount=0;
                 for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
                 console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
-                console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(pulseGroup));
+                console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(myPulseGroup));
 
                 
             });
@@ -1160,8 +1160,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
     //if (!pulseGroup.isGenesisNode) pulseGroups.push(newPulseGroup);
     //else
-    pulseGroup=newPulseGroup; 
-    pulseGroups[newPulseGroup.groupName]=newPulseGroup;  //for now genesis node has no others
+    myPulseGroup=newPulseGroup; 
+    myPulseGroups[newPulseGroup.groupName]=newPulseGroup;  //for now genesis node has no others
     setTimeout(newPulseGroup.checkSWversion,5*1000);  //check that we have the best software
 
 });
