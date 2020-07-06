@@ -910,7 +910,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         console.log("Group Owner has newer software than we do (" + me.version + " vs " + incomingPulse.version + "). QUit, Rejoin, and reload new SW");
                         process.exit(36); //SOFTWARE RELOAD and RECONNECT
                     }
+                    //
+                    //  groupOwner controls population.
+                    // - resync if groupOwner has diff config
                     var ary = myPulseEntry.owls.split(",");
+                    var owlCount = 0;
                     for (var owlEntry in ary) {
                         //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                         var m = ary[owlEntry].split("=")[0];
@@ -919,7 +923,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                             console.log("Owner announced a NEW MINT ENTRY - syncing with genesis node for config");
                             return newPulseGroup.syncGenesisPulseGroup();
                         }
+                        owlCount++;
                     }
+                    console.log("groupOwner tells us there are " + owlCount + " nodes in thie pulseGroup and we have " + newPulseGroup.nodeCount);
+                    //TODO: Also resync if the groupOwner has removed an item
                     //console.log("recvPulses - group owner population is in tact");
                 }
             }
