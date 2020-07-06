@@ -486,7 +486,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     
     
     txt += ""
-    txt += '<p class="raw">'+JSON.stringify(myPulseGroups,null,2)+'</p>';
+    txt += '<p id="raw">'+JSON.stringify(myPulseGroups,null,2)+'</p>';
     
     txt += "</body>";
     txt += "</html>"
@@ -1178,7 +1178,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
                 newPulseGroup.nodeCount=0;
                 for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
-                console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
+                ///console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
                 console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = "+dump(myPulseGroup));
 
                 

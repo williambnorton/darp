@@ -411,7 +411,7 @@ function instrumentation() {
         txt += "</table>";
     }
     txt += "";
-    txt += '<p class="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
+    txt += '<p id="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
     txt += "</body>";
     txt += "</html>";
     //console.log("txt="+txt);
@@ -990,7 +990,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 for (var pulse in newPulseGroup.pulses) {
                     newPulseGroup.nodeCount++;
                 }
-                console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = " + newPulseGroup.nodeCount);
+                ///console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
                 console.log("* * * * * * *  * * * * * * * * * * * * *  * NEW pulseGroup = " + lib_1.dump(myPulseGroup));
             });
         });
