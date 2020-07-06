@@ -166,7 +166,7 @@ function instrumentation() {
     txt += "<script>";
     txt += 'var nodeCountLastTime=0;'; //We start out with ourselves only
     txt += 'function fetchState() {';
-    txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";';
+    txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";'; //For instruementation show multiple pulseGorups
     //txt += 'console.log("url="+url);';
     txt += '   $.getJSON(url, function(config) {';
     txt += '         for (var n in config) { ';
@@ -193,6 +193,8 @@ function instrumentation() {
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
     //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
     txt += '             $("#dateTime").html( "<div class=\'updated\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+    txt += '             $("#raw").text( JSON.stringify(myPulseGroups,null,2));'; //wbnwbnwbnwbnwbnwnbn
+    txt += '<p class="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
     //      Render table from information in the state fetched from node
     //
     txt += '      var totalEarn=0.000000;';
