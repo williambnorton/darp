@@ -953,7 +953,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup = function () {
         var http = require("http");
-        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup?pulsegroup=" + this.groupName + "&mint=" + newPulseGroup.mintTable[0].mint);
+        var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + newPulseGroup.mintTable[0].mint);
         var thisGroup = this.groupName;
         console.log("syncGenesisPulseGroup(): url=" + url);
         http.get(url, function (res) {
