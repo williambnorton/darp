@@ -982,7 +982,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {
                 var elapsedMSincePulse=(now()-this.mintTable[m].lastPulseTimestamp);
-                console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
+                //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
                     console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                     this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
