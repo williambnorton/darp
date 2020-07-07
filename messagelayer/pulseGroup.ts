@@ -1160,6 +1160,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  copy mint table and update (add/del) pulseObject pulse entries so we match the genesis node
     //
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
+        if (newPulseGroup.isGenesisNode()) return console.log(ts()+"Genesis node does not sync with itself");
         var http = require("http");
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/"+this.groupName+"/"+newPulseGroup.mintTable[0].mint);
         var thisGroup=this.groupName;
