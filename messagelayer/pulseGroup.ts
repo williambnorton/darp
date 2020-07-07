@@ -987,9 +987,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     this.mintTable[m].state="NR";  //We don't know this node's state
 
                     if (newPulseGroup.isGenesisNode()) {
-                        if ((now()-this.mintTable[m].lastPulseTimestamp)>newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
+                        var elapsedSecondsSincePulse=(now()-this.mintTable[m].lastPulseTimestamp)/1000;
+                        if (elapsedSecondsSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
                             console.log("DELETEING MINT with old timestamp "+this.mintTable[m].geo);
-                            //this.mintTable[m]=null;
+                            this.mintTable[m]=null;
                         }
                     }
 
@@ -1004,14 +1005,16 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedSecondsSincePulse=(now()-this.pulses[p].pulseTimestamp)/1000;
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedSecondsSincePulse > 2*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                    console.log("Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo);
+                    console.log(ts()+"Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo);
                     this.pulses[p].owl=NO_OWL;
                     this.pulses[p].owls="1";
                     this.pulses[p].pktLoss++;
                     if (newPulseGroup.isGenesisNode()) {
+                        console.log(`I am Genesis Node: ${this.pulses[p].geo}`);
                         if ( now()-this.pulses[p].pulseTimestamp> 10 * newPulseGroup.cycleTime*1000) {
-                            console.log("DELETEING PULSE with old timestamp "+this.pulses[p].geo);
-                            //delete this.pulses[p];
+                            console.log("ts() - Genesis would be DELETEING PULSE with old timestamp "+this.pulses[p].geo);
+                            if (newPulseGroup.mintTable[this.pulses[p].mint]==null) //delete this.pulses[p];
+                                delete this.pulses[p];
                         }
                     }
                     //delete this.pulses[p];
