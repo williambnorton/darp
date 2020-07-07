@@ -786,7 +786,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
             newPulseGroup.timeout(); //and timeout the non-responders
             if (newPulseGroup.adminControl == 'RESYNCH') {
-                console.log("Resynching with genesis node...");
+                console.log(lib_1.ts() + "Resynching with genesis node...");
                 newPulseGroup.adminControl = '';
                 newPulseGroup.syncGenesisPulseGroup(); //fetch new config from genesis
             }
