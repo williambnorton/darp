@@ -290,7 +290,11 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     txt += '</head>';
     txt += '<body>';
     txt += '<h1>DARP Node '+me.geo+' http://'+me.ipaddr+":"+me.port+'</h1>';
-    txt += '<p id="dateTime">Updated: '+ new Date() +' </p>'
+
+    var d=new Date();
+    var timeStr=d.toString().split(' ')[4];
+
+    txt += '<p id="dateTime">*Refresh: '+ timeStr +' </p>'
 
     for (var p in myPulseGroups) {
         var pulseGroup=myPulseGroups[p];
