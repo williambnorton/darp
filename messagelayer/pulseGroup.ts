@@ -564,7 +564,7 @@ app.get('/pulseGroup/:pulsegroup/:mint', function(req, res) {
         for (var pulseGroup in myPulseGroups) {
             if (myPulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
                 var mint=0;
-                if (typeof req.params.mint == "undefined")  //use our mint 0
+                if (typeof req.params.mint != "undefined")  //use our mint 0
                     mint=parseInt(req.params.mint)          //or send mint0 of caller
                 
                 let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));    //clone my pulseGroup obecjt 
