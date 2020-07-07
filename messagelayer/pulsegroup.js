@@ -811,11 +811,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                if ((lib_1.now() - this.mintTable[m].lastPulseTimestamp) > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                var elapsedSecondsSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp) / 1000;
+                console.log("elapsed tiome since last pulse=" + elapsedSecondsSincePulse);
+                if (elapsedSecondsSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     console.log("Clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
-                    var elapsedSecondsSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp) / 1000;
                     if (newPulseGroup.isGenesisNode()) {
                         var elapsedSecondsSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp) / 1000;
                         console.log("genesis node :elapsedSecondsSincePulse");
