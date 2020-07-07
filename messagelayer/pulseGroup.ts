@@ -977,22 +977,26 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     //  all pulseTimes are assumed accurate to my local clock
     newPulseGroup.timeout=function() {      //developing here - do not refactor yet
-        console.log("timeout():");
         //var nodeipy=[];
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {
+                
                 if ((now()-this.mintTable[m].lastPulseTimestamp) > 2 * newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                    //console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
+                    console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                     this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
                     this.mintTable[m].state="NR";  //We don't know this node's state
+                    var elapsedSecondsSincePulse=(now()-this.mintTable[m].lastPulseTimestamp)/1000;
 
                     if (newPulseGroup.isGenesisNode()) {
                         var elapsedSecondsSincePulse=(now()-this.mintTable[m].lastPulseTimestamp)/1000;
+                        console.log("genesis node :elapsedSecondsSincePulse");
                         if (elapsedSecondsSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
                             console.log("timeout(): DELETEING MINT with old timestamp "+this.mintTable[m].geo);
                             this.mintTable[m]=null;
                         }
+                    } else {
+                        //we may timeout
                     }
 
                     //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
