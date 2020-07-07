@@ -811,16 +811,15 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                var elapsedSecondsSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp) / 1000;
-                console.log("elapsed tiome since last pulse=" + elapsedSecondsSincePulse);
-                if (elapsedSecondsSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                var elapsedMSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp);
+                console.log("elapsed tiome since last pulse=" + elapsedMSincePulse);
+                if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     console.log("Clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) {
-                        var elapsedSecondsSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp) / 1000;
                         console.log("genesis node :elapsedSecondsSincePulse");
-                        if (elapsedSecondsSincePulse > 5 * newPulseGroup.cycleTime * 1000) { //TIMEOUT MINT after 5 seconds
+                        if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime * 1000) { //TIMEOUT MINT after 5 seconds
                             console.log("timeout(): DELETEING MINT with old timestamp " + this.mintTable[m].geo);
                             this.mintTable[m] = null;
                         }
@@ -835,16 +834,16 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         }
         for (var p in this.pulses) {
             if (this.pulses[p] && this.pulses[p].lastPulseTimestamp != 0) {
-                var elapsedSecondsSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp) / 1000;
+                var elapsedMSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
-                if (elapsedSecondsSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     console.log(lib_1.ts() + "timout(): Non-respondong node Clearing OWL in pulse entry " + this.pulses[p].geo);
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
                     this.pulses[p].pktLoss++;
                     if (newPulseGroup.isGenesisNode()) {
                         console.log("I am Genesis Node: " + this.pulses[p].geo);
-                        if (lib_1.now() - this.pulses[p].pulseTimestamp > 10 * newPulseGroup.cycleTime * 1000) {
+                        if (elapsedMSincePulse > 10 * newPulseGroup.cycleTime * 1000) {
                             console.log(lib_1.ts() + "timeout() - Genesis DELETEING PULSE with old timestamp " + this.pulses[p].geo);
                             if (newPulseGroup.mintTable[this.pulses[p].mint] == null) //delete this.pulses[p];
                                 delete this.pulses[p];
