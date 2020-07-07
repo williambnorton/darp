@@ -984,7 +984,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedMSincePulse=(now()-this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                    console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
+                    //console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                     this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
                     this.mintTable[m].state="NR";  //We don't know this node's state
 
@@ -1009,7 +1009,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedMSincePulse=(now()-this.pulses[p].pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
-                    console.log(ts()+"timout(): Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo+":"+this.groupName);
+                    //console.log(ts()+"timout(): Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo+":"+this.groupName);
                     this.pulses[p].owl=NO_OWL;
                     this.pulses[p].owls="1";
                     this.pulses[p].pktLoss++;
