@@ -155,7 +155,7 @@ function instrumentation() {    //this should get its own file
     txt += '<script> function startTime() { var today = new Date(); var h = today.getHours(); var m = today.getMinutes(); var s = today.getSeconds(); m = checkTime(m); s = checkTime(s); document.getElementById(\'txt\').innerHTML = h + ":" + m + ":" + s; var t = setTimeout(startTime, 500); } function checkTime(i) { if (i < 10) {i = "0" + i};  return i; } </script>';
 //    txt += '<link rel = "stylesheet" type = "text/css" href = "http://drpeering.com/noia.css" /> '
 //    txt += '<link rel = "stylesheet" type = "text/css" href = "http://'+me.ipaddr+':'+me.port+'/darp.css" /> '
-    txt += "<style>"
+    txt += "<style>";  //inline so we don't have to do a fetch 
     txt += ' \
     p,hr,tr,th { font-size: 10px } \
   \
@@ -976,7 +976,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //    console.log("getMint() SHOULD BE timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
                     //delete this.mintTable[m];
                 //}
-                if ((this.mintTable[m].mint!=0) && (this.mintTable[m].mint==mint)) return this.mintTable[m];
+                console.log(`m=${m}`);
+                if ((m!="0") && (this.mintTable[m].mint==mint)) return this.mintTable[m];
             }
         }
         return null;
