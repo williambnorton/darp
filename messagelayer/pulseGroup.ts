@@ -1007,7 +1007,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         }
                     } else {
                         //we may timeout the group owner and kill the pulsegroup
-                        if (elapsedMSincePulse>60 * 1000 ) console.log("group owner has been unreachable for 1 minute");
+                        if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
                     }
 
                     //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
