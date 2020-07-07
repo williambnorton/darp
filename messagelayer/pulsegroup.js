@@ -803,7 +803,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //    console.log("getMint() SHOULD BE timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
                 //delete this.mintTable[m];
                 //}
-                console.log("m=" + m);
+                //console.log(`m=${m}`);
                 if ((m != "0") && (this.mintTable[m].mint == mint))
                     return this.mintTable[m];
             }
