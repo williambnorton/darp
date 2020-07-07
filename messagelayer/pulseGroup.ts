@@ -929,6 +929,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
 
     newPulseGroup.pulse=function() {
+
         var ipary:string[]=[], owls="";
         newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
@@ -955,6 +956,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
 
             newPulseGroup.timeout(); //and timeout the non-responders
+            if ( newPulseGroup.adminControl=='RESYNCH' ) {
+                console.log("Resynching with genesis node...");
+                newPulseGroup.adminControl=='';
+                newPulseGroup.syncGenesisPulseGroup();  //fetch new config from genesis
+            }
         }
     };
 
@@ -996,11 +1002,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) {
                         console.log("genesis node :elapsedSecondsSincePulse");
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
-                            console.log("timeout(): DELETEING MINT with old timestamp "+this.mintTable[m].geo);
+                            console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             this.mintTable[m]=null;
                         }
                     } else {
-                        //we may timeout
+                        //we may timeout the group owner and kill the pulsegroup
+                        if (elapsedMSincePulse>60 * 1000 ) console.log("group owner has been unreachable for 1 minute");
                     }
 
                     //Nodes can be upgraded to "BUSY" if someone else has a measurement to it
@@ -1070,6 +1077,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         setTimeout(newPulseGroup.checkSWversion,CHECK_SW_VERSION_CYCLE_TIME*1000);  //Every 60 seconds check we have the best software
     };
 
+    newPulseGroup.adminControl='';
     //
     //  recvPulses - 
     //
@@ -1090,13 +1098,16 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 /* wbnwbn */        myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
                 } else {
                     console.log(ts()+"recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis"+incomingPulse.geo);
-                    return newPulseGroup.syncGenesisPulseGroup();
+                    newPulseGroup.adminControl='RESYNCH';
+                    //return newPulseGroup.syncGenesisPulseGroup();
                     return ;  //we are done 
                 }
             } else {
                 if (mintEntry==null) {      //we have a pulse entry but no corresponding mint entry-->sync with genesis
                     console.log(ts()+"recvPulse(): We are out of sync with genesis node:  found my pulse Entry "+incomingPulse.geo+" but we have no mintEntry for this...should TODO force sync herew");
-                    return newPulseGroup.syncGenesisPulseGroup();
+                    //return newPulseGroup.syncGenesisPulseGroup();
+                    newPulseGroup.adminControl='RESYNCH'; 
+                    return;
                 }
             }
 
