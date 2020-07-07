@@ -570,7 +570,7 @@ app.get('/pulseGroup/:pulsegroup/:mint', function(req, res) {
                 let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));    //clone my pulseGroup obecjt 
                 //newNodePulseGroup.me=newNode;
                 clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  //assign him his mint and config
-                console.log("pulsegroup delivering cloned pulseGroup with customer mint0 for new mint #" +mint);//+dump(clonedPulseGroup));
+                console.log("pulsegroup delivering cloned pulseGroup with customer mint0 for new mint #" +mint+dump(clonedPulseGroup));
                 //res.end(JSON.stringify(myPulseGroups[pulseGroup], null, 2));
                 res.end(JSON.stringify(clonedPulseGroup, null, 2));  //send the cloned group with his mint as mint0
                 return; //we sent the more specific
@@ -584,6 +584,7 @@ app.get('/pulseGroup/:pulsegroup/:mint', function(req, res) {
         res.end(JSON.stringify(myPulseGroups, null, 2));
     return
 });
+
 app.get(['/pulseGroups','/state','/me'], function(req, res) {
     //console.log("fetching '/pulseGroups' ");
     res.setHeader('Content-Type', 'application/json');
@@ -591,6 +592,7 @@ app.get(['/pulseGroups','/state','/me'], function(req, res) {
     res.end(JSON.stringify(myPulseGroups, null, 2)); 
     return;
 });
+
 app.get('/mintTable', function(req, res) {
     console.log("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
