@@ -837,7 +837,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedMSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
-                    console.log(lib_1.ts() + "timout(): Non-respondong node Clearing OWL in pulse entry " + this.pulses[p].geo);
+                    console.log(lib_1.ts() + "timout(): Non-respondong node Clearing OWL in pulse entry " + this.pulses[p].geo + ":" + this.groupName);
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
                     this.pulses[p].pktLoss++;
