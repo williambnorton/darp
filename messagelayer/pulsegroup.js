@@ -818,7 +818,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) {
                         var elapsedSecondsSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp) / 1000;
                         if (elapsedSecondsSincePulse > 5 * newPulseGroup.cycleTime * 1000) { //TIMEOUT MINT after 5 seconds
-                            console.log("DELETEING MINT with old timestamp " + this.mintTable[m].geo);
+                            console.log("timeout(): DELETEING MINT with old timestamp " + this.mintTable[m].geo);
                             this.mintTable[m] = null;
                         }
                     }
@@ -832,14 +832,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedSecondsSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp) / 1000;
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedSecondsSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
-                    console.log(lib_1.ts() + "Non-respondong node Clearing OWL in pulse entry " + this.pulses[p].geo);
+                    console.log(lib_1.ts() + "timout(): Non-respondong node Clearing OWL in pulse entry " + this.pulses[p].geo);
                     this.pulses[p].owl = NO_OWL;
                     this.pulses[p].owls = "1";
                     this.pulses[p].pktLoss++;
                     if (newPulseGroup.isGenesisNode()) {
                         console.log("I am Genesis Node: " + this.pulses[p].geo);
                         if (lib_1.now() - this.pulses[p].pulseTimestamp > 10 * newPulseGroup.cycleTime * 1000) {
-                            console.log("ts() - Genesis would be DELETEING PULSE with old timestamp " + this.pulses[p].geo);
+                            console.log(lib_1.ts() + "timeout() - Genesis DELETEING PULSE with old timestamp " + this.pulses[p].geo);
                             if (newPulseGroup.mintTable[this.pulses[p].mint] == null) //delete this.pulses[p];
                                 delete this.pulses[p];
                         }
