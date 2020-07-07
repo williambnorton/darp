@@ -807,6 +807,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //      or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     //  all pulseTimes are assumed accurate to my local clock
     newPulseGroup.timeout = function () {
+        console.log("timeout():");
         //var nodeipy=[];
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
