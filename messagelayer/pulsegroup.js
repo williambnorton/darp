@@ -158,7 +158,7 @@ function instrumentation() {
     \
     .NR{ \
             color: black; \
-            background-color: red; \
+            background-color: pink; \
     }';
     txt += "</style>";
     //    txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
@@ -410,6 +410,7 @@ function instrumentation() {
         }
         txt += "</table>";
     }
+    txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
     txt += "";
     txt += '<p id="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
     txt += "</body>";
