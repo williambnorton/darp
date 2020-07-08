@@ -825,7 +825,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedMSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
-                    //console.log("Clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
+                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
@@ -1058,9 +1058,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
                 console.log("newPulseGroup.mintTable.length=" + newPulseGroup.mintTable.length);
                 newPulseGroup.nodeCount = newPulseGroup.mintTable.length;
-                //for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
-                ///console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
-                //console.log("* * Synchronized pulseGroup = "+dump(myPulseGroup));
             });
         });
     };
