@@ -1051,10 +1051,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
             }
         }
-        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
-        for (var p in this.pulses) {
-            newPulseGroup.nodeCount++;
-        }
+        newPulseGroup.modeCount=this.mintTable.length;
+//        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
+//        for (var p in this.pulses) {
+//            newPulseGroup.nodeCount++;
+//        }
     }
 
 
