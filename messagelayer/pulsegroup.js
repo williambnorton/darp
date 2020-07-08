@@ -803,7 +803,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
     };
     newPulseGroup.isGenesisNode = function () {
-        return newPulseGroup.mintTable[0].geo == newPulseGroup.owner;
+        return newPulseGroup.mintTable[0].geo == newPulseGroup.groupOwner;
     };
     newPulseGroup.getMint = function (mint) {
         for (var m in newPulseGroup.mintTable) {

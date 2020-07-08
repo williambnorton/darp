@@ -977,7 +977,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     };
 
     newPulseGroup.isGenesisNode=function():Boolean {
-        return newPulseGroup.mintTable[0].geo==newPulseGroup.owner;
+        return newPulseGroup.mintTable[0].geo==newPulseGroup.groupOwner;
     }
 
     newPulseGroup.getMint=function(mint:number):MintEntry|null {
