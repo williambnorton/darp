@@ -495,7 +495,7 @@ app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
     res.end(JSON.stringify(myPulseGroups, null, 2));
     return;
 });
-app.get(['/pulseGroups', '/state', '/me'], function (req, res) {
+app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     //console.log("fetching '/pulseGroups' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
