@@ -1051,7 +1051,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
             }
         }
-        newPulseGroup.modeCount=this.mintTable.length;
+        newPulseGroup.modeCount=this.pulses.length;
+        console.log("timeout(): setting newPulseGroup.nodeCount="+newPulseGroup.nodeCount);
+
 //        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
 //        for (var p in this.pulses) {
 //            newPulseGroup.nodeCount++;
@@ -1254,9 +1256,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
                     }
                 }
-                console.log("newPulseGroup.mintTable.length="+newPulseGroup.mintTable.length);
-                newPulseGroup.nodeCount=newPulseGroup.mintTable.length;
-                
+                //newPulseGroup.nodeCount=newPulseGroup.mintTable.length;
+                newPulseGroup.modeCount=newPulseGroup.pulses.length;
+                console.log("newPulseGroup.nodeCount="+newPulseGroup.nodeCount);
+
+
             });
         });
     };
