@@ -874,7 +874,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
             }
         }
-        newPulseGroup.modeCount = this.pulses.length;
+        newPulseGroup.modeCount = newPulseGroup.pulses.length;
         console.log("timeout(): setting newPulseGroup.nodeCount=" + newPulseGroup.nodeCount);
         //        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
         //        for (var p in this.pulses) {
