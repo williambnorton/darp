@@ -821,7 +821,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //var nodeipy=[];
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
-            if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+            if (m && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) { //ignore mintTable[0]
                 var elapsedMSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
