@@ -94,7 +94,7 @@ var server = app.listen(PORT, '0.0.0.0', function() {
 //  me should always be mintTable[0] (first item)
 //pulseGroup.me and pulseGroup.genesis should be there for convenience though
 
-const me:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
+const me:MintEntry=makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
         //All nodes also start out ready to be a genesis node for others
 const genesis:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); 
 var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
@@ -764,7 +764,7 @@ app.get('/nodefactory', function(req, res) {
     return { 
         mint: mint, 
         geo: geo,
-        state: (mint==me.mint)?DEFAULT_START_STATE:"me",
+        state: mint?DEFAULT_START_STATE:"me",
         bootTimestamp: now(), //RemoteClock on startup  ****
         version: version,   //software version running on remote system ********
         wallet: wallet,     // ** 
