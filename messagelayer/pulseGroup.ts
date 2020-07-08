@@ -247,7 +247,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt += '          }'
 
    //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
+//wbnwbnwbn   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
    txt += '          if (pulse.pulseTimestamp!="0")'
    txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
    txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");'
@@ -996,7 +996,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //var nodeipy=[];
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
-            if ( m && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {  //ignore mintTable[0]
+            if ( (m!="0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp!=0) {  //ignore mintTable[0]
                 var elapsedMSincePulse=(now()-this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
@@ -1004,9 +1004,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
                     this.mintTable[m].state="NR";  //We don't know this node's state
 
-                    if (newPulseGroup.isGenesisNode()) {
+                    if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("genesis node :elapsedSecondsSincePulse");
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
+                            console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
+                            console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
+                            console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
+                            console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             this.mintTable[m]=null;
                         }
@@ -1030,12 +1034,17 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     this.pulses[p].owl=NO_OWL;
                     this.pulses[p].owls="1";
                     this.pulses[p].pktLoss++;
-                    if (newPulseGroup.isGenesisNode()) {
+                    if (newPulseGroup.isGenesisNode()) {   /*GENESIS ONLY*/
                         console.log(`I am Genesis Node: ${this.pulses[p].geo}`);
                         if ( elapsedMSincePulse > 10 * newPulseGroup.cycleTime*1000) {
                             console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
-                            if (newPulseGroup.mintTable[this.pulses[p].mint]==null) //delete this.pulses[p];
+                            console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
+                            console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
+                            console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
+                            console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
+                            if (newPulseGroup.mintTable[this.pulses[p].mint]==null) { //delete this.pulses[p];
                                 delete this.pulses[p];
+                            }
                         }
                     }
                     //delete this.pulses[p];
