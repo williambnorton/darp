@@ -635,7 +635,7 @@ function makeMintEntry(mint, geo, port, incomingIP, publickey, version, wallet) 
     return {
         mint: mint,
         geo: geo,
-        state: mint ? DEFAULT_START_STATE : "me",
+        state: mint == 0 ? DEFAULT_START_STATE : "me",
         bootTimestamp: lib_1.now(),
         version: version,
         wallet: wallet,
@@ -826,6 +826,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedMSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
+                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
+                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
+                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
+                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                     console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
