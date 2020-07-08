@@ -819,7 +819,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  all pulseTimes are assumed accurate to my local clock
     newPulseGroup.timeout = function () {
         //var nodeipy=[];
-        var startingNodeCount = newPulseGroup.nodeCount;
+        var startingPulseEntryCount = newPulseGroup.pulses.length;
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
             if ((m != "0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) { //ignore mintTable[0]
@@ -875,9 +875,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
             }
         }
-        if (startingNodeCount != newPulseGroup.pulses.length) {
+        if (startingPulseEntryCount != newPulseGroup.pulses.length) {
             newPulseGroup.nodeCount = newPulseGroup.pulses.length;
-            console.log("timeout(): nodeC0unt Changed from " + startingNodeCount + " setting newPulseGroup.nodeCount=" + newPulseGroup.pulses.length);
+            console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + newPulseGroup.pulses.length);
         }
         //        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
         //        for (var p in this.pulses) {
