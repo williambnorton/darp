@@ -464,7 +464,7 @@ app.get('/asset-manifest.json', function (req, res) {
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
 //
-app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
+app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
     //console.log("fetching '/pulseGroup' pulsegroup="+req.params.pulsegroup+" req.params.mint="+req.params.mint);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -490,10 +490,11 @@ app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
         //console.log("/pulseGroup/:pulsegroup returning pulseGroup specified "+req.params.pulsegroup);
         res.end(JSON.stringify(null));
     }
-    else
+    else {
         console.log("No pulseGroup specified");
-    res.end(JSON.stringify(myPulseGroups, null, 2));
-    return;
+        res.end(JSON.stringify(myPulseGroups, null, 2));
+        return;
+    }
 });
 app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     console.log("fetching '/pulseGroups' ");
