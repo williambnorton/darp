@@ -1254,8 +1254,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     }
                 }
                 console.log("newPulseGroup.mintTable.length="+newPulseGroup.mintTable.length);
-                newPulseGroup.nodeCount=0;
-                for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
+                newPulseGroup.nodeCount=newPulseGroup.mintTable.length;
+                //for (var pulse in newPulseGroup.pulses) { newPulseGroup.nodeCount++ }
                 ///console.log("* * * * * * *  * * * * * * * * * * * * *  * SETTING wbnwbnwbn nodeCount to = "+newPulseGroup.nodeCount);
                 //console.log("* * Synchronized pulseGroup = "+dump(myPulseGroup));
 
