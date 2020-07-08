@@ -829,7 +829,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
-                        console.log("genesis node :elapsedSecondsSincePulse");
+                        console.log("m=" + m + " genesis node elapsedMSincePulse=" + elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime * 1000) { //TIMEOUT MINT after 5 seconds
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
@@ -924,10 +924,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 if (mintEntry != null && (mintEntry.geo == incomingPulse.geo)) { //we found mint and matches incoming geo - should we check incomingIP also? We can.
                     //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
                     //TODO: Explore this - we should not need to do this.
-                    /* wbnwbn */ myPulseEntry = newPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group] = makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version);
+                    // /* wbnwbn */        myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
+                    console.log(lib_1.ts() + "recvPulses(): Valid pulse for a mint we known about" + incomingPulse.geo);
+                    //newPulseGroup.adminControl='RESYNCH';
+                    //return newPulseGroup.syncGenesisPulseGroup();
+                    //return ;  //we are done 
                 }
                 else {
-                    console.log(lib_1.ts() + "recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis" + incomingPulse.geo);
+                    console.log(lib_1.ts() + "recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis to get credentials for " + incomingPulse.geo);
                     newPulseGroup.adminControl = 'RESYNCH';
                     //return newPulseGroup.syncGenesisPulseGroup();
                     return; //we are done 
@@ -941,7 +945,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     return;
                 }
             }
-            //we expect mintEntry to be set to our mint entry
+            //we expect mintEntry to --> mint entry for this pulse
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
             if (myPulseEntry != null) {
                 newPulseGroup.ts = lib_1.now(); //We got a pulse - update the pulseGroup timestamp
@@ -979,7 +983,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         //console.log("Searching for mint "+m);
                         if (newPulseGroup.getMint(m) == null) {
                             console.log("Owner announced a NEW MINT ENTRY " + m + " - syncing with genesis node for config");
-                            return newPulseGroup.syncGenesisPulseGroup();
+                            newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
+                            return;
                         }
                         owlCount++;
                     }
@@ -1033,6 +1038,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     var genesisPulseEntry = pulses[pulse];
                     if (typeof newPulseGroup.pulses[pulse] == "undefined") {
                         console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
                         newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
                     }
                 }
@@ -1040,9 +1049,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     var myPulseEntry = newPulseGroup.pulses[pulse];
                     if (typeof pulses[pulse] == "undefined") {
                         console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
+                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                         newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
                     }
                 }
+                console.log("newPulseGroup.mintTable.length=" + newPulseGroup.mintTable.length);
                 newPulseGroup.nodeCount = 0;
                 for (var pulse in newPulseGroup.pulses) {
                     newPulseGroup.nodeCount++;
