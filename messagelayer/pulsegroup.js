@@ -762,6 +762,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     };
     //pulseGroup.pulse = function() {
     newPulseGroup.pulse = function () {
+        newPulseGroup.mintTable[0].state = "PULSING";
+        newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
         var ipary = [], owls = "";
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             ipary.push(nodeEntry.ipaddr + "_" + nodeEntry.port);
@@ -789,10 +791,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             newPulseGroup.timeout(); //and timeout the non-responders
             if (newPulseGroup.adminControl == 'RESYNCH') {
                 console.log(lib_1.ts() + "Resynching with genesis node...");
-                newPulseGroup.adminControl = '';
                 newPulseGroup.syncGenesisPulseGroup(); //fetch new config from genesis
+                newPulseGroup.adminControl = '';
             }
         }
+        newPulseGroup.mintTable[0].state = "me";
+        newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
     };
     newPulseGroup.isGenesisNode = function () {
         return newPulseGroup.mintTable[0].geo == newPulseGroup.owner;
@@ -1062,7 +1066,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                         console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                         console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                        newPulseGroup.pulses[pulse] = pulses[pulse]; //save our new pulse entry
+                        delete newPulseGroup.pulses[pulse]; //delete this pulse we have but groupOwner does not have
                     }
                 }
                 newPulseGroup.modeCount = newPulseGroup.pulses.length;
