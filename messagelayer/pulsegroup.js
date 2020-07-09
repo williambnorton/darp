@@ -799,8 +799,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 matrix.push({ s: nodeEntry.mint, d: newPulseGroup.mintTable[0].mint, owl: NO_OWL }); //This guy missed his pulse
             }
         });
-        newPulseGroup.matrix = matrix;
-        //console.log("could publish to subscribers matrix="+dump(newPulseGroup.matrix));
+        newPulseGroup.matrix = matrix; //replace existing matrix - 
+        //console.log("could publish to subscribers pulseGroup matrix="+dump(newPulseGroup.matrix));
     };
     //
     //  pulse()
@@ -983,7 +983,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
                 else {
                     if (!newPulseGroup.isGenesisNode()) {
-                        console.log(lib_1.ts() + "recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis to get credentials for " + incomingPulse.geo);
+                        console.log(lib_1.ts() + "recvPulses(): Found pulseEntry but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for " + incomingPulse.geo);
                         newPulseGroup.adminControl = 'RESYNCH';
                         //return newPulseGroup.syncGenesisPulseGroup();
                         return; //we are done 
