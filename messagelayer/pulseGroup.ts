@@ -949,7 +949,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var ary=nodeEntry.owls.split(",");
                 for(var owlEntry in ary) {
                     //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
-                    var m=ary[owlEntry].split("=")[0];
+                    var m=parseInt(ary[owlEntry].split("=")[0]);
                     var owl=NO_OWL;
                     var Sowl=ary[owlEntry].split("=")[1];
                     if (typeof Sowl != "undefined") owl=parseInt(Sowl);
