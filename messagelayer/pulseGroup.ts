@@ -1001,7 +1001,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix=function() {
-
+        return;//turning off this feature until stable
         var matrix:Number[][]=[];
         for (var pulse in newPulseGroup.pulses) {
             const nodeEntry=newPulseGroup.pulses[pulse];
@@ -1028,7 +1028,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
                 //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
                 //});
-                
+
 //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
                 console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
 

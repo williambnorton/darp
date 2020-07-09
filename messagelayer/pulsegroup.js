@@ -802,6 +802,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix = function () {
+        return; //turning off this feature until stable
         var matrix = [];
         for (var pulse in newPulseGroup.pulses) {
             var nodeEntry = newPulseGroup.pulses[pulse];
