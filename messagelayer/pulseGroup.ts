@@ -1005,6 +1005,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         var matrix:Number[][]=[];
         for (var pulse in newPulseGroup.pulses) {
             const nodeEntry=newPulseGroup.pulses[pulse];
+            console.log("processing "+pulse);
 //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             if ((now()-nodeEntry.pulseTimestamp<2 * 1000)) {  // VALID PULSE
                 //for each OWLS                 
