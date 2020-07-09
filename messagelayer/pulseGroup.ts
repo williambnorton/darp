@@ -948,7 +948,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 for(var owlEntry in ary) {
                     //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                     var m=ary[owlEntry].split("=")[0];
-                    var owl=ary[owlEntry].split("=")[1];
+                    var owl=NO_OWL;
+                    var Sowl=ary[owlEntry].split("=")[1];
+                    if (typeof Sowl != "undefined") owl=parseInt(Sowl));
                     //console.log("Searching for mint "+m);
                     console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
                     matrix.push( { src:m, dest:nodeEntry.mint, owl:owl } );  //pulse measured to me
