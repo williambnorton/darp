@@ -836,19 +836,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("m=" + m + " genesis node elapsedMSincePulse=" + elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime * 1000) { //TIMEOUT MINT after 5 seconds
-                            console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
-                            console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
-                            console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
-                            console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
                             this.mintTable[m] = null;
                         }
