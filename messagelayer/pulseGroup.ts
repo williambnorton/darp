@@ -1081,7 +1081,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
         if (newPulseGroup.groupOwner==me.geo) 
             return console.log("checkSWversion - genesis node never checks its own version");
-        console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
+        //console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         const url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);
         var http = require("http");
