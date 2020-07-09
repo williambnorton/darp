@@ -1003,7 +1003,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     newPulseGroup.buildMatrix=function() {
 
         var ts=now();
-        var matrix:Number[][]=[];
+        var matrix:Number[][];
         newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             if ((index!="0")&&(ts-nodeEntry.pulseTimestamp<2 * 1000)) {  //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
@@ -1034,6 +1034,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     matrix[nodeEntry.mint]=[];
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint]=NO_OWL;  //This guy missed his pulse - mark his entries
             }
+
         });
         newPulseGroup.matrix=matrix;    //replace existing matrix - 
         //console.log("could publish to subscribers pulseGroup matrix="+dump(newPulseGroup.matrix));

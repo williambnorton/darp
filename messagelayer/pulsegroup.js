@@ -803,7 +803,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.buildMatrix = function () {
         var ts = lib_1.now();
-        var matrix = [];
+        var matrix;
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             if ((index != "0") && (ts - nodeEntry.pulseTimestamp < 2 * 1000)) { //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
