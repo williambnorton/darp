@@ -964,7 +964,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 matrix.push( { src:nodeEntry.mint, dest:newPulseGroup.mintTable[0].mint, owl:NO_OWL } );  //This guy missed his pulse
             }
         });
-        console.log("matrix="+dump(matrix));
+        ///console.log("matrix="+dump(matrix));
         newPulseGroup.matrix=matrix;
     }
 //
