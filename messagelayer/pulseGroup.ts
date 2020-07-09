@@ -101,6 +101,12 @@ var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEnt
 
 //HERE these two me and genesis are the start of the mintTable
 
+interface OwlEntry {
+    s : number;     //source Mint
+    d : number;     //Detination Mint
+    o : number;     //one-way latency measurement
+};
+
 interface PulseGroup {
     groupName: string;
     groupOwner: string;
@@ -113,6 +119,7 @@ interface PulseGroup {
     nodeCount:number;
     nextMint:number;
     cycleTime:number;
+    matrix: OwlEntry[];
 } 
 
 var myPulseGroup = {                 //my pulseGroup Configuration
@@ -301,8 +308,69 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
 
     txt += '<p id="dateTime">*Refresh: '+ timeStr +' </p>'
 
+
+
     for (var p in myPulseGroups) {
         var pulseGroup=myPulseGroups[p];
+
+
+
+
+
+
+
+               //
+               //   show OWL Matrix table
+               //
+               txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+               txt += '<tr><th></th>'
+
+               //   print OWL headers
+               for (var col in pulseGroup.pulses) {
+                   var colEntry = pulseGroup.pulses[col];
+                   //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+                    txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " <b>" + colEntry.mint + "<b></a> </th>"
+                   //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
+               }
+               txt += "</tr>"
+
+               /*
+               //
+               //   print OWL matrix
+               //
+               for (var row in pulseGroup.matrix) {
+                   var rowEntry = pulseGroup.pulses[row];
+                   var cellState="RUNNING"; //unreachable     badkey   alert   
+                   txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
+                   for (var col in pulseGroup.pulses) {
+                       var colEntry = pulseGroup.pulses[col];  //
+                       var entryLabel = rowEntry.geo + "-" + colEntry.geo
+                       var owl = "";
+
+                        cellState=rowEntry.state
+                       if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
+                           (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
+                           owl = OWLMatrix[rowEntry.geo][colEntry.geo]
+                       }                       
+                       txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>"
+                   }
+                   txt += "</tr>"
+               }
+               */
+               txt += "</table>";
+
+
+
+
+
+
+
+
+
+
+
+
+
             //
         //  Externalize pulse structures 
         //
