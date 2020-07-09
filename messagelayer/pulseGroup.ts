@@ -1001,7 +1001,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix=function() {
-        return;//turning off this feature until stable
+        //return;//turning off this feature until stable
         var matrix:Number[][]=[];
         for (var pulse in newPulseGroup.pulses) {
             const nodeEntry=newPulseGroup.pulses[pulse];
@@ -1171,16 +1171,16 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
             }
         }
-        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
-        for (var p in this.pulses) {
-            newPulseGroup.nodeCount++;
+        
+        if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
+            newPulseGroup.nodeCount=newPulseGroup.pulses.length;
+            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=`+newPulseGroup.pulses.length);
         }
-//        if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
-//            newPulseGroup.nodeCount=newPulseGroup.pulses.length;
-//            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=`+newPulseGroup.pulses.length);
+//        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
+//        for (var p in this.pulses) {
+//            newPulseGroup.nodeCount++;
 //        }
-
-    newPulseGroup.buildMatrix();
+        newPulseGroup.buildMatrix();
     }
 
 
