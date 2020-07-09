@@ -832,7 +832,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 });
                 //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
                 console.log("nodeEntry.mint=" + nodeEntry.mint + " mymint=" + newPulseGroup.mintTable[0].mint);
-                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse
+                if (typeof matrix[nodeEntry.mint] == "undefined")
+                    matrix[nodeEntry.mint] = [];
+                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries
             }
         });
         newPulseGroup.matrix = matrix; //replace existing matrix - 
