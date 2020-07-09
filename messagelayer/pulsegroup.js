@@ -66,7 +66,7 @@ var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //------------------------ Environmentals loaded -----------------------
-//             start config/instrumentation web server
+//             start config/instrumentaton web server
 var express = require('express');
 var app = express();
 var server = app.listen(PORT, '0.0.0.0', function () {
@@ -841,9 +841,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
             }
         }
-        //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
-        //    for (var d in newPulseGroup.matrix[s])
-        //        console.log(`s=${s} d=${d} = ${newPulseGroup.matrix[s][d]}`);
+        for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
+            for (var d in newPulseGroup.matrix[s])
+                console.log("MATRIX s=" + s + " d=" + d + " = " + newPulseGroup.matrix[s][d]);
         newPulseGroup.matrix = matrix; //replace existing matrix - 
         //console.log("could publish to subscribers here pulseGroup matrix="+dump(newPulseGroup.matrix));
     };
