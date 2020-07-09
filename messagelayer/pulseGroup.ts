@@ -1002,7 +1002,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.buildMatrix=function() {
         var ts=now();
-        var matrix:Number[][];
+        var matrix:Number[][]=[];
         newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             if ((index!="0")&&(ts-nodeEntry.pulseTimestamp<2 * 1000)) {  //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
@@ -1019,7 +1019,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
                     matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint]=owl;  //pulse measured to me
                 }
-                matrix[nodeEntry.mint, newPulseGroup.mintTable[0].mint = owl  //pulse measured to me
+                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl  //pulse measured to me
             } else {
                 console.log(`${nodeEntry.geo} did not respond. Entering NO_OWL for all values to this node`);
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL

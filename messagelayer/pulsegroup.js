@@ -803,7 +803,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.buildMatrix = function () {
         var ts = lib_1.now();
-        var matrix;
+        var matrix = [];
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             if ((index != "0") && (ts - nodeEntry.pulseTimestamp < 2 * 1000)) { //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
@@ -821,7 +821,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
                     matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = owl; //pulse measured to me
                 }
-                matrix[nodeEntry.mint, newPulseGroup.mintTable[0].mint = owl]; //pulse measured to me
+                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl; //pulse measured to me
             }
             else {
                 console.log(nodeEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
