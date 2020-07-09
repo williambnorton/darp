@@ -838,6 +838,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
             }
         }
+        for (var s in newPulseGroup.matrix)
+            for (var d in newPulseGroup.matrix[s])
+                console.log("s=" + s + " d=" + d + " = " + newPulseGroup.matrix[s][d]);
         newPulseGroup.matrix = matrix; //replace existing matrix - 
         console.log("could publish to subscribers pulseGroup matrix=" + lib_1.dump(newPulseGroup.matrix));
     };
