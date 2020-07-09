@@ -937,12 +937,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     };
     //pulseGroup.pulse = function() {
 
-    newPulseGroup.matrix=function() {
+    newPulseGroup.buildMatrix=function() {
         var ts=now();
-        var matrix=[];
+        var matrix=[{}];
         newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             if (ts-nodeEntry.pulseTimestamp<2 * 1000) {  //non-retired OWL
-                matrix.push( { src:nodeEntry.mint, dest:newPulseGroup.mintTable[0].mint, owl:nodeEntry.owl } );  //pulse measured to me
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
                 var ary=nodeEntry.owls.split(",");
                 for(var owlEntry in ary) {
@@ -952,12 +951,21 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     var Sowl=ary[owlEntry].split("=")[1];
                     if (typeof Sowl != "undefined") owl=parseInt(Sowl);
                     //console.log("Searching for mint "+m);
-                    console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-                    matrix.push( { src:m, dest:nodeEntry.mint, owl:owl } );  //pulse measured to me
-
+                    //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
+                    matrix.push( { s:m, d:nodeEntry.mint, o:owl } );  //pulse measured to me
                 }
+                matrix.push( { src:nodeEntry.mint, dest:newPulseGroup.mintTable[0].mint, owl:nodeEntry.owl } );  //pulse measured to me
+            } else {
+                console.log(`${nodeEntry.geo} did not respond. Entering NO_OWL for all values to this node`);
+                //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                    matrix.push( { s:groupNode.mint, d:nodeEntry.mint, o:NO_OWL } );  //clear out previously published measurements
+                });
+                matrix.push( { src:nodeEntry.mint, dest:newPulseGroup.mintTable[0].mint, owl:NO_OWL } );  //This guy missed his pulse
             }
         });
+        console.log("matrix="+dump(matrix));
+        newPulseGroup.matrix=matrix;
     }
 //
 //  pulse()
