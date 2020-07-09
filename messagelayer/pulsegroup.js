@@ -207,7 +207,8 @@ function instrumentation() {
     txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
     txt += '          }';
     //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-    //wbnwbnwbn   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
+    txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
+    txt += '          else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");'; //Add NR class to entire row
     txt += '          if (pulse.pulseTimestamp!="0")';
     txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
     txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
