@@ -842,7 +842,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             for (var d in newPulseGroup.matrix[s])
                 console.log("s=" + s + " d=" + d + " = " + newPulseGroup.matrix[s][d]);
         newPulseGroup.matrix = matrix; //replace existing matrix - 
-        console.log("could publish to subscribers pulseGroup matrix=" + lib_1.dump(newPulseGroup.matrix));
+        //console.log("could publish to subscribers pulseGroup matrix="+dump(newPulseGroup.matrix));
     };
     //
     //  pulse()
