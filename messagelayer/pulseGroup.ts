@@ -94,7 +94,7 @@ var server = app.listen(PORT, '0.0.0.0', function() {
 //  me should always be mintTable[0] (first item)
 //pulseGroup.me and pulseGroup.genesis should be there for convenience though
 
-const me:MintEntry=makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
+const me:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
         //All nodes also start out ready to be a genesis node for others
 const genesis:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); 
 var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
@@ -1012,8 +1012,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                     var m=parseInt(ary[owlEntry].split("=")[0]);
                     var owl=NO_OWL;
-                    var Sowl=ary[owlEntry].split("=")[1];
-                    if (typeof Sowl != "undefined") owl=parseInt(Sowl);
+                    var strOwl=ary[owlEntry].split("=")[1];
+                    if (typeof strOwl != "undefined") owl=parseInt(strOwl);
                     if (typeof matrix[nodeEntry.mint]=="undefined")
                         matrix[nodeEntry.mint]=[];
                     //console.log("Searching for mint "+m);
