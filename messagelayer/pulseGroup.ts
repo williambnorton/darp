@@ -1128,10 +1128,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //return newPulseGroup.syncGenesisPulseGroup();
                     //return ;  //we are done 
                 } else {
-                    console.log(ts()+"recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis to get credentials for "+incomingPulse.geo);
-                    newPulseGroup.adminControl='RESYNCH';
-                    //return newPulseGroup.syncGenesisPulseGroup();
-                    return ;  //we are done 
+                    if (!newPulseGroup.isGenesisNode()) {
+                        console.log(ts()+"recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis to get credentials for "+incomingPulse.geo);
+                        newPulseGroup.adminControl='RESYNCH';
+                        //return newPulseGroup.syncGenesisPulseGroup();
+                        return ;  //we are done 
+                    }
                 }
             } else {
                 if (mintEntry==null) {      //we have a pulse entry but no corresponding mint entry-->sync with genesis
