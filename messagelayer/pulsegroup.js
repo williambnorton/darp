@@ -802,8 +802,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix = function () {
-        if (typeof newPulseGroup.mintTable[0].mint == "undefined")
-            return console.log("UNDEFINED MINT 0 - too early");
         var ts = lib_1.now();
         var matrix = [];
         newPulseGroup.forEachNode(function (index, nodeEntry) {
@@ -832,6 +830,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     if ((index != "0") && (groupNode.mint != nodeEntry.mint))
                         matrix[groupNode.mint][nodeEntry.mint] = NO_OWL; //clear out previously published measurements
                 });
+                //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                console.log("nodeEntry.mint=" + nodeEntry.mint + " mymint=" + newPulseGroup.mintTable[0].mint);
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse
             }
         });
