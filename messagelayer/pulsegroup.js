@@ -819,7 +819,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     if (typeof matrix[nodeEntry.mint] == "undefined")
                         matrix[nodeEntry.mint] = [];
                     //console.log("Searching for mint "+m);
-                    console.log("matrix src " + m + " - dst " + nodeEntry.mint + " = " + owl);
+                    //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
                     matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = owl; //pulse measured to me
                 }
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl; //pulse measured to me
@@ -832,17 +832,17 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
                 //});
                 //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                console.log("nodeEntry.mint=" + nodeEntry.mint + " mymint=" + newPulseGroup.mintTable[0].mint);
+                //console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
                 if (typeof matrix[nodeEntry.mint] == "undefined")
                     matrix[nodeEntry.mint] = [];
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
             }
         }
-        for (var s in newPulseGroup.matrix)
-            for (var d in newPulseGroup.matrix[s])
-                console.log("s=" + s + " d=" + d + " = " + newPulseGroup.matrix[s][d]);
+        //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
+        //    for (var d in newPulseGroup.matrix[s])
+        //        console.log(`s=${s} d=${d} = ${newPulseGroup.matrix[s][d]}`);
         newPulseGroup.matrix = matrix; //replace existing matrix - 
-        //console.log("could publish to subscribers pulseGroup matrix="+dump(newPulseGroup.matrix));
+        //console.log("could publish to subscribers here pulseGroup matrix="+dump(newPulseGroup.matrix));
     };
     //
     //  pulse()
