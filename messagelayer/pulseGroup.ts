@@ -938,13 +938,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //pulseGroup.pulse = function() {
 
     //
-    //  
+    //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix=function() {
         var ts=now();
         var matrix=[{}];
         newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
-            if (ts-nodeEntry.pulseTimestamp<2 * 1000) {  //non-retired OWL
+            if ((index!="0")&&(ts-nodeEntry.pulseTimestamp<2 * 1000)) {  //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
                 var ary=nodeEntry.owls.split(",");
                 for(var owlEntry in ary) {
@@ -962,13 +962,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 console.log(`${nodeEntry.geo} did not respond. Entering NO_OWL for all values to this node`);
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
-                    if (groupNode.mint!=nodeEntry.mint) matrix.push( { s:groupNode.mint, d:nodeEntry.mint, o:NO_OWL } );  //clear out previously published measurements
+                    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) matrix.push( { s:groupNode.mint, d:nodeEntry.mint, o:NO_OWL } );  //clear out previously published measurements
                 });
-                matrix.push( { src:nodeEntry.mint, dest:newPulseGroup.mintTable[0].mint, owl:NO_OWL } );  //This guy missed his pulse
+                matrix.push( { s:nodeEntry.mint, d:newPulseGroup.mintTable[0].mint, owl:NO_OWL } );  //This guy missed his pulse
             }
         });
         newPulseGroup.matrix=matrix;
-        console.log("subscribers matrix="+dump(newPulseGroup.matrix));
+        //console.log("could publish to subscribers matrix="+dump(newPulseGroup.matrix));
 
     }
 
