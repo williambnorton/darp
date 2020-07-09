@@ -802,14 +802,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix = function () {
-        var ts = lib_1.now();
-        var matrix;
-        newPulseGroup.forEachNode(function (index, nodeEntry) {
-            if ((index != "0") && (ts - nodeEntry.pulseTimestamp < 2 * 1000)) { //non-retired OWL
-                //for each OWLS wbnwbnwbnwbnwbnwbn                
+        var matrix = [];
+        for (var pulse in newPulseGroup.pulses) {
+            var nodeEntry = newPulseGroup.pulses[pulse];
+            //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
+            if ((lib_1.now() - nodeEntry.pulseTimestamp < 2 * 1000)) { // VALID PULSE
+                //for each OWLS                 
                 var ary = nodeEntry.owls.split(","); //put all my OWLs into matrix
                 for (var owlEntry in ary) {
-                    //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                     var m = parseInt(ary[owlEntry].split("=")[0]);
                     var owl = NO_OWL;
                     var strOwl = ary[owlEntry].split("=")[1];
@@ -823,22 +823,20 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl; //pulse measured to me
             }
-            else {
+            else { //OLD PULSE - CLEAR these entries
                 console.log(nodeEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                newPulseGroup.forEachNode(function (index, groupNode) {
-                    if ((index != "0") && (groupNode.mint != nodeEntry.mint))
-                        matrix[groupNode.mint][nodeEntry.mint] = NO_OWL; //clear out previously published measurements
-                });
+                //newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
+                //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
+                //});
                 //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
                 console.log("nodeEntry.mint=" + nodeEntry.mint + " mymint=" + newPulseGroup.mintTable[0].mint);
-                if (typeof matrix == "undefined")
-                    matrix = [];
                 if (typeof matrix[nodeEntry.mint] == "undefined")
                     matrix[nodeEntry.mint] = [];
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries
             }
-        });
+        }
         newPulseGroup.matrix = matrix; //replace existing matrix - 
         //console.log("could publish to subscribers pulseGroup matrix="+dump(newPulseGroup.matrix));
     };
