@@ -928,7 +928,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             }
         }
         for (var p in this.pulses) {
-            if (this.pulses[p] && this.pulses[p].lastPulseTimestamp != 0) {
+            if ((this.pulses[p]) && (this.pulses[p].lastPulseTimestamp != 0) && (this.pulses[p].mint != 1)) { //don't timeout genesis pulse
                 var elapsedMSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
