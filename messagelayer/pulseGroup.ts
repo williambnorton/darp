@@ -950,7 +950,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     var m=ary[owlEntry].split("=")[0];
                     var owl=NO_OWL;
                     var Sowl=ary[owlEntry].split("=")[1];
-                    if (typeof Sowl != "undefined") owl=parseInt(Sowl));
+                    if (typeof Sowl != "undefined") owl=parseInt(Sowl);
                     //console.log("Searching for mint "+m);
                     console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
                     matrix.push( { src:m, dest:nodeEntry.mint, owl:owl } );  //pulse measured to me
