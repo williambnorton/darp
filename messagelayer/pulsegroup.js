@@ -90,11 +90,8 @@ var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
 var pulse = makePulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 ;
 var myPulseGroup = {
-    //    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
     groupName: me.geo + ".1",
     groupOwner: me.geo,
-    //    me : me,
-    //    genesis: genesis,
     mintTable: [
         me, genesis
     ],
@@ -105,7 +102,8 @@ var myPulseGroup = {
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
-    cycleTime: 1
+    cycleTime: 1,
+    matrix: []
 };
 //pulseGroup.me=me;
 //pulseGroup.genesis=genesis;
@@ -258,29 +256,26 @@ function instrumentation() {
             //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
         }
         txt += "</tr>";
-        /*
         //
         //   print OWL matrix
         //
         for (var row in pulseGroup.matrix) {
             var rowEntry = pulseGroup.pulses[row];
-            var cellState="RUNNING"; //unreachable     badkey   alert
-            txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
+            //                   var cellState="RUNNING"; //unreachable     badkey   alert   
+            txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr + ":" + rowEntry.port + '/">' + rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
             for (var col in pulseGroup.pulses) {
-                var colEntry = pulseGroup.pulses[col];  //
-                var entryLabel = rowEntry.geo + "-" + colEntry.geo
+                var colEntry = pulseGroup.pulses[col]; //
+                var entryLabel = rowEntry.geo + "-" + colEntry.geo;
                 var owl = "";
-
-                 cellState=rowEntry.state
-                if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
-                    (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
-                    owl = OWLMatrix[rowEntry.geo][colEntry.geo]
-                }
-                txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>"
+                //      var cellState=colEntry.state
+                //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
+                //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
+                owl = OWLMatrix[rowEntry.geo][colEntry.geo];
+                //      }                       
+                txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>";
             }
-            txt += "</tr>"
+            txt += "</tr>";
         }
-        */
         txt += "</table>";
         //
         //  Externalize pulse structures 
@@ -876,9 +871,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 newPulseGroup.syncGenesisPulseGroup(); //fetch new config from genesis
                 newPulseGroup.adminControl = '';
             }
+            newPulseGroup.mintTable[0].state = "me";
+            newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
         }
-        newPulseGroup.mintTable[0].state = "me";
-        newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
     };
     newPulseGroup.isGenesisNode = function () {
         return newPulseGroup.mintTable[0].geo == newPulseGroup.groupOwner;

@@ -123,11 +123,9 @@ interface PulseGroup {
 } 
 
 var myPulseGroup = {                 //my pulseGroup Configuration
-//    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
-        groupName : me.geo+".1",    //
+    groupName : me.geo+".1",    //
     groupOwner : me.geo,
-//    me : me,
-//    genesis: genesis,
+
     mintTable: [
        me,genesis
     ],           
@@ -139,7 +137,7 @@ var myPulseGroup = {                 //my pulseGroup Configuration
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
     cycleTime : 1,      //pulseGroup-wide setting: number of seconds between pulses
-
+    matrix: []
 };
 //pulseGroup.me=me;
 //pulseGroup.genesis=genesis;
@@ -334,29 +332,29 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                }
                txt += "</tr>"
 
-               /*
+               
                //
                //   print OWL matrix
                //
                for (var row in pulseGroup.matrix) {
                    var rowEntry = pulseGroup.pulses[row];
-                   var cellState="RUNNING"; //unreachable     badkey   alert   
+//                   var cellState="RUNNING"; //unreachable     badkey   alert   
                    txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
                    for (var col in pulseGroup.pulses) {
                        var colEntry = pulseGroup.pulses[col];  //
                        var entryLabel = rowEntry.geo + "-" + colEntry.geo
                        var owl = "";
 
-                        cellState=rowEntry.state
-                       if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
-                           (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
+                 //      var cellState=colEntry.state
+                 //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
+                 //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
                            owl = OWLMatrix[rowEntry.geo][colEntry.geo]
-                       }                       
+                 //      }                       
                        txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>"
                    }
                    txt += "</tr>"
                }
-               */
+               
                txt += "</table>";
 
 
@@ -1078,9 +1076,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 newPulseGroup.syncGenesisPulseGroup();  //fetch new config from genesis
                 newPulseGroup.adminControl='';
             }
+            newPulseGroup.mintTable[0].state="me";
+            newPulseGroup.mintTable[0].lastPulseTimestamp=now();
         }
-        newPulseGroup.mintTable[0].state="me";
-        newPulseGroup.mintTable[0].lastPulseTimestamp=now();
+
     };
 
     newPulseGroup.isGenesisNode=function():Boolean {
