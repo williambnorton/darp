@@ -256,9 +256,9 @@ function instrumentation() {
         }
         txt += "</tr>";
         for (var src in pulseGroup.matrix) { //INSTRUMENTATION POINT
-            txt += '<tr><td></td>'; //heacer on left side
+            txt += '<tr><td>' + src + '</td>'; //heacer on left side
             for (var dest in pulseGroup.matrix[src]) {
-                txt += '<td>' + pulseGroup.matrix[src][dest] + "ms</td>";
+                txt += '<td>' + pulseGroup.matrix[src][dest] + " ms</td>";
                 console.log("MATRIX src=" + src + " dest=" + dest + " = " + pulseGroup.matrix[src][dest]);
             }
             txt += "</tr>";
@@ -286,8 +286,8 @@ function instrumentation() {
                        }
                        txt += "</tr>"
                    }
-           */
-        txt += "</table>";
+                   txt += "</table>";
+    */
         //
         //  Externalize pulse structures 
         //
