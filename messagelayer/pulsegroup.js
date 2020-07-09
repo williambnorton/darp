@@ -802,6 +802,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix = function () {
+        if (typeof newPulseGroup.mintTable[0].mint == "undefined")
+            return console.log("UNDEFINED MINT 0 - too early");
         var ts = lib_1.now();
         var matrix = [];
         newPulseGroup.forEachNode(function (index, nodeEntry) {
