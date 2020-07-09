@@ -587,7 +587,7 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
 });
 
 app.get(['/pulsegroups','/state','/me'], function(req, res) {
-    console.log(ts()+"fetching '/pulseGroups' "+req.connection.remoteAddress);
+    //console.log(ts()+"fetching '/pulseGroups' "+req.connection.remoteAddress);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(myPulseGroups, null, 2)); 
@@ -1081,6 +1081,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
         if (newPulseGroup.groupOwner==me.geo) 
             return console.log("checkSWversion - genesis node never checks its own version");
+        console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         const url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);
         var http = require("http");
