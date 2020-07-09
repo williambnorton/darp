@@ -811,7 +811,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             var nodeEntry = newPulseGroup.pulses[pulse];
             console.log("processing " + pulse);
             //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
-            if ((lib_1.now() - nodeEntry.pulseTimestamp < 2 * 1000)) { // VALID PULSE
+            var pulseFreshness = lib_1.now() - nodeEntry.pulseTimestamp;
+            console.log(pulse + " pulseFreshness=" + pulseFreshness);
+            if ((lib_1.now() - nodeEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
                 //for each OWLS                 
                 var ary = nodeEntry.owls.split(","); //put all my OWLs into matrix
                 for (var owlEntry in ary) {
@@ -820,12 +822,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     var strOwl = ary[owlEntry].split("=")[1];
                     if (typeof strOwl != "undefined")
                         owl = parseInt(strOwl);
-                    if (typeof matrix[nodeEntry.mint] == "undefined")
-                        matrix[nodeEntry.mint] = [];
+                    if (typeof matrix[m] == "undefined")
+                        matrix[m] = [];
                     //console.log("Searching for mint "+m);
                     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-                    matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = owl; //pulse measured to me
+                    matrix[m][nodeEntry.mint] = owl; //pulse measured to peer
                 }
+                if (typeof matrix[nodeEntry.mint] == "undefined")
+                    matrix[nodeEntry.mint] = [];
                 matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl; //pulse measured to me
             }
             else { //OLD PULSE - CLEAR these entries
