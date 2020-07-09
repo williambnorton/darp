@@ -250,8 +250,8 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
    txt += '          else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
    
-   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_geo").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
-   txt += '          else $("."+pulse.geo+"_geo").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
+   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
+   txt += '          else $("."+pulse.geo).addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
 
    txt += '          if (pulse.pulseTimestamp!="0")'
    txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
