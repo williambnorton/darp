@@ -802,7 +802,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  buildMatrix of objects for each segment - 
     //
     newPulseGroup.buildMatrix = function () {
-        return; //turning off this feature until stable
+        //return;//turning off this feature until stable
         var matrix = [];
         for (var pulse in newPulseGroup.pulses) {
             var nodeEntry = newPulseGroup.pulses[pulse];
@@ -839,7 +839,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             }
         }
         newPulseGroup.matrix = matrix; //replace existing matrix - 
-        //console.log("could publish to subscribers pulseGroup matrix="+dump(newPulseGroup.matrix));
+        console.log("could publish to subscribers pulseGroup matrix=" + lib_1.dump(newPulseGroup.matrix));
     };
     //
     //  pulse()
