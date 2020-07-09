@@ -923,7 +923,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //        for (var p in this.pulses) {
         //            newPulseGroup.nodeCount++;
         //        }
-        newPulseGroup.matrix();
+        newPulseGroup.buildMatrix();
     };
     newPulseGroup.checkSWversion = function () {
         //console.log("=================================> checkSWversion()");
