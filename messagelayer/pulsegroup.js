@@ -242,40 +242,49 @@ function instrumentation() {
     txt += '<p id="dateTime">*Refresh: ' + timeStr + ' </p>';
     for (var p in myPulseGroups) {
         var pulseGroup = myPulseGroups[p];
-        //
-        //   show OWL Matrix table
-        //
-        txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
-        txt += '<tr><th></th>';
-        //   print OWL headers
-        for (var col in pulseGroup.pulses) {
-            var colEntry = pulseGroup.pulses[col];
-            //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-            txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " <b>" + colEntry.mint + "<b></a> </th>";
-            //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
-        }
-        txt += "</tr>";
-        //
-        //   print OWL matrix
-        //
-        for (var row in pulseGroup.matrix) {
-            var rowEntry = pulseGroup.pulses[row];
-            //                   var cellState="RUNNING"; //unreachable     badkey   alert   
-            txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr + ":" + rowEntry.port + '/">' + rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
-            for (var col in pulseGroup.pulses) {
-                var colEntry = pulseGroup.pulses[col]; //
-                var entryLabel = rowEntry.geo + "-" + colEntry.geo;
-                var owl = "";
-                //      var cellState=colEntry.state
-                //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
-                //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
-                owl = pulseGroup.matrix[rowEntry.mint][colEntry.mint];
-                //      }                       
-                txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>";
-            }
-            txt += "</tr>";
-        }
-        txt += "</table>";
+        /****
+        
+                       //
+                       //   show OWL Matrix table
+                       //
+                       txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+                       txt += '<tr><th></th>'
+        
+                       //   print OWL headers
+                       for (var col in pulseGroup.pulses) {
+                           var colEntry = pulseGroup.pulses[col];
+                           //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+                            txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " <b>" + colEntry.mint + "<b></a> </th>"
+                           //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
+                       }
+                       txt += "</tr>"
+        
+                       
+                       //
+                       //   print OWL matrix
+                       //
+                       for (var row in pulseGroup.matrix) {
+                           var rowEntry = pulseGroup.pulses[row];
+        //                   var cellState="RUNNING"; //unreachable     badkey   alert
+                           txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
+                           for (var col in pulseGroup.pulses) {
+                               var colEntry = pulseGroup.pulses[col];  //
+                               var entryLabel = rowEntry.geo + "-" + colEntry.geo
+                               var owl = "";
+        
+                         //      var cellState=colEntry.state
+                         //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
+                         //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
+                                   owl = pulseGroup.matrix[rowEntry.mint][colEntry.mint];
+                         //      }
+                               txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>"
+                           }
+                           txt += "</tr>"
+                       }
+                       
+                       txt += "</table>";
+        
+        ***/
         //
         //  Externalize pulse structures 
         //
