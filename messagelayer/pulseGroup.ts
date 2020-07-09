@@ -309,7 +309,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
 
 
 
-/****
+
 
                //
                //   show OWL Matrix table
@@ -326,7 +326,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                }
                txt += "</tr>"
 
-               
+    /*           
                //
                //   print OWL matrix
                //
@@ -348,10 +348,10 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                    }
                    txt += "</tr>"
                }
-               
+       */        
                txt += "</table>";
 
-***/
+
 
 
 
