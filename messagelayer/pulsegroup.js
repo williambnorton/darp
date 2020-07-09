@@ -766,9 +766,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         });
     };
     //pulseGroup.pulse = function() {
+    //
+    //  
+    //
     newPulseGroup.buildMatrix = function () {
         var ts = lib_1.now();
         var matrix = [{}];
+        matrix.pop();
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             if (ts - nodeEntry.pulseTimestamp < 2 * 1000) { //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
@@ -790,7 +794,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 console.log(nodeEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 newPulseGroup.forEachNode(function (index, groupNode) {
-                    matrix.push({ s: groupNode.mint, d: nodeEntry.mint, o: NO_OWL }); //clear out previously published measurements
+                    if (groupNode.mint != nodeEntry.mint)
+                        matrix.push({ s: groupNode.mint, d: nodeEntry.mint, o: NO_OWL }); //clear out previously published measurements
                 });
                 matrix.push({ src: nodeEntry.mint, dest: newPulseGroup.mintTable[0].mint, owl: NO_OWL }); //This guy missed his pulse
             }
