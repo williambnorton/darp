@@ -88,7 +88,6 @@ var me = makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All node
 //All nodes also start out ready to be a genesis node for others
 var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
 var pulse = makePulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-;
 var myPulseGroup = {
     groupName: me.geo + ".1",
     groupOwner: me.geo,
@@ -804,11 +803,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.buildMatrix = function () {
         var ts = lib_1.now();
-        var matrix = [{}];
+        var matrix;
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             if ((index != "0") && (ts - nodeEntry.pulseTimestamp < 2 * 1000)) { //non-retired OWL
                 //for each OWLS wbnwbnwbnwbnwbnwbn                
-                var ary = nodeEntry.owls.split(",");
+                var ary = nodeEntry.owls.split(","); //put all my OWLs into matrix
                 for (var owlEntry in ary) {
                     //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                     var m = parseInt(ary[owlEntry].split("=")[0]);
@@ -816,20 +815,22 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     var Sowl = ary[owlEntry].split("=")[1];
                     if (typeof Sowl != "undefined")
                         owl = parseInt(Sowl);
+                    if (typeof matrix[nodeEntry.mint] == "undefined")
+                        matrix[nodeEntry.mint] = [];
                     //console.log("Searching for mint "+m);
                     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-                    matrix.push({ s: m, d: nodeEntry.mint, o: owl }); //pulse measured to me
+                    matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = owl; //pulse measured to me
                 }
-                matrix.push({ src: nodeEntry.mint, dest: newPulseGroup.mintTable[0].mint, owl: nodeEntry.owl }); //pulse measured to me
+                matrix[nodeEntry.mint, newPulseGroup.mintTable[0].mint = owl]; //pulse measured to me
             }
             else {
                 console.log(nodeEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 newPulseGroup.forEachNode(function (index, groupNode) {
                     if ((index != "0") && (groupNode.mint != nodeEntry.mint))
-                        matrix.push({ s: groupNode.mint, d: nodeEntry.mint, o: NO_OWL }); //clear out previously published measurements
+                        matrix[groupNode.mint][nodeEntry.mint] = NO_OWL; //clear out previously published measurements
                 });
-                matrix.push({ s: nodeEntry.mint, d: newPulseGroup.mintTable[0].mint, owl: NO_OWL }); //This guy missed his pulse
+                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse
             }
         });
         newPulseGroup.matrix = matrix; //replace existing matrix - 
