@@ -1171,14 +1171,15 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
             }
         }
-        if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
-            newPulseGroup.nodeCount=newPulseGroup.pulses.length;
-            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=`+newPulseGroup.pulses.length);
+        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
+        for (var p in this.pulses) {
+            newPulseGroup.nodeCount++;
         }
-//        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
-//        for (var p in this.pulses) {
-//            newPulseGroup.nodeCount++;
+//        if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
+//            newPulseGroup.nodeCount=newPulseGroup.pulses.length;
+//            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=`+newPulseGroup.pulses.length);
 //        }
+
     newPulseGroup.buildMatrix();
     }
 
