@@ -269,7 +269,7 @@ function instrumentation() {
                 //      var cellState=colEntry.state
                 //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
                 //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
-                owl = OWLMatrix[rowEntry.geo][colEntry.geo];
+                owl = pulseGroup.matrix[rowEntry.mint][colEntry.mint];
                 //      }                       
                 txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint + '">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + rowEntry.geo + '&dst=' + colEntry.geo + "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>";
             }
