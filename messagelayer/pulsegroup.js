@@ -211,7 +211,8 @@ function instrumentation() {
     txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {';
     // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
     //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-    txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
+    // txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+    txt += '             $("."+pulse.geo+"_"+field).text(fieldValue);';
     txt += '          }';
     //txt += '          console.log("config="+JSON.stringify(config,null,2));'
     txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
