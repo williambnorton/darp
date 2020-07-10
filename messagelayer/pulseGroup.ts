@@ -214,7 +214,7 @@ function instrumentation() {    //this should get its own file
     txt += '    for (var dest in pulseGroup.matrix[src]) {';              
     txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
     txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
-    txt += '         var destMintEntry=pulseGroup.mintTable[src];';
+    txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
     txt += '         var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
     txt += '         var link="<a href="+gurl+">";';
     txt += '         console.log("link="+link);';
