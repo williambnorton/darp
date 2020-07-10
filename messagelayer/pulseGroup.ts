@@ -219,7 +219,7 @@ function instrumentation() {    //this should get its own file
     txt += '         var link="<a href="+gurl+">";';
     txt += '         console.log("link="+link);';
     txt += '         $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
-    txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
+    //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
 //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
 
     txt += '    }';
