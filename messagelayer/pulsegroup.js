@@ -276,9 +276,10 @@ function instrumentation() {
             else
                 txt += '<tr class="' + mintEntry.geo + ' NR"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
             for (var dest in pulseGroup.matrix[src]) {
+                var destMint = pulseGroup.mintTable[parseInt(dest)]; //what if there is no mint?
                 //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
                 // txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
-                txt += '<td class="' + src + "-" + dest + '">' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + mintEntry.geo + '/' + me.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                txt += '<td class="' + src + "-" + dest + '">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
             }
             txt += "</tr>";
         }
