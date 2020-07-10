@@ -281,7 +281,7 @@ function instrumentation() {
         txt += "</tr>";
         for (var src in pulseGroup.matrix) {
             var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
-            if (mintEntry.state == "UP")
+            if ((mintEntry) && mintEntry.state == "UP")
                 txt += '<tr class="' + mintEntry.geo + ' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr + ":" + mintEntry.port + '/">' + mintEntry.geo + " " + mintEntry.mint + '</a></td>'; //heacer on left side
             else
                 txt += '<tr class="' + mintEntry.geo + ' NR"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
