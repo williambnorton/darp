@@ -1315,7 +1315,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                             newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                             return;
                         }
-                        newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry,owl);  //store owls
+                        newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry.geo,owl);  //store owls
                     }
                     newPulseGroup.storeOWL(incomingPulse.geo,newPulseGroup.mintTable[0].geo,incomingPulse.owl);  //store pulse latency To me
 
