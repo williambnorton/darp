@@ -4,6 +4,7 @@
 //
 import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
+import {   grapher } from './grapher';
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
@@ -617,35 +618,33 @@ app.get('/graph/:src/:dst', function(req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
-
-    var DST=req.params.dst; 
-    var SRC=req.params.src;
-    console.log(`/graph src=${SRC} dst=${DST}`);
-    console.log(`/graph src=${SRC} dst=${DST}`);
-    console.log(`/graph src=${SRC} dst=${DST}`);
-    console.log(`/graph src=${SRC} dst=${DST}`);
-    console.log(`/graph src=${SRC} dst=${DST}`);
+    var dest=req.params.dst; 
+    var src=req.params.src;
     var txt='';
-    txt+='<meta http-equiv="refresh" content="'+60+'">';
-    txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
-    var myYYMMDD=YYMMDD();     
-    var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
-    try {
-                if (fs.existsSync(path)) {
+    txt+=grapher(src,dest);
+
+//    txt+='<meta http-equiv="refresh" content="'+60+'">';
+
+//    txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
+//    var myYYMMDD=YYMMDD();     
+// /   var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
+//    try {
+//                if (fs.existsSync(path)) {
                 //file exists
-                        txt+=fs.readFileSync(path);
-                        console.log(`found graph data file ${path}:${txt}`);
-                }
-                else console.log("could not find live pulseGroup graph data from "+path);
-    } catch(err) {
-                return console.error(err)
-    }
-    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
-    txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
+//                        txt+=fs.readFileSync(path);
+                        //console.log(`found graph data file ${path}:${txt}`);
+//                }
+//                else console.log("could not find live pulseGroup graph data from "+path);
+//    } catch(err) {
+//                return console.error(err)
+//    }
+//    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
+//    txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
     console.log(`graph txt=${txt}`);
     res.end(txt);
     return;
 });
+
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
@@ -1381,7 +1380,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     var fs = require('fs');
     var d = new Date();
     var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
-    var sample = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
+    var sample = '{ label: "", y: " + owl + "},\n';
     //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
 
         //if (owl > 2000 || owl < 0) {

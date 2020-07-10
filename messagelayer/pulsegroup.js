@@ -7,6 +7,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var pulselayer_1 = require("./pulselayer");
+var grapher_1 = require("./grapher");
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
 var REFRESH = 120; //Every 2 minuytes force rrfresh
@@ -509,32 +510,26 @@ app.get('/graph/:src/:dst', function (req, res) {
     //handleShowState(req, res); 
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    var DST = req.params.dst;
-    var SRC = req.params.src;
-    console.log("/graph src=" + SRC + " dst=" + DST);
-    console.log("/graph src=" + SRC + " dst=" + DST);
-    console.log("/graph src=" + SRC + " dst=" + DST);
-    console.log("/graph src=" + SRC + " dst=" + DST);
-    console.log("/graph src=" + SRC + " dst=" + DST);
+    var dest = req.params.dst;
+    var src = req.params.src;
     var txt = '';
-    txt += '<meta http-equiv="refresh" content="' + 60 + '">';
-    txt += "<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
-    var myYYMMDD = lib_1.YYMMDD();
-    var path = SRC + "-" + DST + "." + myYYMMDD + '.txt';
-    try {
-        if (fs.existsSync(path)) {
-            //file exists
-            txt += fs.readFileSync(path);
-            console.log("found graph data file " + path + ":" + txt);
-        }
-        else
-            console.log("could not find live pulseGroup graph data from " + path);
-    }
-    catch (err) {
-        return console.error(err);
-    }
-    txt += " ]); var options = { hAxis: { title: '" + SRC + "-" + DST + " (" + myYYMMDD + ")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
-    txt += "<p><a href=" + 'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
+    txt += grapher_1.grapher(src, dest);
+    //    txt+='<meta http-equiv="refresh" content="'+60+'">';
+    //    txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
+    //    var myYYMMDD=YYMMDD();     
+    // /   var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
+    //    try {
+    //                if (fs.existsSync(path)) {
+    //file exists
+    //                        txt+=fs.readFileSync(path);
+    //console.log(`found graph data file ${path}:${txt}`);
+    //                }
+    //                else console.log("could not find live pulseGroup graph data from "+path);
+    //    } catch(err) {
+    //                return console.error(err)
+    //    }
+    //    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
+    //    txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
     console.log("graph txt=" + txt);
     res.end(txt);
     return;
@@ -1161,7 +1156,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         var fs = require('fs');
         var d = new Date();
         var filename = src + '-' + dst + '.' + lib_1.YYMMDD() + '.txt';
-        var sample = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
+        var sample = '{ label: "", y: " + owl + "},\n';
         //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
         //if (owl > 2000 || owl < 0) {
         //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
