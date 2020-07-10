@@ -408,7 +408,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             txt += "<td>" + pulseEntry.mint + "</td>";
             // OWL
 //            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
-            txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+            txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo '" >' + pulseEntry.owl + "</a> ms</td>";
             //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
             //txt+="<td>"+pulseEntry.owls+"</td>"
             //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
@@ -606,6 +606,36 @@ app.get('/version', function(req, res) {
     return;
 });
 
+
+var fs=require("fs");
+app.get('/graph/:group/:src/:dst', function(req, res) {
+    //console.log("********************** fetching '/'");
+    //handleShowState(req, res); 
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    var GROUP=req.params.group; 
+    var DST=req.params.dst; 
+    var SRC=req.params.src;
+    var txt='';
+    txt+='<meta http-equiv="refresh" content="'+60+'">';
+    txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
+    var myYYMMDD=YYMMDD();     
+    var path=SRC+"-"+DST+"."+YYMMDD+'.txt';
+    try {
+                if (fs.existsSync(path)) {
+                //file exists
+                        //txt+="<p>filename="+SRC+"-"+DST+"."+YYMMDD+'.txt</p>';
+                        txt+=fs.readFileSync(SRC+"-"+DST+"."+YYMMDD+'.txt');
+                }
+    } catch(err) {
+                return console.error(err)
+    }
+    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+YYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
+    txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
+    res.end(txt);
+    return;
+}
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
