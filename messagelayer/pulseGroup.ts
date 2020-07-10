@@ -215,8 +215,8 @@ function instrumentation() {    //this should get its own file
     txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
     txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
     txt += '         var destMintEntry=pulseGroup.mintTable[src];';
-    txt += '         var gurl="http://"+destMintEntry.ipaddr+":"+destMint.port+"/graph/"+mintEntry.geo+"/"+destMint.geo';
-    txt += '         var link="<a href=\""+gurl+"\">"';
+    txt += '         var gurl="http://"+destMintEntry.ipaddr+":"+destMint.port+"/graph/"+mintEntry.geo+"/"+destMint.geo;';
+    txt += '         var link="<a href=\""+gurl+"\">";';
     txt += '         console.log("link="+link);'
     txt += '         $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
     txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
