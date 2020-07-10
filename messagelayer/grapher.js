@@ -19,7 +19,7 @@ function grapher(src, dest) {
     catch (err) {
         return console.error(err);
     }
-    txt += "\n\t\t\t\t{ label: \"\",  y: 5.28 },\n\n\t\t\t]\n\t\t}\n\t\t]\n\t});\n});\n</script>\n</head>\n<body>\n<div class=\"chartContainer\" style=\"height: 300px; width: 100%;\"></div>\n</body>\n</html>\n";
+    txt += "]\n\t\t}\n\t\t]\n\t});\n});\n</script>\n</head>\n<body>\n<div class=\"chartContainer\" style=\"height: 300px; width: 100%;\"></div>\n</body>\n</html>\n";
     console.log("txt=" + txt);
     return txt;
 }
