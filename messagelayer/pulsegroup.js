@@ -171,11 +171,18 @@ function instrumentation() {
     txt += '   $.getJSON(url, function(config) {';
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
-    //use CSS to write the clickable owls
+    //u update the matrix using jquery selectors
     txt += 'for (var src in pulseGroup.matrix) {';
     txt += '    for (var dest in pulseGroup.matrix[src]) {';
-    txt += '         if (pulseGroup.matrix[src][dest]!=-99999) $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");';
+    txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
+    txt += '         const srcMintEntry=pulseGroup.mintTable[src];';
+    txt += '         const destMintEntry=pulseGroup.mintTable[src];';
+    txt += '         const gurl="http://"+destMintEntry.ipaddr+":"+destMint.port+"/graph/"+mintEntry.geo+"/"+destMint.geo';
+    txt += '         const link="<a href=\"+gurl+">';
+    txt += '         console.log("link="+link);';
+    txt += '         $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
     txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
+    //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
     txt += '    }';
     txt += '}';
     //}
