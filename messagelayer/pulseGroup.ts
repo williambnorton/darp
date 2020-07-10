@@ -1380,7 +1380,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     var fs = require('fs');
     var d = new Date();
     var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
-    var sample = '{ label: "", y: " + owl + "},\n';
+    var sample = `{ label: "", y: ${owl} },\n`;
     //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
 
         //if (owl > 2000 || owl < 0) {
