@@ -19,5 +19,5 @@ tsc *.ts
 cd ..
 
 git add *.bash
-git add . && git commit -m "$MESSAGE + " && git push
+git add . && git commit -m "$MESSAGE + " && git pull && git push
 echo `date` Completed compiles + git push for `ls Build*`
