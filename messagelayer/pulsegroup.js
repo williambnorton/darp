@@ -1160,22 +1160,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //      storeOWL() - store one way latency to file or graphing & history
     //
     newPulseGroup.storeOWL = function (src, dst, owl) {
-        var fs = require('fs');
-        var d = new Date();
-        var filename = src + '-' + dst + '.' + lib_1.YYMMDD() + '.txt';
-        var sample = "{ label: \"" + lib_1.now() + "\", y: " + owl + " },\n";
-        //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
-        //if (owl > 2000 || owl < 0) {
-        //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
-        //
-        //owl = 0;
-        //}
-        //var logMsg = "{y:" + owl + "},\n";
-        fs.appendFile(filename, sample, function (err) {
-            if (err)
-                throw err;
-            //console.log('Saved!');
-        });
+        grapher_1.grapherStoreOwl(src, dst, owl); //store OWL in a way the grapher can parse it
     };
     //
     //syncGenesisPulseGroup-sync this pulseGorup object with genesis node pulseGroup object

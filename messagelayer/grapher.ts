@@ -38,7 +38,7 @@ $(function() {
         if (fs.existsSync(path)) {
                 //file exists
                         txt+=fs.readFileSync(path);
-                        console.log(`found graph data file ${path}:${txt}`);
+                        //console.log(`found / data file ${path}:${txt}`);
         } else 
             console.log("could not find live pulseGroup graph data from "+path);
     } catch(err) {
@@ -58,6 +58,28 @@ $(function() {
 </body>
 </html>
 `
-console.log(`txt=${txt}`);
+//console.log(`txt=${txt}`);
 return txt
+}
+
+//
+//  grapherStoreOwl - store the owl sample in a way that can be graphed by the function above
+//
+export function grapherStoreOwl(src,dst,owl) {
+    var fs = require('fs');
+    var d = new Date();
+    var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
+    var sample = `{ label: "${now()}", y: ${owl} },\n`;
+    //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
+
+        //if (owl > 2000 || owl < 0) {
+            //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+        //
+            //owl = 0;
+        //}
+        //var logMsg = "{y:" + owl + "},\n";
+        fs.appendFile(filename, sample, function(err) {
+            if (err) throw err;
+            //console.log('Saved!');
+        });
 }

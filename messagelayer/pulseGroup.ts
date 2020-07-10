@@ -4,7 +4,7 @@
 //
 import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
-import {   grapher } from './grapher';
+import {   grapher, grapherStoreOwl } from './grapher';
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
@@ -1384,23 +1384,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 //      storeOWL() - store one way latency to file or graphing & history
 //
     newPulseGroup.storeOWL=function(src:string,dst:string,owl:number) {
-
-    var fs = require('fs');
-    var d = new Date();
-    var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
-    var sample = `{ label: "${now()}", y: ${owl} },\n`;
-    //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
-
-        //if (owl > 2000 || owl < 0) {
-            //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
-        //
-            //owl = 0;
-        //}
-        //var logMsg = "{y:" + owl + "},\n";
-        fs.appendFile(filename, sample, function(err) {
-            if (err) throw err;
-            //console.log('Saved!');
-        });
+        grapherStoreOwl(src,dst,owl);   //store OWL in a way the grapher can parse it
     }
 
     //
