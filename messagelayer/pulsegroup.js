@@ -170,10 +170,11 @@ function instrumentation() {
     txt += '   $.getJSON(url, function(config) {';
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
+    //use CSS to write the clickable owls
     txt += 'for (var src in pulseGroup.matrix) {';
     txt += '    for (var dest in pulseGroup.matrix[src]) {';
-    txt += '         if (pulseGroup.matrix[src][dest]!=-99999) $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
-    txt += '         else $("."+src+"-"+dest).text("");';
+    txt += '         if (pulseGroup.matrix[src][dest]!=-99999) $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");';
+    txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
     txt += '    }';
     txt += '}';
     //}
@@ -220,10 +221,10 @@ function instrumentation() {
     txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
     txt += '          else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");'; //Add NR class to entire row
     txt += '          if (pulse.pulseTimestamp!="0")';
-    txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-    txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
-    txt += '          $("."+pulse.geo+"_bootTimestamp").html(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-    txt += '           $("."+pulse.geo+"_owls").html(pulse.owls.substring(0,20));'; //TODO : Align left for this text field
+    txt += '              $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
+    txt += '          else $("."+pulse.geo+"_pulseTimestamp").text("0");';
+    txt += '          $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
+    txt += '           $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'; //TODO : Align left for this text field
     txt += '          pulse.inPulses=parseInt(pulse.inPulses);';
     txt += '          pulse.outPulses=parseInt(pulse.outPulses);';
     txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
