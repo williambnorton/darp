@@ -256,10 +256,11 @@ function instrumentation() {
         }
         txt += "</tr>";
         for (var src in pulseGroup.matrix) { //INSTRUMENTATION POINT
-            txt += '<tr><td>' + src + '</td>'; //heacer on left side
+            var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
+            txt += '<tr><td>' + mintEntry.geo + '</td>'; //heacer on left side
             for (var dest in pulseGroup.matrix[src]) {
-                txt += '<td>' + pulseGroup.matrix[src][dest] + " ms</td>";
                 console.log("MATRIX src=" + src + " dest=" + dest + " = " + pulseGroup.matrix[src][dest]);
+                txt += '<td class="' + mintEntry.geo + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
             }
             txt += "</tr>";
         }
