@@ -1342,7 +1342,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     var d = new Date();
     var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
     var sample = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
-    console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample);
+    //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
 
         //if (owl > 2000 || owl < 0) {
             //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
