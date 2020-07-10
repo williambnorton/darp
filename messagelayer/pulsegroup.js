@@ -10,6 +10,7 @@ var pulselayer_1 = require("./pulselayer");
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
 var REFRESH = 120; //Every 2 minuytes force rrfresh
+var OWLS_DISPLAYED = 30;
 var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
@@ -263,7 +264,7 @@ function instrumentation() {
             //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
         }
         txt += "</tr>";
-        for (var src in pulseGroup.matrix) { //INSTRUMENTATION POINT
+        for (var src in pulseGroup.matrix) {
             var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
             if (mintEntry.state == "UP")
                 txt += '<tr class="' + mintEntry.geo + ' UP"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
@@ -365,7 +366,7 @@ function instrumentation() {
                 txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
             if (pulseEntry.lastMsg) {
                 txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
-                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, 20) + "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
                 //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
             }
             else {

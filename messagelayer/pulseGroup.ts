@@ -8,6 +8,7 @@ import {   sendPulses, recvPulses } from './pulselayer';
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
 const REFRESH=120;  //Every 2 minuytes force rrfresh
+const OWLS_DISPLAYED=30;
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
 
@@ -343,7 +344,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                }
                txt += "</tr>"
 
-               for (var src in pulseGroup.matrix) {      //INSTRUMENTATION POINT
+               for (var src in pulseGroup.matrix) {      
                     var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
                     if (mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
                     else txt += '<tr class="'+mintEntry.geo+' NR"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
@@ -456,7 +457,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                 txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
             if (pulseEntry.lastMsg) {
                 txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
-                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, 20) + "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
                 //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
             }
             else {
