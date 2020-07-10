@@ -1,11 +1,11 @@
 FROM ubuntu:18.04 as base
 RUN apt-get update && \ 
     apt install -y npm && \
-    npm install express redis jstat
+    npm install express
 WORKDIR /opt
 
 FROM node:current-alpine3.10
-RUN apk add wireguard-tools redis wget curl iproute2 git && \
+RUN apk add wireguard-tools wget curl iproute2 git && \
     rm -rf /var/cache/apk/* && \
     git clone https://github.com/williambnorton/darp.git /root/darp
 COPY --from=base /node_modules .
