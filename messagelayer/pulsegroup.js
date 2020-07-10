@@ -265,7 +265,10 @@ function instrumentation() {
         txt += "</tr>";
         for (var src in pulseGroup.matrix) { //INSTRUMENTATION POINT
             var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
-            txt += '<tr class="' + mintEntry.geo + '"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
+            if (mintEntry.state == "UP")
+                txt += '<tr class="' + mintEntry.geo + ' UP"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
+            else
+                txt += '<tr class="' + mintEntry.geo + ' NR"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
             for (var dest in pulseGroup.matrix[src]) {
                 //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
                 txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
