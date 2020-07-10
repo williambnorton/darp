@@ -621,6 +621,10 @@ app.get('/graph/:src/:dst', function(req, res) {
     var DST=req.params.dst; 
     var SRC=req.params.src;
     console.log(`/graph src=${SRC} dst=${DST}`);
+    console.log(`/graph src=${SRC} dst=${DST}`);
+    console.log(`/graph src=${SRC} dst=${DST}`);
+    console.log(`/graph src=${SRC} dst=${DST}`);
+    console.log(`/graph src=${SRC} dst=${DST}`);
     var txt='';
     txt+='<meta http-equiv="refresh" content="'+60+'">';
     txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
