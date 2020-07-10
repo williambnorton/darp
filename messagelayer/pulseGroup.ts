@@ -215,10 +215,12 @@ function instrumentation() {    //this should get its own file
     txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
     txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
     txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
-    txt += '         var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
-    txt += '         var link="<a href="+gurl+">";';
-    txt += '         console.log("link="+link);';
-    txt += '         $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
+    txt += '         if ((srcMintEntry) && (destMintEntry)){'
+    txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
+    txt += '             var link="<a href="+gurl+">";';
+    txt += '             console.log("link="+link);';
+    txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
+    txt += '         } else console.log(ts()+"COULD NOT FIND MINT");';
     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
 //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
 
