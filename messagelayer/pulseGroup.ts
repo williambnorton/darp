@@ -666,7 +666,7 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
     //  pulseGroup 
     //
     if (typeof req.params.pulsegroup != "undefined") { 
-        console.log("pulsegroup="+req.params.pulsegroup+" mint="+req.params.mint);
+        //console.log("pulsegroup="+req.params.pulsegroup+" mint="+req.params.mint);
         for (var pulseGroup in myPulseGroups) {
             if (myPulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
                 var mint=0;
