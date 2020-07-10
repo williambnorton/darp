@@ -20,6 +20,4 @@ cd ..
 
 git add *.bash
 git add . && git commit -m "$MESSAGE + " && git push
-git add darp.css
-git add *.bash
 echo `date` Completed compiles + git push for `ls Build*`
