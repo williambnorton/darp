@@ -175,10 +175,10 @@ function instrumentation() {
     txt += 'for (var src in pulseGroup.matrix) {';
     txt += '    for (var dest in pulseGroup.matrix[src]) {';
     txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
-    txt += '         const srcMintEntry=pulseGroup.mintTable[src];';
-    txt += '         const destMintEntry=pulseGroup.mintTable[src];';
-    txt += '         const gurl="http://"+destMintEntry.ipaddr+":"+destMint.port+"/graph/"+mintEntry.geo+"/"+destMint.geo';
-    txt += '         const link="<a href=\"+gurl+">';
+    txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
+    txt += '         var destMintEntry=pulseGroup.mintTable[src];';
+    txt += '         var gurl="http://"+destMintEntry.ipaddr+":"+destMint.port+"/graph/"+mintEntry.geo+"/"+destMint.geo';
+    txt += '         var link="<a href=\"+gurl+">';
     txt += '         console.log("link="+link);';
     txt += '         $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
     txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
