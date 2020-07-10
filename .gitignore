@@ -107,5 +107,6 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# Wireguard keys
-wireguard/
+# Wirgeguard keys
+wireguard/privatekey
+wireguard/publickey
