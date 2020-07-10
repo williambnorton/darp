@@ -265,7 +265,7 @@ function instrumentation() {
         txt += "</tr>";
         for (var src in pulseGroup.matrix) { //INSTRUMENTATION POINT
             var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
-            txt += '<tr><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
+            txt += '<tr class="' + mintEntry.geo + '"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
             for (var dest in pulseGroup.matrix[src]) {
                 //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
                 txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
@@ -827,10 +827,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         var matrix = [];
         for (var pulse in newPulseGroup.pulses) {
             var nodeEntry = newPulseGroup.pulses[pulse];
-            console.log("processing " + pulse);
+            //console.log("processing "+pulse);
             //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             var pulseFreshness = lib_1.now() - nodeEntry.pulseTimestamp;
-            console.log(pulse + " pulseFreshness=" + pulseFreshness);
+            //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
             if ((lib_1.now() - nodeEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
                 //for each OWLS                 
                 var ary = nodeEntry.owls.split(","); //put all my OWLs into matrix
