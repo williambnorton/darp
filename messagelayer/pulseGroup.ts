@@ -629,11 +629,11 @@ app.get('/graph/:src/:dst', function(req, res) {
     txt+='<meta http-equiv="refresh" content="'+60+'">';
     txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
     var myYYMMDD=YYMMDD();     
-    var path=SRC+"-"+DST+"."+YYMMDD+'.txt';
+    var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
     try {
                 if (fs.existsSync(path)) {
                 //file exists
-                        txt+=fs.readFileSync(SRC+"-"+DST+"."+myYYMMDD+'.txt');
+                        txt+=fs.readFileSync(path);
                         console.log(`found graph data file ${path}:${txt}`);
                 }
                 else console.log("could not find live pulseGroup graph data from "+path);
