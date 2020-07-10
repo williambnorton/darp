@@ -527,6 +527,8 @@ app.get('/graph/:src/:dst', function (req, res) {
             //txt+="<p>filename="+SRC+"-"+DST+"."+YYMMDD+'.txt</p>';
             txt += fs.readFileSync(SRC + "-" + DST + "." + lib_1.YYMMDD + '.txt');
         }
+        else
+            console.log("could not find live pulseGroup graph data from " + path);
     }
     catch (err) {
         return console.error(err);
