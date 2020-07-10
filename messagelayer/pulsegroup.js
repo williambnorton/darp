@@ -9,7 +9,8 @@ var lib_1 = require("../lib/lib");
 var pulselayer_1 = require("./pulselayer");
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
-var REFRESH = 120;
+var REFRESH = 120; //Every 2 minuytes force rrfresh
+var OWLS_DISPLAYED = 30;
 var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
@@ -66,7 +67,7 @@ var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //------------------------ Environmentals loaded -----------------------
-//             start config/instrumentation web server
+//             start config/instrumentaton web server
 var express = require('express');
 var app = express();
 var server = app.listen(PORT, '0.0.0.0', function () {
@@ -84,16 +85,13 @@ var server = app.listen(PORT, '0.0.0.0', function () {
 //  genesis node should always be mintTable[1]
 //  me should always be mintTable[0] (first item)
 //pulseGroup.me and pulseGroup.genesis should be there for convenience though
-var me = makeMintEntry(0, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All nodes can count on 'me' always being present
+var me = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All nodes can count on 'me' always being present
 //All nodes also start out ready to be a genesis node for others
 var genesis = makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);
 var pulse = makePulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = {
-    //    var pulseGroup:PulseGroup = {                 //my pulseGroup Configuration
     groupName: me.geo + ".1",
     groupOwner: me.geo,
-    //    me : me,
-    //    genesis: genesis,
     mintTable: [
         me, genesis
     ],
@@ -104,7 +102,8 @@ var myPulseGroup = {
     ts: lib_1.now(),
     nodeCount: 1,
     nextMint: 2,
-    cycleTime: 1
+    cycleTime: 1,
+    matrix: []
 };
 //pulseGroup.me=me;
 //pulseGroup.genesis=genesis;
@@ -171,6 +170,14 @@ function instrumentation() {
     txt += '   $.getJSON(url, function(config) {';
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
+    txt += 'for (var src in pulseGroup.matrix) {';
+    txt += '    for (var dest in pulseGroup.matrix[src]) {';
+    txt += '         if (pulseGroup.matrix[src][dest]!=-99999) $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
+    txt += '         else $("."+src+"-"+dest).text("");';
+    txt += '    }';
+    txt += '}';
+    //}
+    //}
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
@@ -207,7 +214,10 @@ function instrumentation() {
     txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");';
     txt += '          }';
     //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-    //wbnwbnwbn   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
+    txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
+    txt += '          else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");'; //Add NR class to entire row
+    txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
+    txt += '          else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");'; //Add NR class to entire row
     txt += '          if (pulse.pulseTimestamp!="0")';
     txt += '              $("."+pulse.geo+"_pulseTimestamp").html(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
     txt += '          else $("."+pulse.geo+"_pulseTimestamp").html("0");';
@@ -241,6 +251,56 @@ function instrumentation() {
     txt += '<p id="dateTime">*Refresh: ' + timeStr + ' </p>';
     for (var p in myPulseGroups) {
         var pulseGroup = myPulseGroups[p];
+        //
+        //   show OWL Matrix table
+        //
+        txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+        txt += '<tr><th></th>';
+        //   print OWL headers
+        for (var col in pulseGroup.pulses) {
+            var colEntry = pulseGroup.pulses[col];
+            //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+            txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " <b>" + colEntry.mint + "<b></a> </th>";
+            //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
+        }
+        txt += "</tr>";
+        for (var src in pulseGroup.matrix) {
+            var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
+            if (mintEntry.state == "UP")
+                txt += '<tr class="' + mintEntry.geo + ' UP"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
+            else
+                txt += '<tr class="' + mintEntry.geo + ' NR"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
+            for (var dest in pulseGroup.matrix[src]) {
+                //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
+                txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+            }
+            txt += "</tr>";
+        }
+        txt += "</table>";
+        /*
+                   //
+                   //   print OWL matrix
+                   //
+                   for (var row in pulseGroup.matrix) {
+                       var rowEntry = pulseGroup.pulses[row];
+    //                   var cellState="RUNNING"; //unreachable     badkey   alert
+                       txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
+                       for (var col in pulseGroup.pulses) {
+                           var colEntry = pulseGroup.pulses[col];  //
+                           var entryLabel = rowEntry.geo + "-" + colEntry.geo
+                           var owl = "";
+    
+                     //      var cellState=colEntry.state
+                     //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
+                     //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
+                               owl = pulseGroup.matrix[rowEntry.mint][colEntry.mint];
+                     //      }
+                           txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>"
+                       }
+                       txt += "</tr>"
+                   }
+                   txt += "</table>";
+    */
         //
         //  Externalize pulse structures 
         //
@@ -306,7 +366,7 @@ function instrumentation() {
                 txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
             if (pulseEntry.lastMsg) {
                 txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
-                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, 20) + "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
                 //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
             }
             else {
@@ -464,8 +524,8 @@ app.get('/asset-manifest.json', function (req, res) {
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
 //
-app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
-    console.log("fetching '/pulseGroup' pulsegroup=" + req.params.pulsegroup + " req.params.mint=" + req.params.mint);
+app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
+    //console.log("fetching '/pulseGroup' pulsegroup="+req.params.pulsegroup+" req.params.mint="+req.params.mint);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //
@@ -490,13 +550,14 @@ app.get('/pulseGroup/:pulsegroup/:mint', function (req, res) {
         //console.log("/pulseGroup/:pulsegroup returning pulseGroup specified "+req.params.pulsegroup);
         res.end(JSON.stringify(null));
     }
-    else
+    else {
         console.log("No pulseGroup specified");
-    res.end(JSON.stringify(myPulseGroups, null, 2));
-    return;
+        res.end(JSON.stringify(myPulseGroups, null, 2));
+        return;
+    }
 });
-app.get(['/pulseGroups', '/state', '/me'], function (req, res) {
-    //console.log("fetching '/pulseGroups' ");
+app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
+    //console.log(ts()+"fetching '/pulseGroups' "+req.connection.remoteAddress);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(myPulseGroups, null, 2));
@@ -583,8 +644,9 @@ app.get('/nodefactory', function (req, res) {
     for (var mint in myPulseGroup.mintTable) {
         //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
         if (myPulseGroup.mintTable[mint] && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
-            console.log("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint);
+            console.log("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
             myPulseGroup.mintTable.splice(parseInt(mint)); //make sure not do delete me or genesis node
+            //remove the owl
             //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
         }
     }
@@ -761,6 +823,60 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         });
     };
     //pulseGroup.pulse = function() {
+    //
+    //  buildMatrix of objects for each segment - 
+    //
+    newPulseGroup.buildMatrix = function () {
+        //return;//turning off this feature until stable
+        var matrix = [];
+        for (var pulse in newPulseGroup.pulses) {
+            var nodeEntry = newPulseGroup.pulses[pulse];
+            //console.log("processing "+pulse);
+            //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
+            var pulseFreshness = lib_1.now() - nodeEntry.pulseTimestamp;
+            //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
+            if ((lib_1.now() - nodeEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
+                //for each OWLS                 
+                var ary = nodeEntry.owls.split(","); //put all my OWLs into matrix
+                for (var owlEntry in ary) {
+                    var m = parseInt(ary[owlEntry].split("=")[0]);
+                    var owl = NO_OWL;
+                    var strOwl = ary[owlEntry].split("=")[1];
+                    if (typeof strOwl != "undefined")
+                        owl = parseInt(strOwl);
+                    if (typeof matrix[m] == "undefined")
+                        matrix[m] = [];
+                    //console.log("Searching for mint "+m);
+                    //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
+                    matrix[m][nodeEntry.mint] = owl; //pulse measured to peer
+                }
+                if (typeof matrix[nodeEntry.mint] == "undefined")
+                    matrix[nodeEntry.mint] = [];
+                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl; //pulse measured to me
+            }
+            else { //OLD PULSE - CLEAR these entries
+                console.log(nodeEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
+                //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                //newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
+                //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
+                //});
+                //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                //console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
+                if (typeof matrix[nodeEntry.mint] == "undefined")
+                    matrix[nodeEntry.mint] = [];
+                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
+            }
+        }
+        //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
+        //    for (var d in newPulseGroup.matrix[s])
+        //        console.log(`MATRIX s=${s} d=${d} = ${newPulseGroup.matrix[s][d]}`);
+        newPulseGroup.matrix = matrix; //replace existing matrix - 
+        //console.log("could publish to subscribers here pulseGroup matrix="+dump(newPulseGroup.matrix));
+    };
+    //
+    //  pulse()
+    //
     newPulseGroup.pulse = function () {
         newPulseGroup.mintTable[0].state = "PULSING";
         newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
@@ -794,12 +910,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 newPulseGroup.syncGenesisPulseGroup(); //fetch new config from genesis
                 newPulseGroup.adminControl = '';
             }
+            newPulseGroup.mintTable[0].state = "me";
+            newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
         }
-        newPulseGroup.mintTable[0].state = "me";
-        newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
     };
     newPulseGroup.isGenesisNode = function () {
-        return newPulseGroup.mintTable[0].geo == newPulseGroup.owner;
+        return newPulseGroup.mintTable[0].geo == newPulseGroup.groupOwner;
     };
     newPulseGroup.getMint = function (mint) {
         for (var m in newPulseGroup.mintTable) {
@@ -830,22 +946,18 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var elapsedMSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
-                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle" + this.mintTable[m].geo);
+                    //console.log("m="+m+" elapsedMSincePulse="+elapsedMSincePulse+" clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
                     this.mintTable[m].owl = NO_OWL; //we don't have a valid OWL
                     this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("m=" + m + " genesis node elapsedMSincePulse=" + elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime * 1000) { //TIMEOUT MINT after 5 seconds
+                            console.log("timeout(): DELETING MINT with " + elapsedMSincePulse + " ms old timestamp " + this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
                             console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
-                            console.log("timeout(): DELETING MINT with old timestamp " + this.mintTable[m].geo);
-                            this.mintTable[m] = null;
+                            delete newPulseGroup.mintTable[m]; //
                         }
                     }
                     else {
@@ -858,7 +970,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             }
         }
         for (var p in this.pulses) {
-            if (this.pulses[p] && this.pulses[p].lastPulseTimestamp != 0) {
+            if ((this.pulses[p]) && (this.pulses[p].lastPulseTimestamp != 0) && (this.pulses[p].mint != 1)) { //don't timeout genesis pulse
                 var elapsedMSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
@@ -891,11 +1003,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //        for (var p in this.pulses) {
         //            newPulseGroup.nodeCount++;
         //        }
+        newPulseGroup.buildMatrix();
     };
     newPulseGroup.checkSWversion = function () {
         //console.log("=================================> checkSWversion()");
         if (newPulseGroup.groupOwner == me.geo)
             return console.log("checkSWversion - genesis node never checks its own version");
+        //console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         var url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts=" + lib_1.now() + "&x=" + lib_1.now() % 2000); //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);
         var http = require("http");
@@ -944,10 +1058,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //return ;  //we are done 
                 }
                 else {
-                    console.log(lib_1.ts() + "recvPulses(): Found pulseEntry but Could not find mint for this pulse... Re-synching with genesis to get credentials for " + incomingPulse.geo);
-                    newPulseGroup.adminControl = 'RESYNCH';
-                    //return newPulseGroup.syncGenesisPulseGroup();
-                    return; //we are done 
+                    if (!newPulseGroup.isGenesisNode()) {
+                        console.log(lib_1.ts() + "recvPulses(): Found pulseEntry " + incomingPulse.geo + ":" + incomingPulse.group + "but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for " + incomingPulse.geo);
+                        newPulseGroup.adminControl = 'RESYNCH';
+                        //return newPulseGroup.syncGenesisPulseGroup();
+                        return; //we are done 
+                    }
                 }
             }
             else {

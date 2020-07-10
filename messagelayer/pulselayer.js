@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-exports.sendPulses = exports.recvPulses = void 0;
 //
 //  pulselayer - send "pulse" UDP message to all nodes
 //
