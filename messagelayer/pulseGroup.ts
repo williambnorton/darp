@@ -1071,9 +1071,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             }
         }
 
-        for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
-            for (var d in newPulseGroup.matrix[s])
-                console.log(`MATRIX s=${s} d=${d} = ${newPulseGroup.matrix[s][d]}`);
+        //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
+        //    for (var d in newPulseGroup.matrix[s])
+        //        console.log(`MATRIX s=${s} d=${d} = ${newPulseGroup.matrix[s][d]}`);
         
         newPulseGroup.matrix=matrix;    //replace existing matrix - 
         //console.log("could publish to subscribers here pulseGroup matrix="+dump(newPulseGroup.matrix));
