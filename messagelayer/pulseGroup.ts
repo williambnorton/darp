@@ -206,6 +206,27 @@ function instrumentation() {    //this should get its own file
     txt += '   $.getJSON(url, function(config) {'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
+
+
+    txt += 'for (var src in pulseGroup.matrix) {';
+//   for (var src in pulseGroup.matrix) {      //INSTRUMENTATION POINT
+//    var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
+//   txt += '<tr><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
+    txt += '    for (var dest in pulseGroup.matrix[src]) {';
+    //for (var dest in pulseGroup.matrix[src]) {
+      // console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
+    txt += '         $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
+    txt += '    }';
+    txt += '}';
+      //}
+//}
+
+
+
+
+
+
+
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
    txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
@@ -328,10 +349,10 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
 
                for (var src in pulseGroup.matrix) {      //INSTRUMENTATION POINT
                     var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
-                   txt += '<tr><td>'+mintEntry.geo+'</td>'; //heacer on left side
+                   txt += '<tr><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
                    for (var dest in pulseGroup.matrix[src]) {
                        console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
-                       txt += '<td class="'+mintEntry.geo+'">' + pulseGroup.matrix[src][dest] + " ms</td>"
+                       txt += '<td class="'+src+"-"+dest+'">' + pulseGroup.matrix[src][dest] + " ms</td>"
                    }
                    txt +="</tr>"
                 }
