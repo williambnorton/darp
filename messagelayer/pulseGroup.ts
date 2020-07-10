@@ -7,7 +7,7 @@ import {   sendPulses, recvPulses } from './pulselayer';
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
-const REFRESH=120;
+const REFRESH=120;  //Every 2 minuytes force rrfresh
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
 
@@ -209,13 +209,9 @@ function instrumentation() {    //this should get its own file
 
 
     txt += 'for (var src in pulseGroup.matrix) {';
-//   for (var src in pulseGroup.matrix) {      //INSTRUMENTATION POINT
-//    var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
-//   txt += '<tr><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
-    txt += '    for (var dest in pulseGroup.matrix[src]) {';
-    //for (var dest in pulseGroup.matrix[src]) {
-      // console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
-    txt += '         $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
+    txt += '    for (var dest in pulseGroup.matrix[src]) {';              
+    txt += '         if (pulseGroup.matrix[src][dest]!=-99999) $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
+    txt += '         else $("."+src+"-"+dest).text("");';
     txt += '    }';
     txt += '}';
       //}
@@ -351,7 +347,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                     var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
                    txt += '<tr><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
                    for (var dest in pulseGroup.matrix[src]) {
-                       console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
+                       //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
                        txt += '<td class="'+src+"-"+dest+'">' + pulseGroup.matrix[src][dest] + " ms</td>"
                    }
                    txt +="</tr>"

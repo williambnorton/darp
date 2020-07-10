@@ -9,7 +9,7 @@ var lib_1 = require("../lib/lib");
 var pulselayer_1 = require("./pulselayer");
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
-var REFRESH = 120;
+var REFRESH = 120; //Every 2 minuytes force rrfresh
 var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
@@ -170,13 +170,9 @@ function instrumentation() {
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
     txt += 'for (var src in pulseGroup.matrix) {';
-    //   for (var src in pulseGroup.matrix) {      //INSTRUMENTATION POINT
-    //    var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
-    //   txt += '<tr><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
     txt += '    for (var dest in pulseGroup.matrix[src]) {';
-    //for (var dest in pulseGroup.matrix[src]) {
-    // console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
-    txt += '         $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
+    txt += '         if (pulseGroup.matrix[src][dest]!=-99999) $("."+src+"-"+dest).text(pulseGroup.matrix[src][dest] + " ms");';
+    txt += '         else $("."+src+"-"+dest).text("");';
     txt += '    }';
     txt += '}';
     //}
@@ -271,7 +267,7 @@ function instrumentation() {
             var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
             txt += '<tr><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
             for (var dest in pulseGroup.matrix[src]) {
-                console.log("MATRIX src=" + src + " dest=" + dest + " = " + pulseGroup.matrix[src][dest]);
+                //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
                 txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
             }
             txt += "</tr>";
