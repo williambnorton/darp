@@ -2,7 +2,7 @@
 //  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
 //
 //
-import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION } from '../lib/lib';
+import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
@@ -319,79 +319,45 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
     txt += '<p id="dateTime">*Refresh: '+ timeStr +' </p>'
 
 
-
+    //
+    //  externalize pulseGroup matrix
+    //
     for (var p in myPulseGroups) {
         var pulseGroup=myPulseGroups[p];
 
+        //
+        //   show OWL Matrix table
+        //
+        txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+        txt += '<tr><th></th>'
+
+        //   print OWL headers
+        for (var col in pulseGroup.pulses) {
+            var colEntry = pulseGroup.pulses[col];
+            //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+            txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " <b>" + colEntry.mint + "<b></a> </th>"
+            //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
+        }
+        txt += "</tr>"
+
+        for (var src in pulseGroup.matrix) {      
+            var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
+            if (mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr+":"+mintEntry.port+'/">'+mintEntry.geo+" "+mintEntry.mint+'</a></td>'; //heacer on left side
+            else txt += '<tr class="'+mintEntry.geo+' NR"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
+            for (var dest in pulseGroup.matrix[src]) {
+                //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
+                txt += '<td class="'+src+"-"+dest+'">' + pulseGroup.matrix[src][dest] + " ms</td>"
+            }
+            txt +="</tr>"
+        }
+        txt+="</table>";
 
 
 
 
 
 
-               //
-               //   show OWL Matrix table
-               //
-               txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
-               txt += '<tr><th></th>'
-
-               //   print OWL headers
-               for (var col in pulseGroup.pulses) {
-                   var colEntry = pulseGroup.pulses[col];
-                   //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-                    txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">' + colEntry.geo + " <b>" + colEntry.mint + "<b></a> </th>"
-                   //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
-               }
-               txt += "</tr>"
-
-               for (var src in pulseGroup.matrix) {      
-                    var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
-                    if (mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr+":"+mintEntry.port+'/">'+mintEntry.geo+" "+mintEntry.mint+'</a></td>'; //heacer on left side
-                    else txt += '<tr class="'+mintEntry.geo+' NR"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
-                    for (var dest in pulseGroup.matrix[src]) {
-                       //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
-                       txt += '<td class="'+src+"-"+dest+'">' + pulseGroup.matrix[src][dest] + " ms</td>"
-                   }
-                   txt +="</tr>"
-                }
-                txt+="</table>";
-    /*           
-               //
-               //   print OWL matrix
-               //
-               for (var row in pulseGroup.matrix) {
-                   var rowEntry = pulseGroup.pulses[row];
-//                   var cellState="RUNNING"; //unreachable     badkey   alert   
-                   txt += '<tr><td><a target="_blank" href="http://' + rowEntry.ipaddr+":"+rowEntry.port+'/">'+rowEntry.geo + " " + rowEntry.mint + '</a></td>'; //heacer on left side
-                   for (var col in pulseGroup.pulses) {
-                       var colEntry = pulseGroup.pulses[col];  //
-                       var entryLabel = rowEntry.geo + "-" + colEntry.geo
-                       var owl = "";
-
-                 //      var cellState=colEntry.state
-                 //      if ((typeof OWLMatrix[rowEntry.geo] != "undefined") &&
-                 //          (typeof OWLMatrix[rowEntry.geo][colEntry.geo] != "undefined")) {
-                           owl = pulseGroup.matrix[rowEntry.mint][colEntry.mint];
-                 //      }                       
-                       txt += '<div class="fade-out"><td class="' + rowEntry.mint + "-" + colEntry.mint+'">' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' +  rowEntry.geo+'&dst='+colEntry.geo +  "&group=" + pulseGroup.groupName + '" >' + owl + "ms</a>" + "</td></div>"
-                   }
-                   txt += "</tr>"
-               }
-               txt += "</table>";
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-            //
+        //
         //  Externalize pulse structures 
         //
         txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulseTable">';
@@ -1334,18 +1300,25 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //  groupOwner controls population.
                     // - resync if groupOwner has diff config
                     var ary=myPulseEntry.owls.split(",");
-                    var owlCount=0;
                     for(var owlEntry in ary) {
                         //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
-                        var m=ary[owlEntry].split("=")[0];
+                        var m=parseInt(ary[owlEntry].split("=")[0]);
+                        var strOwl=ary[owlEntry].split("=")[1];
+                        if (typeof strOwl=="undefined") strOwl="0";
+                        var owl=parseInt(strOwl);
                         //console.log("Searching for mint "+m);
-                        if (newPulseGroup.getMint(m) == null) {
+                        var srcMintEntry=newPulseGroup.mintTable[m];
+                        var dstMintEntry=newPulseGroup.mintTable[myPulseEntry.mint];
+
+                        if (srcMintEntry == null || dstMintEntry==null) {
                             console.log(`Owner announced a NEW MINT ENTRY ${m} - syncing with genesis node for config`);
                             newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                             return;
                         }
-                        owlCount++;
+                        newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry,owl);  //store owls
                     }
+                    newPulseGroup.storeOWL(incomingPulse.geo,newPulseGroup.mintTable[0].geo,incomingPulse.owl);  //store pulse latency To me
+
                     //console.log(`groupOwner tells us there are ${owlCount} nodes in thie pulseGroup and we have ${newPulseGroup.nodeCount}`);
                     //TODO: Also resync if the groupOwner has removed an item
                     //console.log("recvPulses - group owner population is in tact");
@@ -1359,6 +1332,29 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
         });
     };
+    
+//
+//      storeOWL() - store one way latency to file or graphing & history
+//
+    newPulseGroup.storeOWL=function(src:string,dst:string,owl:number) {
+
+    var fs = require('fs');
+    var d = new Date();
+    var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
+    var sample = "{ x: new Date('" + d + "'), y: " + owl + "},\n";
+    console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample);
+
+        //if (owl > 2000 || owl < 0) {
+            //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+        //
+            //owl = 0;
+        //}
+        //var logMsg = "{y:" + owl + "},\n";
+        fs.appendFile(filename, sample, function(err) {
+            if (err) throw err;
+            //console.log('Saved!');
+        });
+    }
 
     //
     //syncGenesisPulseGroup-sync this pulseGorup object with genesis node pulseGroup object
