@@ -633,15 +633,14 @@ app.get('/graph/:src/:dst', function(req, res) {
     try {
                 if (fs.existsSync(path)) {
                 //file exists
-                        //txt+="<p>filename="+SRC+"-"+DST+"."+YYMMDD+'.txt</p>';
-                        txt+=fs.readFileSync(SRC+"-"+DST+"."+YYMMDD+'.txt');
+                        txt+=fs.readFileSync(SRC+"-"+DST+"."+myYYMMDD+'.txt');
                         console.log(`found graph data file ${path}:${txt}`);
                 }
                 else console.log("could not find live pulseGroup graph data from "+path);
     } catch(err) {
                 return console.error(err)
     }
-    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+YYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
+    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
     txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
     console.log(`graph txt=${txt}`);
     res.end(txt);
