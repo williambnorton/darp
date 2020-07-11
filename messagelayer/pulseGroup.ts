@@ -176,6 +176,9 @@ function instrumentation() {    //this should get its own file
     .mintTable tr:first-child { \
         color: blue; \
     } \
+    .pulses tr:first-child { \
+        color: blue; \
+    } \
      \
     .UP{ \
             color: black;\
@@ -257,7 +260,7 @@ function instrumentation() {    //this should get its own file
    txt += "             var timeStr=d.toString().split(' ')[4];"
    //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
    //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-   txt += '             $("#dateTime").html( "<div class=\'updated\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
+   txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
    txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));';  //wbnwbnwbnwbnwbnwnbn
 
 
