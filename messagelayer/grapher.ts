@@ -39,6 +39,10 @@ $(function() {
         if (fs.existsSync(path)) {
                 //file exists
                         txt+=fs.readFileSync(path);
+                        var minuteSamples=txt.split("/n");
+                        const newSamples=minuteSamples.splice(0,(minuteSamples.length-60));
+                        console.log(`newSamples length=${newSamples.length}`);
+
                         //console.log(`found / data file ${path}:${txt}`);
         } else {
             console.log("could not find live pulseGroup graph data from "+path);
