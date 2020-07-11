@@ -47,13 +47,13 @@ $(function() {
 
             for (var i=0; i<sampleCount-6; i++)
                 minuteSamples.pop();
-            txt += minuteSamples.join("/n");
+            txt += minuteSamples.join(",");
 
             console.log(`sampleCount=${sampleCount} last measures: ${minuteSamples}`);
             //save only last 60 samples of raw data'
-            fs.writeFile(path, minuteSamples.join(","), function (err) {
-                if (err) return console.log(err);
-            });
+            //fs.writeFile(path, minuteSamples.join(","), function (err) {
+            //    if (err) return console.log(err);
+            //});
                         //console.log(`found / data file ${path}:${txt}`);
         } else {
             console.log("could not find live pulseGroup graph data from "+path);
