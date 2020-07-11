@@ -10,10 +10,13 @@ function grapher(src, dest) {
     try {
         if (fs.existsSync(path)) {
             //file exists
-            txt += fs.readFileSync(path);
-            var minuteSamples = txt.split("/n");
-            var newSamples = minuteSamples.splice(0, (minuteSamples.length - 60));
-            console.log("minuteSamples length=" + minuteSamples.length + " minuteSamples=" + minuteSamples);
+            var rawSamples = fs.readFileSync(path);
+            var minuteSamples = rawSamples.split("/n");
+            var sampleCount = minuteSamples.length;
+            for (var i = 0; i < minuteSamples - 6; i++)
+                minuteSamples.pop();
+            txt += minuteSamples.join("\n");
+            console.log("last measures: " + minuteSamples);
             //console.log(`found / data file ${path}:${txt}`);
         }
         else {
