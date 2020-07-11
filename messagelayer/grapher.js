@@ -17,6 +17,11 @@ function grapher(src, dest) {
                 minuteSamples.pop();
             txt += minuteSamples.join("\n");
             console.log("sampleCount=" + sampleCount + " last measures: " + minuteSamples);
+            fs.writeFile(path, minuteSamples.join("/n"), function (err) {
+                if (err)
+                    return console.log(err);
+                console.log("stored ");
+            });
             //console.log(`found / data file ${path}:${txt}`);
         }
         else {
