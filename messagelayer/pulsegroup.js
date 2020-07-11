@@ -1145,11 +1145,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         }
                         //newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry.geo,owl);  //store owls into my local filestore
                     }
-                    newPulseGroup.storeOWL(incomingPulse.geo, newPulseGroup.mintTable[0].geo, incomingPulse.owl); //store pulse latency To me
                     //console.log(`groupOwner tells us there are ${owlCount} nodes in thie pulseGroup and we have ${newPulseGroup.nodeCount}`);
                     //TODO: Also resync if the groupOwner has removed an item
                     //console.log("recvPulses - group owner population is in tact");
                 }
+                newPulseGroup.storeOWL(incomingPulse.geo, newPulseGroup.mintTable[0].geo, incomingPulse.owl); //store pulse latency To me
             }
             else {
                 console.log("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: " + incomingPulse.geo);
