@@ -185,7 +185,7 @@ function instrumentation() {
     txt += '             var link="<a target=_blank href="+gurl+">";';
     // txt += '             console.log("link="+link);';
     txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
-    txt += '         } else console.log(ts()+"COULD NOT FIND MINT");';
+    txt += '         } else console.log("COULD NOT FIND MINT");';
     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
     //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
     txt += '    }';
