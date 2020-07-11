@@ -1015,7 +1015,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         //console.log(`I am Genesis Node timing out ${this.pulses[p].geo}`);
                         if (elapsedMSincePulse > 10 * newPulseGroup.cycleTime * 1000) {
-                            console.log(lib_1.ts() + "timeout() : Genesis DELETING PULSE with " + elapsedMSincePulse + " ms old timestamp " + this.mintTable[m].geo);
+                            console.log(lib_1.ts() + ("timeout() : Genesis DELETING PULSE " + this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp "));
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
