@@ -530,7 +530,7 @@ app.get('/graph/:src/:dst', function (req, res) {
     var dest = req.params.dst;
     var src = req.params.src;
     var txt = '';
-    txt += grapher_1.grapher(src, dest);
+    txt += grapher_1.grapher(src, dest); //get the HTML to display and show graph
     //    txt+='<meta http-equiv="refresh" content="'+60+'">';
     //    txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
     //    var myYYMMDD=YYMMDD();     

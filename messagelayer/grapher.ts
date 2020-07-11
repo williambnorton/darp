@@ -4,9 +4,10 @@ export function grapher(src:string,dest:string) {
     console.log(`grapher(): src=${src} det=${dest}`);
 var txt=`
 <!DOCTYPE HTML>
+<meta http-equiv="refresh" content="10">
 <html>
 <head>
-<title>jQuery Line Chart</title> 
+<title>${src}-${dest}</title> 
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 <script type="text/javascript">

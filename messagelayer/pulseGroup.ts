@@ -639,7 +639,7 @@ app.get('/graph/:src/:dst', function(req, res) {
     var dest=req.params.dst; 
     var src=req.params.src;
     var txt='';
-    txt+=grapher(src,dest);
+    txt+=grapher(src,dest); //get the HTML to display and show graph
 
 //    txt+='<meta http-equiv="refresh" content="'+60+'">';
 
