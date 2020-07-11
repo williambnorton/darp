@@ -13,7 +13,7 @@ function grapher(src, dest) {
             txt += fs.readFileSync(path);
             var minuteSamples = txt.split("/n");
             var newSamples = minuteSamples.splice(0, (minuteSamples.length - 60));
-            console.log("newSamples length=" + newSamples.length + " " + minuteSamples);
+            console.log("minuteSamples length=" + minuteSamples.length + " minuteSamples=" + minuteSamples);
             //console.log(`found / data file ${path}:${txt}`);
         }
         else {
