@@ -13,8 +13,10 @@ function grapher(src, dest) {
             txt += fs.readFileSync(path);
             //console.log(`found / data file ${path}:${txt}`);
         }
-        else
+        else {
             console.log("could not find live pulseGroup graph data from " + path);
+            txt += "/* could not find live pulseGroup graph data from " + path + " */";
+        }
     }
     catch (err) {
         return console.error(err);
