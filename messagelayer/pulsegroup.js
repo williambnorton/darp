@@ -179,7 +179,7 @@ function instrumentation() {
     txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
     txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){';
     txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
-    txt += '             var link="<a target=\"_blank\" href="+gurl+">";';
+    txt += '             var link="<a target=_blank href="+gurl+">";';
     txt += '             console.log("link="+link);';
     txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
     txt += '         } else console.log(ts()+"COULD NOT FIND MINT");';
