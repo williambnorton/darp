@@ -13,7 +13,7 @@ var txt=`
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest} latency (in ms)"
+			text: "${src}-${dest} ${YYMMDD()} latency (in ms)"
 		},
 		axisY: {
 			title: "latency in ms",
@@ -31,7 +31,7 @@ $(function() {
                 `;
     
     
-                var fs = require("fs");
+    var fs = require("fs");
     var myYYMMDD=YYMMDD();     
     var path=src+"-"+dest+"."+myYYMMDD+'.txt';
     try {
