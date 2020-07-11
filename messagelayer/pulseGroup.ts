@@ -1305,8 +1305,20 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
             if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
                 //TODO: This is where authentication to this pulseGroup happens
-                if (mintEntry!=null && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
-                    //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
+                if (mintEntry==null) { //} && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
+                   console.log(ts()+"recvPulses(): IGNORING PULSE Found pulseEntry "+incomingPulse.geo+":"+incomingPulse.group+" but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for "+incomingPulse.geo);
+                    newPulseGroup.adminControl='RESYNCH';
+                    //return newPulseGroup.syncGenesisPulseGroup();
+                    return ;  //we are done     
+                }
+                if (mintEntry.geo!=incomingPulse.geo) {
+                    console.log(ts()+"recvPulses(): IGNORING PULSE - mismatched mint "+incomingPulse.geo+":"+incomingPulse.group+" and mint="+mintEntry.mint+" and this mint is geo="+mintEntry.geo+" but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for "+incomingPulse.geo);
+                    newPulseGroup.adminControl='RESYNCH';
+                    //return newPulseGroup.syncGenesisPulseGroup();
+                    return ;  //we are done    
+                    return;
+                }
+                //console.log("recvPulses - adding entry cause I found s mint for this node: "+incomingPulse.geo+":"+incomingPulse.group);
                     //TODO: Explore this - we should not need to do this.
 
                     // /* wbnwbn */        myPulseEntry=newPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group]=makePulseEntry(incomingPulse.mint, incomingPulse.geo, incomingPulse.group, incomingPulse.ipaddr, incomingPulse.port, incomingPulse.version); 
@@ -1315,6 +1327,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //return newPulseGroup.syncGenesisPulseGroup();
                     //return ;  //we are done 
                 } else {
+
                     if (!newPulseGroup.isGenesisNode()) {
                         console.log(ts()+"recvPulses(): Found pulseEntry "+incomingPulse.geo+":"+incomingPulse.group+"but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for "+incomingPulse.geo);
                         newPulseGroup.adminControl='RESYNCH';
