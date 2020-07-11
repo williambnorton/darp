@@ -41,10 +41,10 @@ $(function() {
             var rawSamples=fs.readFileSync(path);
             var minuteSamples=rawSamples.toString().split("/n");
             var sampleCount=minuteSamples.length;
-            for (var i=0; i<minuteSamples-6; i++)
+            for (var i=0; i<sampleCount-6; i++)
                 minuteSamples.pop();
             txt += minuteSamples.join("\n");
-            console.log(`last measures: ${minuteSamples}`);
+            console.log(`sampleCount=${sampleCount} last measures: ${minuteSamples}`);
 
                         //console.log(`found / data file ${path}:${txt}`);
         } else {
