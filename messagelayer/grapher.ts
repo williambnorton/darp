@@ -25,7 +25,7 @@ $(function() {
 		data: [
 		{
 			type: "line", //try changing to column, area
-			toolTipContent: "{label}: {y} mm",
+			toolTipContent: "{label}: {y} ms",
 			dataPoints: [
                 //fetch data from file
                 `;
@@ -65,21 +65,22 @@ return txt
 //
 //  grapherStoreOwl - store the owl sample in a way that can be graphed by the function above
 //
-export function grapherStoreOwl(src,dst,owl) {
+export function grapherStoreOwl(src:String,dst:String,owl:Number) {
     var fs = require('fs');
     var d = new Date();
+    var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
-    var sample = `{ label: "${now()}", y: ${owl} },\n`;
+    var sample = `{ label: "${sampleLabel}", y: ${owl} },\n`;
     //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
 
-        //if (owl > 2000 || owl < 0) {
-            //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
-        //
-            //owl = 0;
-        //}
-        //var logMsg = "{y:" + owl + "},\n";
-        fs.appendFile(filename, sample, function(err) {
-            if (err) throw err;
-            //console.log('Saved!');
-        });
+    //if (owl > 2000 || owl < 0) {
+        //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+    //
+        //owl = 0;
+    //}
+    //var logMsg = "{y:" + owl + "},\n";
+    fs.appendFile(filename, sample, function(err) {
+        if (err) throw err;
+        //console.log('Saved!');
+    });
 }
