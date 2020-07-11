@@ -321,7 +321,7 @@ function instrumentation() {
         txt += "<th>owls</th>";
         txt += "<th>bootTimestamp</th>";
         txt += "<th>version</th>";
-        txt += "<th>Wallet Balance</th>";
+        txt += "<th>Net Earnings</th>";
         txt += "</tr>";
         var total = 0; //Add up total balance of all pulses
         //console.log(ts()+"                            pulses="+dump(pulses));
@@ -385,7 +385,7 @@ function instrumentation() {
             //txt+="<td>"+pulseEntry.lastMsg+"</td>"
             txt += "</tr>";
         }
-        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">' + pulseGroup.groupName + ' Earnings $' + total.toFixed(6) + '</td></tr>';
+        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">' + pulseGroup.groupName + ' Earnings $' + total.toFixed(6) + '</td></tr>';
         txt += "</table>";
     }
     for (var p in myPulseGroups) {
