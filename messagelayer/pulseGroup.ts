@@ -1198,7 +1198,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                             //delete newPulseGroup.mintTable[m];   //did not work
                             newPulseGroup.mintTable[m]=null;   //
                         }
-                    } else {
+                    } else { /*  not genesis - only can time out genesis  */
+                        if (now()-newPulseGroup.mintTable[1].pulseTimestamp > 30*1000) {
+                            console.log(`Here the node will timeout the genesis snode, and delete his pulseGroup`);
+                        }
                         //we may timeout the group owner and kill the pulsegroup
                         //if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
                     }
