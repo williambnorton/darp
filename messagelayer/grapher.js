@@ -11,16 +11,17 @@ function grapher(src, dest) {
         if (fs.existsSync(path)) {
             //file exists
             var rawSamples = fs.readFileSync(path);
+            console.log("rawSamples=" + rawSamples);
             var minuteSamples = rawSamples.toString().split("/n");
             var sampleCount = minuteSamples.length;
-            for (var i = 0; i < sampleCount - 6; i++)
+            console.log("minuteSamples=" + minuteSamples + " sampleCount=" + sampleCount);
+            for (var i = 0; i < sampleCount - 60; i++)
                 minuteSamples.pop();
             txt += minuteSamples.join("\n");
             console.log("sampleCount=" + sampleCount + " last measures: " + minuteSamples);
             fs.writeFile(path, minuteSamples.join("/n"), function (err) {
                 if (err)
                     return console.log(err);
-                console.log("stored ");
             });
             //console.log(`found / data file ${path}:${txt}`);
         }
