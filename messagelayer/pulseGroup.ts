@@ -240,7 +240,7 @@ function instrumentation() {    //this should get its own file
 
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-   txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
+ //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
    txt += '             if ( pulseGroup.nodeCount > 1 ) {'
    txt += '                if (nodeCountLastTime!=0) {'
    txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {'
@@ -661,7 +661,7 @@ app.get('/graph/:src/:dst', function(req, res) {
 //    }
 //    txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
 //    txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
-    console.log(`graph txt=${txt}`);
+    //console.log(`graph txt=${txt}`);
     res.end(txt);
     return;
 });

@@ -28,7 +28,7 @@ $(function() {
 			type: "line", //try changing to column, area
 			toolTipContent: "{label}: {y} ms",
 			dataPoints: [
-                //fetch data from file
+                //fetched data from file goes here
                 `;
     
     
