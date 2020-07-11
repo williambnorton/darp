@@ -883,7 +883,8 @@ app.get('/nodefactory', function(req, res) {
     return { 
         mint: mint, 
         geo: geo,
-        state: mint==0?DEFAULT_START_STATE:"me",
+//        state: mint==0?DEFAULT_START_STATE:"me",
+        state: DEFAULT_START_STATE,
         bootTimestamp: now(), //RemoteClock on startup  ****
         version: version,   //software version running on remote system ********
         wallet: wallet,     // ** 
@@ -1125,27 +1126,24 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         });
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
-        if (typeof myEntry=="undefined") {
-            console.log(`pulse() can not find pulseEntry ${GEO}:${newPulseGroup.groupName} NOT PULSING`);
-        } else {
-            myEntry.seq++;
-            var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
-            //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
-            sendPulses(pulseMessage,ipary);
 
-            setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
-            //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
-            //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
+        myEntry.seq++;
+        var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
+        //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
+        sendPulses(pulseMessage,ipary);
 
-            newPulseGroup.timeout(); //and timeout the non-responders
-            if ( newPulseGroup.adminControl=='RESYNCH' ) {
-                console.log(ts()+"Resynching with genesis node...");
-                newPulseGroup.syncGenesisPulseGroup();  //fetch new config from genesis
-                newPulseGroup.adminControl='';
-            }
-            newPulseGroup.mintTable[0].state="me";
-            newPulseGroup.mintTable[0].lastPulseTimestamp=now();
+        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
+        //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
+        //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
+
+        newPulseGroup.timeout(); //and timeout the non-responders
+        if ( newPulseGroup.adminControl=='RESYNCH' ) {
+            console.log(ts()+"Resynching with genesis node...");
+            newPulseGroup.syncGenesisPulseGroup();  //fetch new config from genesis
+            newPulseGroup.adminControl='';
         }
+        newPulseGroup.mintTable[0].state="UP";
+        newPulseGroup.mintTable[0].lastPulseTimestamp=now();
 
     };
 
