@@ -2,7 +2,7 @@
 //  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
 //
 //
-import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD } from '../lib/lib';
+import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 import {   grapher, grapherStoreOwl } from './grapher';
 
@@ -143,7 +143,7 @@ myPulseGroups={}; //[me.geo+".1"] : pulseGroup};
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
 
-//console.log("--------------------------Starting with my own pulseGroup="+dump(pulseGroup));
+Log("--------------------------Starting with my own pulseGroup="+dump(myPulseGroup));
 //pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
 //console.log("-********************** AFTER pulseGroup="+dump(pulseGroup));
 
@@ -604,6 +604,7 @@ app.get('/version', function(req, res) {
  app.get('/stop', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("EXITTING and Stopping the node request from "+ip);
+    Log("EXITTING and Stopping the node request from "+ip);
     res.redirect(req.get('referer'));
     process.exit(86);
 });
@@ -611,6 +612,8 @@ app.get('/version', function(req, res) {
  app.get('/reboot', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
+    Log("reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
+
     res.redirect(req.get('referer'));
     process.exit(99999) 
  });
@@ -618,6 +621,7 @@ app.get('/version', function(req, res) {
  app.get('/reload', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("EXITTING to reload the system request from: "+ip)
+    Log("EXITTING to reload the system request from: "+ip)
     res.redirect(req.get('referer'));
     process.exit(36);
  });

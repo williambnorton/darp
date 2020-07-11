@@ -113,7 +113,7 @@ myPulseGroups = {}; //[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //TO ADD A MINT: pulseGroup.mintTable[36]=me;
 //pulseGroup.mintTable=genesis;
-//console.log("--------------------------Starting with my own pulseGroup="+dump(pulseGroup));
+lib_1.Log("--------------------------Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
 //pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
 //console.log("-********************** AFTER pulseGroup="+dump(pulseGroup));
 //process.exit(36);
@@ -501,18 +501,21 @@ app.get('/version', function (req, res) {
 app.get('/stop', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("EXITTING and Stopping the node request from " + ip);
+    lib_1.Log("EXITTING and Stopping the node request from " + ip);
     res.redirect(req.get('referer'));
     process.exit(86);
 });
 app.get('/reboot', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from " + ip);
+    lib_1.Log("reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from " + ip);
     res.redirect(req.get('referer'));
     process.exit(99999);
 });
 app.get('/reload', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("EXITTING to reload the system request from: " + ip);
+    lib_1.Log("EXITTING to reload the system request from: " + ip);
     res.redirect(req.get('referer'));
     process.exit(36);
 });
