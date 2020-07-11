@@ -14,7 +14,7 @@ var txt=`
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest} ${YYMMDD()} latency (in ms)"
+			text: "${src}-${dest}"
 		},
 		axisY: {
 			title: "latency in ms",
