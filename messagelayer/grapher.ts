@@ -39,7 +39,7 @@ $(function() {
         if (fs.existsSync(path)) {
                 //file exists
             var rawSamples=fs.readFileSync(path);
-            var minuteSamples=rawSamples.split("/n");
+            var minuteSamples=rawSamples.toString().split("/n");
             var sampleCount=minuteSamples.length;
             for (var i=0; i<minuteSamples-6; i++)
                 minuteSamples.pop();
