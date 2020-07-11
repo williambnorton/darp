@@ -445,8 +445,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
                 txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
                 txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
                 //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
-            }
-            else {
+            } else {
                 txt += "<td>" + "" + "</td>";
                 txt += "<td>" + "" + "</td>";
             }
