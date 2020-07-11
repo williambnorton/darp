@@ -855,9 +855,9 @@ app.get('/nodefactory', function(req, res) {
     //                              pulseNode MEMBER NODE
     //
 
-    console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
-    console.log(ts() + "nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
-    console.log(ts() + "nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
+    //console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
+    //console.log(ts() + "nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
+    //console.log(ts() + "nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
     
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
