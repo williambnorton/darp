@@ -414,7 +414,11 @@ function instrumentation() {
             var mintEntry = pulseGroup.mintTable[a];
             if (mintEntry != null) {
                 //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
-                txt += '<tr class="' + mintEntry.geo + '">';
+                if (mintEntry.state == "UP")
+                    txt += '<tr class="UP ' + mintEntry.geo + '" >';
+                else
+                    txt += '<tr class="NR ' + mintEntry.geo + '" >';
+                //                txt += '<tr class="'+mintEntry.geo+'">';
                 //txt+="<td>"+mintEntry+"</td>"
                 txt += "<td>" + mintEntry.mint + "</td>";
                 txt += '<td class="' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>";
