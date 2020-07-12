@@ -1093,7 +1093,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             var mintEntry = newPulseGroup.getMint(incomingPulse.mint); // look up the pulse claimed mint
             //console.log(`associated ${incomingPulse.mint} mintEntry=`+dump(mintEntry));
             //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
-            if (typeof myPulseEntry == "undefined" || myPulseEntry == null) { //If we don't have this pulseEntry yet
+            //            if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
+            if (myPulseEntry && mintEntry) { }
+            else { //If we don't have this pulseEntry or we don't have its mintEntry yet
                 if (!newPulseGroup.isGenesisNode()) {
                     console.log(lib_1.ts() + ("ignoring " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse entry"));
                     return;
@@ -1109,8 +1111,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     newPulseGroup.adminControl = 'RESYNCH';
                     return; //we are done    
                 }
-                console.log(lib_1.ts() + "recvPulses(): Valid pulse for a mint we know about " + incomingPulse.geo);
             }
+            console.log(lib_1.ts() + "recvPulses(): Valid pulse for a mint we know about " + incomingPulse.geo);
             //we expect mintEntry to --> mint entry for this pulse
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
             if (myPulseEntry != null) {
