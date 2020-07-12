@@ -19,7 +19,7 @@ function grapher(src, dest) {
             var sixtySamples = [];
             for (var i = sampleCount - 10; i < 10; i++)
                 sixtySamples[j++] = minuteSamples[i];
-            txt += sixtySamples.join("\n");
+            txt += sixtySamples.join(" ");
             console.log("sampleCount=" + sixtySamples.length + " sixtySamples: " + sixtySamples);
             //save only last 60 samples of raw data'
             //fs.writeFile(path, minuteSamples.join(","), function (err) {

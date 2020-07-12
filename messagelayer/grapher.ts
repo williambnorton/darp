@@ -49,7 +49,7 @@ $(function() {
             for (var i=sampleCount-10; i< 10; i++)
                 sixtySamples[j++]=minuteSamples[i];
 
-            txt += sixtySamples.join("\n");
+            txt += sixtySamples.join(" ");
 
             console.log(`sampleCount=${sixtySamples.length} sixtySamples: ${sixtySamples}`);
             //save only last 60 samples of raw data'
