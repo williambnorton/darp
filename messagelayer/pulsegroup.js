@@ -185,7 +185,8 @@ function instrumentation() {
     txt += '             var link="<a target=_blank href="+gurl+">";';
     // txt += '             console.log("link="+link);';
     txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
-    txt += '         } else console.log("COULD NOT FIND MINT");';
+    //    txt += '         } else console.log("COULD NOT FIND MINT");';
+    txt += '         } else $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");';
     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
     //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
     txt += '    }';
@@ -873,14 +874,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //return;//turning off this feature until stable
         var matrix = [];
         for (var pulse in newPulseGroup.pulses) {
-            var nodeEntry = newPulseGroup.pulses[pulse];
+            var pulseEntry = newPulseGroup.pulses[pulse];
             //console.log("processing "+pulse);
             //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
-            var pulseFreshness = lib_1.now() - nodeEntry.pulseTimestamp;
+            var pulseFreshness = lib_1.now() - pulseEntry.pulseTimestamp;
             //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
-            if ((lib_1.now() - nodeEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
+            if ((lib_1.now() - pulseEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
                 //for each OWLS                 
-                var ary = nodeEntry.owls.split(","); //put all my OWLs into matrix
+                var ary = pulseEntry.owls.split(","); //put all my OWLs into matrix
                 for (var owlEntry in ary) {
                     var m = parseInt(ary[owlEntry].split("=")[0]);
                     var owl = NO_OWL;
@@ -891,14 +892,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         matrix[m] = [];
                     //console.log("Searching for mint "+m);
                     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-                    matrix[m][nodeEntry.mint] = owl; //pulse measured to peer
+                    matrix[m][pulseEntry.mint] = owl; //pulse measured to peer
                 }
-                if (typeof matrix[nodeEntry.mint] == "undefined")
-                    matrix[nodeEntry.mint] = [];
-                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = nodeEntry.owl; //pulse measured to me
+                if (typeof matrix[pulseEntry.mint] == "undefined")
+                    matrix[pulseEntry.mint] = [];
+                matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = pulseEntry.owl; //pulse measured to me
             }
             else { //OLD PULSE - CLEAR these entries
-                console.log(nodeEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
+                console.log(pulseEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 //newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
@@ -906,9 +907,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //});
                 //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
                 //console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-                if (typeof matrix[nodeEntry.mint] == "undefined")
-                    matrix[nodeEntry.mint] = [];
-                matrix[nodeEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
+                if (typeof matrix[pulseEntry.mint] == "undefined")
+                    matrix[pulseEntry.mint] = [];
+                matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
             }
         }
         //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
