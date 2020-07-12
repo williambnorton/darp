@@ -41,14 +41,16 @@ $(function() {
             var rawSamples=fs.readFileSync(path);
             console.log(`rawSamples=${rawSamples.toString()} `);
             var secondSamples=rawSamples.toString().split(",");  //2 commas per line
-            console.log(`secondSamples=${secondSamples} `);
+            //console.log(`secondSamples=${secondSamples} `);
 
-            console.log(`secondSamples=${secondSamples} secondSamples.length=${secondSamples.length}`);
+            console.log(`secondSamples.length=${secondSamples.length} secondSamples=${secondSamples} `);
 
             var j=0;
             var sixtySamples:String[]=[];
-            for (var i=secondSamples.length-10; i<10; i++)
+            for (var i=secondSamples.length-10; i<10; i++) {
+                console.log(`copying secondSamples[i]=${secondSamples[i]} to sixtySamples[j]-${j}`);
                 sixtySamples[j++]=secondSamples[i]+",";
+            }
 //
             var newSamples = sixtySamples.join(",");
             txt += newSamples;
