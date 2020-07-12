@@ -275,7 +275,7 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
    // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
    //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
   // txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
-   txt += '             $("."+pulse.geo+"_"+field).text(fieldValue);'
+   txt += '             if (pulse!=null) $("."+pulse.geo+"_"+field).text(fieldValue);'
    txt += '          }'
 
    //txt += '          console.log("config="+JSON.stringify(config,null,2));'
@@ -357,14 +357,16 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
 
         for (var src in pulseGroup.matrix) {      
             var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
-            if ((mintEntry) && mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr+":"+mintEntry.port+'/">'+mintEntry.geo+" "+mintEntry.mint+'</a></td>'; //heacer on left side
+            if ((mintEntry!=null) && mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr+":"+mintEntry.port+'/">'+mintEntry.geo+" "+mintEntry.mint+'</a></td>'; //heacer on left side
             else txt += '<tr class="'+mintEntry.geo+' NR"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
+            
             for (var dest in pulseGroup.matrix[src]) {
                 var destMint=pulseGroup.mintTable[parseInt(dest)]; //what if there is no mint?
                 //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
 // txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
 
-                txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                if (destMint!=null) txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                else txt += '<td class="'+src+"-"+dest+'">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
             }
             txt +="</tr>"
         }
@@ -411,55 +413,58 @@ txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
             var rowMintEntry=pulseGroup.mintTable[pulseEntry.mint];
             if ((rowMintEntry)&&(rowMintEntry.state=="UP"))
                 txt += '<tr class="UP ' + pulseEntry.geo + '" >';
-            else txt += '<tr class="NR ' + pulseEntry.geo + '" >';
-            //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-            txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
-            //txt+="<td>"+pulseEntry.geo+"</td>"
-            txt += "<td >" + pulseEntry.group + "</td>";
-            txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
-            txt += "<td>" + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
-            txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
-            var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
-            if (pulseEntry.pulseTimestamp == 0)
-                deltaSeconds = "0";
-            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-            txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
-            //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-            txt += "<td>" + pulseEntry.mint + "</td>";
-            // OWL
-//            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
-            txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
-            //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
-            //txt+="<td>"+pulseEntry.owls+"</td>"
-            //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
-            //txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
-            txt += '<td class="' + pulseEntry.geo + '_inPulses"' + '>' + pulseEntry.inPulses + "</td>";
-            txt += '<td class="' + pulseEntry.geo + '_outPulses"' + '>' + pulseEntry.outPulses + "</td>";
-            //var pktLoss=parseInt(pulseEntry.seq)-parseInt(pulseEntry.inMsgs);
-            //console.log("pktloss=:"+pktLoss);
-            if (pulseEntry.pktDrops > 1)
-                txt += '<td class="' + pulseEntry.geo + '_pktDrops WARNING"' + '>' + pulseEntry.pktDrops + "</td>";
-            else
-                txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
-            if (pulseEntry.lastMsg) {
-                txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
-                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
-                //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
-            } else {
-                txt += "<td>" + "" + "</td>";
-                txt += "<td>" + "" + "</td>";
+            else txt += '<tr class="NR ' + "unknown geo" + '" >';
+            if (rowMintEntry!=null) {
+                //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
+                txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+                //txt+="<td>"+pulseEntry.geo+"</td>"
+                txt += "<td >" + pulseEntry.group + "</td>";
+                txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
+                txt += "<td>" + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
+                txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
+                var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+                if (pulseEntry.pulseTimestamp == 0)
+                    deltaSeconds = "0";
+                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
+                //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+                txt += "<td>" + pulseEntry.mint + "</td>";
+                // OWL
+    //            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+                txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
+                //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
+                //txt+="<td>"+pulseEntry.owls+"</td>"
+                //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
+                //txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_inPulses"' + '>' + pulseEntry.inPulses + "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_outPulses"' + '>' + pulseEntry.outPulses + "</td>";
+                //var pktLoss=parseInt(pulseEntry.seq)-parseInt(pulseEntry.inMsgs);
+                //console.log("pktloss=:"+pktLoss);
+                if (pulseEntry.pktDrops > 1)
+                    txt += '<td class="' + pulseEntry.geo + '_pktDrops WARNING"' + '>' + pulseEntry.pktDrops + "</td>";
+                else
+                    txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
+                if (pulseEntry.lastMsg) {
+                    txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
+                    txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
+                    //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
+                } else {
+                    txt += "<td>" + "" + "</td>";
+                    txt += "<td>" + "" + "</td>";
+                }
+                var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
+                if (pulseEntry.bootTimestamp == 0)
+                    deltaSeconds2 = "0";
+                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
+                txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
+                var balance = (Math.min(pulseEntry.inPulses*1500, pulseEntry.outPulses*1500) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
+                total = total + balance;
+                txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
+                //txt+="<td>"+pulseEntry.lastMsg+"</td>"
             }
-            var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
-            if (pulseEntry.bootTimestamp == 0)
-                deltaSeconds2 = "0";
-            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-            txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
-            txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
-            var balance = (Math.min(pulseEntry.inPulses*1500, pulseEntry.outPulses*1500) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
-            total = total + balance;
-            txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
-            //txt+="<td>"+pulseEntry.lastMsg+"</td>"
-            txt += "</tr>";
+
+                txt += "</tr>";
         }
         txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">'+pulseGroup.groupName+' Earnings $' + total.toFixed(6) + '</td></tr>';
         txt += "</table>";
