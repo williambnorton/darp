@@ -38,7 +38,8 @@ $(function() {
     try {
         if (fs.existsSync(path)) {
                 //file exists
-            var rawSamples=fs.readFileSync(path);
+            txt+=fs.readFileSync(path);
+            /* //really want to only save last 60 second samples
             console.log(`rawSamples=${rawSamples.toString()} `);
             var secondSamples=rawSamples.toString().split(",");  //2 commas per line
             //console.log(`secondSamples=${secondSamples} `);
@@ -59,7 +60,9 @@ $(function() {
             //fs.writeFile(path, minuteSamples.join(","), function (err) {
             //    if (err) return console.log(err);
             //});
-                        //console.log(`found / data file ${path}:${txt}`);
+
+            console.log(`found / data file ${path}:${txt}`);
+            */
         } else {
             console.log("could not find live pulseGroup graph data from "+path);
             txt +=`/* could not find live pulseGroup graph data from ${path} */`
