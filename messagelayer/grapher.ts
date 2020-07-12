@@ -45,14 +45,15 @@ $(function() {
 
             var sampleCount=secondSamples.length;
             console.log(`secondSamples=${secondSamples} secondSamples.length=${secondSamples.length}`);
-            var j=0;
-            var sixtySamples:String[]=[];
-            for (var i=sampleCount-10; i<10; i++)
-                sixtySamples[j++]="{"+secondSamples[i];
 
-            var newSamples = sixtySamples.join(" ");
+            //var j=0;
+            //var sixtySamples:String[]=[];
+            //for (var i=sampleCount-10; i<10; i++)
+            //    sixtySamples[j++]="{"+secondSamples[i];
+//
+            var newSamples = secondSamples.join(",");
             txt += newSamples;
-            console.log(`sixtySamples length=${sixtySamples.length} newSamples: ${newSamples}`);
+            console.log(`sixtySamples length=${secondSamples.length} newSamples: ${newSamples}`);
             //save only last 60 samples of raw data'
             //fs.writeFile(path, minuteSamples.join(","), function (err) {
             //    if (err) return console.log(err);
