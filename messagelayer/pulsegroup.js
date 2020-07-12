@@ -293,11 +293,9 @@ function instrumentation() {
                 else
                     txt += '<tr class="' + mintEntry.geo + ' NR"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
                 for (var dest in pulseGroup.matrix[src]) {
-                    var destMint = pulseGroup.mintTable[parseInt(dest)]; //what if there is no mint?
-                    //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
-                    // txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
-                    if (destMint != null)
-                        txt += '<td class="' + src + "-" + dest + ' ' + dest + '">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                    var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
+                    if (destMintEntry != null)
+                        txt += '<td class="' + src + "-" + dest + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + mintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
                     else
                         txt += '<td class="' + src + "-" + dest + '">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
