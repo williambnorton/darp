@@ -1317,8 +1317,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
             //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
 //            if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
-            if (myPulseEntry && mintEntry) {}
-            else {  //If we don't have this pulseEntry or we don't have its mintEntry yet
+            if (myPulseEntry==null || mintEntry==null) {
                 if (!newPulseGroup.isGenesisNode()) {
                     console.log(ts()+`ignoring ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse entry`);
                     return;
@@ -1334,6 +1333,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     newPulseGroup.adminControl='RESYNCH';
                     return ;  //we are done    
                 }
+                return;//we need a mint and pulseGroup entry to receive a pulse
             }
             //console.log(ts()+"recvPulses(): Valid pulse for a mint we know about "+incomingPulse.geo);
 
