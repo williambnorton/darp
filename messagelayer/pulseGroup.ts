@@ -372,8 +372,8 @@ function instrumentation() {    //this should get its own file
                     //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
     // txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
 
-                    if (destMint!=null) txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
-                    else txt += '<td class="'+src+"-"+dest+'">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+                    if (destMint!=null) txt += '<td class="'+src+"-"+dest+' '+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                    else txt += '<td class="'+src+"-"+dest+' '+dest+'">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
                 txt +="</tr>"
             }
