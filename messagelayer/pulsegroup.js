@@ -295,7 +295,7 @@ function instrumentation() {
                 for (var dest in pulseGroup.matrix[src]) {
                     var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
                     if (destMintEntry != null)
-                        txt += '<td class="' + src + "-" + srcMintEntry.geo + ' ' + dest + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                        txt += '<td class="' + srcMintEntry.mint + "-" + destMintEntry.mint + ' ' + srcMintEntry.geo + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
                     else
                         txt += '<td class="' + src + "-" + dest + '">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
