@@ -363,18 +363,20 @@ function instrumentation() {    //this should get its own file
 
         for (var src in pulseGroup.matrix) {      
             var mintEntry=pulseGroup.mintTable[src];  //src mintEntry
-            if ((mintEntry!=null) && mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr+":"+mintEntry.port+'/">'+mintEntry.geo+" "+mintEntry.mint+'</a></td>'; //heacer on left side
-            else txt += '<tr class="'+mintEntry.geo+' NR"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
+            if (mintEntry!=null) {
+                if (mintEntry.state=="UP") txt += '<tr class="'+mintEntry.geo+' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr+":"+mintEntry.port+'/">'+mintEntry.geo+" "+mintEntry.mint+'</a></td>'; //heacer on left side
+                else txt += '<tr class="'+mintEntry.geo+' NR"><td>'+mintEntry.geo+" "+mintEntry.mint+'</td>'; //heacer on left side
             
-            for (var dest in pulseGroup.matrix[src]) {
-                var destMint=pulseGroup.mintTable[parseInt(dest)]; //what if there is no mint?
-                //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
-// txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
+                for (var dest in pulseGroup.matrix[src]) {
+                    var destMint=pulseGroup.mintTable[parseInt(dest)]; //what if there is no mint?
+                    //console.log(`MATRIX src=${src} dest=${dest} = ${pulseGroup.matrix[src][dest]}`);                       
+    // txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/'+pulseEntry.group+'/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
 
-                if (destMint!=null) txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
-                else txt += '<td class="'+src+"-"+dest+'">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+                    if (destMint!=null) txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                    else txt += '<td class="'+src+"-"+dest+'">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+                }
+                txt +="</tr>"
             }
-            txt +="</tr>"
         }
         txt+="</table>";
 
