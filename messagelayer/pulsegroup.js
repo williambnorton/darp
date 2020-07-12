@@ -685,7 +685,7 @@ app.get('/nodefactory', function (req, res) {
     //
     for (var mint in myPulseGroup.mintTable) {
         //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
-        if (myPulseGroup.mintTable[mint] && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
+        if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
             console.log("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
             myPulseGroup.mintTable.splice(parseInt(mint)); //make sure not do delete me or genesis node
             //remove the owl
@@ -921,8 +921,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  pulse()
     //
     newPulseGroup.pulse = function () {
-        newPulseGroup.mintTable[0].state = "PULSING";
-        newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
         var ipary = [], owls = "";
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             ipary.push(nodeEntry.ipaddr + "_" + nodeEntry.port);
@@ -956,6 +954,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         return newPulseGroup.mintTable[0].geo == newPulseGroup.groupOwner;
     };
     newPulseGroup.getMint = function (mint) {
+        return newPulseGroup.mintTable[mint];
         for (var m in newPulseGroup.mintTable) {
             if (newPulseGroup.mintTable[m] != null) {
                 //genesis node should timeout old mints
