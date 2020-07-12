@@ -38,43 +38,26 @@ $(function() {
     try {
         if (fs.existsSync(path)) {
                 //file exists
-            const data=fs.readFileSync(path, 'UTF-8');
+            const data=fs.readFileSync(path, 'UTF-8').toString();
                 // split the contents by new line
             const lines = data.split(/\r?\n/);
 
             var last60:string[]=[];
             // print all lines
             lines.forEach((line:string) => {
-                console.log(line);
+                console.log("*"+line);
                 last60.push(line);
                 if (last60.length>60)
-                    last60.shift();
+                    last60.shift();  //drop first entries
             });
             txt+=last60.join("\n");
             console.log(`last60=${dump(last60)}`);
-            /* //really want to only save last 60 second samples
-            console.log(`rawSamples=${rawSamples.toString()} `);
-            var secondSamples=rawSamples.toString().split(",");  //2 commas per line
-            //console.log(`secondSamples=${secondSamples} `);
 
-            console.log(`secondSamples.length=${secondSamples.length} secondSamples=${secondSamples} `);
-
-            var j=0;
-            var sixtySamples:String[]=[];
-            for (var i=secondSamples.length-10; i<10; i++) {
-                console.log(`copying secondSamples[i]=${secondSamples[i]} to sixtySamples[j]-${j}`);
-                sixtySamples[j++]=secondSamples[i]+",";
-            }
-//
-            var newSamples = sixtySamples.join(",");
-            txt += newSamples;
-            console.log(`newSamples length=${newSamples.length} newSamples: ${newSamples}`);
-            //save only last 60 samples of raw data'
-            //fs.writeFile(path, minuteSamples.join(","), function (err) {
-            //    if (err) return console.log(err);
-            //});
-*/
-            console.log(`found / data file ${path}:${txt}`);
+            //save only last 60 samples of raw data'*/
+            fs.writeFile(path, last60.join("\n"), function (err) {
+                if (err) return console.log(err);
+            });
+            //console.log(`found / data file ${path}:${txt}`);
            
         } else {
             console.log("could not find live pulseGroup graph data from "+path);
