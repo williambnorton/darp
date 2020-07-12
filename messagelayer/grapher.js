@@ -11,10 +11,10 @@ function grapher(src, dest) {
         if (fs.existsSync(path)) {
             //file exists
             var rawSamples = fs.readFileSync(path);
-            console.log("rawSamples=" + rawSamples + " " + typeof rawSamples);
+            console.log("rawSamples=" + rawSamples.toString() + " ");
             var minuteSamples = rawSamples.toString().split("{");
             var sampleCount = minuteSamples.length;
-            //console.log(`minuteSamples=${minuteSamples} sampleCount=${sampleCount}`);
+            console.log("minuteSamples=" + minuteSamples + " mintSamples.length=" + minuteSamples.length);
             var j = 0;
             var sixtySamples = [];
             for (var i = sampleCount - 10; i < 10; i++)
