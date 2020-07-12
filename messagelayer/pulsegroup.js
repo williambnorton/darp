@@ -286,16 +286,16 @@ function instrumentation() {
         }
         txt += "</tr>";
         for (var src in pulseGroup.matrix) {
-            var mintEntry = pulseGroup.mintTable[src]; //src mintEntry
-            if (mintEntry != null) {
-                if (mintEntry.state == "UP")
-                    txt += '<tr class="' + mintEntry.geo + ' UP"><td><a target="_blank" href="http://' + mintEntry.ipaddr + ":" + mintEntry.port + '/">' + mintEntry.geo + " " + mintEntry.mint + '</a></td>'; //heacer on left side
+            var srcMintEntry = pulseGroup.mintTable[src]; //src mintEntry
+            if (srcMintEntry != null) {
+                if (srcMintEntry.state == "UP")
+                    txt += '<tr class="' + srcMintEntry.geo + ' UP"><td><a target="_blank" href="http://' + srcMintEntry.ipaddr + ":" + srcMintEntry.port + '/">' + srcMintEntry.geo + " " + srcMintEntry.mint + '</a></td>'; //heacer on left side
                 else
-                    txt += '<tr class="' + mintEntry.geo + ' NR"><td>' + mintEntry.geo + " " + mintEntry.mint + '</td>'; //heacer on left side
+                    txt += '<tr class="' + srcMintEntry.geo + ' NR"><td>' + srcMintEntry.geo + " " + srcMintEntry.mint + '</td>'; //heacer on left side
                 for (var dest in pulseGroup.matrix[src]) {
                     var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
                     if (destMintEntry != null)
-                        txt += '<td class="' + src + "-" + dest + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + mintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                        txt += '<td class="' + src + "-" + srcMintEntry.geo + ' ' + dest + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
                     else
                         txt += '<td class="' + src + "-" + dest + '">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
@@ -422,44 +422,44 @@ function instrumentation() {
         txt += "</tr>";
         //console.log(ts()+"                            mintTable="+dump(mintTable));
         for (var a in pulseGroup.mintTable) {
-            var mintEntry = pulseGroup.mintTable[a];
-            if (mintEntry != null) {
+            var srcMintEntry = pulseGroup.mintTable[a];
+            if (srcMintEntry != null) {
                 //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
-                if (mintEntry.state == "UP")
-                    txt += '<tr class="UP ' + mintEntry.geo + '" >';
+                if (srcMintEntry.state == "UP")
+                    txt += '<tr class="UP ' + srcMintEntry.geo + '" >';
                 else
-                    txt += '<tr class="NR ' + mintEntry.geo + '" >';
+                    txt += '<tr class="NR ' + srcMintEntry.geo + '" >';
                 //                txt += '<tr class="'+mintEntry.geo+'">';
                 //txt+="<td>"+mintEntry+"</td>"
-                txt += "<td>" + mintEntry.mint + "</td>";
-                txt += '<td class="' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >' + mintEntry.geo + "</a></td>";
-                txt += "<td>" + mintEntry.port + "</td>";
-                txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/me" >' + mintEntry.ipaddr + "</a></td>";
-                txt += "<td>" + mintEntry.publickey.substring(0, 3) + "..." + mintEntry.publickey.substring(40, mintEntry.publickey.length) + "</td>";
-                txt += '<td class="' + mintEntry.geo + '_state' + ' ' + mintEntry.state + '">' + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/mintTable" >' + mintEntry.state + '</a>' + "</td>";
+                txt += "<td>" + srcMintEntry.mint + "</td>";
+                txt += '<td class="' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/" >' + srcMintEntry.geo + "</a></td>";
+                txt += "<td>" + srcMintEntry.port + "</td>";
+                txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/me" >' + srcMintEntry.ipaddr + "</a></td>";
+                txt += "<td>" + srcMintEntry.publickey.substring(0, 3) + "..." + srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) + "</td>";
+                txt += '<td class="' + srcMintEntry.geo + '_state' + ' ' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/mintTable" >' + srcMintEntry.state + '</a>' + "</td>";
                 //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
                 //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
                 //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
                 //txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
-                var deltaSeconds = Math.round((lib_1.now() - mintEntry.lastPulseTimestamp) / 1000) + " secs ago";
-                if (mintEntry.lastPulseTimestamp == 0)
+                var deltaSeconds = Math.round((lib_1.now() - srcMintEntry.lastPulseTimestamp) / 1000) + " secs ago";
+                if (srcMintEntry.lastPulseTimestamp == 0)
                     deltaSeconds = "0";
                 //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                txt += '<td class="' + mintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
+                txt += '<td class="' + srcMintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
                 //            txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
-                txt += '<td class="' + mintEntry.geo + '_owl "' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
+                txt += '<td class="' + srcMintEntry.geo + '_owl "' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + srcMintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + srcMintEntry.lastOWL + "</a> ms</td>";
                 //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
-                txt += "<td>" + '<a target="_blank" href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/version" >' + mintEntry.version + "</a></td>";
-                txt += "<td>" + mintEntry.wallet.substring(0, 3) + "..." + mintEntry.wallet.substring(40, mintEntry.wallet.length) + "</td>";
+                txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/version" >' + srcMintEntry.version + "</a></td>";
+                txt += "<td>" + srcMintEntry.wallet.substring(0, 3) + "..." + srcMintEntry.wallet.substring(40, srcMintEntry.wallet.length) + "</td>";
                 //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
                 //txt += "<td>" + mintEntry.owl + " ms</td>"
                 //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
                 //            txt+="<td>"+mintEntry.rtt+"</td>"
-                var stopButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/stop";
-                var rebootButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reboot";
-                var reloadButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/reload";
-                var SINGLESTEPButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/SINGLESTEP";
-                var pulseMsgButtonURL = "http://" + mintEntry.ipaddr + ":" + mintEntry.port + "/pulseMsg";
+                var stopButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/stop";
+                var rebootButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/reboot";
+                var reloadButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/reload";
+                var SINGLESTEPButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/SINGLESTEP";
+                var pulseMsgButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/pulseMsg";
                 txt += "<td>" + '<FORM>';
                 txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
                 txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
@@ -474,11 +474,11 @@ function instrumentation() {
                 //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
                 //if (pulseEntry.bootTimestamp == 0) delta = "0";
                 //txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
-                var deltaSeconds2 = Math.round((lib_1.now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
-                if (mintEntry.bootTimestamp == 0)
+                var deltaSeconds2 = Math.round((lib_1.now() - srcMintEntry.bootTimestamp) / 1000) + " secs ago";
+                if (srcMintEntry.bootTimestamp == 0)
                     deltaSeconds2 = "0";
                 //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                txt += '<td class="' + mintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
+                txt += '<td class="' + srcMintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                 txt += "</tr>";
             }
         }
