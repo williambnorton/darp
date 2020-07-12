@@ -1335,7 +1335,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     return ;  //we are done    
                 }
             }
-            console.log(ts()+"recvPulses(): Valid pulse for a mint we know about "+incomingPulse.geo);
+            //console.log(ts()+"recvPulses(): Valid pulse for a mint we know about "+incomingPulse.geo);
 
             //we expect mintEntry to --> mint entry for this pulse
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
