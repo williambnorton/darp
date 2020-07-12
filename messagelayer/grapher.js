@@ -11,7 +11,7 @@ function grapher(src, dest) {
         if (fs.existsSync(path)) {
             //file exists
             var rawSamples = fs.readFileSync(path);
-            //console.log(`rawSamples=${rawSamples}`);
+            console.log("rawSamples=" + rawSamples + " " + typeof rawSamples);
             var minuteSamples = rawSamples.toString().split("\n");
             var sampleCount = minuteSamples.length;
             //console.log(`minuteSamples=${minuteSamples} sampleCount=${sampleCount}`);
