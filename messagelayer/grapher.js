@@ -10,7 +10,19 @@ function grapher(src, dest) {
     try {
         if (fs.existsSync(path)) {
             //file exists
-            txt += fs.readFileSync(path);
+            var data = fs.readFileSync(path);
+            // split the contents by new line
+            var lines = data.split(/\r?\n/);
+            var last60 = [];
+            // print all lines
+            lines.forEach(function (line) {
+                console.log(line);
+                last60.push(line);
+                if (last60.length > 60)
+                    last60.shift();
+            });
+            txt += last60.join("\n");
+            console.log("last60=" + lib_1.dump(last60));
             /* //really want to only save last 60 second samples
             console.log(`rawSamples=${rawSamples.toString()} `);
             var secondSamples=rawSamples.toString().split(",");  //2 commas per line
@@ -32,9 +44,8 @@ function grapher(src, dest) {
             //fs.writeFile(path, minuteSamples.join(","), function (err) {
             //    if (err) return console.log(err);
             //});
-
-            console.log(`found / data file ${path}:${txt}`);
-            */
+*/
+            console.log("found / data file " + path + ":" + txt);
         }
         else {
             console.log("could not find live pulseGroup graph data from " + path);
