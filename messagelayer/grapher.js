@@ -12,14 +12,14 @@ function grapher(src, dest) {
             //file exists
             var rawSamples = fs.readFileSync(path);
             //console.log(`rawSamples=${rawSamples}`);
-            var minuteSamples = rawSamples.toString().split(",");
+            var minuteSamples = rawSamples.toString().split("\n");
             var sampleCount = minuteSamples.length;
             //console.log(`minuteSamples=${minuteSamples} sampleCount=${sampleCount}`);
             var j = 0;
             var sixtySamples = [];
             for (var i = sampleCount - 10; i < 10; i++)
                 sixtySamples[j++] = minuteSamples[i];
-            txt += sixtySamples.join(",");
+            txt += sixtySamples.join("\n");
             console.log("sampleCount=" + sixtySamples.length + " sixtySamples: " + sixtySamples);
             //save only last 60 samples of raw data'
             //fs.writeFile(path, minuteSamples.join(","), function (err) {
