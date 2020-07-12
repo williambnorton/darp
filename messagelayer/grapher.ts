@@ -45,13 +45,13 @@ $(function() {
             var last60:string[]=[];
             // print all lines
             lines.forEach((line:string) => {
-                console.log("*"+line);
+                //console.log("*"+line);
                 last60.push(line);
                 if (last60.length>60)
                     last60.shift();  //drop first entries
             });
             txt+=last60.join("\n");
-            console.log(`last60=${dump(last60)}`);
+            //console.log(`last60=${dump(last60)}`);
 
             //save only last 60 samples of raw data'*/
             fs.writeFile(path, last60.join("\n"), function (err) {
