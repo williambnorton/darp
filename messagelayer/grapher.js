@@ -11,16 +11,16 @@ function grapher(src, dest) {
         if (fs.existsSync(path)) {
             //file exists
             var rawSamples = fs.readFileSync(path);
-            console.log("rawSamples=" + rawSamples);
+            //console.log(`rawSamples=${rawSamples}`);
             var minuteSamples = rawSamples.toString().split(",");
             var sampleCount = minuteSamples.length;
-            console.log("minuteSamples=" + minuteSamples + " sampleCount=" + sampleCount);
+            //console.log(`minuteSamples=${minuteSamples} sampleCount=${sampleCount}`);
             var j = 0;
             var sixtySamples = [];
-            for (var i = sampleCount - 10; i < sampleCount; i++)
+            for (var i = sampleCount - 10; i < 10; i++)
                 sixtySamples[j++] = minuteSamples[i];
             txt += sixtySamples.join(",");
-            console.log("sampleCount=" + sixtySamples.length + " last measures: " + sixtySamples);
+            console.log("sampleCount=" + sixtySamples.length + " sixtySamples: " + sixtySamples);
             //save only last 60 samples of raw data'
             //fs.writeFile(path, minuteSamples.join(","), function (err) {
             //    if (err) return console.log(err);
