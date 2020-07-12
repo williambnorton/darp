@@ -38,7 +38,7 @@ $(function() {
     try {
         if (fs.existsSync(path)) {
                 //file exists
-            var data=fs.readFileSync(path);
+            const data=fs.readFileSync(path, 'UTF-8');
                 // split the contents by new line
             const lines = data.split(/\r?\n/);
 

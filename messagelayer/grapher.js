@@ -10,7 +10,7 @@ function grapher(src, dest) {
     try {
         if (fs.existsSync(path)) {
             //file exists
-            var data = fs.readFileSync(path);
+            var data = fs.readFileSync(path, 'UTF-8');
             // split the contents by new line
             var lines = data.split(/\r?\n/);
             var last60 = [];
