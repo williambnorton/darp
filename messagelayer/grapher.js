@@ -12,13 +12,14 @@ function grapher(src, dest) {
             //file exists
             var rawSamples = fs.readFileSync(path);
             console.log("rawSamples=" + rawSamples.toString() + " ");
-            var minuteSamples = rawSamples.toString().split("{");
-            var sampleCount = minuteSamples.length;
-            console.log("minuteSamples=" + minuteSamples + " mintSamples.length=" + minuteSamples.length);
+            var secondSamples = rawSamples.toString().split(","); //2 commas per line
+            console.log("secondSamples=" + secondSamples + " ");
+            var sampleCount = secondSamples.length;
+            console.log("secondSamples=" + secondSamples + " secondSamples.length=" + secondSamples.length);
             var j = 0;
             var sixtySamples = [];
             for (var i = sampleCount - 10; i < 10; i++)
-                sixtySamples[j++] = "{" + minuteSamples[i];
+                sixtySamples[j++] = "{" + secondSamples[i];
             var newSamples = sixtySamples.join(" ");
             txt += newSamples;
             console.log("sixtySamples length=" + sixtySamples.length + " newSamples: " + newSamples);
