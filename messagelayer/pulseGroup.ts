@@ -268,47 +268,49 @@ function instrumentation() {    //this should get its own file
    txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));';  //wbnwbnwbnwbnwbnwnbn
 
 
-//      Render table from information in the state fetched from node
-//
-txt += '      var totalEarn=0.000000;'
-txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
-//                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+   //      Render table from information in the state fetched from node
+   //
+   txt += '      var totalEarn=0.000000;'
+   txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
+   //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
    txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
    txt += '          var pulse=value;'      //
-   txt += '          for (let [field, fieldValue] of Object.entries(pulse)) {'
-   // txt += '           console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-   //txt += '              console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-  // txt += '             $("."+pulse.geo+"_"+field).html(fieldValue+"");'
-   txt += '             if (pulse!=null) $("."+pulse.geo+"_"+field).text(fieldValue);'
-   txt += '          }'
+   txt += '          if (pulse!=null) {'
+   txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {'
+   // txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+ //txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+ // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+   txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);'
+   txt += '              }'
 
-   //txt += '          console.log("config="+JSON.stringify(config,null,2));'
-   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
-   txt += '          else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
+   //txt += '            console.log("config="+JSON.stringify(config,null,2));'
+   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
+   txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
    
-   txt += '          if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
-   txt += '          else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");' //Add NR class to entire row
+   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
+   txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");' //Add NR class to entire row
 
-   txt += '          if (pulse.pulseTimestamp!="0")'
-   txt += '              $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
-   txt += '          else $("."+pulse.geo+"_pulseTimestamp").text("0");'
-   txt += '          $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
-   txt +='           $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'  //TODO : Align left for this text field
-   txt +='          pulse.inPulses=parseInt(pulse.inPulses);'
-   txt +='          pulse.outPulses=parseInt(pulse.outPulses);'
-   txt += '          var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-   txt += '          totalEarn+=balance;';
-   txt += '          balance=balance.toFixed(6);';
+   txt += '              if (pulse.pulseTimestamp!="0")'
+   txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+   txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");'
+   txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'        
+   txt +='               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'  //TODO : Align left for this text field
+   txt +='               pulse.inPulses=parseInt(pulse.inPulses);'
+   txt +='               pulse.outPulses=parseInt(pulse.outPulses);'
+   txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
+   txt += '              totalEarn+=balance;';
+   txt += '              balance=balance.toFixed(6);';
 
    //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
 
-   txt +='           $("."+pulse.geo+"_balance").text("$" + balance);'  //TODO : Align left for this text field
+   txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'  //TODO : Align left for this text field
  
    
 
-//        txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
-   txt += '       }'   
-   //txt += 'console.log("totalEarn coming in =:"+totalEarn);'
+//      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
+    txt += '           }'   
+    txt += '       }'   
+//txt += 'console.log("totalEarn coming in =:"+totalEarn);'
    txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);'
    txt +='        $(".total_earn").text("totalEarn: $"+totalEarn);'
 //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
