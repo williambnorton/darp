@@ -932,7 +932,7 @@ app.get('/nodefactory', function(req, res) {
     seq: number;
     owl:number;
     owls:string;
-    history:string[];
+    history:number[];
 
     bootTimestamp:number;
     version:string;
