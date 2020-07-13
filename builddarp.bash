@@ -14,9 +14,7 @@ ls -l Build.*
 #
 #	The same flow should work on boot darp - simple extensible loop
 #
-cd messagelayer
-tsc *.ts
-cd ..
+tsc
 
 git add *.bash
 git add . && git commit -m "$MESSAGE + " && git pull && git push
