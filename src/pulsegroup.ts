@@ -33,7 +33,7 @@ if (!process.env.HOSTNAME) {
 }
 
 if (!process.env.PORT) {
-    process.env.PORT = "65013"
+    process.env.PORT = "65013";
     console.log(`No PORT enviropnmental variable specified - setting my DEFAULT PORT ${process.env.PORT}`);
  }
  var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
@@ -46,7 +46,7 @@ if (!process.env.GENESIS) {
 const GENESIS=process.env.GENESIS;
 
 if (!process.env.VERSION) {
-   process.env.VERSION = require('fs').readFileSync('../SWVersion', {encoding:'utf8', flag:'r'}).trim();
+   process.env.VERSION = require('fs').readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
    console.log(`No VERSION enviropnmental variable specified - setting to ${process.env.VERSION}`);
 }
 var VERSION=process.env.VERSION||"NoVersion";

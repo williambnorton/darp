@@ -1,6 +1,6 @@
 "use strict";
 var _a, _b;
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 //
 //  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
 //
@@ -41,7 +41,7 @@ if (!process.env.GENESIS) {
 }
 var GENESIS = process.env.GENESIS;
 if (!process.env.VERSION) {
-    process.env.VERSION = require('fs').readFileSync('../SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
+    process.env.VERSION = require('fs').readFileSync('./SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
     console.log("No VERSION enviropnmental variable specified - setting to " + process.env.VERSION);
 }
 var VERSION = process.env.VERSION || "NoVersion";

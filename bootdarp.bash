@@ -114,21 +114,15 @@ do
     sleep 1
 
    
-
-
-
-
-
     cd $DARPDIR
-    cd $DARPDIR/messagelayer
+    cd $DARPDIR/dist
     if [ -f  $DARPDIR/pulsegroup.pid ]; then
         kill `cat $DARPDIR/pulsegroup.pid`
     fi
     echo `date` 'Starting pulsegroup...'
-    #node messagelayer 
-	node pulsegroup 
+	node pulsegroup
     rc=$?
-    echo `date` pulseGroup done rc=$rc
+    echo `date` pulsegroup done rc=$rc
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
