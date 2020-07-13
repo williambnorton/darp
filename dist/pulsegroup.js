@@ -944,7 +944,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + myEntry.seq + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myEntry.mint + "," + owls;
         //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
         pulselayer_1.sendPulses(pulseMessage, ipary);
-        var sleepTime = (lib_1.now() + 1000) % 1000; // try and start pulse around on the second
+        var sleepTime = 1000 - (lib_1.now() + 1000) % 1000; // try and start pulse around on the second
         console.log("sleepTime=" + sleepTime);
         setTimeout(newPulseGroup.pulse, sleepTime);
         //        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
