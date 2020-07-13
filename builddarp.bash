@@ -7,7 +7,7 @@
 
 pwd |grep noia
 if [ $? -ne 0 ]; then
-	echo $0 can not run from a non-development account
+	echo $0 can not run from a non-development area
 	exit 86
 fi
 echo `date` compiling typescript into javascript 
@@ -22,9 +22,6 @@ ls -l Build.*
 #
 #tsc - updates were not getting through
 cd src;tsc *.ts;mv *.js ../dist/; cd ..
-=======
-#tsc  #did not work
-cd src;tsc *.ts;cd ..
 
 git add *.bash
 git add . && git commit -m "$MESSAGE + " && git pull && git push
