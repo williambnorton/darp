@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setWireguard = exports.getPublicKey = void 0;
 //
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //

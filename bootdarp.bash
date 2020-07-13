@@ -49,7 +49,7 @@ echo `date` MYIP=$MYIP
 
 if [ "$GENESIS" == "" ]; then
     echo `date` $0 You must specify a genesis node 
-    echo `date` $0 Add -e"GENESIS=<ipaddr>" into the docker run command
+    echo `date` $0 Add -e GENESIS=<ipaddr> into the docker run command or set the environmental variable
     echo
     env
     exit -1
@@ -92,19 +92,6 @@ do
     echo `date` "* * * * * * * STARTING DARP $VERSION  * * *  * * * * * * * * $GENESISIP $MYIP"
     echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * $GENESISIP $MYIP"
 
-
-
-    if [ "$GENESISIP" = "$MYIP  KILLING THIS" ]; then
-        echo CODE WILL CHECK GENESIS EVERY 20 secs amd Genesis reloads manaually
-        echo `date` "I AM GENESIS NODE - Starting up auto-updater"
-        ( ./updateSW.bash -deamon 2>&1 ) >/dev/null & #keep it checking every 30 seconds
-        echo `date` "I AM GENESIS NODE"
-        echo `date` "I AM GENESIS NODE ----->  Get others to join GENESIS="$GENESIS
-        echo `date` "I AM GENESIS NODE"
-    fi
-    sleep 1
-
-
     #Now we are running in the new code /darp directory
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
@@ -113,7 +100,12 @@ do
     echo PUBLICKEY=$PUBLICKEY
     sleep 1
 
-   
+
+   exit 
+
+
+
+
     cd $DARPDIR
     cd $DARPDIR/dist
     if [ -f  $DARPDIR/pulsegroup.pid ]; then
