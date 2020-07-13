@@ -2,7 +2,7 @@
 //  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
 //
 //
-import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log } from '../lib/lib';
+import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log , median } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 import {   grapher, grapherStoreOwl } from './grapher';
 
@@ -932,7 +932,8 @@ app.get('/nodefactory', function(req, res) {
     seq: number;
     owl:number;
     owls:string;
-    history:number[];
+    history:number[];   //history of last 60 owls measured
+    medianHistory:number[];  //history of 1-minute medians
 
     bootTimestamp:number;
     version:string;
@@ -956,6 +957,7 @@ app.get('/nodefactory', function(req, res) {
         pulseTimestamp:0,
         owls: "1", //Startup - I am the only one here
         history: [],
+        medianHistory:[],
         // stats
         bootTimestamp: now(), //RemoteClock on startup  **** - we abandon the pulse when this changes
         version: version, //software version running on sender's node    
@@ -1368,6 +1370,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 myPulseEntry.history.push(myPulseEntry.owl);
                 if (myPulseEntry.history.length>60)  //store 60 samples
                     myPulseEntry.history.shift();  //drop off the last sample
+                var d=new Date(myPulseEntry.pulseTimestamp);
+                if (d.getSeconds()==0) {
+                    myPulseEntry.medianHistory.push(median(myPulseEntry.history);
+                }
 
                 //update mint entry
                 mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
