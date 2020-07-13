@@ -1,7 +1,7 @@
 import {   dump, now, ts, YYMMDD } from '../lib/lib';
 
 export function grapher(src:string,dest:string) {
-    console.log(`grapher(): src=${src} det=${dest}`);
+    //console.log(`grapher(): src=${src} det=${dest}`);
 var txt=`
 <!DOCTYPE HTML>
 <meta http-equiv="refresh" content="10">

@@ -116,6 +116,7 @@ interface PulseGroup {
     nextMint:number;
     cycleTime:number;
     matrix: Number[][];     //OWL Measurements from participation in the pulseGroup [src][dst]=OWL
+    csvMatrix: Number[];   //OWLs in CSV format
 } 
 
 var myPulseGroup = {                 //my pulseGroup Configuration
@@ -133,7 +134,8 @@ var myPulseGroup = {                 //my pulseGroup Configuration
     nodeCount : 1,      //how many nodes in this pulsegroup
     nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
     cycleTime : 1,      //pulseGroup-wide setting: number of seconds between pulses
-    matrix: []
+    matrix: [],
+    csvMatrix: []
 };
 //pulseGroup.me=me;
 //pulseGroup.genesis=genesis;
@@ -369,9 +371,9 @@ function instrumentation() {    //this should get its own file
             
                 for (var dest in pulseGroup.matrix[src]) {
                     var destMintEntry=pulseGroup.mintTable[parseInt(dest)];
-
+console.log(`dest=${dest}`);
                     if (destMintEntry!=null) txt += '<td class="'+srcMintEntry.mint+"-"+destMintEntry.mint+' '+srcMintEntry.geo+' '+destMintEntry.geo+'">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
-                    else txt += '<td class="'+src+"-"+dest+'">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+                    else txt += '<td class="'+src+"-"+dest+'">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
                 txt +="</tr>"
             }
@@ -1273,7 +1275,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //console.log("=================================> checkSWversion()");
 
         if (newPulseGroup.groupOwner==me.geo) 
-            return console.log("checkSWversion - genesis node never checks its own version");
+            return console.log(`Point your browser to Genesis Node for instrumentation: http://${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
         //console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         const url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);

@@ -1,6 +1,6 @@
 "use strict";
 var _a, _b;
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 //
 //  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
 //
@@ -104,7 +104,8 @@ var myPulseGroup = {
     nodeCount: 1,
     nextMint: 2,
     cycleTime: 1,
-    matrix: []
+    matrix: [],
+    csvMatrix: []
 };
 //pulseGroup.me=me;
 //pulseGroup.genesis=genesis;
@@ -294,10 +295,11 @@ function instrumentation() {
                     txt += '<tr class="' + srcMintEntry.geo + ' NR"><td>' + srcMintEntry.geo + " " + srcMintEntry.mint + '</td>'; //heacer on left side
                 for (var dest in pulseGroup.matrix[src]) {
                     var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
+                    console.log("dest=" + dest);
                     if (destMintEntry != null)
                         txt += '<td class="' + srcMintEntry.mint + "-" + destMintEntry.mint + ' ' + srcMintEntry.geo + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
                     else
-                        txt += '<td class="' + src + "-" + dest + '">' + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+                        txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
                 txt += "</tr>";
             }
@@ -1055,7 +1057,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     newPulseGroup.checkSWversion = function () {
         //console.log("=================================> checkSWversion()");
         if (newPulseGroup.groupOwner == me.geo)
-            return console.log("checkSWversion - genesis node never checks its own version");
+            return console.log("Point your browser to Genesis Node for instrumentation: http://" + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port);
         //console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         var url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts=" + lib_1.now() + "&x=" + lib_1.now() % 2000); //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);

@@ -148,13 +148,13 @@ do
     #
     #   could simply - for app in list, and in this order, start or stop them all
     #
-    echo "ABOUT TO KILL TASKS --- ubuntu docker has pid in field #1, native might be #2   :  ps aux |grep -v grep | grep node | awk '{ print $1}'"
-    ps aux |grep -v grep | grep node | awk '{ print $1}'
-    echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
+    #echo "ABOUT TO KILL TASKS --- ubuntu docker has pid in field #1, native might be #2   :  ps aux |grep -v grep | grep node | awk '{ print $1}'"
+    #ps aux |grep -v grep | grep node | awk '{ print $1}'
+    #echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
+    #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
 
-    ps aux
+    #ps aux
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
     if [ $? -ne 0 ]; then
         echo `date` cd DARPDIR failed with rc= $? EXITTING

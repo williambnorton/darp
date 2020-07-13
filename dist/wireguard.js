@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 //
 //  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
 //

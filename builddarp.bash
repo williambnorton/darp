@@ -14,7 +14,8 @@ ls -l Build.*
 #
 #	The same flow should work on boot darp - simple extensible loop
 #
-tsc
+#tsc - updates were not getting through
+cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 git add *.bash
 git add . && git commit -m "$MESSAGE + " && git pull && git push
