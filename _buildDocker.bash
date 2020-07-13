@@ -1,5 +1,5 @@
 #!/bin/bash
-#   buildDocker.bash - build a new docker - takes 5 minutes
+#   _builddocker.bash - build a new docker - takes 5 minutes
 #
 echo `date` Building darp codebase 
 ./builddarp.bash 
