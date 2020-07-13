@@ -1,7 +1,7 @@
 FROM ubuntu:18.04 as base
 RUN apt-get update && \ 
     apt install -y npm && \
-    npm update && npm install
+    npm update && npm install express
 WORKDIR /opt
 
 FROM node:current-alpine3.10
