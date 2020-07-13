@@ -932,6 +932,7 @@ app.get('/nodefactory', function(req, res) {
     seq: number;
     owl:number;
     owls:string;
+    history:string[];
 
     bootTimestamp:number;
     version:string;
@@ -954,6 +955,7 @@ app.get('/nodefactory', function(req, res) {
         owl: NO_OWL,     //delete this when pulseTimestamp is >2 secs old
         pulseTimestamp:0,
         owls: "1", //Startup - I am the only one here
+        history: [],
         // stats
         bootTimestamp: now(), //RemoteClock on startup  **** - we abandon the pulse when this changes
         version: version, //software version running on sender's node    
@@ -1360,6 +1362,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 myPulseEntry.owl=incomingPulse.owl;
                 myPulseEntry.seq=incomingPulse.seq;
                 myPulseEntry.owls=incomingPulse.owls;
+                myPulseEntry.history.push(myPulseEntry.owl);
+                if (myPulseEntry.history.length>60)  //store 60 samples
+                    myPulseEntry.history.shift();  //drop off the last sample
 
                 //update mint entry
                 mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null

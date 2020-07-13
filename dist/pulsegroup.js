@@ -771,6 +771,7 @@ function makePulseEntry(mint, geo, group, ipaddr, port, version) {
         owl: NO_OWL,
         pulseTimestamp: 0,
         owls: "1",
+        history: [],
         // stats
         bootTimestamp: lib_1.now(),
         version: version,
@@ -1129,6 +1130,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 myPulseEntry.owl = incomingPulse.owl;
                 myPulseEntry.seq = incomingPulse.seq;
                 myPulseEntry.owls = incomingPulse.owls;
+                myPulseEntry.history.push(myPulseEntry.owl);
+                if (myPulseEntry.history.length > 60) //store 60 samples
+                    myPulseEntry.history.shift(); //drop off the last sample
                 //update mint entry
                 mintEntry.lastPulseTimestamp = myPulseEntry.pulseTimestamp; //CRASH mintEntry ==null
                 mintEntry.lastOWL = myPulseEntry.owl;
