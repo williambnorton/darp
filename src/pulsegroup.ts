@@ -1155,8 +1155,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
 
 
-        var sleepTime=1000-(now()+1000)%1000;       // try and start pulse around on the second
-        console.log(`sleepTime=${sleepTime}`);
+        var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
+        //console.log(`sleepTime=${sleepTime}`);
         setTimeout( newPulseGroup.pulse, sleepTime );
 //        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
 
