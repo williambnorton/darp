@@ -1372,7 +1372,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     myPulseEntry.history.shift();  //drop off the last sample
                 var d=new Date(myPulseEntry.pulseTimestamp);
                 if (d.getSeconds()==0) {
-                    myPulseEntry.medianHistory.push(median(myPulseEntry.history);
+                    myPulseEntry.medianHistory.push(median(myPulseEntry.history));
                 }
 
                 //update mint entry
