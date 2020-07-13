@@ -1149,8 +1149,17 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
         sendPulses(pulseMessage,ipary);
 
-        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
-        //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
+
+
+        var sleepTime=(now()+1000)%1000; // try and start pulse around on the second
+        console.log(`sleepTime=${sleepTime}`);
+        setTimeout(newPulseGroup.pulse,newPulseGroup. sleepTime);
+//        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
+
+
+
+
+//var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
         //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
 
         newPulseGroup.timeout(); //and timeout the non-responders
