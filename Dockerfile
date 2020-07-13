@@ -8,7 +8,11 @@ RUN apk add wireguard-tools wget curl iproute2 git && \
     rm -rf /var/cache/apk/* && \
     git clone https://github.com/williambnorton/darp.git /root/darp
 # COPY . /root/darp
-RUN cd /root/darp && npm update && npm install express
+RUN npm update && npm install express
+
+#My docker couldn't find the node express module...
+ADD node_modules node_modules
+
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
 WORKDIR /root/darp
 ENTRYPOINT ["/bin/bash","-c","./bootdarp.bash"]
