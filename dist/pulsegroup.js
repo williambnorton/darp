@@ -295,7 +295,7 @@ function instrumentation() {
                     txt += '<tr class="' + srcMintEntry.geo + ' NR"><td>' + srcMintEntry.geo + " " + srcMintEntry.mint + '</td>'; //heacer on left side
                 for (var dest in pulseGroup.matrix[src]) {
                     var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
-                    console.log("dest=" + dest);
+                    //console.log(`dest=${dest}`);
                     if (destMintEntry != null)
                         txt += '<td class="' + srcMintEntry.mint + "-" + destMintEntry.mint + ' ' + srcMintEntry.geo + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
                     else
