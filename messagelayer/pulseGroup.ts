@@ -349,8 +349,8 @@ function instrumentation() {    //this should get its own file
         //
         //   show OWL Matrix table
         //
-        txt += '<br><h2>' + pulseGroup.groupName + ' OWL Matrix for pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
-        txt += '<tr><th></th>'
+        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+        txt += '<tr><th>'+pulseGroup.groupName+' OWL Matrix</th>'
 
         //   print OWL headers
         for (var col in pulseGroup.pulses) {
