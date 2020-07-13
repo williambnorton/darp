@@ -98,13 +98,6 @@ do
     ./configWG.bash #>/dev/null
     export PUBLICKEY=`cat $WGDIR/publickey`
     echo PUBLICKEY=$PUBLICKEY
-    sleep 1
-
-
-   exit 
-
-
-
 
     cd $DARPDIR
     cd $DARPDIR/dist
