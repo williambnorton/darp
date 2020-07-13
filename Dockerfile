@@ -1,6 +1,7 @@
 FROM ubuntu:18.04 as base
 RUN apt-get update && \ 
-    apt install -y npm
+    apt install -y npm && \
+    npm update && npm install
 WORKDIR /opt
 
 FROM node:current-alpine3.10
