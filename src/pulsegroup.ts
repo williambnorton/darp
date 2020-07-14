@@ -5,7 +5,7 @@
 import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log , median } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 import {   grapher, grapherStoreOwl } from './grapher';
-import express from "express";
+import express = require('express');
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
