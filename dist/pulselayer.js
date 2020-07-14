@@ -6,6 +6,7 @@ exports.__esModule = true;
 //
 var lib_1 = require("../lib/lib");
 var messagelayer_1 = require("./messagelayer");
+var pulsegroup_1 = require("./pulsegroup");
 var TEST = true; // launch with TEST=1 to get automatic pulser and catcher
 var h = process.env.HOSTNAME || require("os").hostname().split(".")[0];
 var HOSTNAME = h.toUpperCase();
@@ -23,21 +24,20 @@ function recvPulses(port, callback) {
         var OWL = pulseTimestamp - senderTimestamp;
         var owlsStart = lib_1.nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-        var pulse = {
+        var pulse = new pulsegroup_1.PulseEntry({
             pulseTimestamp: pulseTimestamp,
-            senderTimestamp: senderTimestamp,
+            outgoingTimestamp: senderTimestamp,
             msgType: ary[2],
             version: ary[3],
             geo: ary[4],
             group: ary[5],
-            seq: ary[6],
+            seq: parseInt(ary[6]),
             bootTimestamp: parseInt(ary[7]),
-            mint: ary[8],
+            mint: parseInt(ary[8]),
             owls: pulseOwls,
             owl: OWL,
             lastMsg: incomingMessage
-        };
-        ;
+        });
         //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
         //console.log("structured pulse="+dump(pulse));
         //ary.shift();ary.shift();
