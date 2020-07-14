@@ -935,9 +935,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             if (nodeEntry.owl == NO_OWL)
                 owls += nodeEntry.mint + ",";
             else {
+                var medianOfMeasures = lib_1.median(nodeEntry.history);
                 var medianOfMedians = lib_1.median(nodeEntry.medianHistory);
-                var deviation = Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians;
-                console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=i sto" + nodeEntry.owl + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation);
+                var deviation = Math.round(Math.abs(medianOfMedians - medianOfMeasures) * 100 / medianOfMedians);
+                console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                 var flag = "";
                 if (deviation * 100 / medianOfMedians > 30)
                     flag = "*;"; //deviation 30% from the median, flag
