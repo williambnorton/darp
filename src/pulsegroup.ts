@@ -285,7 +285,8 @@ function instrumentation() {    //this should get its own file
    txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);'
    txt += '              }'
 
-   //txt += '            console.log("config="+JSON.stringify(config,null,2));'
+   txt += '              console.log("pulse.owl="+pulse.owl);'
+   
    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
    txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
    
@@ -1152,7 +1153,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                 var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
                 console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                if (deviation >30) flag="*;" //deviation 30% from the median, flag
+                if ((nodeEntry.owl>3) && (deviation>30)) flag="*;" //deviation 30% from the median, flag
             }
                 owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
        });
