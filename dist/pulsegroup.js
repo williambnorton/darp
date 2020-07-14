@@ -938,7 +938,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var medianOfMeasures = lib_1.median(nodeEntry.history);
                 var medianOfMedians = lib_1.median(nodeEntry.medianHistory);
                 var deviation = Math.round(Math.abs(medianOfMedians - medianOfMeasures) * 100 / medianOfMedians);
-                console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
+                console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                 var flag = "";
                 if (deviation * 100 / medianOfMedians > 30)
                     flag = "*;"; //deviation 30% from the median, flag
