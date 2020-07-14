@@ -28,7 +28,7 @@ if (!process.env.DARPDIR) {
     console.log("DARPDIR defaulted to \" + " + process.env.DARPDIR);
 }
 if (!process.env.HOSTNAME) {
-    process.env.HOSTNAME = "127.0.0.1"; //require('os').hostname().split(".")[0].toUpperCase();
+    process.env.HOSTNAME = require('os').hostname().split(".")[0].toUpperCase();
     console.log("No HOSTNAME enviropnmental variable specified + " + process.env.HOSTNAME);
 }
 if (!process.env.PORT) {
@@ -37,7 +37,7 @@ if (!process.env.PORT) {
 }
 var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
 if (!process.env.GENESIS) {
-    process.env.GENESIS = "127.0.0.1"; // "71.202.2.184"
+    process.env.GENESIS = "71.202.2.184";
     console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to " + process.env.GENESIS + ":" + process.env.PORT);
 }
 var GENESIS = process.env.GENESIS;
