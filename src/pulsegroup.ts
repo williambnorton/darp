@@ -6,7 +6,6 @@ import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log , median 
 import {   sendPulses, recvPulses } from './pulselayer';
 import {   grapher, grapherStoreOwl } from './grapher';
 import express from "express";
-import AddressInfo from "net"
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
@@ -30,7 +29,7 @@ if (!process.env.DARPDIR) {
 }
 
 if (!process.env.HOSTNAME) {
-   process.env.HOSTNAME = "127.0.0.1"  //require('os').hostname().split(".")[0].toUpperCase();
+   process.env.HOSTNAME = require('os').hostname().split(".")[0].toUpperCase();
    console.log(`No HOSTNAME enviropnmental variable specified + ${process.env.HOSTNAME}`);
 }
 
@@ -42,7 +41,7 @@ if (!process.env.PORT) {
 
 
 if (!process.env.GENESIS) {
-   process.env.GENESIS = "127.0.0.1" // "71.202.2.184"
+   process.env.GENESIS = "71.202.2.184"
    console.log(`No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to ${process.env.GENESIS}:${process.env.PORT}`);
 }
 const GENESIS=process.env.GENESIS;
