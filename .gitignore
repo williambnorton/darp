@@ -6,8 +6,7 @@
 /node_modules
 
 # Wireguard keys if they are accidentally generated
-wireguard/privatekey
-wireguard/publickey
+wireguard/
 
 # Logs
 logs

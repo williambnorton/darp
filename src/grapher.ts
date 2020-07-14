@@ -54,7 +54,7 @@ $(function() {
             //console.log(`last60=${dump(last60)}`);
 
             //save only last 60 samples of raw data'*/
-            fs.writeFile(path, last60.join("\n"), function (err) {
+            fs.writeFile(path, last60.join("\n"), function (err: Error) {
                 if (err) return console.log(err);
             });
             //console.log(`found / data file ${path}:${txt}`);
@@ -101,7 +101,7 @@ export function grapherStoreOwl(src:String,dst:String,owl:Number) {
         //owl = 0;
     //}
     //var logMsg = "{y:" + owl + "},\n";
-    fs.appendFile(filename, sample, function(err) {
+    fs.appendFile(filename, sample, function(err: Error) {
         if (err) throw err;
         //console.log('Saved!');
     });

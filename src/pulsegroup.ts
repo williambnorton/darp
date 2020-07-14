@@ -5,6 +5,8 @@
 import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log , median } from '../lib/lib';
 import {   sendPulses, recvPulses } from './pulselayer';
 import {   grapher, grapherStoreOwl } from './grapher';
+import express from "express";
+import AddressInfo from "net"
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
@@ -28,7 +30,7 @@ if (!process.env.DARPDIR) {
 }
 
 if (!process.env.HOSTNAME) {
-   process.env.HOSTNAME = require('os').hostname().split(".")[0].toUpperCase();
+   process.env.HOSTNAME = "127.0.0.1"  //require('os').hostname().split(".")[0].toUpperCase();
    console.log(`No HOSTNAME enviropnmental variable specified + ${process.env.HOSTNAME}`);
 }
 
@@ -40,7 +42,7 @@ if (!process.env.PORT) {
 
 
 if (!process.env.GENESIS) {
-   process.env.GENESIS = "71.202.2.184"
+   process.env.GENESIS = "127.0.0.1" // "71.202.2.184"
    console.log(`No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to ${process.env.GENESIS}:${process.env.PORT}`);
 }
 const GENESIS=process.env.GENESIS;
@@ -77,13 +79,17 @@ var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2
 //------------------------ Environmentals loaded -----------------------
 
 //             start config/instrumentaton web server
-var express = require('express');
 var app = express();
 var server = app.listen(PORT, '0.0.0.0', function() {
     //TODO: add error handling here
-    var host = server.address().address
-    var port = server.address().port
-    console.log("Express app listening at http://%s:%s", host, port)
+    const serverAdddress = server.address();
+    if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
+        var host = serverAdddress.address;
+        var port = serverAdddress.port;
+        console.log("Express app listening at http://%s:%s", host, port);
+    } else {
+        console.log("Express app initialization failed");
+    }
 }) //.on('error', console.log);
 //
 //
@@ -754,10 +760,10 @@ app.get('/nodefactory', function(req, res) {
 
     //console.log("EXPRESS geo="+req.query.geo+" publickey="+req.query.publickey+" query="+JSON.stringify(req.query,null,2)+" port="+req.query.port+" wallet="+req.query.wallet+" version="+req.query.version);
     //marshall variables
-    var geo = req.query.geo;
-    var publickey = req.query.publickey;
-    var port = req.query.port || 65013;
-    var wallet = req.query.wallet || "";
+    var geo = String(req.query.geo);
+    var publickey = String(req.query.publickey);
+    var port = Number(req.query.port) || 65013;
+    var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
     if (typeof incomingTimestamp == "undefined") {
         console.log("/nodeFactory called with no timestamp");
@@ -769,7 +775,9 @@ app.get('/nodefactory', function(req, res) {
     }
 
     var incomingIP = req.query.myip;                // for now we believe the node's IP
-    var octetCount = incomingIP.split(".").length;  //but validate as IP, not error msg
+    if (typeof incomingIP === "string") {
+        var octetCount = incomingIP.split(".").length;  //but validate as IP, not error msg
+    }
     if (octetCount != 4) incomingIP="noMYIP";
 
     var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -783,7 +791,7 @@ app.get('/nodefactory', function(req, res) {
     }
 
     //console.log("req="+dump(req));
-    var version = req.query.version;
+    var version = String(req.query.version);
     //console.log("EXPRESS /nodefactory geo="+geo+" publickey="+publickey+" port="+port+" wallet="+wallet+" incomingIP="+incomingIP+" version="+version);
     //console.log("req="+dump(req.connection));
     //var newNode=pulseGroup.addNode( geo, GEO+".1", incomingIP, port,publickey, version, wallet); //add new node and pulse entry to group
@@ -831,7 +839,7 @@ app.get('/nodefactory', function(req, res) {
     //
     var newMint=myPulseGroup.nextMint++;
     console.log(geo+": mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = makePulseEntry(newMint, geo, myPulseGroup.groupName, incomingIP, port, VERSION);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = makePulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
 
 
@@ -840,7 +848,7 @@ app.get('/nodefactory', function(req, res) {
     //
     //  mintTable - first [0] is me and [1] is genesis
     // Here is a little code
-    var newNode=makeMintEntry(newMint, geo, port, incomingIP, publickey, version, wallet);
+    var newNode=makeMintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
     myPulseGroup.mintTable[newMint]=newNode;  //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
@@ -921,11 +929,67 @@ app.get('/nodefactory', function(req, res) {
  //    var mintEntry=mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string
  //}
  
- interface PulseEntry {
-    outgoingTimestamp:number;   //from message layer
-    pulseTimestamp:number;      //from message layer
+ export interface PulseEntryInterface {
+    outgoingTimestamp: number;   //from message layer
+    pulseTimestamp: number;      //from message layer
+    msgType?: string;
 
     mint: number;               //
+    geo: string;
+    group: string;
+    ipaddr: string;
+    port: number;
+    seq: number;
+    owl: number;
+    owls: string;
+    history: number[];   //history of last 60 owls measured
+    medianHistory: number[];  //history of 1-minute medians
+
+    bootTimestamp: number;
+    version: string;
+    inPulses: number;
+    outPulses: number;
+    pktDrops: number;
+    lastMsg: string;
+} 
+
+export class IncomingPulse {
+    outgoingTimestamp: number;
+    pulseTimestamp: number;
+    msgType: string;
+    version:string;
+    geo: string;
+    group: string;
+    seq: number;
+    bootTimestamp: number;
+    mint: number;
+    owls: string;
+    owl: number;
+    lastMsg: string;
+    constructor (pulseTimestamp: number, outgoingTimestamp: number, msgType: string, 
+                 version: string, geo: string, group: string, seq: number, bootTimestamp: number,
+                 mint: number, owls: string, owl: number, lastMsg: string) {
+        this.pulseTimestamp = pulseTimestamp;
+        this.outgoingTimestamp = outgoingTimestamp;
+        this.msgType = msgType;
+        this.version = version,
+        this.geo = geo;
+        this.group = group;
+        this.seq = seq;
+        this.bootTimestamp = bootTimestamp;   //if genesis node reboots --> all node reload SW too
+        this.mint = mint;
+        this.owls = owls;
+        this.owl = owl;
+        this.lastMsg = lastMsg;
+    }
+}
+
+export class PulseEntry implements PulseEntryInterface {
+    outgoingTimestamp:number;
+    pulseTimestamp:number;
+    msgType: string;
+
+    mint: number;
     geo: string;
     group: string;
     ipaddr:string;
@@ -933,8 +997,8 @@ app.get('/nodefactory', function(req, res) {
     seq: number;
     owl:number;
     owls:string;
-    history:number[];   //history of last 60 owls measured
-    medianHistory:number[];  //history of 1-minute medians
+    history:number[];
+    medianHistory:number[];
 
     bootTimestamp:number;
     version:string;
@@ -942,11 +1006,27 @@ app.get('/nodefactory', function(req, res) {
     outPulses:number;
     pktDrops:number;
     lastMsg:string;
-} 
+
+    constructor(incommingPulse: IncomingPulse) {
+        this.pulseTimestamp = incommingPulse.pulseTimestamp;
+        this.outgoingTimestamp = incommingPulse.outgoingTimestamp;
+        this.msgType = incommingPulse.msgType;
+        this.version = incommingPulse.version,
+        this.geo = incommingPulse.geo;
+        this.group = incommingPulse.group;
+        this.seq = incommingPulse.seq;
+        this.bootTimestamp = incommingPulse.bootTimestamp;   //if genesis node reboots --> all node reload SW too
+        this.mint = incommingPulse.mint;
+        this.owls = incommingPulse.owls;
+        this.owl = incommingPulse.owl;
+        this.lastMsg = incommingPulse.lastMsg;
+    }
+}
+
  //
  //  pulseEntry - contains stats for and relevent fields to configure wireguard
  //
- function makePulseEntry(mint:number, geo:string, group:string, ipaddr:string, port:number, version:string):PulseEntry {
+ function makePulseEntry(mint:number, geo:string, group:string, ipaddr:string, port:number, version:string): PulseEntryInterface {
     return { //one record per pulse - index = <geo>:<group>
         mint: mint, //Genesis node would send this 
         geo: geo, //record index (key) is <geo>:<genesisGroup>

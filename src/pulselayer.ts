@@ -4,16 +4,18 @@
 //
 import {   dump,   now,      ts, nth_occurrence, MYVERSION } from '../lib/lib';
 import {   sendMsg, recvMsg, messagelayer_stats } from './messagelayer';
+import { PulseEntry, PulseEntryInterface } from './pulsegroup';
 
 const TEST=true; // launch with TEST=1 to get automatic pulser and catcher
 var h=process.env.HOSTNAME||require("os").hostname().split(".")[0];
 const HOSTNAME=h.toUpperCase();
 const VERSION = MYVERSION();
 
+type incomingPulseCallback = (incomingPulse: PulseEntryInterface) => void;
 //
 //  recvPulses() - bind the port and send incoming pulses as structured data
 //
-export function recvPulses(port,callback) {
+export function recvPulses(port: number, callback: incomingPulseCallback) : void {
     //console.log(`recvPulses(port=${port}):`);
     recvMsg(""+port,function(incomingMessage:string) {  //one-time set up of message handler callback
         //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
@@ -23,20 +25,20 @@ export function recvPulses(port,callback) {
           const OWL=pulseTimestamp-senderTimestamp;
           var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
           var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-          var pulse = {
+          var pulse = new PulseEntry({
             pulseTimestamp : pulseTimestamp,
-            senderTimestamp : senderTimestamp,
+            outgoingTimestamp : senderTimestamp,
             msgType : ary[2],
             version: ary[3],
             geo: ary[4],
             group: ary[5],
-            seq: ary[6],
+            seq: parseInt(ary[6]),
             bootTimestamp: parseInt(ary[7]),   //if genesis node reboots --> all node reload SW too
-            mint: ary[8],
+            mint: parseInt(ary[8]),
             owls: pulseOwls,
             owl: OWL,
             lastMsg:incomingMessage
-          };;
+          });
           //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
           //console.log("structured pulse="+dump(pulse));
 
@@ -47,8 +49,7 @@ export function recvPulses(port,callback) {
     });
 };
 
-export function sendPulses(msg,nodelist) {   //nodelist may be null, which means same pulsegourp sent
-    
+export function sendPulses(msg: string, nodelist: string[]) {   //nodelist may be null, which means same pulsegourp sent
     sendMsg(msg, nodelist);
 }
 

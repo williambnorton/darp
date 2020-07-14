@@ -23,7 +23,7 @@ export var messagelayer_stats={
 };
 
 //             RECEIVER CODE
-server.on('error', (err) => {
+server.on('error', (err: Error) => {
   console.log(`messagelayer server error:\n${err.stack}`);
   server.close();
 });
@@ -36,11 +36,11 @@ server.on('listening', () => {
 //
 //  recvMsg(): bind port and start callbacks for incoming messages
 //
-export function recvMsg(port:string,callback:any) {   //API routine
+export function recvMsg(port:string, callback:any) {   //API routine
   messagelayer_stats.port=port;
   server.bind(port);
   // Prints: server listening 0.0.0.0:41234
-  server.on('message', (msg, rinfo) => {
+  server.on('message', (msg: Buffer, rinfo: Object) => {
     var incomingTimestamp=messagelayer_stats.lastInTimestamp=now();
     messagelayer_stats.inOctets+=msg.length;
     messagelayer_stats.inMsgs++;
