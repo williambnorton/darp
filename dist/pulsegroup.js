@@ -1065,7 +1065,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         }
                     }
                     else { /*  not genesis - only can time out genesis  */
-                        console.log("timing out genesis node reconnect");
+                        console.log("timing out genesis node reconnect newPulseGroup.mintTable=" + lib_1.dump(newPulseGroup.mintTable));
                         if (lib_1.now() - newPulseGroup.mintTable[1].pulseTimestamp > 30 * 1000) {
                             console.log("Here the node will timeout the genesis snode, and delete his pulseGroup");
                         }
