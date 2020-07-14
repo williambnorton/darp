@@ -8,7 +8,7 @@ exports.__esModule = true;
 var lib_1 = require("../lib/lib");
 var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
-var express_1 = require("express");
+var express = require("express");
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
 var REFRESH = 120; //Every 2 minuytes force rrfresh
@@ -70,7 +70,7 @@ GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 //------------------------ Environmentals loaded -----------------------
 //             start config/instrumentaton web server
-var app = express_1["default"]();
+var app = express();
 var server = app.listen(PORT, '0.0.0.0', function () {
     //TODO: add error handling here
     var serverAdddress = server.address();
