@@ -935,8 +935,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             if (nodeEntry.owl == NO_OWL)
                 owls += nodeEntry.mint + ",";
             else {
-                //if pulseTimestamp within a second (POLLING CYCLE)
-                owls += nodeEntry.mint + "=" + nodeEntry.owl + ",";
+                var medianOfMedians = lib_1.median(nodeEntry.medianHistory);
+                var deviation = Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians;
+                console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=i sto" + nodeEntry.owl + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation);
+                var flag = "";
+                if (deviation * 100 / medianOfMedians > 30)
+                    flag = "*;"; //deviation 30% from the median, flag
+                owls += nodeEntry.mint + "=" + nodeEntry.owl + flag + ",";
             }
         });
         owls = owls.replace(/,+$/, ""); //remove trailing comma 
