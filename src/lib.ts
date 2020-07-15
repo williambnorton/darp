@@ -100,6 +100,7 @@ export function Log(logMsg: string, filename?: string) {
  */
 export function MYVERSION(): string {
     let darpdir = process.env.DARPDIR;
+    var darpBuild=null;  //we set this in the readir call
     if (typeof darpdir == "undefined") {
         console.log(`MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...`);
         process.exit(36); //reload SW - this should not happen
@@ -111,12 +112,12 @@ export function MYVERSION(): string {
         const Build=fn.match(/Build.*/);
         console.log(`Build=${Build}`); 
         if (Build!=null) {
-            console.log(`Build Not null!`);
-            return Build;
+            console.log(`Build Not null! setting darpBuild ${Build}`);
+            darpBuild=Build[0];
         }
     });
-    console.log(`MYVERSION(): Exitting - could not find the Build.`);
-    process.exit(36);
+    console.log(`MYVERSION(): darpBuild=${darpBuild}`);
+    return darpBuild;
 }
 
 
