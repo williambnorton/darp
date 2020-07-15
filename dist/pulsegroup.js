@@ -204,312 +204,325 @@ function instrumentation() {
     txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
     txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
-    txt += '    console.log("Highlight from pulsed Owls "+owls+" srcMintEntry="+srcMintEntry+" dstMintEntry="+dstMintEntry);';
-    txt += '    if (srcMintEntry && dstMintEntry) {';
-    txt += '       $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("background-color", "gray");';
-    txt += '    }';
+    txt += '    for(var owlEntry in ary) {';
+    txt += '       var srcMint=parseInt(ary[owlEntry].split("=")[0]);'; //get the
+    txt += '        ';
+    txt += '        var owl=-99999;';
+    txt += '       var strOwl=ary[owlEntry].split("=")[1];';
+    txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
+    txt += '        var regex = /\*/g;';
+    txt += '        var flag=strOwl.match(regex);';
+    txt += '        if (flag) console.log("found a flagged entry");;';
+    txt += '     }'; //we don't do this
     txt += '}';
-    //}
-    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
-    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-    //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
-    txt += '             if ( pulseGroup.nodeCount > 1 ) {';
-    txt += '                if (nodeCountLastTime!=0) {';
-    txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         location.reload();';
-    txt += '                     }';
-    txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;';
-    txt += '             }';
-    txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
-    //update the dateTime so people know the updates re coming in
-    txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
-    txt += "             var now=d.getTime();";
-    txt += "             var timeStr=d.toString().split(' ')[4];";
-    //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-    //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
-    txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
-    //      Render table from information in the state fetched from node
+    //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
+}
+txt += '    console.log("Checking "+pulseEntry.geo+" pulsed Owls "+owls+" srcMintEntry="+srcMintEntry+" dstMintEntry="+dstMintEntry);';
+txt += '    ';
+txt += '    if (srcMintEntry && dstMintEntry) {';
+txt += '       $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("background-color", "gray");';
+txt += '    }';
+txt += '}';
+//}
+//txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+//txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+//txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
+txt += '             if ( pulseGroup.nodeCount > 1 ) {';
+txt += '                if (nodeCountLastTime!=0) {';
+txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {';
+txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+txt += '                         location.reload();';
+txt += '                     }';
+txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;';
+txt += '             }';
+txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
+//update the dateTime so people know the updates re coming in
+txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
+txt += "             var now=d.getTime();";
+txt += "             var timeStr=d.toString().split(' ')[4];";
+//       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+//txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
+txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
+//      Render table from information in the state fetched from node
+//
+txt += '      var totalEarn=0.000000;';
+txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
+//                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
+txt += '          var pulse=value;'; //
+txt += '          if (pulse!=null) {';
+txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {';
+// txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+//txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+// txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);';
+txt += '              }';
+txt += '              console.log("pulse.owl="+pulse.owl);';
+txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
+txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");'; //Add NR class to entire row
+txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
+txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");'; //Add NR class to entire row
+txt += '              if (pulse.pulseTimestamp!="0")';
+txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
+txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");';
+txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
+txt += '               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'; //TODO : Align left for this text field
+txt += '               pulse.inPulses=parseInt(pulse.inPulses);';
+txt += '               pulse.outPulses=parseInt(pulse.outPulses);';
+txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
+txt += '              totalEarn+=balance;';
+txt += '              balance=balance.toFixed(6);';
+//txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
+txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
+//      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
+txt += '           }';
+txt += '       }';
+//txt += 'console.log("totalEarn coming in =:"+totalEarn);'
+txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);';
+txt += '        $(".total_earn").text("totalEarn: $"+totalEarn);';
+//   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
+//   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
+txt += '         }';
+txt += '   });';
+txt += "    setTimeout(fetchState,1000);";
+txt += "}";
+txt += 'setTimeout(fetchState,1000);';
+txt += '</script>';
+txt += '</head>';
+txt += '<body>';
+txt += '<h1>DARP Node ' + me.geo + ' http://' + me.ipaddr + ":" + me.port + '</h1>';
+var d = new Date();
+var timeStr = d.toString().split(' ')[4];
+txt += '<p id="dateTime">*Refresh: ' + timeStr + ' </p>';
+//
+//  externalize pulseGroup matrix
+//
+for (var p in myPulseGroups) {
+    var pulseGroup = myPulseGroups[p];
     //
-    txt += '      var totalEarn=0.000000;';
-    txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
-    //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-    txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
-    txt += '          var pulse=value;'; //
-    txt += '          if (pulse!=null) {';
-    txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {';
-    // txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-    //txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-    // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
-    txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);';
-    txt += '              }';
-    txt += '              console.log("pulse.owl="+pulse.owl);';
-    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
-    txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");'; //Add NR class to entire row
-    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
-    txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");'; //Add NR class to entire row
-    txt += '              if (pulse.pulseTimestamp!="0")';
-    txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-    txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");';
-    txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-    txt += '               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'; //TODO : Align left for this text field
-    txt += '               pulse.inPulses=parseInt(pulse.inPulses);';
-    txt += '               pulse.outPulses=parseInt(pulse.outPulses);';
-    txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-    txt += '              totalEarn+=balance;';
-    txt += '              balance=balance.toFixed(6);';
-    //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
-    txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
-    //      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
-    txt += '           }';
-    txt += '       }';
-    //txt += 'console.log("totalEarn coming in =:"+totalEarn);'
-    txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);';
-    txt += '        $(".total_earn").text("totalEarn: $"+totalEarn);';
-    //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
-    //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
-    txt += '         }';
-    txt += '   });';
-    txt += "    setTimeout(fetchState,1000);";
-    txt += "}";
-    txt += 'setTimeout(fetchState,1000);';
-    txt += '</script>';
-    txt += '</head>';
-    txt += '<body>';
-    txt += '<h1>DARP Node ' + me.geo + ' http://' + me.ipaddr + ":" + me.port + '</h1>';
-    var d = new Date();
-    var timeStr = d.toString().split(' ')[4];
-    txt += '<p id="dateTime">*Refresh: ' + timeStr + ' </p>';
+    //   show OWL Matrix table
     //
-    //  externalize pulseGroup matrix
-    //
-    for (var p in myPulseGroups) {
-        var pulseGroup = myPulseGroups[p];
-        //
-        //   show OWL Matrix table
-        //
-        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
-        txt += '<tr><th>' + pulseGroup.groupName + ' OWL Matrix</th>';
-        //   print OWL headers
-        for (var col in pulseGroup.pulses) {
-            var colEntry = pulseGroup.pulses[col];
-            //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
-            txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " <b>" + colEntry.mint + "</b></a> </th>";
-            //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
-        }
-        txt += "</tr>";
-        for (var src in pulseGroup.matrix) {
-            var srcMintEntry = pulseGroup.mintTable[src]; //src mintEntry
-            if (srcMintEntry != null) {
-                if (srcMintEntry.state == "UP")
-                    txt += '<tr class="' + srcMintEntry.geo + ' UP"><td><a target="_blank" href="http://' + srcMintEntry.ipaddr + ":" + srcMintEntry.port + '/">' + srcMintEntry.geo + " " + srcMintEntry.mint + '</a></td>'; //heacer on left side
-                else
-                    txt += '<tr class="' + srcMintEntry.geo + ' NR"><td>' + srcMintEntry.geo + " " + srcMintEntry.mint + '</td>'; //heacer on left side
-                for (var dest in pulseGroup.matrix[src]) {
-                    var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
-                    //console.log(`dest=${dest}`);
-                    if (destMintEntry != null)
-                        txt += '<td class="' + srcMintEntry.mint + "-" + destMintEntry.mint + ' ' + srcMintEntry.geo + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
-                    else
-                        txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
-                }
-                txt += "</tr>";
-            }
-        }
-        txt += "</table>";
-        //
-        //  Externalize pulse structures 
-        //
-        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulseTable">';
-        txt += "<tr>";
-        txt += "<th>geo</th>";
-        txt += "<th>group</th>";
-        txt += "<th>ipaddr</th>";
-        txt += "<th>port</th>";
-        txt += "<th>seq</th>";
-        txt += "<th>pulseTimestamp</th>";
-        txt += "<th>mint</th>";
-        txt += "<th>owl</th>";
-        //txt += "<th>median</th>"
-        //txt+="<th>owls</th>"
-        //txt += "<th>inOctets</th>";
-        //txt += "<th>outOctets</th>";
-        txt += "<th>inPulses</th>";
-        txt += "<th>outPulses</th>";
-        txt += "<th>pktDrops</th>";
-        txt += "<th>pulseSz</th>";
-        txt += "<th>owls</th>";
-        txt += "<th>bootTimestamp</th>";
-        txt += "<th>version</th>";
-        txt += "<th>Net Earnings</th>";
-        txt += "</tr>";
-        var total = 0; //Add up total balance of all pulses
-        //console.log(ts()+"                            pulses="+dump(pulses));
-        for (var a in pulseGroup.pulses) {
-            var pulseEntry = pulseGroup.pulses[a];
-            var mint = pulseEntry.mint;
-            //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
-            //console.log("pulseEntry="+dump(pulseEntry));
-            var rowMintEntry = pulseGroup.mintTable[pulseEntry.mint];
-            if ((rowMintEntry) && (rowMintEntry.state == "UP"))
-                txt += '<tr class="UP ' + pulseEntry.geo + '" >';
+    txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+    txt += '<tr><th>' + pulseGroup.groupName + ' OWL Matrix</th>';
+    //   print OWL headers
+    for (var col in pulseGroup.pulses) {
+        var colEntry = pulseGroup.pulses[col];
+        //txt+='<th><a href="http://'+colEntry.ipaddr+":"+me.port+'/">'+colEntry.geo+":"+colEntry.srcMint+"</a></th>"
+        txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr + ":" + colEntry.port + '/">' + colEntry.geo + " <b>" + colEntry.mint + "</b></a> </th>";
+        //else txt += '<th><a target="_blank" href="http://' + colEntry.ipaddr+":"+colEntry.port+'/">'+ colEntry.mint + "</a></th>"
+    }
+    txt += "</tr>";
+    for (var src in pulseGroup.matrix) {
+        var srcMintEntry = pulseGroup.mintTable[src]; //src mintEntry
+        if (srcMintEntry != null) {
+            if (srcMintEntry.state == "UP")
+                txt += '<tr class="' + srcMintEntry.geo + ' UP"><td><a target="_blank" href="http://' + srcMintEntry.ipaddr + ":" + srcMintEntry.port + '/">' + srcMintEntry.geo + " " + srcMintEntry.mint + '</a></td>'; //heacer on left side
             else
-                txt += '<tr class="NR ' + "unknown geo" + '" >';
-            if (rowMintEntry != null) {
-                //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
-                txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
-                //txt+="<td>"+pulseEntry.geo+"</td>"
-                txt += "<td >" + pulseEntry.group + "</td>";
-                txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
-                txt += "<td>" + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
-                txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
-                var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
-                if (pulseEntry.pulseTimestamp == 0)
-                    deltaSeconds = "0";
-                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
-                //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
-                txt += "<td>" + pulseEntry.mint + "</td>";
-                // OWL
-                //            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
-                txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo + '" >' + pulseEntry.owl + "</a> ms</td>";
-                //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
-                //txt+="<td>"+pulseEntry.owls+"</td>"
-                //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
-                //txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
-                txt += '<td class="' + pulseEntry.geo + '_inPulses"' + '>' + pulseEntry.inPulses + "</td>";
-                txt += '<td class="' + pulseEntry.geo + '_outPulses"' + '>' + pulseEntry.outPulses + "</td>";
-                //var pktLoss=parseInt(pulseEntry.seq)-parseInt(pulseEntry.inMsgs);
-                //console.log("pktloss=:"+pktLoss);
-                if (pulseEntry.pktDrops > 1)
-                    txt += '<td class="' + pulseEntry.geo + '_pktDrops WARNING"' + '>' + pulseEntry.pktDrops + "</td>";
+                txt += '<tr class="' + srcMintEntry.geo + ' NR"><td>' + srcMintEntry.geo + " " + srcMintEntry.mint + '</td>'; //heacer on left side
+            for (var dest in pulseGroup.matrix[src]) {
+                var destMintEntry = pulseGroup.mintTable[parseInt(dest)];
+                //console.log(`dest=${dest}`);
+                if (destMintEntry != null)
+                    txt += '<td class="' + srcMintEntry.mint + "-" + destMintEntry.mint + ' ' + srcMintEntry.geo + ' ' + destMintEntry.geo + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
                 else
-                    txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
-                if (pulseEntry.lastMsg) {
-                    txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
-                    txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
-                    //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
-                }
-                else {
-                    txt += "<td>" + "" + "</td>";
-                    txt += "<td>" + "" + "</td>";
-                }
-                var deltaSeconds2 = Math.round((lib_1.now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
-                if (pulseEntry.bootTimestamp == 0)
-                    deltaSeconds2 = "0";
-                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
-                txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
-                var balance = (Math.min(pulseEntry.inPulses * 1500, pulseEntry.outPulses * 1500) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
-                total = total + balance;
-                txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
-                //txt+="<td>"+pulseEntry.lastMsg+"</td>"
+                    txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
             }
             txt += "</tr>";
         }
-        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">' + pulseGroup.groupName + ' Earnings $' + total.toFixed(6) + '</td></tr>';
-        txt += "</table>";
     }
-    for (var p in myPulseGroups) {
-        var pulseGroup = myPulseGroups[p];
-        //
-        //  Externalize mintTable 
-        //
-        //console.log(ts()+"config.mintTable="+dump(config.mintTable));
-        txt += '<br><h2>mintTable</h2><table class="mintTable">';
-        txt += "<tr>";
-        txt += "<th>mint</th>";
-        txt += "<th>geo</th>";
-        txt += "<th>port</th>";
-        txt += "<th>ipaddr</th>";
-        txt += "<th>publickey</th>";
-        txt += "<th>state</th>";
-        txt += "<th>lastPulseTimestamp</th>";
-        txt += "<th>lastOWL</th>";
-        txt += "<th>version</th>";
-        txt += "<th>wallet</th>";
-        //txt+="<th>G</th>"
-        //<th>rtt</th>"
-        txt += "<th>CONTROLS</th>";
-        txt += "<th>adminControl</th>";
-        txt += "<th>bootTimestamp</th>";
-        txt += "</tr>";
-        //console.log(ts()+"                            mintTable="+dump(mintTable));
-        for (var a in pulseGroup.mintTable) {
-            var srcMintEntry = pulseGroup.mintTable[a];
-            if (srcMintEntry != null) {
-                //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
-                if (srcMintEntry.state == "UP")
-                    txt += '<tr class="UP ' + srcMintEntry.geo + '" >';
-                else
-                    txt += '<tr class="NR ' + srcMintEntry.geo + '" >';
-                //                txt += '<tr class="'+mintEntry.geo+'">';
-                //txt+="<td>"+mintEntry+"</td>"
-                txt += "<td>" + srcMintEntry.mint + "</td>";
-                txt += '<td class="' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/" >' + srcMintEntry.geo + "</a></td>";
-                txt += "<td>" + srcMintEntry.port + "</td>";
-                txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/me" >' + srcMintEntry.ipaddr + "</a></td>";
-                txt += "<td>" + srcMintEntry.publickey.substring(0, 3) + "..." + srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) + "</td>";
-                txt += '<td class="' + srcMintEntry.geo + ' ' + srcMintEntry.geo + '_state' + ' ' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/mintTable" >' + srcMintEntry.state + '</a>' + "</td>";
-                //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
-                //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
-                //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
-                //txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
-                var deltaSeconds = Math.round((lib_1.now() - srcMintEntry.lastPulseTimestamp) / 1000) + " secs ago";
-                if (srcMintEntry.lastPulseTimestamp == 0)
-                    deltaSeconds = "0";
-                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                txt += '<td class="' + srcMintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
-                //            txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
-                txt += '<td class="' + srcMintEntry.geo + '_owl "' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + srcMintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + srcMintEntry.lastOWL + "</a> ms</td>";
-                //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
-                txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/version" >' + srcMintEntry.version + "</a></td>";
-                txt += "<td>" + srcMintEntry.wallet.substring(0, 3) + "..." + srcMintEntry.wallet.substring(40, srcMintEntry.wallet.length) + "</td>";
-                //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
-                //txt += "<td>" + mintEntry.owl + " ms</td>"
-                //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
-                //            txt+="<td>"+mintEntry.rtt+"</td>"
-                var stopButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/stop";
-                var rebootButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/reboot";
-                var reloadButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/reload";
-                var SINGLESTEPButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/SINGLESTEP";
-                var pulseMsgButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/pulseMsg";
-                txt += "<td>" + '<FORM>';
-                txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
-                txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
-                txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
-                txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
-                txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
-                txt += '</FORM>' + "</td>";
-                //if (mintEntry.adminControl)
-                //    txt += "<td>" + mintEntry.adminControl + "</td>";
-                //else
-                txt += "<td>" + "</td>";
-                //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
-                //if (pulseEntry.bootTimestamp == 0) delta = "0";
-                //txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
-                var deltaSeconds2 = Math.round((lib_1.now() - srcMintEntry.bootTimestamp) / 1000) + " secs ago";
-                if (srcMintEntry.bootTimestamp == 0)
-                    deltaSeconds2 = "0";
-                //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
-                txt += '<td class="' + srcMintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
-                txt += "</tr>";
+    txt += "</table>";
+    //
+    //  Externalize pulse structures 
+    //
+    txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulseTable">';
+    txt += "<tr>";
+    txt += "<th>geo</th>";
+    txt += "<th>group</th>";
+    txt += "<th>ipaddr</th>";
+    txt += "<th>port</th>";
+    txt += "<th>seq</th>";
+    txt += "<th>pulseTimestamp</th>";
+    txt += "<th>mint</th>";
+    txt += "<th>owl</th>";
+    //txt += "<th>median</th>"
+    //txt+="<th>owls</th>"
+    //txt += "<th>inOctets</th>";
+    //txt += "<th>outOctets</th>";
+    txt += "<th>inPulses</th>";
+    txt += "<th>outPulses</th>";
+    txt += "<th>pktDrops</th>";
+    txt += "<th>pulseSz</th>";
+    txt += "<th>owls</th>";
+    txt += "<th>bootTimestamp</th>";
+    txt += "<th>version</th>";
+    txt += "<th>Net Earnings</th>";
+    txt += "</tr>";
+    var total = 0; //Add up total balance of all pulses
+    //console.log(ts()+"                            pulses="+dump(pulses));
+    for (var a in pulseGroup.pulses) {
+        var pulseEntry = pulseGroup.pulses[a];
+        var mint = pulseEntry.mint;
+        //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
+        //console.log("pulseEntry="+dump(pulseEntry));
+        var rowMintEntry = pulseGroup.mintTable[pulseEntry.mint];
+        if ((rowMintEntry) && (rowMintEntry.state == "UP"))
+            txt += '<tr class="UP ' + pulseEntry.geo + '" >';
+        else
+            txt += '<tr class="NR ' + "unknown geo" + '" >';
+        if (rowMintEntry != null) {
+            //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
+            txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
+            //txt+="<td>"+pulseEntry.geo+"</td>"
+            txt += "<td >" + pulseEntry.group + "</td>";
+            txt += "<td> " + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/me" >' + pulseEntry.ipaddr + "</a></td>";
+            txt += "<td>" + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/state" >' + pulseEntry.port + "</a></td>";
+            txt += '<td class="' + pulseEntry.geo + '_seq"' + '>' + pulseEntry.seq + "</td>";
+            var deltaSeconds = Math.round((lib_1.now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago";
+            if (pulseEntry.pulseTimestamp == 0)
+                deltaSeconds = "0";
+            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+            txt += '<td class="' + pulseEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
+            //txt+="<td>"+pulseEntry.pulseTimestamp+"</td>"
+            txt += "<td>" + pulseEntry.mint + "</td>";
+            // OWL
+            //            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
+            txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo + '" >' + pulseEntry.owl + "</a> ms</td>";
+            //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
+            //txt+="<td>"+pulseEntry.owls+"</td>"
+            //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
+            //txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
+            txt += '<td class="' + pulseEntry.geo + '_inPulses"' + '>' + pulseEntry.inPulses + "</td>";
+            txt += '<td class="' + pulseEntry.geo + '_outPulses"' + '>' + pulseEntry.outPulses + "</td>";
+            //var pktLoss=parseInt(pulseEntry.seq)-parseInt(pulseEntry.inMsgs);
+            //console.log("pktloss=:"+pktLoss);
+            if (pulseEntry.pktDrops > 1)
+                txt += '<td class="' + pulseEntry.geo + '_pktDrops WARNING"' + '>' + pulseEntry.pktDrops + "</td>";
+            else
+                txt += '<td class="' + pulseEntry.geo + '_pktDrops "' + '>' + pulseEntry.pktDrops + "</td>";
+            if (pulseEntry.lastMsg) {
+                txt += "<td>" + pulseEntry.lastMsg.length + "</td>"; //pulse size
+                txt += '<td class="' + pulseEntry.geo + '_owls"' + '>' + pulseEntry.owls.substring(0, OWLS_DISPLAYED) + "</td>";
+                //txt += "<td>" + pulseEntry.lastMsg.substring(0,50) + "</td>"
             }
+            else {
+                txt += "<td>" + "" + "</td>";
+                txt += "<td>" + "" + "</td>";
+            }
+            var deltaSeconds2 = Math.round((lib_1.now() - pulseEntry.bootTimestamp) / 1000) + " secs ago";
+            if (pulseEntry.bootTimestamp == 0)
+                deltaSeconds2 = "0";
+            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+            txt += '<td class="' + pulseEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
+            txt += '<td class="' + pulseEntry.geo + '_version"' + '>' + pulseEntry.version + "</td>";
+            var balance = (Math.min(pulseEntry.inPulses * 1500, pulseEntry.outPulses * 1500) / (1000000 * 1000)) * .5; //GB=1000 MB @ 50 cents per
+            total = total + balance;
+            txt += '<td class="' + pulseEntry.geo + '_balance"' + '> $' + balance.toFixed(6) + "</td>";
+            //txt+="<td>"+pulseEntry.lastMsg+"</td>"
         }
-        txt += "</table>";
+        txt += "</tr>";
     }
-    txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
-    txt += "";
-    txt += '<p id="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
-    txt += "</body>";
-    txt += "</html>";
-    //console.log("txt="+txt);
-    return txt;
+    txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">' + pulseGroup.groupName + ' Earnings $' + total.toFixed(6) + '</td></tr>';
+    txt += "</table>";
 }
+for (var p in myPulseGroups) {
+    var pulseGroup = myPulseGroups[p];
+    //
+    //  Externalize mintTable 
+    //
+    //console.log(ts()+"config.mintTable="+dump(config.mintTable));
+    txt += '<br><h2>mintTable</h2><table class="mintTable">';
+    txt += "<tr>";
+    txt += "<th>mint</th>";
+    txt += "<th>geo</th>";
+    txt += "<th>port</th>";
+    txt += "<th>ipaddr</th>";
+    txt += "<th>publickey</th>";
+    txt += "<th>state</th>";
+    txt += "<th>lastPulseTimestamp</th>";
+    txt += "<th>lastOWL</th>";
+    txt += "<th>version</th>";
+    txt += "<th>wallet</th>";
+    //txt+="<th>G</th>"
+    //<th>rtt</th>"
+    txt += "<th>CONTROLS</th>";
+    txt += "<th>adminControl</th>";
+    txt += "<th>bootTimestamp</th>";
+    txt += "</tr>";
+    //console.log(ts()+"                            mintTable="+dump(mintTable));
+    for (var a in pulseGroup.mintTable) {
+        var srcMintEntry = pulseGroup.mintTable[a];
+        if (srcMintEntry != null) {
+            //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
+            if (srcMintEntry.state == "UP")
+                txt += '<tr class="UP ' + srcMintEntry.geo + '" >';
+            else
+                txt += '<tr class="NR ' + srcMintEntry.geo + '" >';
+            //                txt += '<tr class="'+mintEntry.geo+'">';
+            //txt+="<td>"+mintEntry+"</td>"
+            txt += "<td>" + srcMintEntry.mint + "</td>";
+            txt += '<td class="' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/" >' + srcMintEntry.geo + "</a></td>";
+            txt += "<td>" + srcMintEntry.port + "</td>";
+            txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/me" >' + srcMintEntry.ipaddr + "</a></td>";
+            txt += "<td>" + srcMintEntry.publickey.substring(0, 3) + "..." + srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) + "</td>";
+            txt += '<td class="' + srcMintEntry.geo + ' ' + srcMintEntry.geo + '_state' + ' ' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/mintTable" >' + srcMintEntry.state + '</a>' + "</td>";
+            //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"
+            //var deltaT = Math.round((now() - mintEntry.pulseTimestamp) / 1000) + " secs ago";
+            //if (mintEntry.pulseTimestamp == 0) deltaT = "0";
+            //txt += '<td class="'+mintEntry.geo+'_pulseTimestamp"'+'">' + deltaT + "</td>";
+            var deltaSeconds = Math.round((lib_1.now() - srcMintEntry.lastPulseTimestamp) / 1000) + " secs ago";
+            if (srcMintEntry.lastPulseTimestamp == 0)
+                deltaSeconds = "0";
+            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+            txt += '<td class="' + srcMintEntry.geo + '_pulseTimestamp"' + '>' + deltaSeconds + "</td>";
+            //            txt += '<td class="' + mintEntry.geo + '_owl fade-out"' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + mintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + mintEntry.lastOWL + "</a> ms</td>";
+            txt += '<td class="' + srcMintEntry.geo + '_owl "' + '>' + '<a target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + srcMintEntry.geo + '&dst=' + me.geo + "&group=" + pulseGroup.groupName + '" >' + srcMintEntry.lastOWL + "</a> ms</td>";
+            //txt+="<td>"+mintEntry.bootTimestamp+"</td>"
+            txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/version" >' + srcMintEntry.version + "</a></td>";
+            txt += "<td>" + srcMintEntry.wallet.substring(0, 3) + "..." + srcMintEntry.wallet.substring(40, srcMintEntry.wallet.length) + "</td>";
+            //txt+="<td>"+mintEntry.SHOWPULSES+"</td>"
+            //txt += "<td>" + mintEntry.owl + " ms</td>"
+            //txt+="<td>"+mintEntry.isGenesisNode+"</td>"
+            //            txt+="<td>"+mintEntry.rtt+"</td>"
+            var stopButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/stop";
+            var rebootButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/reboot";
+            var reloadButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/reload";
+            var SINGLESTEPButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/SINGLESTEP";
+            var pulseMsgButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port + "/pulseMsg";
+            txt += "<td>" + '<FORM>';
+            txt += '<INPUT Type="BUTTON" Value="PULSE1" Onclick="window.location.href=\'' + pulseMsgButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="RELOAD" Onclick="window.location.href=\'' + reloadButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="SINGLESTEP" Onclick="window.location.href=\'' + SINGLESTEPButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="STOP" Onclick="window.location.href=\'' + stopButtonURL + "'" + '">';
+            txt += '<INPUT Type="BUTTON" Value="REBOOT" Onclick="window.location.href=\'' + rebootButtonURL + "'" + '">';
+            txt += '</FORM>' + "</td>";
+            //if (mintEntry.adminControl)
+            //    txt += "<td>" + mintEntry.adminControl + "</td>";
+            //else
+            txt += "<td>" + "</td>";
+            //var delta = Math.round((now() - mintEntry.bootTimestamp) / 1000) + " secs ago";
+            //if (pulseEntry.bootTimestamp == 0) delta = "0";
+            //txt += '<td class="'+pulseEntry.geo+'_bootTimestamp"'+'">' + delta + "</td>";
+            var deltaSeconds2 = Math.round((lib_1.now() - srcMintEntry.bootTimestamp) / 1000) + " secs ago";
+            if (srcMintEntry.bootTimestamp == 0)
+                deltaSeconds2 = "0";
+            //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
+            txt += '<td class="' + srcMintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
+            txt += "</tr>";
+        }
+    }
+    txt += "</table>";
+}
+txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
+txt += "";
+txt += '<p id="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
+txt += "</body>";
+txt += "</html>";
+//console.log("txt="+txt);
+return txt;
 app.get('/', function (req, res) {
     //console.log("********************** fetching '/'");
     //handleShowState(req, res); 
@@ -934,14 +947,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //return;//turning off this feature until stable
         var matrix = [];
         for (var pulse in newPulseGroup.pulses) {
-            var pulseEntry = newPulseGroup.pulses[pulse];
+            var pulseEntry_1 = newPulseGroup.pulses[pulse];
             //console.log("processing "+pulse);
             //        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
-            var pulseFreshness = lib_1.now() - pulseEntry.pulseTimestamp;
+            var pulseFreshness = lib_1.now() - pulseEntry_1.pulseTimestamp;
             //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
-            if ((lib_1.now() - pulseEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
+            if ((lib_1.now() - pulseEntry_1.pulseTimestamp) < 2 * 1000) { // VALID PULSE
                 //for each OWLS                 
-                var ary = pulseEntry.owls.split(","); //put all my OWLs into matrix
+                var ary = pulseEntry_1.owls.split(","); //put all my OWLs into matrix
                 for (var owlEntry in ary) {
                     var m = parseInt(ary[owlEntry].split("=")[0]);
                     var owl = NO_OWL;
@@ -952,14 +965,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         matrix[m] = [];
                     //console.log("Searching for mint "+m);
                     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-                    matrix[m][pulseEntry.mint] = owl; //pulse measured to peer
+                    matrix[m][pulseEntry_1.mint] = owl; //pulse measured to peer
                 }
-                if (typeof matrix[pulseEntry.mint] == "undefined")
-                    matrix[pulseEntry.mint] = [];
-                matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = pulseEntry.owl; //pulse measured to me
+                if (typeof matrix[pulseEntry_1.mint] == "undefined")
+                    matrix[pulseEntry_1.mint] = [];
+                matrix[pulseEntry_1.mint][newPulseGroup.mintTable[0].mint] = pulseEntry_1.owl; //pulse measured to me
             }
             else { //OLD PULSE - CLEAR these entries
-                console.log(pulseEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
+                console.log(pulseEntry_1.geo + " did not respond. Entering NO_OWL for all values to this node");
                 //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 //newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
@@ -967,9 +980,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //});
                 //                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
                 //console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-                if (typeof matrix[pulseEntry.mint] == "undefined")
-                    matrix[pulseEntry.mint] = [];
-                matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
+                if (typeof matrix[pulseEntry_1.mint] == "undefined")
+                    matrix[pulseEntry_1.mint] = [];
+                matrix[pulseEntry_1.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
             }
         }
         //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
