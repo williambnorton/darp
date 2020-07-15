@@ -242,10 +242,10 @@ function instrumentation() {    //this should get its own file
     txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
-    txt += '    console.log("pulseEntry ="+JSON.stringify(pulseEntry,null,2));'
+    txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));'
 
-    txt += '    var srcMintEntry=pulseEntry.mintTable[pulseEntry.mint];';
-    txt += '    var dstMintEntry=pulseEntry.mintTable[0];';
+    txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+    txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    console.log("Highlight from pulsed Owls "+owls+" srcMintEntry="+srcMintEntry+" dstMintEntry="+dstMintEntry);'
 
