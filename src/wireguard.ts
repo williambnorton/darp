@@ -1,12 +1,11 @@
-//
-//  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
-//
-// ***
-import { dump, now, ts } from "../lib/lib";
-const WGDIR="/etc/wireguard";  //this is the direcvtory to build and evolve wg config files
+/** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
 
-const pulseRedis = require('redis');
-var redisClient = pulseRedis.createClient(); //creates a new client
+import { dump, now, ts } from "./lib";
+//import pulseRedis = require('redis');
+
+
+const WGDIR="/etc/wireguard";  //this is the direcvtory to build and evolve wg config files
+//const redisClient = pulseRedis.createClient(); //creates a new client
 
 export function getPublicKey() {
     return require('fs').readFileSync(WGDIR+'/publickey', 'utf8');
@@ -49,6 +48,7 @@ export function setWireguard() {
     //for each group in me.pulseGroups
     console.log(ts()+"setWireguard(): TODO: Here we would ....Set up wireguard files and docker forever script...");
     return;
+    /*
     redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
         redisClient.hgetall("mint:0", function (err,me) {
             redisClient.hgetall("mint:1", function (err,genesis) {
@@ -74,12 +74,12 @@ export function setWireguard() {
                             console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
                             //config+="\n";                            
                             var myStanza="#\n" + 
-prefix+"# "+mintEntry.geo+" can send to us on this channel mint="+ mint+"\n" +
-prefix+"[Peer]\n" +
-prefix+"PublicKey = "+mintEntry.publickey+"\n" +
-prefix+"AllowedIPs = 10.10."+Math.round(me.mint/254)+"."+(me.mint%254)+"/32,fd86:ea04:1115::"+mintEntry.mint+"/128\n" +
-prefix+"Endpoint = "+mintEntry.ipaddr+":"+"80"+"\n" +
-prefix+"PersistentKeepalive = 25"+"\n\n";
+                                prefix+"# "+mintEntry.geo+" can send to us on this channel mint="+ mint+"\n" +
+                                prefix+"[Peer]\n" +
+                                prefix+"PublicKey = "+mintEntry.publickey+"\n" +
+                                prefix+"AllowedIPs = 10.10."+Math.round(me.mint/254)+"."+(me.mint%254)+"/32,fd86:ea04:1115::"+mintEntry.mint+"/128\n" +
+                                prefix+"Endpoint = "+mintEntry.ipaddr+":"+"80"+"\n" +
+                                prefix+"PersistentKeepalive = 25"+"\n\n";
 
                             config.unshift(myStanza);
                             //console.log("config[mint="+mint+"]="+config[mint]);
@@ -119,7 +119,7 @@ prefix+"PersistentKeepalive = 25"+"\n\n";
             });
         });
     });
-
+    */
 }
 
 /*

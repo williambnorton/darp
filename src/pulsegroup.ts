@@ -1,21 +1,21 @@
-//
-//  nodefactory.ts - Creatre Configuration for joining our  pulseGroup object
-//
-//
-import {   dump, now, ts, MYIP, nth_occurrence, MYVERSION, YYMMDD, Log , median } from '../lib/lib';
-import {   sendPulses, recvPulses } from './pulselayer';
-import {   grapher, grapherStoreOwl } from './grapher';
+/** @module pulsegroup Create Configuration for joining our pulseGroup object */
+
+import { dump, now, ts, nth_occurrence, MYVERSION, YYMMDD, Log, median } from './lib';
+import { sendPulses, recvPulses } from './pulselayer';
+import { grapher, grapherStoreOwl } from './grapher';
 import express = require('express');
+import http = require("http");
+
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
-const REFRESH=120;  //Every 2 minuytes force rrfresh
+const REFRESH=120;  //Every 2 minutes force refresh
 const OWLS_DISPLAYED=30;
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
 
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
-//const DEFAULT_START_STATE = "QUARENTINE"; //for single stepping through network protocol code
+//const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
 const DEFAULT_START_STATE="NR"; 
 console.log(ts()+"pulsegroup.ts(): ALL NODES START IN "+DEFAULT_START_STATE+" Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
@@ -673,7 +673,12 @@ app.get('/version', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("EXITTING and Stopping the node request from "+ip);
     Log("EXITTING and Stopping the node request from "+ip);
-    res.redirect(req.get('referer'));
+    var referer = req.get('Referer');
+    if (referer !== undefined) {
+        res.redirect(referer);
+    } else {
+        //TODO
+    }
     process.exit(86);
 });
  
@@ -681,8 +686,12 @@ app.get('/version', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
     Log("reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
-
-    res.redirect(req.get('referer'));
+    var referer = req.get('Referer');
+    if (referer !== undefined) {
+        res.redirect(referer);
+    } else {
+        //TODO
+    }
     process.exit(99999) 
  });
  
@@ -690,7 +699,12 @@ app.get('/version', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("EXITTING to reload the system request from: "+ip)
     Log("EXITTING to reload the system request from: "+ip)
-    res.redirect(req.get('referer'));
+    var referer = req.get('Referer');
+    if (referer !== undefined) {
+        res.redirect(referer);
+    } else {
+        //TODO
+    }
     process.exit(36);
  });
 
@@ -823,10 +837,13 @@ app.get('/nodefactory', function(req, res) {
     }
 
     var incomingIP = req.query.myip;                // for now we believe the node's IP
+    var octetCount = 0;
     if (typeof incomingIP === "string") {
         var octetCount = incomingIP.split(".").length;  //but validate as IP, not error msg
     }
-    if (octetCount != 4) incomingIP="noMYIP";
+    if (octetCount != 4) {
+        incomingIP="noMYIP"
+    };
 
     var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (incomingIP == "noMYIP") incomingIP = clientIncomingIP;
@@ -985,19 +1002,19 @@ app.get('/nodefactory', function(req, res) {
     mint: number;               //
     geo: string;
     group: string;
-    ipaddr: string;
-    port: number;
+    ipaddr?: string;
+    port?: number;
     seq: number;
     owl: number;
     owls: string;
-    history: number[];   //history of last 60 owls measured
-    medianHistory: number[];  //history of 1-minute medians
+    history?: number[];   //history of last 60 owls measured
+    medianHistory?: number[];  //history of 1-minute medians
 
     bootTimestamp: number;
     version: string;
-    inPulses: number;
-    outPulses: number;
-    pktDrops: number;
+    inPulses?: number;
+    outPulses?: number;
+    pktDrops?: number;
     lastMsg: string;
 } 
 
@@ -1040,19 +1057,19 @@ export class PulseEntry implements PulseEntryInterface {
     mint: number;
     geo: string;
     group: string;
-    ipaddr:string;
-    port: number;
+    ipaddr?: string;
+    port?: number;
     seq: number;
     owl:number;
     owls:string;
-    history:number[];
-    medianHistory:number[];
+    history?: number[];
+    medianHistory?: number[];
 
     bootTimestamp:number;
     version:string;
-    inPulses:number;
-    outPulses:number;
-    pktDrops:number;
+    inPulses?: number;
+    outPulses?: number;
+    pktDrops?: number;
     lastMsg:string;
 
     constructor(incommingPulse: IncomingPulse) {
@@ -1093,7 +1110,7 @@ export class PulseEntry implements PulseEntryInterface {
         //
         inPulses: 0,
         outPulses: 0,
-        pktDrops:0,  
+        pktDrops: 0,  
         lastMsg: "",
         outgoingTimestamp: 0  //sender's timestamp on send
     }
@@ -1111,9 +1128,22 @@ console.log("getting pulseGroup from url="+url);
 //
 //  newPulseGroup() - this will be the object creation from remote JSON routine
 //
-function getMyPulseGroupObject(ipaddr:string,port:number,callback) {
+
+// interface PulseGroupInerface {
+//     nextMint: number;
+//     nodeCount: number;
+//     mintTable: MintEntry[];
+//     pulses: PulseGroup[];
+//     addNode: (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string) => MintEntry;
+//     deleteNode: (ipaddr: string, port: number) => void;
+//     forEachNode: (callback: CallableFunction) => void;
+//     forEachMint: (callback: CallableFunction) => void;
+// }
+
+// type newPulseGroupCallback = (newPulseGroup: PulseGroupInerface) => void;
+
+function getMyPulseGroupObject(ipaddr: string, port: number, callback) {
     console.log(`getPulseGroup(): ipaddr=${ipaddr}:${port}`);
-    const http=require('http'); 
     var req = http.get(url, function (res) {
         var data = '', json_data;
         res.on('data', function (stream) {
@@ -1133,12 +1163,12 @@ function getMyPulseGroupObject(ipaddr:string,port:number,callback) {
                 console.log(ts()+"getPulseGroup(): GENESIS node already configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
                 //pulseGroups=[newPulseGroup];
-                callback(newPulseGroup);            
+                callback(newPulseGroup);
                 return;
             } 
             console.log(ts()+"getPulseGroup(): Configuring non-genesis node ... ");
 
-            callback(newPulseGroup);            
+            callback(newPulseGroup);
             console.log("getPulseGroup():- call setWireguard to generate wireguard config for me and genesis node:");
     //        setWireguard(); //set up initial wireguard comfig
         });
@@ -1172,8 +1202,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     newPulseGroup.forEachMint = function(callback) {for (var mint in this.mintTable) callback(mint,this.mintTable[mint]);};
     
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
-    newPulseGroup.addNode = function(geo:string,group:string,ipaddr:string,port:number, publickey:string, version:string, wallet:string):MintEntry {
-        newPulseGroup.deleteNode(ipaddr,port);  //remove any preexisting entries with this ipaddr:port
+    newPulseGroup.addNode = function(geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string) : MintEntry {
+        newPulseGroup.deleteNode(ipaddr, port);  //remove any preexisting entries with this ipaddr:port
         var newMint=newPulseGroup.nextMint++;
         //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
         //TO ADD a PULSE: 
@@ -1187,13 +1217,13 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         newPulseGroup.nodeCount++;
         return this.mintTable[newMint];
     };
-//       newPulseGroup.deleteNode = function(geo:string,group:string,ipaddr:string,port:number,mint:number) {
-//           delete this.pulses[geo + ":" + group];
-//           delete this.mintTable[mint];
-//       };
+    //   newPulseGroup.deleteNode = function(geo:string,group:string,ipaddr:string,port:number,mint:number) {
+    //       delete this.pulses[geo + ":" + group];
+    //       delete this.mintTable[mint];
+    //   };
 
-    newPulseGroup.deleteNode = function(ipaddr:string,port:number) {
-        this.mintTable.forEach(element => {
+    newPulseGroup.deleteNode = function(ipaddr: string, port: number) {
+        this.mintTable.forEach((element: MintEntry) => {
             if (element.ipaddr==ipaddr && element.port==port) {
                 console.log("delete old mint "+element.mint);
             }
@@ -1263,8 +1293,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 //
     newPulseGroup.pulse=function() {
         
-        var ipary:string[]=[], owls="";
-        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
+        var ipary: string[] = [];
+        var owls = "";
+        newPulseGroup.forEachNode(function(index: string, nodeEntry: PulseEntry) {
             ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
             nodeEntry.outPulses++;
             
@@ -1436,7 +1467,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         const url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);
-        var http = require("http");
+
         http.get(url, res => {
             res.setEncoding("utf8");
             let body = "";
@@ -1467,7 +1498,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  recvPulses - 
     //
     newPulseGroup.recvPulses=function () {
-        recvPulses(me.port,function(incomingPulse:PulseEntry) {
+        recvPulses(me.port, function(incomingPulse:PulseEntry) {
             //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
             //console.log("myPulseGroup="+dump(pulseGroup));
             var myPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
@@ -1587,7 +1618,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
         if (newPulseGroup.isGenesisNode()) return console.log(ts()+"Genesis node does not sync with itself");
-        var http = require("http");
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/"+this.groupName+"/"+newPulseGroup.mintTable[0].mint);
         var thisGroup=this.groupName;
         console.log("syncGenesisPulseGroup(): url="+url);
