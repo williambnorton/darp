@@ -100,6 +100,7 @@ export function Log(logMsg: string, filename?: string) {
  */
 export function MYVERSION(): string[] {
     let darpdir = "../";
+    console.log(`process.env.darpdir=${process.env.darpdir}`);
     let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     return files;
 }

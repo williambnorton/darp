@@ -100,6 +100,7 @@ exports.Log = Log;
  */
 function MYVERSION() {
     var darpdir = "../";
+    console.log("process.env.darpdir=" + process.env.darpdir);
     var files = fs.readdirSync(darpdir).filter(function (fn) { fn.startsWith('Build.'); });
     return files;
 }
