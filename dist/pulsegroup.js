@@ -213,7 +213,7 @@ function instrumentation() {
     txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
     txt += '        var regex = /@/g;';
     txt += '        var flag=strOwl.match(regex);';
-    txt += '        if (flag) console.log("found a flagged entry");';
+    txt += '        if (flag) console.log("found a flagged entry "+strOwl);';
     txt += '     }'; //we don't do this
     txt += '}';
     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
