@@ -430,7 +430,7 @@ function instrumentation() {    //this should get its own file
                 for (var dest in pulseGroup.matrix[src]) {
                     var destMintEntry=pulseGroup.mintTable[parseInt(dest)];
                     //console.log(`dest=${dest}`);
-                    if (destMintEntry!=null) txt += '<td class="'+srcMintEntry.mint+"-"+destMintEntry.mint+' '+srcMintEntry.geo+' '+destMintEntry.geo+'">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+                    if (destMintEntry!=null) txt += '<td class="'+srcMintEntry.mint+"-"+destMintEntry.mint+' '+srcMintEntry.geo+' '+destMintEntry.geo+'">' + '<div class="'+srcMintEntry.mint+"-"+destMintEntry.mint+'">'+ '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></div></td>";
                     else txt += '<td class="'+src+"-"+dest+'">' + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
                 txt +="</tr>"
