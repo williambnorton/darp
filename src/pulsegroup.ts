@@ -1337,7 +1337,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     flag="@" //deviation 30% from the median, flag
                 }
             }
-                owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
+            owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
        });
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
