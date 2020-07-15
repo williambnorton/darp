@@ -288,7 +288,7 @@ function instrumentation() {    //this should get its own file
    txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);'
    txt += '              }'
 
-   txt += '              console.log("pulse.owl="+pulse.owl);'
+   txt += '              //console.log("pulse.owl="+pulse.owl);'
    
    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
    txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
@@ -1247,7 +1247,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
 
         var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
-        //console.log(`sleepTime=${sleepTime}`);
+        console.log(`sleepTime=${sleepTime}`);
         setTimeout( newPulseGroup.pulse, sleepTime );
 //        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
 
