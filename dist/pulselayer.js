@@ -1,19 +1,18 @@
 "use strict";
 /** @module pulselayer send "pulse" UDP message to all nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendPulses = exports.recvPulses = void 0;
 var lib_1 = require("./lib");
 var messagelayer_1 = require("./messagelayer");
 var pulsegroup_1 = require("./pulsegroup");
-var TEST = true; // launch with TEST=1 to get automatic pulser and catcher
-var h = process.env.HOSTNAME || require("os").hostname().split(".")[0];
-var HOSTNAME = h.toUpperCase();
-var VERSION = lib_1.MYVERSION();
-//
-//  recvPulses() - bind the port and send incoming pulses as structured data
-//
+/**
+ * Bind the port to receive pulses and deserialiaze them into structured data.
+ * @param {number} port Listening port.
+ * @param {incomingPulseCallback} callback Function to deserialize the incoming pulse data.
+ */
 function recvPulses(port, callback) {
     //console.log(`recvPulses(port=${port}):`);
-    messagelayer_1.recvMsg("" + port, function (incomingMessage) {
+    messagelayer_1.recvMsg(port, function (incomingMessage) {
         //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
         var ary = incomingMessage.split(",");
         var pulseTimestamp = parseInt(ary[0]);
@@ -45,12 +44,21 @@ function recvPulses(port, callback) {
 }
 exports.recvPulses = recvPulses;
 ;
+/**
+ * Forwards message to nodes in the list. Wraps messagelayer functionality.
+ * @param {string} msg Pulse message serialized.
+ * @param {string[]} nodelist List of nodes' IP adresses (can be empty).
+ */
 function sendPulses(msg, nodelist) {
     messagelayer_1.sendMsg(msg, nodelist);
 }
 exports.sendPulses = sendPulses;
 /***************** TEST AREA **************** /
- var seq=1;
+var h = process.env.HOSTNAME || require("os").hostname().split(".")[0];
+const TEST = true; // launch with TEST=1 to get automatic pulser and catcher
+const HOSTNAME = h.toUpperCase();
+const VERSION = MYVERSION();
+var seq=1;
 function buildPulseMessage() {
     var pulseMessage="0,"+VERSION+","+HOSTNAME+",DEVOPS.1,"+seq+",0,1592590923743,1,2,1,";
     seq++;
