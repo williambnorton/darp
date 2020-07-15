@@ -1232,7 +1232,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                 var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
                 console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                if ((nodeEntry.owl>3) && (deviation>30)) flag="*;" //deviation 30% from the median, flag
+                if ((nodeEntry.owl>3) && (deviation>30)) flag="*" //deviation 30% from the median, flag
             }
                 owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
        });
