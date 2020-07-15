@@ -198,30 +198,26 @@ function instrumentation() {
     txt += '    }';
     txt += '}';
     //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+    //Now we are trying to fill the matrix using only the owls - removing matrix ugliness.
+    txt += 'for (var src in pulseGroup.pulses) {';
+    txt += '    var pulseEntry=pulseGroup.pulses[src];';
+    //txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));'
+    txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+    txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
+    txt += '    var owls=pulseEntry.owls.split(",");';
+    txt += '    for(var owlEntry in ary) {';
+    txt += '       var srcMint=parseInt(ary[owlEntry].split("=")[0]);'; //get the
+    txt += '        ';
+    txt += '        var owl=-99999;';
+    txt += '       var strOwl=ary[owlEntry].split("=")[1];';
+    txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
+    txt += '        var regex = /+/g;';
+    txt += '        var flag=strOwl.match(regex);';
+    txt += '        if (flag) console.log("found a flagged entry");';
+    txt += '     }'; //we don't do this
+    txt += '}';
+    //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
     /*
-        //Now we are trying to fill the matrix using only the owls - removing matrix ugliness.
-        txt += 'for (var src in pulseGroup.pulses) {';
-        txt += '    var pulseEntry=pulseGroup.pulses[src];';
-        //txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));'
-    
-        txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-        txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
-        txt += '    var owls=pulseEntry.owls.split(",");';
-    
-        txt += '    for(var owlEntry in ary) {';
-        txt += '       var srcMint=parseInt(ary[owlEntry].split("=")[0]);'; //get the
-        txt +='        ';
-        txt +='        var owl=-99999;';
-        txt += '       var strOwl=ary[owlEntry].split("=")[1];';
-        txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
-        txt += '        var regex = /+/g;';
-        txt += '        var flag=strOwl.match(regex);';
-        txt += '        if (flag) console.log("found a flagged entry");';
-        txt += '     }'; //we don't do this
-        txt += '}';
-            //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-    
-    
     
     
     
