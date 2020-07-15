@@ -1,4 +1,4 @@
-import {   dump, now, ts, YYMMDD } from '../lib/lib';
+import { dump, now, ts, YYMMDD } from './lib';
 
 export function grapher(src:string,dest:string) {
     //console.log(`grapher(): src=${src} det=${dest}`);

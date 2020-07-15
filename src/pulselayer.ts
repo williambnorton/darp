@@ -1,25 +1,24 @@
-//
-//  pulselayer - send "pulse" UDP message to all nodes
-//
-//
-import {   dump,   now,      ts, nth_occurrence, MYVERSION } from '../lib/lib';
-import {   sendMsg, recvMsg, messagelayer_stats } from './messagelayer';
+/** @module pulselayer send "pulse" UDP message to all nodes */
+
+import { dump, now, ts, nth_occurrence, MYVERSION } from './lib';
+import { sendMsg, recvMsg, messagelayer_stats } from './messagelayer';
 import { PulseEntry, PulseEntryInterface } from './pulsegroup';
+
 
 const TEST=true; // launch with TEST=1 to get automatic pulser and catcher
 var h=process.env.HOSTNAME||require("os").hostname().split(".")[0];
 const HOSTNAME=h.toUpperCase();
 const VERSION = MYVERSION();
 
-type incomingPulseCallback = (incomingPulse: PulseEntryInterface) => void;
+type incomingPulseCallback = (incomingPulse: PulseEntry) => void;
 //
 //  recvPulses() - bind the port and send incoming pulses as structured data
 //
 export function recvPulses(port: number, callback: incomingPulseCallback) : void {
     //console.log(`recvPulses(port=${port}):`);
-    recvMsg(""+port,function(incomingMessage:string) {  //one-time set up of message handler callback
+    recvMsg(""+port,function(incomingMessage: string) {  //one-time set up of message handler callback
         //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
-          var ary=incomingMessage.split(",");
+          var ary = incomingMessage.split(",");
           const pulseTimestamp=parseInt(ary[0]);
           const senderTimestamp=parseInt(ary[1]);
           const OWL=pulseTimestamp-senderTimestamp;
@@ -37,7 +36,7 @@ export function recvPulses(port: number, callback: incomingPulseCallback) : void
             mint: parseInt(ary[8]),
             owls: pulseOwls,
             owl: OWL,
-            lastMsg:incomingMessage
+            lastMsg: incomingMessage
           });
           //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
           //console.log("structured pulse="+dump(pulse));

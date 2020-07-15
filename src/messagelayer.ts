@@ -1,12 +1,11 @@
-//
-//  messagelayer -  send and receive message to group of nodes
-//
-import {   dump,   now,      ts } from '../lib/lib';
-//
-//  -create the UDP message bus for communication with all nodes
-// all others only have to deal with message, we timestamp and queue it here
+/** @module messagelayer send and receive message to group of nodes */
+
+import { dump, now, ts } from './lib';
+
+
+// Create the UDP message bus for communication with all nodes
+// All others only have to deal with message, we timestamp and queue it here
 const PORT=process.env.PORT||"65013"
-//
 const dgram = require('dgram');
 const server = dgram.createSocket('udp4');
 
