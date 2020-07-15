@@ -105,18 +105,12 @@ function MYVERSION() {
         console.log("MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...");
         process.exit(36); //reload SW - this should not happen
     }
-    console.log(darpdir + "==>" + fs.readdirSync(darpdir));
-    //    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     var files = fs.readdirSync(darpdir).forEach(function (fn) {
-        console.log("fn=" + fn + " " + fn.match(/Build.*/));
         var Build = fn.match(/Build.*/);
-        console.log("Build=" + Build);
         if (Build != null) {
-            console.log("Build Not null! setting darpBuild " + Build);
             darpBuild = Build[0];
         }
     });
-    console.log("MYVERSION(): darpBuild=" + darpBuild);
     return darpBuild;
 }
 exports.MYVERSION = MYVERSION;
