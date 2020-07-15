@@ -101,14 +101,16 @@ export function Log(logMsg: string, filename?: string) {
 export function MYVERSION(): string {
     let darpdir = process.env.DARPDIR;
     if (typeof darpdir == "undefined") {
-        console.log(`Environmental variable DARPDIR undefined... EXITTING...`);
+        console.log(`MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...`);
         process.exit(36); //reload SW - this should not happen
     }
     console.log(`${darpdir}==>${fs.readdirSync(darpdir)}`);
 //    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
-    let files = fs.readdirSync(darpdir).forEach((fn: string) => { console.log(`fn=${fn}`); });
-    console.log(`darpdir=${darpdir} MYVERSION=${files}`);
-    return files[0];
+    let files = fs.readdirSync(darpdir).forEach((fn: string) => { 
+        if (fn.match(/Build./g)) return fn; 
+    });
+    console.log(`MYVERSION(): Exitting - could not find the Build.`);
+    process.exit(36);
 }
 
 
