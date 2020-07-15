@@ -105,6 +105,7 @@ function MYVERSION() {
         process.exit(36); //reload SW - this should not happen
     }
     var files = fs.readdirSync(darpdir).filter(function (fn) { fn.startsWith('Build.'); });
+    console.log("darpdir=" + darpdir + " files=" + files);
     return files;
 }
 exports.MYVERSION = MYVERSION;
