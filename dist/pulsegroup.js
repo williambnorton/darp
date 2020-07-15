@@ -13,6 +13,7 @@ var REFRESH = 120; //Every 2 minutes force refresh
 var OWLS_DISPLAYED = 30;
 var TEST = true;
 var DEFAULT_SHOWPULSES = "0";
+var DEVIATION_THRESHOLD = 30; //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
 var DEFAULT_START_STATE = "NR";
@@ -1073,7 +1074,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                if ((nodeEntry.owl > 3) && (deviation > 10)) {
+                if ((nodeEntry.owl > 3) && (deviation > DEVIATION_THRESHOLD)) {
                     console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                     flag = "@"; //deviation 30% from the median, flag
                 }
