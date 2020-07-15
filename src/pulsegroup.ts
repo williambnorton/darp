@@ -241,7 +241,7 @@ function instrumentation() {    //this should get its own file
     txt += '}';
       //}
 //}
-    console.log(`Highlight matrix from pulsed Owls`);
+    console.log(`Highlight matrix from pulsed Owls ${pulseGroup.pulses}`);
     
 
 
