@@ -107,8 +107,8 @@ export function MYVERSION(): string {
     console.log(`${darpdir}==>${fs.readdirSync(darpdir)}`);
 //    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     let files = fs.readdirSync(darpdir).forEach((fn: string) => { 
-        console.log(`fn=${fn}`);
-        if (fn.match(/Build/g)) return fn; 
+        console.log(`fn=${fn} ${fn.match(/Build/)}`);
+        if (fn.match(/Build/)!=null) return fn; 
     });
     console.log(`MYVERSION(): Exitting - could not find the Build.`);
     process.exit(36);
