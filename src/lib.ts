@@ -98,16 +98,17 @@ export function Log(logMsg: string, filename?: string) {
  * Reads the Build version files and returns their names
  * @returns {string[]} Build version filenames
  */
-export function MYVERSION(): string[] {
+export function MYVERSION(): string {
     let darpdir = process.env.DARPDIR;
     if (typeof darpdir == "undefined") {
         console.log(`Environmental variable DARPDIR undefined... EXITTING...`);
         process.exit(36); //reload SW - this should not happen
     }
-    console.log(`${fs.readdirSync(darpdir)}`);
+    console.log(`${darpdir}==>${fs.readdirSync(darpdir)}`);
+//    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
-    console.log(`darpdir=${darpdir} files=${files}`);
-    return files;
+    console.log(`darpdir=${darpdir} MYVERSION=${files}`);
+    return files[0];
 }
 
 
