@@ -1,7 +1,6 @@
 "use strict";
 /** @module lib Common routines in one place */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MYVERSION = exports.Log = exports.dump = exports.YYMMDD = exports.ts = exports.now = exports.nth_occurrence = exports.median = void 0;
+exports.__esModule = true;
 var fs = require("fs");
 /**
  * Returns the statistical median of the number array.
