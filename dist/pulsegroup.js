@@ -1,7 +1,8 @@
 "use strict";
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 var _a, _b;
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PulseEntry = exports.IncomingPulse = void 0;
 var lib_1 = require("./lib");
 var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");

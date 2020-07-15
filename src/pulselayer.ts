@@ -1,33 +1,32 @@
 /** @module pulselayer send "pulse" UDP message to all nodes */
 
-import { dump, now, ts, nth_occurrence, MYVERSION } from './lib';
-import { sendMsg, recvMsg, messagelayer_stats } from './messagelayer';
-import { PulseEntry, PulseEntryInterface } from './pulsegroup';
+import { nth_occurrence, MYVERSION } from './lib';
+import { sendMsg, recvMsg } from './messagelayer';
+import { PulseEntry } from './pulsegroup';
 
-
-const TEST=true; // launch with TEST=1 to get automatic pulser and catcher
-var h=process.env.HOSTNAME||require("os").hostname().split(".")[0];
-const HOSTNAME=h.toUpperCase();
-const VERSION = MYVERSION();
 
 type incomingPulseCallback = (incomingPulse: PulseEntry) => void;
-//
-//  recvPulses() - bind the port and send incoming pulses as structured data
-//
-export function recvPulses(port: number, callback: incomingPulseCallback) : void {
+
+
+/**
+ * Bind the port to receive pulses and deserialiaze them into structured data.
+ * @param {number} port Listening port.
+ * @param {incomingPulseCallback} callback Function to deserialize the incoming pulse data.
+ */
+export function recvPulses(port: number, callback: incomingPulseCallback): void {
     //console.log(`recvPulses(port=${port}):`);
-    recvMsg(""+port,function(incomingMessage: string) {  //one-time set up of message handler callback
+    recvMsg(port, function (incomingMessage: string) {  //one-time set up of message handler callback
         //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
-          var ary = incomingMessage.split(",");
-          const pulseTimestamp=parseInt(ary[0]);
-          const senderTimestamp=parseInt(ary[1]);
-          const OWL=pulseTimestamp-senderTimestamp;
-          var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
-          var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-          var pulse = new PulseEntry({
-            pulseTimestamp : pulseTimestamp,
-            outgoingTimestamp : senderTimestamp,
-            msgType : ary[2],
+        var ary = incomingMessage.split(",");
+        const pulseTimestamp = parseInt(ary[0]);
+        const senderTimestamp = parseInt(ary[1]);
+        const OWL = pulseTimestamp - senderTimestamp;
+        var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
+        var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
+        var pulse = new PulseEntry({
+            pulseTimestamp: pulseTimestamp,
+            outgoingTimestamp: senderTimestamp,
+            msgType: ary[2],
             version: ary[3],
             geo: ary[4],
             group: ary[5],
@@ -37,23 +36,34 @@ export function recvPulses(port: number, callback: incomingPulseCallback) : void
             owls: pulseOwls,
             owl: OWL,
             lastMsg: incomingMessage
-          });
-          //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
-          //console.log("structured pulse="+dump(pulse));
+        });
+        //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
+        //console.log("structured pulse="+dump(pulse));
 
-          //ary.shift();ary.shift();
-          //const pulse=ary.join(",");
-          //console.log("Message Layer Statistics: :"+dump(messagelayer_stats));  //INSTRUMENTATION POINT
-          callback(pulse);
+        //ary.shift();ary.shift();
+        //const pulse=ary.join(",");
+        //console.log("Message Layer Statistics: :"+dump(messagelayer_stats));  //INSTRUMENTATION POINT
+        callback(pulse);
     });
 };
 
-export function sendPulses(msg: string, nodelist: string[]) {   //nodelist may be null, which means same pulsegourp sent
+
+/**
+ * Forwards message to nodes in the list. Wraps messagelayer functionality. 
+ * @param {string} msg Pulse message serialized.
+ * @param {string[]} nodelist List of nodes' IP adresses (can be empty).
+ */
+export function sendPulses(msg: string, nodelist: string[]) {
     sendMsg(msg, nodelist);
 }
 
+
 /***************** TEST AREA **************** /
- var seq=1;
+var h = process.env.HOSTNAME || require("os").hostname().split(".")[0];
+const TEST = true; // launch with TEST=1 to get automatic pulser and catcher
+const HOSTNAME = h.toUpperCase();
+const VERSION = MYVERSION();
+var seq=1;
 function buildPulseMessage() {
     var pulseMessage="0,"+VERSION+","+HOSTNAME+",DEVOPS.1,"+seq+",0,1592590923743,1,2,1,";
     seq++;
@@ -70,7 +80,7 @@ if (TEST) {
             console.log("pulseApp receiving pulse="+dump(pulse));
         });
 }
-function pulseAll() {    //sample test app 
+function pulseAll() {    //sample test app
     sendPulses(buildPulseMessage() , process.argv);
     setTimeout(pulseAll,1000);  //do it again in a few seconds
 }

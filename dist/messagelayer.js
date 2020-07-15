@@ -1,11 +1,11 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
 var lib_1 = require("./lib");
+var dgram = require("dgram");
 // Create the UDP message bus for communication with all nodes
 // All others only have to deal with message, we timestamp and queue it here
-var PORT = process.env.PORT || "65013";
-var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 exports.messagelayer_stats = {
     port: "",
@@ -27,11 +27,13 @@ server.on('listening', function () {
     var address = server.address();
     console.log("messagelayer server listening " + address.address + ":" + address.port);
 });
-//
-//  recvMsg(): bind port and start callbacks for incoming messages
-//
+/**
+ * Bind listening port and attach message handler to deserialize pulse messages.
+ * @param {number} port Listening port.
+ * @param {pulseDeserializer} callback Message handler to deserialize pulse messages.
+ */
 function recvMsg(port, callback) {
-    exports.messagelayer_stats.port = port;
+    exports.messagelayer_stats.port = port.toString();
     server.bind(port);
     // Prints: server listening 0.0.0.0:41234
     server.on('message', function (msg, rinfo) {
@@ -55,7 +57,7 @@ var client = dgram.createSocket('udp4');
 function sendMsg(outgoingMessage, nodelist) {
     nodelist.forEach(function (node) {
         var ipaddr = node.split("_")[0];
-        var port = node.split("_")[1] || "65013";
+        var port = Number(node.split("_")[1]) || 65013;
         var timestampedMsg = "" + lib_1.now() + "," + outgoingMessage;
         var message = Buffer.from(timestampedMsg);
         exports.messagelayer_stats.outMsgs++;

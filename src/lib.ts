@@ -8,7 +8,7 @@ import fs = require('fs');
  * @param {number[]} numbers An array of numbers.
  * @returns {number} The calculated median value from the specified numbers.
  */
-export function median(numbers: number[]) : number {
+export function median(numbers: number[]): number {
     // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
     var median = 0, numsLen = numbers.length;
     numbers.sort();
@@ -29,29 +29,29 @@ export function median(numbers: number[]) : number {
  * @param {number} nth An occurence of the character to search for.
  * @returns {number} An index of character in the string
  */
-export function nth_occurrence(string: string, char: string, nth: number) : number {
+export function nth_occurrence(string: string, char: string, nth: number): number {
     var first_index = string.indexOf(char);
     var length_up_to_first_index = first_index + 1;
-  
+
     if (nth == 1) {
         return first_index;
     } else {
         var string_after_first_occurrence = string.slice(length_up_to_first_index);
         var next_occurrence = nth_occurrence(string_after_first_occurrence, char, nth - 1);
-  
+
         if (next_occurrence === -1) {
             return -1;
         } else {
             return length_up_to_first_index + next_occurrence;
         }
     }
-  }
+}
 
 /**
  * Returns milliseconds since 1970
  * @returns {number} Miliseconds
  */
-export function now() : number {
+export function now(): number {
     var d = new Date();
     return d.getTime();
 }
@@ -60,7 +60,7 @@ export function now() : number {
  * Returns human readable timezone-aware datetime with appended space
  * @returns {string} Timestamp within local timezone
  */
-export function ts() : string {
+export function ts(): string {
     return new Date().toLocaleTimeString() + " ";
 }
 
@@ -68,15 +68,15 @@ export function ts() : string {
  * Returns YYMMDD string
  * @returns {string} Date in YYMMDD format
  */
-export function YYMMDD() : string {
+export function YYMMDD(): string {
     var _YYMMDD = new Date().toISOString().substring(2, 10).replace(/-/g, '');
     return _YYMMDD;
 }
 
-export function dump(obj: object) : string {
+export function dump(obj: object): string {
     return JSON.stringify(obj, null, 2);
 }
- 
+
 /**
  * Saves a data backup into disk, should we lose connection
  * @param {string} logMsg Log message to save
@@ -98,9 +98,9 @@ export function Log(logMsg: string, filename?: string) {
  * Reads the Build version files and returns their names
  * @returns {string[]} Build version filenames
  */
-export function MYVERSION() : string[] {
+export function MYVERSION(): string[] {
     let darpdir = "../";
-    let files = fs.readdirSync(darpdir).filter((fn: string) => {fn.startsWith('Build.')});
+    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     return files;
 }
 
