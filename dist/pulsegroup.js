@@ -187,11 +187,12 @@ function instrumentation() {
     txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){';
     txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
     //    txt += '             var link="<a target=_blank href="+gurl+">";';
-    txt += '             var link="<div class=2-1><a target=_blank href="+gurl+"></div>";';
-    // txt += '             console.log("link="+link);';
-    txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
+    txt += '             var myDiv="<div class="+srcMintEntry.mint+"-"+destMintEntry.mint+">;"';
+    txt += '             var link="<a target=_blank href="+gurl+">";';
+    txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
+    txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");';
+    txt += '         } else $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
     //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
     txt += '    }';
