@@ -223,7 +223,7 @@ function instrumentation() {
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);';
     txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);';
-    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
+    txt += '                   $("div."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     //txt += '               } else {';
     //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
@@ -236,7 +236,7 @@ function instrumentation() {
     txt += '            } else {'; //if flag
     txt += '               if (srcMintEntry && dstMintEntry) {';
     //txt += '                   console.log("UN--HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);'
-    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';
+    txt += '                   $("div."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';
     txt += '               }';
     txt += '            }';
     txt += '        }';
