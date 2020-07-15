@@ -187,7 +187,7 @@ function instrumentation() {
     txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){';
     txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
     //    txt += '             var link="<a target=_blank href="+gurl+">";';
-    txt += '             var link="<div class=\"\"><a target=_blank href="+gurl+"></div>";';
+    txt += '             var link="<div class=2-1><a target=_blank href="+gurl+"></div>";';
     // txt += '             console.log("link="+link);';
     txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
     //    txt += '         } else console.log("COULD NOT FIND MINT");';

@@ -231,7 +231,7 @@ function instrumentation() {    //this should get its own file
 
 
 //    txt += '             var link="<a target=_blank href="+gurl+">";';
-    txt += '             var link="<div class=\"\"><a target=_blank href="+gurl+"></div>";';
+    txt += '             var link="<div class=2-1><a target=_blank href="+gurl+"></div>";';
 
 
 
