@@ -204,7 +204,6 @@ function instrumentation() {    //this should get its own file
     }';
     txt += "</style>"
 
-//    txt += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>'
     txt +=`<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>`
 
     txt += "<script>"
@@ -214,7 +213,7 @@ function instrumentation() {    //this should get its own file
     txt += 'function fetchState() {'
     
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';  //For instruementation show multiple pulseGorups
-    //txt += 'console.log("url="+url);';
+    //txt += 'console.log("getJSON url="+url);';
     txt += '   $.getJSON(url, function(config) {'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
@@ -242,12 +241,11 @@ function instrumentation() {    //this should get its own file
     txt += '}';
       //}
 //}
-
-
-
-
-
-
+    console.log(`Highlight matrix from pulsed Owls`);
+    txt += 'for (var pulse in pulseGroup.pulses) {';
+    txt += '    var pulseEntry=pulseGroup.pulses[pulse];';
+    txt += '    console.log("pulseEntry.owls="+pulseEntry.owls);';
+    txt += '}';
 
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
