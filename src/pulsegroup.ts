@@ -239,9 +239,10 @@ function instrumentation() {    //this should get its own file
 
     txt += '    }';
     txt += '}';
+    txt += 'console.log("Highlight from pulsed Owls "+JSON.stringify(pulseGroup.pulses,null,2));'
       //}
 //}
-    console.log(`Highlight matrix from pulsed Owls ${pulseGroup.pulses}`);
+   
     
 
 
