@@ -238,8 +238,8 @@ function instrumentation() {    //this should get its own file
     txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
 
     //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else ';
-    txt += '            console.log(srcMintEntry+" : "+destMintEntry);'
+    txt += '         } else {';
+    txt += 
     txt += '            $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
     txt += '         }'
 
@@ -1333,11 +1333,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                 if ((nodeEntry.owl>3) && (deviation>10)) {
-                    console.log(ts()+`FLAGGING from ${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
+                    console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                     flag="@" //deviation 30% from the median, flag
                 }
             }
-            owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
+                owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
        });
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];

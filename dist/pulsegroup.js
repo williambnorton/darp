@@ -192,9 +192,9 @@ function instrumentation() {
     txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else ';
-    txt += '            console.log(srcMintEntry+" : "+destMintEntry);';
-    txt += '            $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
+    txt += '         } else {';
+    txt +=
+        txt += '            $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
     txt += '         }';
     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
     //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
@@ -1077,7 +1077,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                 if ((nodeEntry.owl > 3) && (deviation > 10)) {
-                    console.log(lib_1.ts() + ("FLAGGING from " + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
+                    console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                     flag = "@"; //deviation 30% from the median, flag
                 }
             }
