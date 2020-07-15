@@ -283,7 +283,7 @@ function instrumentation() {    //this should get its own file
     txt += '                   console.log("HIGHLIGHTING class="+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);'
     //txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
-    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow").css("border-width", "5px");';
 
     //txt += '               } else {';
     //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
