@@ -200,6 +200,7 @@ function instrumentation() {
     txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));';
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
+    txt += '    console.log("pulseEntry ="+JSON.stringify(pulseEntry,null,2));';
     txt += '    var srcMintEntry=pulseEntry.mintTable[pulseEntry.mint];';
     txt += '    var dstMintEntry=pulseEntry.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
