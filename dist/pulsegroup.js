@@ -211,7 +211,7 @@ function instrumentation() {
     txt += '        var owl=-99999;';
     txt += '       var strOwl=ary===owls[owlEntry].split("=")[1];';
     txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
-    txt += '        var regex = /\*/g;';
+    txt += '        var regex = /+/g;';
     txt += '        var flag=strOwl.match(regex);';
     txt += '        if (flag) console.log("found a flagged entry");';
     txt += '     }'; //we don't do this
@@ -1021,7 +1021,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                 console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                 if ((nodeEntry.owl > 3) && (deviation > 30))
-                    flag = "*"; //deviation 30% from the median, flag
+                    flag = "+"; //deviation 30% from the median, flag
             }
             owls += nodeEntry.mint + "=" + nodeEntry.owl + flag + ",";
         });
