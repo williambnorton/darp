@@ -209,7 +209,7 @@ function instrumentation() {
     txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
     txt += '        ';
     txt += '        var owl=-99999;';
-    txt += '       var strOwl=ary===owls[owlEntry].split("=")[1];';
+    txt += '       var strOwl=owls[owlEntry].split("=")[1];';
     txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
     txt += '        var regex = /@/g;';
     txt += '        var flag=strOwl.match(regex);';
