@@ -281,7 +281,7 @@ function instrumentation() {    //this should get its own file
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);'
-    txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
+    txt += '                   console.log("div."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
     txt += '                   $("div."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     //txt += '               } else {';
     //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
@@ -1336,7 +1336,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                 if ((nodeEntry.owl>3) && (deviation>DEVIATION_THRESHOLD)) {
-                    console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
+                    console.log(ts()+`Exceeded threshold. Setting flag on owl for geo=${nodeEntry.geo} to ${me.geo} nodeEntry.owl=${nodeEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                     flag="@" //deviation 30% from the median, flag
                 }
             }
