@@ -107,8 +107,8 @@ function MYVERSION() {
     console.log(darpdir + "==>" + fs.readdirSync(darpdir));
     //    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     var files = fs.readdirSync(darpdir).forEach(function (fn) {
-        console.log("fn=" + fn + " " + fn.match(/Build/));
-        if (fn.match(/Build/) != null)
+        console.log("fn=" + fn + " " + fn.match(/Build.*/));
+        if (fn.match(/Build.*/))
             return fn;
     });
     console.log("MYVERSION(): Exitting - could not find the Build.");
