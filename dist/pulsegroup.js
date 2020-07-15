@@ -211,9 +211,9 @@ function instrumentation() {
     txt += '        var owl=-99999;';
     txt += '       var strOwl=ary[owlEntry].split("=")[1];';
     txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
-    txt += '        var regex = /\*/g;';
+    txt += '        var regex = /+/g;';
     txt += '        var flag=strOwl.match(regex);';
-    txt += '        if (flag) console.log("found a flagged entry");;';
+    txt += '        if (flag) console.log("found a flagged entry");';
     txt += '     }'; //we don't do this
     txt += '}';
     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
