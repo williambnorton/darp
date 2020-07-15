@@ -280,9 +280,11 @@ function instrumentation() {    //this should get its own file
     txt += '           if (flag) {';  //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
-    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);'
-    txt += '                   console.log("div."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
-    txt += '                   $("td ."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
+    txt += '                   console.log("HIGHLIGHTING class="+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);'
+    txt += '                   //console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
+
     //txt += '               } else {';
     //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
@@ -295,7 +297,9 @@ function instrumentation() {    //this should get its own file
     txt += '            } else {'; //if flag
     txt += '               if (srcMintEntry && dstMintEntry) {';
     //txt += '                   console.log("UN--HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);'
-    txt += '                   $("td ."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';    
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';    
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "black");';
+
     txt += '               }';
     txt += '            }';
     txt += '        }';
