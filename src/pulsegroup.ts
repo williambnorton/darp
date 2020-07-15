@@ -240,7 +240,7 @@ function instrumentation() {    //this should get its own file
     txt += '    }';
     txt += '}';
     txt += 'for (var src in pulseGroup.pulses) {';
-    txt += '    var pulseEntry=pulseGroup.pulses[src]);';
+    txt += '    var pulseEntry=pulseGroup.pulses[src];';
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    console.log("Highlight from pulsed Owls "+owls);'
 
