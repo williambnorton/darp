@@ -280,7 +280,7 @@ function instrumentation() {    //this should get its own file
     txt += '           if (flag) {';  //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
-    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+srcOwl);'
+    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);'
     txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     //txt += '               } else {';
