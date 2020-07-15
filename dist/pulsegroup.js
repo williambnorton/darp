@@ -213,7 +213,7 @@ function instrumentation() {
     txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
-    txt += '             console.log("found a flagged entry "+strOwl);';
+    //txt += '             console.log("found a flagged entry "+strOwl);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);';
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
@@ -1071,8 +1071,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                if ((nodeEntry.owl > 3) && (deviation > 10))
+                if ((nodeEntry.owl > 3) && (deviation > 10)) {
+                    console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                     flag = "@"; //deviation 30% from the median, flag
+                }
             }
             owls += nodeEntry.mint + "=" + nodeEntry.owl + flag + ",";
         });
