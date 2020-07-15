@@ -1,13 +1,10 @@
 "use strict";
+/** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
 exports.__esModule = true;
-//
-//  wireguard.ts - configure wireguard conf file in wireguard as darp.pending.conf
-//
-// ***
-var lib_1 = require("../lib/lib");
+var lib_1 = require("./lib");
+//import pulseRedis = require('redis');
 var WGDIR = "/etc/wireguard"; //this is the direcvtory to build and evolve wg config files
-var pulseRedis = require('redis');
-var redisClient = pulseRedis.createClient(); //creates a new client
+//const redisClient = pulseRedis.createClient(); //creates a new client
 function getPublicKey() {
     return require('fs').readFileSync(WGDIR + '/publickey', 'utf8');
 }
@@ -46,69 +43,78 @@ function setWireguard() {
     //for each group in me.pulseGroups
     console.log(lib_1.ts() + "setWireguard(): TODO: Here we would ....Set up wireguard files and docker forever script...");
     return;
-    redisClient.hgetall("gSRlist", function (err, gSRlist) {
-        redisClient.hgetall("mint:0", function (err, me) {
-            redisClient.hgetall("mint:1", function (err, genesis) {
-                var lastPulse = "", addressStanza = "", config = new Array();
-                addressStanza += "#Individual entries for node: " + me.geo + " " + " mint=" + me.mint + " " + lib_1.ts() + " Genesis bootTimestamp=" + genesis.bootTimestamp + " by wireguard.ts\n";
-                addressStanza += "Address = 10.10." + Math.round(me.mint / 254) + "." + (me.mint % 254) + "/16, fd86:ea04:1115::" + me.mint + "/64\n";
-                addressStanza += "ListenPort = 80\n";
-                for (var entryLabel in gSRlist)
-                    lastPulse = entryLabel; //stop when we get to this entry
-                for (var entryLabel in gSRlist) { //for all currently used mint entries
-                    var mint = gSRlist[entryLabel]; //
-                    console.log(lib_1.ts() + "***** Spewing out wireguard config file into /etc/wireguard mint=" + mint + " entryLabel=" + entryLabel);
-                    redisClient.hgetall("mint:" + mint, function (err, mintEntry) {
-                        if (mintEntry != null) {
-                            var prefix = "";
-                            var mint = parseInt(mintEntry.mint); //do not count on mint outside my scope
+    /*
+    redisClient.hgetall("gSRlist", function (err,gSRlist) { //get each mint in use now
+        redisClient.hgetall("mint:0", function (err,me) {
+            redisClient.hgetall("mint:1", function (err,genesis) {
+                var lastPulse="", addressStanza="", config=new Array();
+
+                addressStanza+="#Individual entries for node: "+me.geo+" "+" mint="+me.mint+" "+ts()+" Genesis bootTimestamp="+genesis.bootTimestamp+" by wireguard.ts\n";
+                addressStanza+="Address = 10.10."+Math.round(me.mint/254)+"."+(me.mint%254)+"/16, fd86:ea04:1115::"+me.mint+"/64\n";
+                addressStanza+="ListenPort = 80\n";
+
+                for (var entryLabel in gSRlist) lastPulse=entryLabel;  //stop when we get to this entry
+
+                for (var entryLabel in gSRlist) {  //for all currently used mint entries
+                    var mint=gSRlist[entryLabel];  //
+                    console.log(ts()+"***** Spewing out wireguard config file into /etc/wireguard mint="+mint+" entryLabel="+entryLabel);
+
+                    redisClient.hgetall("mint:"+mint, function (err,mintEntry) {
+                        if ( mintEntry != null ) {
+                            var prefix="";
+                            var mint=parseInt(mintEntry.mint);  //do not count on mint outside my scope
                             //config[mint]=new Array();
-                            if (mintEntry.geo == me.geo) {
-                                prefix = "#   * me *   ";
-                            } //comment my stuff out
+                            if (mintEntry.geo==me.geo) {prefix="#   * me *   "}  //comment my stuff out
                             //console.log(prefix+"------------------- Writing stanza for mint="+mint+" "+mintEntry.geo);
-                            console.log(prefix + "mintEntry =" + JSON.stringify(mintEntry, null, 2));
-                            //config+="\n";                            
-                            var myStanza = "#\n" +
-                                prefix + "# " + mintEntry.geo + " can send to us on this channel mint=" + mint + "\n" +
-                                prefix + "[Peer]\n" +
-                                prefix + "PublicKey = " + mintEntry.publickey + "\n" +
-                                prefix + "AllowedIPs = 10.10." + Math.round(me.mint / 254) + "." + (me.mint % 254) + "/32,fd86:ea04:1115::" + mintEntry.mint + "/128\n" +
-                                prefix + "Endpoint = " + mintEntry.ipaddr + ":" + "80" + "\n" +
-                                prefix + "PersistentKeepalive = 25" + "\n\n";
+                            console.log(prefix+"mintEntry ="+JSON.stringify(mintEntry,null,2));
+                            //config+="\n";
+                            var myStanza="#\n" +
+                                prefix+"# "+mintEntry.geo+" can send to us on this channel mint="+ mint+"\n" +
+                                prefix+"[Peer]\n" +
+                                prefix+"PublicKey = "+mintEntry.publickey+"\n" +
+                                prefix+"AllowedIPs = 10.10."+Math.round(me.mint/254)+"."+(me.mint%254)+"/32,fd86:ea04:1115::"+mintEntry.mint+"/128\n" +
+                                prefix+"Endpoint = "+mintEntry.ipaddr+":"+"80"+"\n" +
+                                prefix+"PersistentKeepalive = 25"+"\n\n";
+
                             config.unshift(myStanza);
                             //console.log("config[mint="+mint+"]="+config[mint]);
                             //console.log("config="+config);
                             //console.log("wireguard(): mintEntry.geo: "+mintEntry.geo);
-                            if (mintEntry.geo + ":" + mintEntry.group == lastPulse) {
+
+                            if (mintEntry.geo+":"+mintEntry.group==lastPulse) {
                                 //console.log("Got to last pulse "+lastPulse+" - now WRITE the wireguard config stanzas:"+dump(config));
                                 //console.log("READY TO WRITE Wireguard file :"+config);
-                                var aggregateStanzas = "";
+
+                                var aggregateStanzas="";
                                 //console.log("dump config:"+dump(config));
-                                for (var stanza = config.pop(); stanza != null; stanza = config.pop()) {
-                                    aggregateStanzas += stanza;
+                                for (var stanza=config.pop(); stanza!=null; stanza=config.pop()) {
+                                    aggregateStanzas+=stanza;
                                 }
                                 //console.log("BASECONFIG: " + BASECONFIG);
                                 //console.log("addressStanza: " + addressStanza);
                                 //console.log("aggregateStanzas: " + aggregateStanzas);
-                                var fs = require('fs');
-                                fs.writeFile(WGDIR + '/darp0.pending.conf', BASECONFIG + addressStanza + aggregateStanzas, function (err) {
+                                
+                                const fs = require('fs');
+                                fs.writeFile(WGDIR+'/darp0.pending.conf', BASECONFIG+addressStanza+aggregateStanzas, (err) => {
                                     // throws an error, you could also catch it here
-                                    if (err)
-                                        throw err;
-                                    console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf ");
+                                    if (err) throw err;
+                                    console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/darp0.conf ");
+ 
                                     wgdump();
+
                                 });
                             }
-                        }
-                        else {
-                            console.log("wireguard: configuring wireguard...ignoring self " + me.geo + " or null mint");
+                            
+                        } else {
+                            console.log("wireguard: configuring wireguard...ignoring self "+me.geo+" or null mint");
                         }
                     });
                 }
+                
             });
         });
     });
+    */
 }
 exports.setWireguard = setWireguard;
 /*

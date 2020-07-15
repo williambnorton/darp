@@ -1,10 +1,7 @@
 "use strict";
+/** @module pulselayer send "pulse" UDP message to all nodes */
 exports.__esModule = true;
-//
-//  pulselayer - send "pulse" UDP message to all nodes
-//
-//
-var lib_1 = require("../lib/lib");
+var lib_1 = require("./lib");
 var messagelayer_1 = require("./messagelayer");
 var pulsegroup_1 = require("./pulsegroup");
 var TEST = true; // launch with TEST=1 to get automatic pulser and catcher

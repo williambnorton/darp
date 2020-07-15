@@ -1,14 +1,10 @@
 "use strict";
+/** @module messagelayer send and receive message to group of nodes */
 exports.__esModule = true;
-//
-//  messagelayer -  send and receive message to group of nodes
-//
-var lib_1 = require("../lib/lib");
-//
-//  -create the UDP message bus for communication with all nodes
-// all others only have to deal with message, we timestamp and queue it here
+var lib_1 = require("./lib");
+// Create the UDP message bus for communication with all nodes
+// All others only have to deal with message, we timestamp and queue it here
 var PORT = process.env.PORT || "65013";
-//
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
 exports.messagelayer_stats = {
