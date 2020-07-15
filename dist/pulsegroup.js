@@ -210,24 +210,26 @@ function instrumentation() {
     txt += '       var strOwl=owls[owlEntry].split("=")[1];';
     txt += '       if (typeof strOwl != "undefined") {';
     txt += '           owl=parseInt(strOwl);';
-    txt += '           var regex = /@/g;';
+    txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
-    /*
-    txt += '           if (flag) {';  //WBN WORKIGN ON THIS
-    txt += '               //console.log("found a flagged entry "+strOwl);';
+    txt += '           if (flag) {'; //We have an OWL measure that should be investigated
+    //txt += '               //console.log("found a flagged entry "+strOwl);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
-    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
-    txt += '               } else {';
-    txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
+    //txt += '               } else {';
+    //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
-    txt += '            } else {'; //no flag set on this remove BUSY class
+    //txt += '            } else {'; //no flag set on this remove BUSY class
+    //txt += '               if (srcMintEntry && dstMintEntry) {';
+    //txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
+    //txt += '               } else {';
+    //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    //txt += '               }';
+    txt += '            } else {'; //if flag
     txt += '               if (srcMintEntry && dstMintEntry) {';
-    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
-    txt += '               } else {';
-    txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';
     txt += '               }';
     txt += '            }';
-*/
     txt += '        }';
     txt += '     }'; //we don't do this
     txt += '}';

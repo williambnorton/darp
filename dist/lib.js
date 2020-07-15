@@ -95,8 +95,8 @@ function Log(logMsg, filename) {
 }
 exports.Log = Log;
 /**
- * Reads the Build version files and returns their names
- * @returns {string[]} Build version filenames
+ * Returns the Build version filename
+ * @returns {string} Build version filename
  */
 function MYVERSION() {
     var darpdir = process.env.DARPDIR;

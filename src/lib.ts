@@ -95,8 +95,8 @@ export function Log(logMsg: string, filename?: string) {
 }
 
 /**
- * Reads the Build version files and returns their names
- * @returns {string[]} Build version filenames
+ * Returns the Build version filename 
+ * @returns {string} Build version filename
  */
 export function MYVERSION(): string {
     let darpdir = process.env.DARPDIR;
