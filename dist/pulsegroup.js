@@ -200,11 +200,14 @@ function instrumentation() {
     //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
-    txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));';
+    //txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));'
     txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
     txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    console.log("Highlight from pulsed Owls "+owls+" srcMintEntry="+srcMintEntry+" dstMintEntry="+dstMintEntry);';
+    txt += '    if (srcMintEntry && dstMintEntry) {';
+    txt += '       $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("background-color", "gray");';
+    txt += '    }';
     txt += '}';
     //}
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
