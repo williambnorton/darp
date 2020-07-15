@@ -216,7 +216,7 @@ function instrumentation() {
     txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
-    txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
+    //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);';
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
