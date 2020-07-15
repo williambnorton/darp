@@ -214,7 +214,7 @@ function instrumentation() {
     txt += '        var regex = /@/g;';
     txt += '        var flag=strOwl.match(regex);';
     txt += '        if (flag) {';
-    txt += '            console.log("found a flagged entry "+strOwl);';
+    txt += '            //console.log("found a flagged entry "+strOwl);';
     txt += '            if (srcMintEntry && dstMintEntry) {';
     txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
     txt += '            } else {';
@@ -1026,7 +1026,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
                 //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
-                console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
+                //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                 if ((nodeEntry.owl > 3) && (deviation > 30))
                     flag = "@"; //deviation 30% from the median, flag
             }
