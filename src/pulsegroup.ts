@@ -231,7 +231,7 @@ function instrumentation() {    //this should get its own file
 
 
 //    txt += '             var link="<a target=_blank href="+gurl+">";';
-    txt += '             var myDiv="<div class="+srcMintEntry.mint+"-"+destMintEntry.mint+">;"';
+    txt += '             var myDiv="<div class="+srcMintEntry.mint+"-"+destMintEntry.mint+">";';
     txt += '             var link="<a target=_blank href="+gurl+">";';
 
     txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
