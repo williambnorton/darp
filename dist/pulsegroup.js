@@ -199,8 +199,10 @@ function instrumentation() {
     txt += '}';
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
+    txt += '    var srcMintEntry=pulseEntry.mintTable[pulseEntry.mint];';
+    txt += '    var dstMintEntry=pulseEntry.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
-    txt += '    console.log("Highlight from pulsed Owls "+owls);';
+    txt += '    console.log("Highlight from pulsed Owls "+owls+" srcMintEntry="+srcMintEntry+" dstMintEntry="+dstMintEntry);';
     txt += '}';
     //}
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
