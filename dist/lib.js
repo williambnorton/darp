@@ -104,6 +104,7 @@ function MYVERSION() {
         console.log("Environmental variable DARPDIR undefined... EXITTING...");
         process.exit(36); //reload SW - this should not happen
     }
+    console.log("" + fs.readdirSync(darpdir));
     var files = fs.readdirSync(darpdir).filter(function (fn) { fn.startsWith('Build.'); });
     console.log("darpdir=" + darpdir + " files=" + files);
     return files;
