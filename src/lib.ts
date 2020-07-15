@@ -99,8 +99,11 @@ export function Log(logMsg: string, filename?: string) {
  * @returns {string[]} Build version filenames
  */
 export function MYVERSION(): string[] {
-    let darpdir = "../";
-    console.log(`process.env.DARPDIR=${process.env.DARPDIR}`);
+    let darpdir = process.env.DARPDIR;
+    if (typeof darpdir == "undefined") {
+        console.log(`Environmental variable DARPDIR undefined... EXITTING...`);
+        process.exit(36); //reload SW - this should not happen
+    }
     let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
     return files;
 }
