@@ -1,1 +1,0 @@
-launchmicroservices.bash
