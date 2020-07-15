@@ -106,7 +106,7 @@ function MYVERSION() {
     }
     console.log(darpdir + "==>" + fs.readdirSync(darpdir));
     //    let files = fs.readdirSync(darpdir).filter((fn: string) => { fn.startsWith('Build.') });
-    var files = fs.readdirSync(darpdir).filter(function (fn) { fn.startsWith('Build.'); });
+    var files = fs.readdirSync(darpdir).forEach(function (fn) { console.log("fn=" + fn); });
     console.log("darpdir=" + darpdir + " MYVERSION=" + files);
     return files[0];
 }
