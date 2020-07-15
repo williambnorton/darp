@@ -197,6 +197,7 @@ function instrumentation() {
     //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
     txt += '    }';
     txt += '}';
+    txt += 'console.log("pulseGroup.pulses="+JSON.stringify(pulseGroup.pulses,null,2));';
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
     txt += '    var srcMintEntry=pulseEntry.mintTable[pulseEntry.mint];';

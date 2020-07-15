@@ -239,6 +239,7 @@ function instrumentation() {    //this should get its own file
 
     txt += '    }';
     txt += '}';
+    txt += 'console.log("pulseGroup.pulses="+JSON.stringify(pulseGroup.pulses,null,2));'
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
     txt += '    var srcMintEntry=pulseEntry.mintTable[pulseEntry.mint];';
