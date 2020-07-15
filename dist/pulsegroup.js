@@ -214,7 +214,8 @@ function instrumentation() {
     txt += '           owl=parseInt(strOwl);';
     txt += '           var regex = /@/g;';
     txt += '           var flag=strOwl.match(regex);';
-    txt += '           if (flag) {'; //TODO
+    /*
+    txt += '           if (flag) {';  //TODO
     txt += '               //console.log("found a flagged entry "+strOwl);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
@@ -228,6 +229,7 @@ function instrumentation() {
     txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
     txt += '            }';
+*/
     txt += '        }';
     txt += '     }'; //we don't do this
     txt += '}';
