@@ -186,7 +186,8 @@ function instrumentation() {
     txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
     txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){';
     txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
-    txt += '             var link="<a target=_blank href="+gurl+">";';
+    //    txt += '             var link="<a target=_blank href="+gurl+">";';
+    txt += '             var link="<div class=\"\"><a target=_blank href="+gurl+"></div>";';
     // txt += '             console.log("link="+link);';
     txt += '             $("."+src+"-"+dest).html(link+pulseGroup.matrix[src][dest]+" ms</a>");';
     //    txt += '         } else console.log("COULD NOT FIND MINT");';
@@ -213,7 +214,7 @@ function instrumentation() {
     txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
-    //txt += '             console.log("found a flagged entry "+strOwl);';
+    txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);';
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
@@ -331,7 +332,7 @@ function instrumentation() {
         //
         //   show OWL Matrix table
         //
-        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup: ' + pulseGroup.groupName + '</h2><table>';
+        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup: ' + pulseGroup.groupName + '</h2><table class="matrix">';
         txt += '<tr><th>' + pulseGroup.groupName + ' OWL Matrix</th>';
         //   print OWL headers
         for (var col in pulseGroup.pulses) {
