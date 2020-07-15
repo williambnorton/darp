@@ -205,13 +205,13 @@ function instrumentation() {
     txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
     txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
-    txt += '    for(var owlEntry in ary) {';
-    txt += '       var srcMint=parseInt(ary[owlEntry].split("=")[0]);'; //get the
+    txt += '    for(var owlEntry in owls) {';
+    txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
     txt += '        ';
     txt += '        var owl=-99999;';
-    txt += '       var strOwl=ary[owlEntry].split("=")[1];';
+    txt += '       var strOwl=ary===owls[owlEntry].split("=")[1];';
     txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
-    txt += '        var regex = /+/g;';
+    txt += '        var regex = /\*/g;';
     txt += '        var flag=strOwl.match(regex);';
     txt += '        if (flag) console.log("found a flagged entry");';
     txt += '     }'; //we don't do this
