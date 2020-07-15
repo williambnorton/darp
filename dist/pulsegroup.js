@@ -215,7 +215,7 @@ function instrumentation() {
     txt += '           var regex = /@/g;';
     txt += '           var flag=strOwl.match(regex);';
     /*
-    txt += '           if (flag) {';  //TODO
+    txt += '           if (flag) {';  //WBN WORKIGN ON THIS
     txt += '               //console.log("found a flagged entry "+strOwl);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
