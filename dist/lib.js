@@ -110,6 +110,10 @@ function MYVERSION() {
         console.log("fn=" + fn + " " + fn.match(/Build.*/));
         var Build = fn.match(/Build.*/);
         console.log("Build=" + Build);
+        if (Build != null) {
+            console.log("Build Not null!");
+            return Build;
+        }
     });
     console.log("MYVERSION(): Exitting - could not find the Build.");
     process.exit(36);
