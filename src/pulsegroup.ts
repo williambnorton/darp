@@ -266,7 +266,7 @@ function instrumentation() {    //this should get its own file
     txt += '           if (flag) {';  //We have an OWL measure that should be investigated
     txt += '             console.log("found a flagged entry "+strOwl);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
-    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.geo+"-"+dstMintEntry.geo+"="+owl);'
+    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);'
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
     //txt += '               } else {';
     //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
@@ -279,6 +279,7 @@ function instrumentation() {    //this should get its own file
     //txt += '               }';
     txt += '            } else {'; //if flag
     txt += '               if (srcMintEntry && dstMintEntry) {';
+    txt += '                   console.log("UN--HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);'
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';    
     txt += '               }';
     txt += '            }';
