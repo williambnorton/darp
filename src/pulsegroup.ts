@@ -238,10 +238,8 @@ function instrumentation() {    //this should get its own file
     txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
 
     //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else {';
-    txt += 
-    txt += '            $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
-    txt += '         }'
+    txt += '         } else $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
+    
 
 
 

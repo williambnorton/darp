@@ -192,10 +192,7 @@ function instrumentation() {
     txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else {';
-    txt +=
-        txt += '            $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
-    txt += '         }';
+    txt += '         } else $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
     //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
     txt += '    }';
