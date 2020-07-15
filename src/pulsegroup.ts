@@ -261,7 +261,9 @@ function instrumentation() {    //this should get its own file
     txt += '        if (flag) {';
     txt += '            console.log("found a flagged entry "+strOwl);';
     txt += '            if (srcMintEntry && dstMintEntry) {';
-    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("background-color", "gray");';
+    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
+    txt += '            } else {';
+    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';
     txt += '            }';
     txt += '        }';
     txt += '     }'; //we don't do this
