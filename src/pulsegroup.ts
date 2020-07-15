@@ -255,16 +255,25 @@ function instrumentation() {    //this should get its own file
     txt +='        ';
     txt +='        var owl=-99999;';
     txt += '       var strOwl=owls[owlEntry].split("=")[1];';
-    txt += '       if (typeof strOwl != "undefined") owl=parseInt(strOwl);';
-    txt += '        var regex = /@/g;';
-    txt += '        var flag=strOwl.match(regex);';
-    txt += '        if (flag) {';
-    txt += '            //console.log("found a flagged entry "+strOwl);';
-    txt += '            if (srcMintEntry && dstMintEntry) {';
-    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
-    txt += '            } else {';
-    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    txt += '       if (typeof strOwl != "undefined") {';
+    txt += '           owl=parseInt(strOwl);';
+    txt += '           var regex = /@/g;';
+    txt += '           var flag=strOwl.match(regex);';
+    txt += '           if (flag) {';  //TODO
+    txt += '               //console.log("found a flagged entry "+strOwl);';
+    txt += '               if (srcMintEntry && dstMintEntry) {';
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
+    txt += '               } else {';
+    txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    txt += '               }';
+    txt += '            } else {'; //no flag set on this remove BUSY class
+    txt += '               if (srcMintEntry && dstMintEntry) {';
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
+    txt += '               } else {';
+    txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    txt += '               }';
     txt += '            }';
+    
     txt += '        }';
     txt += '     }'; //we don't do this
     txt += '}';
