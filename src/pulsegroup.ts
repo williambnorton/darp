@@ -268,7 +268,7 @@ function instrumentation() {    //this should get its own file
     txt +='        ';
     txt +='        var owl=-99999;';
     txt += '       var strOwl=owls[owlEntry].split("=")[1];';
-    txt += '       if (typeof strOwl != "undefined") {';
+    txt += '       if (typeof strOwl != "undefined") {';  //<srcMint>[=<owl>[<flag>]],...
     txt += '           owl=parseInt(strOwl);';
     txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
@@ -280,9 +280,9 @@ function instrumentation() {    //this should get its own file
     txt += '           if (flag) {';  //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
-    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);'
+    txt += '                   console.log("HIGHLIGHTING "+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+srcOwl);'
     txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
-    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
+    txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     //txt += '               } else {';
     //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
