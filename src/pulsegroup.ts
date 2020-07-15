@@ -259,6 +259,10 @@ function instrumentation() {    //this should get its own file
     txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
     
+
+
+
+
     txt += '           if (flag) {';  //We have an OWL measure that should be investigated
     txt += '             console.log("found a flagged entry "+strOwl);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
@@ -344,11 +348,11 @@ function instrumentation() {    //this should get its own file
 
   //. txt += '              console.log("pulse.owl="+pulse.owl);'
    
-   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
-   txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");' //Add NR class to entire row
+   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");' //Add NR class to entire row
+   txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");' //Add NR class to entire row
    
-   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");' //Add NR class to entire row
-   txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR BUSY");' //Add NR class to entire row
+   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP");' //Add NR class to entire row
+   txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR");' //Add NR class to entire row
 
    txt += '              if (pulse.pulseTimestamp!="0")'
    txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
