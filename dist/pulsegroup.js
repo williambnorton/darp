@@ -216,9 +216,9 @@ function instrumentation() {
     txt += '        if (flag) {';
     txt += '            console.log("found a flagged entry "+strOwl);';
     txt += '            if (srcMintEntry && dstMintEntry) {';
-    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");';
+    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
     txt += '            } else {';
-    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).removeClass("BUSY");';
+    txt += '                $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
     txt += '            }';
     txt += '        }';
     txt += '     }'; //we don't do this
@@ -274,7 +274,7 @@ function instrumentation() {
     // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
     txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);';
     txt += '              }';
-    txt += '              console.log("pulse.owl="+pulse.owl);';
+    //. txt += '              console.log("pulse.owl="+pulse.owl);'
     txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
     txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR BUSY");'; //Add NR class to entire row
     txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP BUSY");'; //Add NR class to entire row
