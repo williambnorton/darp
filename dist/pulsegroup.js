@@ -403,7 +403,7 @@ function instrumentation() {
     txt += '   }).fail(function() { ';
     txt += '       console.log("JSON Fetch error");';
     txt += '        $(document.body).css( "background", "pink" );';
-    txt += '   }):';
+    txt += '   });';
     txt += "    setTimeout(fetchState,1000);";
     txt += "}";
     txt += 'setTimeout(fetchState,1000);';

@@ -624,7 +624,7 @@ function instrumentation() {    //this should get its own file
    txt += '   }).fail(function() { ';
    txt += '       console.log("JSON Fetch error");';
    txt += '        $(document.body).css( "background", "pink" );'
-   txt += '   }):'
+   txt += '   });'
 
 
     txt += "    setTimeout(fetchState,1000);";  
