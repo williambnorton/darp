@@ -458,7 +458,9 @@ function instrumentation() {    //this should get its own file
     txt += '}';
     //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
 **/
-    //Now we are trying to fill the matrix using only the owls - removing matrix ugliness.
+
+
+    //   Now instead, we will fill the matrix using only the owls - removing matrix ugliness.
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
     txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");'

@@ -7,8 +7,9 @@ var fs = require("fs");
  * @param {number[]} numbers An array of numbers.
  * @returns {number} The calculated median value from the specified numbers.
  */
-function median(numbers) {
+function median(incomingNumbers) {
     // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
+    var numbers = incomingNumbers; //don't sort the actual data set
     var median = 0, numsLen = numbers.length;
     numbers.sort();
     if (numsLen % 2 === 0) {
