@@ -10,7 +10,7 @@ import fs = require('fs');
  */
 export function median(incomingNumbers: number[]): number {
     // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
-    var numbers=incomingNumbers; //don't sort the actual data set
+    var numbers=[...incomingNumbers]; //don't sort the actual data set
     var median = 0, numsLen = numbers.length;
     
     numbers.sort();

@@ -1,5 +1,12 @@
 "use strict";
 /** @module lib Common routines in one place */
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var fs = require("fs");
 /**
@@ -9,7 +16,7 @@ var fs = require("fs");
  */
 function median(incomingNumbers) {
     // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
-    var numbers = incomingNumbers; //don't sort the actual data set
+    var numbers = __spreadArrays(incomingNumbers); //don't sort the actual data set
     var median = 0, numsLen = numbers.length;
     numbers.sort();
     if (numsLen % 2 === 0) {
