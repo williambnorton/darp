@@ -398,7 +398,7 @@ function instrumentation() {    //this should get its own file
     \
     .BUSY{ \
             color: black;\
-            background-color:yellow;\
+            border-color:yellow;\
     }\
     \
     .NR{ \

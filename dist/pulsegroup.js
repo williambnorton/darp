@@ -227,7 +227,7 @@ function instrumentation() {
     \
     .BUSY{ \
             color: black;\
-            background-color:yellow;\
+            border-color:yellow;\
     }\
     \
     .NR{ \
