@@ -17,7 +17,7 @@ const REFRESH=120;  //Every 2 minutes force refresh
 const OWLS_DISPLAYED=30;
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
-const DEVIATION_THRESHOLD=30;     //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
+const DEVIATION_THRESHOLD=40;     //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
 const DEFAULT_START_STATE="NR"; 
@@ -1366,7 +1366,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             if ( nodeEntry.owl == NO_OWL) owls+=nodeEntry.mint+",";
             else {
                 var medianOfMeasures=median(nodeEntry.history);
-
+                console.log(`nodeEntry.medianHistory.length=${nodeEntry.medianHistory.length}`);
                 if (nodeEntry.medianHistory.length>0) {  //use medianHistory to identify a median to deviate from
                     var medianOfMedians=median(nodeEntry.medianHistory);
                 } else {
@@ -1580,12 +1580,12 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 }
                 //TODO: This is where authentication to this pulseGroup happens
                 if (mintEntry==null) { //} && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
-                   console.log(ts()+"recvPulses(): IGNORING PULSE Found pulseEntry "+incomingPulse.geo+":"+incomingPulse.group+" but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for "+incomingPulse.geo);
+                   console.log(ts()+"recvPulses(): IGNORING PULSE Found pulseEntry "+incomingPulse.geo+":"+incomingPulse.group+" but Could not find mint for this pulse... Will re-synch with genesis to get credentials for "+incomingPulse.geo);
                     newPulseGroup.adminControl='RESYNCH';
                     return ;  //we are done     
                 }
                 if (mintEntry.geo!=incomingPulse.geo) {
-                    console.log(ts()+"recvPulses(): IGNORING PULSE - mismatched mint "+incomingPulse.geo+":"+incomingPulse.group+" and mint="+mintEntry.mint+" and this mint is geo="+mintEntry.geo+" but Could not find mint for this pulse... Flagging to re-synch with genesis to get credentials for "+incomingPulse.geo);
+                    console.log(ts()+"recvPulses(): IGNORING PULSE - mismatched mint "+incomingPulse.geo+":"+incomingPulse.group+" and mint="+mintEntry.mint+" and this mint is geo="+mintEntry.geo+" but Could not find mint for this pulse... will re-synch with genesis to get credentials for "+incomingPulse.geo);
                     newPulseGroup.adminControl='RESYNCH';
                     return ;  //we are done    
                 }
@@ -1611,6 +1611,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var d=new Date(myPulseEntry.pulseTimestamp);
                 if (d.getSeconds()==0) {
                     myPulseEntry.medianHistory.push(median(myPulseEntry.history));
+                    console.log(`Wrote MedianHistory Now myPulseEntry=${myPulseEntry}`);
                 }
 
                 //update mint entry
