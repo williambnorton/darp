@@ -1273,7 +1273,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var d = new Date(myPulseEntry.pulseTimestamp);
                 if (d.getSeconds() == 0) {
                     myPulseEntry.medianHistory.push(lib_1.median(myPulseEntry.history));
-                    console.log("Wrote MedianHistory median=" + lib_1.median(myPulseEntry.history) + " Now myPulseEntry=" + lib_1.dump(myPulseEntry));
+                    //console.log(`Wrote MedianHistory median=${median(myPulseEntry.history)} Now myPulseEntry=${dump(myPulseEntry)}`);
                 }
                 //update mint entry
                 mintEntry.lastPulseTimestamp = myPulseEntry.pulseTimestamp; //CRASH mintEntry ==null
@@ -1306,7 +1306,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         var srcMintEntry = newPulseGroup.mintTable[m];
                         var dstMintEntry = newPulseGroup.mintTable[myPulseEntry.mint];
                         if (srcMintEntry == null || dstMintEntry == null) {
-                            console.log("Owner announced a NEW MINT ENTRY " + m + " - syncing with genesis node for config");
+                            console.log("Owner announced a NEW MINT ENTRY " + m + " - syncing with genesis node for new mintTable and pulses for its config");
                             newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                             return;
                         }
