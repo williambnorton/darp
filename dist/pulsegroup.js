@@ -314,7 +314,7 @@ function instrumentation() {
     txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
     txt += '                     console.log("After link flag="+flag);';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
-    txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+destOwlMintEntry);';
+    txt += '             console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
     txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
     txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);';
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
