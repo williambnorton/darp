@@ -1,11 +1,13 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
 var lib_1 = require("./lib");
 var dgram = require("dgram");
 // Create the UDP message bus for communication with all nodes
 // All others only have to deal with message, we timestamp and queue it here
 var server = dgram.createSocket('udp4');
+var client = dgram.createSocket('udp4');
 exports.messagelayer_stats = {
     port: "",
     inMsgs: 0,
@@ -17,7 +19,7 @@ exports.messagelayer_stats = {
     lastInMsg: "",
     lastOutMsg: ""
 };
-//             RECEIVER CODE
+// RECEIVER CODE
 server.on('error', function (err) {
     console.log("messagelayer server error:\n" + err.stack);
     server.close();
@@ -46,13 +48,13 @@ function recvMsg(port, callback) {
     });
 }
 exports.recvMsg = recvMsg;
-//--------------------------------------------------------------------
 //    SENDER CODE
-//pulseMsg sample: 0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339
-var client = dgram.createSocket('udp4');
-//
-//   sendMsg(): Send same message to all nodes in nodelist 
-//
+/**
+ * Send same message to all nodes in nodelist.
+ * Example pulseMsg: "0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339"
+ * @param {string} outgoingMessage Stringified pulse message as in example above
+ * @param {string[]} nodelist List of nodes' addresses in IP_PORT format
+ */
 function sendMsg(outgoingMessage, nodelist) {
     nodelist.forEach(function (node) {
         var ipaddr = node.split("_")[0];

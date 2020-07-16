@@ -7,6 +7,8 @@ import dgram = require('dgram');
 // Create the UDP message bus for communication with all nodes
 // All others only have to deal with message, we timestamp and queue it here
 const server = dgram.createSocket('udp4');
+const client = dgram.createSocket('udp4');
+type pulseDeserializer = (incomingMessage: string) => void;
 
 export var messagelayer_stats = {
     port: "",
@@ -21,7 +23,8 @@ export var messagelayer_stats = {
 };
 
 
-//             RECEIVER CODE
+// RECEIVER CODE
+
 server.on('error', (err: Error) => {
     console.log(`messagelayer server error:\n${err.stack}`);
     server.close();
@@ -32,8 +35,6 @@ server.on('listening', () => {
     console.log(`messagelayer server listening ${address.address}:${address.port}`);
 });
 
-
-type pulseDeserializer = (incomingMessage: string) => void;
 
 /**
  * Bind listening port and attach message handler to deserialize pulse messages.
@@ -54,15 +55,16 @@ export function recvMsg(port: number, callback: pulseDeserializer) {   //API rou
         callback(incomingMessage);
     });
 }
-//--------------------------------------------------------------------
+
+
 //    SENDER CODE
 
-//pulseMsg sample: 0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339
-const client = dgram.createSocket('udp4');
-
-//
-//   sendMsg(): Send same message to all nodes in nodelist 
-//
+/**
+ * Send same message to all nodes in nodelist.
+ * Example pulseMsg: "0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339"
+ * @param {string} outgoingMessage Stringified pulse message as in example above
+ * @param {string[]} nodelist List of nodes' addresses in IP_PORT format
+ */
 export function sendMsg(outgoingMessage: string, nodelist: string[]) {  //API routine
 
     nodelist.forEach(function (node: string) {
@@ -75,8 +77,11 @@ export function sendMsg(outgoingMessage: string, nodelist: string[]) {  //API ro
         messagelayer_stats.lastOutMsg = timestampedMsg;
         messagelayer_stats.outOctets += message.length;
         //console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
-        client.send(message, 0, message.length, port, ipaddr, (err: Error) => {
-            if (err) { console.log(`messagelayer sendMessage(): ERROR`); client.close(); }
+        client.send(message, 0, message.length, port, ipaddr, (err: Error | null) => {
+            if (err) {
+                console.log(`messagelayer sendMessage(): ERROR`);
+                client.close();
+            }
         });
     });
 }
@@ -101,4 +106,3 @@ function test_app_pulser() {    //sample test app
 }
 test_app_pulser();  //bench test - uncomment to run a test
 /*************  TEST AREA **********/
-

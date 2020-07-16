@@ -73,6 +73,11 @@ export function YYMMDD(): string {
     return _YYMMDD;
 }
 
+/**
+ * Return JSON string
+ * @param {object} obj Object to convert to JSON
+ * @returns {string} Stringified object
+ */
 export function dump(obj: object): string {
     return JSON.stringify(obj, null, 2);
 }
@@ -95,19 +100,19 @@ export function Log(logMsg: string, filename?: string) {
 }
 
 /**
- * Returns the Build version filename 
- * @returns {string} Build version filename
+ * Returns the Build version
+ * @returns {string} Build version
  */
-export function MYVERSION(): string {
+export function MYVERSION(): string | null {
     let darpdir = process.env.DARPDIR;
-    var darpBuild=null;  //we set this in the readir call
+    var darpBuild = null;  //we set this in the readir call
     if (typeof darpdir == "undefined") {
         console.log(`MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...`);
         process.exit(36); //reload SW - this should not happen
     }
     let files = fs.readdirSync(darpdir).forEach((fn: string) => { 
         const Build=fn.match(/Build.*/);
-        if (Build!=null) {
+        if (Build !== null) {
             darpBuild=Build[0];
         }
     });

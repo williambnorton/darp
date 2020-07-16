@@ -1,4 +1,6 @@
 import { dump, now, ts, YYMMDD } from './lib';
+import fs = require('fs');
+
 
 export function grapher(src:string,dest:string) {
     //console.log(`grapher(): src=${src} det=${dest}`);
@@ -30,9 +32,7 @@ $(function() {
 			dataPoints: [
                 //fetched data from file goes here
                 `;
-    
-    
-    var fs = require("fs");
+
     var myYYMMDD=YYMMDD();     
     var path=src+"-"+dest+"."+myYYMMDD+'.txt';
     try {
@@ -54,7 +54,7 @@ $(function() {
             //console.log(`last60=${dump(last60)}`);
 
             //save only last 60 samples of raw data'*/
-            fs.writeFile(path, last60.join("\n"), function (err: Error) {
+            fs.writeFile(path, last60.join("\n"), (err) => {
                 if (err) return console.log(err);
             });
             //console.log(`found / data file ${path}:${txt}`);
@@ -88,7 +88,6 @@ return txt
 //  grapherStoreOwl - store the owl sample in a way that can be graphed by the function above
 //
 export function grapherStoreOwl(src:String,dst:String,owl:Number) {
-    var fs = require('fs');
     var d = new Date();
     var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
@@ -101,7 +100,7 @@ export function grapherStoreOwl(src:String,dst:String,owl:Number) {
         //owl = 0;
     //}
     //var logMsg = "{y:" + owl + "},\n";
-    fs.appendFile(filename, sample, function(err: Error) {
+    fs.appendFile(filename, sample, (err) => {
         if (err) throw err;
         //console.log('Saved!');
     });

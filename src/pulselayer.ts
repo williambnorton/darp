@@ -2,10 +2,10 @@
 
 import { nth_occurrence, MYVERSION } from './lib';
 import { sendMsg, recvMsg } from './messagelayer';
-import { PulseEntry } from './pulsegroup';
+import { IncomingPulseInterface } from './pulsegroup';
 
 
-type incomingPulseCallback = (incomingPulse: PulseEntry) => void;
+type incomingPulseCallback = (incomingPulse: IncomingPulseInterface) => void;
 
 
 /**
@@ -23,7 +23,7 @@ export function recvPulses(port: number, callback: incomingPulseCallback): void 
         const OWL = pulseTimestamp - senderTimestamp;
         var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-        var pulse = new PulseEntry({
+        var pulse: IncomingPulseInterface = {
             pulseTimestamp: pulseTimestamp,
             outgoingTimestamp: senderTimestamp,
             msgType: ary[2],
@@ -36,7 +36,7 @@ export function recvPulses(port: number, callback: incomingPulseCallback): void 
             owls: pulseOwls,
             owl: OWL,
             lastMsg: incomingMessage
-        });
+        };
         //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
         //console.log("structured pulse="+dump(pulse));
 

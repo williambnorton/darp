@@ -1,9 +1,9 @@
 "use strict";
 /** @module pulselayer send "pulse" UDP message to all nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendPulses = exports.recvPulses = void 0;
 var lib_1 = require("./lib");
 var messagelayer_1 = require("./messagelayer");
-var pulsegroup_1 = require("./pulsegroup");
 /**
  * Bind the port to receive pulses and deserialiaze them into structured data.
  * @param {number} port Listening port.
@@ -19,7 +19,7 @@ function recvPulses(port, callback) {
         var OWL = pulseTimestamp - senderTimestamp;
         var owlsStart = lib_1.nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-        var pulse = new pulsegroup_1.PulseEntry({
+        var pulse = {
             pulseTimestamp: pulseTimestamp,
             outgoingTimestamp: senderTimestamp,
             msgType: ary[2],
@@ -32,7 +32,7 @@ function recvPulses(port, callback) {
             owls: pulseOwls,
             owl: OWL,
             lastMsg: incomingMessage
-        });
+        };
         //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
         //console.log("structured pulse="+dump(pulse));
         //ary.shift();ary.shift();
