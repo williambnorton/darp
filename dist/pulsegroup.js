@@ -399,7 +399,7 @@ function instrumentation() {
     //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
     //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
     txt += '         }';
-    txt += '   });';
+    txt += '   }).fail(function() { console.log("JSON Fetch error");});';
     txt += "    setTimeout(fetchState,1000);";
     txt += "}";
     txt += 'setTimeout(fetchState,1000);';

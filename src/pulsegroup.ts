@@ -620,7 +620,7 @@ function instrumentation() {    //this should get its own file
 
    txt += '         }'
 
-   txt += '   });';
+   txt += '   }).fail(function() { console.log("JSON Fetch error");});';
 
 
     txt += "    setTimeout(fetchState,1000);";  
