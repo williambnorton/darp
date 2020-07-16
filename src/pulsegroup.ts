@@ -501,7 +501,7 @@ function instrumentation() {    //this should get its own file
 
     txt += '             if (flag) {';  //We have an OWL measure that should be investigated
     txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    txt += '                 console.log("srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+    txt += '                 console.log("pulse.mint="+pulse.mint+" srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
     
 
     txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
