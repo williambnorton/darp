@@ -498,11 +498,12 @@ function instrumentation() {    //this should get its own file
 
 
 
-
-    txt += '           if (flag) {';  //We have an OWL measure that should be investigated
-    txt += '             console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    txt += '             console.log("srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+/***
+    txt += '             if (flag) {';  //We have an OWL measure that should be investigated
+    txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+    txt += '                 console.log("srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
     
+
     txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
     txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");'; 
@@ -520,6 +521,9 @@ function instrumentation() {    //this should get its own file
     txt += '               }else {console.log("No Flag and src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
     txt += '            }';
     txt += '                     console.log("After flag section");';
+
+***/
+
 
     txt += '        }';
     txt += '     }'; //we don't do this
