@@ -13,7 +13,7 @@ fi
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="Simple javascript pulseGroup object model with graphs"
+MESSAGE="DARP Protocol with matrix and basic data graphs"
 date>"Build."`date +%y%m%d.%H%M`
 ls -l Build.*
 
