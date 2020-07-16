@@ -312,7 +312,7 @@ function instrumentation() {
     txt += '            }';
     txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
     txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
-    txt += '                     console.log("After link");';
+    txt += '                     console.log("After link flag="+flag);';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+destOwlMintEntry);';
     txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
@@ -331,6 +331,7 @@ function instrumentation() {
     txt += '     }'; //we don't do this
     txt += '}';
     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
+    txt += '                     console.log("After flag section");';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
