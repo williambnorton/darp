@@ -418,6 +418,7 @@ function instrumentation() {    //this should get its own file
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';  //For instruementation show multiple pulseGorups
     //txt += 'console.log("getJSON url="+url);';
     txt += '   $.getJSON(url, function(config) {'
+    txt += '        $(document.body).css( "background", "white" );'
    // txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
@@ -620,7 +621,10 @@ function instrumentation() {    //this should get its own file
 
    txt += '         }'
 
-   txt += '   }).fail(function() { console.log("JSON Fetch error");});';
+   txt += '   }).fail(function() { ';
+   txt += '       console.log("JSON Fetch error");';
+   txt += '        $(document.body).css( "background", "pink" );'
+   txt += '   }):'
 
 
     txt += "    setTimeout(fetchState,1000);";  
