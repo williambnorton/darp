@@ -1054,7 +1054,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 owls += nodeEntry.mint + ",";
             else {
                 var medianOfMeasures = lib_1.median(nodeEntry.history);
-                console.log("nodeEntry.medianHistory.length=" + nodeEntry.medianHistory.length);
+                //console.log(`nodeEntry.medianHistory.length=${nodeEntry.medianHistory.length}`);
                 if (nodeEntry.medianHistory.length > 0) { //use medianHistory to identify a median to deviate from
                     var medianOfMedians = lib_1.median(nodeEntry.medianHistory);
                 }
@@ -1269,7 +1269,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var d = new Date(myPulseEntry.pulseTimestamp);
                 if (d.getSeconds() == 0) {
                     myPulseEntry.medianHistory.push(lib_1.median(myPulseEntry.history));
-                    console.log("Wrote MedianHistory Now myPulseEntry=" + myPulseEntry);
+                    console.log("Wrote MedianHistory median=" + lib_1.median(myPulseEntry.history) + " Now myPulseEntry=" + lib_1.dump(myPulseEntry));
                 }
                 //update mint entry
                 mintEntry.lastPulseTimestamp = myPulseEntry.pulseTimestamp; //CRASH mintEntry ==null
