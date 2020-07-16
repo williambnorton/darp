@@ -503,13 +503,13 @@ function instrumentation() {    //this should get its own file
     txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
-    txt += '               }';
+    txt += '               } else {console.log("src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
     txt += '            } else {'; //if flag
     txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
-    //txt += '                   console.log("UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
+    txt += '                   console.log("NO FLAG UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';    
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
-    txt += '               }';
+    txt += '               }else {console.log("No Flag and src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
     txt += '            }';
     txt += '        }';
     txt += '     }'; //we don't do this
