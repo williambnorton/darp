@@ -1051,7 +1051,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                 if ((nodeEntry.owl > 3) && (deviation > DEVIATION_THRESHOLD)) {
-                    console.log(lib_1.ts() + ("Exceeded threshold. Setting flag on owl for geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
+                    console.log(lib_1.ts() + (nodeEntry.mint + "-" + newPulseGroup.mintTable[0].mint + " " + nodeEntry.owl + "@  geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
                     flag = "@"; //deviation 30% from the median, flag
                 }
             }
