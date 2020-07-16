@@ -492,6 +492,7 @@ function instrumentation() {    //this should get its own file
     txt += '            }'
     txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
     txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
+    txt += '                     console.log("After link");';
 
 
 

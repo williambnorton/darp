@@ -312,6 +312,7 @@ function instrumentation() {
     txt += '            }';
     txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
     txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
+    txt += '                     console.log("After link");';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+destOwlMintEntry);';
     txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
