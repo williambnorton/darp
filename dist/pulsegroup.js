@@ -316,9 +316,9 @@ function instrumentation() {
     txt += '                     console.log("After link flag="+flag);';
     txt += '             if (flag) {'; //We have an OWL measure that should be investigated
     txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    txt += '                 console.log("pulse.mint="+pulse.mint+" srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+    txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
     txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
-    txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);';
+    txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);';
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
     txt += '                   console.log("FINISHED HIGHLIGHTING");';
