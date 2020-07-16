@@ -1,7 +1,6 @@
 "use strict";
 /** @module pulselayer send "pulse" UDP message to all nodes */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendPulses = exports.recvPulses = void 0;
+exports.__esModule = true;
 var lib_1 = require("./lib");
 var messagelayer_1 = require("./messagelayer");
 /**
