@@ -4,8 +4,12 @@ import { dump, now, ts, nth_occurrence, MYVERSION, YYMMDD, Log, median } from '.
 import { sendPulses, recvPulses } from './pulselayer';
 import { grapher, grapherStoreOwl } from './grapher';
 import express = require('express');
-import http = require("http");
+import http = require('http');
+import fs = require('fs');
+import os = require('os');
 
+
+// Define constants
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
@@ -14,57 +18,57 @@ const OWLS_DISPLAYED=30;
 const TEST=true;
 const DEFAULT_SHOWPULSES = "0"
 const DEVIATION_THRESHOLD=30;     //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
-
 //const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 //const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
 const DEFAULT_START_STATE="NR"; 
 console.log(ts()+"pulsegroup.ts(): ALL NODES START IN "+DEFAULT_START_STATE+" Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
-/****  NODE SITE CONFIGURATION  ****/
 
-//      Environment is way for environment to control the code
+
+// Load environment variables
+
 if (!process.env.DARPDIR) {
-   console.log("No DARPDIR enviropnmental variable specified ");
-   process.env.DARPDIR = process.env.HOME + "/darp"
-   console.log(`DARPDIR defaulted to " + ${process.env.DARPDIR}`);
+    console.log("No DARPDIR enviropnmental variable specified ");
+    process.env.DARPDIR = process.env.HOME + "/darp"
+    console.log(`DARPDIR defaulted to " + ${process.env.DARPDIR}`);
 }
 
 if (!process.env.HOSTNAME) {
-   process.env.HOSTNAME = require('os').hostname().split(".")[0].toUpperCase();
-   console.log(`No HOSTNAME enviropnmental variable specified + ${process.env.HOSTNAME}`);
+    process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
+    console.log(`No HOSTNAME enviropnmental variable specified + ${process.env.HOSTNAME}`);
 }
 
 if (!process.env.PORT) {
     process.env.PORT = "65013";
     console.log(`No PORT enviropnmental variable specified - setting my DEFAULT PORT ${process.env.PORT}`);
- }
- var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
+}
+var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
 
 
 if (!process.env.GENESIS) {
-   process.env.GENESIS = "71.202.2.184"
-   console.log(`No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to ${process.env.GENESIS}:${process.env.PORT}`);
+    process.env.GENESIS = "71.202.2.184"
+    console.log(`No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to ${process.env.GENESIS}:${process.env.PORT}`);
 }
 const GENESIS=process.env.GENESIS;
 
 if (!process.env.VERSION) {
-   process.env.VERSION = require('fs').readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
-   console.log(`No VERSION enviropnmental variable specified - setting to ${process.env.VERSION}`);
+    process.env.VERSION = fs.readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
+    console.log(`No VERSION enviropnmental variable specified - setting to ${process.env.VERSION}`);
 }
 var VERSION=process.env.VERSION||"NoVersion";
 
-
 if (!process.env.MYIP) {
-   console.log("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
-   process.env.MYIP = process.env.GENESIS
-//   MYIP();
-} else process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ''); //\trim string
+    console.log("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
+    process.env.MYIP = process.env.GENESIS  // MYIP();
+} else {
+    process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ''); //\trim string
+}
 var IP=process.env.MYIP
 
-var PUBLICKEY = process.env.PUBLICKEY||"noPublicKey";
+var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
 if (!PUBLICKEY)
    try {
-       PUBLICKEY = require('fs').readFileSync('../wireguard/publickey', 'utf8');
+       PUBLICKEY = fs.readFileSync('../wireguard/publickey', 'utf8');
        PUBLICKEY = PUBLICKEY.replace(/^\n|\n$/g, '');
        console.log("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
    } catch (err) {
@@ -72,13 +76,13 @@ if (!PUBLICKEY)
        PUBLICKEY = "deadbeef00deadbeef00deadbeef0013";
    }
 
-var GEO = process.env.HOSTNAME||"noHostName"; //passed into docker
+var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
-//------------------------ Environmentals loaded -----------------------
 
-//             start config/instrumentaton web server
+// Start config/instrumentaton web server
+
 var app = express();
 var server = app.listen(PORT, '0.0.0.0', function() {
     //TODO: add error handling here
@@ -91,60 +95,258 @@ var server = app.listen(PORT, '0.0.0.0', function() {
         console.log("Express app initialization failed");
     }
 }) //.on('error', console.log);
-//
-//
-//  Making of my own pulseGroup for members to connect to
-//
-//
 
-//Simplification - don't have separate genesis and me object from mintTable
-//  genesis node should always be mintTable[1]
-//  me should always be mintTable[0] (first item)
-//pulseGroup.me and pulseGroup.genesis should be there for convenience though
 
-const me:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);   //All nodes can count on 'me' always being present
-        //All nodes also start out ready to be a genesis node for others
-const genesis:MintEntry=makeMintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); 
-var pulse=makePulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
+// Define data structures used in the protocol
 
-//HERE these two me and genesis are the start of the mintTable
+/** Node configuraton details */
+interface MintEntryInterface {
+    mint: number;
+    geo: string;
 
-interface PulseGroup {
+    // wireguard configuration details
+    port: number;
+    ipaddr: string;
+    publickey: string;
+
+    state: string;
+    bootTimestamp: number;
+    version: string;
+    wallet: string;
+    lastPulseTimestamp: number;
+    lastOWL: number;
+};
+
+class MintEntry implements MintEntryInterface {
+    mint: number;
+    geo: string;
+
+    port: number;
+    ipaddr: string;
+    publickey: string;
+
+    state: string;
+    bootTimestamp: number;
+    version: string;
+    wallet: string;
+    lastPulseTimestamp: number;
+    lastOWL: number;
+    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string) {
+        this.mint = mint; 
+        this.geo = geo;
+        this.port = port;
+        this.ipaddr = incomingIP;  //set by genesis node on connection
+        this.publickey = publickey;
+        this.state = DEFAULT_START_STATE;  // this.state = mint==0 ? DEFAULT_START_STATE : "me";
+        this.bootTimestamp = now();  //RemoteClock on startup  ****
+        this.version = version;  //software version running on remote system ********
+        this.wallet = wallet;  // **
+        this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
+        this.lastOWL = NO_OWL;  //most recent OWL measurement
+    };
+};
+
+/** Incoming pulse definition, when deserialized form pulse message. Export for use in pulselayer. */
+export interface IncomingPulseInterface {
+    outgoingTimestamp: number;
+    pulseTimestamp: number;
+    msgType: string;
+    version:string;
+    geo: string;
+    group: string;
+    seq: number;
+    bootTimestamp: number;
+    mint: number;
+    owls: string;
+    owl: number;
+    lastMsg: string;
+};
+ 
+class IncomingPulse implements IncomingPulseInterface {
+    outgoingTimestamp: number;
+    pulseTimestamp: number;
+    msgType: string;
+    version:string;
+    geo: string;
+    group: string;
+    seq: number;
+    bootTimestamp: number;
+    mint: number;
+    owls: string;
+    owl: number;
+    lastMsg: string;
+    constructor (pulseTimestamp: number, outgoingTimestamp: number, msgType: string, 
+        version: string, geo: string, group: string, seq: number, bootTimestamp: number,
+        mint: number, owls: string, owl: number, lastMsg: string) {
+            this.pulseTimestamp = pulseTimestamp;
+            this.outgoingTimestamp = outgoingTimestamp;
+            this.msgType = msgType;
+            this.version = version,
+            this.geo = geo;
+            this.group = group;
+            this.seq = seq;
+            this.bootTimestamp = bootTimestamp;   //if genesis node reboots --> all node reload SW too
+            this.mint = mint;
+            this.owls = owls;
+            this.owl = owl;
+            this.lastMsg = lastMsg;
+        };
+};
+
+/** Contains stats for and relevent fields to configure wireguard. */
+interface PulseEntryInterface {
+    outgoingTimestamp: number;   //from message layer
+    pulseTimestamp: number;      //from message layer
+
+    mint: number; //Genesis node would send this 
+    geo: string; //record index (key) is <geo>:<genesisGroup>
+    group: string; //DEVPOS:DEVOP.1 for genesis node start
+    ipaddr: string; //DEVPOS:DEVOP.1 for genesis node start
+    port: number; //DEVPOS:DEVOP.1 for genesis node start
+    seq: number; //last sequence number heard
+    owl: number; //delete this when pulseTimestamp is >2 secs old
+    owls: string;
+    history: number[];   //history of last 60 owls measured
+    medianHistory: number[];  //history of 1-minute medians
+    
+    // stats
+    bootTimestamp: number;
+    version: string;
+    inPulses: number;
+    outPulses: number;
+    pktDrops: number;
+    lastMsg: string;
+};
+
+class PulseEntry implements PulseEntryInterface {
+    outgoingTimestamp: number;
+    pulseTimestamp: number;
+
+    mint: number;
+    geo: string;
+    group: string;
+    ipaddr: string;
+    port: number;
+    seq: number;
+    owl: number;
+    owls: string;
+    history: number[];
+    medianHistory: number[];
+
+    bootTimestamp: number;
+    version: string;
+    inPulses: number;
+    outPulses: number;
+    pktDrops: number;
+    lastMsg: string;
+
+    constructor(mint:number, geo:string, group:string, ipaddr:string, port:number, version:string) {
+        this.mint = mint;
+        this.geo = geo;
+        this.group = group;
+        this.ipaddr = ipaddr;
+        this.port = port;
+        this.seq = 1;
+        this.owl = NO_OWL;
+        this.pulseTimestamp = 0;
+        this.owls = "1";  //Startup - I am the only one here
+        this.history = [];
+        this.medianHistory =[];
+        
+        this.bootTimestamp = now(); //RemoteClock on startup  **** - we abandon the pulse when this changes
+        this.version = version, //software version running on sender's node    
+        //
+        this.inPulses = 0;
+        this.outPulses = 0;
+        this.pktDrops = 0;  
+        this.lastMsg = "";
+        this.outgoingTimestamp = 0;  //sender's timestamp on send
+    };
+};
+
+
+type Pulses = {[x: string]: PulseEntryInterface};
+
+interface PulseGroupInterface {
     groupName: string;
     groupOwner: string;
-    me: MintEntry;
-    genesis:MintEntry;
-    mintTable:MintEntry[];
-    pulses:PulseEntry[];
-    rc:string;
-    ts:string;
-    nodeCount:number;
-    nextMint:number;
-    cycleTime:number;
-    matrix: Number[][];     //OWL Measurements from participation in the pulseGroup [src][dst]=OWL
-    csvMatrix: Number[];   //OWLs in CSV format
-} 
-
-var myPulseGroup = {                 //my pulseGroup Configuration
-    groupName : me.geo+".1",    //
-    groupOwner : me.geo,
-
-    mintTable: [
-       me,genesis
-    ],           
-    pulses: {               //store statistics for this network segment
-        [genesis.geo + ":" + genesis.geo+".1"]: pulse
-    },
-    rc: "",
-    ts: now(), 
-    nodeCount : 1,      //how many nodes in this pulsegroup
-    nextMint : 2,      //assign IP. Allocate IP out of 10.10.0.<mint>
-    cycleTime : 1,      //pulseGroup-wide setting: number of seconds between pulses
-    matrix: [],
-    csvMatrix: []
+    me?: MintEntryInterface;
+    genesis?: MintEntryInterface;
+    mintTable: MintEntryInterface[];
+    pulses: Pulses;
+    rc: string;
+    ts: number;
+    nodeCount: number;
+    nextMint: number;
+    cycleTime: number;
+    matrix: number[][];  //OWL Measurements from participation in the pulseGroup [src][dst]=OWL
+    csvMatrix: number[];  //OWLs in CSV format
 };
-//pulseGroup.me=me;
-//pulseGroup.genesis=genesis;
+
+class PulseGroup implements PulseGroupInterface {
+    groupName: string;
+    groupOwner: string;
+    me?: MintEntryInterface;
+    genesis?: MintEntryInterface;
+    mintTable: MintEntryInterface[];
+    pulses: Pulses;
+    rc: string;
+    ts: number;
+    nodeCount: number;
+    nextMint: number;
+    cycleTime: number;
+    matrix: number[][];
+    csvMatrix: number[];
+    constructor (me: MintEntryInterface, genesis: MintEntryInterface, pulse: PulseEntryInterface) {
+        this.groupName = me.geo + ".1";
+        this.groupOwner = me.geo;
+        this.mintTable = [me, genesis];  // Simplification: me should always be mintTable[0], genesis node should always be mintTable[1]
+        //pulseGroup.me and pulseGroup.genesis should be there for convenience though
+        //this.pulseGroup.me = me;
+        //this.pulseGroup.genesis = genesis;
+        this.pulses = {               
+            [genesis.geo + ":" + genesis.geo+".1"]: pulse
+        };  //store statistics for this network segment
+        this.rc = "",
+        this.ts = now(), 
+        this.nodeCount = 1,  //how many nodes in this pulsegroup
+        this.nextMint = 2,  //assign IP. Allocate IP out of 10.10.0.<mint>
+        this.cycleTime = 1,  //pulseGroup-wide setting: number of seconds between pulses
+        this.matrix = [],
+        this.csvMatrix = []
+    };
+};
+
+
+interface AugmentedPulseGroupInterface extends PulseGroupInterface {
+    adminControl: string;
+
+    addNode: (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string) => MintEntry;
+    buildMatrix: () => void;
+    checkSWversion: () => void;
+    deleteNode: (ipaddr: string, port: number) => void;
+    forEachNode: (callback: CallableFunction) => void;
+    forEachMint: (callback: CallableFunction) => void;
+    getMint: (mint: number) => MintEntry | null;
+    isGenesisNode: () => Boolean;
+    pulse: () => void;
+    recvPulses: () => void;
+    storeOWL: (src:string, dst:string, owl:number) => void;
+    syncGenesisPulseGroup: () => void;
+    timeout: () => void;
+}
+
+type newPulseGroupCallback = (newPulseGroup: AugmentedPulseGroupInterface) => void;
+
+
+// Construct my own pulseGroup for others to connect to
+
+const me = new MintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);  //All nodes can count on 'me' always being present
+const genesis = new MintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);  //All nodes also start out ready to be a genesis node for others
+var pulse = new PulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
+var myPulseGroup = new PulseGroup(me, genesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
+
+
 var myPulseGroups={[me.geo+".1"] : myPulseGroup};
 myPulseGroups={}; //[me.geo+".1"] : pulseGroup};
 //TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -744,8 +946,6 @@ app.get('/version', function(req, res) {
     return;
 });
 
-
-var fs=require("fs");
 app.get('/graph/:src/:dst', function(req, res) {
     //console.log("********************** fetching '/'");
     //handleShowState(req, res); 
@@ -931,7 +1131,7 @@ app.get('/nodefactory', function(req, res) {
     //
     var newMint=myPulseGroup.nextMint++;
     console.log(geo+": mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = makePulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, VERSION);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
 
 
@@ -940,7 +1140,7 @@ app.get('/nodefactory', function(req, res) {
     //
     //  mintTable - first [0] is me and [1] is genesis
     // Here is a little code
-    var newNode=makeMintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
+    var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
     myPulseGroup.mintTable[newMint]=newNode;  //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
@@ -985,163 +1185,6 @@ app.get('/nodefactory', function(req, res) {
 
 });
 
- interface MintEntry {
-    mint: number;
-    geo: string;
-    port: number;
-    ipaddr:string;
-    publickey:string;
-    state:string;
-    bootTimestamp:number;
-    version:string;
-    wallet:string;
-    lastPulseTimestamp:number;
-    lastOWL:number;
-} 
- function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
-
-    return { 
-        mint: mint, 
-        geo: geo,
-//        state: mint==0?DEFAULT_START_STATE:"me",
-        state: DEFAULT_START_STATE,
-        bootTimestamp: now(), //RemoteClock on startup  ****
-        version: version,   //software version running on remote system ********
-        wallet: wallet,     // ** 
-        lastPulseTimestamp:0, //for timing out and validating lastOWL
-        lastOWL:NO_OWL,     //most recent OWL measurement
-        // wireguard configuration details
-        port: port,
-        ipaddr: incomingIP,     //set by genesis node on connection
-        publickey: publickey
-    }
- }
-
- //function addMintEntry() {
- //    var mintEntry=mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string
- //}
- 
- export interface PulseEntryInterface {
-    outgoingTimestamp: number;   //from message layer
-    pulseTimestamp: number;      //from message layer
-    msgType?: string;
-
-    mint: number;               //
-    geo: string;
-    group: string;
-    ipaddr?: string;
-    port?: number;
-    seq: number;
-    owl: number;
-    owls: string;
-    history?: number[];   //history of last 60 owls measured
-    medianHistory?: number[];  //history of 1-minute medians
-
-    bootTimestamp: number;
-    version: string;
-    inPulses?: number;
-    outPulses?: number;
-    pktDrops?: number;
-    lastMsg: string;
-} 
-
-export class IncomingPulse {
-    outgoingTimestamp: number;
-    pulseTimestamp: number;
-    msgType: string;
-    version:string;
-    geo: string;
-    group: string;
-    seq: number;
-    bootTimestamp: number;
-    mint: number;
-    owls: string;
-    owl: number;
-    lastMsg: string;
-    constructor (pulseTimestamp: number, outgoingTimestamp: number, msgType: string, 
-                 version: string, geo: string, group: string, seq: number, bootTimestamp: number,
-                 mint: number, owls: string, owl: number, lastMsg: string) {
-        this.pulseTimestamp = pulseTimestamp;
-        this.outgoingTimestamp = outgoingTimestamp;
-        this.msgType = msgType;
-        this.version = version,
-        this.geo = geo;
-        this.group = group;
-        this.seq = seq;
-        this.bootTimestamp = bootTimestamp;   //if genesis node reboots --> all node reload SW too
-        this.mint = mint;
-        this.owls = owls;
-        this.owl = owl;
-        this.lastMsg = lastMsg;
-    }
-}
-
-export class PulseEntry implements PulseEntryInterface {
-    outgoingTimestamp:number;
-    pulseTimestamp:number;
-    msgType: string;
-
-    mint: number;
-    geo: string;
-    group: string;
-    ipaddr?: string;
-    port?: number;
-    seq: number;
-    owl:number;
-    owls:string;
-    history?: number[];
-    medianHistory?: number[];
-
-    bootTimestamp:number;
-    version:string;
-    inPulses?: number;
-    outPulses?: number;
-    pktDrops?: number;
-    lastMsg:string;
-
-    constructor(incommingPulse: IncomingPulse) {
-        this.pulseTimestamp = incommingPulse.pulseTimestamp;
-        this.outgoingTimestamp = incommingPulse.outgoingTimestamp;
-        this.msgType = incommingPulse.msgType;
-        this.version = incommingPulse.version,
-        this.geo = incommingPulse.geo;
-        this.group = incommingPulse.group;
-        this.seq = incommingPulse.seq;
-        this.bootTimestamp = incommingPulse.bootTimestamp;   //if genesis node reboots --> all node reload SW too
-        this.mint = incommingPulse.mint;
-        this.owls = incommingPulse.owls;
-        this.owl = incommingPulse.owl;
-        this.lastMsg = incommingPulse.lastMsg;
-    }
-}
-
- //
- //  pulseEntry - contains stats for and relevent fields to configure wireguard
- //
- function makePulseEntry(mint:number, geo:string, group:string, ipaddr:string, port:number, version:string): PulseEntryInterface {
-    return { //one record per pulse - index = <geo>:<group>
-        mint: mint, //Genesis node would send this 
-        geo: geo, //record index (key) is <geo>:<genesisGroup>
-        group: group, //DEVPOS:DEVOP.1 for genesis node start
-        ipaddr: ipaddr, //DEVPOS:DEVOP.1 for genesis node start
-        port: port, //DEVPOS:DEVOP.1 for genesis node start
-        seq: 1, //last sequence number heard
-        owl: NO_OWL,     //delete this when pulseTimestamp is >2 secs old
-        pulseTimestamp:0,
-        owls: "1", //Startup - I am the only one here
-        history: [],
-        medianHistory:[],
-        // stats
-        bootTimestamp: now(), //RemoteClock on startup  **** - we abandon the pulse when this changes
-        version: version, //software version running on sender's node    
-        //
-        inPulses: 0,
-        outPulses: 0,
-        pktDrops: 0,  
-        lastMsg: "",
-        outgoingTimestamp: 0  //sender's timestamp on send
-    }
- }
 
 //
 //      get conmfiguration from the genesis node
@@ -1156,20 +1199,8 @@ console.log("getting pulseGroup from url="+url);
 //  newPulseGroup() - this will be the object creation from remote JSON routine
 //
 
-// interface PulseGroupInerface {
-//     nextMint: number;
-//     nodeCount: number;
-//     mintTable: MintEntry[];
-//     pulses: PulseGroup[];
-//     addNode: (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string) => MintEntry;
-//     deleteNode: (ipaddr: string, port: number) => void;
-//     forEachNode: (callback: CallableFunction) => void;
-//     forEachMint: (callback: CallableFunction) => void;
-// }
 
-// type newPulseGroupCallback = (newPulseGroup: PulseGroupInerface) => void;
-
-function getMyPulseGroupObject(ipaddr: string, port: number, callback) {
+function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseGroupCallback) {
     console.log(`getPulseGroup(): ipaddr=${ipaddr}:${port}`);
     var req = http.get(url, function (res) {
         var data = '', json_data;
@@ -1203,11 +1234,6 @@ function getMyPulseGroupObject(ipaddr: string, port: number, callback) {
     //console.log("http fetch done");
 }
 
-//
-//
-//
-
-
 
 /***************** MAIN ****************/
 
@@ -1225,8 +1251,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     //       attach convenience routines to the downloaded pulseGroup assignment
     //
-    newPulseGroup.forEachNode = function(callback) {for (var node in this.pulses) callback(node,this.pulses[node]);};
-    newPulseGroup.forEachMint = function(callback) {for (var mint in this.mintTable) callback(mint,this.mintTable[mint]);};
+    newPulseGroup.forEachNode = function(callback) {for (var node in this.pulses) callback(node, this.pulses[node]);};
+    newPulseGroup.forEachMint = function(callback) {for (var mint in this.mintTable) callback(mint, this.mintTable[mint]);};
     
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
     newPulseGroup.addNode = function(geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string) : MintEntry {
@@ -1234,10 +1260,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         var newMint=newPulseGroup.nextMint++;
         //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
         //TO ADD a PULSE: 
-        this.pulses[geo + ":" + group] = makePulseEntry(newMint, geo, group, ipaddr, port, VERSION);
+        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, VERSION);
         //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
         //TO ADD A MINT:
-        var newNode=makeMintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
+        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
         this.mintTable[newMint] = newNode;
         //console.log(`addNode() adding mint# ${newMint} = ${geo}:${ipaddr}:${port}:${newMint} added to ${group}`);
         //console.log("After adding node, pulseGroup="+dump(pulseGroup));
@@ -1263,7 +1289,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //
     newPulseGroup.buildMatrix=function() {
         //return;//turning off this feature until stable
-        var matrix:Number[][]=[];
+        var matrix: number[][] = [];
         for (var pulse in newPulseGroup.pulses) {
             const pulseEntry=newPulseGroup.pulses[pulse];
             //console.log("processing "+pulse);
@@ -1322,14 +1348,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         
         var ipary: string[] = [];
         var owls = "";
-        newPulseGroup.forEachNode(function(index: string, nodeEntry: PulseEntry) {
+        newPulseGroup.forEachNode(function(index: string, nodeEntry: PulseEntryInterface) {
             ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
             nodeEntry.outPulses++;
             
+            var flag="";
             if ( nodeEntry.owl == NO_OWL) owls+=nodeEntry.mint+",";
             else {
                 var medianOfMeasures=median(nodeEntry.history);
-                var flag="";
 
                 if (nodeEntry.medianHistory.length>0) {  //use medianHistory to identify a median to deviate from
                     var medianOfMedians=median(nodeEntry.medianHistory);
@@ -1344,7 +1370,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     flag="@" //deviation 30% from the median, flag
                 }
             }
-                owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
+            owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
        });
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
@@ -1385,7 +1411,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         return newPulseGroup.mintTable[0].geo==newPulseGroup.groupOwner;
     }
 
-    newPulseGroup.getMint=function(mint:number):MintEntry|null {
+    newPulseGroup.getMint=function(mint:number): MintEntry|null {
         return newPulseGroup.mintTable[mint];
         for (var m in newPulseGroup.mintTable) {
             if (newPulseGroup.mintTable[m]!=null) {
@@ -1417,7 +1443,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 if ( elapsedMSincePulse > 2 * newPulseGroup.cycleTime*1000 ) { //timeout after 2 seconds
                     //console.log("m="+m+" elapsedMSincePulse="+elapsedMSincePulse+" clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
 
-                    this.mintTable[m].owl=NO_OWL;  //we don't have a valid OWL
+                    this.mintTable[m].lastOWL=NO_OWL;  //we don't have a valid OWL
                     this.mintTable[m].state="NR";  //We don't know this node's state
 
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
@@ -1429,11 +1455,11 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //delete newPulseGroup.mintTable[m];   //did not work
-                            newPulseGroup.mintTable[m]=null;   //
+                            delete newPulseGroup.mintTable[m];
                         }
                     } else { /*  not genesis - only can time out genesis  */
                         console.log(`timing out genesis node reconnect newPulseGroup.mintTable=`+dump(newPulseGroup.mintTable));
-                        if (now()-newPulseGroup.mintTable[1].pulseTimestamp > 30*1000) {
+                        if (now()-newPulseGroup.mintTable[1].lastPulseTimestamp > 30*1000) {
                             console.log(`Here the node will timeout the genesis snode, and delete his pulseGroup`);
                         }
                         //we may timeout the group owner and kill the pulsegroup
@@ -1447,14 +1473,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             }
         }
         for (var p in this.pulses) {
-            if ((this.pulses[p]) && (this.pulses[p].lastPulseTimestamp!=0 ) && (this.pulses[p].mint!=1)) { //don't timeout genesis pulse
+            if ((this.pulses[p]) && (this.pulses[p].pulseTimestamp != 0) && (this.pulses[p].mint != 1)) { //don't timeout genesis pulse
                 var elapsedMSincePulse=(now()-this.pulses[p].pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2*newPulseGroup.cycleTime*1000) { //timeout after 2 seconds
                     //console.log(ts()+"timout(): Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo+":"+this.groupName);
                     this.pulses[p].owl=NO_OWL;
                     this.pulses[p].owls="1";
-                    this.pulses[p].pktLoss++;
+                    this.pulses[p].pktDrops++;
                     if (newPulseGroup.isGenesisNode()) {   /*GENESIS ONLY*/
                         //console.log(`I am Genesis Node timing out ${this.pulses[p].geo}`);
                         if ( elapsedMSincePulse > 10 * newPulseGroup.cycleTime*1000) {
@@ -1478,7 +1504,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         }
         
         if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
-            newPulseGroup.nodeCount=newPulseGroup.pulses.length;
+            newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
             console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=`+newPulseGroup.pulses.length);
         }
 //        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
@@ -1528,7 +1554,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //  recvPulses - 
     //
     newPulseGroup.recvPulses=function () {
-        recvPulses(me.port, function(incomingPulse:PulseEntry) {
+        recvPulses(me.port, function(incomingPulse: IncomingPulse) {
             //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
             //console.log("myPulseGroup="+dump(pulseGroup));
             var myPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
@@ -1559,7 +1585,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
             //we expect mintEntry to --> mint entry for this pulse
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
-            if (myPulseEntry!=null) {     
+            if (myPulseEntry !== undefined) {     
                 newPulseGroup.ts=now(); //We got a pulse - update the pulseGroup timestamp
 
                 //copy incoming pulse into my pulse record
@@ -1703,7 +1729,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         delete newPulseGroup.pulses[pulse];  //delete this pulse we have but groupOwner does not have
                     }
                 }
-                newPulseGroup.modeCount=newPulseGroup.pulses.length;
+                newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
 
             });
         });
@@ -1735,7 +1761,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     //else
     myPulseGroup=newPulseGroup; 
     myPulseGroups[newPulseGroup.groupName]=newPulseGroup;  //for now genesis node has no others
-    setTimeout(newPulseGroup.checkSWversion,5*1000);  //check that we have the best software
+    setTimeout(newPulseGroup.checkSWversion, 5*1000);  //check that we have the best software
 
 });
 //----------------- sender 

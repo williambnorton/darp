@@ -1,6 +1,7 @@
 "use strict";
 /** @module lib Common routines in one place */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MYVERSION = exports.Log = exports.dump = exports.YYMMDD = exports.ts = exports.now = exports.nth_occurrence = exports.median = void 0;
 var fs = require("fs");
 /**
  * Returns the statistical median of the number array.
@@ -73,6 +74,11 @@ function YYMMDD() {
     return _YYMMDD;
 }
 exports.YYMMDD = YYMMDD;
+/**
+ * Return JSON string
+ * @param {object} obj Object to convert to JSON
+ * @returns {string} Stringified object
+ */
 function dump(obj) {
     return JSON.stringify(obj, null, 2);
 }
@@ -95,8 +101,8 @@ function Log(logMsg, filename) {
 }
 exports.Log = Log;
 /**
- * Returns the Build version filename
- * @returns {string} Build version filename
+ * Returns the Build version
+ * @returns {string} Build version
  */
 function MYVERSION() {
     var darpdir = process.env.DARPDIR;
@@ -107,7 +113,7 @@ function MYVERSION() {
     }
     var files = fs.readdirSync(darpdir).forEach(function (fn) {
         var Build = fn.match(/Build.*/);
-        if (Build != null) {
+        if (Build !== null) {
             darpBuild = Build[0];
         }
     });
