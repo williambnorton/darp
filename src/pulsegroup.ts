@@ -473,6 +473,9 @@ function instrumentation() {    //this should get its own file
     
     txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
     txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+    txt += '            console.log("srcMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
+    txt += '            console.log("destMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
+
     txt += '            if (srcOwlMintEntry && destOwlMintEntry) {'
     txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
     txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
