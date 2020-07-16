@@ -317,14 +317,12 @@ function instrumentation() {
     txt += '             if (flag) {'; //We have an OWL measure that should be investigated
     txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
     txt += '                 console.log("srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
-    /***
-        txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
-        txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);'
-        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
-        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
-        txt += '                   console.log("FINISHED HIGHLIGHTING");'
-        txt += '               } else {console.log("src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
-        ***/
+    txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
+    txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);';
+    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
+    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
+    txt += '                   console.log("FINISHED HIGHLIGHTING");';
+    txt += '               } else {console.log("src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
     txt += '            } else {'; //if flag
     txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
     /***
