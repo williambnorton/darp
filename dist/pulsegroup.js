@@ -309,7 +309,7 @@ function instrumentation() {
     txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
     txt += '               var link="<a target=_blank href="+gurl+">";';
     txt += '            }';
-    //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
+    txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     txt += '               $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+destOwlMintEntry);';

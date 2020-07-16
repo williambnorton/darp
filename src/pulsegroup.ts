@@ -488,7 +488,7 @@ function instrumentation() {    //this should get its own file
     txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
     txt += '               var link="<a target=_blank href="+gurl+">";';
     txt += '            }'
-//txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
+    txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
     txt += '               $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
 
 
