@@ -494,24 +494,24 @@ function instrumentation() {    //this should get its own file
 
 
     txt += '           if (flag) {';  //We have an OWL measure that should be investigated
-    //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
-    txt += '               if (srcOwlMintEntry && dstMintEntry) {';
+    //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+destOwlMintEntry);';
+    txt += '               if (srcOwlMintEntry && destOwlMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
 
     //txt += '               } else {';
-    //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    //txt += '                  $("."+srcMintEntry.mint+"-"+destOwlMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
     //txt += '            } else {'; //no flag set on this remove BUSY class
-    //txt += '               if (srcMintEntry && dstMintEntry) {';
-    //txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow");';
+    //txt += '               if (srcMintEntry && destOwlMintEntry) {';
+    //txt += '                   $("."+srcMintEntry.mint+"-"+destOwlMintEntry.mint).css("border-color", "yellow");';
     //txt += '               } else {';
-    //txt += '                  $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "gray");';
+    //txt += '                  $("."+srcMintEntry.mint+"-"+destOwlMintEntry.mint).css("border-color", "gray");';
     //txt += '               }';
     txt += '            } else {'; //if flag
-    txt += '               if (srcOwlMintEntry && dstMintEntry) {';
-    //txt += '                   console.log("UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+dstMintEntry.mint+"="+owl);'
+    txt += '               if (srcOwlMintEntry && destOwlMintEntry) {';
+    //txt += '                   console.log("UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';    
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
 
