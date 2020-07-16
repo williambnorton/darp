@@ -418,7 +418,7 @@ function instrumentation() {    //this should get its own file
     txt += 'var url="http://'+me.ipaddr+":"+me.port+'/pulseGroups";';  //For instruementation show multiple pulseGorups
     //txt += 'console.log("getJSON url="+url);';
     txt += '   $.getJSON(url, function(config) {'
-    txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
+   // txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
 
@@ -462,7 +462,7 @@ function instrumentation() {    //this should get its own file
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
     txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");'
-    txt += '    console.log("pulseEntry="+JSON.stringify(pulseGroup,null,2)+JSON.stringify(pulseEntry,null,2));'
+    //txt += '    console.log("pulseEntry="+JSON.stringify(pulseGroup,null,2)+JSON.stringify(pulseEntry,null,2));'
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    for(var owlEntry in owls) {';
     txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
@@ -475,54 +475,52 @@ function instrumentation() {    //this should get its own file
     
     txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
     txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-    txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
-    txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
+    //txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
+    //txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
 
     txt += '            if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {'
-    txt += '               console.log("non-null src and dest entries");'
+    //txt += '               console.log("non-null src and dest entries");'
     txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
     txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
     txt += '               var link="<a target=_blank href="+gurl+">";';
-    txt += '               console.log("Finished non-null");';
+    //txt += '               console.log("Finished non-null");';
 
     txt += '            } else {'
-    txt += '               console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);'
+    //txt += '               console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);'
     txt += '               var gurl="http://noMint";';
     txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
     txt += '               var link="<a target=_blank href="+gurl+">";';
     txt += '            }'
-    txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
+    //txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
     txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
-    txt += '                     console.log("After link flag="+flag);';
+    //txt += '                     console.log("After link flag="+flag);';
 
 
 
 
 
     txt += '             if (flag) {';  //We have an OWL measure that should be investigated
-    txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+    //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+    //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
     
 
     txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
-    txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);'
+    //txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");'; 
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
-    txt += '                   console.log("FINISHED HIGHLIGHTING");'
-    txt += '               } else {console.log("src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
+    //txt += '                   console.log("FINISHED HIGHLIGHTING");'
+    txt += '               }'
     
     txt += '            } else {'; //if flag
-    txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-/***
+    //txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+
     txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
-    txt += '                   console.log("NO FLAG UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
+//    txt += '                   console.log("NO FLAG UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';    
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
-    txt += '                   console.log("FINISHED UN-HIGHLIGHTING");'
-    txt += '               }else {console.log("No Flag and src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
-***/
+//    txt += '                   console.log("FINISHED UN-HIGHLIGHTING");'
+    txt += '               }' 
     txt += '            }';
-    txt += '                     console.log("After flag section");';
 
 
 
@@ -531,7 +529,6 @@ function instrumentation() {    //this should get its own file
     txt += '     }'; //we don't do this
     txt += '}';
         //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-        txt += '                     console.log("End of new section");';
 
 
 
