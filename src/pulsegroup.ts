@@ -460,14 +460,9 @@ function instrumentation() {    //this should get its own file
     //Now we are trying to fill the matrix using only the owls - removing matrix ugliness.
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
-    //txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));'
-
-    //txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-    //txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    for(var owlEntry in owls) {';
     txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
-    txt +='        ';
     txt +='        var owl=-99999;';
     txt += '       var strOwl=owls[owlEntry].split("=")[1];';
     txt += '       if (typeof strOwl != "undefined") {';  //<srcMint>[=<owl>[<flag>]],...
@@ -499,22 +494,12 @@ function instrumentation() {    //this should get its own file
     txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
-
-    //txt += '               } else {';
-    //txt += '                  $("."+srcMintEntry.mint+"-"+destOwlMintEntry.mint).css("border-color", "gray");';
     txt += '               }';
-    //txt += '            } else {'; //no flag set on this remove BUSY class
-    //txt += '               if (srcMintEntry && destOwlMintEntry) {';
-    //txt += '                   $("."+srcMintEntry.mint+"-"+destOwlMintEntry.mint).css("border-color", "yellow");';
-    //txt += '               } else {';
-    //txt += '                  $("."+srcMintEntry.mint+"-"+destOwlMintEntry.mint).css("border-color", "gray");';
-    //txt += '               }';
     txt += '            } else {'; //if flag
     txt += '               if (srcOwlMintEntry && destOwlMintEntry) {';
     //txt += '                   console.log("UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';    
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
-
     txt += '               }';
     txt += '            }';
     txt += '        }';
@@ -522,19 +507,7 @@ function instrumentation() {    //this should get its own file
     txt += '}';
         //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
 
-/*
 
-
-
-    txt += '    console.log("Checking "+pulseEntry.geo+" pulsed Owls "+owls+" srcMintEntry="+srcMintEntry+" dstMintEntry="+dstMintEntry);'
-    txt += '    '
-    txt += '    if (srcMintEntry && dstMintEntry) {';
-    txt += '       $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("background-color", "gray");';
-    txt += '    }';
-    txt += '}';
-//}
-   
-  */  
 
 
 
