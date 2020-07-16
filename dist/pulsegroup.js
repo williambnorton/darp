@@ -299,12 +299,12 @@ function instrumentation() {
     txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
     txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
     txt += '            if (srcOwlMintEntry && destOwlMintEntry) {';
-    txt += '               var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destMintEntry.geo;';
-    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
+    txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
+    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
     txt += '               var link="<a target=_blank href="+gurl+">";';
     txt += '            } else {';
     txt += '               var gurl="http://noMint";';
-    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
+    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
     txt += '               var link="<a target=_blank href="+gurl+">";';
     txt += '            }';
     //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
