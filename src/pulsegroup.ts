@@ -460,6 +460,7 @@ function instrumentation() {    //this should get its own file
     //Now we are trying to fill the matrix using only the owls - removing matrix ugliness.
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
+    txt += '    console.log("pulseEntry="+JSON.stringify(pulseEntry,null,2));'
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    for(var owlEntry in owls) {';
     txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
