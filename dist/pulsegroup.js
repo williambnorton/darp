@@ -315,8 +315,8 @@ function instrumentation() {
     txt += '                     console.log("After link flag="+flag);';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
     txt += '             console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    txt += '             console.log("srcOwlMintEntry.mint"+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
-    txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
+    txt += '             console.log("srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+    txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
     txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulse.mint+"="+strOwl);';
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
@@ -331,11 +331,12 @@ function instrumentation() {
     txt += '                   console.log("FINISHED UN-HIGHLIGHTING");';
     txt += '               }else {console.log("No Flag and src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
     txt += '            }';
+    txt += '                     console.log("After flag section");';
     txt += '        }';
     txt += '     }'; //we don't do this
     txt += '}';
     //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
-    txt += '                     console.log("After flag section");';
+    txt += '                     console.log("End of new section");';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
