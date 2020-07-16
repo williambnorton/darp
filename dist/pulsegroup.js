@@ -296,8 +296,8 @@ function instrumentation() {
     txt += '           var flag=strOwl.match(regex);';
     txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
     txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-    txt += '            console.log("srcMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));';
-    txt += '            console.log("destMintEntry="+JSON.stringify(destOwlMintEntry,null,2));';
+    txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));';
+    txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));';
     txt += '            if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
     txt += '               console.log("non-null src and dest entries");';
     txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
@@ -321,7 +321,7 @@ function instrumentation() {
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
     txt += '               } else {console.log("src or dest mint is null "+srcOwlMintEntry+destOwlMintEntry);}';
     txt += '            } else {'; //if flag
-    txt += '             console.log("UN-flagged entry "+strOwl+" "+srcMintEntry +" "+destOwlMintEntry);';
+    txt += '             console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
     txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
     txt += '                   console.log("NO FLAG UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);';
     txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';
