@@ -244,35 +244,48 @@ function instrumentation() {
     txt += '   $.getJSON(url, function(config) {';
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
-    //u update the matrix using jquery selectors
-    txt += 'for (var src in pulseGroup.matrix) {';
-    txt += '    for (var dest in pulseGroup.matrix[src]) {';
-    txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
-    txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
-    txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
-    txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){';
-    txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
-    //    txt += '             var link="<a target=_blank href="+gurl+">";';
-    txt += '             var myDiv=\'<div class="\'+srcMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
-    txt += '             var link="<a target=_blank href="+gurl+">";';
-    //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
-    txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
-    //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else {';
-    txt += '              $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
-    txt += '              console.log("COULD NOT FIND MINT "+src+srcMintEntry+dest+destMintEntry);';
-    txt += '         }';
-    //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
-    //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
-    txt += '    }';
-    txt += '}';
-    //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+    /*****
+     //u update the matrix using jquery selectors
+     txt += 'for (var src in pulseGroup.matrix) {';
+     txt += '    for (var dest in pulseGroup.matrix[src]) {';
+     txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
+     txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
+     txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
+     txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){'
+     txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
+ 
+ 
+ 
+ 
+ //    txt += '             var link="<a target=_blank href="+gurl+">";';
+     txt += '             var myDiv=\'<div class="\'+srcMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
+     txt += '             var link="<a target=_blank href="+gurl+">";';
+ 
+     //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
+     txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
+ 
+     //    txt += '         } else console.log("COULD NOT FIND MINT");';
+     txt += '         } else {';
+     txt += '              $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
+     txt += '              console.log("COULD NOT FIND MINT "+src+srcMintEntry+dest+destMintEntry);';
+ 
+     txt += '         }'
+ 
+ 
+ 
+     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
+ //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
+ 
+     txt += '    }';
+     txt += '}';
+     //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+ **/
     //Now we are trying to fill the matrix using only the owls - removing matrix ugliness.
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
     //txt += '    console.log("pulseEntry.mintTable ="+JSON.stringify(pulseEntry.mintTble,null,2));'
-    txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-    txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
+    //txt += '    var srcMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+    //txt += '    var dstMintEntry=pulseGroup.mintTable[0];';
     txt += '    var owls=pulseEntry.owls.split(",");';
     txt += '    for(var owlEntry in owls) {';
     txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
@@ -283,11 +296,24 @@ function instrumentation() {
     txt += '           owl=parseInt(strOwl);';
     txt += '           var regex = /@/;';
     txt += '           var flag=strOwl.match(regex);';
+    txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
+    txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+    txt += '            if (srcOwlMintEntry && destOwlMintEntry) {';
+    txt += '               var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destMintEntry.geo;';
+    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
+    txt += '               var link="<a target=_blank href="+gurl+">";';
+    txt += '            } else {';
+    txt += '               var gurl="http://noMint";';
+    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
+    txt += '               var link="<a target=_blank href="+gurl+">";';
+    txt += '            }';
+    //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
+    txt += '               $("."+src+"-"+dest).html(myDiv+link+owl+" ms</a></div>");';
     txt += '           if (flag) {'; //We have an OWL measure that should be investigated
     //txt += '             console.log("found a flagged entry "+strOwl+" "+srcMintEntry +" "+dstMintEntry);';
     txt += '               if (srcMintEntry && dstMintEntry) {';
     txt += '                   console.log("HIGHLIGHTING class="+srcMintEntry.mint+"-"+dstMintEntry.mint+"="+strOwl);';
-    //txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);'
+    txt += '                   console.log("."+srcMintEntry.mint+"-"+dstMintEntry.mint);';
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).addClass("BUSY");'; //TODO set OWL as text here
     txt += '                   $("."+srcMintEntry.mint+"-"+dstMintEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
     //txt += '               } else {';
@@ -1050,8 +1076,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                 var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                 //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                if ((nodeEntry.owl > 3) && (deviation > DEVIATION_THRESHOLD)) {
-                    console.log(lib_1.ts() + (nodeEntry.mint + "-" + newPulseGroup.mintTable[0].mint + " " + nodeEntry.owl + "@  geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
+                if ((nodeEntry.owl > 4) && (deviation > DEVIATION_THRESHOLD)) {
+                    console.log(lib_1.ts() + ("Flagging " + nodeEntry.mint + "-" + newPulseGroup.mintTable[0].mint + " " + nodeEntry.owl + "@  geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
                     flag = "@"; //deviation 30% from the median, flag
                 }
             }
