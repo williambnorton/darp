@@ -43,19 +43,19 @@ $(function() {
                 // split the contents by new line
             const lines = data.split(/\r?\n/);
 
-            var last60:string[]=[];  //store 600 samples - ten minutes for each peer
+            var last300:string[]=[];  //store 600 samples - ten minutes for each peer
             // print all lines
             lines.forEach((line:string) => {
                 //console.log("*"+line);
-                last60.push(line);
-                if (last60.length>60)  //eventually TODO: graph from pulseEntry.medianHistory + pulseEntry.history
-                    last60.shift();  //drop first entries
+                last300.push(line);
+                if (last300.length>300)  //eventually TODO: graph from pulseEntry.medianHistory + pulseEntry.history
+                    last300.shift();  //drop first entries
             });
-            txt+=last60.join("\n");
+            txt+=last300.join("\n");
             //console.log(`last60=${dump(last60)}`);
 
             //save only last 60 samples of raw data'*/
-            fs.writeFile(path, last60.join("\n"), (err) => {
+            fs.writeFile(path, last300.join("\n"), (err) => {
                 if (err) return console.log(err);
             });
             //console.log(`found / data file ${path}:${txt}`);
