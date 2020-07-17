@@ -13,18 +13,18 @@ function grapher(src, dest) {
             var data = fs.readFileSync(path, 'UTF-8').toString();
             // split the contents by new line
             var lines = data.split(/\r?\n/);
-            var last600 = []; //store 600 samples - ten minutes for each peer
+            var last60 = []; //store 600 samples - ten minutes for each peer
             // print all lines
             lines.forEach(function (line) {
                 //console.log("*"+line);
-                last600.push(line);
-                if (last600.length > 600)
-                    last600.shift(); //drop first entries
+                last60.push(line);
+                if (last60.length > 60) //eventually TODO: graph from pulseEntry.medianHistory + pulseEntry.history
+                    last60.shift(); //drop first entries
             });
-            txt += last600.join("\n");
+            txt += last60.join("\n");
             //console.log(`last60=${dump(last60)}`);
             //save only last 60 samples of raw data'*/
-            fs.writeFile(path, last600.join("\n"), function (err) {
+            fs.writeFile(path, last60.join("\n"), function (err) {
                 if (err)
                     return console.log(err);
             });

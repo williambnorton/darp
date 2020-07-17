@@ -619,7 +619,8 @@ function instrumentation() {    //this should get its own file
 
 
 
-   txt += '         }'
+    txt += '         }'
+    txt += '     '
 
    txt += '   }).fail(function() { ';
    txt += '       console.log("JSON Fetch error");';
@@ -681,7 +682,10 @@ function instrumentation() {    //this should get its own file
         txt+="</table>";
 
 
-
+        txt += '<br><h2>Exceptional Network Paths</h2>';
+        txt += '<table class="exceptionalpaths">';
+        txt += '<tr><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>ms</th><th>to Z Side</th><th>total ms</th><th>ms better</th>   </tr>'
+        txt += '</table>'
 
 
 

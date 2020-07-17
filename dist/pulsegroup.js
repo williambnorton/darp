@@ -400,6 +400,7 @@ function instrumentation() {
     //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
     //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
     txt += '         }';
+    txt += '     ';
     txt += '   }).fail(function() { ';
     txt += '       console.log("JSON Fetch error");';
     txt += '        $(document.body).css( "background", "pink" );';
@@ -451,6 +452,10 @@ function instrumentation() {
             }
         }
         txt += "</table>";
+        txt += '<br><h2>Exceptional Network Paths</h2>';
+        txt += '<table class="exceptionalpaths">';
+        txt += '<tr><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>ms</th><th>to Z Side</th><th>total ms</th><th>ms better</th>   </tr>';
+        txt += '</table>';
         //
         //  Externalize pulse structures 
         //
