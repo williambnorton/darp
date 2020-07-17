@@ -564,14 +564,16 @@ function instrumentation() {    //this should get its own file
     txt += '        var destEntry=pulseGroup.pulses[destP];';
     txt += '        var direct=getOwl(srcEntry.mint,destEntry.mint);';  //get direct latency measure
     //txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);'
+    txt += '        if (destEntry!=srcEntry) '
     txt += '        for (iP in pulseGroup.pulses) {'
     txt += '            var intermediaryEntry=pulseGroup.pulses[iP];';
-    txt += '            var srcToIntermediary=getOwl(srcEntry.mint,intermediaryEntry.mint);'
-    txt += '            var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);'
-    txt += '            var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;'
-    txt += '            var delta=intermediaryPathLatency-direct;'
-    txt += '            console.log(srcEntry.mint+"-"+destEntry.mint+"="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-    
+    txt += '            if (intermediaryEntry!=srcEntry && intermediaryEntry!=destEntry) {'
+    txt += '               var srcToIntermediary=getOwl(srcEntry.mint,intermediaryEntry.mint);'
+    txt += '               var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);'
+    txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;'
+    txt += '               var delta=intermediaryPathLatency-direct;'
+    txt += '               console.log(srcEntry.mint+"-"+destEntry.mint+"="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+    txt += '            }';
     txt += '        }';
     txt += '    }';
     txt += '}';
