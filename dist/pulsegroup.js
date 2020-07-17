@@ -352,6 +352,8 @@ function instrumentation() {
     txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];';
     txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);';
     txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);';
+    txt += '    if (owl=="") owl=-99999;';
+    txt += '    else owl=parseInt(owl);';
     //txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);'
     txt += ' return owl;';
     txt += '}';
