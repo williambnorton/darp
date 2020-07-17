@@ -1375,16 +1375,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //console.log(`nodeEntry.medianHistory.length=${nodeEntry.medianHistory.length}`);
                 if (nodeEntry.medianHistory.length>0) {  //use medianHistory to identify a median to deviate from
                     var medianOfMedians=median(nodeEntry.medianHistory);
-                } else {
-                    var medianOfMedians=median(nodeEntry.history);
-                }
-                //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
-                var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
-                //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-//                if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {
-                  if (Math.abs(nodeEntry.owl-medianOfMedians)>10) {  //flagg if deviation is > 10ms - we can improve that
+                    //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
+                    var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
+                    //console.log(`geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
+//                  if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {  //flag if off by 30% from median
+                    if (Math.abs(nodeEntry.owl-medianOfMedians)>10) {  //flagg if deviation is > 10ms - we can improve that
                         console.log(ts()+`Flagging ${nodeEntry.mint}-${newPulseGroup.mintTable[0].mint} ${nodeEntry.owl}@  geo=${nodeEntry.geo} to ${me.geo} nodeEntry.owl=${nodeEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                    flag="@" //deviation 30% from the median, flag
+                        flag="@" //deviation 30% from the median, flag
+                    }
                 }
             }
             owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
