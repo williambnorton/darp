@@ -558,8 +558,12 @@ function instrumentation() {    //this should get its own file
     txt += ' return owl;'
     txt += '}'
 
-    txt += 'for (var src in pulseGroup.pulses) {';
-    txt += 'console.log("Here would process "+src);'
+    txt += 'for (var srcP in pulseGroup.pulses) {';
+    txt += '    var srcEntry=pulseGroup.pulses[srcP];'
+    txt += '    for (var destP in pulseGroup.pulses) {';
+    txt += '        var destEntry=pulseGroup.pulses[destP];'
+    txt += '        console.log("Here we would process "+srcEntry.mint+"-"+destEntry.mint);'
+    txt += '     }';
     txt += '}';
     
     //txt += '    for (var dest in pulseGroup.pulses) {'
@@ -1592,7 +1596,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             res.on("end", () => {
                 var genesisVersion = JSON.parse(body);
                 var mySWversion=MYVERSION(); //find the Build.*
-                //console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(genesisVersion)+" MY SW Version="+mySWversion+" me.version="+me.version);
+                console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(genesisVersion)+" MY SW Version="+mySWversion+" me.version="+me.version);
                 if (genesisVersion != mySWversion) {
                     console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD

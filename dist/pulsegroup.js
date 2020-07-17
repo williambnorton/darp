@@ -355,8 +355,12 @@ function instrumentation() {
     txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);';
     txt += ' return owl;';
     txt += '}';
-    txt += 'for (var src in pulseGroup.pulses) {';
-    txt += 'console.log("Here would process "+src);';
+    txt += 'for (var srcP in pulseGroup.pulses) {';
+    txt += '    var srcEntry=pulseGroup.pulses[srcP];';
+    txt += '    for (var destP in pulseGroup.pulses) {';
+    txt += '        var destEntry=pulseGroup.pulses[destP];';
+    txt += '        console.log("Here we would process "+srcEntry.mint+"-"+destEntry.mint);';
+    txt += '     }';
     txt += '}';
     //txt += '    for (var dest in pulseGroup.pulses) {'
     //txt += '         for (var intermediary in pulseGroup.pulses) {'
@@ -1241,7 +1245,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
             res.on("end", function () {
                 var genesisVersion = JSON.parse(body);
                 var mySWversion = lib_1.MYVERSION(); //find the Build.*
-                //console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(genesisVersion)+" MY SW Version="+mySWversion+" me.version="+me.version);
+                console.log(lib_1.ts() + "checkSWversion(): " + " genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + me.version);
                 if (genesisVersion != mySWversion) {
                     console.log(lib_1.ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + " .......process exitting");
                     process.exit(36); //SOFTWARE RELOAD
