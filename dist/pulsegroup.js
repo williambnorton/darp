@@ -367,7 +367,7 @@ function instrumentation() {
     txt += '            var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);';
     txt += '            var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
     txt += '            var delta=intermediaryPathLatency-direct;';
-    txt += '            console.log("direct="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
+    txt += '            if (delta<0) console.log("BETTER PATH direct="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
     txt += '        }';
     txt += '    }';
     txt += '}';
