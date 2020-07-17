@@ -92,7 +92,6 @@ export function dump(obj: object): string {
 export function Log(logMsg: string, filename?: string) {
     if (typeof filename == "undefined")
         filename = 'NOIA.log';
-    var d = new Date();
     filename = filename + '.log';
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, (err) => {
@@ -112,7 +111,7 @@ export function MYVERSION(): string | null {
         console.log(`MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...`);
         process.exit(36); //reload SW - this should not happen
     }
-    let files = fs.readdirSync(darpdir).forEach((fn: string) => { 
+    fs.readdirSync(darpdir).forEach((fn: string) => { 
         const Build=fn.match(/Build.*/);
         if (Build !== null) {
             darpBuild=Build[0];

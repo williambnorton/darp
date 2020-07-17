@@ -1,6 +1,6 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
-import { dump, now, ts, nth_occurrence, MYVERSION, YYMMDD, Log, median } from './lib';
+import { dump, now, ts, MYVERSION, Log, median } from './lib';
 import { sendPulses, recvPulses } from './pulselayer';
 import { grapher, grapherStoreOwl } from './grapher';
 import express = require('express');
@@ -15,11 +15,11 @@ const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
 const NO_OWL=-99999;
 const REFRESH=120;  //Every 2 minutes force refresh
 const OWLS_DISPLAYED=30;
-const TEST=true;
-const DEFAULT_SHOWPULSES = "0"
-const DEVIATION_THRESHOLD=20;     //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
-//const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
-//const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
+// const TEST=true;
+// const DEFAULT_SHOWPULSES = "0"
+// const DEVIATION_THRESHOLD=20;  //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
+// const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
+// const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
 const DEFAULT_START_STATE="NR"; 
 console.log(ts()+"pulsegroup.ts(): ALL NODES START IN "+DEFAULT_START_STATE+" Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
@@ -266,6 +266,7 @@ class PulseEntry implements PulseEntryInterface {
 
 
 type Pulses = {[x: string]: PulseEntryInterface};
+type PulseGroups = {[x: string]: PulseGroup};
 
 interface PulseGroupInterface {
     groupName: string;
@@ -345,13 +346,8 @@ const me = new MintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);  //All n
 const genesis = new MintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET);  //All nodes also start out ready to be a genesis node for others
 var pulse = new PulseEntry(1, GEO, GEO+".1", IP, PORT, VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new PulseGroup(me, genesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
+var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 
-
-var myPulseGroups={[me.geo+".1"] : myPulseGroup};
-myPulseGroups={}; //[me.geo+".1"] : pulseGroup};
-//TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
-//TO ADD A MINT: pulseGroup.mintTable[36]=me;
-//pulseGroup.mintTable=genesis;
 
 Log("--------------------------Starting with my own pulseGroup="+dump(myPulseGroup));
 //pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
@@ -719,7 +715,6 @@ function instrumentation() {    //this should get its own file
         //console.log(ts()+"                            pulses="+dump(pulses));
         for (var a in pulseGroup.pulses) {
             var pulseEntry = pulseGroup.pulses[a];
-            var mint = pulseEntry.mint;
             //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
             //console.log("pulseEntry="+dump(pulseEntry));
             var rowMintEntry=pulseGroup.mintTable[pulseEntry.mint];
@@ -1098,9 +1093,9 @@ app.get('/nodefactory', function(req, res) {
         return console.log(ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);;
     console.log("incomingIP="+incomingIP+" clientIncomingIP="+clientIncomingIP+" req.myip="+req.query.myip);
 
-    function filter(incomingIP:string) {
-        //here we filter (ignore) incoming IPs with global blacklist/whitelist
-    }
+    // function filter(incomingIP:string) {
+    //     //here we filter (ignore) incoming IPs with global blacklist/whitelist
+    // }
 
     //console.log("req="+dump(req));
     var version = String(req.query.version);
@@ -1193,15 +1188,15 @@ app.get('/nodefactory', function(req, res) {
     //                              pulseNode MEMBER NODE
     //
 
-    //console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
-    //console.log(ts() + "nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
-    //console.log(ts() + "nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
+    // console.log(ts() + "nodefactory configuring new node publickey=" + publickey + " me.publickey=" + me.publickey);
+    // console.log(ts() + "nodefactory: Received connection from " + geo + "(" + incomingIP + ")");
+    // console.log(ts() + "nodeFactory sending newNodeConfig =" + dump(newNodePulseGroup));
     
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); //send mint:0 mint:1 *mint:N groupEntry *entryN
-    //console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
-//    pulseGroups=[pulseGroup];
-    var pulseGroups={[me.geo+".1"] : myPulseGroup};
+    // console.log("After Cloning and delivery of member config, my genesis pulseGroup="+dump(pulseGroup));
+    // pulseGroups=[pulseGroup];
+    // var pulseGroups={[me.geo+".1"] : myPulseGroup};
 
 });
 
@@ -1222,8 +1217,8 @@ console.log("getting pulseGroup from url="+url);
 
 function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseGroupCallback) {
     console.log(`getPulseGroup(): ipaddr=${ipaddr}:${port}`);
-    var req = http.get(url, function (res) {
-        var data = '', json_data;
+    http.get(url, function (res) {
+        var data = '';
         res.on('data', function (stream) {
             data += stream;
         });
@@ -1248,7 +1243,7 @@ function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseG
 
             callback(newPulseGroup);
             console.log("getPulseGroup():- call setWireguard to generate wireguard config for me and genesis node:");
-    //        setWireguard(); //set up initial wireguard comfig
+            // setWireguard(); //set up initial wireguard comfig
         });
     });
     //console.log("http fetch done");
@@ -1312,9 +1307,9 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         var matrix: number[][] = [];
         for (var pulse in newPulseGroup.pulses) {
             const pulseEntry=newPulseGroup.pulses[pulse];
-            //console.log("processing "+pulse);
-//        newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
-            var pulseFreshness=now()-pulseEntry.pulseTimestamp;
+            // console.log("processing "+pulse);
+            // newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
+            // var pulseFreshness=now()-pulseEntry.pulseTimestamp;
             //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
             if ((now()-pulseEntry.pulseTimestamp) < 2*1000) {  // VALID PULSE
                 
@@ -1337,14 +1332,14 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = pulseEntry.owl  //pulse measured to me
             } else {                                        //OLD PULSE - CLEAR these entries
                 console.log(`${pulseEntry.geo} did not respond. Entering NO_OWL for all values to this node`);
-                //   node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                //newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
                 //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
                 //});
 
-//                 if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                //console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
+                // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
 
                 if (typeof matrix[pulseEntry.mint]=="undefined")
                     matrix[pulseEntry.mint]=[];
@@ -1652,17 +1647,17 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                         var m=parseInt(ary[owlEntry].split("=")[0]);
                         var strOwl=ary[owlEntry].split("=")[1];
                         if (typeof strOwl=="undefined") strOwl="0";
-                        var owl=parseInt(strOwl);
                         //console.log("Searching for mint "+m);
                         var srcMintEntry=newPulseGroup.mintTable[m];
                         var dstMintEntry=newPulseGroup.mintTable[myPulseEntry.mint];
-
+                        
                         if (srcMintEntry == null || dstMintEntry==null) {
                             console.log(`Owner announced a NEW MINT ENTRY ${m} - syncing with genesis node for new mintTable and pulses for its config`);
                             newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                             return;
                         }
-                        //newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry.geo,owl);  //store owls into my local filestore
+                        // var owl=parseInt(strOwl);
+                        // newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry.geo,owl);  //store owls into my local filestore
                     }
                     
 
@@ -1696,7 +1691,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
         if (newPulseGroup.isGenesisNode()) return console.log(ts()+"Genesis node does not sync with itself");
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/"+this.groupName+"/"+newPulseGroup.mintTable[0].mint);
-        var thisGroup=this.groupName;
         console.log("syncGenesisPulseGroup(): url="+url);
 
         http.get(url, function (res) {
@@ -1729,7 +1723,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
 
                 var pulses=groupOwnerPulseGroup.pulses;
                 for (var pulse in pulses) {             //Add all mints that we don't have
-                    var genesisPulseEntry=pulses[pulse];
                     if (typeof newPulseGroup.pulses[pulse] == "undefined") {
                         console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
                         console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
@@ -1740,7 +1733,6 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     }
                 }
                 for (var pulse in newPulseGroup.pulses) {  //Delete all node we have that the group owner does not
-                    var myPulseEntry=newPulseGroup.pulses[pulse];
                     if (typeof pulses[pulse] == "undefined") {
                         console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
                         console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
