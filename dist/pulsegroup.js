@@ -1104,10 +1104,10 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                     var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                     var delta = Math.abs(medianOfMedians - nodeEntry.owl);
-                    console.log("geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
+                    console.log("pulse(): geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                     //                  if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {  //flag if off by 30% from median
                     if (delta > 10) { //flagg if deviation is > 10ms - we can improve that
-                        console.log(lib_1.ts() + ("Flagging " + nodeEntry.mint + "-" + newPulseGroup.mintTable[0].mint + " " + nodeEntry.owl + "@  delta=" + delta + " geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
+                        console.log(lib_1.ts() + ("pulse(): Flagging " + nodeEntry.mint + "-" + newPulseGroup.mintTable[0].mint + "=" + nodeEntry.owl + "  delta=" + delta + " geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
                         flag = "@"; //deviation 30% from the median, flag
                     }
                 }
