@@ -1,6 +1,6 @@
 /** @module pulselayer send "pulse" UDP message to all nodes */
 
-import { nth_occurrence, MYVERSION } from './lib';
+import { nth_occurrence } from './lib';
 import { sendMsg, recvMsg } from './messagelayer';
 import { IncomingPulseInterface } from './pulsegroup';
 

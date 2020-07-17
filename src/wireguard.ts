@@ -1,17 +1,19 @@
 /** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
 
-import { dump, now, ts } from "./lib";
+import { ts } from "./lib";
 //import pulseRedis = require('redis');
 
 
 const WGDIR="/etc/wireguard";  //this is the direcvtory to build and evolve wg config files
 //const redisClient = pulseRedis.createClient(); //creates a new client
 
+
 export function getPublicKey() {
     return require('fs').readFileSync(WGDIR+'/publickey', 'utf8');
 }
 
-function wgdump() {
+
+export function wgdump() {
     var wgconfig="";
     try {
         wgconfig=require('fs').readFileSync(WGDIR+'/darp0.conf', 'utf8');
@@ -20,6 +22,7 @@ function wgdump() {
     }
     console.log("wgconfig="+wgconfig);
 }
+
 
 export function setWireguard() {
 
@@ -31,6 +34,7 @@ export function setWireguard() {
     } catch (err) {
         BASECONFIG="deadbeef00deadbeef00deadbeef0012";
     }
+    console.log("setWireguard(): BASECONFIG="+BASECONFIG);
 
     //console.log("BASECONFIG="+BASECONFIG);
     //# Created by ./configWG.bash Fri Mar 6 20:46:57 UTC 2020
@@ -44,6 +48,7 @@ export function setWireguard() {
     } catch (err) {
         PUBLICKEY="deadbeef00deadbeef00deadbeef0012";
     }
+    console.log("setWireguard(): PUBLICKEY="+PUBLICKEY);
 
     //for each group in me.pulseGroups
     console.log(ts()+"setWireguard(): TODO: Here we would ....Set up wireguard files and docker forever script...");

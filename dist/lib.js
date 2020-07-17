@@ -7,7 +7,8 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MYVERSION = exports.Log = exports.dump = exports.YYMMDD = exports.ts = exports.now = exports.nth_occurrence = exports.median = void 0;
 var fs = require("fs");
 /**
  * Returns the statistical median of the number array.
@@ -98,7 +99,6 @@ exports.dump = dump;
 function Log(logMsg, filename) {
     if (typeof filename == "undefined")
         filename = 'NOIA.log';
-    var d = new Date();
     filename = filename + '.log';
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, function (err) {
@@ -118,7 +118,7 @@ function MYVERSION() {
         console.log("MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...");
         process.exit(36); //reload SW - this should not happen
     }
-    var files = fs.readdirSync(darpdir).forEach(function (fn) {
+    fs.readdirSync(darpdir).forEach(function (fn) {
         var Build = fn.match(/Build.*/);
         if (Build !== null) {
             darpBuild = Build[0];
