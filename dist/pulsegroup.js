@@ -329,9 +329,38 @@ function instrumentation() {
     txt += '               }';
     txt += '            }';
     txt += '        }';
-    txt += '     }'; //we don't do this
+    txt += '     }';
     txt += '}';
-    //console.log(`matrix src ${m} - dst ${nodeEntry.mint} = ${owl}`);
+    txt += '/* now create extraordinary path table */';
+    txt += 'function getOWLfrom(srcMint, owls) {';
+    txt += '   var ary = owls.split(",");';
+    txt += '    for (var i = 0; i < ary.length; i++) {';
+    txt += '        var mint = ary[i].split("=")[0];';
+    txt += '        if (mint == srcMint) {';
+    txt += '            var owl = ary[i].split("=")[1];';
+    txt += '            if (typeof owl != "undefined" && owl != null)';
+    txt += '                return owl;';
+    txt += '              else';
+    txt += '                  return "";';
+    txt += '         }';
+    txt += '    }';
+    txt += '    return "";';
+    txt += '}';
+    txt += 'function getOwl(srcMint,destMint) {';
+    txt += '    var srcMintEntry=pulseGroup.mintTable[srcMint];';
+    txt += '    if (srcMintEntry==null) return console.log("getOwl() can not find mintTableEntry for "+srcMint);';
+    txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];';
+    txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);';
+    txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);';
+    txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);';
+    txt += ' return owl;';
+    txt += '}';
+    txt += 'for (var src in pulseGroup.pulses) {';
+    txt += 'console.log("Here would process "+src);';
+    txt += '}';
+    //txt += '    for (var dest in pulseGroup.pulses) {'
+    //txt += '         for (var intermediary in pulseGroup.pulses) {'
+    //txt += '             var direct=getOwl(pulseGroup.pulses[intermediary].mint'
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
