@@ -4,9 +4,10 @@ import fs = require('fs');
 
 export function grapher(src:string,dest:string) {
     //console.log(`grapher(): src=${src} det=${dest}`);
-var txt=`
+//<meta http-equiv="refresh" content="10">
+
+    var txt=`
 <!DOCTYPE HTML>
-<meta http-equiv="refresh" content="10">
 <html>
 <head>
 <title>${src}-${dest}</title> 
@@ -16,7 +17,7 @@ var txt=`
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest}"
+			text: "${src}-${dest} ${new Date()}"
 		},
 		axisY: {
 			title: "latency in ms",
