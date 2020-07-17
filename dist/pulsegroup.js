@@ -1289,7 +1289,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                 //TODO: This is where authentication to this pulseGroup happens
                 if (mintEntry == null) { //} && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
                     console.log(lib_1.ts() + "recvPulses(): IGNORING PULSE Found pulseEntry " + incomingPulse.geo + ":" + incomingPulse.group + " but Could not find mint for this pulse... Will re-synch with genesis to get credentials for " + incomingPulse.geo);
-                    newPulseGroup.adminControl = 'RESYNCH';
+                    if (!newPulseGroup.isGenesisNode())
+                        newPulseGroup.adminControl = 'RESYNCH';
                     return; //we are done     
                 }
                 if (mintEntry.geo != incomingPulse.geo) {
