@@ -360,7 +360,7 @@ function instrumentation() {
     txt += '    for (var destP in pulseGroup.pulses) {';
     txt += '        var destEntry=pulseGroup.pulses[destP];';
     txt += '        var direct=getOwl(srcEntry.mint,destEntry.mint);'; //get direct latency measure
-    txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);';
+    //txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);'
     txt += '        for (iP in pulseGroup.pulses) {';
     txt += '            var intermediaryEntry=pulseGroup.pulses[iP];';
     txt += '            var srcToIntermediary=getOwl(srcEntry.mint,intermediaryEntry.mint);';
