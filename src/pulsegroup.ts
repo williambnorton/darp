@@ -570,7 +570,7 @@ function instrumentation() {    //this should get its own file
     txt += '            var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);'
     txt += '            var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;'
     txt += '            var delta=intermediaryPathLatency-direct;'
-    txt += '            if (delta<0) console.log("BETTER PATH direct="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+    txt += '            console.log(srcEntry.mint+"-"+destEntry.mint+"="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     
     txt += '        }';
     txt += '    }';
