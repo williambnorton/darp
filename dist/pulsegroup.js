@@ -359,8 +359,17 @@ function instrumentation() {
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
     txt += '    for (var destP in pulseGroup.pulses) {';
     txt += '        var destEntry=pulseGroup.pulses[destP];';
-    txt += '        console.log("Here we would process "+srcEntry.mint+"-"+destEntry.mint);';
-    txt += '     }';
+    txt += '        var direct=getOwl(srcEntry.mint,destEntry.mint);'; //get direct latency measure
+    txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);';
+    txt += '        for (iP in pulseGroup.pulses) {';
+    txt += '            var intermediaryEntry=pulseGroup.pulses[iP];';
+    txt += '            var srcToIntermediary=getOwl(srcEntry.mint,intermediaryEntry.mint);';
+    txt += '            var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);';
+    txt += '            var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
+    txt += '            var delta=intermediaryPathLatency-direct;';
+    txt += '            console.log("direct="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
+    txt += '        }';
+    txt += '    }';
     txt += '}';
     //txt += '    for (var dest in pulseGroup.pulses) {'
     //txt += '         for (var intermediary in pulseGroup.pulses) {'
