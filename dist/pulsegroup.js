@@ -339,12 +339,12 @@ function instrumentation() {
     txt += '        if (mint == srcMint) {';
     txt += '            var owl = ary[i].split("=")[1];';
     txt += '            if (typeof owl != "undefined" && owl != null)';
-    txt += '                return owl;';
+    txt += '                return parseInt(owl);';
     txt += '              else';
-    txt += '                  return "";';
+    txt += '                  return -99999;';
     txt += '         }';
     txt += '    }';
-    txt += '    return "";';
+    txt += '    return -99999;';
     txt += '}';
     txt += 'function getOwl(srcMint,destMint) {';
     txt += '    var srcMintEntry=pulseGroup.mintTable[srcMint];';
@@ -352,8 +352,6 @@ function instrumentation() {
     txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];';
     txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);';
     txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);';
-    txt += '    if (owl=="") owl=-99999;';
-    txt += '    else owl=parseInt(owl);';
     txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);';
     txt += ' return owl;';
     txt += '}';
