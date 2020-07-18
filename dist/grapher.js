@@ -4,7 +4,7 @@ var lib_1 = require("./lib");
 var fs = require("fs");
 function grapher(src, dest) {
     //console.log(`grapher(): src=${src} det=${dest}`);
-    var txt = "\n<!DOCTYPE HTML>\n<meta http-equiv=\"refresh\" content=\"10\">\n<html>\n<head>\n<title>" + src + "-" + dest + "</title> \n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery-1.11.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery.canvasjs.min.js\"></script>\n<script type=\"text/javascript\">\n$(function() {\n\t$(\".chartContainer\").CanvasJSChart({\n\t\ttitle: {\n\t\t\ttext: \"" + src + "-" + dest + " " + new Date() + "\"\n\t\t},\n\t\taxisY: {\n\t\t\ttitle: \"latency in ms\",\n\t\t\tincludeZero: false\n\t\t},\n\t\taxisX: {\n\t\t\tinterval: 1\n\t\t},\n\t\tdata: [\n\t\t{\n\t\t\ttype: \"line\", //try changing to column, area\n\t\t\ttoolTipContent: \"{label}: {y} ms\",\n\t\t\tdataPoints: [\n                //fetched data from file goes here\n                ";
+    var txt = "\n<!DOCTYPE HTML>\n<meta http-equiv=\"refresh\" content=\"60\">\n<html>\n<head>\n<title>" + src + "-" + dest + "</title> \n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery-1.11.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery.canvasjs.min.js\"></script>\n<script type=\"text/javascript\">\n$(function() {\n\t$(\".chartContainer\").CanvasJSChart({\n\t\ttitle: {\n\t\t\ttext: \"" + src + "-" + dest + " " + new Date() + "\"\n\t\t},\n\t\taxisY: {\n\t\t\ttitle: \"latency in ms\",\n\t\t\tincludeZero: false\n\t\t},\n\t\taxisX: {\n\t\t\tinterval: 1\n\t\t},\n\t\tdata: [\n\t\t{\n\t\t\ttype: \"line\", //try changing to column, area\n\t\t\ttoolTipContent: \"{label}: {y} ms\",\n\t\t\tdataPoints: [\n                //fetched data from file goes here\n                ";
     var myYYMMDD = lib_1.YYMMDD();
     var path = src + "-" + dest + "." + myYYMMDD + '.txt';
     try {
@@ -18,7 +18,7 @@ function grapher(src, dest) {
             lines.forEach(function (line) {
                 //console.log("*"+line);
                 last300.push(line);
-                if (last300.length > 300) //eventually TODO: graph from pulseEntry.medianHistory + pulseEntry.history
+                if (last300.length > 300 * 12) //12 5 minute samples=1 last 1 hour of second by second data
                     last300.shift(); //drop first entries
             });
             txt += last300.join("\n");
