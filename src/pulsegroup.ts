@@ -530,9 +530,9 @@ function instrumentation() {    //this should get its own file
 
 
 
+    txt += '/* here create extraordinary path table */';
 
-    
-    txt += '/* now create extraordinary path table */'
+    /*
     txt += 'function getOWLfrom(srcMint, owls) {';
     txt += '   var ary = owls.split(",");';
     txt += '    for (var i = 0; i < ary.length; i++) {';
@@ -581,7 +581,7 @@ function instrumentation() {    //this should get its own file
     txt += '        }';
     txt += '    }';
     txt += '}';
-    
+    */
 
 
 
