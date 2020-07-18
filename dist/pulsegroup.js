@@ -240,7 +240,7 @@ function instrumentation() {
     txt += '        console.log( "window loaded" );';
     txt += '     });';
     txt += 'var nodeCountLastTime=0;'; //We start out with ourselves only
-    txt += 'var sleepTime=0;'; //We start out with ourselves only
+    txt += 'var sleepTime=0;';
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";'; //For instruementation show multiple pulseGorups
     //txt += 'console.log("getJSON url="+url);';
@@ -459,7 +459,7 @@ function instrumentation() {
     txt += '        $(document.body).css( "background", "pink" );';
     txt += '   });';
     txt += 'var d = new Date();sleepTime=1000-(d.getTime()+1000)%1000;';
-    txt += '    console.log("sleepTime between fetches="+sleepTime);';
+    //txt += '    console.log("sleepTime between fetches="+sleepTime);';  
     txt += "    setTimeout(fetchState,sleepTime);";
     //    txt += "    setTimeout(fetchState,1000);";  
     txt += "}";
