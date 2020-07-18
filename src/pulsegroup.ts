@@ -539,10 +539,12 @@ function instrumentation() {    //this should get its own file
     txt += '        var mint = ary[i].split("=")[0];';
     txt += '        if (mint == srcMint) {';
     txt += '            var owl = ary[i].split("=")[1];';
-    txt += '            if (typeof owl != "undefined" && owl != null)';
+    txt += '            if (typeof owl != "undefined" && owl != null) {';
+    txt += '                console.log("returning srcMint="+srcMint+" owl="+owl);'
     txt += '                return owl;';
-    txt += '              else';
+    txt += '              } else {';
     txt += '                  return -99999;';  //no OWL measurement
+    txt += '              }';
     txt += '         }';
     txt += '    }';
     txt += '    return -99999;'; //did not find the srcMint
@@ -553,6 +555,8 @@ function instrumentation() {    //this should get its own file
     txt += '    if (srcMintEntry==null) return console.log("getOwl() can not find mintTableEntry for "+srcMint);'
     txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];'; 
     txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);'; 
+    txt += '    console.log("getOwl(): destPulseEntry.owls="+destPulseEntry.owls);';
+
     txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);'; 
     txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);'
     txt += ' return owl;'
