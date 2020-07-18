@@ -234,6 +234,7 @@ function instrumentation() {
     txt += "<script>";
     txt += '    $( document ).ready(function() {';
     txt += '       console.log( "document loaded" );';
+    txt += '       fetchState();';
     txt += '    });';
     txt += '    $( window ).on( "load", function() {';
     txt += '        console.log( "window loaded" );';
@@ -409,8 +410,8 @@ function instrumentation() {
     txt += "             var timeStr=d.toString().split(' ')[4];";
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
     //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+"ms</h1></div>" );'; //we show this epoch
-    txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
+    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms</h1></div>" );'; //we show this epoch
+    txt += '             $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
     //      Render table from information in the state fetched from node
     //
     txt += '      var totalEarn=0.000000;';
@@ -461,7 +462,6 @@ function instrumentation() {
     txt += "    setTimeout(fetchState,sleepTime);";
     //    txt += "    setTimeout(fetchState,1000);";  
     txt += "}";
-    txt += 'setTimeout(fetchState,1000);';
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
