@@ -540,12 +540,12 @@ function instrumentation() {    //this should get its own file
     txt += '        if (mint == srcMint) {';
     txt += '            var owl = ary[i].split("=")[1];';
     txt += '            if (typeof owl != "undefined" && owl != null)';
-    txt += '                return parseInt(owl);';
+    txt += '                return owl;';
     txt += '              else';
-    txt += '                  return -99999;';
+    txt += '                  return -99999;';  //no OWL measurement
     txt += '         }';
     txt += '    }';
-    txt += '    return -99999;';
+    txt += '    return -99999;'; //did not find the srcMint
     txt += '}'
     
     txt += 'function getOwl(srcMint,destMint) {'
