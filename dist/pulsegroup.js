@@ -450,7 +450,19 @@ function instrumentation() {
     txt += '       console.log("JSON Fetch error");';
     txt += '        $(document.body).css( "background", "pink" );';
     txt += '   });';
-    txt += "    setTimeout(fetchState,1000);";
+    /*
+    export function now(): number {
+     var d = new Date();
+     return d.getTime();
+ }
+         var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
+         console.log(`sleepTime=${sleepTime}`);
+         setTimeout( newPulseGroup.pulse, sleepTime );
+    */
+    txt += 'var d = new Date();var sleepTime=1000-(d.getTime()+1000)%1000;';
+    txt += '    console.log("sleepTime between fetches="+sleepTime);';
+    txt += "    setTimeout(fetchState,sleepTime);";
+    //    txt += "    setTimeout(fetchState,1000);";  
     txt += "}";
     txt += 'setTimeout(fetchState,1000);';
     txt += '</script>';
