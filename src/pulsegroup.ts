@@ -1276,7 +1276,7 @@ app.get('/nodefactory', function(req, res) {
 //
 //      get conmfiguration from the genesis node
 //
-var url=encodeURI("http://"+process.env.GENESIS+":"+process.env.PORT+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP+"&ts="+now());
+var url=encodeURI("http://"+GENESIS+":"+GENESISPORT+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP+"&ts="+now());
 console.log("getting pulseGroup from url="+url);
 
 //var hostname=process.env.HOSTNAME||"noHostName"
