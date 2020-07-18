@@ -403,7 +403,7 @@ function instrumentation() {
     txt += "             var timeStr=d.toString().split(' ')[4];";
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
     //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + "</h1></div>" );'; //we show this epoch
+    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+"</h1></div>" );'; //we show this epoch
     txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
     //      Render table from information in the state fetched from node
     //
@@ -450,16 +450,7 @@ function instrumentation() {
     txt += '       console.log("JSON Fetch error");';
     txt += '        $(document.body).css( "background", "pink" );';
     txt += '   });';
-    /*
-    export function now(): number {
-     var d = new Date();
-     return d.getTime();
- }
-         var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
-         console.log(`sleepTime=${sleepTime}`);
-         setTimeout( newPulseGroup.pulse, sleepTime );
-    */
-    txt += 'var d = new Date();var sleepTime=1000-(d.getTime()+1000)%1000;';
+    txt += 'var d = new Date();sleepTime=1000-(d.getTime()+1000)%1000;';
     txt += '    console.log("sleepTime between fetches="+sleepTime);';
     txt += "    setTimeout(fetchState,sleepTime);";
     //    txt += "    setTimeout(fetchState,1000);";  
