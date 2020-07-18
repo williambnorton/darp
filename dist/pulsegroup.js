@@ -240,6 +240,7 @@ function instrumentation() {
     txt += '        console.log( "window loaded" );';
     txt += '     });';
     txt += 'var nodeCountLastTime=0;'; //We start out with ourselves only
+    txt += 'var sleepTime=0;'; //We start out with ourselves only
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";'; //For instruementation show multiple pulseGorups
     //txt += 'console.log("getJSON url="+url);';

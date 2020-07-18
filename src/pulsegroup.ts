@@ -416,6 +416,7 @@ function instrumentation() {    //this should get its own file
     txt += '        console.log( "window loaded" );';
     txt += '     });';
     txt += 'var nodeCountLastTime=0;' //We start out with ourselves only
+    txt += 'var sleepTime=0;' //We start out with ourselves only
     
     txt += 'function fetchState() {'
     
