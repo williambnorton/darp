@@ -1208,7 +1208,8 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                     else { /*  not genesis - only can time out genesis  */
                         console.log("timing out genesis node reconnect newPulseGroup.mintTable=" + lib_1.dump(newPulseGroup.mintTable));
                         if (lib_1.now() - newPulseGroup.mintTable[1].lastPulseTimestamp > 30 * 1000) {
-                            console.log("Here the node will timeout the genesis snode, and delete his pulseGroup");
+                            console.log("Here the node will timeout the genesis snode, and delete his pulseGroup... for now - genesis node is paying us, isn't here.Exitting.");
+                            process.exit(36);
                         }
                         //we may timeout the group owner and kill the pulsegroup
                         //if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
@@ -1236,6 +1237,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             if (newPulseGroup.mintTable[this.pulses[p].mint] == null) { //delete this.pulses[p];
+                                console.log(lib_1.ts() + "DELETEING pulse " + p); //log when timing out to debug
                                 delete this.pulses[p];
                             }
                             else {
