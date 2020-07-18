@@ -31,6 +31,11 @@ if (!process.env.HOSTNAME) {
     process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
     console.log("No HOSTNAME enviropnmental variable specified + " + process.env.HOSTNAME);
 }
+if (!process.env.GENESIS) {
+    console.log("No GENESIS enviropnmental variable specified - EXITTING");
+    process.exit(86);
+}
+var GENESIS = process.env.GENESIS;
 if (!process.env.PORT) {
     process.env.PORT = "65013";
     console.log("No PORT enviropnmental variable specified - setting my DEFAULT PORT " + process.env.PORT);
@@ -41,11 +46,6 @@ if (process.env.GENESISPORT) {
     GENESISPORT = parseInt(process.env.GENESISPORT); //Unless otherwise specified GENESIS PORT is same as user's port
     console.log("Setting GENESISPORT to " + GENESISPORT);
 }
-if (!process.env.GENESIS) {
-    console.log("No GENESIS enviropnmental variable specified - EXITTING");
-    process.exit(86);
-}
-var GENESIS = process.env.GENESIS;
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
     console.log("No VERSION enviropnmental variable specified - setting to " + process.env.VERSION);
@@ -1021,7 +1021,7 @@ function getMyPulseGroupObject(ipaddr, port, callback) {
 //  This is really a pulseGroup object creator - should instead return an object woith attached methods and config from genesis node
 //
 //      as in, when incoming JOIN message comes in, pulseGroups[n++]=new pulseGroup(GENESIS, PORT, [PUBLICKEY], ... )
-getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
+getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
     console.log("callback from my or someone else's pulseGroup=" + lib_1.dump(newPulseGroup));
     //
