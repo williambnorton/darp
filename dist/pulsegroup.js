@@ -232,6 +232,12 @@ function instrumentation() {
     txt += "</style>";
     txt += "<script src=\"https://code.jquery.com/jquery-3.5.1.min.js\" integrity=\"sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=\" crossorigin=\"anonymous\"></script>";
     txt += "<script>";
+    txt += '    $( document ).ready(function() {';
+    txt += '       console.log( "document loaded" );';
+    txt += '    });';
+    txt += '    $( window ).on( "load", function() {';
+    txt += '        console.log( "window loaded" );';
+    txt += '     });';
     txt += 'var nodeCountLastTime=0;'; //We start out with ourselves only
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";'; //For instruementation show multiple pulseGorups
@@ -403,7 +409,7 @@ function instrumentation() {
     txt += "             var timeStr=d.toString().split(' ')[4];";
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
     //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+"</h1></div>" );'; //we show this epoch
+    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+"ms</h1></div>" );'; //we show this epoch
     txt += '             $("#raw").text( "pulseGroup=["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
     //      Render table from information in the state fetched from node
     //
