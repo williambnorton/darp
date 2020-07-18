@@ -36,9 +36,14 @@ if (!process.env.PORT) {
     console.log("No PORT enviropnmental variable specified - setting my DEFAULT PORT " + process.env.PORT);
 }
 var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
+var GENESISPORT = PORT;
+if (process.env.GENESISPORT) {
+    GENESISPORT = parseInt(process.env.GENESISPORT); //Unless otherwise specified GENESIS PORT is same as user's port
+    console.log("Setting GENESISPORT to " + GENESISPORT);
+}
 if (!process.env.GENESIS) {
-    process.env.GENESIS = "71.202.2.184";
-    console.log("No GENESIS enviropnmental variable specified - setting DEFAULT GENESIS and PORT to " + process.env.GENESIS + ":" + process.env.PORT);
+    console.log("No GENESIS enviropnmental variable specified - EXITTING");
+    process.exit(86);
 }
 var GENESIS = process.env.GENESIS;
 if (!process.env.VERSION) {
