@@ -827,7 +827,7 @@ function instrumentation() {    //this should get its own file
 
                 txt += "</tr>";
         }
-        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">'+pulseGroup.groupName+' Earnings $' + total.toFixed(6) + '</td></tr>';
+        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">'+pulseGroup.groupName+' Earnings $' + total.toFixed(6) + '</td></tr>';
         txt += "</table>";
     }
 
