@@ -415,7 +415,7 @@ function instrumentation() {    //this should get its own file
     //txt += 'console.log("getJSON url="+url);';
     txt += '   $.getJSON(url, function(config) {'
     txt += '        $(document.body).css( "background", "white" );'
-   // txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
+    txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
 
