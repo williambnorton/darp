@@ -1125,7 +1125,7 @@ getMyPulseGroupObject(GENESIS, PORT, function (newPulseGroup) {
         //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
         pulselayer_1.sendPulses(pulseMessage, ipary);
         var sleepTime = 1000 - (lib_1.now() + 1000) % 1000; // start pulse around on the second
-        //console.log(`sleepTime=${sleepTime}`);
+        console.log("sleepTime=" + sleepTime);
         setTimeout(newPulseGroup.pulse, sleepTime);
         //        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
         //var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
