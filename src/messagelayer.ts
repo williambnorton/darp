@@ -1,7 +1,8 @@
 /** @module messagelayer send and receive message to group of nodes */
 
-import { now } from './lib';
+import { now,ts } from './lib';
 import dgram = require('dgram');
+import { exit } from 'process';
 
 
 // Create the UDP message bus for communication with all nodes
@@ -26,8 +27,12 @@ export var messagelayer_stats = {
 // RECEIVER CODE
 
 server.on('error', (err: Error) => {
-    console.log(`messagelayer server error:\n${err.stack}`);
-    server.close();
+    console.log(ts()+`messagelayer server error:\n${err.stack}`);
+    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
+    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
+    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
+    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
+    //server.close();
 });
 
 server.on('listening', () => {
@@ -79,8 +84,13 @@ export function sendMsg(outgoingMessage: string, nodelist: string[]) {  //API ro
         //console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
         client.send(message, 0, message.length, port, ipaddr, (err: Error | null) => {
             if (err) {
-                console.log(`messagelayer sendMessage(): ERROR`);
-                client.close();
+                console.log(ts()+`messagelayer sendMessage(): ERROR`);
+                console.log(ts()+`messagelayer sendMessage(): ERROR`);
+                console.log(ts()+`messagelayer sendMessage(): ERROR`);
+                console.log(ts()+`messagelayer sendMessage(): ERROR`);
+                console.log(ts()+`messagelayer sendMessage(): ERROR`);
+                //client.close();
+                //exit(36);
             }
         });
     });

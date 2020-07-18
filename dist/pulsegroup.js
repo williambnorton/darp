@@ -353,7 +353,7 @@ function instrumentation() {
     txt += '    if (srcMintEntry==null) return console.log("getOwl() can not find mintTableEntry for "+srcMint);';
     txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];';
     txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);';
-    txt += '    console.log("getOwl(): destPulseEntry.owls="+destPulseEntry.owls);';
+    txt += '    console.log("getOwl(): destMint="+destPulseEntry.mint+" destPulseEntry.owls="+destPulseEntry.owls);';
     txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);';
     txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);';
     txt += ' return owl;';

@@ -20,8 +20,12 @@ exports.messagelayer_stats = {
 };
 // RECEIVER CODE
 server.on('error', function (err) {
-    console.log("messagelayer server error:\n" + err.stack);
-    server.close();
+    console.log(lib_1.ts() + ("messagelayer server error:\n" + err.stack));
+    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
+    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
+    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
+    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
+    //server.close();
 });
 server.on('listening', function () {
     var address = server.address();
@@ -67,8 +71,13 @@ function sendMsg(outgoingMessage, nodelist) {
         //console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
-                console.log("messagelayer sendMessage(): ERROR");
-                client.close();
+                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
+                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
+                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
+                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
+                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
+                //client.close();
+                //exit(36);
             }
         });
     });
