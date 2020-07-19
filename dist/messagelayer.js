@@ -1,8 +1,11 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
 var lib_1 = require("./lib");
+var logger_1 = require("./logger");
 var dgram = require("dgram");
+//import { exit } from 'process';
 // Create the UDP message bus for communication with all nodes
 // All others only have to deal with message, we timestamp and queue it here
 var server = dgram.createSocket('udp4');
@@ -20,11 +23,8 @@ exports.messagelayer_stats = {
 };
 // RECEIVER CODE
 server.on('error', function (err) {
-    console.log(lib_1.ts() + ("messagelayer server error:\n" + err.stack));
-    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
-    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
-    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
-    console.log(lib_1.ts() + "messagelayer server error - server recev error - not sure if we should continue...");
+    logger_1.logger.error("messagelayer server error:\n" + err.stack);
+    logger_1.logger.error("messagelayer server error - server recev error - not sure if we should continue...");
     //server.close();
 });
 server.on('listening', function () {
@@ -44,7 +44,7 @@ function recvMsg(port, callback) {
         var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = lib_1.now();
         exports.messagelayer_stats.inOctets += msg.length;
         exports.messagelayer_stats.inMsgs++;
-        //console.log(`messagelayer Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
+        logger_1.logger.debug("messagelayer server received: " + msg + " from " + rinfo.address + ":" + rinfo.port); //INSTRUMENTATION POINT
         var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
         exports.messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);
@@ -68,14 +68,10 @@ function sendMsg(outgoingMessage, nodelist) {
         exports.messagelayer_stats.lastOutTimestamp = lib_1.now();
         exports.messagelayer_stats.lastOutMsg = timestampedMsg;
         exports.messagelayer_stats.outOctets += message.length;
-        //console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
+        logger_1.logger.debug("messagelayer client sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
-                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
-                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
-                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
-                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
-                console.log(lib_1.ts() + "messagelayer sendMessage(): ERROR");
+                logger_1.logger.error("messagelayer sendMessage()");
                 //client.close();
                 //exit(36);
             }

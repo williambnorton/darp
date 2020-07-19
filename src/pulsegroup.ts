@@ -1,6 +1,7 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
-import { dump, now, ts, MYVERSION, Log, median } from './lib';
+import { dump, now, MYVERSION, Log, median } from './lib';
+import { logger } from './logger';
 import { sendPulses, recvPulses } from './pulselayer';
 import { grapher, grapherStoreOwl } from './grapher';
 import express = require('express');
@@ -21,24 +22,23 @@ const OWLS_DISPLAYED=30;
 // const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 // const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
 const DEFAULT_START_STATE="NR"; 
-console.log(ts()+"pulsegroup.ts(): ALL NODES START IN "+DEFAULT_START_STATE+" Mode");
+logger.info("pulsegroup: ALL NODES START IN "+DEFAULT_START_STATE+" Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
-
 
 // Load environment variables
 
 if (!process.env.DARPDIR) {
-    console.log("No DARPDIR enviropnmental variable specified ");
+    logger.warning("No DARPDIR environmental variable specified ");
     process.env.DARPDIR = process.env.HOME + "/darp"
-    console.log(`DARPDIR defaulted to " + ${process.env.DARPDIR}`);
+    logger.warning(`DARPDIR defaulted to " + ${process.env.DARPDIR}`);
 }
 
 if (!process.env.HOSTNAME) {
     process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
-    console.log(`No HOSTNAME enviropnmental variable specified + ${process.env.HOSTNAME}`);
+    logger.warning(`No HOSTNAME environmental variable specified + ${process.env.HOSTNAME}`);
 }
 if (!process.env.GENESIS) {
-    console.log(`No GENESIS enviropnmental variable specified - EXITTING`);
+    logger.error(`No GENESIS environmental variable specified - EXITTING`);
     process.exit(86);
 }
 const GENESIS=process.env.GENESIS;
@@ -47,23 +47,22 @@ var PORT=65013;
 if (process.env.PORT) {
     PORT = parseInt(process.env.PORT);
 }
-console.log(`**** starting with PORT=${PORT}`);
+logger.info(`Starting with PORT=${PORT}`);
 
 var GENESISPORT=PORT;
 if (process.env.GENESISPORT) {
     GENESISPORT = parseInt(process.env.GENESISPORT);   //Unless otherwise specified GENESIS PORT is same as user's port
-    console.log(`Setting GENESISPORT to ${GENESISPORT}`);
+    logger.info(`Setting GENESISPORT to ${GENESISPORT}`);
 }
-
 
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
-    console.log(`No VERSION enviropnmental variable specified - setting to ${process.env.VERSION}`);
+    logger.warning(`No VERSION enviropnmental variable specified - setting to ${process.env.VERSION}`);
 }
 var VERSION=process.env.VERSION||"NoVersion";
 
 if (!process.env.MYIP) {
-    console.log("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
+    logger.warning("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
     process.env.MYIP = process.env.GENESIS  // MYIP();
 } else {
     process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ''); //\trim string
@@ -71,21 +70,22 @@ if (!process.env.MYIP) {
 var IP=process.env.MYIP
 
 var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
-if (!PUBLICKEY)
-   try {
-       PUBLICKEY = fs.readFileSync('../wireguard/publickey', 'utf8');
-       PUBLICKEY = PUBLICKEY.replace(/^\n|\n$/g, '');
-       console.log("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
-   } catch (err) {
-       console.log("PUBLICKEY lookup failed");
-       PUBLICKEY = "deadbeef00deadbeef00deadbeef0013";
-   }
+if (!PUBLICKEY) {
+    try {
+        PUBLICKEY = fs.readFileSync('../wireguard/publickey', 'utf8');
+        PUBLICKEY = PUBLICKEY.replace(/^\n|\n$/g, '');
+        logger.info("pulled PUBLICKEY from publickey file: >" + PUBLICKEY + "<");
+    } catch (err) {
+        logger.warning("PUBLICKEY lookup failed");
+        PUBLICKEY = "deadbeef00deadbeef00deadbeef0013";
+    }
+}
 
 var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
 
-console.log(`GENESIS=${GENESIS} GENESISPORT=${GENESISPORT}`);
+logger.info(`GENESIS=${GENESIS} GENESISPORT=${GENESISPORT}`);
 // Start config/instrumentaton web server
 
 var app = express();
@@ -95,9 +95,9 @@ var server = app.listen(PORT, '0.0.0.0', function() {
     if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
         var host = serverAdddress.address;
         var port = serverAdddress.port;
-        console.log("Express app listening at http://%s:%s", host, port);
+        logger.info(`Express app listening at http://${host}:${port}`);
     } else {
-        console.log("Express app initialization failed");
+        logger.error("Express app initialization failed");
     }
 }) //.on('error', console.log);
 
@@ -987,7 +987,7 @@ app.get('/version', function(req, res) {
  
  app.get('/stop', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("EXITTING and Stopping the node request from "+ip);
+    logger.info(`EXITTING and Stopping the node request from ${ip}`);
     Log("EXITTING and Stopping the node request from "+ip);
     var referer = req.get('Referer');
     if (referer !== undefined) {
@@ -1000,7 +1000,7 @@ app.get('/version', function(req, res) {
  
  app.get('/reboot', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
+    logger.info(`/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from ${ip}`);
     Log("reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
     var referer = req.get('Referer');
     if (referer !== undefined) {
@@ -1013,7 +1013,7 @@ app.get('/version', function(req, res) {
  
  app.get('/reload', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("EXITTING to reload the system request from: "+ip)
+    logger.info(`EXITTING to reload the system request from: ${ip}`)
     Log("EXITTING to reload the system request from: "+ip)
     var referer = req.get('Referer');
     if (referer !== undefined) {
@@ -1098,7 +1098,7 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
         res.end(JSON.stringify(null));
     }
     else    {
-        console.log("No pulseGroup specified");
+        logger.warning("No pulseGroup specified");
         res.end(JSON.stringify(myPulseGroups, null, 2));
         return
     }
@@ -1113,7 +1113,7 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
 });
 
 app.get('/mintTable', function(req, res) {
-    console.log("fetching '/mintTable' ");
+    logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(myPulseGroups, null, 2)); 
@@ -1128,7 +1128,7 @@ app.get('/nodefactory', function(req, res) {
     //
     //  additional nodes adding to pulseGroup
     //
-    console.log('EXPRESS nodeFactory: config requested with params: ' + dump(req.query));
+    logger.info('EXPRESS nodeFactory: config requested with params: ' + dump(req.query));
 
     //
     //  Marshall incoming parameters
@@ -1139,11 +1139,11 @@ app.get('/nodefactory', function(req, res) {
     var geo = String(req.query.geo);
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;
-    var genesisport = Number(req.query.genesisport) || port;
+    //var genesisport = Number(req.query.genesisport) || port;
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
     if (typeof incomingTimestamp == "undefined") {
-        console.log("/nodeFactory called with no timestamp");
+        logger.warning("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
             "rc": "-1 nodeFactory called with no timestamp. "
@@ -1163,8 +1163,8 @@ app.get('/nodefactory', function(req, res) {
     var clientIncomingIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (incomingIP == "noMYIP") incomingIP = clientIncomingIP;
     if (typeof incomingIP == "undefined")
-        return console.log(ts() + "***********************ERROR: incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);;
-    console.log("incomingIP="+incomingIP+" clientIncomingIP="+clientIncomingIP+" req.myip="+req.query.myip);
+        return logger.error(`incomingIP unavailable from geo=${geo} incomingIP=${incomingIP} clientIncomingIP=${clientIncomingIP}`);
+    logger.info(`incomingIP=${incomingIP} clientIncomingIP=${clientIncomingIP} req.myip=${req.query.myip}`);
 
     // function filter(incomingIP:string) {
     //     //here we filter (ignore) incoming IPs with global blacklist/whitelist
@@ -1181,11 +1181,11 @@ app.get('/nodefactory', function(req, res) {
     //
     console.log(`incomingIP=${incomingIP} port=${port} GENESIS=${GENESIS} GENESISPORT=${GENESISPORT} me=`+dump(me));
     if (me.ipaddr==incomingIP && (port==GENESISPORT)) {         //GENESIS NODE instantiating itself - don't need to add anything
-        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
         return;
@@ -1195,11 +1195,11 @@ app.get('/nodefactory', function(req, res) {
 //  Or - Handle pulseGroup member case
 //
 
-    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
 //
 //  First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
@@ -1207,7 +1207,7 @@ app.get('/nodefactory', function(req, res) {
     for (var mint in myPulseGroup.mintTable) {
 //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
         if ((myPulseGroup.mintTable[mint]!=null) && myPulseGroup.mintTable[mint].ipaddr==incomingIP &&  myPulseGroup.mintTable[mint].port==port) {
-            console.log("deleting previous mint for this node: "+incomingIP+":"+port+" mint #"+mint+" geo="+myPulseGroup.mintTable[mint].geo);
+            logger.info(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
             myPulseGroup.mintTable.splice(parseInt(mint));   //make sure not do delete me or genesis node
             //remove the owl
 
@@ -1218,7 +1218,7 @@ app.get('/nodefactory', function(req, res) {
     //  Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     //
     var newMint=myPulseGroup.nextMint++;
-    console.log(geo+": mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
+    logger.info(`${geo}: mint=${newMint} publickey=${publickey} version=${version} wallet=${wallet}`);
     myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
 
@@ -1231,8 +1231,8 @@ app.get('/nodefactory', function(req, res) {
     var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
     myPulseGroup.mintTable[newMint]=newNode;  //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
-    console.log(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
-    console.log("After adding node, pulseGroup="+dump(myPulseGroup));
+    logger.info(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
+    logger.info("After adding node, pulseGroup="+dump(myPulseGroup));
     myPulseGroup.nodeCount++;
     //TODO: check for duplicates - search for ipaddr:port that matches
 
@@ -1251,11 +1251,11 @@ app.get('/nodefactory', function(req, res) {
     //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
     //  this means mintTable[0]  
 
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup=");
-    console.log("********************************* newNodePulseGroup="+dump(newNodePulseGroup));
+    logger.info("********************************* newNodePulseGroup=");
+    logger.info("********************************* newNodePulseGroup=");
+    logger.info("********************************* newNodePulseGroup=");
+    logger.info("********************************* newNodePulseGroup=");
+    logger.info("********************************* newNodePulseGroup="+dump(newNodePulseGroup));
 
     //
     //                              pulseNode MEMBER NODE
@@ -1290,35 +1290,35 @@ function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseG
 
     const configurl="http://"+GENESIS+":"+GENESISPORT+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&genesisport="+GENESISPORT+"&version="+VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP+"&ts="+now();
     var pulseGroupObjectURL=encodeURI(configurl);
-    console.log("getting pulseGroup from url="+pulseGroupObjectURL);
+    logger.info(`getting pulseGroup from url=${pulseGroupObjectURL}`);
+    logger.info(`getPulseGroupObject(): pulling from ipaddr=${ipaddr} port ${port}`);
 
-    console.log(`getPulseGroupObject(): pulling from ipaddr=${ipaddr} port ${port}`);
     http.get(pulseGroupObjectURL, function (res) {
         var data = '';
         res.on('data', function (stream) {
             data += stream;
         });
         res.on('error', function() {
-            console.log(ts()+"getPulseGroup(): received error from "+pulseGroupObjectURL);
+            logger.error(`getPulseGroup(): received error from ${pulseGroupObjectURL}`);
             process.exit(36); 
         })
 
         res.on('end', function () {
             //console.log("********* *******           data="+data);
             var newPulseGroup = JSON.parse(data);            
-            console.log("getPulseGroup(): from node factory:"+dump(newPulseGroup));
+            logger.info("getPulseGroup(): from node factory:"+dump(newPulseGroup));
 
             if (newPulseGroup.mintTable[0].publickey==PUBLICKEY) {
-                console.log(ts()+"getPulseGroup(): GENESIS node already configured ");
+                logger.info("getPulseGroup(): GENESIS node already configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
                 //pulseGroups=[newPulseGroup];
                 callback(newPulseGroup);
                 return;
             } 
-            console.log(ts()+"getPulseGroup(): Configuring non-genesis node ... ");
+            logger.info("getPulseGroup(): Configuring non-genesis node ... ");
 
             callback(newPulseGroup);
-            console.log("getPulseGroup():- call setWireguard to generate wireguard config for me and genesis node:");
+            logger.info("getPulseGroup():- call setWireguard to generate wireguard config for me and genesis node:");
             // setWireguard(); //set up initial wireguard comfig
         });
     });
@@ -1337,7 +1337,7 @@ function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseG
 
 getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
-    console.log("callback from my or someone else's pulseGroup="+dump(newPulseGroup));
+    logger.info("callback from my or someone else's pulseGroup="+dump(newPulseGroup));
 
     //
     //       attach convenience routines to the downloaded pulseGroup assignment
@@ -1369,7 +1369,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     newPulseGroup.deleteNode = function(ipaddr: string, port: number) {
         this.mintTable.forEach((element: MintEntry) => {
             if (element.ipaddr==ipaddr && element.port==port) {
-                console.log("delete old mint "+element.mint);
+                logger.warning("delete old mint "+element.mint);
             }
         });
     };
@@ -1407,7 +1407,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
                 matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = pulseEntry.owl  //pulse measured to me
             } else {                                        //OLD PULSE - CLEAR these entries
-                console.log(`${pulseEntry.geo} did not respond. Entering NO_OWL for all values to this node`);
+                logger.warning(`${pulseEntry.geo} did not respond. Entering NO_OWL for all values to this node`);
                 // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
@@ -1456,7 +1456,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
  //TURN ON TO DEBUG FLAGGING                   if (deviation!=0) console.log(`pulse(): geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
 //                  if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {  //flag if off by 30% from median
                     if (delta>10) {  //flagg if deviation is > 10ms - we can improve that
-                        console.log(ts()+`pulse(): Flagging ${nodeEntry.mint}-${newPulseGroup.mintTable[0].mint}=${nodeEntry.owl}  delta=${delta} geo=${nodeEntry.geo} to ${me.geo} nodeEntry.owl=${nodeEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
+                        logger.info(`pulse(): Flagging ${nodeEntry.mint}-${newPulseGroup.mintTable[0].mint}=${nodeEntry.owl}  delta=${delta} geo=${nodeEntry.geo} to ${me.geo} nodeEntry.owl=${nodeEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                         flag="@" //deviation 30% from the median, flag
                     }
                 }
@@ -1494,7 +1494,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
         newPulseGroup.timeout(); //and timeout the non-responders
         if ( newPulseGroup.adminControl=='RESYNCH' ) {
-            console.log(ts()+"Resynching with genesis node...");
+            logger.info("Resynching with genesis node...");
             newPulseGroup.syncGenesisPulseGroup();  //fetch new config from genesis
             newPulseGroup.adminControl='';
         }
@@ -1554,9 +1554,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                             delete newPulseGroup.mintTable[m];
                         }
                     } else { /*  not genesis - only can time out genesis  */
-                        console.log(`timing out genesis node reconnect newPulseGroup.mintTable=`+dump(newPulseGroup.mintTable));
+                        logger.warning(`timing out genesis node reconnect newPulseGroup.mintTable=`+dump(newPulseGroup.mintTable));
                         if (now()-newPulseGroup.mintTable[1].lastPulseTimestamp > 30*1000) {
-                            console.log(`Here the node will timeout the genesis snode, and delete his pulseGroup... for now - genesis node is paying us, isn't here.Exitting.`);
+                            logger.error(`Here the node will timeout the genesis snode, and delete his pulseGroup... for now - genesis node is paying us, isn't here.Exitting.`);
                             process.exit(36);
                         }
                         //we may timeout the group owner and kill the pulsegroup
@@ -1581,16 +1581,16 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) {   /*GENESIS ONLY*/
                         //console.log(`I am Genesis Node timing out ${this.pulses[p].geo}`);
                         if ( elapsedMSincePulse > 10 * newPulseGroup.cycleTime*1000) {
-                            console.log(ts()+`timeout() : Genesis DELETING PULSE ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
+                            logger.warning(`timeout() : Genesis DELETING PULSE ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
                            // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                            // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                            // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                            // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             if (newPulseGroup.mintTable[this.pulses[p].mint]==null) { //delete this.pulses[p];
-                                console.log(ts()+`DELETEING pulse `+p);  //log when timing out to debug
+                                logger.warning(`DELETEING pulse ${p}`);  //log when timing out to debug
                                 delete this.pulses[p];
                             } else {
-                                console.log(`will delete pulse when mint is gone`);
+                                logger.warning(`will delete pulse when mint is gone`);
                             }
                             
 
@@ -1603,7 +1603,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         
         if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
             newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
-            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=`+newPulseGroup.pulses.length);
+            logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${newPulseGroup.pulses.length}`);
         }
 //        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
 //        for (var p in this.pulses) {
@@ -1617,7 +1617,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         //console.log("=================================> checkSWversion()");
 
         if (newPulseGroup.groupOwner==me.geo) 
-            return console.log(`Point your browser to Genesis Node for instrumentation: http://${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
+            return logger.info(`Point your browser to Genesis Node for instrumentation: http://${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
         //console.log("checkSWversion newPulseGroup="+dump(newPulseGroup));    
         const url = encodeURI("http://" + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/version?ts="+now()+"&x="+now()%2000);  //add garbage to avoid caches
         //console.log("checkSWversion(): url="+url);
@@ -1631,15 +1631,15 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             });
 
             res.on('error', function(error) {
-                console.log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
+                logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE"); // Error handling here never triggered TODO
             });
 
             res.on("end", () => {
                 var genesisVersion = JSON.parse(body);
                 var mySWversion=MYVERSION(); //find the Build.*
-                console.log(ts()+"checkSWversion(): "+" genesis SWversion=="+dump(genesisVersion)+" MY SW Version="+mySWversion+" me.version="+me.version);
+                logger.info(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${me.version}`);
                 if (genesisVersion != mySWversion) {
-                    console.log(ts() + "checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + " .......process exitting");
+                    logger.error(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
                     process.exit(36); //SOFTWARE RELOAD
                 }
             });
@@ -1663,18 +1663,18 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //            if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
             if (myPulseEntry==null || mintEntry==null) {
                 if (!newPulseGroup.isGenesisNode()) {
-                    console.log(ts()+`ignoring ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse entry`);
+                    logger.info(`ignoring ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse entry`);
                     return;
                 }
                 //TODO: This is where authentication to this pulseGroup happens
                 if (mintEntry==null) { //} && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
-                   console.log(ts()+"recvPulses(): IGNORING PULSE Found pulseEntry "+incomingPulse.geo+":"+incomingPulse.group+" but Could not find mint for this pulse... Will re-synch with genesis to get credentials for "+incomingPulse.geo);
+                    logger.warning(`recvPulses(): IGNORING PULSE Found pulseEntry ${incomingPulse.geo}:${incomingPulse.group} but Could not find mint for this pulse... Will re-synch with genesis to get credentials for ${incomingPulse.geo}`);
                     if (!newPulseGroup.isGenesisNode())
                         newPulseGroup.adminControl='RESYNCH';
                     return ;  //we are done     
                 }
                 if (mintEntry.geo!=incomingPulse.geo) {
-                    console.log(ts()+"recvPulses(): IGNORING PULSE - mismatched mint "+incomingPulse.geo+":"+incomingPulse.group+" and mint="+mintEntry.mint+" and this mint is geo="+mintEntry.geo+" but Could not find mint for this pulse... will re-synch with genesis to get credentials for "+incomingPulse.geo);
+                    logger.warning(`recvPulses(): IGNORING PULSE - mismatched mint ${incomingPulse.geo}:${incomingPulse.group} and mint=${mintEntry.mint} and this mint is geo=${mintEntry.geo} but Could not find mint for this pulse... will re-synch with genesis to get credentials for ${incomingPulse.geo}`);
                     newPulseGroup.adminControl='RESYNCH';
                     return ;  //we are done    
                 }
@@ -1714,11 +1714,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     //console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
 
                     if (incomingPulse.version != me.version) {
-                        console.log(`Group Owner has newer software than we do me: ${me.version} vs genesis: ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        console.log(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                        logger.error(`Group Owner has newer software than we do me: ${me.version} vs genesis: ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
                         process.exit(36); //SOFTWARE RELOAD and RECONNECT
                     }
                     //
@@ -1736,7 +1736,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         var dstMintEntry=newPulseGroup.mintTable[myPulseEntry.mint];
                         
                         if (srcMintEntry == null || dstMintEntry==null) {
-                            console.log(`Owner announced a NEW MINT ENTRY ${m} - syncing with genesis node for new mintTable and pulses for its config`);
+                            logger.info(`Owner announced a NEW MINT ENTRY ${m} - syncing with genesis node for new mintTable and pulses for its config`);
                             newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                             return;
                         }
@@ -1752,7 +1752,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 newPulseGroup.storeOWL(incomingPulse.geo,newPulseGroup.mintTable[0].geo,incomingPulse.owl);  //store pulse latency To me
 
             } else {
-                console.log("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: "+incomingPulse.geo);
+                logger.warning(`Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: ${incomingPulse.geo}`);
 
                 //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
                                                 //maybe also add empty pulse records for each that don't have a pulse record
@@ -1773,9 +1773,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //  copy mint table and update (add/del) pulseObject pulse entries so we match the genesis node
     //
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
-        if (newPulseGroup.isGenesisNode()) return console.log(ts()+"Genesis node does not sync with itself");
+        if (newPulseGroup.isGenesisNode()) return logger.info("Genesis node does not sync with itself");
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/"+this.groupName+"/"+newPulseGroup.mintTable[0].mint);
-        console.log("syncGenesisPulseGroup(): url="+url);
+        logger.info(`syncGenesisPulseGroup(): url=${url}`);
 
         http.get(url, function (res) {
             res.setEncoding("utf8");
@@ -1808,21 +1808,21 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 var pulses=groupOwnerPulseGroup.pulses;
                 for (var pulse in pulses) {             //Add all mints that we don't have
                     if (typeof newPulseGroup.pulses[pulse] == "undefined") {
-                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: "+pulse);
+                        logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
                         newPulseGroup.pulses[pulse]=pulses[pulse];  //save our new pulse entry
                     }
                 }
                 for (var pulse in newPulseGroup.pulses) {  //Delete all node we have that the group owner does not
                     if (typeof pulses[pulse] == "undefined") {
-                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
-                        console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: "+pulse);
+                        logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
+                        logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
                         delete newPulseGroup.pulses[pulse];  //delete this pulse we have but groupOwner does not have
                     }
                 }
@@ -1845,11 +1845,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     pulseGroup.addNode("MAZCAP",GEO+".1","40.127.4.79",   65013,PUBLICKEY,VERSION,WALLET);
     pulseGroup.addNode("MAZSYD",GEO+".1","52.187.248.162",65013,PUBLICKEY,VERSION,WALLET);
 /* */    
-    console.log("===* * * * * * * * * * * * * * * * * * DARP NODE STARTED: pulseGroup="+dump(newPulseGroup));
+    logger.info(`* * * * * * * * * * * * * * * * * * DARP NODE STARTED: pulseGroup=${dump(newPulseGroup)}`);
 //        pulseGroup.forEachNode(function(index:string,node:PulseEntry){console.log("pulseNode: "+index+" node="+dump(node));});
 //        pulseGroup.forEachMint(function(index:string,mint:MintEntry){console.log("MINT:"+index+" mint="+dump(mint));});
     //console.log("pulseGroup="+dump(pulseGroup));
-    console.log("Starting pulseGroup "+newPulseGroup.groupName);
+    logger.info(`Starting pulseGroup ${newPulseGroup.groupName}`);
     newPulseGroup.recvPulses();
     newPulseGroup.pulse();
 

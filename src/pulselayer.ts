@@ -1,6 +1,7 @@
 /** @module pulselayer send "pulse" UDP message to all nodes */
 
-import { nth_occurrence } from './lib';
+import { dump, nth_occurrence } from './lib';
+import { logger } from './logger';
 import { sendMsg, recvMsg } from './messagelayer';
 import { IncomingPulseInterface } from './pulsegroup';
 
@@ -14,9 +15,10 @@ type incomingPulseCallback = (incomingPulse: IncomingPulseInterface) => void;
  * @param {incomingPulseCallback} callback Function to deserialize the incoming pulse data.
  */
 export function recvPulses(port: number, callback: incomingPulseCallback): void {
-    //console.log(`recvPulses(port=${port}):`);
     recvMsg(port, function (incomingMessage: string) {  //one-time set up of message handler callback
-        //console.log(`****** pulselayer(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
+        
+        logger.debug(`pulselayer recvMsg callback: incomingMessage=${incomingMessage}`);
+        
         var ary = incomingMessage.split(",");
         const pulseTimestamp = parseInt(ary[0]);
         const senderTimestamp = parseInt(ary[1]);
@@ -37,12 +39,10 @@ export function recvPulses(port: number, callback: incomingPulseCallback): void 
             owl: OWL,
             lastMsg: incomingMessage
         };
-        //console.log("****** recvPulses(): message="+incomingMessage+" owlstart="+owlsStart," pulseOwls="+pulseOwls);
-        //console.log("structured pulse="+dump(pulse));
 
-        //ary.shift();ary.shift();
-        //const pulse=ary.join(",");
-        //console.log("Message Layer Statistics: :"+dump(messagelayer_stats));  //INSTRUMENTATION POINT
+        logger.debug(`pulselayer recvMsg callback: message=${incomingMessage} owlstart=${owlsStart}, pulseOwls=${pulseOwls}`);
+        logger.debug(`pulselayer recvMsg callback: structured pulse=${dump(pulse)}`);
+
         callback(pulse);
     });
 };
