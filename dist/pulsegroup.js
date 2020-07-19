@@ -73,6 +73,7 @@ if (!PUBLICKEY)
 var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
 GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
 var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+console.log("GENESIS=" + GENESIS + " GENESISPORT=" + GENESISPORT);
 // Start config/instrumentaton web server
 var app = express();
 var server = app.listen(PORT, '0.0.0.0', function () {
@@ -1132,8 +1133,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
                     var deviation = Math.round(Math.abs(medianOfMedians - nodeEntry.owl) * 100 / medianOfMedians);
                     var delta = Math.abs(medianOfMedians - nodeEntry.owl);
-                    if (deviation != 0)
-                        console.log("pulse(): geo=" + nodeEntry.geo + " nodeEntry.owl=" + nodeEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
+                    //TURN ON TO DEBUG FLAGGING                   if (deviation!=0) console.log(`pulse(): geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                     //                  if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {  //flag if off by 30% from median
                     if (delta > 10) { //flagg if deviation is > 10ms - we can improve that
                         console.log(lib_1.ts() + ("pulse(): Flagging " + nodeEntry.mint + "-" + newPulseGroup.mintTable[0].mint + "=" + nodeEntry.owl + "  delta=" + delta + " geo=" + nodeEntry.geo + " to " + me.geo + " nodeEntry.owl=" + nodeEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%"));
