@@ -981,20 +981,21 @@ app.get('/nodefactory', function (req, res) {
 //
 //  newPulseGroup() - this will be the object creation from remote JSON routine
 //
+//
+//      get conmfiguration from the genesis node
+//
 function getMyPulseGroupObject(ipaddr, port, callback) {
-    //
-    //      get conmfiguration from the genesis node
-    //
-    var configurl = encodeURI("http://" + GENESIS + ":" + GENESISPORT + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&version=" + VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_1.now());
-    console.log("getting pulseGroup from url=" + configurl);
+    var configurl = "http://" + GENESIS + ":" + GENESISPORT + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&genesisport=" + GENESISPORT + "&version=" + VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_1.now();
+    var pulseGroupObjectURL = encodeURI(configurl);
+    console.log("getting pulseGroup from url=" + pulseGroupObjectURL);
     console.log("getPulseGroupObject(): pulling from ipaddr=" + ipaddr + " port " + port);
-    http.get(configurl, function (res) {
+    http.get(pulseGroupObjectURL, function (res) {
         var data = '';
         res.on('data', function (stream) {
             data += stream;
         });
         res.on('error', function () {
-            console.log(lib_1.ts() + "getPulseGroup(): received error from " + configurl);
+            console.log(lib_1.ts() + "getPulseGroup(): received error from " + pulseGroupObjectURL);
             process.exit(36);
         });
         res.on('end', function () {
