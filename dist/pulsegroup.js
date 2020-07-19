@@ -9,7 +9,7 @@ var express = require("express");
 var http = require("http");
 var fs = require("fs");
 var os = require("os");
-logger_1.logger.setLevel(2); //Q: how to apply logger enum?
+logger_1.logger.setLevel(3); //Q: how to apply logger enum?
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
