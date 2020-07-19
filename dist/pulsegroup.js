@@ -903,8 +903,8 @@ app.get('/nodefactory', function (req, res) {
     //
     //  Handle Geneis Node case - first to start up
     //
-    console.log("PORT=" + PORT + " GENESISPORT=" + GENESISPORT + " me=" + lib_1.dump(me));
-    if (me.ipaddr == incomingIP && (PORT == GENESISPORT)) { //GENESIS NODE instantiating itself - don't need to add anything
+    console.log("incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + GENESIS + " GENESISPORT=" + GENESISPORT + " me=" + lib_1.dump(me));
+    if (me.ipaddr == incomingIP && (port == GENESISPORT)) { //GENESIS NODE instantiating itself - don't need to add anything
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
