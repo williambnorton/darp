@@ -39,7 +39,6 @@ var GENESIS = process.env.GENESIS;
 var PORT = 65013;
 if (process.env.PORT) {
     PORT = parseInt(process.env.PORT);
-    console.log("No PORT enviropnmental variable specified - setting my DEFAULT PORT " + PORT);
 }
 console.log("starting with PORT=" + PORT + process.exit(86));
 var GENESISPORT = PORT;
