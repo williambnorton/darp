@@ -1273,11 +1273,7 @@ app.get('/nodefactory', function(req, res) {
 });
 
 
-//
-//      get conmfiguration from the genesis node
-//
-var url=encodeURI("http://"+GENESIS+":"+GENESISPORT+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP+"&ts="+now());
-console.log("getting pulseGroup from url="+url);
+
 
 //var hostname=process.env.HOSTNAME||"noHostName"
 //var geo=hostname.split(".")[0].toUpperCase();
@@ -1288,14 +1284,20 @@ console.log("getting pulseGroup from url="+url);
 
 
 function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseGroupCallback) {
-    console.log(`getPulseGroup(): ipaddr=${ipaddr}:${port}`);
-    http.get(url, function (res) {
+    //
+    //      get conmfiguration from the genesis node
+    //
+    var configurl=encodeURI("http://"+GENESIS+":"+GENESISPORT+"/nodefactory?geo="+GEO+"&port="+PORT+"&publickey="+PUBLICKEY+"&version="+VERSION+"&wallet="+WALLET+"&myip="+process.env.MYIP+"&ts="+now());
+    console.log("getting pulseGroup from url="+configurl);
+
+    console.log(`getPulseGroupObject(): pulling from ipaddr=${ipaddr} port ${port}`);
+    http.get(configurl, function (res) {
         var data = '';
         res.on('data', function (stream) {
             data += stream;
         });
         res.on('error', function() {
-            console.log(ts()+"getPulseGroup(): received error from "+URL);
+            console.log(ts()+"getPulseGroup(): received error from "+configurl);
             process.exit(36); 
         })
 
