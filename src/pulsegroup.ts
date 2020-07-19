@@ -1180,7 +1180,7 @@ app.get('/nodefactory', function(req, res) {
 //  Handle Geneis Node case - first to start up
 //
 
-    if (me.ipaddr==incomingIP) {         //GENESIS NODE instantiating itself - don't need to add anything
+    if (me.ipaddr==incomingIP && (PORT==GENESISPORT)) {         //GENESIS NODE instantiating itself - don't need to add anything
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         console.log("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
