@@ -28,10 +28,6 @@ if (!process.env.DARPDIR) {
     process.env.DARPDIR = process.env.HOME + "/darp";
     logger_1.logger.warning("DARPDIR defaulted to \" + " + process.env.DARPDIR);
 }
-if (!process.env.HOSTNAME) {
-    process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
-    logger_1.logger.warning("No HOSTNAME environmental variable specified + " + process.env.HOSTNAME);
-}
 if (!process.env.GENESIS) {
     logger_1.logger.error("No GENESIS environmental variable specified - EXITTING");
     process.exit(86);
@@ -47,6 +43,11 @@ if (process.env.GENESISPORT) {
     GENESISPORT = parseInt(process.env.GENESISPORT); //Unless otherwise specified GENESIS PORT is same as user's port
     logger_1.logger.info("Setting GENESISPORT to " + GENESISPORT);
 }
+if (!process.env.HOSTNAME) {
+    process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
+    logger_1.logger.warning("No HOSTNAME environmental variable specified + " + process.env.HOSTNAME);
+}
+var HOSTNAME = process.env.HOSTNAME + "_" + PORT;
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
     logger_1.logger.warning("No VERSION enviropnmental variable specified - setting to " + process.env.VERSION);
@@ -72,9 +73,9 @@ if (!PUBLICKEY) {
         PUBLICKEY = "deadbeef00deadbeef00deadbeef0013";
     }
 }
-var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
-GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
-var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+var GEO = HOSTNAME; //passed into docker
+GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0]; //remove problem characters
+var WALLET = process.env.WALLET || "auto";
 logger_1.logger.info("GENESIS=" + GENESIS + " GENESISPORT=" + GENESISPORT);
 // Start config/instrumentaton web server
 var app = express();
@@ -702,7 +703,7 @@ function instrumentation() {
         }
         txt += "</table>";
     }
-    txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
+    txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e GENESISPORT=' + GENESISPORT + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>';
     txt += "";
     txt += '<p id="raw">' + JSON.stringify(myPulseGroups, null, 2) + '</p>';
     txt += "</body>";

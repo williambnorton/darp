@@ -33,10 +33,6 @@ if (!process.env.DARPDIR) {
     logger.warning(`DARPDIR defaulted to " + ${process.env.DARPDIR}`);
 }
 
-if (!process.env.HOSTNAME) {
-    process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
-    logger.warning(`No HOSTNAME environmental variable specified + ${process.env.HOSTNAME}`);
-}
 if (!process.env.GENESIS) {
     logger.error(`No GENESIS environmental variable specified - EXITTING`);
     process.exit(86);
@@ -54,6 +50,12 @@ if (process.env.GENESISPORT) {
     GENESISPORT = parseInt(process.env.GENESISPORT);   //Unless otherwise specified GENESIS PORT is same as user's port
     logger.info(`Setting GENESISPORT to ${GENESISPORT}`);
 }
+
+if (!process.env.HOSTNAME) {
+    process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
+    logger.warning(`No HOSTNAME environmental variable specified + ${process.env.HOSTNAME}`);
+}
+var HOSTNAME=process.env.HOSTNAME+"_"+PORT;
 
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
@@ -81,9 +83,9 @@ if (!PUBLICKEY) {
     }
 }
 
-var GEO = process.env.HOSTNAME || "noHostName"; //passed into docker
-GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];
-var WALLET = process.env.WALLET || "584e560b06717ae0d76b8067d68a2ffd34d7a390f2b2888f83bc9d15462c04b2";
+var GEO = HOSTNAME; //passed into docker
+GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];  //remove problem characters
+var WALLET = process.env.WALLET || "auto";
 
 logger.info(`GENESIS=${GENESIS} GENESISPORT=${GENESISPORT}`);
 // Start config/instrumentaton web server
@@ -956,7 +958,7 @@ function instrumentation() {    //this should get its own file
     
     
     
-    txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'
+    txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e GENESISPORT='+GENESISPORT+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'
 
     txt += ""
     txt += '<p id="raw">'+JSON.stringify(myPulseGroups,null,2)+'</p>';
