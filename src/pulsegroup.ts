@@ -55,7 +55,8 @@ if (!process.env.HOSTNAME) {
     process.env.HOSTNAME = os.hostname().split(".")[0].toUpperCase();
     logger.warning(`No HOSTNAME environmental variable specified + ${process.env.HOSTNAME}`);
 }
-var HOSTNAME=process.env.HOSTNAME+"_"+PORT;
+var HOSTNAME=process.env.HOSTNAME;  //multiport - may want to tack port to name?
+if (PORT!=65013) HOSTNAME+="@"+PORT
 
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
