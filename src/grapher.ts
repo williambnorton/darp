@@ -48,7 +48,7 @@ $(function() {
             lines.forEach((line:string) => {
                 //console.log("*"+line);
                 last300.push(line);
-                if (last300.length>300*12)  //12 5 minute samples=1 last 1 hour of second by second data
+                if (last300.length>300)  //12 5 minute samples=1 last 1 hour of second by second data
                     last300.shift();  //drop first entries
             });
             txt+=last300.join("\n");
