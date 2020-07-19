@@ -2,7 +2,6 @@
 /** @module pulselayer send "pulse" UDP message to all nodes */
 exports.__esModule = true;
 var lib_1 = require("./lib");
-var logger_1 = require("./logger");
 var messagelayer_1 = require("./messagelayer");
 /**
  * Bind the port to receive pulses and deserialiaze them into structured data.
@@ -11,7 +10,7 @@ var messagelayer_1 = require("./messagelayer");
  */
 function recvPulses(port, callback) {
     messagelayer_1.recvMsg(port, function (incomingMessage) {
-        logger_1.logger.info("pulselayer recvMsg callback: incomingMessage=" + incomingMessage);
+        //logger.info(`pulselayer recvMsg callback: incomingMessage=${incomingMessage}`);
         var ary = incomingMessage.split(",");
         var pulseTimestamp = parseInt(ary[0]);
         var senderTimestamp = parseInt(ary[1]);
@@ -32,8 +31,8 @@ function recvPulses(port, callback) {
             owl: OWL,
             lastMsg: incomingMessage
         };
-        logger_1.logger.info("pulselayer recvMsg callback: message=" + incomingMessage + " owlstart=" + owlsStart + ", pulseOwls=" + pulseOwls);
-        logger_1.logger.info("pulselayer recvMsg callback: structured pulse=" + lib_1.dump(pulse));
+        //logger.info(`pulselayer recvMsg callback: message=${incomingMessage} owlstart=${owlsStart}, pulseOwls=${pulseOwls}`);
+        //logger.info(`pulselayer recvMsg callback: structured pulse=${dump(pulse)}`);
         callback(pulse);
     });
 }
