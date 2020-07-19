@@ -1,8 +1,9 @@
 /** @module messagelayer send and receive message to group of nodes */
 
-import { now,ts } from './lib';
+import { now } from './lib';
+import { logger } from './logger';
 import dgram = require('dgram');
-import { exit } from 'process';
+//import { exit } from 'process';
 
 
 // Create the UDP message bus for communication with all nodes
@@ -27,11 +28,8 @@ export var messagelayer_stats = {
 // RECEIVER CODE
 
 server.on('error', (err: Error) => {
-    console.log(ts()+`messagelayer server error:\n${err.stack}`);
-    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
-    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
-    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
-    console.log(ts()+`messagelayer server error - server recev error - not sure if we should continue...`);
+    logger.error(`messagelayer server error:\n${err.stack}`);
+    logger.error(`messagelayer server error - server recev error - not sure if we should continue...`);
     //server.close();
 });
 
@@ -50,11 +48,11 @@ export function recvMsg(port: number, callback: pulseDeserializer) {   //API rou
     messagelayer_stats.port = port.toString();
     server.bind(port);
     // Prints: server listening 0.0.0.0:41234
-    server.on('message', (msg: Buffer, rinfo: Object) => {
+    server.on('message', (msg, rinfo) => {
         var incomingTimestamp = messagelayer_stats.lastInTimestamp = now();
         messagelayer_stats.inOctets += msg.length;
         messagelayer_stats.inMsgs++;
-        //console.log(`messagelayer Server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
+        logger.debug(`messagelayer server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
         var incomingMessage = `${incomingTimestamp},${msg}` //prepend our timeStamp
         messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);
@@ -81,14 +79,10 @@ export function sendMsg(outgoingMessage: string, nodelist: string[]) {  //API ro
         messagelayer_stats.lastOutTimestamp = now();
         messagelayer_stats.lastOutMsg = timestampedMsg;
         messagelayer_stats.outOctets += message.length;
-        //console.log(ts()+"messagelayer.sendMsg() sending "+timestampedMsg+" to "+ipaddr+":"+port);
+        logger.debug(`messagelayer client sending ${timestampedMsg} to ${ipaddr}:${port}`);
         client.send(message, 0, message.length, port, ipaddr, (err: Error | null) => {
             if (err) {
-                console.log(ts()+`messagelayer sendMessage(): ERROR`);
-                console.log(ts()+`messagelayer sendMessage(): ERROR`);
-                console.log(ts()+`messagelayer sendMessage(): ERROR`);
-                console.log(ts()+`messagelayer sendMessage(): ERROR`);
-                console.log(ts()+`messagelayer sendMessage(): ERROR`);
+                logger.error(`messagelayer sendMessage()`);
                 //client.close();
                 //exit(36);
             }

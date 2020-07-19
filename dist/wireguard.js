@@ -1,6 +1,7 @@
 "use strict";
 /** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.setWireguard = exports.wgdump = exports.getPublicKey = void 0;
 var lib_1 = require("./lib");
 //import pulseRedis = require('redis');
 var WGDIR = "/etc/wireguard"; //this is the direcvtory to build and evolve wg config files
