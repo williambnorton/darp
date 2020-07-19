@@ -864,6 +864,7 @@ app.get('/nodefactory', function (req, res) {
     var geo = String(req.query.geo);
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;
+    var genesisport = Number(req.query.genesisport) || port;
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
     if (typeof incomingTimestamp == "undefined") {
@@ -1119,7 +1120,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         newPulseGroup.forEachNode(function (index, nodeEntry) {
             ipary.push(nodeEntry.ipaddr + "_" + nodeEntry.port);
             nodeEntry.outPulses++;
-            var flag = "";
+            var flag = ""; //this section flags "interesting" cells to click on and explore
             if (nodeEntry.owl == NO_OWL)
                 owls += nodeEntry.mint + ",";
             else {
