@@ -47,9 +47,7 @@ var PORT=65013;
 if (process.env.PORT) {
     PORT = parseInt(process.env.PORT);
 }
-console.log(`starting with PORT=${PORT}${process.exit(86)}`);
-
-
+console.log(`**** starting with PORT=${PORT}`);
 
 var GENESISPORT=PORT;
 if (process.env.GENESISPORT) {
