@@ -52,7 +52,7 @@ export function recvMsg(port: number, callback: pulseDeserializer) {   //API rou
         var incomingTimestamp = messagelayer_stats.lastInTimestamp = now();
         messagelayer_stats.inOctets += msg.length;
         messagelayer_stats.inMsgs++;
-        logger.debug(`messagelayer server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
+        logger.info(`messagelayer server received: ${msg} from ${rinfo.address}:${rinfo.port}`);  //INSTRUMENTATION POINT
         var incomingMessage = `${incomingTimestamp},${msg}` //prepend our timeStamp
         messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);

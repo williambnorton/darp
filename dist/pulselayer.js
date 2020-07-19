@@ -11,7 +11,7 @@ var messagelayer_1 = require("./messagelayer");
  */
 function recvPulses(port, callback) {
     messagelayer_1.recvMsg(port, function (incomingMessage) {
-        logger_1.logger.debug("pulselayer recvMsg callback: incomingMessage=" + incomingMessage);
+        logger_1.logger.info("pulselayer recvMsg callback: incomingMessage=" + incomingMessage);
         var ary = incomingMessage.split(",");
         var pulseTimestamp = parseInt(ary[0]);
         var senderTimestamp = parseInt(ary[1]);
@@ -32,8 +32,8 @@ function recvPulses(port, callback) {
             owl: OWL,
             lastMsg: incomingMessage
         };
-        logger_1.logger.debug("pulselayer recvMsg callback: message=" + incomingMessage + " owlstart=" + owlsStart + ", pulseOwls=" + pulseOwls);
-        logger_1.logger.debug("pulselayer recvMsg callback: structured pulse=" + lib_1.dump(pulse));
+        logger_1.logger.info("pulselayer recvMsg callback: message=" + incomingMessage + " owlstart=" + owlsStart + ", pulseOwls=" + pulseOwls);
+        logger_1.logger.info("pulselayer recvMsg callback: structured pulse=" + lib_1.dump(pulse));
         callback(pulse);
     });
 }
