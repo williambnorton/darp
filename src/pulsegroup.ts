@@ -9,7 +9,7 @@ import http = require('http');
 import fs = require('fs');
 import os = require('os');
 
-
+logger.setLevel(2); //Q: how to apply logger enum?
 // Define constants
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds

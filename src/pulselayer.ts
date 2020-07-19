@@ -17,7 +17,7 @@ type incomingPulseCallback = (incomingPulse: IncomingPulseInterface) => void;
 export function recvPulses(port: number, callback: incomingPulseCallback): void {
     recvMsg(port, function (incomingMessage: string) {  //one-time set up of message handler callback
         
-        //logger.info(`pulselayer recvMsg callback: incomingMessage=${incomingMessage}`);
+        logger.info(`pulselayer recvMsg callback: incomingMessage=${incomingMessage}`);
         
         var ary = incomingMessage.split(",");
         const pulseTimestamp = parseInt(ary[0]);
@@ -40,8 +40,8 @@ export function recvPulses(port: number, callback: incomingPulseCallback): void 
             lastMsg: incomingMessage
         };
 
-        //logger.info(`pulselayer recvMsg callback: message=${incomingMessage} owlstart=${owlsStart}, pulseOwls=${pulseOwls}`);
-        //logger.info(`pulselayer recvMsg callback: structured pulse=${dump(pulse)}`);
+        logger.info(`pulselayer recvMsg callback: message=${incomingMessage} owlstart=${owlsStart}, pulseOwls=${pulseOwls}`);
+        logger.info(`pulselayer recvMsg callback: structured pulse=${dump(pulse)}`);
 
         callback(pulse);
     });
