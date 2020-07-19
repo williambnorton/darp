@@ -41,6 +41,7 @@ if (!process.env.PORT) {
     console.log("No PORT enviropnmental variable specified - setting my DEFAULT PORT " + process.env.PORT);
 }
 var PORT = parseInt(process.env.PORT) || 65013; //passed into docker
+console.log("starting with PORT=" + PORT);
 var GENESISPORT = PORT;
 if (process.env.GENESISPORT) {
     GENESISPORT = parseInt(process.env.GENESISPORT); //Unless otherwise specified GENESIS PORT is same as user's port
