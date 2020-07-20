@@ -1,6 +1,7 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var dgram = require("dgram");
@@ -28,7 +29,7 @@ server.on('error', function (err) {
 });
 server.on('listening', function () {
     var address = server.address();
-    console.log("messagelayer server listening " + address.address + ":" + address.port);
+    logger_1.logger.info("messagelayer server listening " + address.address + ":" + address.port);
 });
 /**
  * Bind listening port and attach message handler to deserialize pulse messages.

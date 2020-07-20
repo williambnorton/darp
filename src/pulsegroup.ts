@@ -1,7 +1,7 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
 import { dump, now, MYVERSION, Log, median } from './lib';
-import { logger } from './logger';
+import { logger, LogLevel } from './logger';
 import { sendPulses, recvPulses } from './pulselayer';
 import { grapher, grapherStoreOwl } from './grapher';
 import express = require('express');
@@ -9,7 +9,10 @@ import http = require('http');
 import fs = require('fs');
 import os = require('os');
 
-logger.setLevel(3); //Q: how to apply logger enum?
+
+logger.setLevel(LogLevel.INFO);
+
+
 // Define constants
 
 const CHECK_SW_VERSION_CYCLE_TIME=15;//CHECK SW updates every 15 seconds
@@ -60,12 +63,12 @@ if (PORT!=65013) HOSTNAME+="@"+PORT
 
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', {encoding:'utf8', flag:'r'}).trim();
-    logger.warning(`No VERSION enviropnmental variable specified - setting to ${process.env.VERSION}`);
+    logger.warning(`No VERSION environmental variable specified - setting to ${process.env.VERSION}`);
 }
 var VERSION=process.env.VERSION||"NoVersion";
 
 if (!process.env.MYIP) {
-    logger.warning("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
+    logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
     process.env.MYIP = process.env.GENESIS  // MYIP();
 } else {
     process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ''); //\trim string

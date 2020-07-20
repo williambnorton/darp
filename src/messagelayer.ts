@@ -35,7 +35,7 @@ server.on('error', (err: Error) => {
 
 server.on('listening', () => {
     const address = server.address();
-    console.log(`messagelayer server listening ${address.address}:${address.port}`);
+    logger.info(`messagelayer server listening ${address.address}:${address.port}`);
 });
 
 

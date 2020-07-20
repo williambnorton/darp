@@ -1,6 +1,7 @@
 "use strict";
 /** @module logger Basic logger, which can be extended to log into ElasticSearch */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.logger = exports.LogLevel = void 0;
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["DEBUG"] = 1] = "DEBUG";
