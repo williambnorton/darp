@@ -705,7 +705,7 @@ function instrumentation() {    //this should get its own file
     txt += '</script>';
     txt += '</head>';
     txt += '<body>';
-    txt += '<h1>DARP Node '+me.geo+' http://'+me.ipaddr+":"+me.port+'</h1>';
+    txt += '<h1>DARP Node '+me.geo+' http://'+me.ipaddr+":"+me.port+' '+VERSION+'</h1>';
 
     var d=new Date();
     var timeStr=d.toString().split(' ')[4];
