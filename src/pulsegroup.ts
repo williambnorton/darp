@@ -1208,8 +1208,9 @@ app.get('/nodefactory', function(req, res) {
 //  First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
 //
     for (var mint in myPulseGroup.mintTable) {
+        if (mint=="0" || mint=="1") {} //ignore mintTable[0] and minttable[1] - never delete these
 //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
-        if ((myPulseGroup.mintTable[mint]!=null) && myPulseGroup.mintTable[mint].ipaddr==incomingIP &&  myPulseGroup.mintTable[mint].port==port) {
+        else if ((myPulseGroup.mintTable[mint]!=null) && myPulseGroup.mintTable[mint].ipaddr==incomingIP &&  myPulseGroup.mintTable[mint].port==port) {
             logger.info(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
             myPulseGroup.mintTable.splice(parseInt(mint));   //make sure not do delete me or genesis node
             //remove the owl
