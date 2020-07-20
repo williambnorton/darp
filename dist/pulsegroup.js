@@ -1049,6 +1049,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         this.mintTable[newMint] = newNode;
         newPulseGroup.nodeCount++;
         logger_1.logger.warning("addNode(): added mintEntry and empty pulse entry " + lib_1.dump(newNode) + lib_1.dump(this.pulses[geo + ":" + group]));
+        newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
         return this.mintTable[newMint];
     };
     newPulseGroup.deleteNode = function (ipaddr, port) {
@@ -1066,6 +1067,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             }
         }
         ;
+        newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
     };
     //pulseGroup.pulse = function() {
     //
@@ -1247,13 +1249,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             }
         }
         if (startingPulseEntryCount != newPulseGroup.pulses.length) {
-            newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
             logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + newPulseGroup.pulses.length);
         }
-        //        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
-        //        for (var p in this.pulses) {
-        //            newPulseGroup.nodeCount++;
-        //        }
+        newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
         newPulseGroup.buildMatrix();
     };
     newPulseGroup.checkSWversion = function () {

@@ -1217,6 +1217,7 @@ app.get('/nodefactory', function(req, res) {
                 logger.info(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
 
                 myPulseGroup.mintTable.splice(parseInt(mint));   //make sure not do delete me or genesis node
+
                 //remove the owl
 
                 //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
@@ -1354,6 +1355,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         this.mintTable[newMint] = newNode;
         newPulseGroup.nodeCount++;
         logger.warning("addNode(): added mintEntry and empty pulse entry "+dump(newNode)+dump( this.pulses[geo + ":" + group]));
+        newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
 
         return this.mintTable[newMint];
     };
@@ -1371,6 +1373,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 delete this.pulses[pulselabel];
             }
         };
+        newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
     };
     //pulseGroup.pulse = function() {
 
@@ -1586,13 +1589,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         }
         
         if (startingPulseEntryCount!=newPulseGroup.pulses.length) {
-            newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
             logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${newPulseGroup.pulses.length}`);
         }
-//        newPulseGroup.nodeCount=0;  //update nodeCount since we may have deleted
-//        for (var p in this.pulses) {
-//            newPulseGroup.nodeCount++;
-//        }
+        newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
+
+
         newPulseGroup.buildMatrix();
     }
 
