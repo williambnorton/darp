@@ -513,7 +513,7 @@ function instrumentation() {
                     if (destMintEntry != null)
                         txt += '<td class="' + srcMintEntry.mint + "-" + destMintEntry.mint + ' ' + srcMintEntry.geo + ' ' + destMintEntry.geo + '">' + '<div class="' + srcMintEntry.mint + "-" + destMintEntry.mint + '">' + '<a target="_blank" href="http://' + destMintEntry.ipaddr + ':' + destMintEntry.port + '/graph/' + srcMintEntry.geo + '/' + destMintEntry.geo + '" >' + pulseGroup.matrix[src][dest] + " ms</a></div></td>";
                     else
-                        txt += '<td class="' + src + "-" + dest + '">' + pulseGroup.matrix[src][dest] + " ms</td>";
+                        txt += '<td class="' + src + "-" + dest + '">' + "ERRnomint" + pulseGroup.matrix[src][dest] + " ms</td>";
                 }
                 txt += "</tr>";
             }
@@ -556,10 +556,10 @@ function instrumentation() {
             //console.log(ts()+"a="+a+" pulseTable[pulseEntry]"+dump(pulseEntry));
             //console.log("pulseEntry="+dump(pulseEntry));
             var rowMintEntry = pulseGroup.mintTable[pulseEntry.mint];
-            if ((rowMintEntry) && (rowMintEntry.state == "UP"))
+            if ((rowMintEntry != null) && (rowMintEntry.state == "UP"))
                 txt += '<tr class="UP ' + pulseEntry.geo + '" >';
             else
-                txt += '<tr class="NR ' + "unknown geo" + '" >';
+                txt += '<tr class="NR ' + "unknown geo" + '" >'; //should not happen
             if (rowMintEntry != null) {
                 //            txt+="<td>"+'<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/" >'+mintEntry.geo+"</a></td>"
                 txt += '<td class="' + pulseEntry.geo + ':' + pulseEntry.mint + '">' + '<a target="_blank" href="http://' + pulseEntry.ipaddr + ':' + pulseEntry.port + '/" >' + pulseEntry.geo + '</a>' + "</td>";
@@ -703,6 +703,8 @@ function instrumentation() {
                 txt += '<td class="' + srcMintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                 txt += "</tr>";
             }
+            else
+                console.log("ERROR : srcMintEntry=null in pulseEntry");
         }
         txt += "</table>";
     }
@@ -931,13 +933,16 @@ app.get('/nodefactory', function (req, res) {
     //  First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     //
     for (var mint in myPulseGroup.mintTable) {
-        if (mint == "0" || mint == "1") { } //ignore mintTable[0] and minttable[1] - never delete these
-        //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
-        else if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
-            logger_1.logger.info("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
-            myPulseGroup.mintTable.splice(parseInt(mint)); //make sure not do delete me or genesis node
-            //remove the owl
-            //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
+        if (mint == "0" || mint == "1") { //ignore mintTable[0] and minttable[1] - never delete these
+            //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
+        }
+        else {
+            if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
+                logger_1.logger.info("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
+                myPulseGroup.mintTable.splice(parseInt(mint)); //make sure not do delete me or genesis node
+                //remove the owl
+                //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
+            }
         }
     }
     //
@@ -948,8 +953,8 @@ app.get('/nodefactory', function (req, res) {
     myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
     //
-    //  mintTable - first [0] is me and [1] is genesis
-    // Here is a little code
+    //  mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
+    //
     var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
     myPulseGroup.mintTable[newMint] = newNode; //we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
@@ -983,14 +988,8 @@ app.get('/nodefactory', function (req, res) {
     // pulseGroups=[pulseGroup];
     // var pulseGroups={[me.geo+".1"] : myPulseGroup};
 });
-//var hostname=process.env.HOSTNAME||"noHostName"
-//var geo=hostname.split(".")[0].toUpperCase();
-//var port=process.env.PORT||"65013";
 //
-//  newPulseGroup() - this will be the object creation from remote JSON routine
-//
-//
-//      get conmfiguration from the genesis node
+//  getMyPulseGroupObject() - this will be the pulsegroup object from the genesis node
 //
 function getMyPulseGroupObject(ipaddr, port, callback) {
     var configurl = "http://" + GENESIS + ":" + GENESISPORT + "/nodefactory?geo=" + GEO + "&port=" + PORT + "&publickey=" + PUBLICKEY + "&genesisport=" + GENESISPORT + "&version=" + VERSION + "&wallet=" + WALLET + "&myip=" + process.env.MYIP + "&ts=" + lib_1.now();
@@ -1044,29 +1043,29 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
     newPulseGroup.addNode = function (geo, group, ipaddr, port, publickey, version, wallet) {
         newPulseGroup.deleteNode(ipaddr, port); //remove any preexisting entries with this ipaddr:port
-        var newMint = newPulseGroup.nextMint++;
-        //console.log("AddNode(): "+geo+":"+group+" as "+ipaddr+"_"+port+" mint="+newMint+" publickey="+publickey+"version="+version+"wallet="+wallet);
-        //TO ADD a PULSE: 
+        var newMint = newPulseGroup.nextMint++; //get a new mint for new node
         this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, VERSION);
-        //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
-        //TO ADD A MINT:
         var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
         this.mintTable[newMint] = newNode;
-        //console.log(`addNode() adding mint# ${newMint} = ${geo}:${ipaddr}:${port}:${newMint} added to ${group}`);
-        //console.log("After adding node, pulseGroup="+dump(pulseGroup));
         newPulseGroup.nodeCount++;
+        logger_1.logger.warning("addNode(): added mintEntry and empty pulse entry " + lib_1.dump(newNode) + lib_1.dump(this.pulses[geo + ":" + group]));
         return this.mintTable[newMint];
     };
-    //   newPulseGroup.deleteNode = function(geo:string,group:string,ipaddr:string,port:number,mint:number) {
-    //       delete this.pulses[geo + ":" + group];
-    //       delete this.mintTable[mint];
-    //   };
     newPulseGroup.deleteNode = function (ipaddr, port) {
+        var _this = this;
         this.mintTable.forEach(function (element) {
             if (element.ipaddr == ipaddr && element.port == port) {
-                logger_1.logger.warning("delete old mint " + element.mint);
+                logger_1.logger.warning("deleteNode(): deleting mint " + element.mint);
+                delete _this.mintTable[element.mint];
             }
         });
+        for (var pulselabel in this.pulses) {
+            if (this.pulses[pulselabel].ipaddr == ipaddr && this.pulses[pulselabel].port == port) {
+                logger_1.logger.warning("deleteNode: deleting pulse " + pulselabel);
+                delete this.pulses[pulselabel];
+            }
+        }
+        ;
     };
     //pulseGroup.pulse = function() {
     //
@@ -1173,22 +1172,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     };
     newPulseGroup.isGenesisNode = function () {
         return newPulseGroup.mintTable[0].geo == newPulseGroup.groupOwner;
-    };
-    newPulseGroup.getMint = function (mint) {
-        return newPulseGroup.mintTable[mint];
-        for (var m in newPulseGroup.mintTable) {
-            if (newPulseGroup.mintTable[m] != null) {
-                //genesis node should timeout old mints
-                //if ((newPulseGroup.isGenesisNode()) && (now()-this.mintTable.lastPulseTimestamp>5)) {
-                //    console.log("getMint() SHOULD BE timing out :"+this.mintTable[m].geo+" mint "+this.mintTable[m].mint);
-                //delete this.mintTable[m];
-                //}
-                //console.log(`m=${m}`);
-                if ((m != "0") && (this.mintTable[m].mint == mint))
-                    return this.mintTable[m];
-            }
-        }
-        return null;
     };
     //  two different timeouts
     //  1) update packetLoss counters and clear OWLs in pulseEntry
@@ -1310,7 +1293,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
             //console.log("myPulseGroup="+dump(pulseGroup));
             var myPulseEntry = myPulseGroup.pulses[incomingPulse.geo + ":" + incomingPulse.group];
-            var mintEntry = newPulseGroup.getMint(incomingPulse.mint); // look up the pulse claimed mint
+            //var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
+            var mintEntry = newPulseGroup.mintTable[incomingPulse.mint]; // look up the pulse claimed mint
             //console.log(`associated ${incomingPulse.mint} mintEntry=`+dump(mintEntry));
             //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
             //            if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
