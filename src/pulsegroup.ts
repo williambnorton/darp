@@ -10,7 +10,7 @@ import fs = require('fs');
 import os = require('os');
 
 
-logger.setLevel(LogLevel.DEBUG);
+logger.setLevel(LogLevel.WARNING);
 
 
 // Define constants
