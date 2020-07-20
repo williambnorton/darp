@@ -1,6 +1,6 @@
 "use strict";
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
@@ -9,7 +9,7 @@ var express = require("express");
 var http = require("http");
 var fs = require("fs");
 var os = require("os");
-logger_1.logger.setLevel(3); //Q: how to apply logger enum?
+logger_1.logger.setLevel(logger_1.LogLevel.INFO);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
@@ -53,11 +53,11 @@ if (PORT != 65013)
     HOSTNAME += "@" + PORT;
 if (!process.env.VERSION) {
     process.env.VERSION = fs.readFileSync('./SWVersion', { encoding: 'utf8', flag: 'r' }).trim();
-    logger_1.logger.warning("No VERSION enviropnmental variable specified - setting to " + process.env.VERSION);
+    logger_1.logger.warning("No VERSION environmental variable specified - setting to " + process.env.VERSION);
 }
 var VERSION = process.env.VERSION || "NoVersion";
 if (!process.env.MYIP) {
-    logger_1.logger.warning("No MYIP enviropnmental variable specified - ERROR - but I will try and find an IP myself frmom incoming message");
+    logger_1.logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
     process.env.MYIP = process.env.GENESIS; // MYIP();
 }
 else {
