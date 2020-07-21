@@ -1685,7 +1685,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
             //pulseGroup owner controls population
             if (newPulseGroup.groupOwner==myPulseEntry.geo) {
-                    var owlsAry=myPulseEntry.owls.split(",");
+                    var owlsAry=incomingPulse.owls.split(",");
                     //addNode/resynch with groupOwner if we don't have this mint
                     for(var o in owlsAry) {
                         const owlEntry=owlsAry[o];
@@ -1707,7 +1707,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                             //find each mint in the group owner announcement or delete/resync
                             var found=false;
  
-                            var owlsAry=myPulseEntry.owls.split(","); //test
+                            var owlsAry=incomingPulse.owls.split(","); //test
                             console.log(`owlsAry=${owlsAry} looking for mint #${mymint} --> myPulseEntry=${dump(myPulseEntry)}`);
                             for(var o in owlsAry) {
                                 var owlmint=owlsAry[o].split("=")[0];
