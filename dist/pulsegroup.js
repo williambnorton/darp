@@ -1326,10 +1326,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 var owlsAry = myPulseEntry.owls.split(",");
                 //addNode/resynch with groupOwner if we don't have this mint
                 for (var o in owlsAry) {
-                    console.log(" GROUP OWNER Population control owlMeasure=" + myPulseEntry.owls + " ary[ownEntry]=" + owlsAry[o]);
-                    var mint = parseInt(owlsAry[o].split("=")[0]);
+                    var owlEntry = owlsAry[o];
+                    console.log(" GROUP OWNER Population control checking we have owlEntry=" + owlEntry);
+                    var mint = parseInt(owlEntry.split("=")[0]);
                     var srcMintEntry = newPulseGroup.mintTable[mint];
-                    if (srcMintEntry == null) {
+                    if (srcMintEntry == null) { //we do not have this mint in our mintTale
                         logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                         console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                         newPulseGroup.syncGenesisPulseGroup(); //HACK: any membership change we need resync
@@ -1340,7 +1341,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 for (var mymint in newPulseGroup.mintTable) {
                     var mintEntry = newPulseGroup.mintTable[mymint];
                     if (mintEntry != null && mintEntry.mint > 1) {
-                        console.log("mintEntry.geo=" + mintEntry.geo + " #" + mintEntry.mint);
+                        console.log("ensuring mintEntry.geo=" + mintEntry.geo + " #" + mintEntry.mint + " is in the groupOwner annoucnement");
                         //find each mint in the group owner announcement or delete/resync
                         var found = false;
                         var owlsAry = myPulseEntry.owls.split(","); //test
