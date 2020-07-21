@@ -226,6 +226,16 @@ function instrumentation() {
         color: blue; \
     } \
      \
+     .ME{ \
+        color: black;\
+        background-color: tan;\
+        font-weight: bold;\
+    }\
+    \
+    .GENESIS{ \
+        color: black;\
+        background-color: grey;\
+    }\
     .UP{ \
             color: black;\
             background-color: lightgreen;\
@@ -526,7 +536,7 @@ function instrumentation() {
         //
         //  Externalize pulse structures 
         //
-        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulseTable">';
+        txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulses">';
         txt += "<tr>";
         txt += "<th>geo</th>";
         txt += "<th>group</th>";
@@ -644,10 +654,16 @@ function instrumentation() {
             var srcMintEntry = pulseGroup.mintTable[a];
             if (srcMintEntry != null) {
                 //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
+                var mintClass = "";
+                if (srcMintEntry.mint == 0)
+                    mintClass += 'ME ';
+                if (srcMintEntry.mint == 1)
+                    mintClass += 'GENESIS ';
                 if (srcMintEntry.state == "UP")
-                    txt += '<tr class="UP ' + srcMintEntry.geo + '" >';
-                else
-                    txt += '<tr class="NR ' + srcMintEntry.geo + '" >';
+                    mintClass += "UP ";
+                if (srcMintEntry.state == "NR")
+                    mintClass += "NT ";
+                txt += '<tr class="' + mintClass + srcMintEntry.geo + '" >';
                 //                txt += '<tr class="'+mintEntry.geo+'">';
                 //txt+="<td>"+mintEntry+"</td>"
                 txt += "<td>" + srcMintEntry.mint + "</td>";
