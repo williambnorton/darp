@@ -1316,7 +1316,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 }
                 //  deleteNode if not in announbcement
                 for (var mymint in newPulseGroup.mintTable) {
-                    if (newPulseGroup.mintTable[mymint] != null) {
+                    if (mymint != "0" && newPulseGroup.mintTable[mymint] != null) {
                         //find our mint in the group owner announcement or delete/resync
                         var found = false;
                         for (var owlEntry in ary) {
