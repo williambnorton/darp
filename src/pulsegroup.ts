@@ -1456,7 +1456,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         
         var ipary: string[] = [];
         var owls = "";
-        newPulseGroup.forEachNode(function(index: string, pulseEntry: PulseEntryInterface) {
+//        newPulseGroup.forEachNode(function(index: string, pulseEntry: PulseEntryInterface) {
+        for (var pulse in this.pulses) {
+            var pulseEntry=this.pulses[pulse];
             console.log(`pulse(): pushing to pulse ${dump(pulseEntry)}`);
             ipary.push(pulseEntry.ipaddr+"_"+ pulseEntry.port);
             pulseEntry.outPulses++;
@@ -1481,7 +1483,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 }
             }
             owls+=pulseEntry.mint+"="+pulseEntry.owl+flag+","
-       });
+       };
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
 
