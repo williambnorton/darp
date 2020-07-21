@@ -655,7 +655,7 @@ function instrumentation() {
             if (srcMintEntry != null) {
                 //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
                 var mintClass = "";
-                if (srcMintEntry.mint == 0)
+                if (a == "0")
                     mintClass += 'ME ';
                 if (srcMintEntry.mint == 1)
                     mintClass += 'GENESIS ';

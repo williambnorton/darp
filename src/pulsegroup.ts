@@ -894,7 +894,7 @@ function instrumentation() {    //this should get its own file
                 //console.log(ts()+"a="+a+" mintEntry"+dump(mintEntry));
 
                 var mintClass="";
-                if (srcMintEntry.mint==0) mintClass+='ME ';
+                if (a=="0") mintClass+='ME ';
                 if (srcMintEntry.mint==1) mintClass+='GENESIS ';
                 
                 if (srcMintEntry.state=="UP") mintClass+="UP ";
