@@ -1220,7 +1220,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         newPulseGroup.mintTable[0].state = "UP";
         newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
         var sleepTime = 1000 - (lib_1.now() + 1000) % 1000; // start pulse around on the second
-        console.log("sleepTime=" + sleepTime); //INSTRUMENTATION POINT - DO NOT DELETE - shows load on node
+        //console.log(`sleepTime=${sleepTime}`); //INSTRUMENTATION POINT - DO NOT DELETE - shows load on node
         setTimeout(newPulseGroup.pulse, sleepTime);
         //        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
     };
@@ -1359,7 +1359,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 //addNode/resynch with groupOwner if we don't have this mint
                 for (var o in owlsAry) {
                     var owlEntry = owlsAry[o];
-                    console.log(" GROUP OWNER Population control checking we have owlEntry=" + owlEntry);
+                    //console.log(" GROUP OWNER Population control checking we have owlEntry="+owlEntry);
                     var mint = parseInt(owlEntry.split("=")[0]);
                     var srcMintEntry = newPulseGroup.mintTable[mint];
                     if (srcMintEntry == null) { //we do not have this mint in our mintTale
