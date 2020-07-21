@@ -1097,8 +1097,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             var pulseEntry = newPulseGroup.pulses[pulse];
             // console.log("processing "+pulse);
             // newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
-            // var pulseFreshness=now()-pulseEntry.pulseTimestamp;
-            //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
+            var pulseFreshness = lib_1.now() - pulseEntry.pulseTimestamp;
+            console.log(pulse + " pulseFreshness=" + pulseFreshness);
             if ((lib_1.now() - pulseEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
                 //for each OWLS                 
                 var ary = pulseEntry.owls.split(","); //put all my OWLs into matrix
@@ -1119,7 +1119,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = pulseEntry.owl; //pulse measured to me
             }
             else { //OLD PULSE - CLEAR these entries
-                logger_1.logger.warning(pulseEntry.geo + " mint#" + pulseEntry.mint + " did not respond. Entering NO_OWL for all values to this node");
+                logger_1.logger.warning(pulseEntry.geo + " mint#" + pulseEntry.mint + " has an old pulseTimestamp. Entering NO_OWL for all values to this node");
                 // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
