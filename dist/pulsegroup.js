@@ -1055,10 +1055,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     newPulseGroup.deleteNode = function (ipaddr, port) {
         var _this = this;
         this.mintTable.forEach(function (element) {
-            if (element.ipaddr == ipaddr && element.port == port) {
-                logger_1.logger.warning("deleteNode(): deleting mint " + element.mint);
-                delete _this.mintTable[element.mint];
-            }
+            if (element.mint != 0 && element.mint != 1)
+                if (element.ipaddr == ipaddr && element.port == port) {
+                    logger_1.logger.warning("deleteNode(): deleting mint " + element.mint);
+                    delete _this.mintTable[element.mint];
+                }
         });
         for (var pulselabel in this.pulses) {
             if (this.pulses[pulselabel].ipaddr == ipaddr && this.pulses[pulselabel].port == port) {
@@ -1102,7 +1103,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = pulseEntry.owl; //pulse measured to me
             }
             else { //OLD PULSE - CLEAR these entries
-                logger_1.logger.warning(pulseEntry.geo + " did not respond. Entering NO_OWL for all values to this node");
+                logger_1.logger.warning(pulseEntry.geo + " mint#" + pulseEntry.mint + " did not respond. Entering NO_OWL for all values to this node");
                 // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint)) 
@@ -1185,7 +1186,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         var startingPulseEntryCount = newPulseGroup.pulses.length;
         for (var m in this.mintTable) {
             //console.log("checking for a pre-existing: "+dump(this.mintTable[m]));
-            if ((m != "0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) { //ignore mintTable[0]
+            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) { //ignore mintTable[0]
                 var elapsedMSincePulse = (lib_1.now() - this.mintTable[m].lastPulseTimestamp);
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
@@ -1316,7 +1317,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 }
                 //  deleteNode if not in announbcement
                 for (var mymint in newPulseGroup.mintTable) {
-                    if (mymint != "0" && newPulseGroup.mintTable[mymint] != null) {
+                    if (mymint != "0" && mymint != "1" && newPulseGroup.mintTable[mymint] != null) {
                         //find our mint in the group owner announcement or delete/resync
                         var found = false;
                         for (var owlEntry in ary) {
