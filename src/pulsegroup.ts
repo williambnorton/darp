@@ -1375,6 +1375,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     };
 
     newPulseGroup.deleteNode = function(ipaddr: string, port: number) {
+
         this.mintTable.forEach((element: MintEntry) => {
             if (element.mint!=0 && element.mint!=1)
             if (element.ipaddr==ipaddr && element.port==port) {
@@ -1382,12 +1383,34 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 delete this.mintTable[element.mint];
             }
         });
+        var deletedMint=-1;
         for (var pulselabel in this.pulses) {
             if (this.pulses[pulselabel].ipaddr==ipaddr && this.pulses[pulselabel].port==port) {
                 logger.warning("deleteNode: deleting pulse "+pulselabel);
+                deletedMint=this.pulses[pulselabel].mint;
                 delete this.pulses[pulselabel];
             }
         };
+        //remnove mint from the group owner's owls list
+
+        //wbnwbnwbn
+        //loop OWLS_DISPLAYED, copy if not mint=deletedmint
+        if (this.isGenesisNode()) {
+            var groupOwnerPulseLabel=newPulseGroup.groupOwner+":"+newPulseGroup.groupName;
+            var groupOwnerPulseEntry=newPulseGroup.pulses[groupOwnerPulseLabel];
+            console.log(`groupOwnerPulseEntry=${dump(groupOwnerPulseEntry)}`);
+            if (groupOwnerPulseEntry!=null) {
+                var owlEntryAry=groupOwnerPulseEntry.owls.split(",");
+                var newOwls="";  //copy all but deleted Owl to control population
+                for (var o in owlEntryAry) {
+                    if (parseInt(owlEntryAry[o])!=deletedMint) {
+                        newOwls+=owlEntryAry[o]+",";
+                    } else console.log(`deleted owl associated with mint ${deletedMint}`);
+                }
+
+                
+            }
+        }
         newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
     };
     //pulseGroup.pulse = function() {
@@ -1689,7 +1712,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                             if (!found) {
                                 logger.info(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
                                 console.log(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
-                                newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
+
+                                newPulseGroup.deleteNode(newPulseGroup.mintTable[mymint].ipaddr, newPulseGroup.mintTable[mymint].port);
+
+                                //newPulseGroup.syncGenesisPulseGroup(); //optional.... membership change we need resync
+
                                     return;
                             }
                         }
