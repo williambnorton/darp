@@ -1163,13 +1163,13 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //  pulse() - send our OWL measurements to all in the pulseGroup
     //
     newPulseGroup.pulse = function () {
-        console.log("pulse() called newPulseGroup.pulses=" + lib_1.dump(newPulseGroup.pulses));
+        //console.log(`pulse() called newPulseGroup.pulses=${dump(newPulseGroup.pulses)}`);
         var ipary = [];
         var owls = "";
         //        newPulseGroup.forEachNode(function(index: string, pulseEntry: PulseEntryInterface) {
         for (var pulse in newPulseGroup.pulses) {
             var pulseEntry = newPulseGroup.pulses[pulse];
-            console.log("pulse(): pushing to pulse " + lib_1.dump(pulseEntry));
+            //console.log(`pulse(): pushing to pulse ${dump(pulseEntry)}`);
             ipary.push(pulseEntry.ipaddr + "_" + pulseEntry.port);
             pulseEntry.outPulses++;
             //**HIGHLIGHT INTERESTING CELLS IN MATRIX CODE */
@@ -1200,7 +1200,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         ;
         owls = owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry = newPulseGroup.pulses[GEO + ":" + newPulseGroup.groupName];
-        console.log("pulse(): lookinmg for my entry to pulse: " + GEO + ":" + newPulseGroup.groupName);
+        //console.log(`pulse(): lookinmg for my entry to pulse: ${GEO}:${newPulseGroup.groupName}`);
         if (myEntry == null) {
             console.log("can not find " + GEO + ":" + newPulseGroup.groupName);
         }
@@ -1208,7 +1208,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             myEntry.seq++;
             var myMint = newPulseGroup.mintTable[0].mint;
             var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + myEntry.seq + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myMint + "," + owls;
-            console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary)); //INSTRUMENTATION POINT
+            //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
             pulselayer_1.sendPulses(pulseMessage, ipary);
         }
         newPulseGroup.timeout(); //and timeout the non-responders
