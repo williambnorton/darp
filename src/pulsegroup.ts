@@ -1697,10 +1697,10 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                             return;
                         }
                     }
-                    //  deleteNode if its mint is not in announbcement
+                    //  deleteNode if its mint is not in announcement
                     for (var mymint in newPulseGroup.mintTable) {
                         var mintEntry=newPulseGroup.mintTable[mymint];
-                        if (mintEntry!=null && mintEntry.mint>1) {
+                        if (mintEntry!=null && mymint!="0" && mymint!="1") {
                             console.log(`ensuring mintEntry.geo=${mintEntry.geo} #${mintEntry.mint} is in the groupOwner annoucnement`);
                             //find each mint in the group owner announcement or delete/resync
                             var found=false;
