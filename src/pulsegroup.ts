@@ -1426,7 +1426,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             // console.log("processing "+pulse);
             // newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             var pulseFreshness=now()-pulseEntry.pulseTimestamp;
-            console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
+            //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
             if ((now()-pulseEntry.pulseTimestamp) < 2*1000) {  // VALID PULSE
                 
                 //for each OWLS                 

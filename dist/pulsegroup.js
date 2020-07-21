@@ -1119,7 +1119,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             // console.log("processing "+pulse);
             // newPulseGroup.forEachNode(function(index:string,nodeEntry:PulseEntry) {
             var pulseFreshness = lib_1.now() - pulseEntry.pulseTimestamp;
-            console.log(pulse + " pulseFreshness=" + pulseFreshness);
+            //console.log(`${pulse} pulseFreshness=${pulseFreshness}`);
             if ((lib_1.now() - pulseEntry.pulseTimestamp) < 2 * 1000) { // VALID PULSE
                 //for each OWLS                 
                 var ary = pulseEntry.owls.split(","); //put all my OWLs into matrix
