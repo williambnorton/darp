@@ -1367,7 +1367,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, VERSION);
         var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
         this.mintTable[newMint] = newNode;
-        newPulseGroup.nodeCount++;
+        //newPulseGroup.nodeCount++;
         logger.warning("addNode(): added mintEntry and empty pulse entry "+dump(newNode)+dump( this.pulses[geo + ":" + group]));
         newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
 
