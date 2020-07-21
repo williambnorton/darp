@@ -1647,25 +1647,46 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
             //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
 //            if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
-            if (myPulseEntry==null || mintEntry==null) {
-                if (!newPulseGroup.isGenesisNode()) {
-                    logger.info(`ignoring ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse entry`);
+            if (myPulseEntry==null || mintEntry==null) {  //show more specifics why pulse is ignored
+                    logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo+":"+incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
                     return;
-                }
-                //TODO: This is where authentication to this pulseGroup happens
-                if (mintEntry==null) { //} && (mintEntry.geo==incomingPulse.geo)) {  //we found mint and matches incoming geo - should we check incomingIP also? We can.
-                    logger.warning(`recvPulses(): IGNORING PULSE Found pulseEntry ${incomingPulse.geo}:${incomingPulse.group} but Could not find mint for this pulse... Will re-synch with genesis to get credentials for ${incomingPulse.geo}`);
-                    if (!newPulseGroup.isGenesisNode())
-                        newPulseGroup.adminControl='RESYNCH';
-                    return ;  //we are done     
-                }
-                if (mintEntry.geo!=incomingPulse.geo) {
-                    logger.warning(`recvPulses(): IGNORING PULSE - mismatched mint ${incomingPulse.geo}:${incomingPulse.group} and mint=${mintEntry.mint} and this mint is geo=${mintEntry.geo} but Could not find mint for this pulse... will re-synch with genesis to get credentials for ${incomingPulse.geo}`);
-                    newPulseGroup.adminControl='RESYNCH';
-                    return ;  //we are done    
-                }
-                return;//we need a mint and pulseGroup entry to receive a pulse
             }
+
+            //pulseGroup owner controls population
+            if (newPulseGroup.groupOwner==myPulseEntry.geo) {
+                    var ary=myPulseEntry.owls.split(",");
+                    //addNode/resynch with groupOwner if we don't have this mint
+                    for(var owlEntry in ary) {
+                        console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
+                        var mint=parseInt(ary[owlEntry].split("=")[0]);
+                        var srcMintEntry=newPulseGroup.mintTable[mint];
+                        if (srcMintEntry == null) {
+                            logger.info(`Owner announced a NEW MINT ENTRY ${mint} - syncing with genesis node for new mintTable and pulses for its config`);
+                            newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
+                            return;
+                        }
+                    }
+                    //  deleteNode if not in announbcement
+                    for (var mymint in newPulseGroup.mintTable) {
+                        if (newPulseGroup.mintTable[mymint]!=null) {
+                            //find our mint in the group owner announcement or delete/resync
+                            var found=false;
+                            for(var owlEntry in ary) {
+                                var owlmint=ary[owlEntry].split("=")[0];
+                                if (owlmint == mymint) found=true;
+                            }
+                            if (!found) {
+                                   logger.info(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
+                                    newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
+                                    return;
+                            }
+                        }
+
+                    }
+            }
+
+            //with miontTable and pulses updated, handle valid pulse
+
             //console.log(ts()+"recvPulses(): Valid pulse for a mint we know about "+incomingPulse.geo);
 
             //we expect mintEntry to --> mint entry for this pulse
@@ -1707,28 +1728,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
                         process.exit(36); //SOFTWARE RELOAD and RECONNECT
                     }
-                    //
-                    //  groupOwner controls population.
-                    // - resync if groupOwner has diff config
-                    
-                    var ary=myPulseEntry.owls.split(",");
-                    for(var owlEntry in ary) {
-                        //console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
-                        var m=parseInt(ary[owlEntry].split("=")[0]);
-                        var strOwl=ary[owlEntry].split("=")[1];
-                        if (typeof strOwl=="undefined") strOwl="0";
-                        //console.log("Searching for mint "+m);
-                        var srcMintEntry=newPulseGroup.mintTable[m];
-                        var dstMintEntry=newPulseGroup.mintTable[myPulseEntry.mint];
-                        
-                        if (srcMintEntry == null || dstMintEntry==null) {
-                            logger.info(`Owner announced a NEW MINT ENTRY ${m} - syncing with genesis node for new mintTable and pulses for its config`);
-                            newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
-                            return;
-                        }
-                        // var owl=parseInt(strOwl);
-                        // newPulseGroup.storeOWL(srcMintEntry.geo,dstMintEntry.geo,owl);  //store owls into my local filestore
-                    }
+
                     
 
                     //console.log(`groupOwner tells us there are ${owlCount} nodes in thie pulseGroup and we have ${newPulseGroup.nodeCount}`);
