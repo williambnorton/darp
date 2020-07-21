@@ -1025,8 +1025,8 @@ function getMyPulseGroupObject(ipaddr, port, callback) {
             //console.log("********* *******           data="+data);
             var newPulseGroup = JSON.parse(data);
             logger_1.logger.info("getPulseGroup(): from node factory:" + lib_1.dump(newPulseGroup));
-            if (newPulseGroup.mintTable[0].publickey == PUBLICKEY) {
-                logger_1.logger.info("getPulseGroup(): GENESIS node already configured ");
+            if (newPulseGroup.mintTable[1].publickey == PUBLICKEY) {
+                logger_1.logger.info("getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured ");
                 //*********** GENESIS NODE CONFIGURED **********/
                 //pulseGroups=[newPulseGroup];
                 callback(newPulseGroup);
