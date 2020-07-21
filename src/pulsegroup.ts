@@ -1453,12 +1453,12 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //  pulse() - send our OWL measurements to all in the pulseGroup
 //
     newPulseGroup.pulse=function() {
-        console.log(`pulse() called this.pulses=${dump(this.pulses)}`);
+        console.log(`pulse() called newPulseGroup.pulses=${dump(newPulseGroup.pulses)}`);
         var ipary: string[] = [];
         var owls = "";
 //        newPulseGroup.forEachNode(function(index: string, pulseEntry: PulseEntryInterface) {
-        for (var pulse in this.pulses) {
-            var pulseEntry=this.pulses[pulse];
+        for (var pulse in newPulseGroup.pulses) {
+            var pulseEntry=newPulseGroup.pulses[pulse];
             console.log(`pulse(): pushing to pulse ${dump(pulseEntry)}`);
             ipary.push(pulseEntry.ipaddr+"_"+ pulseEntry.port);
             pulseEntry.outPulses++;
