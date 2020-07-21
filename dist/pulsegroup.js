@@ -9,7 +9,7 @@ var express = require("express");
 var http = require("http");
 var fs = require("fs");
 var os = require("os");
-logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
+logger_1.logger.setLevel(logger_1.LogLevel.INFO);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
 var NO_OWL = -99999;
@@ -1203,11 +1203,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         }
         else {
             myEntry.seq++;
+            var myMint = newPulseGroup.mintTable[0].mint;
+            var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + myEntry.seq + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myMint + "," + owls;
+            console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary)); //INSTRUMENTATION POINT
+            pulselayer_1.sendPulses(pulseMessage, ipary);
         }
-        var myMint = newPulseGroup.mintTable[0].mint;
-        var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + myEntry.seq + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myMint + "," + owls;
-        console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary)); //INSTRUMENTATION POINT
-        pulselayer_1.sendPulses(pulseMessage, ipary);
         newPulseGroup.timeout(); //and timeout the non-responders
         if (newPulseGroup.adminControl == 'RESYNCH') {
             logger_1.logger.info("Resynching with genesis node...");
