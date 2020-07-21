@@ -1367,12 +1367,15 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         return this.mintTable[newMint];
     };
 
+    //
+    //  deleteNode() - Genesis node controls population, so delete mintTable, pulse and owl for the mint
+    //
     newPulseGroup.deleteNode = function(ipaddr: string, port: number) {
-
         this.mintTable.forEach((element: MintEntry) => {
             if (element.mint!=0 && element.mint!=1)
             if (element.ipaddr==ipaddr && element.port==port) {
                 logger.warning(`deleteNode(): deleting mint ${element.mint}`);
+                console.log(`deleteNode(): DELETEING Mint ${element.mint}`);
                 delete this.mintTable[element.mint];
             }
         });
@@ -1380,8 +1383,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         for (var pulselabel in this.pulses) {
             if (this.pulses[pulselabel].ipaddr==ipaddr && this.pulses[pulselabel].port==port) {
                 logger.warning("deleteNode: deleting pulse "+pulselabel);
+                console.log(`deleteNode(): DELETEING Mint ${this.pulses[pulselabel].mint}`);
+
                 deletedMint=this.pulses[pulselabel].mint;
                 delete this.pulses[pulselabel];
+
             }
         };
         //remnove mint from the group owner's owls list
@@ -1391,17 +1397,15 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         if (this.isGenesisNode()) {
             var groupOwnerPulseLabel=newPulseGroup.groupOwner+":"+newPulseGroup.groupName;
             var groupOwnerPulseEntry=newPulseGroup.pulses[groupOwnerPulseLabel];
-            console.log(`groupOwnerPulseEntry=${dump(groupOwnerPulseEntry)}`);
+            console.log(`deleteNode(): groupOwnerPulseEntry=${dump(groupOwnerPulseEntry)}`);
             if (groupOwnerPulseEntry!=null) {
                 var owlEntryAry=groupOwnerPulseEntry.owls.split(",");
                 var newOwls="";  //copy all but deleted Owl to control population
                 for (var o in owlEntryAry) {
                     if (parseInt(owlEntryAry[o])!=deletedMint) {
                         newOwls+=owlEntryAry[o]+",";
-                    } else console.log(`deleted owl associated with mint ${deletedMint}`);
+                    } else console.log(`deleteNode(): deleted owl associated with mint ${deletedMint}`);
                 }
-
-                
             }
         }
         newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
@@ -1556,7 +1560,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("m="+m+" genesis node elapsedMSincePulse="+elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
-                            console.log("timeout(): DELETING MINT with "+ elapsedMSincePulse+" ms old timestamp "+this.mintTable[m].geo+" mint="+this.mintTable[m].mint);
+                            console.log(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             newPulseGroup.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
