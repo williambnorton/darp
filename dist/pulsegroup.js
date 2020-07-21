@@ -1067,22 +1067,27 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //  deleteNode() - Genesis node controls population, so delete mintTable, pulse and owl for the mint
     //
     newPulseGroup.deleteNode = function (ipaddr, port) {
-        var _this = this;
-        this.mintTable.forEach(function (element) {
-            if (element.mint != 0 && element.mint != 1)
-                if (element.ipaddr == ipaddr && element.port == port) {
-                    logger_1.logger.warning("deleteNode(): deleting mint " + element.mint);
-                    console.log("deleteNode(): DELETEING Mint " + element.mint);
-                    delete _this.mintTable[element.mint];
+        console.log("deleteNode(): ipaddr=" + ipaddr + " port=" + port);
+        for (var m in newPulseGroup.mintTable) {
+            var mintEntry = newPulseGroup.mintTable[m];
+            console.log("deleteNode(): mintEntry=" + lib_1.dump(mintEntry));
+            if (mintEntry.mint != 0 && mintEntry.mint != 1) {
+                if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
+                    logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
+                    console.log("deleteNode(): DELETEING Mint " + mintEntry.mint);
+                    delete this.mintTable[mintEntry.mint];
                 }
-        });
+            }
+        }
+        ;
         var deletedMint = -1;
-        for (var pulselabel in this.pulses) {
-            if (this.pulses[pulselabel].ipaddr == ipaddr && this.pulses[pulselabel].port == port) {
-                logger_1.logger.warning("deleteNode: deleting pulse " + pulselabel);
-                console.log("deleteNode(): DELETEING Mint " + this.pulses[pulselabel].mint);
-                deletedMint = this.pulses[pulselabel].mint;
-                delete this.pulses[pulselabel];
+        for (var pulseLabel in this.pulses) {
+            var pulseEntry = newPulseGroup.pulses[pulseLabel];
+            if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
+                logger_1.logger.warning("deleteNode: deleting pulse " + pulseLabel);
+                console.log("deleteNode(): DELETEING Pulse " + pulseEntry.mint);
+                deletedMint = pulseEntry.mint;
+                delete newPulseGroup.pulses[pulseLabel];
             }
         }
         ;
