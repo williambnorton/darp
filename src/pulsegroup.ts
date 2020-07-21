@@ -1450,36 +1450,37 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     }
 
 //
-//  pulse()
+//  pulse() - send our OWL measurements to all in the pulseGroup
 //
     newPulseGroup.pulse=function() {
         
         var ipary: string[] = [];
         var owls = "";
-        newPulseGroup.forEachNode(function(index: string, nodeEntry: PulseEntryInterface) {
-            ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
-            nodeEntry.outPulses++;
+        newPulseGroup.forEachNode(function(index: string, pulseEntry: PulseEntryInterface) {
+            console.log(`pulse(): pushing to pulse ${dump(pulseEntry)}`);
+            ipary.push(pulseEntry.ipaddr+"_"+ pulseEntry.port);
+            pulseEntry.outPulses++;
             
             //**HIGHLIGHT INTERESTING CELLS IN MATRIX CODE */
             var flag="";    //this section flags "interesting" cells to click on and explore
-            if ( nodeEntry.owl == NO_OWL) owls+=nodeEntry.mint+",";
+            if ( pulseEntry.owl == NO_OWL) owls+=pulseEntry.mint+",";
             else {
-                var medianOfMeasures=median(nodeEntry.history);
+                var medianOfMeasures=median(pulseEntry.history);
                 //console.log(`nodeEntry.medianHistory.length=${nodeEntry.medianHistory.length}`);
-                if (nodeEntry.medianHistory.length>0) {  //use medianHistory to identify a median to deviate from
-                    var medianOfMedians=median(nodeEntry.medianHistory);
+                if (pulseEntry.medianHistory.length>0) {  //use medianHistory to identify a median to deviate from
+                    var medianOfMedians=median(pulseEntry.medianHistory);
                     //var deviation=Math.round(Math.abs(medianOfMedians-medianOfMeasures)*100/medianOfMedians);
-                    var deviation=Math.round(Math.abs(medianOfMedians-nodeEntry.owl)*100/medianOfMedians);
-                    var delta=Math.abs(medianOfMedians-nodeEntry.owl);
+                    var deviation=Math.round(Math.abs(medianOfMedians-pulseEntry.owl)*100/medianOfMedians);
+                    var delta=Math.abs(medianOfMedians-pulseEntry.owl);
  //TURN ON TO DEBUG FLAGGING                   if (deviation!=0) console.log(`pulse(): geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
 //                  if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {  //flag if off by 30% from median
                     if (delta>10) {  //flagg if deviation is > 10ms - we can improve that
-                        logger.info(`pulse(): Flagging ${nodeEntry.mint}-${newPulseGroup.mintTable[0].mint}=${nodeEntry.owl}  delta=${delta} geo=${nodeEntry.geo} to ${me.geo} nodeEntry.owl=${nodeEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
+                        logger.info(`pulse(): Flagging ${pulseEntry.mint}-${newPulseGroup.mintTable[0].mint}=${pulseEntry.owl}  delta=${delta} geo=${pulseEntry.geo} to ${me.geo} nodeEntry.owl=${pulseEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
                         flag="@" //deviation 30% from the median, flag
                     }
                 }
             }
-            owls+=nodeEntry.mint+"="+nodeEntry.owl+flag+","
+            owls+=pulseEntry.mint+"="+pulseEntry.owl+flag+","
        });
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
