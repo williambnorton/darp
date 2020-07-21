@@ -1460,6 +1460,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             ipary.push(nodeEntry.ipaddr+"_"+ nodeEntry.port);
             nodeEntry.outPulses++;
             
+            //**HIGHLIGHT INTERESTING CELLS IN MATRIX CODE */
             var flag="";    //this section flags "interesting" cells to click on and explore
             if ( nodeEntry.owl == NO_OWL) owls+=nodeEntry.mint+",";
             else {
@@ -1653,7 +1654,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.recvPulses=function () {
         recvPulses(me.port, function(incomingPulse: IncomingPulse) {
-            //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
+            console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
             //console.log("myPulseGroup="+dump(pulseGroup));
             var myPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
             //var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
