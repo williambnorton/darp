@@ -1340,6 +1340,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 for (var mymint in newPulseGroup.mintTable) {
                     var mintEntry = newPulseGroup.mintTable[mymint];
                     if (mintEntry != null && mintEntry.mint > 1) {
+                        console.log("mintEntry.geo=" + mintEntry.geo + " #" + mintEntry.mint);
                         //find each mint in the group owner announcement or delete/resync
                         var found = false;
                         var owlsAry = myPulseEntry.owls.split(","); //test
