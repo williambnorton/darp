@@ -1673,16 +1673,16 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     var ary=myPulseEntry.owls.split(",");
                     //addNode/resynch with groupOwner if we don't have this mint
                     for(var owlEntry in ary) {
-                        console.log("PROCESSING GROUP OWNER owls="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
+                        console.log(" GROUP OWNER Population control owlMeasure="+myPulseEntry.owls+" ary[ownEntry]="+ary[owlEntry]);
                         var mint=parseInt(ary[owlEntry].split("=")[0]);
                         var srcMintEntry=newPulseGroup.mintTable[mint];
                         if (srcMintEntry == null) {
-                            logger.info(`Owner announced a NEW MINT ENTRY ${mint} - syncing with genesis node for new mintTable and pulses for its config`);
-                            newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
+                            logger.DEBUG(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
+                            newPulseGroup.syncGenesisPulseGroup(); //HACK: any membership change we need resync
                             return;
                         }
                     }
-                    //  deleteNode if not in announbcement
+                    //  deleteNode if its mint is not in announbcement
                     for (var mymint in newPulseGroup.mintTable) {
                         if (mymint!="0" && mymint!="1" && newPulseGroup.mintTable[mymint]!=null) {
                             //find our mint in the group owner announcement or delete/resync
@@ -1692,7 +1692,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                                 if (owlmint == mymint) found=true;
                             }
                             if (!found) {
-                                   logger.info(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
+                                   logger.DEBUG(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
                                     newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                                     return;
                             }
