@@ -1573,8 +1573,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         }
                     } else { /*  not genesis - only can time out genesis  */
                         logger.warning(`timing out genesis node reconnect newPulseGroup.mintTable=`+dump(newPulseGroup.mintTable));
-                        if (now()-newPulseGroup.mintTable[1].lastPulseTimestamp > 30*1000) {
-                            logger.error(`Here the node will timeout the genesis snode, and delete his pulseGroup... for now - genesis node is paying us, isn't here.Exitting.`);
+                        var age=now()-newPulseGroup.mintTable[1].lastPulseTimestamp;
+                        if (age > 30*1000) {
+                            logger.error(`Genesis node disappeared. age of =${age}ms Exit, our work is done. Exitting.`);
                             process.exit(36);
                         }
                         //we may timeout the group owner and kill the pulsegroup
