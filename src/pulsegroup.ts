@@ -1708,7 +1708,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                             var found=false;
  
                             var owlsAry=myPulseEntry.owls.split(","); //test
-                            console.log(`owls=${owlsAry} looking for mint #${mymint}`);
+                            console.log(`owlsAry=${owlsAry} looking for mint #${mymint} --> myPulseEntry=${dump(myPulseEntry)}`);
                             for(var o in owlsAry) {
                                 var owlmint=owlsAry[o].split("=")[0];
                                 console.log(`owlmint =${owlmint} mymint=${mymint}`);
