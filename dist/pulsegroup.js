@@ -1320,11 +1320,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             }
             //pulseGroup owner controls population
             if (newPulseGroup.groupOwner == myPulseEntry.geo) {
-                var ary = myPulseEntry.owls.split(",");
+                var owlsAry = myPulseEntry.owls.split(",");
                 //addNode/resynch with groupOwner if we don't have this mint
-                for (var owlEntry in ary) {
-                    console.log(" GROUP OWNER Population control owlMeasure=" + myPulseEntry.owls + " ary[ownEntry]=" + ary[owlEntry]);
-                    var mint = parseInt(ary[owlEntry].split("=")[0]);
+                for (var o in owlsAry) {
+                    console.log(" GROUP OWNER Population control owlMeasure=" + myPulseEntry.owls + " ary[ownEntry]=" + owlsAry[o]);
+                    var mint = parseInt(owlsAry[o].split("=")[0]);
                     var srcMintEntry = newPulseGroup.mintTable[mint];
                     if (srcMintEntry == null) {
                         logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
@@ -1335,11 +1335,12 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 }
                 //  deleteNode if its mint is not in announbcement
                 for (var mymint in newPulseGroup.mintTable) {
-                    if (mymint != "0" && mymint != "1" && newPulseGroup.mintTable[mymint] != null) {
-                        //find our mint in the group owner announcement or delete/resync
+                    if (newPulseGroup.mintTable[mymint] != null && newPulseGroup.mintTable[mymint].mint > 1) {
+                        //find each mint in the group owner announcement or delete/resync
                         var found = false;
-                        for (var owlEntry in ary) {
-                            var owlmint = ary[owlEntry].split("=")[0];
+                        for (var o in owlsAry) {
+                            var owlmint = owlsAry[o].split("=")[0];
+                            console.log("owlmint =" + owlmint + " mymint=" + mymint);
                             if (owlmint == mymint)
                                 found = true;
                         }
