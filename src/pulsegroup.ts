@@ -10,7 +10,7 @@ import fs = require('fs');
 import os = require('os');
 
 
-logger.setLevel(LogLevel.ERROR);
+logger.setLevel(LogLevel.WARNING);
 
 
 // Define constants
@@ -1198,12 +1198,8 @@ app.get('/nodefactory', function(req, res) {
     //
     //  Handle Geneis Node case - first to start up
     //
-    console.log(`incomingIP=${incomingIP} port=${port} GENESIS=${GENESIS} GENESISPORT=${GENESISPORT} me=`+dump(me));
     if (me.ipaddr==incomingIP && (port==GENESISPORT)) {         //GENESIS NODE instantiating itself - don't need to add anything
-        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
-        logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
+        console.log(`I AM GENESIS NODE incomingIP=${incomingIP} port=${port} GENESIS=${GENESIS} GENESISPORT=${GENESISPORT} me=`+dump(me));
         logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
@@ -1222,7 +1218,7 @@ app.get('/nodefactory', function(req, res) {
 
 //
 //  First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
-//
+// TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
         if (mint=="0" || mint=="1") { //ignore mintTable[0] and minttable[1] - never delete these
 //        console.log("looking at mint="+dump(pulseGroup.mintTable[mint]));
@@ -1231,10 +1227,7 @@ app.get('/nodefactory', function(req, res) {
                 logger.info(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
 
                 myPulseGroup.mintTable.splice(parseInt(mint));   //make sure not do delete me or genesis node
-
-                //remove the owl
-
-                //delete pulseGroup.mintTable[mint];  //will make it null in the mint table
+                //did not delete pulse or
             }
         }
     }
