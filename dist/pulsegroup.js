@@ -1142,6 +1142,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //  pulse() - send our OWL measurements to all in the pulseGroup
     //
     newPulseGroup.pulse = function () {
+        console.log("pulse() called");
         var ipary = [];
         var owls = "";
         //        newPulseGroup.forEachNode(function(index: string, pulseEntry: PulseEntryInterface) {
