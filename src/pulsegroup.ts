@@ -1689,6 +1689,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         if (newPulseGroup.mintTable[mymint]!=null && newPulseGroup.mintTable[mymint].mint>1) {
                             //find each mint in the group owner announcement or delete/resync
                             var found=false;
+ 
+                            var owlsAry=myPulseEntry.owls.split(","); //test
                             console.log(`owls=${owlsAry} looking for mint #${mymint}`);
                             for(var o in owlsAry) {
                                 var owlmint=owlsAry[o].split("=")[0];
