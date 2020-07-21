@@ -1509,12 +1509,15 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
        };
         owls=owls.replace(/,+$/, ""); //remove trailing comma 
         var myEntry=newPulseGroup.pulses[GEO+":"+newPulseGroup.groupName];
-
-        myEntry.seq++;
-        var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myEntry.mint+","+owls;
+       console.log(`pulse(): lookinmg for my entry to pulse: ${GEO}:${newPulseGroup.groupName}`);
+       if (myEntry==null) { console.log(`can not find ${GEO}:${newPulseGroup.groupName}`);}
+       else { 
+            myEntry.seq++;
+       }
+       var myMint=newPulseGroup.mintTable[0].mint;
+        var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myMint+","+owls;
         console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
         sendPulses(pulseMessage,ipary);
-
         newPulseGroup.timeout(); //and timeout the non-responders
         if ( newPulseGroup.adminControl=='RESYNCH' ) {
             logger.info("Resynching with genesis node...");
