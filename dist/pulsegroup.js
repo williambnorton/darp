@@ -1192,7 +1192,10 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     }
                 }
             }
-            owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
+            if (pulseEntry.owl == NO_OWL)
+                owls += pulseEntry.mint + ",";
+            else
+                owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
         }
         ;
         owls = owls.replace(/,+$/, ""); //remove trailing comma 
