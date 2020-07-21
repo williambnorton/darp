@@ -1704,15 +1704,15 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     for (var mymint in newPulseGroup.mintTable) {
                         var mintEntry=newPulseGroup.mintTable[mymint];
                         if (mintEntry!=null && mymint!="0" && mymint!="1") {
-                            console.log(`ensuring mintEntry.geo=${mintEntry.geo} #${mintEntry.mint} is in the groupOwner annoucnement`);
+                            //console.log(`ensuring mintEntry.geo=${mintEntry.geo} #${mintEntry.mint} is in the groupOwner annoucnement`);
                             //find each mint in the group owner announcement or delete/resync
                             var found=false;
  
                             var owlsAry=incomingPulse.owls.split(","); //test
-                            console.log(`owlsAry=${owlsAry} looking for mint #${mymint} --> myPulseEntry=${dump(myPulseEntry)}`);
+                            //console.log(`owlsAry=${owlsAry} looking for mint #${mymint} --> myPulseEntry=${dump(myPulseEntry)}`);
                             for(var o in owlsAry) {
                                 var owlmint=owlsAry[o].split("=")[0];
-                                console.log(`owlmint =${owlmint} mymint=${mymint}`);
+                                //console.log(`owlmint =${owlmint} mymint=${mymint}`);
                                 if (owlmint == mymint) found=true;
                             }
                             if (!found) {
