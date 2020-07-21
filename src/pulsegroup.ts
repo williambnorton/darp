@@ -1557,12 +1557,13 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         console.log("m="+m+" genesis node elapsedMSincePulse="+elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
                             console.log("timeout(): DELETING MINT with "+ elapsedMSincePulse+" ms old timestamp "+this.mintTable[m].geo+" mint="+this.mintTable[m].mint);
+                            newPulseGroup.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
                             //delete newPulseGroup.mintTable[m];   //did not work
-                            delete newPulseGroup.mintTable[m];
+                            //delete newPulseGroup.mintTable[m];
                         }
                     } else { /*  not genesis - only can time out genesis  */
                         logger.warning(`timing out genesis node reconnect newPulseGroup.mintTable=`+dump(newPulseGroup.mintTable));
