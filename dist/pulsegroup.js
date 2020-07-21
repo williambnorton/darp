@@ -268,7 +268,7 @@ function instrumentation() {
     //txt += 'console.log("getJSON url="+url);';
     txt += '   $.getJSON(url, function(config) {';
     txt += '        $(document.body).css( "background", "white" );';
-    txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));';
+    //txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
     /*****
@@ -414,7 +414,7 @@ function instrumentation() {
     */
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-    //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
+    txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
     txt += '             if ( pulseGroup.nodeCount > 1 ) {';
     txt += '                if (nodeCountLastTime!=0) {';
     txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {';
