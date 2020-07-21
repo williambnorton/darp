@@ -1670,7 +1670,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.recvPulses=function () {
         recvPulses(me.port, function(incomingPulse: IncomingPulse) {
-            console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
+            //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
             //console.log("myPulseGroup="+dump(pulseGroup));
             var myPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
             //var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
