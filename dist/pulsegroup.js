@@ -1172,7 +1172,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         var myEntry = newPulseGroup.pulses[GEO + ":" + newPulseGroup.groupName];
         myEntry.seq++;
         var pulseMessage = "0," + VERSION + "," + GEO + "," + newPulseGroup.groupName + "," + myEntry.seq + "," + newPulseGroup.mintTable[0].bootTimestamp + "," + myEntry.mint + "," + owls;
-        //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
+        console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(ipary)); //INSTRUMENTATION POINT
         pulselayer_1.sendPulses(pulseMessage, ipary);
         var sleepTime = 1000 - (lib_1.now() + 1000) % 1000; // start pulse around on the second
         //        console.log(`sleepTime=${sleepTime}`); //INSTRUMENTATION POINT - DO NOT DELETE - shows load on node
