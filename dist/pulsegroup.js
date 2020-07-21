@@ -1278,29 +1278,32 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             }
         }
         for (var p in this.pulses) {
-            if ((this.pulses[p]) && (this.pulses[p].pulseTimestamp != 0) && (this.pulses[p].mint != 1)) { //don't timeout genesis pulse
-                var elapsedMSincePulse = (lib_1.now() - this.pulses[p].pulseTimestamp);
+            var pulseEntry = this.pulses[p];
+            if ((pulseEntry) && (pulseEntry.pulseTimestamp != 0) && (pulseEntry.mint != 1)) { //don't timeout genesis pulse
+                var elapsedMSincePulse = (lib_1.now() - pulseEntry.pulseTimestamp);
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     //console.log(ts()+"timout(): Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo+":"+this.groupName);
-                    this.pulses[p].owl = NO_OWL;
-                    this.pulses[p].owls = "1";
-                    this.pulses[p].pktDrops++;
+                    pulseEntry.owl = NO_OWL;
+                    pulseEntry.owls = "1";
+                    pulseEntry.pktDrops++;
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         //console.log(`I am Genesis Node timing out ${this.pulses[p].geo}`);
                         if (elapsedMSincePulse > 10 * newPulseGroup.cycleTime * 1000) {
-                            logger_1.logger.warning("timeout() : Genesis DELETING PULSE " + this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
+                            logger_1.logger.warning("timeout() : Genesis DELETING Node " + this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
                             // console.log(ts()+"timeout() - Genesis DELETEING PULSE with old timestamp "+this.pulses[p].geo);
-                            if (newPulseGroup.mintTable[this.pulses[p].mint] == null) { //delete this.pulses[p];
-                                logger_1.logger.warning("DELETEING pulse " + p); //log when timing out to debug
-                                delete this.pulses[p];
-                            }
-                            else {
-                                logger_1.logger.warning("will delete pulse when mint is gone");
-                            }
+                            newPulseGroup.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
+                            /*
+                            if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];
+                                 logger.warning(`DELETEING pulse ${p}`);  //log when timing out to debug
+                                 delete this.pulses[p];
+                             } else {
+                                 logger.warning(`will delete pulse when mint is gone`);
+                             }
+                             */
                         }
                     }
                     //delete this.pulses[p];
