@@ -1677,7 +1677,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         var mint=parseInt(ary[owlEntry].split("=")[0]);
                         var srcMintEntry=newPulseGroup.mintTable[mint];
                         if (srcMintEntry == null) {
-                            logger.DEBUG(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
+                            logger.info(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
+                            console.log(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
                             newPulseGroup.syncGenesisPulseGroup(); //HACK: any membership change we need resync
                             return;
                         }
@@ -1692,8 +1693,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                                 if (owlmint == mymint) found=true;
                             }
                             if (!found) {
-                                   logger.DEBUG(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
-                                    newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
+                                logger.info(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
+                                console.log(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
+                                newPulseGroup.syncGenesisPulseGroup(); //any membership change we need resync
                                     return;
                             }
                         }
