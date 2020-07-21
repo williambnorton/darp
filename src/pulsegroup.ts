@@ -1492,27 +1492,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
         sendPulses(pulseMessage,ipary);
 
-
-
-
-
-
-
-
-
-
-        var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
-//        console.log(`sleepTime=${sleepTime}`); //INSTRUMENTATION POINT - DO NOT DELETE - shows load on node
-        setTimeout( newPulseGroup.pulse, sleepTime );
-//        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
-
-
-
-
-
-//var timeToNextSecond=now()%1000;  //REALLY WANT TO TRY AND CONTROL SELF TO END ON 1 SECOND BOUNDARIES
-        //setTimeout(newPulseGroup.pulse,newPulseGroup. timeToNextSecond);
-
         newPulseGroup.timeout(); //and timeout the non-responders
         if ( newPulseGroup.adminControl=='RESYNCH' ) {
             logger.info("Resynching with genesis node...");
@@ -1521,6 +1500,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         }
         newPulseGroup.mintTable[0].state="UP";
         newPulseGroup.mintTable[0].lastPulseTimestamp=now();
+
+        var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
+        console.log(`sleepTime=${sleepTime}`); //INSTRUMENTATION POINT - DO NOT DELETE - shows load on node
+        setTimeout( newPulseGroup.pulse, sleepTime );
+//        setTimeout(newPulseGroup.pulse,newPulseGroup.cycleTime*1000);
 
     };
 
