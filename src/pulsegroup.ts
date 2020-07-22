@@ -1665,23 +1665,19 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     newPulseGroup.recvPulses=function () {
         recvPulses(me.port, function(incomingPulse: IncomingPulse) {
             //console.log("----------> recvPulses incomingPulse="+dump(incomingPulse));//+" newPulseGroup="+dump(newPulseGroup));
-            //console.log("myPulseGroup="+dump(pulseGroup));
-            var myPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];
-            //var mintEntry=newPulseGroup.getMint(incomingPulse.mint);    // look up the pulse claimed mint
-            var mintEntry=newPulseGroup.mintTable[incomingPulse.mint];    // look up the pulse claimed mint
-            //console.log(`associated ${incomingPulse.mint} mintEntry=`+dump(mintEntry));
+            var incomingPulseEntry=myPulseGroup.pulses[incomingPulse.geo+":"+incomingPulse.group];    
+            var incomingPulseMintEntry=newPulseGroup.mintTable[incomingPulse.mint];    // look up the pulse claimed mint
 
-            //console.log(`My pulseEntry for ${incomingPulse.geo}:${incomingPulse.group}=`+dump(myPulseEntry));
-//            if (typeof myPulseEntry == "undefined" || myPulseEntry==null) {  //If we don't have this pulseEntry yet
-            if (myPulseEntry==null || mintEntry==null) {  //show more specifics why pulse is ignored
+            if (incomingPulseEntry==null || incomingPulseMintEntry==null) {  //show more specifics why pulse is ignored
                     logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo+":"+incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
                     return;
             }
             
             //pulseGroup owner controls population
-            if (newPulseGroup.groupOwner==myPulseEntry.geo) {
+            if (newPulseGroup.groupOwner==incomingPulseEntry.geo) {  //group owner pulse here  SECURITY HOLE-more authentiction needed ip:port
+
                     var owlsAry=incomingPulse.owls.split(",");
-                    //addNode/resynch with groupOwner if we don't have this mint
+                    //addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
                     for(var o in owlsAry) {
                         const owlEntry=owlsAry[o];
                         //console.log(" GROUP OWNER Population control checking we have owlEntry="+owlEntry);
@@ -1695,31 +1691,29 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         }
                     }
                     //  deleteNode if its mint is not in announcement
-                    for (var mymint in newPulseGroup.mintTable) {
-                        var mintEntry=newPulseGroup.mintTable[mymint];
-                        if (mintEntry!=null && mymint!="0" && mymint!="1") {
+                    for (var pulse in newPulseGroup.pulses) {
+                        var myPulseEntry=newPulseGroup.pulses[pulse];
                             //console.log(`ensuring mintEntry.geo=${mintEntry.geo} #${mintEntry.mint} is in the groupOwner annoucnement`);
-                            //find each mint in the group owner announcement or delete/resync
+                            //find each pulse in the group owner announcement or delete/resync
                             var found=false;
  
                             var owlsAry=incomingPulse.owls.split(","); //test probably dont need this
                             //console.log(`owlsAry=${owlsAry} looking for mint #${mymint} --> myPulseEntry=${dump(myPulseEntry)}`);
                             for(var o in owlsAry) {
-                                var owlmint=owlsAry[o].split("=")[0];
+                                var owlmint=parseInt(owlsAry[o].split("=")[0]);
                                 //console.log(`owlmint =${owlmint} mymint=${mymint}`);
-                                if (owlmint == mymint) found=true;
+                                if (owlmint == myPulseEntry.mint) found=true;
                             }
                             if (!found) {
-                                logger.info(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
-                                console.log(`Owner no longer announces my MINT ENTRY ${mymint} - syncing with genesis node for new mintTable and pulses for its config`);
+                                logger.info(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
+                                console.log(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
 
-                                newPulseGroup.deleteNode(newPulseGroup.mintTable[mymint].ipaddr, newPulseGroup.mintTable[mymint].port);
+                                newPulseGroup.deleteNode(newPulseGroup.mintTable[myPulseEntry.mint].ipaddr, newPulseGroup.mintTable[myPulseEntry.mint].port);
 
                                 //newPulseGroup.syncGenesisPulseGroup(); //optional.... membership change we need resync
 
                                     return;
                             }
-                        }
 
                     }
             }
@@ -1730,32 +1724,32 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
             //we expect mintEntry to --> mint entry for this pulse
             //console.log("My pulseEntry for this pulse="+dump(myPulseEntry));
-            if (myPulseEntry !== undefined) {     
+            if (incomingPulseEntry !== undefined) {     
                 newPulseGroup.ts=now(); //We got a pulse - update the pulseGroup timestamp
 
                 //copy incoming pulse into my pulse record
-                myPulseEntry.inPulses++;
-                myPulseEntry.lastMsg=incomingPulse.lastMsg;
-                myPulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
-                myPulseEntry.owl=incomingPulse.owl;
-                myPulseEntry.seq=incomingPulse.seq;
-                myPulseEntry.owls=incomingPulse.owls;
-                myPulseEntry.history.push(myPulseEntry.owl);
-                if (myPulseEntry.history.length>60)  //store 60 samples
-                    myPulseEntry.history.shift();  //drop off the last sample
-                var d=new Date(myPulseEntry.pulseTimestamp);
+                incomingPulseEntry.inPulses++;
+                incomingPulseEntry.lastMsg=incomingPulse.lastMsg;
+                incomingPulseEntry.pulseTimestamp=incomingPulse.pulseTimestamp;
+                incomingPulseEntry.owl=incomingPulse.owl;
+                incomingPulseEntry.seq=incomingPulse.seq;
+                incomingPulseEntry.owls=incomingPulse.owls;
+                incomingPulseEntry.history.push(incomingPulseEntry.owl);
+                if (incomingPulseEntry.history.length>60)  //store 60 samples
+                    incomingPulseEntry.history.shift();  //drop off the last sample
+                var d=new Date(incomingPulseEntry.pulseTimestamp);
                 if (d.getSeconds()==0) {
-                    myPulseEntry.medianHistory.push(median(myPulseEntry.history));
+                    incomingPulseEntry.medianHistory.push(median(incomingPulseEntry.history));
                     //console.log(`Wrote MedianHistory median=${median(myPulseEntry.history)} Now myPulseEntry=${dump(myPulseEntry)}`);
                 }
 
                 //update mint entry
-                mintEntry.lastPulseTimestamp=myPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
-                mintEntry.lastOWL=myPulseEntry.owl;
-                mintEntry.state="UP";
+                incomingPulseMintEntry.lastPulseTimestamp=incomingPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
+                incomingPulseMintEntry.lastOWL=incomingPulseEntry.owl;
+                incomingPulseMintEntry.state="UP";
                 //console.log("owls="+pulseEntry.owls);
 
-                if (myPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
+                if (incomingPulseEntry.mint==1) {             //if pulseGroup owner, make sure I have all of his mints
                     //console.log("recvPulse handling owner's pulse and managing population to match his");                            
                     //console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
 
