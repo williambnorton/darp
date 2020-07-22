@@ -58,31 +58,3 @@ export function sendPulses(msg: string, nodelist: string[]) {
 }
 
 
-/***************** TEST AREA **************** /
-var h = process.env.HOSTNAME || require("os").hostname().split(".")[0];
-const TEST = true; // launch with TEST=1 to get automatic pulser and catcher
-const HOSTNAME = h.toUpperCase();
-const VERSION = MYVERSION();
-var seq=1;
-function buildPulseMessage() {
-    var pulseMessage="0,"+VERSION+","+HOSTNAME+",DEVOPS.1,"+seq+",0,1592590923743,1,2,1,";
-    seq++;
-    console.log("buildPulseMessage() : pulseMessage="+pulseMessage);
-    return pulseMessage;
-}
-
-if (TEST) {
-    process.argv.shift();  //ignore rid of node
-    process.argv.shift();  //ignore rid of path to mthis code
-    pulseAll();  //bench test - uncomment to run a test
-
-        recvPulses("65013",function(pulse) {
-            console.log("pulseApp receiving pulse="+dump(pulse));
-        });
-}
-function pulseAll() {    //sample test app
-    sendPulses(buildPulseMessage() , process.argv);
-    setTimeout(pulseAll,1000);  //do it again in a few seconds
-}
-
-/***************** TEST AREA ****************/

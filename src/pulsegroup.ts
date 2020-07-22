@@ -1251,28 +1251,15 @@ app.get('/nodefactory', function(req, res) {
     logger.info(`added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
     logger.info("After adding node, pulseGroup="+dump(myPulseGroup));
     myPulseGroup.nodeCount++;
-    //TODO: check for duplicates - search for ipaddr:port that matches
-
-    //console.log("BeforeCloning, pulseGroup="+dump(pulseGroup));
-
-    //function makeMintEntry(mint:number, geo:string, port:number, incomingIP:string, publickey:string, version:string, wallet:string):MintEntry {
-    
+     
     //make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));    //clone my pulseGroup obecjt 
-    //newNodePulseGroup.me=newNode;
     newNodePulseGroup.mintTable[0]=newNode;  //assign him his mint and config
 
-
-    //newNodePulseGroup.mintTable.shift();  //get rid of groupOwner mint[0]
-    //newNodePulseGroup.mintTable[0]=newNode;
-    //wbnwbnwbn - Here we modify our pulseGroup to be fitted for remote.
+    //- Here we modify our pulseGroup to be fitted for remote.
     //  this means mintTable[0]  
 
-    logger.info("********************************* newNodePulseGroup=");
-    logger.info("********************************* newNodePulseGroup=");
-    logger.info("********************************* newNodePulseGroup=");
-    logger.info("********************************* newNodePulseGroup=");
-    logger.info("********************************* newNodePulseGroup="+dump(newNodePulseGroup));
+    logger.info("* Geneis node crteated newNodePulseGroup="+dump(newNodePulseGroup));
 
     //
     //                              pulseNode MEMBER NODE
@@ -1379,7 +1366,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 if (mintEntry.ipaddr==ipaddr && mintEntry.port==port) {
                     logger.warning(`deleteNode(): deleting mint ${mintEntry.mint}`);
                     console.log(`deleteNode(): DELETEING Mint ${mintEntry.mint}`);
-                    delete this.mintTable[mintEntry.mint];
+                    //delete this.mintTable[mintEntry.mint];  //this shifts all elemenets!!! So mintTable[3] is mint#4 now
+                    newPulseGroup.mintTable[mintEntry.mint]=null; //we want to preserve the ordering of the nodes (not shift up)
                 }
             }
         };
