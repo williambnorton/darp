@@ -1376,7 +1376,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         //console.log(`ensuring mintEntry.geo=${mintEntry.geo} #${mintEntry.mint} is in the groupOwner annoucnement`);
                         //find each mint in the group owner announcement or delete/resync
                         var found = false;
-                        var owlsAry = incomingPulse.owls.split(","); //test
+                        var owlsAry = incomingPulse.owls.split(","); //test probably dont need this
                         //console.log(`owlsAry=${owlsAry} looking for mint #${mymint} --> myPulseEntry=${dump(myPulseEntry)}`);
                         for (var o in owlsAry) {
                             var owlmint = owlsAry[o].split("=")[0];
