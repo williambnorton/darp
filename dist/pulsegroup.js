@@ -1057,16 +1057,16 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //  deleteNode() - Genesis node controls population, so delete mintTable, pulse and owl for the mint
     //
     newPulseGroup.deleteNode = function (ipaddr, port) {
-        console.log("deleteNode(): ipaddr=" + ipaddr + " port=" + port);
+        //        console.log(`deleteNode(): ipaddr=${ipaddr} port=${port}`);
         for (var m in newPulseGroup.mintTable) {
             var mintEntry = newPulseGroup.mintTable[m];
-            console.log("deleteNode(): checking out mintEntry=" + lib_1.dump(mintEntry) + " looking for " + ipaddr);
+            //            console.log(`deleteNode(): checking out mintEntry=${dump(mintEntry)} looking for ${ipaddr}`);
             if (mintEntry && m != "0" && m != "1") { //ignore first mints me and genesis node-e dont delete those
                 if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
                     logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
-                    console.log("deleteNode(): DELETEING Mint " + mintEntry.mint);
+                    //                    console.log(`deleteNode(): DELETEING Mint ${mintEntry.mint}`);
                     delete this.mintTable[mintEntry.mint]; //this shifts all elemenets!!! So mintTable[3] is mint#4 now
-                    console.log("mintTable after deleteing = " + lib_1.dump(this.mintTable));
+                    //                    console.log(`mintTable after deleteing = ${dump(this.mintTable)}`);
                     //newPulseGroup.mintTable[mintEntry.mint]=null; //we want to preserve the ordering of the nodes (not shift up)
                 }
             }
@@ -1077,28 +1077,24 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             var pulseEntry = newPulseGroup.pulses[pulseLabel];
             if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
                 logger_1.logger.warning("deleteNode: deleting pulse " + pulseLabel);
-                console.log("deleteNode(): DELETEING Pulse " + pulseEntry.mint);
+                //                console.log(`deleteNode(): DELETEING Pulse ${pulseEntry.mint}`);
                 deletedMint = pulseEntry.mint;
                 delete newPulseGroup.pulses[pulseLabel];
             }
         }
         ;
         //remnove mint from the group owner's owls list
-        //wbnwbnwbn
-        //loop OWLS_DISPLAYED, copy if not mint=deletedmint
         if (this.isGenesisNode()) {
             var groupOwnerPulseLabel = newPulseGroup.groupOwner + ":" + newPulseGroup.groupName;
             var groupOwnerPulseEntry = newPulseGroup.pulses[groupOwnerPulseLabel];
-            console.log("deleteNode(): groupOwnerPulseEntry=" + lib_1.dump(groupOwnerPulseEntry));
+            //            console.log(`deleteNode(): groupOwnerPulseEntry=${dump(groupOwnerPulseEntry)}`);
             if (groupOwnerPulseEntry != null) {
                 var owlEntryAry = groupOwnerPulseEntry.owls.split(",");
                 var newOwls = ""; //copy all but deleted Owl to control population
                 for (var o in owlEntryAry) {
                     if (parseInt(owlEntryAry[o]) != deletedMint) {
                         newOwls += owlEntryAry[o] + ",";
-                    }
-                    else
-                        console.log("deleteNode(): deleted owl associated with mint " + deletedMint);
+                    } //else console.log(`deleteNode(): deleted owl associated with mint ${deletedMint}`);
                 }
             }
         }
