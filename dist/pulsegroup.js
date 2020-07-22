@@ -1060,16 +1060,16 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         console.log("deleteNode(): ipaddr=" + ipaddr + " port=" + port);
         for (var m in newPulseGroup.mintTable) {
             var mintEntry = newPulseGroup.mintTable[m];
-            console.log("deleteNode(): mintEntry=" + lib_1.dump(mintEntry));
-            if (mintEntry.mint != 0 && mintEntry.mint != 1) {
-                if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
-                    logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
-                    console.log("deleteNode(): DELETEING Mint " + mintEntry.mint);
-                    delete this.mintTable[mintEntry.mint]; //this shifts all elemenets!!! So mintTable[3] is mint#4 now
-                    console.log("mintTable after deleteing = " + lib_1.dump(this.mintTable));
-                    //newPulseGroup.mintTable[mintEntry.mint]=null; //we want to preserve the ordering of the nodes (not shift up)
-                }
+            console.log("deleteNode(): checking out mintEntry=" + lib_1.dump(mintEntry) + " looking for " + ipaddr);
+            //if (mintEntry.mint!=0 && mintEntry.mint!=1) {
+            if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
+                logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
+                console.log("deleteNode(): DELETEING Mint " + mintEntry.mint);
+                delete this.mintTable[mintEntry.mint]; //this shifts all elemenets!!! So mintTable[3] is mint#4 now
+                console.log("mintTable after deleteing = " + lib_1.dump(this.mintTable));
+                //newPulseGroup.mintTable[mintEntry.mint]=null; //we want to preserve the ordering of the nodes (not shift up)
             }
+            //}
         }
         ;
         var deletedMint = -1;
