@@ -1362,7 +1362,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         for (var m in newPulseGroup.mintTable) {
             const mintEntry=newPulseGroup.mintTable[m];
             console.log(`deleteNode(): checking out mintEntry=${dump(mintEntry)} looking for ${ipaddr}`);
-            //if (mintEntry.mint!=0 && mintEntry.mint!=1) {
+            if (mintEntry && m!="0" && m!="1") {  //ignore first mints me and genesis node-e dont delete those
                 if (mintEntry.ipaddr==ipaddr && mintEntry.port==port) {
                     logger.warning(`deleteNode(): deleting mint ${mintEntry.mint}`);
                     console.log(`deleteNode(): DELETEING Mint ${mintEntry.mint}`);
@@ -1370,7 +1370,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     console.log(`mintTable after deleteing = ${dump(this.mintTable)}`);
                     //newPulseGroup.mintTable[mintEntry.mint]=null; //we want to preserve the ordering of the nodes (not shift up)
                 }
-            //}
+            }
         };
         var deletedMint=-1;
         for (var pulseLabel in this.pulses) {
