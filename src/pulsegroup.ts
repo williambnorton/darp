@@ -956,7 +956,7 @@ function instrumentation() {    //this should get its own file
                 //txt += "<td>" + now()+" "+entry.pulseTimestamp+ "</td>";
                 txt += '<td class="' + srcMintEntry.geo + '_bootTimestamp"' + '>' + deltaSeconds2 + "</td>";
                 txt += "</tr>";
-            } else console.log(`ERROR : srcMintEntry=null in pulseEntry`);
+            } //null mintTable entries are OK
         }
         txt += "</table>";
 
@@ -1552,14 +1552,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("m="+m+" genesis node elapsedMSincePulse="+elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
-                            console.log(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            //console.log(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             newPulseGroup.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
-                            //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
-                            //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
-                            //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
-                            //console.log("timeout(): DELETING MINT with old timestamp "+this.mintTable[m].geo);
-                            //delete newPulseGroup.mintTable[m];   //did not work
-                            //delete newPulseGroup.mintTable[m];
                         }
                     } else { /*  not genesis - only can time out genesis  */
                         var age=now()-newPulseGroup.mintTable[1].lastPulseTimestamp;
@@ -1683,7 +1677,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         var srcMintEntry=newPulseGroup.mintTable[mint];
                         if (srcMintEntry == null) {  //we do not have this mint in our mintTale
                             logger.info(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
-                            console.log(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
                             newPulseGroup.syncGenesisPulseGroup(); //HACK: any membership change we need resync
                             return;
                         }
