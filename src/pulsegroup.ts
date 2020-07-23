@@ -1781,8 +1781,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         const pulseEntry=newPulseGroup.pulses[pulseLabel];
         if (pulseEntry!=null) {
             var strDataPoints="";  //Format: { label: "22:37:49", y: 10 },
-            for (var dp in pulseEntry.medianHistory) strDataPoints+=`{ label: "", y: ${pulseEntry.medianHistory[dp]} },`;
-            for (var dp in pulseEntry.history) strDataPoints+=`{ label: "", y: ${pulseEntry.history[dp]} },`;
+            for (var dp in pulseEntry.medianHistory) strDataPoints+=`{ label: "median", y: ${pulseEntry.medianHistory[dp]} },`;
+            for (var dp in pulseEntry.history) strDataPoints+=`{ label: "current", y: ${pulseEntry.history[dp]} },`;
             console.log(`graph data =${strDataPoints}`);
             grapherStoreOwls(src,dst,strDataPoints);   //store OWL in a way the grapher can parse it
         }
