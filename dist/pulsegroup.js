@@ -1415,7 +1415,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     //TODO: Also resync if the groupOwner has removed an item
                     //console.log("recvPulses - group owner population is in tact");
                 }
-                newPulseGroup.storeOWL(incomingPulse.geo, newPulseGroup.mintTable[0].geo, incomingPulse.owl); //store pulse latency To me
+                //                newPulseGroup.storeOWL(incomingPulse.geo,newPulseGroup.mintTable[0].geo,incomingPulse.owl);  //store pulse latency To me
+                newPulseGroup.storeOWL(incomingPulse.geo, newPulseGroup.mintTable[0].geo, incomingPulse.mint); //store pulse latency To me
             }
             else {
                 logger_1.logger.warning("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: " + incomingPulse.geo);
@@ -1427,8 +1428,19 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     //      storeOWL() - store one way latency to file or graphing & history
     //
-    newPulseGroup.storeOWL = function (src, dst, owl) {
-        grapher_1.grapherStoreOwl(src, dst, owl); //store OWL in a way the grapher can parse it
+    //newPulseGroup.storeOWL=function(src:string,dst:string,owl:number) {
+    newPulseGroup.storeOWL = function (src, dst, srcMint) {
+        var pulseLabel = src + ":" + newPulseGroup.groupName;
+        var pulseEntry = newPulseGroup.pulses[pulseLabel];
+        if (pulseEntry != null) {
+            var strDataPoints = ""; //Format: { label: "22:37:49", y: 10 },
+            for (var dp in pulseEntry.medianHistory)
+                strDataPoints += "{ label: \"\", y: " + pulseEntry.medianHistory[dp] + " },";
+            for (var dp in pulseEntry.history)
+                strDataPoints += "{ label: \"\", y: " + pulseEntry.history[dp] + " },";
+            console.log("graph data =" + strDataPoints);
+            grapher_1.grapherStoreOwls(src, dst, strDataPoints); //store OWL in a way the grapher can parse it
+        }
     };
     //
     //syncGenesisPulseGroup-sync this pulseGorup object with genesis node pulseGroup object

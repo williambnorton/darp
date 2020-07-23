@@ -65,3 +65,22 @@ function grapherStoreOwl(src, dst, owl) {
     });
 }
 exports.grapherStoreOwl = grapherStoreOwl;
+function grapherStoreOwls(src, dst, dataPoints) {
+    var d = new Date();
+    var sampleLabel = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    var filename = src + '-' + dst + '.' + lib_1.YYMMDD() + '.txt';
+    var sample = "{ label: \"" + sampleLabel + "\", y: " + owl + " },\n";
+    //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
+    //if (owl > 2000 || owl < 0) {
+    //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
+    //
+    //owl = 0;
+    //}
+    //var logMsg = "{y:" + owl + "},\n";
+    fs.appendFile(filename, sample, function (err) {
+        if (err)
+            throw err;
+        //console.log('Saved!');
+    });
+}
+exports.grapherStoreOwls = grapherStoreOwls;
