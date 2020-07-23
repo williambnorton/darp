@@ -1550,7 +1550,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     this.mintTable[m].state="NR";  //We don't know this node's state
 
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
-                        console.log("m="+m+" genesis node elapsedMSincePulse="+elapsedMSincePulse);
+                        console.log("m="+m+" I am genesis node not seeing him for elapsedMSincePulse="+elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
                             //console.log(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             newPulseGroup.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
