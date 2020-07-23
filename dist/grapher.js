@@ -13,7 +13,7 @@ function grapher(src, dest) {
             var data = fs.readFileSync(path, 'UTF-8').toString();
             // split the contents by new line
             var lines = data.split(/\r?\n/);
-            var last300 = []; //store 600 samples - ten minutes for each peer
+            var last300 = []; //show 5*60 samples - four hours of history and 1 minute of second by second
             // print all lines
             lines.forEach(function (line) {
                 //console.log("*"+line);
@@ -22,13 +22,6 @@ function grapher(src, dest) {
                     last300.shift(); //drop first entries
             });
             txt += last300.join("\n");
-            //console.log(`last60=${dump(last60)}`);
-            //save only last 60 samples of raw data'*/
-            fs.writeFile(path, last300.join("\n"), function (err) {
-                if (err)
-                    return console.log(err);
-            });
-            //console.log(`found / data file ${path}:${txt}`);
         }
         else {
             console.log("could not find live pulseGroup graph data from " + path);
@@ -43,28 +36,6 @@ function grapher(src, dest) {
     return txt;
 }
 exports.grapher = grapher;
-//
-//  grapherStoreOwl - store the owl sample in a way that can be graphed by the function above
-//
-function grapherStoreOwl(src, dst, owl) {
-    var d = new Date();
-    var sampleLabel = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-    var filename = src + '-' + dst + '.' + lib_1.YYMMDD() + '.txt';
-    var sample = "{ label: \"" + sampleLabel + "\", y: " + owl + " },\n";
-    //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
-    //if (owl > 2000 || owl < 0) {
-    //console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");
-    //
-    //owl = 0;
-    //}
-    //var logMsg = "{y:" + owl + "},\n";
-    fs.appendFile(filename, sample, function (err) {
-        if (err)
-            throw err;
-        //console.log('Saved!');
-    });
-}
-exports.grapherStoreOwl = grapherStoreOwl;
 function grapherStoreOwls(src, dst, dataPoints) {
     //var d = new Date();
     //var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
