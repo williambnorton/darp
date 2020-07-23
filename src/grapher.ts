@@ -43,7 +43,7 @@ $(function() {
                 // split the contents by new line
             const lines = data.split(/\r?\n/);
 
-            var last300:string[]=[];  //show 5*60 samples - four hours of history and 1 minute of second by second
+            var last300:string[]=[];  //show 5*60 samples - four hours of medianhistory and 1 minute of second by second
             // print all lines
             lines.forEach((line:string) => {
                 //console.log("*"+line);

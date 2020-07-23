@@ -13,7 +13,7 @@ function grapher(src, dest) {
             var data = fs.readFileSync(path, 'UTF-8').toString();
             // split the contents by new line
             var lines = data.split(/\r?\n/);
-            var last300 = []; //show 5*60 samples - four hours of history and 1 minute of second by second
+            var last300 = []; //show 5*60 samples - four hours of medianhistory and 1 minute of second by second
             // print all lines
             lines.forEach(function (line) {
                 //console.log("*"+line);

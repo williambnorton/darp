@@ -1426,14 +1426,14 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         });
     };
     //
-    //      storeOWL() - store one way latency to file or graphing & history
+    //      storeOWL() - store one-way latencies to file or graphing & history
     //
     //newPulseGroup.storeOWL=function(src:string,dst:string,owl:number) {
     newPulseGroup.storeOWL = function (src, dst, srcMint) {
         var pulseLabel = src + ":" + newPulseGroup.groupName;
         var pulseEntry = newPulseGroup.pulses[pulseLabel];
         if (pulseEntry != null) {
-            var strDataPoints = ""; //Format: { label: "22:37:49", y: 10 },
+            var strDataPoints = ""; //Format: { label: "22:37:49", y: 10 }, we have no timestamps yet in this model
             for (var dp in pulseEntry.medianHistory)
                 strDataPoints += "{ label: \"median\", y: " + pulseEntry.medianHistory[dp] + " },";
             for (var dp in pulseEntry.history)
