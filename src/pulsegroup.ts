@@ -1783,7 +1783,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             var strDataPoints="";  //Format: { label: "22:37:49", y: 10 },
             for (var dp in pulseEntry.medianHistory) strDataPoints+=`{ label: "median", y: ${pulseEntry.medianHistory[dp]} },`;
             for (var dp in pulseEntry.history) strDataPoints+=`{ label: "current", y: ${pulseEntry.history[dp]} },`;
-            console.log(`graph data =${strDataPoints}`);
+            //console.log(`graph data =${strDataPoints}`);
             grapherStoreOwls(src,dst,strDataPoints);   //store OWL in a way the grapher can parse it
         }
     }
