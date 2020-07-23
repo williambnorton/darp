@@ -1503,10 +1503,10 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
        if (myEntry==null) { console.log(`can not find ${GEO}:${newPulseGroup.groupName}`);}
        else { 
             myEntry.seq++;
-       var myMint=newPulseGroup.mintTable[0].mint;
-        var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myMint+","+owls;
-        //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
-        sendPulses(pulseMessage,ipary);
+            var myMint=newPulseGroup.mintTable[0].mint;
+            var pulseMessage="0,"+VERSION+","+GEO+","+newPulseGroup.groupName+","+ myEntry.seq +","+newPulseGroup.mintTable[0].bootTimestamp+","+myMint+","+owls;
+            //console.log("pulseGroup.pulse(): pulseMessage="+pulseMessage+" to "+dump(ipary));  //INSTRUMENTATION POINT
+            sendPulses(pulseMessage,ipary);
         }
 
         newPulseGroup.timeout(); //and timeout the non-responders
