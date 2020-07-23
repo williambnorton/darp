@@ -108,10 +108,9 @@ export function grapherStoreOwl(src:String,dst:String,owl:Number) {
 }
 
 export function grapherStoreOwls(src:String,dst:String,dataPoints:String) {
-    var d = new Date();
-    var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    //var d = new Date();
+    //var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var filename = src + '-' + dst + '.' + YYMMDD() + '.txt';
-    var sample = `{ label: "${sampleLabel}", y: ${owl} },\n`;
     //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
 
     //if (owl > 2000 || owl < 0) {
@@ -120,7 +119,7 @@ export function grapherStoreOwls(src:String,dst:String,dataPoints:String) {
         //owl = 0;
     //}
     //var logMsg = "{y:" + owl + "},\n";
-    fs.appendFile(filename, sample, (err) => {
+    fs.writeFile(filename, dataPoints, (err) => {
         if (err) throw err;
         //console.log('Saved!');
     });
