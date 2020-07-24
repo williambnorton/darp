@@ -1334,8 +1334,8 @@ function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseG
 
 getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
-    logger.info("callback from my or someone else's pulseGroup="+dump(newPulseGroup));
-
+    logger.info("callback from pulseGroup owner. My config is="+dump(newPulseGroup));
+    newPulseGroup.flashWireguard(); //create our wireguard files based on our mint Table
     //
     //       attach convenience routines to the downloaded pulseGroup assignment
     //
