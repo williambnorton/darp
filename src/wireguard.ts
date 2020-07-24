@@ -30,7 +30,7 @@ export function addMyWGStanza(geo:String, ipaddr:String, port:number, mint:numbe
     const octet4=mint%254;
     var line2=`     Address = 10.10.${octet3}.${octet4}/32, fd86:ea04:1115::${mint}/64`
     var line3=`     ListenPort = 80`;
-    return line1+"\n"+line2+"\n"+line3+"\n";
+    return line1+"\n"+line2+"\n"+line3;
 }
 export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:number, publickey:String) : string {
     const octet3=Math.round(mint/254);
@@ -42,7 +42,7 @@ export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:num
     "AllowedIPs = 10.10."+octet3+"."+octet4+"/32, fd86:ea04:1115::"+mint+"/128\n" +
     "Endpoint = "+ipaddr+":"+"80"+"\n" +
     "PersistentKeepalive = 25"+"\n\n";
-    return line1+"\n";
+    return line1;
 }
 
 
