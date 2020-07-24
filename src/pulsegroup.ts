@@ -8,6 +8,7 @@ import express = require('express');
 import http = require('http');
 import fs = require('fs');
 import os = require('os');
+import { setWireguard } from './wireguard';
 
 
 logger.setLevel(LogLevel.WARNING);
@@ -343,6 +344,7 @@ interface AugmentedPulseGroupInterface extends PulseGroupInterface {
     pulse: () => void;
     recvPulses: () => void;
     storeOWL: (src:string, dst:string, owl:number) => void;
+    flashWireguard: () => void;
     syncGenesisPulseGroup: () => void;
     timeout: () => void;
 }
@@ -1771,7 +1773,18 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
         });
     };
-    
+    newPulseGroup.flashWireguard=function() {
+        var myStanza="",peerStanza="";
+        for (var m in newPulseGroup.mintTable) {
+            const mintEntry=newPulseGroup.mintTable[m];
+            if (m=="0")
+                 myStanza=addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+            else 
+                peerStanza+=addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+        } 
+        console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
+        setWireguard(myStanza+"/n"+peerStanza);
+    }
 //
 //      storeOWL() - store one-way latencies to file or graphing & history
 //
@@ -1817,6 +1830,10 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     mintTable[0]=newPulseGroup.mintTable[0];  //wbnwbnwbn INSTALL MY mintTable[0]
                 }
                 newPulseGroup.mintTable=mintTable;  //with us as #0, we have the new PulseGroup mintTable
+                //
+                //  Todo - don't copy timeStamps - they are relative to genesis clock
+                //
+
                 //console.log("**** after installing my me entry mintTable="+dump(mintTable));
 //                        mintTable.pop(); //pop off the genesis mint0
 //                        console.log("****after POP mintTable="+dump(mintTable));
@@ -1847,7 +1864,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     }
                 }
                 newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
-
+                newPulseGroup.flashWireguard(); //send mintTable to wireguard to set config
             });
         });
     };
