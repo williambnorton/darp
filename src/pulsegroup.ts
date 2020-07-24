@@ -1753,7 +1753,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 incomingPulseMintEntry.lastPulseTimestamp=incomingPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
                 incomingPulseMintEntry.lastOWL=incomingPulseEntry.owl;
                 if (incomingPulseMintEntry.state=="QUARANTINE") {
-                    console.log(`incomingPulse received from ${incomingPulseMintEntry.geo} - migrating from QUARANTINE to UP state`);
+                    console.log(`incomingPulse received from ${incomingPulseMintEntry.geo} - migrating from ${incomingPulseMintEntry.state} to UP state`);
                 }
                 incomingPulseMintEntry.state="UP";
                 //console.log("owls="+pulseEntry.owls);
