@@ -1027,7 +1027,7 @@ app.get('/version', function(req, res) {
     } else {
         //TODO
     }
-    process.exit(99999) 
+    process.exit(86) 
  });
  
  app.get('/reload', function(req, res) {
