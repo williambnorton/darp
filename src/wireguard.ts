@@ -63,7 +63,7 @@ export function setWireguard(stanzas:String) {
         // throws an error, you could also catch it here
         if (err) throw err;
         console.log("***************************** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/darp0.conf :");
-        console.log(stanzas);
+        console.log(BASECONFIG+stanzas);
 
         //wgdump();                            
     });
