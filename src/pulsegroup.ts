@@ -1241,9 +1241,6 @@ app.get('/nodefactory', function(req, res) {
     myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, VERSION);
     //console.log("Added pulse: "+geo + ":" + group+"="+dump(pulseGroup.pulses[geo + ":" + group]));
 
-
-
-
     //
     //  mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
     //
@@ -1810,12 +1807,13 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup=function () {   //fetch mintTable and pulses from genesis node
         if (newPulseGroup.isGenesisNode()) {
-             console.log("Genesis node does not sync with itself but will setWireguard files");
+             console.log("GENESIS node does not sync with itself but will setWireguard files");
              newPulseGroup.flashWireguard();  //check my wg config
              return; //genesis node dies not fetch its own configuration
         }
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/"+this.groupName+"/"+newPulseGroup.mintTable[0].mint);
         logger.info(`syncGenesisPulseGroup(): url=${url}`);
+        console.log(`syncGenesisPulseGroup(): url=${url}`);
 
         http.get(url, function (res) {
             res.setEncoding("utf8");

@@ -1463,12 +1463,13 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.syncGenesisPulseGroup = function () {
         if (newPulseGroup.isGenesisNode()) {
-            console.log("Genesis node does not sync with itself but will setWireguard files");
+            console.log("GENESIS node does not sync with itself but will setWireguard files");
             newPulseGroup.flashWireguard(); //check my wg config
             return; //genesis node dies not fetch its own configuration
         }
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + newPulseGroup.mintTable[0].mint);
         logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
+        console.log("syncGenesisPulseGroup(): url=" + url);
         http.get(url, function (res) {
             res.setEncoding("utf8");
             var body = "";
