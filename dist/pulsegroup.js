@@ -975,8 +975,8 @@ app.get('/nodefactory', function (req, res) {
     newNodePulseGroup.mintTable[0] = newNode; //assign him his mint and config
     //- Here we modify our pulseGroup to be fitted for remote.
     //  this means mintTable[0]  
-    logger_1.logger.info("* Geneis node crteated newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
-    console.log("Here I would setWireguard for new node....");
+    logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
+    console.log("Here Genesis node should setWireguard RESYNCH for new node " + geo + "....");
     //
     //                              pulseNode MEMBER NODE
     //
