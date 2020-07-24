@@ -434,7 +434,7 @@ function instrumentation() {
     txt += "             var timeStr=d.toString().split(' ')[4];";
     //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
     //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms</h1></div>" );'; //we show this epoch
+    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms uptime:"+(now-pulseGroup.bootTimestamp)/1000+"</h1></div>" );'; //we show this epoch
     txt += '             $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
     //      Render table from information in the state fetched from node
     //
