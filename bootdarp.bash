@@ -35,7 +35,8 @@ if [ "$PORT" == "" ]; then
     PORT=65013; 
 fi
 #export WGDIR=/etc/wireguard
-export WGDIR=$DARPDIR/wireguard
+#export WGDIR=$DARPDIR/wireguard
+export WGDIR=/etc/wireguard
 export PORT
 echo PORT=$PORT
 

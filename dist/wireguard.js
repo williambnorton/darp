@@ -1,8 +1,9 @@
 "use strict";
 /** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
 exports.__esModule = true;
+var lib_1 = require("./lib");
 //import pulseRedis = require('redis');
-var WGDIR = process.env.DARPDIR + "/wireguard"; //this is the direcvtory to build and evolve wg config files
+var WGDIR = process.env.WGDIR; //this is the direcvtory to build and evolve wg config files
 //const redisClient = pulseRedis.createClient(); //creates a new client
 function getPublicKey() {
     return require('fs').readFileSync(WGDIR + '/publickey', 'utf8');
@@ -20,12 +21,13 @@ function wgdump() {
 }
 exports.wgdump = wgdump;
 function addMyWGStanza(geo, ipaddr, port, mint, publickey) {
+    var line0 = "#  " + lib_1.ts() + " Auto generated wireguard config file for DARP";
     var line1 = "#  " + geo + " " + ipaddr + ":" + port + " mint=" + mint + " PUBLICKEY=" + publickey;
     var octet3 = Math.round(mint / 254);
     var octet4 = mint % 254;
     var line2 = "     Address = 10.10." + octet3 + "." + octet4 + "/32, fd86:ea04:1115::" + mint + "/64";
     var line3 = "     ListenPort = 80";
-    return line1 + "\n" + line2 + "\n" + line3;
+    return line0 + "\n" + line1 + "\n" + line2 + "\n" + line3;
 }
 exports.addMyWGStanza = addMyWGStanza;
 function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {

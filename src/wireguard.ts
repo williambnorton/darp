@@ -4,7 +4,7 @@ import { ts } from "./lib";
 //import pulseRedis = require('redis');
 
 
-const WGDIR=process.env.DARPDIR+"/wireguard";  //this is the direcvtory to build and evolve wg config files
+const WGDIR=process.env.WGDIR;  //this is the direcvtory to build and evolve wg config files
 //const redisClient = pulseRedis.createClient(); //creates a new client
 
 
@@ -25,12 +25,13 @@ export function wgdump() {
 
 
 export function addMyWGStanza(geo:String, ipaddr:String, port:number, mint:number, publickey:String) : string {
+    var line0=`#  ${ts()} Auto generated wireguard config file for DARP`
     var line1=`#  ${geo} ${ipaddr}:${port} mint=${mint} PUBLICKEY=${publickey}`
     const octet3=Math.round(mint/254);
     const octet4=mint%254;
     var line2=`     Address = 10.10.${octet3}.${octet4}/32, fd86:ea04:1115::${mint}/64`
     var line3=`     ListenPort = 80`;
-    return line1+"\n"+line2+"\n"+line3;
+    return line0+"\n"+line1+"\n"+line2+"\n"+line3;
 }
 
 export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:number, publickey:String) : string {
