@@ -1,3 +1,7 @@
+#
+# Dockerfile for DARP - eventually add in popular open source network i
+#	diagnostics and debugging tools
+#
 FROM ubuntu:18.04 as base
 RUN apt-get update && \ 
     apt install -y npm  
