@@ -1337,10 +1337,12 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         var myStanza="",peerStanza="";
         for (var m in newPulseGroup.mintTable) {
             const mintEntry=newPulseGroup.mintTable[m];
-            if (m=="0")
-                 myStanza=addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
-            else 
-                peerStanza+=addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+            if (mintEntry!=null) {
+                if (m=="0")
+                     myStanza=addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+                else 
+                    peerStanza+=addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+            }
         } 
         console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
         setWireguard(myStanza+"\n"+peerStanza);
