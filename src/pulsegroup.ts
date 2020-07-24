@@ -1335,6 +1335,7 @@ function getMyPulseGroupObject(ipaddr: string, port: number, callback: newPulseG
 getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
     logger.info("callback from pulseGroup owner. My config is="+dump(newPulseGroup));
+    newPulseGroup.flashWireguard(); //create our wireguard files based on our mint Table
     //
     //       attach convenience routines to the downloaded pulseGroup assignment
     //
@@ -1772,7 +1773,19 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
         });
     };
-
+    newPulseGroup.flashWireguard=function() {
+        console.log(`flashWireguard()`);
+        var myStanza="",peerStanza="";
+        for (var m in newPulseGroup.mintTable) {
+            const mintEntry=newPulseGroup.mintTable[m];
+            if (m=="0")
+                 myStanza=addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+            else 
+                peerStanza+=addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+        } 
+        console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
+        setWireguard(myStanza+"/n"+peerStanza);
+    }
 //
 //      storeOWL() - store one-way latencies to file or graphing & history
 //
