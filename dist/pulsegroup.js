@@ -1431,9 +1431,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         for (var m in newPulseGroup.mintTable) {
             var mintEntry = newPulseGroup.mintTable[m];
             if (m == "0")
-                myStanza = addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+                myStanza = wireguard_1.addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
             else
-                peerStanza += addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+                peerStanza += wireguard_1.addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
         }
         console.log("myStanza=" + myStanza + " peerStanza=" + peerStanza);
         wireguard_1.setWireguard(myStanza + "/n" + peerStanza);

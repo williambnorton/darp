@@ -8,7 +8,7 @@ import express = require('express');
 import http = require('http');
 import fs = require('fs');
 import os = require('os');
-import { setWireguard } from './wireguard';
+import { setWireguard, addPeerWGStanza, addMyWGStanza } from './wireguard';
 
 
 logger.setLevel(LogLevel.WARNING);
