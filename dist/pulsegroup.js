@@ -9,7 +9,6 @@ var express = require("express");
 var http = require("http");
 var fs = require("fs");
 var os = require("os");
-var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
@@ -1033,7 +1032,6 @@ function getMyPulseGroupObject(ipaddr, port, callback) {
 getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //    joinPulseGroup("71.202.2.184","65013", function (newPulseGroup) {
     logger_1.logger.info("callback from pulseGroup owner. My config is=" + lib_1.dump(newPulseGroup));
-    newPulseGroup.flashWireguard(); //create our wireguard files based on our mint Table
     //
     //       attach convenience routines to the downloaded pulseGroup assignment
     //
@@ -1426,19 +1424,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 //maybe also add empty pulse records for each that don't have a pulse record
             }
         });
-    };
-    newPulseGroup.flashWireguard = function () {
-        console.log("flashWireguard()");
-        var myStanza = "", peerStanza = "";
-        for (var m in newPulseGroup.mintTable) {
-            var mintEntry = newPulseGroup.mintTable[m];
-            if (m == "0")
-                myStanza = wireguard_1.addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
-            else
-                peerStanza += wireguard_1.addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
-        }
-        console.log("myStanza=" + myStanza + " peerStanza=" + peerStanza);
-        wireguard_1.setWireguard(myStanza + "/n" + peerStanza);
     };
     //
     //      storeOWL() - store one-way latencies to file or graphing & history
