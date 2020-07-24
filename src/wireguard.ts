@@ -32,6 +32,7 @@ export function addMyWGStanza(geo:String, ipaddr:String, port:number, mint:numbe
     var line3=`     ListenPort = 80`;
     return line1+"\n"+line2+"\n"+line3;
 }
+
 export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:number, publickey:String) : string {
     const octet3=Math.round(mint/254);
     const octet4=mint%254;
@@ -61,7 +62,7 @@ export function setWireguard(stanzas:String) {
     fs.writeFile(WGDIR+'/darp0.pending.conf', BASECONFIG+stanzas, (err:String) => {
         // throws an error, you could also catch it here
         if (err) throw err;
-        console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/darp0.conf :"+stanzas);
+        console.log("***************************** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/darp0.conf :"+stanzas);
 
         //wgdump();                            
     });

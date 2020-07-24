@@ -58,7 +58,7 @@ function setWireguard(stanzas) {
         // throws an error, you could also catch it here
         if (err)
             throw err;
-        console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf :" + stanzas);
+        console.log("***************************** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf :" + stanzas);
         //wgdump();                            
     });
 }
