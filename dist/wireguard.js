@@ -26,7 +26,7 @@ function addMyWGStanza(geo, ipaddr, port, mint, publickey) {
     var octet4 = Math.round(mint % 254);
     var line2 = "     Address = 10.10." + octet3 + "." + octet4 + ", fd86:ea04:1115::" + mint + "/64";
     var line3 = "     ListenPort = 80";
-    return line1 + "/n" + line2 + "/n" + line3 + "\n";
+    return line1 + "\n" + line2 + "\n" + line3 + "\n";
 }
 exports.addMyWGStanza = addMyWGStanza;
 function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {
@@ -37,12 +37,12 @@ function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {
         "AllowedIPs = 10.10." + Math.round(mint / 254) + "." + (mint % 254) + "/32,fd86:ea04:1115::" + mint + "/128\n" +
         "Endpoint = " + ipaddr + ":" + "80" + "\n" +
         "PersistentKeepalive = 25" + "\n\n";
-    return line1 + "/n";
+    return line1 + "\n";
 }
 exports.addPeerWGStanza = addPeerWGStanza;
-function setWireguard(Stanzas) {
+function setWireguard(stanzas) {
     //we assume these file were set by configWG.bash script
-    console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
+    //console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
     var BASECONFIG = "";
     try {
         BASECONFIG = require('fs').readFileSync(WGDIR + '/wgbase.conf', 'utf8');
@@ -50,13 +50,13 @@ function setWireguard(Stanzas) {
     catch (err) {
         BASECONFIG = "deadbeef00deadbeef00deadbeef0012";
     }
-    console.log("setWireguard(): CONFIG=" + BASECONFIG + Stanzas);
+    //console.log("setWireguard(): CONFIG="+BASECONFIG+Stanzas);
     var fs = require('fs');
-    fs.writeFile(WGDIR + '/darp0.pending.conf', BASECONFIG + Stanzas, function (err) {
+    fs.writeFile(WGDIR + '/darp0.pending.conf', BASECONFIG + stanzas, function (err) {
         // throws an error, you could also catch it here
         if (err)
             throw err;
-        console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf ");
+        console.log("******** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf :" + stanzas);
         wgdump();
     });
 }

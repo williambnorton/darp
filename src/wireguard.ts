@@ -30,7 +30,7 @@ export function addMyWGStanza(geo:String, ipaddr:String, port:number, mint:numbe
     const octet4=Math.round(mint%254);
     var line2=`     Address = 10.10.${octet3}.${octet4}, fd86:ea04:1115::${mint}/64`
     var line3=`     ListenPort = 80`;
-    return line1+"/n"+line2+"/n"+line3+"\n";
+    return line1+"\n"+line2+"\n"+line3+"\n";
 }
 export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:number, publickey:String) : string {
     var line1="#\n" + 
@@ -40,26 +40,26 @@ export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:num
     "AllowedIPs = 10.10."+Math.round(mint/254)+"."+(mint%254)+"/32,fd86:ea04:1115::"+mint+"/128\n" +
     "Endpoint = "+ipaddr+":"+"80"+"\n" +
     "PersistentKeepalive = 25"+"\n\n";
-    return line1+"/n";
+    return line1+"\n";
 }
 
 
-export function setWireguard(Stanzas:String) {
+export function setWireguard(stanzas:String) {
     //we assume these file were set by configWG.bash script
-    console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
+    //console.log("setWireguard(): saving mint entry as stanza for each wg connection.");
     var BASECONFIG="";
     try {
         BASECONFIG=require('fs').readFileSync(WGDIR+'/wgbase.conf', 'utf8');
     } catch (err) {
         BASECONFIG="deadbeef00deadbeef00deadbeef0012";
     }
-    console.log("setWireguard(): CONFIG="+BASECONFIG+Stanzas);
+    //console.log("setWireguard(): CONFIG="+BASECONFIG+Stanzas);
 
     const fs = require('fs');
-    fs.writeFile(WGDIR+'/darp0.pending.conf', BASECONFIG+Stanzas, (err:String) => {
+    fs.writeFile(WGDIR+'/darp0.pending.conf', BASECONFIG+stanzas, (err:String) => {
         // throws an error, you could also catch it here
         if (err) throw err;
-        console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/darp0.conf ");
+        console.log("******** wireguard.ts: WRITING wgConfig file: "+WGDIR+"/darp0.conf :"+stanzas);
 
         wgdump();                            
     });
