@@ -8,5 +8,5 @@ do
 		mv $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
 		wg-quick UP $WGDIR/darp0.conf
 	fi
-    sleep 15
+    sleep 60   #for now check config and redo at most once a minute
 done
