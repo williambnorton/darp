@@ -12,6 +12,7 @@
 #	echo `date` Get a publicKey that starts with $startsWith
 #fi
 #WGDIR=$DARPDIR/wireguard   #in the docker and natively we will interact with this directory 
+echo `date` setting up $DARPDIR for our wireguard configuration files
 if [ ! -d $WGDIR ]; then mkdir $WGDIR; echo `date` "Created $WGDIR"; fi  #make sure wireguard directory exists
 echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
 ls $WGDIR
