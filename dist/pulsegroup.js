@@ -21,7 +21,7 @@ var OWLS_DISPLAYED = 30;
 // const DEVIATION_THRESHOLD=20;  //Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // const DEFAULT_START_STATE="SINGLESTEP";  //for single stepping through network protocol code
 // const DEFAULT_START_STATE = "QUARANTINE"; //for single stepping through network protocol code
-var DEFAULT_START_STATE = "NR";
+var DEFAULT_START_STATE = "QUARANTINE";
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
 //const DEFAULT_START_STATE="SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 // Load environment variables
@@ -103,7 +103,7 @@ var MintEntry = /** @class */ (function () {
         this.port = port;
         this.ipaddr = incomingIP; //set by genesis node on connection
         this.publickey = publickey;
-        this.state = DEFAULT_START_STATE; // this.state = mint==0 ? DEFAULT_START_STATE : "me";
+        this.state = DEFAULT_START_STATE;
         this.bootTimestamp = lib_1.now(); //RemoteClock on startup  ****
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
@@ -663,7 +663,7 @@ function instrumentation() {
                 if (srcMintEntry.state == "UP")
                     mintClass += "UP ";
                 if (srcMintEntry.state == "NR")
-                    mintClass += "NT ";
+                    mintClass += "NR ";
                 txt += '<tr class="' + mintClass + srcMintEntry.geo + '" >';
                 //                txt += '<tr class="'+mintEntry.geo+'">';
                 //txt+="<td>"+mintEntry+"</td>"
