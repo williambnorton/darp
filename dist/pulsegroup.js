@@ -1046,7 +1046,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     peerStanza += wireguard_1.addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
             }
         }
-        console.log("myStanza=" + myStanza + " peerStanza=" + peerStanza);
+        //console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
         wireguard_1.setWireguard(myStanza + "\n" + peerStanza);
     };
     newPulseGroup.flashWireguard(); //create our wireguard files based on our mint Table

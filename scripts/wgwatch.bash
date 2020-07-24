@@ -1,9 +1,10 @@
 #!/bin/bash
-#		wgwatch - invoke wg-quick when this file is created by docker
+#		wgwatch - invoke wg-quick when this file is created by docker - runs on host
 #
 while :
 do
-	if [ -f darp.pending.conf ]; then
+	if [ -f $WGDIR/darp.pending.conf ]; then
+
 		wg-quick DOWN $WGDIR/darp0.conf
 		mv $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
 		wg-quick UP $WGDIR/darp0.conf

@@ -45,7 +45,7 @@ function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {
 exports.addPeerWGStanza = addPeerWGStanza;
 function setWireguard(stanzas) {
     //we assume these file were set by configWG.bash script
-    console.log("setWireguard(): saving mint entry as stanza for each wg connection." + stanzas);
+    //console.log("setWireguard(): saving mint entry as stanza for each wg connection."+stanzas);
     var BASECONFIG = "";
     try {
         BASECONFIG = require('fs').readFileSync(WGDIR + '/wgbase.conf', 'utf8');
@@ -59,8 +59,8 @@ function setWireguard(stanzas) {
         // throws an error, you could also catch it here
         if (err)
             throw err;
-        console.log("***************************** wireguard.ts: WRITING wgConfig file: " + WGDIR + "/darp0.conf :");
-        console.log(BASECONFIG + stanzas);
+        console.log("***************************** wireguard.ts: wrote wgConfig file: " + WGDIR + "/darp0.conf :");
+        //console.log(BASECONFIG+stanzas);
         //wgdump();                            
     });
 }

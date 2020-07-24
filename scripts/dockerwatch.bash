@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+#	dockerwatch - forever loop enabling a forced docker refetch
+#
 while :
 do
 	if [ -f /tmp/wgwatch.pid ]; then
