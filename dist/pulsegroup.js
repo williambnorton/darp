@@ -1224,7 +1224,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             newPulseGroup.syncGenesisPulseGroup(); //fetch new config from genesis
             newPulseGroup.adminControl = '';
         }
-        newPulseGroup.mintTable[0].state = "UP";
+        //        newPulseGroup.mintTable[0].state="UP";
         newPulseGroup.mintTable[0].lastPulseTimestamp = lib_1.now();
         var sleepTime = 1000 - (lib_1.now() + 1000) % 1000; // start pulse around on the second
         //console.log(`sleepTime=${sleepTime}`); //INSTRUMENTATION POINT - DO NOT DELETE - shows load on node

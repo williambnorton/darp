@@ -1529,7 +1529,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             newPulseGroup.syncGenesisPulseGroup();  //fetch new config from genesis
             newPulseGroup.adminControl='';
         }
-        newPulseGroup.mintTable[0].state="UP";
+//        newPulseGroup.mintTable[0].state="UP";
         newPulseGroup.mintTable[0].lastPulseTimestamp=now();
 
         var sleepTime=1000-(now()+1000)%1000;       // start pulse around on the second
