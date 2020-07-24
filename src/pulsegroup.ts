@@ -1391,7 +1391,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         if (this.isGenesisNode()) {
             var groupOwnerPulseLabel=newPulseGroup.groupOwner+":"+newPulseGroup.groupName;
             var groupOwnerPulseEntry=newPulseGroup.pulses[groupOwnerPulseLabel];
-//            console.log(`deleteNode(): groupOwnerPulseEntry=${dump(groupOwnerPulseEntry)}`);
+            //            console.log(`deleteNode(): groupOwnerPulseEntry=${dump(groupOwnerPulseEntry)}`);
             if (groupOwnerPulseEntry!=null) {
                 var owlEntryAry=groupOwnerPulseEntry.owls.split(",");
                 var newOwls="";  //copy all but deleted Owl to control population
@@ -1405,10 +1405,24 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
     };
     //pulseGroup.pulse = function() {
-
-    //
-    //  buildMatrix of objects for each segment - 
-    //
+        
+        newPulseGroup.flashWireguard=function() {
+            console.log(`flashWireguard()`);
+            var myStanza="",peerStanza="";
+            for (var m in newPulseGroup.mintTable) {
+                const mintEntry=newPulseGroup.mintTable[m];
+                if (m=="0")
+                     myStanza=addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+                else 
+                    peerStanza+=addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
+            } 
+            console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
+            setWireguard(myStanza+"/n"+peerStanza);
+        }
+        
+        //
+        //  buildMatrix of objects for each segment - 
+        //
     newPulseGroup.buildMatrix=function() {
         //return;//turning off this feature until stable
         var matrix: number[][] = [];
@@ -1773,19 +1787,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
         });
     };
-    newPulseGroup.flashWireguard=function() {
-        console.log(`flashWireguard()`);
-        var myStanza="",peerStanza="";
-        for (var m in newPulseGroup.mintTable) {
-            const mintEntry=newPulseGroup.mintTable[m];
-            if (m=="0")
-                 myStanza=addMyWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
-            else 
-                peerStanza+=addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
-        } 
-        console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
-        setWireguard(myStanza+"/n"+peerStanza);
-    }
 //
 //      storeOWL() - store one-way latencies to file or graphing & history
 //
