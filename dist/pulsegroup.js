@@ -1515,6 +1515,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     }
                 }
                 newPulseGroup.nodeCount = Object.keys(newPulseGroup.pulses).length;
+                console.log("flashing wireguard configs");
                 newPulseGroup.flashWireguard(); //send mintTable to wireguard to set config
             });
         });
