@@ -1561,7 +1561,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     //console.log("m="+m+" elapsedMSincePulse="+elapsedMSincePulse+" clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
 
                     this.mintTable[m].lastOWL=NO_OWL;  //we don't have a valid OWL
-                    this.mintTable[m].state="NR";  //We don't know this node's state
+                    if (this.mintTable[m].state!="QUARANTINE")
+                        this.mintTable[m].state="NR";  //We don't know this node's state
 
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("m="+m+" I am genesis node not seeing him for elapsedMSincePulse="+elapsedMSincePulse);
@@ -1751,6 +1752,9 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 //update mint entry
                 incomingPulseMintEntry.lastPulseTimestamp=incomingPulseEntry.pulseTimestamp;  //CRASH mintEntry ==null
                 incomingPulseMintEntry.lastOWL=incomingPulseEntry.owl;
+                if (incomingPulseMintEntry.state=="QUARANTINE") {
+                    console.log(`incomingPulse received from ${incomingPulseMintEntry.geo} - migrating from QUARANTINE to UP state`);
+                }
                 incomingPulseMintEntry.state="UP";
                 //console.log("owls="+pulseEntry.owls);
 
