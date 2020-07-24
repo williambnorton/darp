@@ -1259,7 +1259,7 @@ app.get('/nodefactory', function(req, res) {
     //  this means mintTable[0]  
 
     logger.info("* Geneis node crteated newNodePulseGroup="+dump(newNodePulseGroup));
-
+    console.log(`Here I would setWireguard for new node....`);
     //
     //                              pulseNode MEMBER NODE
     //
@@ -1565,7 +1565,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
                         console.log("m="+m+" I am genesis node not seeing him for elapsedMSincePulse="+elapsedMSincePulse);
-                        if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT MINT after 5 seconds
+                        if (elapsedMSincePulse > 5 * newPulseGroup.cycleTime*1000) { //TIMEOUT node after 5 seconds
                             //console.log(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             newPulseGroup.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                         }
@@ -1767,11 +1767,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                         process.exit(36); //SOFTWARE RELOAD and RECONNECT
                     }
 
-                    
-
-                    //console.log(`groupOwner tells us there are ${owlCount} nodes in thie pulseGroup and we have ${newPulseGroup.nodeCount}`);
-                    //TODO: Also resync if the groupOwner has removed an item
-                    //console.log("recvPulses - group owner population is in tact");
                 }
 //                newPulseGroup.storeOWL(incomingPulse.geo,newPulseGroup.mintTable[0].geo,incomingPulse.owl);  //store pulse latency To me
                 newPulseGroup.storeOWL(incomingPulse.geo,newPulseGroup.mintTable[0].geo,incomingPulse.mint);  //store pulse latency To me
