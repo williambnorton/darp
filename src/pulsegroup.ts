@@ -1929,7 +1929,7 @@ newPulseGroup.measurertt=function() {
 			if (state==1) {
 				var ary=stdout.split(" ");
 				console.log(ts()+"stdout="+stdout+" ary="+ary);
-				//console.log(ts()+"ary[7]="+ary[7]);
+				console.log(ts()+"ary[7]="+ary[7]);
 				if (ary[7]=="bytes") {
 					var latency=ary[12];
 					if (typeof latency != "undefined" ){

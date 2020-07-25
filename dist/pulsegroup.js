@@ -1581,7 +1581,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 if (state == 1) {
                     var ary = stdout.split(" ");
                     console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
-                    //console.log(ts()+"ary[7]="+ary[7]);
+                    console.log(lib_1.ts() + "ary[7]=" + ary[7]);
                     if (ary[7] == "bytes") {
                         var latency = ary[12];
                         if (typeof latency != "undefined") {
