@@ -1935,16 +1935,18 @@ newPulseGroup.measurertt=function() {
                     var timeEquals=ary[11];
                     console.log(`timeEquals=${timeEquals}`);
 					if (typeof timeEquals != "undefined" ){
-                        var rtt=parseInt(timeEquals.split("=")[1])*1000;
+                        var rtt=parseInt(timeEquals.split("=")[1]);
 
                         //TODO: here we store or clear the rttMatrix element
                         console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
                         //TODO: store in rttHistory, rttMedian
+                        console.log(`saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         pulseEntry.rtt=rtt;
 					} else {
 						console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = -99999`);
                         //clear in rttHistory, rttMedian
                         pulseEntry.rtt=NO_MEASURE;
+                        console.log(`clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
 
                     }
 				}
