@@ -2,6 +2,7 @@
 #
 #	darpwatch - forever loop making sure our docker is running and running wg-quick when config changes
 #
+chmod 755 ~/wireguard
 while :
 do
 	if [ -f /tmp/wgwatch.pid ]; then
