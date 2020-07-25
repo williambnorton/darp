@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#	dockerwatch - forever loop enabling a forced docker refetch
+#	darpwatch - forever loop making sure our docker is running and running wg-quick when config changes
 #
 while :
 do

@@ -23,21 +23,19 @@ exports.wgdump = wgdump;
 function addMyWGStanza(geo, ipaddr, port, mint, publickey) {
     var line0 = "#  " + lib_1.ts() + " Auto generated wireguard config file for DARP";
     var line1 = "#  " + geo + " " + ipaddr + ":" + port + " mint=" + mint + " PUBLICKEY=" + publickey;
-    var octet3 = Math.round(mint / 254);
-    var octet4 = mint % 254;
-    var line2 = "     Address = 10.10." + octet3 + "." + octet4 + "/32, fd86:ea04:1115::" + mint + "/64";
+    var ip = lib_1.mint2IP(mint); //private address for this node
+    var line2 = "     Address = " + ip + "/32, fd86:ea04:1115::" + mint + "/64";
     var line3 = "     ListenPort = 80";
     return line0 + "\n" + line1 + "\n" + line2 + "\n" + line3;
 }
 exports.addMyWGStanza = addMyWGStanza;
 function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {
-    var octet3 = Math.round(mint / 254);
-    var octet4 = mint % 254;
+    var ip = lib_1.mint2IP(mint); //private address for this node
     var line1 = "#\n" +
         "# " + geo + " can send to us on this channel mint=" + mint + "\n" +
         "[Peer]\n" +
         "PublicKey = " + publickey + "\n" +
-        "AllowedIPs = 10.10." + octet3 + "." + octet4 + "/32, fd86:ea04:1115::" + mint + "/128\n" +
+        "AllowedIPs = " + ip + "/32, fd86:ea04:1115::" + mint + "/128\n" +
         "Endpoint = " + ipaddr + ":" + "80" + "\n" +
         "PersistentKeepalive = 25" + "\n\n";
     return line1;
