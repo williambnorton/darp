@@ -2,9 +2,13 @@
 #		wgwatch - invoke wg-quick when this file is created by docker - runs on host
 #
 WGDIR=$HOME/wireguard
+ls -ld $WGDIR/ 
+ls -l $WGDIR
+
 echo `date` $0 starting with WGDIR=$WGDIR
 ls -ld $WGDIR
 ls -l $WGDIR
+
 	if [ -f /tmp/wgwatch.pid ]; then
 		echo `date` Killing old wgwatch.bash
 		kill `cat /tmp/wireguardwatch.pid`

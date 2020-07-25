@@ -788,7 +788,7 @@ function instrumentation() {    //this should get its own file
         txt += "<th>pulseTimestamp</th>";
         txt += "<th>mint</th>";
         txt += "<th>owl</th>";
-        txt += "<th>rtt</th>";
+        txt += "<th>wg rtt</th>";
         //txt += "<th>median</th>"
         //txt+="<th>owls</th>"
         //txt += "<th>inOctets</th>";
