@@ -16,7 +16,7 @@
 echo `date` "------------------ $0 STARTING DARP v0.2 --------------------" 
 
 SLEEPTIME=15 #time in seconds between software runs in forever loop
-MAXCYCLES=10 # of cycles before stopping
+MAXCYCLES=20 # of cycles before stopping
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -166,7 +166,7 @@ do
         exit 86
     fi
     CYCLES=`expr $CYCLES + 1`
-    echo `date` "...................BOTTOM OF LOOP #$CYCLES ............. SLEEPING "$SLEEPTIME 
+    echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME 
     if [ $CYCLES -gt $MAXCYCLES ]; then    
         echo `date` "RAN 100 CYCLES - $0 EXiTTING"
         exit 86;

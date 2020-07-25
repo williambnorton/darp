@@ -1771,12 +1771,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     //console.log(`CHECKING SOFTWARE VERSION: My build=(${me.version} vs groupOwner: ${incomingPulse.version}).`);
 
                     if (incomingPulse.version != me.version) {
-                        logger.error(`Group Owner has newer software than we do me: ${me.version} vs genesis: ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        logger.error(`Group Owner has newer software than we do (${me.version} vs ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                        process.exit(36); //SOFTWARE RELOAD and RECONNECT
+                        logger.error(`Group Owner has newer? software than we do my SW version: ${me.version} vs genesis: ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
+                       process.exit(36); //SOFTWARE RELOAD and RECONNECT
                     }
 
                 }

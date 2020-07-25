@@ -16,7 +16,7 @@ echo `date` setting up $WGDIR as our wireguard configuration directory
 if [ ! -d $WGDIR ]; then mkdir $WGDIR; echo `date` "Created $WGDIR"; fi  #make sure wireguard directory exists
 echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
 ls $WGDIR
-
+rm -f $WGDIR/* #remove anyold wg files
 #WGDIR=~/darp
 #mkdir -p $WGDIR/wireguard
 #cd $WGDIR/wireguard
