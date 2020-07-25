@@ -1,6 +1,6 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
-import { dump, now, MYVERSION, Log, median, mint2IP } from './lib';
+import { dump, now, MYVERSION, Log, median, mint2IP, ts } from './lib';
 import { logger, LogLevel } from './logger';
 import { sendPulses, recvPulses } from './pulselayer';
 import { grapher, grapherStoreOwls } from './grapher';
@@ -1907,7 +1907,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //
 newPulseGroup.measurertt=function() {
     var child_process = require('child_process');
-
+    console.log(ts()+`measurertt - checking encrypted path`);
 //
 //	pinger() - check to see if pulseGroup private address space is pingable
 //

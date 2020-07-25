@@ -1562,6 +1562,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.measurertt = function () {
         var child_process = require('child_process');
+        console.log(lib_1.ts() + "measurertt - checking encrypted path");
         var _loop_1 = function () {
             var pulseEntry = newPulseGroup.pulses[p]; //do we need to check if this pulse still exists?
             var ip = lib_1.mint2IP(pulseEntry.mint);
