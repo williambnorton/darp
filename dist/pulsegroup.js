@@ -1563,11 +1563,13 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.measurertt = function () {
         var child_process = require('child_process');
-        console.log(lib_1.ts() + "measurertt - checking encrypted path");
+        console.log(lib_1.ts() + "******* measurertt() - checking encrypted path");
         var _loop_1 = function () {
             var pulseEntry = newPulseGroup.pulses[p]; //do we need to check if this pulse still exists?
             var ip = lib_1.mint2IP(pulseEntry.mint);
-            child_process.exec('(ping -c 1 -W 1 ' + ip + " 2>&1)", function (error, stdout, stderr) {
+            var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)";
+            console.log("measurertt(): running ping cmd=" + pingCmd);
+            child_process.exec(pingCmd, function (error, stdout, stderr) {
                 //console.log("Ping 10.10.0."+entry.mint+" stdout="+stdout);
                 var state = 1;
                 var i = stdout.indexOf('100%');
@@ -1578,7 +1580,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     state = -2; //UNREACHABLE BAD KEY
                 if (state == 1) {
                     var ary = stdout.split(" ");
-                    //console.log(ts()+"stdout="+stdout+" ary="+ary);
+                    console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
                     //console.log(ts()+"ary[7]="+ary[7]);
                     if (ary[7] == "bytes") {
                         var latency = ary[12];
