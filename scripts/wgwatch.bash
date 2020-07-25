@@ -16,11 +16,19 @@ fi
 echo $$ >/tmp/wgwatch.pid
 while :
 do
-	if [ -f $WGDIR/darp0.pending.conf ]; then
-		echo `date` pushing pending darp config change 
-		/usr/bin/wg-quick down $WGDIR/darp0.conf
-		mv -f $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
-		/usr/bin/wg-quick up $WGDIR/darp0.conf
+	if [ -w $WGDIR ]; then
+		if [ -f $WGDIR/darp0.pending.conf ]; then
+			echo `date` pushing pending darp config change 
+			/usr/bin/wg-quick down $WGDIR/darp0.conf
+			mv -f $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
+			/usr/bin/wg-quick up $WGDIR/darp0.conf
+		fi
+		sleep 15
+	else
+		echo `date` wireguard directory not writable
+		sudo rm -f ~/wireguard;
+		sudo reboot
 	fi
-    sleep 60   #for now check config and redo at most once a minute
+	sleep 6   #Wait until wireguard dir exists
+
 done
