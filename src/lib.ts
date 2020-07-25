@@ -120,6 +120,11 @@ export function MYVERSION(): string | null {
     return darpBuild;
 }
 
+export function mint2IP(mint):string {
+    const octet3=Math.round(mint/254);
+    const octet4=mint%254;
+    return `10.10.${octet3}.${octet4}`
+}
 
 /*
 export function MYIP() {

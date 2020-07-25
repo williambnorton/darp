@@ -1,6 +1,6 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
-import { dump, now, MYVERSION, Log, median } from './lib';
+import { dump, now, MYVERSION, Log, median, mint2IP } from './lib';
 import { logger, LogLevel } from './logger';
 import { sendPulses, recvPulses } from './pulselayer';
 import { grapher, grapherStoreOwls } from './grapher';
@@ -346,6 +346,7 @@ interface AugmentedPulseGroupInterface extends PulseGroupInterface {
     storeOWL: (src:string, dst:string, owl:number) => void;
     flashWireguard: () => void;
     syncGenesisPulseGroup: () => void;
+    measurertt: () => void;
     timeout: () => void;
 }
 
@@ -1910,7 +1911,47 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     myPulseGroups[newPulseGroup.groupName]=newPulseGroup;  //for now genesis node has no others
     setTimeout(newPulseGroup.checkSWversion, 5*1000);  //check that we have the best software
 
-});
-//----------------- sender 
+//
+//  measurertt - ping the mint address on the private side - we can run pulses here as well
+//
+newPulseGroup.measurertt=function() {
+    var child_process = require('child_process');
+//
+//	pinger() - check to see if pulseGroup private address space is pingable
+//
+    for (var p in newPulseGroup.pulses) {
+        const pulseEntry=newPulseGroup.pulses[p];
+        const ip=mint2IP(pulseEntry.mint);
+		child_process.exec('(ping -c 1 -W 1 '+ip+" 2>&1)", function(error:string, stdout:string, stderr:string){
+			//console.log("Ping 10.10.0."+entry.mint+" stdout="+stdout);
+			var state=1;
+			var i=stdout.indexOf('100%');
+			if ( i >= 0  ) state=-1; //UNREACHABLE
+			i=stdout.indexOf('key');
+			if (i >= 0 ) state=-2;  //UNREACHABLE BAD KEY
+			
+			if (state==1) {
+				var ary=stdout.split(" ");
+				//console.log(ts()+"stdout="+stdout+" ary="+ary);
+				//console.log(ts()+"ary[7]="+ary[7]);
+				if (ary[7]=="bytes") {
+					var latency=ary[12];
+					if (typeof latency != "undefined" ){
+                        var rtt=latency.split(".")[0].split("=")[1];
+                        //TODO: here we store or clear the rttMatrix element
+                        console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
+                        //TODO: store in rttHistory, rttMedian
+					} else {
+						console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = -99999`);
+                        //clear in rttHistory, rttMedian
+                    }
+				}
+            }
 
-/***************** TEST AREA ****************/
+			//updateRTT(entry,state); //find this node in gSRlist
+			//storeRTT(me.geo,entry.geo,state);
+			//console.log(ts()+"pinger() entry "+entry.geo+" is "+state);
+		});
+	}
+}
+});

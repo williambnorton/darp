@@ -1,6 +1,6 @@
 /** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
 
-import { ts } from "./lib";
+import { ts, mint2IP } from "./lib";
 //import pulseRedis = require('redis');
 
 
@@ -22,6 +22,7 @@ export function wgdump() {
     }
     console.log("wgconfig="+wgconfig);
 }
+
 
 
 export function addMyWGStanza(geo:String, ipaddr:String, port:number, mint:number, publickey:String) : string {

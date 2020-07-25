@@ -126,6 +126,12 @@ function MYVERSION() {
     return darpBuild;
 }
 exports.MYVERSION = MYVERSION;
+function mint2IP(mint) {
+    var octet3 = Math.round(mint / 254);
+    var octet4 = mint % 254;
+    return "10.10." + octet3 + "." + octet4;
+}
+exports.mint2IP = mint2IP;
 /*
 export function MYIP() {
     const http = require('http');
