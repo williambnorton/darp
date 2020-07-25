@@ -2,6 +2,14 @@
 #		wgwatch - invoke wg-quick when this file is created by docker - runs on host
 #
 WGDIR=$HOME/wireguard
+
+	if [ -f /tmp/wgwatch.pid ]; then
+		echo `date` Killing old wgwatch.bash
+		kill `cat /tmp/wireguardwatch.pid`
+		rm -f /tmp/wgwatch.pid
+		sleep 1
+	fi
+echo $$ >/tmp/wgwatch.pid
 while :
 do
 	if [ -f $WGDIR/darp0.pending.conf ]; then
