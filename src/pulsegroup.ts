@@ -972,18 +972,7 @@ function instrumentation() {    //this should get its own file
 
     }
 
-
-
-
-
-
-
-
-
-    
-    
-    
-    
+   
     txt += '<p>Connect to this pulseGroup using: docker run -p ' + me.port + ":" + me.port + ' -p ' + me.port + ":" + me.port + "/udp -p 80:80/udp -v ~/wireguard:/etc/wireguard -e GENESIS=" + me.ipaddr + ' -e GENESISPORT='+GENESISPORT+' -e HOSTNAME=`hostname`  -e WALLET=auto -it williambnorton/darp:latest</p>'
 
     txt += ""
@@ -1918,6 +1907,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 //
 newPulseGroup.measurertt=function() {
     var child_process = require('child_process');
+
 //
 //	pinger() - check to see if pulseGroup private address space is pingable
 //
@@ -1958,6 +1948,10 @@ newPulseGroup.measurertt=function() {
 			//storeRTT(me.geo,entry.geo,state);
 			//console.log(ts()+"pinger() entry "+entry.geo+" is "+state);
 		});
-	}
+    }
+    setTimeout(newPulseGroup.measurertt,60*1000); //wait a minute... may have to do this witha stack to spread pings out
 }
+newPulseGroup.measurertt();
+
 });
+

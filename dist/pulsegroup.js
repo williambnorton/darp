@@ -1605,5 +1605,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         for (var p in newPulseGroup.pulses) {
             _loop_1();
         }
+        setTimeout(newPulseGroup.measurertt, 60 * 1000); //wait a minute... may have to do this witha stack to spread pings out
     };
+    newPulseGroup.measurertt();
 });
