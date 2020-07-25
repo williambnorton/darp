@@ -55,10 +55,6 @@ if [ "$GENESIS" == "" ]; then
     env
     exit -1
 fi
-#If the GENESIS variable ENV VAR does not exist then assume we are genesis node
-if [ "$GENESIS" = "public" ]; then
-   GENESIS=`curl http://drpeering.com/genesisnodes`
-fi
 
 echo `date` Genesis node: $GENESIS  "<--- Set GENESIS environmental variable to launch your own pulseGroup"
 GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
