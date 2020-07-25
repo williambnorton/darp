@@ -1953,7 +1953,8 @@ newPulseGroup.measurertt=function() {
 			//console.log(ts()+"pinger() entry "+entry.geo+" is "+state);
 		});
     }
-    setTimeout(newPulseGroup.measurertt,60*1000); //wait a minute... may have to do this witha stack to spread pings out
+    console.log(ts()+`******* measurertt() - setting timeout for next run`);
+    setTimeout(newPulseGroup.measurertt,10*1000); //wait may have to do this witha stack to spread pings out
 }
 
 
