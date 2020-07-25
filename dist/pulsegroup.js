@@ -1585,6 +1585,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     console.log(lib_1.ts() + "ary[6]=" + ary[6]);
                     if (ary[6] == "bytes") {
                         var latency = ary[11];
+                        console.log("latency=" + latency);
                         if (typeof latency != "undefined") {
                             var rtt = parseInt(latency.split(".")[0].split("=")[1]) * 1000;
                             //TODO: here we store or clear the rttMatrix element
