@@ -4,19 +4,11 @@
 #			~/wireguard outside the Docker is our $WGDIR/wireguard
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
-#GENESIS=71.202.2.184:65013
-
-#if [ "$GENESIS" != "" ]; then
-#	startsWith=`curl $GENESIS/mintStack`
-#	startsWith=$startsWith$startsWith 
-#	echo `date` Get a publicKey that starts with $startsWith
-#fi
-#WGDIR=$DARPDIR/wireguard   #in the docker and natively we will interact with this directory 
-echo `date` setting up $WGDIR as our wireguard configuration directory
-if [ ! -d $WGDIR ]; then mkdir $WGDIR; echo `date` "Created $WGDIR"; fi  #make sure wireguard directory exists
+echo `date` setting up our $WGDIR configuration directory for wireguard public keyes
+if [ ! -d $WGDIR ]; then umask 077; mkdir -p $WGDIR; echo `date` "Created $WGDIR"; fi  #make sure wireguard directory exists
 echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
-ls $WGDIR
-rm -f $WGDIR/* #remove anyold wg files
+ls -l $WGDIR
+chown $USER $WGDIR
 #WGDIR=~/darp
 #mkdir -p $WGDIR/wireguard
 #cd $WGDIR/wireguard
