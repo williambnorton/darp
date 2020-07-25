@@ -13,9 +13,11 @@ if [ -f $PIDFILE ]; then
 		sleep 1
 fi
 echo $$ >/tmp/wgwatch.pid
+
 while :
 do
 	if [ -w $WGDIR ]; then
+		cd $WGDIR
 		if [ -f $WGDIR/darp0.pending.conf ]; then
 			echo `date` pushing pending darp config change 
 			/usr/bin/wg-quick down $WGDIR/darp0.conf
