@@ -4,7 +4,7 @@
 WGDIR=$HOME/wireguard
 while :
 do
-	if [ -f $WGDIR/darp.pending.conf ]; then
+	if [ -f $WGDIR/darp0.pending.conf ]; then
 		echo `date` pushing pending darp config change 
 		/usr/bin/wg-quick down $WGDIR/darp0.conf
 		mv $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
