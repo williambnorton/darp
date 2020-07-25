@@ -4,10 +4,10 @@
 while :
 do
 	if [ -f $WGDIR/darp.pending.conf ]; then
-
-		wg-quick DOWN $WGDIR/darp0.conf
+		echo `date` 
+		/usr/bin/wg-quick down $WGDIR/darp0.conf
 		mv $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
-		wg-quick UP $WGDIR/darp0.conf
+		/usr/bin/wg-quick up $WGDIR/darp0.conf
 	fi
     sleep 60   #for now check config and redo at most once a minute
 done

@@ -72,3 +72,4 @@ echo `date` $0 wgbase.conf below - the rest will be added by running code
 cat $WGDIR/wgbase.conf
 cp $DARPDIR/scripts/wgwatch.bash $WGDIR/wgwatch.bash  #need a better way here  #forever loop around wg-quick when darp.conf file changes
 chmod 550 $WGDIR/wgwatch.bash #docker changes config, wgwatch restarts wireguard
+chown $USER $WGDIR
