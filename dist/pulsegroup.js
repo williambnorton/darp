@@ -1571,6 +1571,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             console.log("measurertt(): running ping cmd=" + pingCmd);
             child_process.exec(pingCmd, function (error, stdout, stderr) {
                 //console.log("Ping 10.10.0."+entry.mint+" stdout="+stdout);
+                //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                 var state = 1;
                 var i = stdout.indexOf('100%');
                 if (i >= 0)
@@ -1582,8 +1583,8 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     var ary = stdout.split(" ");
                     console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
                     console.log(lib_1.ts() + "ary[7]=" + ary[7]);
-                    if (ary[7] == "bytes") {
-                        var latency = ary[12];
+                    if (ary[6] == "bytes") {
+                        var latency = ary[11];
                         if (typeof latency != "undefined") {
                             var rtt = latency.split(".")[0].split("=")[1];
                             //TODO: here we store or clear the rttMatrix element
