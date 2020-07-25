@@ -1932,10 +1932,10 @@ newPulseGroup.measurertt=function() {
 				console.log(ts()+"stdout="+stdout+" ary="+ary);
 				console.log(ts()+"ary[6]="+ary[6]);
 				if (ary[6]=="bytes") {
-                    var latency=ary[11];
-                    console.log(`latency=${latency}`);
-					if (typeof latency != "undefined" ){
-                        var rtt=parseInt(latency.split(".")[0].split("=")[1])*1000;
+                    var timeEquals=ary[11];
+                    console.log(`timeEquals=${timeEquals}`);
+					if (typeof timeEquals != "undefined" ){
+                        var rtt=parseInt(timeEquals.split("=")[1])*1000;
 
                         //TODO: here we store or clear the rttMatrix element
                         console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
