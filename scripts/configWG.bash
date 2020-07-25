@@ -67,3 +67,5 @@ cp $DARPDIR/scripts/wgwatch.bash $WGDIR/.  #need a better way here  #forever loo
 cp $DARPDIR/scripts/darpwatch.bash $WGDIR/.  
 chmod 755 $WGDIR/wgwatch.bash 
 chmod 755 $WGDIR/darpwatch.bash 
+ls -ld $WGDIR
+ls -l $WGDIR
