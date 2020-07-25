@@ -13,7 +13,7 @@ var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; //CHECK SW updates every 15 seconds
-var NO_OWL = -99999;
+var NO_MEASURE = -99999;
 var REFRESH = 120; //Every 2 minutes force refresh
 var OWLS_DISPLAYED = 30;
 // const TEST=true;
@@ -108,7 +108,7 @@ var MintEntry = /** @class */ (function () {
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
         this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
-        this.lastOWL = NO_OWL; //most recent OWL measurement
+        this.lastOWL = NO_MEASURE; //most recent OWL measurement
     }
     ;
     return MintEntry;
@@ -143,11 +143,12 @@ var PulseEntry = /** @class */ (function () {
         this.ipaddr = ipaddr;
         this.port = port;
         this.seq = 1;
-        this.owl = NO_OWL;
+        this.owl = NO_MEASURE;
         this.pulseTimestamp = 0;
         this.owls = "1"; //Startup - I am the only one here
         this.history = [];
         this.medianHistory = [];
+        this.rtt = NO_MEASURE;
         this.bootTimestamp = lib_1.now(); //RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version, //software version running on sender's node    
             //
@@ -1134,7 +1135,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 var ary = pulseEntry.owls.split(","); //put all my OWLs into matrix
                 for (var owlEntry in ary) {
                     var m = parseInt(ary[owlEntry].split("=")[0]);
-                    var owl = NO_OWL;
+                    var owl = NO_MEASURE;
                     var strOwl = ary[owlEntry].split("=")[1];
                     if (typeof strOwl != "undefined")
                         owl = parseInt(strOwl);
@@ -1159,7 +1160,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
                 if (typeof matrix[pulseEntry.mint] == "undefined")
                     matrix[pulseEntry.mint] = [];
-                matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = NO_OWL; //This guy missed his pulse - mark his entries empty
+                matrix[pulseEntry.mint][newPulseGroup.mintTable[0].mint] = NO_MEASURE; //This guy missed his pulse - mark his entries empty
             }
         }
         //for (var s in newPulseGroup.matrix) //INTRUMENTATION POINT
@@ -1183,7 +1184,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             pulseEntry.outPulses++;
             //**HIGHLIGHT INTERESTING CELLS IN MATRIX CODE */
             var flag = ""; //this section flags "interesting" cells to click on and explore
-            if (pulseEntry.owl == NO_OWL)
+            if (pulseEntry.owl == NO_MEASURE)
                 owls += pulseEntry.mint + ",";
             else {
                 var medianOfMeasures = lib_1.median(pulseEntry.history);
@@ -1201,7 +1202,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     }
                 }
             }
-            if (pulseEntry.owl == NO_OWL)
+            if (pulseEntry.owl == NO_MEASURE)
                 owls += pulseEntry.mint + ",";
             else
                 owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
@@ -1251,7 +1252,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 //console.log(`elapsed ms since last pulse=${elapsedMSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     //console.log("m="+m+" elapsedMSincePulse="+elapsedMSincePulse+" clearing OWL in mint entry which missed at least one cycle"+this.mintTable[m].geo);
-                    this.mintTable[m].lastOWL = NO_OWL; //we don't have a valid OWL
+                    this.mintTable[m].lastOWL = NO_MEASURE; //we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE")
                         this.mintTable[m].state = "NR"; //We don't know this node's state
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
@@ -1282,7 +1283,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 //console.log(`${this.pulses[p].geo} elapsedSecondsSincePulse=${elapsedSecondsSincePulse}`);
                 if (elapsedMSincePulse > 2 * newPulseGroup.cycleTime * 1000) { //timeout after 2 seconds
                     //console.log(ts()+"timout(): Non-respondong node Clearing OWL in pulse entry "+this.pulses[p].geo+":"+this.groupName);
-                    pulseEntry.owl = NO_OWL;
+                    pulseEntry.owl = NO_MEASURE;
                     pulseEntry.owls = "1";
                     pulseEntry.pktDrops++;
                     if (newPulseGroup.isGenesisNode()) { /*GENESIS ONLY*/
@@ -1560,7 +1561,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     newPulseGroup.measurertt = function () {
         var child_process = require('child_process');
         var _loop_1 = function () {
-            var pulseEntry = newPulseGroup.pulses[p];
+            var pulseEntry = newPulseGroup.pulses[p]; //do we need to check if this pulse still exists?
             var ip = lib_1.mint2IP(pulseEntry.mint);
             child_process.exec('(ping -c 1 -W 1 ' + ip + " 2>&1)", function (error, stdout, stderr) {
                 //console.log("Ping 10.10.0."+entry.mint+" stdout="+stdout);
@@ -1582,10 +1583,12 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                             //TODO: here we store or clear the rttMatrix element
                             console.log("measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = " + rtt);
                             //TODO: store in rttHistory, rttMedian
+                            pulseEntry.rtt = parseInt(rtt);
                         }
                         else {
                             console.log("measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = -99999");
                             //clear in rttHistory, rttMedian
+                            pulseEntry.rtt = NO_MEASURE;
                         }
                     }
                 }
