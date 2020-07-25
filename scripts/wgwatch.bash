@@ -24,7 +24,7 @@ do
 		sleep 15
 	else
 		echo `date` wireguard directory not writable or not ready
-		chown `whoami` $WGDIR
+		sudo chown `whoami` $WGDIR
 		sleep 6   #Wait until wireguard dir exists
 	fi
 	sleep 6   #Wait until wireguard dir exists
