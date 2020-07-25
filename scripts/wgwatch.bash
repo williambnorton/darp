@@ -24,7 +24,7 @@ do
 		fi
 		sleep 15
 	else
-		echo `date` wireguard directory not writable or not ready
+		echo `date` wireguard directory not writable or not ready. Changing ownership
 		sudo chown `whoami` $WGDIR
 		sleep 6   #Wait until wireguard dir exists
 	fi

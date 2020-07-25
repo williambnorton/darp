@@ -919,7 +919,7 @@ function instrumentation() {    //this should get its own file
                 //if (me.geo!=.ipaddr)
                 //    txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/me" >' + srcMintEntry.ipaddr + "</a></td>";
                 //else
-                    txt += "<td>" + '<a target="_blank" href="http://127.0.0.1:8081/ssh?ubuntu@'+srcMintEntry.ipaddr+'">ssh '+srcMintEntry.ipaddr+'</a></td>';
+                    txt += "<td>" + '<a target="_blank" href="http://127.0.0.1:8081/ssh?ubuntu@'+srcMintEntry.ipaddr+'">'+srcMintEntry.ipaddr+'</a></td>';
                 txt += "<td>" + srcMintEntry.publickey.substring(0, 3) + "..." + srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) + "</td>";
                 txt += '<td class="' + srcMintEntry.geo + ' ' + srcMintEntry.geo + '_state' + ' ' + srcMintEntry.state + '">' + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/mintTable" >' + srcMintEntry.state + '</a>' + "</td>";
                 //                   txt += "<td>" + '<a href="http://' + mintEntry.ipaddr + ':' + mintEntry.port + '/config" >' + mintEntry.state + '</a>' + "</td>"

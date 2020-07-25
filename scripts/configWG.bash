@@ -5,11 +5,11 @@
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
 echo `date` setting up our $WGDIR configuration directory for wireguard public keyes
-if [ ! -d $WGDIR ]; then umask 077; mkdir -p $WGDIR; echo `date` "Created $WGDIR"; fi  #make sure wireguard directory exists
+if [ ! -d $WGDIR ]; then umask 077; mkdir -p $WGDIR; echo `date` "ERROR: Should not hve to but Created $WGDIR"; fi  #make sure wireguard directory exists
 echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
 ls -l $WGDIR
-chown ubuntu $WGDIR  #we know our docker runs ubuntu HACK breaks in native mode where no ubuntu exists
-if [ $? -ne 0 ]; then sudo chown ubuntu $WGDIR; fi
+#chown ubuntu $WGDIR  #we know our docker runs ubuntu HACK breaks in native mode where no ubuntu exists
+#if [ $? -ne 0 ]; then sudo chown ubuntu $WGDIR; fi
 #WGDIR=~/darp
 #mkdir -p $WGDIR/wireguard
 #cd $WGDIR/wireguard
