@@ -495,7 +495,7 @@ function instrumentation() {
     var timeStr = d.toString().split(' ')[4];
     txt += '<p id="dateTime">*Refresh: ' + timeStr + ' </p>';
     //
-    //  externalize pulseGroup matrix
+    //  INSTRUMENTATION externalize pulseGroup matrix
     //
     for (var p in myPulseGroups) {
         var pulseGroup = myPulseGroups[p];
@@ -536,7 +536,7 @@ function instrumentation() {
         txt += '<tr><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>ms</th><th>to Z Side</th><th>total ms</th><th>ms better</th>   </tr>';
         txt += '</table>';
         //
-        //  Externalize pulse structures 
+        //  INSTRUMENTATION: Externalize pulse structures 
         //
         txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulses">';
         txt += "<tr>";
@@ -548,6 +548,7 @@ function instrumentation() {
         txt += "<th>pulseTimestamp</th>";
         txt += "<th>mint</th>";
         txt += "<th>owl</th>";
+        txt += "<th>rtt</th>";
         //txt += "<th>median</th>"
         //txt+="<th>owls</th>"
         //txt += "<th>inOctets</th>";
@@ -590,6 +591,7 @@ function instrumentation() {
                 // OWL
                 //            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                 txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo + '" >' + pulseEntry.owl + "</a> ms</td>";
+                txt += '<td class="' + pulseEntry.geo + '_rtt "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo + '" >' + pulseEntry.rtt + "</a> ms</td>";
                 //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
                 //txt+="<td>"+pulseEntry.owls+"</td>"
                 //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
@@ -630,7 +632,7 @@ function instrumentation() {
     for (var p in myPulseGroups) {
         var pulseGroup = myPulseGroups[p];
         //
-        //  Externalize mintTable 
+        //  INSTRUMENTATION Externalize mintTable 
         //
         //console.log(ts()+"config.mintTable="+dump(config.mintTable));
         txt += '<br><h2>mintTable</h2><table class="mintTable">';

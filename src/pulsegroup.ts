@@ -730,7 +730,7 @@ function instrumentation() {    //this should get its own file
 
 
     //
-    //  externalize pulseGroup matrix
+    //  INSTRUMENTATION externalize pulseGroup matrix
     //
     for (var p in myPulseGroups) {
         var pulseGroup=myPulseGroups[p];
@@ -776,7 +776,7 @@ function instrumentation() {    //this should get its own file
 
 
         //
-        //  Externalize pulse structures 
+        //  INSTRUMENTATION: Externalize pulse structures 
         //
         txt += '<br><h2>' + pulseGroup.groupName + ' pulseGroup' + '</h2><table class="pulses">';
         txt += "<tr>";
@@ -788,6 +788,7 @@ function instrumentation() {    //this should get its own file
         txt += "<th>pulseTimestamp</th>";
         txt += "<th>mint</th>";
         txt += "<th>owl</th>";
+        txt += "<th>rtt</th>";
         //txt += "<th>median</th>"
         //txt+="<th>owls</th>"
         //txt += "<th>inOctets</th>";
@@ -829,6 +830,8 @@ function instrumentation() {    //this should get its own file
                 // OWL
     //            txt += '<td class="' + pulseEntry.geo + '_owl fade-out"' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph?src=' + pulseEntry.geo + '&dst=' + me.geo + "&group=" + pulseEntry.group + '" >' + pulseEntry.owl + "</a> ms</td>";
                 txt += '<td class="' + pulseEntry.geo + '_owl "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.owl + "</a> ms</td>";
+                txt += '<td class="' + pulseEntry.geo + '_rtt "' + '>' + '<a  target="_blank" href="http://' + me.ipaddr + ':' + me.port + '/graph/' + pulseEntry.geo + '/' + me.geo +'" >' + pulseEntry.rtt + "</a> ms</td>";
+
                 //txt += '<td class="'+pulseEntry.geo+'_median"'+'>' + pulseEntry.median + "</td>"
                 //txt+="<td>"+pulseEntry.owls+"</td>"
                 //txt += '<td class="' + pulseEntry.geo + '_inOctets"' + '>' + pulseEntry.inOctets + "</td>";
@@ -871,7 +874,7 @@ function instrumentation() {    //this should get its own file
     for (var p in myPulseGroups) {
         var pulseGroup=myPulseGroups[p];
         //
-        //  Externalize mintTable 
+        //  INSTRUMENTATION Externalize mintTable 
         //
         //console.log(ts()+"config.mintTable="+dump(config.mintTable));
         txt += '<br><h2>mintTable</h2><table class="mintTable">';
