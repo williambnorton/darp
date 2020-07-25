@@ -1570,7 +1570,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)";
             console.log("measurertt(): running ping cmd=" + pingCmd);
             child_process.exec(pingCmd, function (error, stdout, stderr) {
-                //console.log("Ping 10.10.0."+entry.mint+" stdout="+stdout);
+                console.log("Ping " + pingCmd + " stdout=" + stdout);
                 //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                 var state = 1;
                 var i = stdout.indexOf('100%');
