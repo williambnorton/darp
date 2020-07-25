@@ -3,9 +3,7 @@
 #
 WGDIR=$HOME/wireguard
 echo `date` $0 starting with WGDIR=$WGDIR
-ls -ld $WGDIR
-ls -l $WGDIR
-cd $WGDIR
+cd
 
 if [ -f /tmp/wgwatch.pid ]; then
 		echo `date` Killing old wgwatch.bash
@@ -25,9 +23,8 @@ do
 		fi
 		sleep 15
 	else
-		echo `date` wireguard directory not writable
-		sudo rm -f ~/wireguard;
-		sudo reboot
+		echo `date` wireguard directory not writable or not ready
+		sleep 6   #Wait until wireguard dir exists
 	fi
 	sleep 6   #Wait until wireguard dir exists
 
