@@ -1930,15 +1930,16 @@ newPulseGroup.measurertt=function() {
 			if (state==1) {
 				var ary=stdout.split(" ");
 				console.log(ts()+"stdout="+stdout+" ary="+ary);
-				console.log(ts()+"ary[7]="+ary[7]);
+				console.log(ts()+"ary[6]="+ary[6]);
 				if (ary[6]=="bytes") {
 					var latency=ary[11];
 					if (typeof latency != "undefined" ){
-                        var rtt=latency.split(".")[0].split("=")[1];
+                        var rtt=parseInt(latency.split(".")[0].split("=")[1])*1000;
+
                         //TODO: here we store or clear the rttMatrix element
                         console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
                         //TODO: store in rttHistory, rttMedian
-                        pulseEntry.rtt=parseInt(rtt);
+                        pulseEntry.rtt=rtt;
 					} else {
 						console.log(`measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = -99999`);
                         //clear in rttHistory, rttMedian
