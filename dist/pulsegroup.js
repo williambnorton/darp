@@ -1400,6 +1400,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 if (newPulseGroup.mintTable[0].state == "QUARANTINE") {
                     console.log("Received pulse from non-genesis node - I must be transitioned out of Quarentine");
                     newPulseGroup.mintTable[0].state = "UP";
+                    newPulseGroup.measurertt();
                 }
             }
             //with miontTable and pulses updated, handle valid pulse
@@ -1608,5 +1609,4 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
         }
         setTimeout(newPulseGroup.measurertt, 60 * 1000); //wait a minute... may have to do this witha stack to spread pings out
     };
-    newPulseGroup.measurertt();
 });
