@@ -347,28 +347,40 @@ function instrumentation() {
         txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
         //txt += '                     console.log("After link flag="+flag);';
     
-    */
-    txt += '             if (flag) {'; //We have an OWL measure that should be investigated
-    //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
-    txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
-    //txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);'
-    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
-    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
-    //txt += '                   console.log("FINISHED HIGHLIGHTING");'
-    txt += '               }';
-    txt += '            } else {'; //if flag
-    //txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
+    
+    
+    
+        txt += '             if (flag) {';  //We have an OWL measure that should be investigated
+        //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+        //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+        
+    
+        txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
+        //txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);'
+        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
+        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
+        //txt += '                   console.log("FINISHED HIGHLIGHTING");'
+        txt += '               }'
+        
+        txt += '            } else {'; //if flag
+        //txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+    
+        txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
     //    txt += '                   console.log("NO FLAG UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
-    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';
-    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
+        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';
+        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
     //    txt += '                   console.log("FINISHED UN-HIGHLIGHTING");'
-    txt += '               }';
-    txt += '            }';
-    txt += '        }';
-    txt += '     }';
-    txt += '}';
+        txt += '               }'
+        txt += '            }';
+    
+    
+    
+    
+        txt += '        }';
+        txt += '     }';
+        txt += '}';
+    
+    */
     txt += '/* here create extraordinary path table */';
     /*
     txt += 'function getOWLfrom(srcMint, owls) {';

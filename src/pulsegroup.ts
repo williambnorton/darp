@@ -529,7 +529,6 @@ function instrumentation() {    //this should get its own file
     txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
     //txt += '                     console.log("After link flag="+flag);';
 
-*/
 
 
 
@@ -563,6 +562,7 @@ function instrumentation() {    //this should get its own file
     txt += '     }'; 
     txt += '}';
 
+*/
 
 
     txt += '/* here create extraordinary path table */';
