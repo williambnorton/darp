@@ -1890,14 +1890,14 @@ newPulseGroup.measurertt=function() {
 			var i=stdout.indexOf('100%');
 			if ( i >= 0  ) {
                 pulseEntry.rtt=NO_MEASURE; //UNREACHABLE
-                console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
+                //console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
                 return;
             }
 			
             var ary=stdout.split(" ");
             var address=ary[8];
             var octets=address.split(".");
-            var mint=parseInt(octets[2])*254+parseInt(octets[3]);
+            var mint=parseInt(octets[2])*254+parseInt(octets[3]); //TODO: we should verify mint here
             if (ary[6]=="bytes") {  //if we have a measure
                 var timeEquals=ary[11];
                 if (typeof timeEquals != "undefined" ){
@@ -1917,7 +1917,7 @@ newPulseGroup.measurertt=function() {
             }
 		});
     }
-    setTimeout(newPulseGroup.measurertt,1*1000); //wait may have to do this witha stack to spread pings out
+    setTimeout(newPulseGroup.measurertt,2*1000); // ping every other second
 }
 
 //
