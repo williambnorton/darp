@@ -273,114 +273,61 @@ function instrumentation() {
     //txt += '        console.log("XHR SUCCESS - config="+JSON.stringify(config,null,2));'
     txt += '         for (var n in config) { ';
     txt += '            var pulseGroup=config[n];';
-    /*****
-     //u update the matrix using jquery selectors
-     txt += 'for (var src in pulseGroup.matrix) {';
-     txt += '    for (var dest in pulseGroup.matrix[src]) {';
-     txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
-     txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
-     txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
-     txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){'
-     txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
- 
- 
- 
- 
- //    txt += '             var link="<a target=_blank href="+gurl+">";';
-     txt += '             var myDiv=\'<div class="\'+srcMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
-     txt += '             var link="<a target=_blank href="+gurl+">";';
- 
-     //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
-     txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
- 
-     //    txt += '         } else console.log("COULD NOT FIND MINT");';
-     txt += '         } else {';
-     txt += '              $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
-     txt += '              console.log("COULD NOT FIND MINT "+src+srcMintEntry+dest+destMintEntry);';
- 
-     txt += '         }'
- 
- 
- 
-     //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
- //    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
- 
-     txt += '    }';
-     txt += '}';
-     //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
- **/
-    /*wbnwbnwbn2020
-        //   Now instead, we will fill the matrix using only the owls - removing matrix ugliness.
-        txt += 'for (var src in pulseGroup.pulses) {';
-        txt += '    var pulseEntry=pulseGroup.pulses[src];';
-        txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");'
-        //txt += '    console.log("pulseEntry="+JSON.stringify(pulseGroup,null,2)+JSON.stringify(pulseEntry,null,2));'
-        txt += '    var owls=pulseEntry.owls.split(",");';
-        txt += '    for(var owlEntry in owls) {';
-        txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
-        txt +='        var owl=-99999;';
-        txt += '       var strOwl=owls[owlEntry].split("=")[1];';
-        txt += '       if (typeof strOwl != "undefined") {';  //<srcMint>[=<owl>[<flag>]],...
-        txt += '           owl=parseInt(strOwl);';
-        txt += '           var regex = /@/;';
-        txt += '           var flag=strOwl.match(regex);';
-        
-        txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
-        txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-        //txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
-        //txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
-    
-        txt += '            if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {'
-        //txt += '               console.log("non-null src and dest entries");'
-        txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
-        txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
-        txt += '               var link="<a target=_blank href="+gurl+">";';
-        //txt += '               console.log("Finished non-null");';
-    
-        txt += '            } else {'
-        //txt += '               console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);'
-        txt += '               var gurl="http://noMint";';
-        txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
-        txt += '               var link="<a target=_blank href="+gurl+">";';
-        txt += '            }'
-        //txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
-        txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
-        //txt += '                     console.log("After link flag="+flag);';
-    
-    
-    
-    
-        txt += '             if (flag) {';  //We have an OWL measure that should be investigated
-        //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-        //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
-        
-    
-        txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
-        //txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);'
-        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
-        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
-        //txt += '                   console.log("FINISHED HIGHLIGHTING");'
-        txt += '               }'
-        
-        txt += '            } else {'; //if flag
-        //txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
-    
-        txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
+    //  Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
+    txt += 'for (var src in pulseGroup.pulses) {';
+    txt += '    var pulseEntry=pulseGroup.pulses[src];';
+    txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");';
+    //txt += '    console.log("pulseEntry="+JSON.stringify(pulseGroup,null,2)+JSON.stringify(pulseEntry,null,2));'
+    txt += '    var owls=pulseEntry.owls.split(",");';
+    txt += '    for(var owlEntry in owls) {';
+    txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
+    txt += '        var owl=-99999;';
+    txt += '       var strOwl=owls[owlEntry].split("=")[1];';
+    txt += '       if (typeof strOwl != "undefined") {'; //<srcMint>[=<owl>[<flag>]],...
+    txt += '           owl=parseInt(strOwl);';
+    txt += '           var regex = /@/;';
+    txt += '           var flag=strOwl.match(regex);';
+    txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
+    txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+    //txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
+    //txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
+    txt += '            if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
+    //txt += '               console.log("non-null src and dest entries");'
+    txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
+    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
+    txt += '               var link="<a target=_blank href="+gurl+">";';
+    //txt += '               console.log("Finished non-null");';
+    txt += '            } else {';
+    //txt += '               console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);'
+    txt += '               var gurl="http://noMint";';
+    txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
+    txt += '               var link="<a target=_blank href="+gurl+">";';
+    txt += '            }';
+    //txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
+    txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
+    //txt += '                     console.log("After link flag="+flag);';
+    txt += '             if (flag) {'; //We have an OWL measure that should be investigated
+    //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+    //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
+    txt += '               if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {';
+    //txt += '                   console.log("HIGHLIGHTING class="+srcOwlMintEntry.mint+"-"+pulseEntry.mint+"="+strOwl);'
+    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");';
+    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");';
+    //txt += '                   console.log("FINISHED HIGHLIGHTING");'
+    txt += '               }';
+    txt += '            } else {'; //if flag
+    //txt += '               console.log("UN-flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
+    txt += '               if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
     //    txt += '                   console.log("NO FLAG UN--HIGHLIGHTING "+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+"="+owl);'
-        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';
-        txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
+    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");';
+    txt += '                   $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");;';
     //    txt += '                   console.log("FINISHED UN-HIGHLIGHTING");'
-        txt += '               }'
-        txt += '            }';
-    
-    
-    
-    
-        txt += '        }';
-        txt += '     }';
-        txt += '}';
-    
-    */
+    txt += '               }';
+    txt += '            }';
+    txt += '        }';
+    txt += '     }';
+    txt += '}';
+    txt += '/* here create extraordinary path table */';
     /*
     txt += 'function getOWLfrom(srcMint, owls) {';
     txt += '   var ary = owls.split(",");';
@@ -430,96 +377,71 @@ function instrumentation() {
     txt += '        }';
     txt += '    }';
     txt += '}';
-
-
-
-
-
-
-
-
-   //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
-   //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-   txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
-   txt += '             if ( pulseGroup.nodeCount >= 1 ) {'
-   txt += '                if (nodeCountLastTime!=0) {'
-   txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {'
-   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-   txt += '                         location.reload();' ;
-   txt += '                     }'
-   txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;'
-   txt += '             }'
-   txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
-   
-                       //update the dateTime so people know the updates re coming in
-   txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
-   txt += "             var now=d.getTime();"
-   txt += "             var timeStr=d.toString().split(' ')[4];"
-   //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-   //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-   txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((now-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>" );' //we show this epoch
-   txt += '             $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));';  //wbnwbnwbnwbnwbnwnbn
-
-
-   //      Render table from information in the state fetched from node
-   //
-   txt += '      var totalEarn=0.000000;'
-   txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
-   //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-   txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
-   txt += '          var pulse=value;'      //
-   txt += '          if (pulse!=null) {'
-   txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {'
-   // txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
- //txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
- // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
-   txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);'
-   txt += '              }'
-
-  //. txt += '              console.log("pulse.owl="+pulse.owl);'
-   
-   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");' //Add NR class to entire row
-   txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");' //Add NR class to entire row
-   
-   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP");' //Add NR class to entire row
-   txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR");' //Add NR class to entire row
-
-   txt += '              if (pulse.pulseTimestamp!="0")'
-   txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
-   txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");'
-   txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
-   txt +='               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'  //TODO : Align left for this text field
-   txt +='               pulse.inPulses=parseInt(pulse.inPulses);'
-   txt +='               pulse.outPulses=parseInt(pulse.outPulses);'
-   txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-   txt += '              totalEarn+=balance;';
-   txt += '              balance=balance.toFixed(6);';
-
-   //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
-
-   txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'  //TODO : Align left for this text field
- 
-   
-
-//      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
-    txt += '           }'
-    txt += '       }'
-//txt += 'console.log("totalEarn coming in =:"+totalEarn);'
-   txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);'
-   txt +='        $(".total_earn").text("totalEarn: $"+totalEarn);'
-//   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
-//   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
-
-
-
-
-
-    txt += '         }'
-    txt += '     '
-*/
+    */
+    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+    txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '             if ( pulseGroup.nodeCount >= 1 ) {';
+    txt += '                if (nodeCountLastTime!=0) {';
+    txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {';
+    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+    txt += '                         location.reload();';
+    txt += '                     }';
+    txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;';
+    txt += '             }';
+    txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
+    //update the dateTime so people know the updates re coming in
+    txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
+    txt += "             var now=d.getTime();";
+    txt += "             var timeStr=d.toString().split(' ')[4];";
+    //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+    //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
+    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((now-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>" );'; //we show this epoch
+    txt += '             $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
+    //      Render table from information in the state fetched from node
+    //
+    txt += '      var totalEarn=0.000000;';
+    txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
+    //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+    txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
+    txt += '          var pulse=value;'; //
+    txt += '          if (pulse!=null) {';
+    txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {';
+    // txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+    //txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+    // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+    txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);';
+    txt += '              }';
+    //. txt += '              console.log("pulse.owl="+pulse.owl);'
+    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");'; //Add NR class to entire row
+    txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");'; //Add NR class to entire row
+    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP");'; //Add NR class to entire row
+    txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR");'; //Add NR class to entire row
+    txt += '              if (pulse.pulseTimestamp!="0")';
+    txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
+    txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");';
+    txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
+    txt += '               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'; //TODO : Align left for this text field
+    txt += '               pulse.inPulses=parseInt(pulse.inPulses);';
+    txt += '               pulse.outPulses=parseInt(pulse.outPulses);';
+    txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
+    txt += '              totalEarn+=balance;';
+    txt += '              balance=balance.toFixed(6);';
+    //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
+    txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
+    //      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
+    txt += '           }';
+    txt += '       }';
+    //txt += 'console.log("totalEarn coming in =:"+totalEarn);'
+    txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);';
+    txt += '        $(".total_earn").text("totalEarn: $"+totalEarn);';
+    //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
+    //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
+    txt += '         }';
+    txt += '     ';
     txt += '   }).fail(function() { ';
     txt += '       console.log("JSON Fetch error");';
     txt += '        $(document.body).css( "background", "pink" );';

@@ -454,45 +454,7 @@ function instrumentation() {    //this should get its own file
    txt += '         for (var n in config) { ';
    txt+=  '            var pulseGroup=config[n];';
 
-   /*****
-    //u update the matrix using jquery selectors
-    txt += 'for (var src in pulseGroup.matrix) {';
-    txt += '    for (var dest in pulseGroup.matrix[src]) {';              
-    txt += '         if (pulseGroup.matrix[src][dest]!=-99999)';
-    txt += '         var srcMintEntry=pulseGroup.mintTable[src];';
-    txt += '         var destMintEntry=pulseGroup.mintTable[dest];';
-    txt += '         if ((srcMintEntry!=null) && (destMintEntry!=null)){'
-    txt += '             var gurl="http://"+destMintEntry.ipaddr+":"+destMintEntry.port+"/graph/"+srcMintEntry.geo+"/"+destMintEntry.geo;';
-
-
-
-
-//    txt += '             var link="<a target=_blank href="+gurl+">";';
-    txt += '             var myDiv=\'<div class="\'+srcMintEntry.mint+"-"+destMintEntry.mint+\'">\';';
-    txt += '             var link="<a target=_blank href="+gurl+">";';
-
-    //txt += '             console.log("link="+myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
-    txt += '             $("."+src+"-"+dest).html(myDiv+link+pulseGroup.matrix[src][dest]+" ms</a></div>");';
-
-    //    txt += '         } else console.log("COULD NOT FIND MINT");';
-    txt += '         } else {';
-    txt += '              $("."+src+"-"+dest).html(pulseGroup.matrix[src][dest]+" ms");'; //does this happen?
-    txt += '              console.log("COULD NOT FIND MINT "+src+srcMintEntry+dest+destMintEntry);';
-
-    txt += '         }' 
-
-
-
-    //txt += '         else $("."+src+"-"+dest).html("<p>__</p>");';
-//    txt += '<td class="'+src+"-"+dest+'">' + '<a target="_blank" href="http://' + destMint.ipaddr + ':' + destMint.port + '/graph/' + mintEntry.geo + '/' + destMint.geo +'" >' + pulseGroup.matrix[src][dest] + " ms</a></td>";
-
-    txt += '    }';
-    txt += '}';
-    //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
-**/
-
-/*wbnwbnwbn2020
-    //   Now instead, we will fill the matrix using only the owls - removing matrix ugliness.
+    //  Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
     txt += 'for (var src in pulseGroup.pulses) {';
     txt += '    var pulseEntry=pulseGroup.pulses[src];';
     txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");'
@@ -532,6 +494,7 @@ function instrumentation() {    //this should get its own file
 
 
 
+
     txt += '             if (flag) {';  //We have an OWL measure that should be investigated
     //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
     //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
@@ -562,9 +525,9 @@ function instrumentation() {    //this should get its own file
     txt += '     }'; 
     txt += '}';
 
-*/
 
 
+    txt += '/* here create extraordinary path table */';
 
     /*
     txt += 'function getOWLfrom(srcMint, owls) {';
@@ -615,6 +578,7 @@ function instrumentation() {    //this should get its own file
     txt += '        }';
     txt += '    }';
     txt += '}';
+    */
 
 
 
@@ -704,7 +668,7 @@ function instrumentation() {    //this should get its own file
 
     txt += '         }'
     txt += '     '
-*/
+
    txt += '   }).fail(function() { ';
    txt += '       console.log("JSON Fetch error");';
    txt += '        $(document.body).css( "background", "pink" );'
