@@ -346,6 +346,7 @@ interface AugmentedPulseGroupInterface extends PulseGroupInterface {
     isGenesisNode: () => Boolean;
     pulse: () => void;
     recvPulses: () => void;
+    secureTrafficHandler: (callback: CallableFunction) => void;
     storeOWL: (src:string, dst:string, owl:number) => void;
     flashWireguard: () => void;
     syncGenesisPulseGroup: () => void;
@@ -1433,6 +1434,12 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 
 //
 //  pulse() - send our OWL measurements to all in the pulseGroup
+//          TODO: SECURITY - least privelege principle - 
+//                  DO NOT pulse nodes in Quarantine the same - only send OWLs and mints for you and new guys
+//                  until they are out of quarantine
+//                  and commnicating over secure MeshChannel
+//                  then they get all nodes as needed to measure/communicate
+//          TODO: pulse (measure OWLs) over secure channel - just change to private addr
 //
     newPulseGroup.pulse=function() {
         //console.log(`pulse() called newPulseGroup.pulses=${dump(newPulseGroup.pulses)}`);
@@ -1443,6 +1450,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             var pulseEntry=newPulseGroup.pulses[pulse];
             //console.log(`pulse(): pushing to pulse ${dump(pulseEntry)}`);
             ipary.push(pulseEntry.ipaddr+"_"+ pulseEntry.port);
+            ipary.push(mint2IP(pulseEntry.mint)+"_"+ 80);  //wbnwbn send to secure channel also
             pulseEntry.outPulses++;
             
             //**HIGHLIGHT INTERESTING CELLS IN MATRIX CODE */
@@ -1683,6 +1691,10 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     console.log(`Received pulse from non-genesis node - I must be transitioned out of Quarentine`);
                     newPulseGroup.mintTable[0].state="UP";
                     newPulseGroup.measurertt();
+                    newPulseGroup.secureTrafficHandler(function(data) {
+                        console.log(`secureChannel traffic handler callback: ${data}`);
+                    });
+                    
                 }
             }
 
@@ -1907,7 +1919,21 @@ newPulseGroup.measurertt=function() {
     }
     setTimeout(newPulseGroup.measurertt,1*1000); //wait may have to do this witha stack to spread pings out
 }
-
+newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
+    var server = app.listen(80, '0.0.0.0', function() {
+        //TODO: add error handling here
+        const serverAdddress = server.address();
+        if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
+            var host = serverAdddress.address;
+            //var port = serverAdddress.port;
+            logger.info(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+        } else {
+            logger.error("Express app initialization failed");
+        }
+    }).on('data', function(err,data) {
+        console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
+    });
+}
 
 });   //End of pulseGroup declaration
 
