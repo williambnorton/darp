@@ -6,6 +6,24 @@ WGDIR=$HOME/wireguard
 echo `date` $0 starting with WGDIR=$WGDIR 
 PIDFILE=/tmp/wgwatch.pid 
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac
+				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
+				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
+				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
+				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
+				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
+				exit
+	;;
+    CYGWIN*)    MACHINE=Cygwin;;
+    MINGW*)     MACHINE=MinGw;;
+    *)          MACHINE="UNKNOWN:${unameOut}"
+esac
+export MACHINE
+echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
+
 if [ -f $PIDFILE ]; then
 		echo `date` Killing old wgwatch.bash
 		kill `cat $PIDFILE`
