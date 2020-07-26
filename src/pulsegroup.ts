@@ -1935,7 +1935,8 @@ newPulseGroup.measurertt=function() {
                 var octets=address.split(".");
                 var mint=parseInt(octets[3])*254+parseInt(octets[4]);
 				console.log(ts()+"address="+address+" octets3="+octets[3]+" octet4="+octets[4]+" mint="+mint+" ary="+ary);
-				if (ary[6]=="bytes") {
+                console.log(`ary[6]=${ary[6]}`);
+                if (ary[6]=="bytes") {  //if we have a measure
                     var timeEquals=ary[11];
                     console.log(`timeEquals=${timeEquals}`);
 					if (typeof timeEquals != "undefined" ){
