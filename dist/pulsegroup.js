@@ -452,7 +452,6 @@ function instrumentation() {
     txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);';
     txt += '              }';
     //. txt += '              console.log("pulse.owl="+pulse.owl);'
-    txt += '             $("."+pulse.geo+"_rtt").text(pulse.rtt)';
     txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");'; //Add NR class to entire row
     txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");'; //Add NR class to entire row
     txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP");'; //Add NR class to entire row
