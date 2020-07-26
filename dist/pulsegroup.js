@@ -193,11 +193,7 @@ var genesis = new MintEntry(1, GEO, PORT, IP, PUBLICKEY, VERSION, WALLET); //All
 var pulse = new PulseEntry(1, GEO, GEO + ".1", IP, PORT, VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new PulseGroup(me, genesis, pulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
 var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
-lib_1.Log("--------------------------Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
-//pulseGroup.addNode("MAZORE",GEO+".1","104.42.192.234",65013,PUBLICKEY,VERSION,WALLET);
-//console.log("-********************** AFTER pulseGroup="+dump(pulseGroup));
-//process.exit(36);
-//instrument the pulseGroup
+/*--------   BEGIN INSTRUMENTATION  CODE   -    instrument the node's pulseGroups    --------*/
 function instrumentation() {
     var txt = '<!DOCTYPE html><meta http-equiv="refresh" content="' + REFRESH + '">'; //TODO: dynamic refresh based on new node adds
     txt += '<head title="DARP">';
@@ -694,6 +690,7 @@ function instrumentation() {
     //console.log("txt="+txt);
     return txt;
 }
+/******* END INSTRUMENTATION CODE ****/
 app.get('/', function (req, res) {
     //console.log("********************** fetching '/'");
     //handleShowState(req, res); 
@@ -1523,14 +1520,12 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.measurertt = function () {
         var child_process = require('child_process');
-        console.log(lib_1.ts() + "******* measurertt() - checking encrypted path");
         var _loop_1 = function () {
             var pulseEntry = newPulseGroup.pulses[p]; //do we need to check if this pulse still exists?
             var ip = lib_1.mint2IP(pulseEntry.mint);
             var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)";
-            console.log("measurertt(): running ping cmd=" + pingCmd);
             child_process.exec(pingCmd, function (error, stdout, stderr) {
-                console.log("Ping " + pingCmd + " stdout=" + stdout);
+                //console.log("Ping "+pingCmd+" stdout="+stdout);
                 //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                 var i = stdout.indexOf('100%');
                 if (i >= 0) {
@@ -1539,43 +1534,31 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                     return;
                 }
                 var ary = stdout.split(" ");
-                console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
                 var address = ary[8];
-                console.log("address=" + address);
                 var octets = address.split(".");
                 var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]);
-                console.log(lib_1.ts() + "***** address=" + address + " octets2=" + octets[2] + " octet3=" + octets[3] + " mint=" + mint + " ary=" + ary);
-                console.log("ary[6]=" + ary[6]);
                 if (ary[6] == "bytes") { //if we have a measure
                     var timeEquals = ary[11];
-                    console.log("timeEquals=" + timeEquals);
                     if (typeof timeEquals != "undefined") {
                         var rtt = parseInt(timeEquals.split("=")[1]);
                         //TODO: here we store or clear the rttMatrix element
-                        console.log("**** address: " + address + " to see who replied... measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = " + rtt);
+                        //console.log(`**** address: ${address} to see who replied... measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
                         //TODO: store in rttHistory, rttMedian
-                        console.log("*******  mint=" + mint + " saving measure to record of pulseEntry.geo=" + pulseEntry.geo);
+                        //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         pulseEntry.rtt = rtt;
                     }
                     else {
-                        console.log("******measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = -99999");
+                        //console.log(`******measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = -99999`);
                         //clear in rttHistory, rttMedian
                         pulseEntry.rtt = NO_MEASURE;
-                        console.log("*******clearing measure to record of pulseEntry.geo=" + pulseEntry.geo);
+                        //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                     }
                 }
-                //updateRTT(entry,state); //find this node in gSRlist
-                //storeRTT(me.geo,entry.geo,state);
-                //console.log(ts()+"pinger() entry "+entry.geo+" is "+state);
             });
         };
-        //
-        //	pinger() - check to see if pulseGroup private address space is pingable
-        //
         for (var p in newPulseGroup.pulses) {
             _loop_1();
         }
-        console.log(lib_1.ts() + "******* measurertt() - setting timeout for next run");
         setTimeout(newPulseGroup.measurertt, 1 * 1000); //wait may have to do this witha stack to spread pings out
     };
-});
+}); //End of pulseGroup declaration
