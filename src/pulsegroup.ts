@@ -1933,8 +1933,8 @@ newPulseGroup.measurertt=function() {
                 var address=ary[8];
                 console.log(`address=${address}`);
                 var octets=address.split(".");
-                var mint=parseInt(octets[3])*254+parseInt(octets[4]);
-				console.log(ts()+"address="+address+" octets3="+octets[3]+" octet4="+octets[4]+" mint="+mint+" ary="+ary);
+                var mint=parseInt(octets[2])*254+parseInt(octets[3]);
+				console.log(ts()+"***** address="+address+" octets2="+octets[2]+" octet3="+octets[3]+" mint="+mint+" ary="+ary);
                 console.log(`ary[6]=${ary[6]}`);
                 if (ary[6]=="bytes") {  //if we have a measure
                     var timeEquals=ary[11];
@@ -1943,7 +1943,7 @@ newPulseGroup.measurertt=function() {
                         var rtt=parseInt(timeEquals.split("=")[1]);
 
                         //TODO: here we store or clear the rttMatrix element
-                        console.log(`**** adress: ${address} to see who replied... measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
+                        console.log(`**** address: ${address} to see who replied... measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
                         //TODO: store in rttHistory, rttMedian
                         console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         pulseEntry.rtt=rtt;
