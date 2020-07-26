@@ -1582,10 +1582,11 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
                 if (state == 1) {
                     var ary = stdout.split(" ");
                     console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
-                    var address = ary[4];
+                    var address = ary[10];
+                    console.log("address=" + address);
                     var octets = address.split(".");
                     var mint = parseInt(octets[3]) * 254 + parseInt(octets[4]);
-                    console.log(lib_1.ts() + "ary[6]=" + ary[6]);
+                    console.log(lib_1.ts() + "ary[8]=" + ary[8]);
                     if (ary[6] == "bytes") {
                         var timeEquals = ary[11];
                         console.log("timeEquals=" + timeEquals);
