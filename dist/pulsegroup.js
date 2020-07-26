@@ -309,39 +309,45 @@ function instrumentation() {
      txt += '}';
      //txt += 'console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
  **/
-    //   Now instead, we will fill the matrix using only the owls - removing matrix ugliness.
-    txt += 'for (var src in pulseGroup.pulses) {';
-    txt += '    var pulseEntry=pulseGroup.pulses[src];';
-    txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");';
-    //txt += '    console.log("pulseEntry="+JSON.stringify(pulseGroup,null,2)+JSON.stringify(pulseEntry,null,2));'
-    txt += '    var owls=pulseEntry.owls.split(",");';
-    txt += '    for(var owlEntry in owls) {';
-    txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
-    txt += '        var owl=-99999;';
-    txt += '       var strOwl=owls[owlEntry].split("=")[1];';
-    txt += '       if (typeof strOwl != "undefined") {'; //<srcMint>[=<owl>[<flag>]],...
-    txt += '           owl=parseInt(strOwl);';
-    txt += '           var regex = /@/;';
-    txt += '           var flag=strOwl.match(regex);';
-    txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
-    txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
-    //txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
-    //txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
-    txt += '            if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {';
-    //txt += '               console.log("non-null src and dest entries");'
-    txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
-    txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
-    txt += '               var link="<a target=_blank href="+gurl+">";';
-    //txt += '               console.log("Finished non-null");';
-    txt += '            } else {';
-    //txt += '               console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);'
-    txt += '               var gurl="http://noMint";';
-    txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
-    txt += '               var link="<a target=_blank href="+gurl+">";';
-    txt += '            }';
-    //txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
-    txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
-    //txt += '                     console.log("After link flag="+flag);';
+    /*wbnwbnwbn2020
+        //   Now instead, we will fill the matrix using only the owls - removing matrix ugliness.
+        txt += 'for (var src in pulseGroup.pulses) {';
+        txt += '    var pulseEntry=pulseGroup.pulses[src];';
+        txt += '    if (pulseEntry==null) console.log("ERROR: pulseEntry==null");'
+        //txt += '    console.log("pulseEntry="+JSON.stringify(pulseGroup,null,2)+JSON.stringify(pulseEntry,null,2));'
+        txt += '    var owls=pulseEntry.owls.split(",");';
+        txt += '    for(var owlEntry in owls) {';
+        txt += '       var srcMint=parseInt(owls[owlEntry].split("=")[0]);'; //get the
+        txt +='        var owl=-99999;';
+        txt += '       var strOwl=owls[owlEntry].split("=")[1];';
+        txt += '       if (typeof strOwl != "undefined") {';  //<srcMint>[=<owl>[<flag>]],...
+        txt += '           owl=parseInt(strOwl);';
+        txt += '           var regex = /@/;';
+        txt += '           var flag=strOwl.match(regex);';
+        
+        txt += '            var srcOwlMintEntry=pulseGroup.mintTable[srcMint];';
+        txt += '            var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];';
+        //txt += '            console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));'
+        //txt += '            console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));'
+    
+        txt += '            if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {'
+        //txt += '               console.log("non-null src and dest entries");'
+        txt += '               var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;';
+        txt += '               var myDiv=\'<div class="\'+srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+\'">\';';
+        txt += '               var link="<a target=_blank href="+gurl+">";';
+        //txt += '               console.log("Finished non-null");';
+    
+        txt += '            } else {'
+        //txt += '               console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);'
+        txt += '               var gurl="http://noMint";';
+        txt += '               var myDiv=\'<div class="\'+srcMint+"-"+pulseEntry.mint+\'">\';';
+        txt += '               var link="<a target=_blank href="+gurl+">";';
+        txt += '            }'
+        //txt += '                     console.log("link="+myDiv+link+owl+" ms</a></div>");';
+        txt += ' $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");';
+        //txt += '                     console.log("After link flag="+flag);';
+    
+    */
     txt += '             if (flag) {'; //We have an OWL measure that should be investigated
     //txt += '                 console.log("found a flagged entry "+strOwl+" "+srcOwlMintEntry +" "+destOwlMintEntry);';
     //txt += '                 console.log("pulseEntry.mint="+pulseEntry.mint+"srcOwlMintEntry.mint="+srcOwlMintEntry.mint+" destOwlMintEntry.mint="+destOwlMintEntry.mint);';
