@@ -1909,7 +1909,6 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
 newPulseGroup.measurertt=function() {
     var child_process = require('child_process');
     console.log(ts()+`******* measurertt() - checking encrypted path`);
-    return;
 //
 //	pinger() - check to see if pulseGroup private address space is pingable
 //
