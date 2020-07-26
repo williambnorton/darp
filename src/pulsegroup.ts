@@ -529,7 +529,7 @@ function instrumentation() {    //this should get its own file
 
     txt += '/* here create extraordinary path table */';
 
-    /*
+    
     txt += 'function getOWLfrom(srcMint, owls) {';
     txt += '   var ary = owls.split(",");';
     txt += '    for (var i = 0; i < ary.length; i++) {';
@@ -578,7 +578,7 @@ function instrumentation() {    //this should get its own file
     txt += '        }';
     txt += '    }';
     txt += '}';
-    */
+    
 
 
 
@@ -643,6 +643,7 @@ function instrumentation() {    //this should get its own file
    txt +='               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'  //TODO : Align left for this text field
    txt +='               pulse.inPulses=parseInt(pulse.inPulses);'
    txt +='               pulse.outPulses=parseInt(pulse.outPulses);'
+   txt += '              $("."+pulse.geo+"_rtt").text(pulse.rtt);'
    txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
    txt += '              totalEarn+=balance;';
    txt += '              balance=balance.toFixed(6);';
