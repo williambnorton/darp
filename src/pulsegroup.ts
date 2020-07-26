@@ -1929,7 +1929,10 @@ newPulseGroup.measurertt=function() {
 			
 			if (state==1) {
 				var ary=stdout.split(" ");
-				console.log(ts()+"stdout="+stdout+" ary="+ary);
+                console.log(ts()+"stdout="+stdout+" ary="+ary);
+                var address=ary[4];
+                var octets=address.split(",");
+                var mint=parseInt(octets[3])*254+parseInt(octets[4]);
 				console.log(ts()+"ary[6]="+ary[6]);
 				if (ary[6]=="bytes") {
                     var timeEquals=ary[11];
@@ -1938,9 +1941,9 @@ newPulseGroup.measurertt=function() {
                         var rtt=parseInt(timeEquals.split("=")[1]);
 
                         //TODO: here we store or clear the rttMatrix element
-                        console.log(`***** WILL I STORE THE RIGHT PLACE? measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
+                        console.log(`***** WILL I STORE THE RIGHT PLACE? PULL in 10.10.x.y to see who replied... measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
                         //TODO: store in rttHistory, rttMedian
-                        console.log(`*******saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
+                        console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         pulseEntry.rtt=rtt;
 					} else {
 						console.log(`******measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = -99999`);
