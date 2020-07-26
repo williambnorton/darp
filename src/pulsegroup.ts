@@ -1962,7 +1962,7 @@ newPulseGroup.measurertt=function() {
 		});
     }
     console.log(ts()+`******* measurertt() - setting timeout for next run`);
-    setTimeout(newPulseGroup.measurertt,1*1000); //wait may have to do this witha stack to spread pings out
+    setTimeout(newPulseGroup.measurertt,15*1000); //wait may have to do this witha stack to spread pings out
 }
 
 
