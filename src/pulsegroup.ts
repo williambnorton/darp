@@ -1919,6 +1919,10 @@ newPulseGroup.measurertt=function() {
     }
     setTimeout(newPulseGroup.measurertt,1*1000); //wait may have to do this witha stack to spread pings out
 }
+
+//
+//  secureTrafficHandler() - to receive traffic over wireguard protected links, this is called
+//
 newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
     var server = app.listen(80, '0.0.0.0', function() {
         //TODO: add error handling here
@@ -1926,9 +1930,15 @@ newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
         if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
             var host = serverAdddress.address;
             //var port = serverAdddress.port;
-            logger.info(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+            console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+            console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+            console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+            console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+            console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
         } else {
             logger.error("Express app initialization failed");
+            console.log(`FAILED DARP ENCRYPTED MESH Traffic handler listening`);
+
         }
     }).on('data', function(err,data) {
         console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
