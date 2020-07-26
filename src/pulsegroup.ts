@@ -1930,7 +1930,7 @@ newPulseGroup.measurertt=function() {
 			if (state==1) {
 				var ary=stdout.split(" ");
                 console.log(ts()+"stdout="+stdout+" ary="+ary);
-                var address=ary[9];
+                var address=ary[8];
                 console.log(`address=${address}`);
                 var octets=address.split(".");
                 var mint=parseInt(octets[3])*254+parseInt(octets[4]);
