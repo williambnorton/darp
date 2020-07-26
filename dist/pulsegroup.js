@@ -1572,39 +1572,36 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             child_process.exec(pingCmd, function (error, stdout, stderr) {
                 console.log("Ping " + pingCmd + " stdout=" + stdout);
                 //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
-                var state = 1;
                 var i = stdout.indexOf('100%');
-                if (i >= 0)
-                    state = -1; //UNREACHABLE
-                i = stdout.indexOf('key');
-                if (i >= 0)
-                    state = -2; //UNREACHABLE BAD KEY
-                if (state == 1) {
-                    var ary = stdout.split(" ");
-                    console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
-                    var address = ary[8];
-                    console.log("address=" + address);
-                    var octets = address.split(".");
-                    var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]);
-                    console.log(lib_1.ts() + "***** address=" + address + " octets2=" + octets[2] + " octet3=" + octets[3] + " mint=" + mint + " ary=" + ary);
-                    console.log("ary[6]=" + ary[6]);
-                    if (ary[6] == "bytes") { //if we have a measure
-                        var timeEquals = ary[11];
-                        console.log("timeEquals=" + timeEquals);
-                        if (typeof timeEquals != "undefined") {
-                            var rtt = parseInt(timeEquals.split("=")[1]);
-                            //TODO: here we store or clear the rttMatrix element
-                            console.log("**** address: " + address + " to see who replied... measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = " + rtt);
-                            //TODO: store in rttHistory, rttMedian
-                            console.log("*******  mint=" + mint + " saving measure to record of pulseEntry.geo=" + pulseEntry.geo);
-                            pulseEntry.rtt = rtt;
-                        }
-                        else {
-                            console.log("******measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = -99999");
-                            //clear in rttHistory, rttMedian
-                            pulseEntry.rtt = NO_MEASURE;
-                            console.log("*******clearing measure to record of pulseEntry.geo=" + pulseEntry.geo);
-                        }
+                if (i >= 0) {
+                    pulseEntry.rtt = NO_MEASURE; //UNREACHABLE
+                    console.log(pulseEntry.geo + " did not respond to ping over encrypted tunnel " + ip);
+                    return;
+                }
+                var ary = stdout.split(" ");
+                console.log(lib_1.ts() + "stdout=" + stdout + " ary=" + ary);
+                var address = ary[8];
+                console.log("address=" + address);
+                var octets = address.split(".");
+                var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]);
+                console.log(lib_1.ts() + "***** address=" + address + " octets2=" + octets[2] + " octet3=" + octets[3] + " mint=" + mint + " ary=" + ary);
+                console.log("ary[6]=" + ary[6]);
+                if (ary[6] == "bytes") { //if we have a measure
+                    var timeEquals = ary[11];
+                    console.log("timeEquals=" + timeEquals);
+                    if (typeof timeEquals != "undefined") {
+                        var rtt = parseInt(timeEquals.split("=")[1]);
+                        //TODO: here we store or clear the rttMatrix element
+                        console.log("**** address: " + address + " to see who replied... measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = " + rtt);
+                        //TODO: store in rttHistory, rttMedian
+                        console.log("*******  mint=" + mint + " saving measure to record of pulseEntry.geo=" + pulseEntry.geo);
+                        pulseEntry.rtt = rtt;
+                    }
+                    else {
+                        console.log("******measurertt(): " + me.geo + " - " + pulseEntry.geo + " rtt = -99999");
+                        //clear in rttHistory, rttMedian
+                        pulseEntry.rtt = NO_MEASURE;
+                        console.log("*******clearing measure to record of pulseEntry.geo=" + pulseEntry.geo);
                     }
                 }
                 //updateRTT(entry,state); //find this node in gSRlist
