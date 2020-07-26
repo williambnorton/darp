@@ -565,7 +565,6 @@ function instrumentation() {    //this should get its own file
 */
 
 
-    txt += '/* here create extraordinary path table */';
 
     /*
     txt += 'function getOWLfrom(srcMint, owls) {';
@@ -616,7 +615,6 @@ function instrumentation() {    //this should get its own file
     txt += '        }';
     txt += '    }';
     txt += '}';
-    */
 
 
 
@@ -706,7 +704,7 @@ function instrumentation() {    //this should get its own file
 
     txt += '         }'
     txt += '     '
-
+*/
    txt += '   }).fail(function() { ';
    txt += '       console.log("JSON Fetch error");';
    txt += '        $(document.body).css( "background", "pink" );'

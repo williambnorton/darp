@@ -381,7 +381,6 @@ function instrumentation() {
         txt += '}';
     
     */
-    txt += '/* here create extraordinary path table */';
     /*
     txt += 'function getOWLfrom(srcMint, owls) {';
     txt += '   var ary = owls.split(",");';
@@ -431,71 +430,96 @@ function instrumentation() {
     txt += '        }';
     txt += '    }';
     txt += '}';
-    */
-    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
-    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-    txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '             if ( pulseGroup.nodeCount >= 1 ) {';
-    txt += '                if (nodeCountLastTime!=0) {';
-    txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
-    txt += '                         location.reload();';
-    txt += '                     }';
-    txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;';
-    txt += '             }';
-    txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
-    //update the dateTime so people know the updates re coming in
-    txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
-    txt += "             var now=d.getTime();";
-    txt += "             var timeStr=d.toString().split(' ')[4];";
-    //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
-    //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
-    txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((now-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>" );'; //we show this epoch
-    txt += '             $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));'; //wbnwbnwbnwbnwbnwnbn
-    //      Render table from information in the state fetched from node
-    //
-    txt += '      var totalEarn=0.000000;';
-    txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {';
-    //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
-    txt += '          var pulseLabel=key;'; //fill in most fields as counters - plain
-    txt += '          var pulse=value;'; //
-    txt += '          if (pulse!=null) {';
-    txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {';
-    // txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
-    //txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
-    // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
-    txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);';
-    txt += '              }';
-    //. txt += '              console.log("pulse.owl="+pulse.owl);'
-    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");'; //Add NR class to entire row
-    txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");'; //Add NR class to entire row
-    txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP");'; //Add NR class to entire row
-    txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR");'; //Add NR class to entire row
-    txt += '              if (pulse.pulseTimestamp!="0")';
-    txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");';
-    txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");';
-    txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");';
-    txt += '               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'; //TODO : Align left for this text field
-    txt += '               pulse.inPulses=parseInt(pulse.inPulses);';
-    txt += '               pulse.outPulses=parseInt(pulse.outPulses);';
-    txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
-    txt += '              totalEarn+=balance;';
-    txt += '              balance=balance.toFixed(6);';
-    //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
-    txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'; //TODO : Align left for this text field
-    //      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
-    txt += '           }';
-    txt += '       }';
-    //txt += 'console.log("totalEarn coming in =:"+totalEarn);'
-    txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);';
-    txt += '        $(".total_earn").text("totalEarn: $"+totalEarn);';
-    //   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
-    //   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
-    txt += '         }';
-    txt += '     ';
+
+
+
+
+
+
+
+
+   //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
+   //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
+   txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
+   txt += '             if ( pulseGroup.nodeCount >= 1 ) {'
+   txt += '                if (nodeCountLastTime!=0) {'
+   txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {'
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+   txt += '                         location.reload();' ;
+   txt += '                     }'
+   txt += '                 } else nodeCountLastTime=pulseGroup.nodeCount;'
+   txt += '             }'
+   txt += '             nodeCountLastTime=pulseGroup.nodeCount ;';
+   
+                       //update the dateTime so people know the updates re coming in
+   txt += "             var d = new Date(parseInt(pulseGroup.ts)); ";
+   txt += "             var now=d.getTime();"
+   txt += "             var timeStr=d.toString().split(' ')[4];"
+   //       txt += "      var d = new Date(); var now=d.getTime();var timeStr=d.toString().split(' ')[4];"
+   //txt += '             $("#dateTime").html( "<div class=\'fade-out\'><h1>*Updated: " + timeStr + "</h1></div>" );' //we show this epoch
+   txt += '             $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((now-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>" );' //we show this epoch
+   txt += '             $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));';  //wbnwbnwbnwbnwbnwnbn
+
+
+   //      Render table from information in the state fetched from node
+   //
+   txt += '      var totalEarn=0.000000;'
+   txt += '      for (let [key, value] of Object.entries(pulseGroup.pulses)) {'
+   //                txt += '   console.log(`FOR EACH PULSE  ${key}.split(":")[0]: ${value} ---> $("."+pulse.geo+"_"+${key}+").html("+${value}+");`);'
+   txt += '          var pulseLabel=key;'   //fill in most fields as counters - plain
+   txt += '          var pulse=value;'      //
+   txt += '          if (pulse!=null) {'
+   txt += '             for (let [field, fieldValue] of Object.entries(pulse)) {'
+   // txt += '             console.log("     FOR EACH FIELD       ^field="+field+" fieldValue="+fieldValue);'
+ //txt += '                console.log("Setting "+pulse.geo+"_"+field+"="+fieldValue);'
+ // txt += '               $("."+pulse.geo+"_"+field).html(fieldValue+"");'
+   txt += '                $("."+pulse.geo+"_"+field).text(fieldValue);'
+   txt += '              }'
+
+  //. txt += '              console.log("pulse.owl="+pulse.owl);'
+   
+   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");' //Add NR class to entire row
+   txt += '              else $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");' //Add NR class to entire row
+   
+   txt += '              if (pulse.owl=="-99999") $("."+pulse.geo).addClass("NR").removeClass("UP");' //Add NR class to entire row
+   txt += '              else $("."+pulse.geo).addClass("UP").removeClass("NR");' //Add NR class to entire row
+
+   txt += '              if (pulse.pulseTimestamp!="0")'
+   txt += '                  $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((now-pulse.pulseTimestamp)/1000)+" secs ago");'
+   txt += '              else $("."+pulse.geo+"_pulseTimestamp").text("0");'
+   txt += '              $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((now-pulse.bootTimestamp)/1000)+" secs ago");'
+   txt +='               $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));'  //TODO : Align left for this text field
+   txt +='               pulse.inPulses=parseInt(pulse.inPulses);'
+   txt +='               pulse.outPulses=parseInt(pulse.outPulses);'
+   txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
+   txt += '              totalEarn+=balance;';
+   txt += '              balance=balance.toFixed(6);';
+
+   //txt += 'console.log("balance="+balance+ "totalEarn="+totalEarn);'
+
+   txt += '               $("."+pulse.geo+"_balance").text("$" + balance);'  //TODO : Align left for this text field
+ 
+   
+
+//      txt +='           $("."+pulse.geo+"_owls").html(\'<span style="text-align:left>"\'+pulse.owls+"</span>");'  //TODO : Align left for this text field
+    txt += '           }'
+    txt += '       }'
+//txt += 'console.log("totalEarn coming in =:"+totalEarn);'
+   txt += '       totalEarn=parseFloat(totalEarn).toFixed(6);'
+   txt +='        $(".total_earn").text("totalEarn: $"+totalEarn);'
+//   txt +='        $(".total_earn").html("totalEarn: $"+totalEarn);'  //TODO : Align left for this text field
+//   txt +='           $(".total_earn").html("$" + totalEarn.toFixed(6));'  //TODO : Align left for this text field
+
+
+
+
+
+    txt += '         }'
+    txt += '     '
+*/
     txt += '   }).fail(function() { ';
     txt += '       console.log("JSON Fetch error");';
     txt += '        $(document.body).css( "background", "pink" );';
