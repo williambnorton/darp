@@ -1,7 +1,6 @@
 "use strict";
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IncomingPulse = void 0;
+exports.__esModule = true;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
@@ -153,8 +152,7 @@ var PulseEntry = /** @class */ (function () {
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
         this.bootTimestamp = lib_1.now(); //RemoteClock on startup  **** - we abandon the pulse when this changes
-        this.version = version, //software version running on sender's node    
-            //
+        this.version = version, //software version running on sender's node
             this.inPulses = 0;
         this.outPulses = 0;
         this.pktDrops = 0;
@@ -171,9 +169,6 @@ var PulseGroup = /** @class */ (function () {
         this.groupName = me.geo + ".1";
         this.groupOwner = me.geo;
         this.mintTable = [me, genesis]; // Simplification: me should always be mintTable[0], genesis node should always be mintTable[1]
-        //pulseGroup.me and pulseGroup.genesis should be there for convenience though
-        //this.pulseGroup.me = me;
-        //this.pulseGroup.genesis = genesis;
         this.pulses = (_a = {},
             _a[genesis.geo + ":" + genesis.geo + ".1"] = pulse,
             _a); //store statistics for this network segment
