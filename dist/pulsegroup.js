@@ -719,7 +719,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.secureTrafficHandler = function (callback) {
             var app = express();
             //        var server = app.listen(80, '0.0.0.0', function() {
-            var server = app.listen(80, lib_1.mint2IP(), function () {
+            var ip = lib_1.mint2IP(_this.mintTable[0].mint); //get my mint and make my private IP
+            var server = app.listen(80, ip, function () {
                 //TODO: add error handling here
                 var serverAdddress = server.address();
                 if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
