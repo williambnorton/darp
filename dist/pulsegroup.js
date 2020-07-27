@@ -1573,7 +1573,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //
     newPulseGroup.secureTrafficHandler = function (callback) {
         //ignoring callback for now
-        var server = app.listen(80, lib_1.mint2IP(me.mint), function () {
+        var server = app.listen(80, lib_1.mint2IP(newPulseGroup.mintTable[0].mint), function () {
             //TODO: add error handling here
             var serverAdddress = server.address();
             if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
@@ -1593,7 +1593,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port 80");
         }).on('error', function (err) {
             console.log("Trying agin in a sec", err);
-            setTimeout(newPulseGroup.secureTrafficHandler, 1000);
+            setTimeout(newPulseGroup.secureTrafficHandler, 5000);
         });
     };
 }); //End of pulseGroup declaration

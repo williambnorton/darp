@@ -1865,7 +1865,7 @@ newPulseGroup.measurertt=function() {
 //
 newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
     //ignoring callback for now
-    var server = app.listen(80, mint2IP(me.mint), function() {
+    var server = app.listen(80, mint2IP(newPulseGroup.mintTable[0].mint), function() {
         //TODO: add error handling here
         const serverAdddress = server.address();
         if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
@@ -1884,8 +1884,8 @@ newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
     }).on('data', function(err,data) {
         console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
     }).on('error', function(err) {    
-            console.log("Trying agin in a sec",err);   
-            setTimeout(newPulseGroup.secureTrafficHandler,1000);
+        console.log("Trying agin in a sec",err);   
+        setTimeout(newPulseGroup.secureTrafficHandler,5000);
     }); 
 }
 
