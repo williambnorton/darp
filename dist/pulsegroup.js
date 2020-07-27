@@ -1572,6 +1572,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     //  secureTrafficHandler() - to receive traffic over wireguard protected links, this is called
     //
     newPulseGroup.secureTrafficHandler = function (callback) {
+        //ignoring callback for now
         var server = app.listen(80, lib_1.mint2IP(me.mint), function () {
             //TODO: add error handling here
             var serverAdddress = server.address();
@@ -1590,6 +1591,14 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             }
         }).on('data', function (err, data) {
             console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port 80");
+        }).on('error', function (err) {
+            if (err.errno === 'EADDRINUSE') {
+                console.log('port busy');
+            }
+            else {
+                console.log(err);
+                setTimeout(newPulseGroup.secureTrafficHandler, 1000);
+            }
         });
     };
 }); //End of pulseGroup declaration
