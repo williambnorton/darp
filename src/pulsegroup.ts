@@ -11,6 +11,8 @@ import { sendPulses, recvPulses } from './pulselayer';
 import { grapherStoreOwls } from './grapher';
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from './wireguard';
 
+console.log(`Starting pulseGroup`);
+process.exit(10);
 
 // Define constants
 
@@ -841,8 +843,9 @@ export class AugmentedPulseGroup {
     
     secureTrafficHandler = (callback: CallableFunction) => {
         var app = express();
-        var server = app.listen(80, '0.0.0.0', function() {
-            //TODO: add error handling here
+//        var server = app.listen(80, '0.0.0.0', function() {
+        var server = app.listen(80, mint2IP(), function() {
+                //TODO: add error handling here
             const serverAdddress = server.address();
             if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
                 var host = serverAdddress.address;

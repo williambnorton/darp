@@ -47,6 +47,8 @@ var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
+console.log("Starting pulseGroup");
+process.exit(10);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
@@ -716,7 +718,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.secureTrafficHandler = function (callback) {
             var app = express();
-            var server = app.listen(80, '0.0.0.0', function () {
+            //        var server = app.listen(80, '0.0.0.0', function() {
+            var server = app.listen(80, lib_1.mint2IP(), function () {
                 //TODO: add error handling here
                 var serverAdddress = server.address();
                 if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
