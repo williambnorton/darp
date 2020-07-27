@@ -3,10 +3,10 @@
 import { dump, nth_occurrence } from './lib';
 import { logger } from './logger';
 import { sendMsg, recvMsg } from './messagelayer';
-import { IncomingPulseInterface } from './pulsegroup';
+import { IncomingPulse } from './pulsegroup';
 
 
-type incomingPulseCallback = (incomingPulse: IncomingPulseInterface) => void;
+type incomingPulseCallback = (incomingPulse: IncomingPulse) => void;
 
 
 /**
@@ -25,7 +25,7 @@ export function recvPulses(port: number, callback: incomingPulseCallback): void 
         const OWL = pulseTimestamp - senderTimestamp;
         var owlsStart = nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-        var pulse: IncomingPulseInterface = {
+        var pulse: IncomingPulse = {
             pulseTimestamp: pulseTimestamp,
             outgoingTimestamp: senderTimestamp,
             msgType: ary[2],
@@ -40,8 +40,8 @@ export function recvPulses(port: number, callback: incomingPulseCallback): void 
             lastMsg: incomingMessage
         };
 
-        logger.info(`pulselayer recvMsg callback: message=${incomingMessage} owlstart=${owlsStart}, pulseOwls=${pulseOwls}`);
-        logger.info(`pulselayer recvMsg callback: structured pulse=${dump(pulse)}`);
+        logger.debug(`pulselayer recvMsg callback: message=${incomingMessage} owlstart=${owlsStart}, pulseOwls=${pulseOwls}`);
+        logger.debug(`pulselayer recvMsg callback: structured pulse=${dump(pulse)}`);
 
         callback(pulse);
     });
