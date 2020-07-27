@@ -2,9 +2,7 @@
 /** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
 exports.__esModule = true;
 var lib_1 = require("./lib");
-//import pulseRedis = require('redis');
 var WGDIR = process.env.WGDIR; //this is the direcvtory to build and evolve wg config files
-//const redisClient = pulseRedis.createClient(); //creates a new client
 function getPublicKey() {
     return require('fs').readFileSync(WGDIR + '/publickey', 'utf8');
 }
@@ -42,8 +40,7 @@ function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {
 }
 exports.addPeerWGStanza = addPeerWGStanza;
 function setWireguard(stanzas) {
-    //we assume these file were set by configWG.bash script
-    //console.log("setWireguard(): saving mint entry as stanza for each wg connection."+stanzas);
+    //we assume these were set by configWG.bash script
     var BASECONFIG = "";
     try {
         BASECONFIG = require('fs').readFileSync(WGDIR + '/wgbase.conf', 'utf8');
@@ -51,15 +48,10 @@ function setWireguard(stanzas) {
     catch (err) {
         BASECONFIG = "deadbeef00deadbeef00deadbeef0012";
     }
-    //console.log("setWireguard(): CONFIG="+BASECONFIG+Stanzas);
     var fs = require('fs');
     fs.writeFile(WGDIR + '/darp0.pending.conf', BASECONFIG + stanzas, function (err) {
-        // throws an error, you could also catch it here
         if (err)
             throw err;
-        console.log("***************************** wireguard.ts: wrote wgConfig file: " + WGDIR + "/darp0.conf :");
-        //console.log(BASECONFIG+stanzas);
-        //wgdump();                            
     });
 }
 exports.setWireguard = setWireguard;
