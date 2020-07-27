@@ -1883,13 +1883,9 @@ newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
         }
     }).on('data', function(err,data) {
         console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
-    }).on('error', function(err) {   
-        if (err.errno === 'EADDRINUSE') {     
-            console.log('port busy');   
-        } else {     
-            console.log(err);   
+    }).on('error', function(err) {    
+            console.log("Trying agin in a sec",err);   
             setTimeout(newPulseGroup.secureTrafficHandler,1000);
-        } 
     }); 
 }
 
