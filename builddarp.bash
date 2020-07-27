@@ -24,5 +24,6 @@ ls -l Build.*
 cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 git add *.bash
-git add . && git commit -m "$MESSAGE + " && git pull && git push
+#git add . && git commit -m "$MESSAGE + " && git pull && git push
+git add . && git commit -m "$MESSAGE + " && git pull dev && git push dev
 echo `date` Completed compiles + git push for `ls Build*`
