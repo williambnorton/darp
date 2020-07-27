@@ -1004,7 +1004,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
             }
         }
         //console.log(`myStanza=${myStanza} peerStanza=${peerStanza}`);
-        wireguard_1.setWireguard(myStanza + "\n" + peerStanza);
+        wireguard_1.setWireguard(myStanza + "\n" + peerStanza); //create first dummy wireguard confiig file (only me)
     };
     newPulseGroup.flashWireguard(); //create our wireguard files based on our mint Table
     //
@@ -1438,7 +1438,7 @@ getMyPulseGroupObject(GENESIS, GENESISPORT, function (newPulseGroup) {
     newPulseGroup.syncGenesisPulseGroup = function () {
         if (newPulseGroup.isGenesisNode()) {
             console.log("GENESIS node does not sync with itself but will setWireguard files");
-            newPulseGroup.flashWireguard(); //check my wg config
+            newPulseGroup.flashWireguard(); //change my wg config
             return; //genesis node dies not fetch its own configuration
         }
         var url = encodeURI('http://' + newPulseGroup.mintTable[1].ipaddr + ":" + newPulseGroup.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + newPulseGroup.mintTable[0].mint);
