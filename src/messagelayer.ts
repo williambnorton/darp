@@ -79,7 +79,7 @@ export function sendMsg(outgoingMessage: string, nodelist: string[]) {  //API ro
         messagelayer_stats.lastOutTimestamp = now();
         messagelayer_stats.lastOutMsg = timestampedMsg;
         messagelayer_stats.outOctets += message.length;
-        logger.debug(`messagelayer client sending ${timestampedMsg} to ${ipaddr}:${port}`);
+        logger.info(`messagelayer client sending ${timestampedMsg} to ${ipaddr}:${port}`);
         client.send(message, 0, message.length, port, ipaddr, (err: Error | null) => {
             if (err) {
                 logger.error(`messagelayer sendMessage()`);

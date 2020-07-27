@@ -112,24 +112,7 @@ var server = app.listen(PORT, '0.0.0.0', function() {
 // Define data structures used in the protocol
 
 /** Node configuraton details */
-interface MintEntryInterface {
-    mint: number;
-    geo: string;
-
-    // wireguard configuration details
-    port: number;
-    ipaddr: string;
-    publickey: string;
-
-    state: string;
-    bootTimestamp: number;
-    version: string;
-    wallet: string;
-    lastPulseTimestamp: number;
-    lastOWL: number;
-};
-
-class MintEntry implements MintEntryInterface {
+class MintEntry {
     mint: number;
     geo: string;
 
@@ -159,22 +142,7 @@ class MintEntry implements MintEntryInterface {
 };
 
 /** Incoming pulse definition, when deserialized form pulse message. Export for use in pulselayer. */
-export interface IncomingPulseInterface {
-    outgoingTimestamp: number;
-    pulseTimestamp: number;
-    msgType: string;
-    version:string;
-    geo: string;
-    group: string;
-    seq: number;
-    bootTimestamp: number;
-    mint: number;
-    owls: string;
-    owl: number;
-    lastMsg: string;
-};
- 
-class IncomingPulse implements IncomingPulseInterface {
+export class IncomingPulse {
     outgoingTimestamp: number;
     pulseTimestamp: number;
     msgType: string;
@@ -206,7 +174,7 @@ class IncomingPulse implements IncomingPulseInterface {
 };
 
 /** Contains stats for and relevent fields to configure wireguard. */
-interface PulseEntryInterface {
+class PulseEntry {
     outgoingTimestamp: number;   //from message layer
     pulseTimestamp: number;      //from message layer
 
@@ -220,33 +188,9 @@ interface PulseEntryInterface {
     owls: string;
     history: number[];   //history of last 60 owls measured
     medianHistory: number[];  //history of 1-minute medians
-    rtt: number; //round trip measures help ID route asymetry and therefore optmizatioj opportuniies
+    rtt: number; //round trip measures help ID route asymetry and therefore optmization opportunities
     
     // stats
-    bootTimestamp: number;
-    version: string;
-    inPulses: number;
-    outPulses: number;
-    pktDrops: number;
-    lastMsg: string;
-};
-
-class PulseEntry implements PulseEntryInterface {
-    outgoingTimestamp: number;
-    pulseTimestamp: number;
-
-    mint: number;
-    geo: string;
-    group: string;
-    ipaddr: string;
-    port: number;
-    seq: number;
-    owl: number;
-    owls: string;
-    history: number[];
-    medianHistory: number[];
-    rtt: number;
-
     bootTimestamp: number;
     version: string;
     inPulses: number;
@@ -269,8 +213,7 @@ class PulseEntry implements PulseEntryInterface {
         this.rtt = NO_MEASURE;
         
         this.bootTimestamp = now(); //RemoteClock on startup  **** - we abandon the pulse when this changes
-        this.version = version, //software version running on sender's node    
-        //
+        this.version = version, //software version running on sender's node
         this.inPulses = 0;
         this.outPulses = 0;
         this.pktDrops = 0;  
@@ -280,15 +223,14 @@ class PulseEntry implements PulseEntryInterface {
 };
 
 
-type Pulses = {[x: string]: PulseEntryInterface};
+type Pulses = {[x: string]: PulseEntry};
 type PulseGroups = {[x: string]: PulseGroup};
 
-interface PulseGroupInterface {
+
+class PulseGroup {
     groupName: string;
     groupOwner: string;
-    me?: MintEntryInterface;
-    genesis?: MintEntryInterface;
-    mintTable: MintEntryInterface[];
+    mintTable: MintEntry[];
     pulses: Pulses;
     rc: string;
     ts: number;
@@ -297,29 +239,10 @@ interface PulseGroupInterface {
     cycleTime: number;
     matrix: number[][];  //OWL Measurements from participation in the pulseGroup [src][dst]=OWL
     csvMatrix: number[];  //OWLs in CSV format
-};
-
-class PulseGroup implements PulseGroupInterface {
-    groupName: string;
-    groupOwner: string;
-    me?: MintEntryInterface;
-    genesis?: MintEntryInterface;
-    mintTable: MintEntryInterface[];
-    pulses: Pulses;
-    rc: string;
-    ts: number;
-    nodeCount: number;
-    nextMint: number;
-    cycleTime: number;
-    matrix: number[][];
-    csvMatrix: number[];
-    constructor (me: MintEntryInterface, genesis: MintEntryInterface, pulse: PulseEntryInterface) {
+    constructor (me: MintEntry, genesis: MintEntry, pulse: PulseEntry) {
         this.groupName = me.geo + ".1";
         this.groupOwner = me.geo;
         this.mintTable = [me, genesis];  // Simplification: me should always be mintTable[0], genesis node should always be mintTable[1]
-        //pulseGroup.me and pulseGroup.genesis should be there for convenience though
-        //this.pulseGroup.me = me;
-        //this.pulseGroup.genesis = genesis;
         this.pulses = {               
             [genesis.geo + ":" + genesis.geo+".1"]: pulse
         };  //store statistics for this network segment
@@ -334,7 +257,19 @@ class PulseGroup implements PulseGroupInterface {
 };
 
 
-interface AugmentedPulseGroupInterface extends PulseGroupInterface {
+interface AugmentedPulseGroupInterface {
+    groupName: string;
+    groupOwner: string;
+    mintTable: MintEntry[];
+    pulses: Pulses;
+    rc: string;
+    ts: number;
+    nodeCount: number;
+    nextMint: number;
+    cycleTime: number;
+    matrix: number[][];  //OWL Measurements from participation in the pulseGroup [src][dst]=OWL
+    csvMatrix: number[];  //OWLs in CSV format
+
     adminControl: string;
 
     addNode: (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string) => MintEntry;

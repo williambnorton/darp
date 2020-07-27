@@ -1,6 +1,7 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var dgram = require("dgram");
@@ -67,7 +68,7 @@ function sendMsg(outgoingMessage, nodelist) {
         exports.messagelayer_stats.lastOutTimestamp = lib_1.now();
         exports.messagelayer_stats.lastOutMsg = timestampedMsg;
         exports.messagelayer_stats.outOctets += message.length;
-        logger_1.logger.debug("messagelayer client sending " + timestampedMsg + " to " + ipaddr + ":" + port);
+        logger_1.logger.info("messagelayer client sending " + timestampedMsg + " to " + ipaddr + ":" + port);
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
                 logger_1.logger.error("messagelayer sendMessage()");

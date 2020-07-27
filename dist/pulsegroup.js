@@ -1,6 +1,7 @@
 "use strict";
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IncomingPulse = void 0;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
@@ -95,7 +96,8 @@ var server = app.listen(PORT, '0.0.0.0', function () {
         logger_1.logger.error("Express app initialization failed");
     }
 }); //.on('error', console.log);
-;
+// Define data structures used in the protocol
+/** Node configuraton details */
 var MintEntry = /** @class */ (function () {
     function MintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
         this.mint = mint;
@@ -114,7 +116,7 @@ var MintEntry = /** @class */ (function () {
     return MintEntry;
 }());
 ;
-;
+/** Incoming pulse definition, when deserialized form pulse message. Export for use in pulselayer. */
 var IncomingPulse = /** @class */ (function () {
     function IncomingPulse(pulseTimestamp, outgoingTimestamp, msgType, version, geo, group, seq, bootTimestamp, mint, owls, owl, lastMsg) {
         this.pulseTimestamp = pulseTimestamp;
@@ -133,8 +135,9 @@ var IncomingPulse = /** @class */ (function () {
     ;
     return IncomingPulse;
 }());
+exports.IncomingPulse = IncomingPulse;
 ;
-;
+/** Contains stats for and relevent fields to configure wireguard. */
 var PulseEntry = /** @class */ (function () {
     function PulseEntry(mint, geo, group, ipaddr, port, version) {
         this.mint = mint;
@@ -161,7 +164,6 @@ var PulseEntry = /** @class */ (function () {
     ;
     return PulseEntry;
 }());
-;
 ;
 var PulseGroup = /** @class */ (function () {
     function PulseGroup(me, genesis, pulse) {
