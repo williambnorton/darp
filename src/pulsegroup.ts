@@ -1859,7 +1859,7 @@ newPulseGroup.measurertt=function() {
 //  secureTrafficHandler() - to receive traffic over wireguard protected links, this is called
 //
 newPulseGroup.secureTrafficHandler = function(callback: CallableFunction) {
-    var server = app.listen(80, '0.0.0.0', function() {
+    var server = app.listen(80, mint2IP(me.mint), function() {
         //TODO: add error handling here
         const serverAdddress = server.address();
         if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
