@@ -800,8 +800,10 @@ export class AugmentedPulseGroup {
         }
         var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + this.mintTable[0].mint);
         logger.info(`syncGenesisPulseGroup(): url=${url}`);
-        console.log(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
+
+        console.log(`self=${dump(self)}`);
+
 
         // Fetch mintTable and pulses from genesis node
         http.get(url, function (res) {
