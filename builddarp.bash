@@ -26,6 +26,7 @@ cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
-echo `date` Before git push ls: `ls -l`
+echo `date` Before git push ls: 
+ls -l
 git add . && git commit -m "$MESSAGE + " && git pull && git push
 echo `date` Completed compiles + git push for `ls Build*`
