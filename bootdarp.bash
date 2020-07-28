@@ -28,7 +28,7 @@ case "${unameOut}" in
 esac
 export MACHINE
 echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
-
+ls -l /root/darp
 
 export DARPDIR=$HOME/darp
 if [ "$PORT" == "" ]; then 
