@@ -749,8 +749,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }).on('data', function (err, data) {
                 console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port 80");
             }).on('error', function (err) {
-                console.log("Trying agin in a sec", err);
-                setTimeout(self.secureTrafficHandler, 5000);
+                console.log("Trying agin in 15 sec", err);
+                setTimeout(self.secureTrafficHandler, 15000);
             });
         };
         this.groupName = pulseGroup.groupName;
