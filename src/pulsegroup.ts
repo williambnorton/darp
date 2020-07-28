@@ -675,7 +675,6 @@ export class AugmentedPulseGroup {
             if (self.groupOwner === incomingPulseEntry.geo) {
                 // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
-                console.log(`checking owners owls to see if we don't have mints the owner is announcing`);
                 var owlsAry = incomingPulse.owls.split(",");
                 // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
                 for (var o in owlsAry) {
@@ -821,6 +820,7 @@ export class AugmentedPulseGroup {
                 }
                 self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
 
+                console.log(`after co[py from genesisNode, self.mintTable=${self.mintTable}`);
                 // TODO - don't copy timeStamps - they are relative to genesis clock
 
                 var pulses = groupOwnerPulseGroup.pulses;
