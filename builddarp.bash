@@ -5,11 +5,14 @@
 #	This ensures all nodes in a pulse group are always running the latest SW so 
 #	fewer incompaitibilities to wirry about
 
+#if you are in a noia directory you can build and push the code to your own repo
+#otherwise, this script does not ap[ply to running nodes - maybe don't put it in docker?
 pwd |grep noia
 if [ $? -ne 0 ]; then
 	echo $0 can not run from a non-development area
 	exit 86
 fi
+
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete

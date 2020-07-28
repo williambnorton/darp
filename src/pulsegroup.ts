@@ -11,7 +11,7 @@ import { sendPulses, recvPulses } from "./pulselayer";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
-logger.setLevel(2);
+logger.setLevel(3);
 // Define constants
 
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds

@@ -47,7 +47,7 @@ var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
-logger_1.logger.setLevel(2);
+logger_1.logger.setLevel(3);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
