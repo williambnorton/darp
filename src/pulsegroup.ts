@@ -710,9 +710,10 @@ export class AugmentedPulseGroup {
             } else {
                 // non-Genesis node pulse - we must be out of Quarantine
                 if (self.mintTable[0].state == "QUARANTINE") {
-                    logger.warning(`Received pulse from non-genesis node - I must be transitioned out of Quarantine`);
+                    logger.info(`Received pulse from non-genesis node - I am accepted in this pulse group - must have transitioned out of Quarantine`);
+                    console.log(`Received pulse from non-genesis node - I am accepted in this pulse group - must have transitioned out of Quarantine`);
                     self.mintTable[0].state = "UP";
-                    self.measurertt();
+                    //self.measurertt();  //turn off for now
                     self.secureTrafficHandler((data: any) => {
                         console.log(`secureChannel traffic handler callback: ${data}`);
                     });
