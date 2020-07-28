@@ -11,6 +11,8 @@ import { sendPulses, recvPulses } from './pulselayer';
 import { grapherStoreOwls } from './grapher';
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from './wireguard';
 
+console.log(`Starting pulseGroup`);
+process.exit(10);
 
 // Define constants
 
@@ -841,9 +843,17 @@ export class AugmentedPulseGroup {
     
     secureTrafficHandler = (callback: CallableFunction) => {
         var app = express();
+<<<<<<< HEAD
         var self = this;
         var server = app.listen(80, mint2IP(this.mintTable[0].mint), function() {
             //TODO: add error handling here
+=======
+//        var server = app.listen(80, '0.0.0.0', function() {
+        const ip = mint2IP(this.mintTable[0].mint);  //get my mint and make my private IP
+
+        var server = app.listen(80, ip, function() {
+                //TODO: add error handling here
+>>>>>>> 06efe226973f105b4627a115c36ff4c21454413b
             const serverAdddress = server.address();
             if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
                 var host = serverAdddress.address;

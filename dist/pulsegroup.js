@@ -36,8 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPulseGroup = exports.AugmentedPulseGroup = exports.PulseGroup = exports.PulseEntry = exports.IncomingPulse = exports.MintEntry = exports.Config = void 0;
+exports.__esModule = true;
 var fs = require("fs");
 var os = require("os");
 var http = require("http");
@@ -48,6 +47,8 @@ var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
+console.log("Starting pulseGroup");
+process.exit(10);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
@@ -717,7 +718,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.secureTrafficHandler = function (callback) {
             var app = express();
-            var server = app.listen(80, '0.0.0.0', function () {
+            //        var server = app.listen(80, '0.0.0.0', function() {
+            var ip = lib_1.mint2IP(_this.mintTable[0].mint); //get my mint and make my private IP
+            var server = app.listen(80, ip, function () {
                 //TODO: add error handling here
                 var serverAdddress = server.address();
                 if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
