@@ -98,13 +98,13 @@ do
 
     cd $DARPDIR
     cd $DARPDIR/dist
-    if [ -f  $DARPDIR/pulsegroup.pid ]; then
-        kill `cat $DARPDIR/pulsegroup.pid`
+    if [ -f  $DARPDIR/index.pid ]; then
+        kill `cat $DARPDIR/index.pid`
     fi
-    echo `date` 'Starting pulsegroup...'
-	node pulsegroup
+    echo `date` 'Starting DARP...'
+	node index
     rc=$?
-    echo `date` pulsegroup done rc=$rc
+    echo `date` index done rc=$rc
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"

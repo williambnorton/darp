@@ -2,12 +2,13 @@
 
 import { ts, mint2IP } from "./lib";
 
+
 const WGDIR=process.env.WGDIR;  //this is the direcvtory to build and evolve wg config files
+
 
 export function getPublicKey() {
     return require('fs').readFileSync(WGDIR+'/publickey', 'utf8');
 }
-
 
 export function wgdump() {
     var wgconfig="";
@@ -43,7 +44,7 @@ export function addPeerWGStanza(geo:String, ipaddr:String, port:number, mint:num
 
 
 export function setWireguard(stanzas:String) {
-    //we assume these were set by configWG.bash script
+    //we assume these file were set by configWG.bash script
     var BASECONFIG="";
     try {
         BASECONFIG=require('fs').readFileSync(WGDIR+'/wgbase.conf', 'utf8');
@@ -53,6 +54,6 @@ export function setWireguard(stanzas:String) {
 
     const fs = require('fs');
     fs.writeFile(WGDIR+'/darp0.pending.conf', BASECONFIG+stanzas, (err:String) => {
-        if (err) throw err;                  
+        if (err) throw err;                          
     });
 };
