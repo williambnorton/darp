@@ -538,7 +538,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         var owlEntry = owlsAry[o];
                         var mint = parseInt(owlEntry.split("=")[0]);
                         var srcMintEntry = self.mintTable[mint];
-                        console.log("owlEntry=" + owlEntry + " mint=" + mint + " srcMintEntry=" + lib_1.dump(srcMintEntry)); //#1
+                        //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
                         //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
                         if (srcMintEntry == null) {
                             console.log("We do not have this mint the group Owner announced mint: " + mint);
