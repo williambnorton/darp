@@ -47,12 +47,12 @@ var logger_1 = require("./logger");
 var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
-logger_1.logger.setLevel(3);
 // Define constants
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
+logger_1.logger.logLevel = 3;
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // Define data structures used in the protocol
 /** App configuration settings obtained from ENV variables */
