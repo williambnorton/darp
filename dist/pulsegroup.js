@@ -538,6 +538,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         var owlEntry = owlsAry[o];
                         var mint = parseInt(owlEntry.split("=")[0]);
                         var srcMintEntry = self.mintTable[mint];
+                        console.log("owlEntry=" + owlEntry + " mint=" + mint + " srcMintEntry=" + srcMintEntry);
                         if (srcMintEntry == null) {
                             console.log("We do not have this mint the group Owner announced mint: " + mint);
                             //we do not have this mint in our mintTale
