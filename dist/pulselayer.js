@@ -1,7 +1,6 @@
 "use strict";
 /** @module pulselayer send "pulse" UDP message to all nodes */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendPulses = exports.recvPulses = void 0;
+exports.__esModule = true;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var messagelayer_1 = require("./messagelayer");
@@ -32,7 +31,7 @@ function recvPulses(port, callback) {
             mint: parseInt(ary[8]),
             owls: pulseOwls,
             owl: OWL,
-            lastMsg: incomingMessage,
+            lastMsg: incomingMessage
         };
         logger_1.logger.debug("pulselayer recvMsg callback: message=" + incomingMessage + " owlstart=" + owlsStart + ", pulseOwls=" + pulseOwls);
         logger_1.logger.debug("pulselayer recvMsg callback: structured pulse=" + lib_1.dump(pulse));
