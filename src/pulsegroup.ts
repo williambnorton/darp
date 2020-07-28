@@ -820,12 +820,12 @@ export class AugmentedPulseGroup {
                 }
                 self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
 
-                console.log(`after co[py from genesisNode, self.mintTable=${self.mintTable}`);
+                console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
                 // TODO - don't copy timeStamps - they are relative to genesis clock
 
                 var pulses = groupOwnerPulseGroup.pulses;
                 for (var pulse in pulses) {
-                    // Add all mints that we don't have
+                    // Add all pulses that we don't have
                     if (typeof self.pulses[pulse] == "undefined") {
                         logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
                         console.log(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
