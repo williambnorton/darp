@@ -19,6 +19,7 @@ const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXP
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
 
 logger.logLevel=3;
+logger.setLevel(3);
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 
 // Define data structures used in the protocol
