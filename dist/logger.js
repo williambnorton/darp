@@ -32,6 +32,7 @@ var Logger = /** @class */ (function () {
         }
     };
     Logger.prototype.log = function (message, messageLevel) {
+        return; //Vytas - quick test - I had a hard time adjusting level
         var now = new Date(Date.now());
         var timestamp;
         if (this.logTimezone === LogTimezone.UTC) {
