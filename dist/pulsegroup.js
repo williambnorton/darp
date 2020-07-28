@@ -666,6 +666,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // Add all mints that we don't have
                         if (typeof self.pulses[pulse] == "undefined") {
                             logger_1.logger.info("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                            console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
                             self.pulses[pulse] = pulses[pulse]; // save our new pulse entry
                         }
                     }
@@ -683,6 +684,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     self.nodeCount = Object.keys(self.pulses).length;
                     logger_1.logger.warning("Flashing Wireguard configs");
                     self.flashWireguard(); //send mintTable to wireguard to set config
+                    console.log("using new pulse group from genesis node: " + lib_1.dump(self));
                 });
             });
         };

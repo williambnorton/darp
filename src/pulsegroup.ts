@@ -825,6 +825,7 @@ export class AugmentedPulseGroup {
                     // Add all mints that we don't have
                     if (typeof self.pulses[pulse] == "undefined") {
                         logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
+                        console.log(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
                         self.pulses[pulse] = pulses[pulse];  // save our new pulse entry
                     }
                 }
@@ -843,6 +844,7 @@ export class AugmentedPulseGroup {
                 logger.warning("Flashing Wireguard configs");
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
+                console.log(`using new pulse group from genesis node: ${dump(self)}`);
             });
         });
     };

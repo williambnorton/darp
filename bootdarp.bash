@@ -83,13 +83,9 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "*  * * * * STARTING DARP $VERSION  * * * * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * *  * * * STARTING DARP $VERSION  * * * * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * ** * * STARTING DARP $VERSION  * * * ** * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * * * * * STARTING DARP $VERSION  * * *  * * * * * * * * $GENESISIP $MYIP"
-    echo `date` "* * * * * * * * STARTING DARP $VERSION  * * * * * * * * * * * * $GENESISIP $MYIP"
+    echo `date` "* * STARTING DARP $VERSION  * * * ** * * $GENESISIP $MYIP"
 
-    #Now we are running in the new code /darp directory
+    #Now we are running in the new code /root/darp directory of docker
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
     ./configWG.bash #>/dev/null
