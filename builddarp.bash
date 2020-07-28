@@ -28,5 +28,5 @@ git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
 echo `date` Before git push ls: 
 ls -l
-git add . && git commit -m "$MESSAGE + " && git pull && git push
+git add . && git commit -m "$MESSAGE + " && git push
 echo `date` Completed compiles + git push for `ls Build*`
