@@ -909,8 +909,8 @@ export class AugmentedPulseGroup {
         }).on('data', function(err,data) {
             console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
         }).on('error', function(err) {    
-            console.log("Trying agin in 60 sec", err);
-            setTimeout(self.secureTrafficHandler, 60*1000);
+            console.log("Trying agin in 600 sec", err);
+            setTimeout(self.secureTrafficHandler, 600*1000);
         });
     };
 }
