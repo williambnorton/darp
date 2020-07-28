@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
 	exit 86
 fi
 
-echo `date` compiling typescript into javascript 
+echo `date` $0 compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
 MESSAGE="DARP Protocol with matrix and basic data graphs"
@@ -32,8 +32,8 @@ git add . && git commit -m "$MESSAGE + " && git pull && git push
 echo `date` Completed compiles + git push for `ls Build*`
 
 if [ $# -gt 0 ]; then
+	echo `date` Using run optio to launch the code on genesis node also 
 	docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q)
-(sleep 30;echo `date` Starting ~/wireguard wgwatch; cd ~/wireguard; ~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
-
-
+	#(sleep 30;echo `date` Starting ~/wireguard wgwatch; cd ~/wireguard; ~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
+	docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
 fi
