@@ -1,6 +1,7 @@
 "use strict";
 /** @module pulselayer send "pulse" UDP message to all nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendPulses = exports.recvPulses = void 0;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var messagelayer_1 = require("./messagelayer");
@@ -11,12 +12,13 @@ var messagelayer_1 = require("./messagelayer");
  */
 function recvPulses(port, callback) {
     messagelayer_1.recvMsg(port, function (incomingMessage) {
+        //one-time set up of message handler callback
         logger_1.logger.info("pulselayer recvMsg callback: incomingMessage=" + incomingMessage);
         var ary = incomingMessage.split(",");
         var pulseTimestamp = parseInt(ary[0]);
         var senderTimestamp = parseInt(ary[1]);
         var OWL = pulseTimestamp - senderTimestamp;
-        var owlsStart = lib_1.nth_occurrence(incomingMessage, ',', 9); //owls start after the 7th comma
+        var owlsStart = lib_1.nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
         var pulse = {
             pulseTimestamp: pulseTimestamp,
@@ -30,7 +32,7 @@ function recvPulses(port, callback) {
             mint: parseInt(ary[8]),
             owls: pulseOwls,
             owl: OWL,
-            lastMsg: incomingMessage
+            lastMsg: incomingMessage,
         };
         logger_1.logger.debug("pulselayer recvMsg callback: message=" + incomingMessage + " owlstart=" + owlsStart + ", pulseOwls=" + pulseOwls);
         logger_1.logger.debug("pulselayer recvMsg callback: structured pulse=" + lib_1.dump(pulse));
@@ -38,7 +40,6 @@ function recvPulses(port, callback) {
     });
 }
 exports.recvPulses = recvPulses;
-;
 /**
  * Forwards message to nodes in the list. Wraps messagelayer functionality.
  * @param {string} msg Pulse message serialized.

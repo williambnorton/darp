@@ -1,6 +1,7 @@
 "use strict";
 /** @module logger Basic logger, which can be extended to log into ElasticSearch */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.logger = exports.LogLevel = void 0;
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["DEBUG"] = 1] = "DEBUG";
@@ -21,7 +22,6 @@ var Logger = /** @class */ (function () {
         this.setLevel(); // checks if env variable LOG_LEVEL is available and sets the level accordingly
         this.logTimezone = LogTimezone.PDT;
     }
-    ;
     Logger.prototype.setLevel = function (logLevel) {
         var logLevelEnv = process.env.LOG_LEVEL;
         if (logLevel !== undefined) {
@@ -36,13 +36,15 @@ var Logger = /** @class */ (function () {
         var now = new Date(Date.now());
         var timestamp;
         if (this.logTimezone === LogTimezone.UTC) {
-            timestamp = now.toLocaleString('en-US', { timeZone: 'UTC' });
+            timestamp = now.toLocaleString("en-US", { timeZone: "UTC" });
         }
         else if (this.logTimezone === LogTimezone.PDT) {
-            timestamp = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+            timestamp = now.toLocaleString("en-US", {
+                timeZone: "America/Los_Angeles",
+            });
         }
         else {
-            timestamp = now.toLocaleString('en-US');
+            timestamp = now.toLocaleString("en-US");
         }
         console.log(timestamp + " - " + LogLevel[messageLevel] + " - " + message); // enum supports reverse mapping
     };

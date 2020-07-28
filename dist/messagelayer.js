@@ -1,14 +1,14 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var dgram = require("dgram");
-//import { exit } from 'process';
 // Create the UDP message bus for communication with all nodes
 // All others only have to deal with message, we timestamp and queue it here
-var server = dgram.createSocket('udp4');
-var client = dgram.createSocket('udp4');
+var server = dgram.createSocket("udp4");
+var client = dgram.createSocket("udp4");
 exports.messagelayer_stats = {
     port: "",
     inMsgs: 0,
@@ -18,15 +18,15 @@ exports.messagelayer_stats = {
     inOctets: 0,
     outOctets: 0,
     lastInMsg: "",
-    lastOutMsg: ""
+    lastOutMsg: "",
 };
 // RECEIVER CODE
-server.on('error', function (err) {
+server.on("error", function (err) {
     logger_1.logger.error("messagelayer server error:\n" + err.stack);
     logger_1.logger.error("messagelayer server error - server recev error - not sure if we should continue...");
     //server.close();
 });
-server.on('listening', function () {
+server.on("listening", function () {
     var address = server.address();
     logger_1.logger.info("messagelayer server listening " + address.address + ":" + address.port);
 });
@@ -36,15 +36,16 @@ server.on('listening', function () {
  * @param {pulseDeserializer} callback Message handler to deserialize pulse messages.
  */
 function recvMsg(port, callback) {
+    // API routine
     exports.messagelayer_stats.port = port.toString();
     server.bind(port);
     // Prints: server listening 0.0.0.0:41234
-    server.on('message', function (msg, rinfo) {
-        var incomingTimestamp = exports.messagelayer_stats.lastInTimestamp = lib_1.now();
+    server.on("message", function (msg, rinfo) {
+        var incomingTimestamp = (exports.messagelayer_stats.lastInTimestamp = lib_1.now());
         exports.messagelayer_stats.inOctets += msg.length;
         exports.messagelayer_stats.inMsgs++;
-        logger_1.logger.info("messagelayer server received: " + msg + " from " + rinfo.address + ":" + rinfo.port); //INSTRUMENTATION POINT
-        var incomingMessage = incomingTimestamp + "," + msg; //prepend our timeStamp
+        logger_1.logger.info("messagelayer server received: " + msg + " from " + rinfo.address + ":" + rinfo.port); // INSTRUMENTATION POINT
+        var incomingMessage = incomingTimestamp + "," + msg; // prepend our timeStamp
         exports.messagelayer_stats.lastInMsg = incomingMessage;
         callback(incomingMessage);
     });
@@ -58,6 +59,7 @@ exports.recvMsg = recvMsg;
  * @param {string[]} nodelist List of nodes' addresses in IP_PORT format
  */
 function sendMsg(outgoingMessage, nodelist) {
+    // API routine
     nodelist.forEach(function (node) {
         var ipaddr = node.split("_")[0];
         var port = Number(node.split("_")[1]) || 65013;
@@ -71,29 +73,8 @@ function sendMsg(outgoingMessage, nodelist) {
         client.send(message, 0, message.length, port, ipaddr, function (err) {
             if (err) {
                 logger_1.logger.error("messagelayer sendMessage()");
-                //client.close();
-                //exit(36);
             }
         });
     });
 }
 exports.sendMsg = sendMsg;
-/************ TEST AREA ***********   add space here to comment test---> * /
-// launch with TEST=1 to get automatic pulser and catcher
-var hostname=process.env.HOSTNAME;
-if (typeof process.env.HOSTNAME == "undefined") process.env.HOSTNAME=require("os").hostname().split(".")[0];
-var pulseMessage="incomingTimestamp="+now()+",0,Build.200619.1110,"+process.env.HOSTNAME+",DEVOPS.1,194,1592591506442,1592590923743,1,2,1,";
-console.log("pulseMessage="+pulseMessage);
-process.argv.shift();  //ignore rid of node
-process.argv.shift();  //ignore rid of path to mthis code
-
-recvMsg("65013",function(incomingMessage:string) {  //one-time set up of message handler callback
-  console.log(`test_app_pulser(): recvMsg callback incomingMessage ------> ${incomingMessage}`);
-});
-
-function test_app_pulser() {    //sample test app
-  sendMsg(pulseMessage, process.argv);
-  setTimeout(test_app_pulser,1000);  //do it again in a few seconds
-}
-test_app_pulser();  //bench test - uncomment to run a test
-/*************  TEST AREA **********/
