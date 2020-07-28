@@ -13,7 +13,8 @@ fi
 echo `date` compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="DARP Protocol with matrix and basic data graphs"
+MESSAGE="DARP Protocol encrypted mesh w/basic data graphs"
+
 date>"Build."`date +%y%m%d.%H%M`
 ls -l Build.*
 
@@ -25,5 +26,6 @@ cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
+echo `date` Before git push ls: `ls -l`
 git add . && git commit -m "$MESSAGE + " && git pull && git push
 echo `date` Completed compiles + git push for `ls Build*`
