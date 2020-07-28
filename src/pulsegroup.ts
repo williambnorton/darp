@@ -847,7 +847,7 @@ export class AugmentedPulseGroup {
                 logger.warning("Flashing Wireguard configs");
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
-                console.log(`using new pulse group from genesis node: ${dump(self)}`);
+                console.log(`************   *************** using new pulse group from genesis node: ${dump(self)}`);
             });
         });
     };

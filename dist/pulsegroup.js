@@ -687,7 +687,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     self.nodeCount = Object.keys(self.pulses).length;
                     logger_1.logger.warning("Flashing Wireguard configs");
                     self.flashWireguard(); //send mintTable to wireguard to set config
-                    console.log("using new pulse group from genesis node: " + lib_1.dump(self));
+                    console.log("************   *************** using new pulse group from genesis node: " + lib_1.dump(self));
                 });
             });
         };
