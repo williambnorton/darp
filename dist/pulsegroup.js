@@ -532,6 +532,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // pulseGroup owner controls population
                 if (self.groupOwner === incomingPulseEntry.geo) {
                     // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
+                    console.log("checking owners owls to see if we don't have mints the owner is announcing");
                     var owlsAry = incomingPulse.owls.split(",");
                     // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
                     for (var o in owlsAry) {
@@ -539,6 +540,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         var mint = parseInt(owlEntry.split("=")[0]);
                         var srcMintEntry = self.mintTable[mint];
                         if (srcMintEntry == null) {
+                            console.log("We do not have this mint the group Owner announced mint: " + mint);
                             //we do not have this mint in our mintTale
                             logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                             self.syncGenesisPulseGroup(); // HACK: any membership change we need resync
@@ -655,6 +657,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
+                    console.log("syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: " + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {
                         mintTable[0] = self.mintTable[0]; // wbnwbnwbn INSTALL MY mintTable[0]
