@@ -1,7 +1,6 @@
 "use strict";
 /** @module messagelayer send and receive message to group of nodes */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMsg = exports.recvMsg = exports.messagelayer_stats = void 0;
+exports.__esModule = true;
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
 var dgram = require("dgram");
@@ -18,7 +17,7 @@ exports.messagelayer_stats = {
     inOctets: 0,
     outOctets: 0,
     lastInMsg: "",
-    lastOutMsg: "",
+    lastOutMsg: ""
 };
 // RECEIVER CODE
 server.on("error", function (err) {

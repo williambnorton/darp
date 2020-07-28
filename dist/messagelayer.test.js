@@ -1,6 +1,6 @@
 "use strict";
 /** @module test Test code */
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var os = require("os");
 var lib_1 = require("./lib");
 var messagelayer_1 = require("./messagelayer");
