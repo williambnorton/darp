@@ -311,7 +311,7 @@ export class AugmentedPulseGroup {
                     peerStanza += addPeerWGStanza(mintEntry.geo, mintEntry.ipaddr, mintEntry.port, mintEntry.mint, mintEntry.publickey);
             }
         } 
-        logger.debug(`flashWireguard(): myStanza=${myStanza} peerStanza=${peerStanza}`);
+        logger.debug(`flashWireguard(): myStanza=${myStanza} peerStanza=${peerStanza}`);  //create first dummy wireguard confiig file (only me)
         setWireguard(myStanza + "\n" + peerStanza);
     }
 
@@ -746,7 +746,7 @@ export class AugmentedPulseGroup {
     syncGenesisPulseGroup = () => {
         if (this.isGenesisNode()) {
             logger.warning("GENESIS node does not sync with itself but will set Wireguard files");
-            this.flashWireguard();  // check my wg config
+            this.flashWireguard();  // change my wg config
             return; // genesis node dies not fetch its own configuration
         }
         var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + this.mintTable[0].mint);
@@ -841,7 +841,8 @@ export class AugmentedPulseGroup {
     
     secureTrafficHandler = (callback: CallableFunction) => {
         var app = express();
-        var server = app.listen(80, '0.0.0.0', function() {
+        var self = this;
+        var server = app.listen(80, mint2IP(this.mintTable[0].mint), function() {
             //TODO: add error handling here
             const serverAdddress = server.address();
             if (typeof serverAdddress !== 'string' && serverAdddress !== null) {
@@ -859,6 +860,9 @@ export class AugmentedPulseGroup {
             }
         }).on('data', function(err,data) {
             console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
+        }).on('error', function(err) {    
+            console.log("Trying agin in a sec", err);   
+            setTimeout(self.secureTrafficHandler, 5000);
         });
     }
 
