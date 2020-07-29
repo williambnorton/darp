@@ -549,6 +549,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log("We do not have this mint the group Owner announced mint: " + mint);
                             //we do not have this mint in our mintTale
                             logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
+                            console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                             self.syncGenesisPulseGroup(); // HACK: any membership change we need resync
                             return;
                         }
