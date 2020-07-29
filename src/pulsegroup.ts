@@ -668,6 +668,7 @@ export class AugmentedPulseGroup {
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
                 logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
+                console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
                 return;
             }
 
@@ -675,7 +676,7 @@ export class AugmentedPulseGroup {
             if (self.groupOwner === incomingPulseEntry.geo) {
                 // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
-                var owlsAry = incomingPulse.owls.split(",");
+                const owlsAry = incomingPulse.owls.split(",");
                 // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
                 for (var o in owlsAry) {
                     const owlEntry = owlsAry[o];
@@ -696,7 +697,7 @@ export class AugmentedPulseGroup {
                 for (var pulse in self.pulses) {
                     var myPulseEntry = self.pulses[pulse];
                     var found = false;
-                    var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
+                    //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
                     for (var o in owlsAry) {
                         var owlmint = parseInt(owlsAry[o].split("=")[0]);
                         if (owlmint == myPulseEntry.mint) {
@@ -713,8 +714,8 @@ export class AugmentedPulseGroup {
             } else {
                 // non-Genesis node pulse - we must be out of Quarantine
                 if (self.mintTable[0].state == "QUARANTINE") {
-                    logger.info(`Received pulse from non-genesis node - I am accepted in this pulse group - must have transitioned out of Quarantine`);
-                    console.log(`Received pulse from non-genesis node - I am accepted in this pulse group - must have transitioned out of Quarantine`);
+                    logger.info(`Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
+                    console.log(`Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                     self.mintTable[0].state = "UP";
                     //self.measurertt();  //turn off for now
                     self.secureTrafficHandler((data: any) => {
