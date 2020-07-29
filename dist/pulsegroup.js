@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPulseGroup = exports.AugmentedPulseGroup = exports.PulseGroup = exports.PulseEntry = exports.IncomingPulse = exports.MintEntry = exports.Config = void 0;
 var fs = require("fs");
 var os = require("os");
 var http = require("http");
@@ -52,9 +53,6 @@ var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
-//logger.logLevel=3;
-//logger.setLevel(3);
-//logger.logLevel = LogLevel.INFO
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // Define data structures used in the protocol
 /** App configuration settings obtained from ENV variables */

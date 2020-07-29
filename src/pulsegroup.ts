@@ -18,9 +18,6 @@ const NO_MEASURE = -99999;
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
 
-//logger.logLevel=3;
-//logger.setLevel(3);
-//logger.logLevel = LogLevel.INFO
 
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 

@@ -7,7 +7,7 @@ import { grapher } from './grapher';
 import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup, PulseGroups } from './pulsegroup';
 
 
-logger.setLevel(LogLevel.INFO);
+logger.setLevel(LogLevel.WARNING);
 
 
 // Load config
@@ -841,9 +841,9 @@ function instrumentation() {    //this should get its own file
 (async () => {
     try {
         myPulseGroup = await getPulseGroup(config);
-        myPulseGroups[myPulseGroup.groupName] = myPulseGroup;  // for now genesis node has no others
         logger.info(`DARP NODE STARTED: pulseGroup=${dump(myPulseGroup)}`);
         var augmentedPulseGroup = new AugmentedPulseGroup(config, myPulseGroup);
+        myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;  // for now genesis node has no others
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
         augmentedPulseGroup.recvPulses();
         augmentedPulseGroup.pulse();
