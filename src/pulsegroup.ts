@@ -551,9 +551,10 @@ export class AugmentedPulseGroup {
                 // ignore mintTable[0]
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                if (elapsedMSincePulse > 2 * this.cycleTime * 1000) {
+                if (elapsedMSincePulse > 15 * this.cycleTime * 1000) {
                     // timeout after 2 seconds
                     logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
+                   console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
 
                     this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE") {
@@ -599,6 +600,7 @@ export class AugmentedPulseGroup {
                     if (this.isGenesisNode()) {
                         if (elapsedMSincePulse > 10 * this.cycleTime * 1000) {
                             logger.warning(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
+                            console.log(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                             /*
                             if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];
