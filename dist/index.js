@@ -36,13 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var logger_1 = require("./logger");
 var lib_1 = require("./lib");
 var grapher_1 = require("./grapher");
 var pulsegroup_1 = require("./pulsegroup");
-logger_1.logger.setLevel(logger_1.LogLevel.INFO);
+logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 // Load config
 var config = new pulsegroup_1.Config();
 // Construct my own pulseGroup for others to connect to
@@ -778,9 +778,9 @@ function instrumentation() {
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
                 myPulseGroup = _a.sent();
-                myPulseGroups[myPulseGroup.groupName] = myPulseGroup; // for now genesis node has no others
                 logger_1.logger.info("DARP NODE STARTED: pulseGroup=" + lib_1.dump(myPulseGroup));
                 augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
+                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; // for now genesis node has no others
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.recvPulses();
                 augmentedPulseGroup.pulse();

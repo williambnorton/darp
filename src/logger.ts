@@ -35,7 +35,6 @@ class Logger {
     }
 
     log(message: string, messageLevel: number) {
-        return;  //Vytas - quick test - I had a hard time adjusting level
         const now = new Date(Date.now());
         let timestamp: string;
         if (this.logTimezone === LogTimezone.UTC) {
