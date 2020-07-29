@@ -859,7 +859,7 @@ export class AugmentedPulseGroup {
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
                 console.log(`syncGenesisPulseGroup(): This is new self new mintTable from genesis node: ${dump(self.mintTable)}`);
-                console.log(`syncGenesisPulseGroup(): This was new mintTable from genesis node.`);
+                console.log(`syncGenesisPulseGroup(): This was new mintTable from genesis node. Looks like mintTble entry is there`);
             });
         });
     };
@@ -916,10 +916,7 @@ export class AugmentedPulseGroup {
                 var host = serverAdddress.address;
                 //var port = serverAdddress.port;
                 console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
-                console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
-                console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
-                console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
-                console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+
             } else {
                 logger.error("Express app initialization failed");
                 console.log(`FAILED DARP ENCRYPTED MESH Traffic handler listening`);
