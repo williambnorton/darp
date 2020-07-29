@@ -664,13 +664,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
-                    console.log("syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: " + lib_1.dump(groupOwnerPulseGroup));
+                    //console.log(`syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: ${dump(groupOwnerPulseGroup)}`);
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {
                         mintTable[0] = self.mintTable[0]; // wbnwbnwbn INSTALL MY mintTable[0]
                     }
                     self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
-                    console.log("after copy from genesisNode, self.mintTable=" + lib_1.dump(self.mintTable));
+                    //console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
                     // TODO - don't copy timeStamps - they are relative to genesis clock
                     var pulses = groupOwnerPulseGroup.pulses;
                     for (var pulse in pulses) {
@@ -692,7 +692,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     self.nodeCount = Object.keys(self.pulses).length;
                     logger_1.logger.warning("Flashing Wireguard configs");
                     self.flashWireguard(); //send mintTable to wireguard to set config
-                    console.log("************   *************** using new pulse group from genesis node: " + lib_1.dump(self));
+                    console.log("syncGenesisPulseGroup():      using new pulse group from genesis node: " + lib_1.dump(self));
                 });
             });
         };

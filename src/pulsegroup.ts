@@ -820,7 +820,7 @@ export class AugmentedPulseGroup {
             });
             res.on("end", function () {
                 var groupOwnerPulseGroup = JSON.parse(body);
-                console.log(`syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: ${dump(groupOwnerPulseGroup)}`);
+                //console.log(`syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: ${dump(groupOwnerPulseGroup)}`);
                 var mintTable = groupOwnerPulseGroup.mintTable;
 
                 if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {
@@ -828,7 +828,7 @@ export class AugmentedPulseGroup {
                 }
                 self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
 
-                console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
+                //console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
                 // TODO - don't copy timeStamps - they are relative to genesis clock
 
                 var pulses = groupOwnerPulseGroup.pulses;
@@ -852,7 +852,7 @@ export class AugmentedPulseGroup {
                 logger.warning("Flashing Wireguard configs");
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
-                console.log(`************   *************** using new pulse group from genesis node: ${dump(self)}`);
+                console.log(`syncGenesisPulseGroup():      using new pulse group from genesis node: ${dump(self)}`);
             });
         });
     };
