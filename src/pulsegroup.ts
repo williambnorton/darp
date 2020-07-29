@@ -814,7 +814,7 @@ export class AugmentedPulseGroup {
         logger.info(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
 
-        console.log(`self=${dump(self)}`);
+        console.log(`---------------------------------> self=${dump(self)}`);
 
 
         // Fetch mintTable and pulses from genesis node
@@ -858,7 +858,7 @@ export class AugmentedPulseGroup {
                 logger.warning("Flashing Wireguard configs");
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
-                console.log(`syncGenesisPulseGroup(): This is new self new pulse group from genesis node: ${dump(self.mintTable)}`);
+                console.log(`syncGenesisPulseGroup(): This is new self new mintTable from genesis node: ${dump(self.mintTable)}`);
                 console.log(`syncGenesisPulseGroup(): This was new mintTable from genesis node.`);
             });
         });

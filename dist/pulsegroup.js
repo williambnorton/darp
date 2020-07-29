@@ -658,7 +658,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
             logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
             var self = _this;
-            console.log("self=" + lib_1.dump(self));
+            console.log("---------------------------------> self=" + lib_1.dump(self));
             // Fetch mintTable and pulses from genesis node
             http.get(url, function (res) {
                 res.setEncoding("utf8");
@@ -696,7 +696,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     self.nodeCount = Object.keys(self.pulses).length;
                     logger_1.logger.warning("Flashing Wireguard configs");
                     self.flashWireguard(); //send mintTable to wireguard to set config
-                    console.log("syncGenesisPulseGroup(): This is new self new pulse group from genesis node: " + lib_1.dump(self.mintTable));
+                    console.log("syncGenesisPulseGroup(): This is new self new mintTable from genesis node: " + lib_1.dump(self.mintTable));
                     console.log("syncGenesisPulseGroup(): This was new mintTable from genesis node.");
                 });
             });
