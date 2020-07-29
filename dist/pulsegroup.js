@@ -249,6 +249,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.warning("addNode(): added mintEntry and empty pulse entry " +
                 lib_1.dump(newNode) +
                 lib_1.dump(_this.pulses[geo + ":" + group]));
+            console.log("addNode(): added mintEntry and empty pulse entry " +
+                lib_1.dump(newNode) +
+                lib_1.dump(_this.pulses[geo + ":" + group]));
             _this.nodeCount = Object.keys(_this.pulses).length;
             return _this.mintTable[newMint];
         };
@@ -693,7 +696,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     self.nodeCount = Object.keys(self.pulses).length;
                     logger_1.logger.warning("Flashing Wireguard configs");
                     self.flashWireguard(); //send mintTable to wireguard to set config
-                    console.log("syncGenesisPulseGroup():      using new pulse group from genesis node: " + lib_1.dump(self));
+                    console.log("syncGenesisPulseGroup(): This is new self new pulse group from genesis node: " + lib_1.dump(self.mintTable));
                 });
             });
         };

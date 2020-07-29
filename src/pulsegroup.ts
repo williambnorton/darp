@@ -349,6 +349,11 @@ export class AugmentedPulseGroup {
                 dump(newNode) +
                 dump(this.pulses[geo + ":" + group])
         );
+        console.log(
+            "addNode(): added mintEntry and empty pulse entry " +
+                dump(newNode) +
+                dump(this.pulses[geo + ":" + group])
+        );
         this.nodeCount = Object.keys(this.pulses).length;
 
         return this.mintTable[newMint];
@@ -853,7 +858,7 @@ export class AugmentedPulseGroup {
                 logger.warning("Flashing Wireguard configs");
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
-                console.log(`syncGenesisPulseGroup():      using new pulse group from genesis node: ${dump(self)}`);
+                console.log(`syncGenesisPulseGroup(): This is new self new pulse group from genesis node: ${dump(self.mintTable)}`);
             });
         });
     };
