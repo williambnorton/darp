@@ -260,6 +260,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     // ignore first mints me and genesis node - don't delete those
                     if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
                         logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
+                        console.log("deleteNode(): deleting mint " + mintEntry.mint);
                         delete _this.mintTable[mintEntry.mint];
                     }
                 }
@@ -269,6 +270,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var pulseEntry = _this.pulses[pulseLabel];
                 if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
                     logger_1.logger.warning("deleteNode: deleting pulse " + pulseLabel);
+                    console.log("deleteNode: deleting pulse " + pulseLabel);
                     deletedMint = pulseEntry.mint;
                     delete _this.pulses[pulseLabel];
                 }
@@ -563,6 +565,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // deleteNode if its mint is not in announcement
                         if (!found) {
                             logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
+                            console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
                             self.deleteNode(self.mintTable[myPulseEntry.mint].ipaddr, self.mintTable[myPulseEntry.mint].port);
                             return;
                         }
@@ -680,10 +683,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // Delete all node we have that the group owner does not
                         if (typeof pulses[pulse] == "undefined") {
                             logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                            logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                            logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                            logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                            logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
+                            console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                             delete self.pulses[pulse]; //delete this pulse we have but groupOwner does not have
                         }
                     }
