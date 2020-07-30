@@ -682,7 +682,7 @@ function instrumentation() {
         txt += "<th>wallet</th>";
         //txt+="<th>G</th>"
         //<th>rtt</th>"
-        txt += "<th>CONTROLS</th>";
+        txt += "<th>NODE API-based CONTROLS</th>";
         txt += "<th>adminControl</th>";
         txt += "<th>bootTimestamp</th>";
         txt += "</tr>";

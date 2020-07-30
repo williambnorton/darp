@@ -655,7 +655,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
             logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
             var self = _this;
-            console.log("---------------------------------> self=" + lib_1.dump(self));
             // Fetch mintTable and pulses from genesis node
             http.get(url, function (res) {
                 res.setEncoding("utf8");
@@ -678,7 +677,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // Add all pulses that we don't have
                         if (typeof self.pulses[pulse] == "undefined") {
                             logger_1.logger.info("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
-                            console.log("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
                             self.pulses[pulse] = pulses[pulse]; // save our new pulse entry
                         }
                     }
@@ -686,15 +684,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // Delete all node we have that the group owner does not
                         if (typeof pulses[pulse] == "undefined") {
                             logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                            console.log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                             delete self.pulses[pulse]; //delete this pulse we have but groupOwner does not have
                         }
                     }
                     self.nodeCount = Object.keys(self.pulses).length;
                     logger_1.logger.warning("Flashing Wireguard configs");
                     self.flashWireguard(); //send mintTable to wireguard to set config
-                    console.log("syncGenesisPulseGroup(): This is new self new mintTable from genesis node: " + lib_1.dump(self.mintTable));
-                    console.log("syncGenesisPulseGroup(): This was new mintTable from genesis node. Looks like mintTble entry is there");
                 });
             });
         };
@@ -758,8 +753,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }).on('data', function (err, data) {
                 console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port 80");
             }).on('error', function (err) {
-                console.log("Trying agin in 600 sec", err);
-                setTimeout(self.secureTrafficHandler, 600 * 1000);
+                console.log("Trying agin in 10 sec", err);
+                setTimeout(self.secureTrafficHandler, 10 * 1000);
             });
         };
         this.groupName = pulseGroup.groupName;

@@ -811,9 +811,6 @@ export class AugmentedPulseGroup {
         logger.info(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
 
-        console.log(`---------------------------------> self=${dump(self)}`);
-
-
         // Fetch mintTable and pulses from genesis node
         http.get(url, function (res) {
             res.setEncoding("utf8");
@@ -839,7 +836,6 @@ export class AugmentedPulseGroup {
                     // Add all pulses that we don't have
                     if (typeof self.pulses[pulse] == "undefined") {
                         logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
-                        console.log(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
                         self.pulses[pulse] = pulses[pulse];  // save our new pulse entry
                     }
                 }
@@ -847,7 +843,6 @@ export class AugmentedPulseGroup {
                     // Delete all node we have that the group owner does not
                     if (typeof pulses[pulse] == "undefined") {
                         logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
-                        console.log(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
                         delete self.pulses[pulse];  //delete this pulse we have but groupOwner does not have
                     }
                 }
@@ -855,8 +850,7 @@ export class AugmentedPulseGroup {
                 logger.warning("Flashing Wireguard configs");
 
                 self.flashWireguard(); //send mintTable to wireguard to set config
-                console.log(`syncGenesisPulseGroup(): This is new self new mintTable from genesis node: ${dump(self.mintTable)}`);
-                console.log(`syncGenesisPulseGroup(): This was new mintTable from genesis node. Looks like mintTble entry is there`);
+
             });
         });
     };
@@ -921,8 +915,8 @@ export class AugmentedPulseGroup {
         }).on('data', function(err,data) {
             console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
         }).on('error', function(err) {    
-            console.log("Trying agin in 600 sec", err);
-            setTimeout(self.secureTrafficHandler, 600*1000);
+            console.log("Trying agin in 10 sec", err);
+            setTimeout(self.secureTrafficHandler, 10*1000);
         });
     };
 }
