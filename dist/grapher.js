@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.grapherStoreOwls = exports.grapher = void 0;
+exports.__esModule = true;
 var lib_1 = require("./lib");
 var fs = require("fs");
 function grapher(src, dest) {
