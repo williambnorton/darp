@@ -12,7 +12,7 @@ import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
 // Define constants
-
+const SECURE_PORT=80;
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 const NO_MEASURE = -99999;
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
@@ -466,7 +466,7 @@ export class AugmentedPulseGroup {
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             ipary.push(pulseEntry.ipaddr + "_" + pulseEntry.port);
-            ipary.push(mint2IP(pulseEntry.mint) + "_" + 80); // wbnwbn send to secure channel also
+            ipary.push(mint2IP(pulseEntry.mint) + "_" + SECURE_PORT); // wbnwbn send to secure channel also
             pulseEntry.outPulses++;
 
             // this section flags "interesting" cells to click on and explore
@@ -900,20 +900,21 @@ export class AugmentedPulseGroup {
     secureTrafficHandler = (callback: CallableFunction) => {
         var app = express();
         var self = this;
-        var server = app.listen(80, mint2IP(this.mintTable[0].mint), function () {
-            //TODO: add error handling here
+//        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
+          var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
+                //TODO: add error handling here
             const serverAdddress = server.address();
             if (typeof serverAdddress !== "string" && serverAdddress !== null ) {
                 var host = serverAdddress.address;
                 //var port = serverAdddress.port;
-                console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:80`);
+                console.log(`DARP ENCRYPTED MESH Traffic handler listening at http://${host}:${SECURE_PORT}`);
 
             } else {
                 logger.error("Express app initialization failed");
                 console.log(`FAILED DARP ENCRYPTED MESH Traffic handler listening`);
             }
         }).on('data', function(err,data) {
-            console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port 80`);
+            console.log(`secureTrafficHandler(): got secure data ${err} ${data} on port ${SECURE_PORT}`);
         }).on('error', function(err) {    
             console.log("Trying agin in 10 sec", err);
             setTimeout(self.secureTrafficHandler, 10*1000);

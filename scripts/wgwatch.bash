@@ -9,17 +9,10 @@ PIDFILE=/tmp/wgwatch.pid
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
-    Darwin*)    MACHINE=Mac
-				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
-				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
-				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
-				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
-				echo `date` $0 does not support Mac at this time Wireguard is NOT set up
+    *)    MACHINE=MacPCnotLinux
+				echo `date` $0 NOTE: does not support Mac at this time Wireguard is NOT set up
 				exit
 	;;
-    CYGWIN*)    MACHINE=Cygwin;;
-    MINGW*)     MACHINE=MinGw;;
-    *)          MACHINE="UNKNOWN:${unameOut}"
 esac
 export MACHINE
 echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
