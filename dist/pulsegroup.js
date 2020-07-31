@@ -48,7 +48,7 @@ var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 // Define constants
-var SECURE_PORT = 80;
+var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
@@ -739,8 +739,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.secureTrafficHandler = function (callback) {
             var app = express();
             var self = _this;
-            var server = app.listen(SECURE_PORT, lib_1.mint2IP(_this.mintTable[0].mint), function () {
-                //          var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
+            //        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
+            var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
                 //TODO: add error handling here
                 var serverAdddress = server.address();
                 if (typeof serverAdddress !== "string" && serverAdddress !== null) {
