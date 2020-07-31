@@ -581,7 +581,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         logger_1.logger.info("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         console.log("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         self.mintTable[0].state = "UP";
-                        self.measurertt();
+                        setInterval(self.measurertt, 1000);
                         self.secureTrafficHandler(function (data) {
                             console.log("secureChannel traffic handler callback: " + data);
                         });
