@@ -771,7 +771,7 @@ function instrumentation() {    //this should get its own file
                 //if (me.geo!=.ipaddr)
                 //    txt += "<td>" + '<a target="_blank" href="http://' + srcMintEntry.ipaddr + ':' + srcMintEntry.port + '/me" >' + srcMintEntry.ipaddr + "</a></td>";
                 //else
-                const encoded = encodeURI("http://127.0.0.1:8081/ssh?ubuntu@"+srcMintEntry.ipaddr);
+                const encoded = encodeURI("http://127.0.0.1:8081/ssh?ip=ubuntu@"+srcMintEntry.ipaddr);
                 console.log(`encoded=${encoded}`);
                 txt += "<td>" + '<a target="_blank" href="'+encoded+'">'+srcMintEntry.ipaddr+'</a></td>';//ops
                 txt += "<td>" + srcMintEntry.publickey.substring(0, 3) + "..." + srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) + "</td>";
