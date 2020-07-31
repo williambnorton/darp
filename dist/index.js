@@ -496,6 +496,7 @@ function instrumentation() {
     txt += '               pulse.inPulses=parseInt(pulse.inPulses);';
     txt += '               pulse.outPulses=parseInt(pulse.outPulses);';
     txt += '              $("."+pulse.geo+"_rtt").text(pulse.rtt);';
+    txt += '              $("."+pulse.geo+"_pktDrops").text(pulse.seq-pulse.inPulses);';
     txt += '              var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;';
     txt += '              totalEarn+=balance;';
     txt += '              balance=balance.toFixed(6);';
