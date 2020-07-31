@@ -900,8 +900,8 @@ export class AugmentedPulseGroup {
     secureTrafficHandler = (callback: CallableFunction) => {
         var app = express();
         var self = this;
-//        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
-          var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
+        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
+//          var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
                 //TODO: add error handling here
             const serverAdddress = server.address();
             if (typeof serverAdddress !== "string" && serverAdddress !== null ) {
