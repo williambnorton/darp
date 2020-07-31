@@ -422,9 +422,9 @@ function instrumentation() {
     txt += '    if (srcMintEntry==null) return console.log("getOwl() can not find mintTableEntry for "+srcMint);';
     txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];';
     txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);';
-    txt += '    console.log("getOwl(): destMint="+destPulseEntry.mint+" destPulseEntry.owls="+destPulseEntry.owls);';
+    //txt += '    console.log("getOwl(): destMint="+destPulseEntry.mint+" destPulseEntry.owls="+destPulseEntry.owls);';
     txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);';
-    txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);';
+    //txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);'
     txt += ' return owl;';
     txt += '}';
     txt += 'for (var srcP in pulseGroup.pulses) {';
@@ -432,7 +432,7 @@ function instrumentation() {
     txt += '    for (var destP in pulseGroup.pulses) {';
     txt += '        var destEntry=pulseGroup.pulses[destP];';
     txt += '        var direct=getOwl(srcEntry.mint,destEntry.mint);'; //get direct latency measure
-    txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);';
+    // txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);'
     txt += '        if (destEntry!=srcEntry) ';
     txt += '        for (iP in pulseGroup.pulses) {';
     txt += '            var intermediaryEntry=pulseGroup.pulses[iP];';
@@ -441,14 +441,14 @@ function instrumentation() {
     txt += '               var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);';
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
     txt += '               var delta=intermediaryPathLatency-direct;';
-    txt += '               console.log("**** "+srcEntry.mint+"-"+destEntry.mint+"="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
+    //txt += '               console.log("**** "+srcEntry.mint+"-"+destEntry.mint+"="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '            }';
     txt += '        }';
     txt += '    }';
     txt += '}';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
-    txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );';
+    //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
     txt += '             if ( pulseGroup.nodeCount >= 1 ) {';
     txt += '                if (nodeCountLastTime!=0) {';
     txt += '                     if ( nodeCountLastTime != pulseGroup.nodeCount ) {';
