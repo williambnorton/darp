@@ -581,7 +581,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         logger_1.logger.info("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         console.log("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         self.mintTable[0].state = "UP";
-                        self.measurertt(); //turn off for now
+                        self.measurertt();
                         self.secureTrafficHandler(function (data) {
                             console.log("secureChannel traffic handler callback: " + data);
                         });
@@ -700,12 +700,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var ip = lib_1.mint2IP(pulseEntry.mint);
                 var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)";
                 child_process.exec(pingCmd, function (error, stdout, stderr) {
-                    //console.log("Ping "+pingCmd+" stdout="+stdout);
+                    console.log("Ping " + pingCmd + " stdout=" + stdout);
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
                     if (i >= 0) {
                         pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                        //console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
+                        console.log(pulseEntry.geo + " did not respond to ping over encrypted tunnel " + ip);
                         return;
                     }
                     var ary = stdout.split(" ");
@@ -718,13 +718,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         if (typeof timeEquals != "undefined") {
                             var rtt = parseInt(timeEquals.split("=")[1]);
                             //TODO: here we store or clear the rttMatrix element
-                            //console.log(`**** address: ${address} to see who replied... measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = `+rtt);
+                            console.log("**** address: " + address + " to see who replied... measurertt(): " + pulseEntry.geo + " rtt = " + rtt);
                             //TODO: store in rttHistory, rttMedian
                             //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                             pulseEntry.rtt = rtt;
                         }
                         else {
-                            //console.log(`******measurertt(): ${me.geo} - ${pulseEntry.geo} rtt = -99999`);
+                            console.log("******measurertt(): " + pulseEntry.geo + " rtt = -99999");
                             //clear in rttHistory, rttMedian
                             pulseEntry.rtt = NO_MEASURE;
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
