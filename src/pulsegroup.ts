@@ -859,15 +859,15 @@ export class AugmentedPulseGroup {
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 
+            //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
             const ip = mint2IP(pulseEntry.mint);
             const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;
             child_process.exec(pingCmd, (error: child_process.ExecException | null, stdout: string, stderr: string) => {
-                    console.log("Ping "+pingCmd+" stdout="+stdout);
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
                     if (i >= 0) {
                         pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                        console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
+                        //console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
                         return;
                     }
 
@@ -881,12 +881,12 @@ export class AugmentedPulseGroup {
                         if (typeof timeEquals != "undefined") {
                             var rtt = parseInt(timeEquals.split("=")[1]);
                             //TODO: here we store or clear the rttMatrix element
-                            console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
+                            //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
                             //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                             pulseEntry.rtt = rtt;
                         } else {
-                            console.log(`******measurertt(): ${pulseEntry.geo} rtt = -99999`);
+                            //console.log(`******measurertt(): ${pulseEntry.geo} rtt = -99999`);
                             //clear in rttHistory, rttMedian
                             pulseEntry.rtt = NO_MEASURE;
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
