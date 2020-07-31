@@ -5,6 +5,7 @@
 WGDIR=$HOME/wireguard
 echo `date` $0 starting with WGDIR=$WGDIR 
 PIDFILE=/tmp/wgwatch.pid 
+umask 077
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
