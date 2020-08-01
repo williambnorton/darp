@@ -498,7 +498,7 @@ function instrumentation() {    //this should get its own file
     
     
     
-    
+    /*
     
     //txt += 'console.log("*  extraordinary PATHS="+extraordinaryPaths);'
     txt += 'for (var e in extraordinaryPaths) {'
@@ -514,7 +514,7 @@ function instrumentation() {    //this should get its own file
 
     txt += '}'
 
-
+*/
 
 
 
