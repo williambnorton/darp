@@ -504,7 +504,11 @@ function instrumentation() {    //this should get its own file
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
-    txt += '    if (extraordinaryPath.ts-now>2000) $("#srclabel-dsrtlabel").remove();'
+    txt += '    var now=new Date();'
+    txt += '    if (extraordinaryPath.ts-now.getTime() > 2000) {';
+    txt += '       console.log("deleteing path "+JSON.stringify(extraordinaryPath,null,2));';
+    txt += '       $("#srclabel-dsrtlabel").remove();'
+    txt += '    }'
     //    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td><td>"+extraordinaryPath.delta+"</td></tr>");   '
     txt += '    $("#extraordinary").append("<tr id=\"extraordinaryPath.aSide-extraordinaryPath.zSide\"><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+"</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
 
