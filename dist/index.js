@@ -456,7 +456,7 @@ function instrumentation() {
     txt += '        }';
     txt += '    }';
     txt += '}';
-    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);';
+    //txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);'
     txt += 'for (var e in exceptionalPaths) {';
     txt += '    var exceptionalPath=exceptionalPaths[e];';
     txt += '    console.log("ExceptionalPath: "+JSON.stringify(exceptionalPath,null,2));';
