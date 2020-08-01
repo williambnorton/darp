@@ -442,7 +442,7 @@ function instrumentation() {
     txt += '            if (intermediaryEntry!=srcEntry && intermediaryEntry!=destEntry) {';
     txt += '               var srcToIntermediary=getOWLfrom(srcEntry.mint,intermediaryEntry.owls);';
     txt += '               var intermediaryToDest=getOWLfrom(intermediaryEntry.mint,destEntry.owls);';
-    txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
+    txt += '               var intermediaryPathLatency=parseInt(srcToIntermediary)+parseInt(intermediaryToDest);';
     txt += '               var delta=intermediaryPathLatency-direct;';
     txt += '                  console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<2) {';
