@@ -435,7 +435,7 @@ function instrumentation() {    //this should get its own file
     txt += '        if (mint == srcMint) {';
     txt += '            var owl = ary[i].split("=")[1];';
     txt += '            if (typeof owl != "undefined" && owl != null) {';
-    txt += '                console.log("returning srcMint="+srcMint+" owl="+owl);'
+    //txt += '                console.log("returning srcMint="+srcMint+" owl="+owl);'
     txt += '                return owl;';
     txt += '              } else {';
     txt += '                  return -99999;';  //no OWL measurement
@@ -471,7 +471,7 @@ function instrumentation() {    //this should get its own file
     txt += '               var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);'
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;'
     txt += '               var delta=intermediaryPathLatency-direct;'
-    //txt += '               console.log("**** "+srcEntry.mint+"-"+destEntry.mint+"="+direct+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+    txt += '               console.log("**** "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '            }';
     txt += '        }';
     txt += '    }';
