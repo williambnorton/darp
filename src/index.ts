@@ -462,7 +462,8 @@ function instrumentation() {    //this should get its own file
 //  EXCEPTIONAL PATHS
 //
 
-
+    txt += 'var exceptionalPath=[];'
+    txt += 'exceptionalPath=[];';  //each time we reset the exceptional path array
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];'
     txt += '    for (var destP in pulseGroup.pulses) {';
@@ -493,6 +494,8 @@ function instrumentation() {    //this should get its own file
     
     txt += '    }';
     txt += '}';
+    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);'
+
 
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
    //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
