@@ -431,7 +431,7 @@ function instrumentation() {
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
     txt += '    for (var destP in pulseGroup.pulses) {';
     txt += '        var destEntry=pulseGroup.pulses[destP];';
-    txt += '        var direct=getOwl(srcEntry.mint,destEntry.mint);'; //get direct latency measure
+    txt += '        var direct=getOwlfrom(srcEntry.mint,destEntry.owls);'; //get direct latency measure
     // txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);'
     txt += '        if (destEntry!=srcEntry) ';
     txt += '        for (iP in pulseGroup.pulses) {';
@@ -441,7 +441,7 @@ function instrumentation() {
     txt += '               var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);';
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
     txt += '               var delta=intermediaryPathLatency-direct;';
-    txt += '               console.log("**** "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
+    txt += '               console.log("*         "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
     txt += '            }';
     txt += '        }';
     txt += '    }';
