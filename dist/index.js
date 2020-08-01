@@ -431,7 +431,7 @@ function instrumentation() {
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
     txt += '    for (var destP in pulseGroup.pulses) {';
     txt += '        var destEntry=pulseGroup.pulses[destP];';
-    txt += '        var direct=getOwlfrom(srcEntry.mint,destEntry.owls);'; //get direct latency measure
+    txt += '        var direct=getOWLfrom(srcEntry.mint,destEntry.owls);'; //get direct latency measure
     // txt += '        console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);'
     txt += '        if (destEntry!=srcEntry) ';
     txt += '        for (iP in pulseGroup.pulses) {';
