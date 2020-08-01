@@ -504,7 +504,7 @@ function instrumentation() {    //this should get its own file
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
-//    txt += '    var now=new Date();'
+    txt += '    var now=new Date();'
 //    txt += '    if (extraordinaryPath.ts-now.getTime() > 2000) {';
 //    txt += '       console.log("deleting path "+JSON.stringify(extraordinaryPath,null,2));';
 //    txt += '       $("#srclabel-dsrtlabel").remove();'
