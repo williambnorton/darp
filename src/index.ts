@@ -500,7 +500,7 @@ function instrumentation() {    //this should get its own file
     txt += '    '
     //      maybe use jquery here:
     //           
-    txt += '    $("#ItemsTable tr").each(function(){     if (parseInt($(this).find("td:first").text())-now.getTime()>20000) $(this).remove();     });'
+    txt += '    $("#ItemsTable tr").each(function(){     if (parseInt($(this).find("td:first").text())-now.getTime()>20000) $(this).parent().remove();     });'
     //    txt += '    if (extraordinaryPath.ts-now.getTime() > 2000) {';
 //    txt += '       console.log("deleting path "+JSON.stringify(extraordinaryPath,null,2));';
 //    txt += '       $("#"+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide).remove();'
