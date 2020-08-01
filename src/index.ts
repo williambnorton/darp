@@ -505,7 +505,7 @@ function instrumentation() {    //this should get its own file
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + ">";'
     txt += '         console.log("trLabel="+trLabel);'
 //    txt += '    $("#extraordinary").append("<tr ><td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
-    txt += '    $("#extraordinary").append("<tr>"+"<td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
+    txt += '    $("#extraordinary").append(trLabel+"<td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
 
     txt += '}'
 
