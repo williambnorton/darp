@@ -501,7 +501,7 @@ function instrumentation() {    //this should get its own file
     
     
     //txt += 'console.log("*  extraordinary PATHS="+extraordinaryPaths);'
-    txt += '$("#extraordinary").empty();'
+    txt += '$("#extraordinary tbody").empty();'
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
