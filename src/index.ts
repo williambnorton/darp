@@ -484,7 +484,7 @@ function instrumentation() {    //this should get its own file
     
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
     txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-    txt += '                  exceptionalPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct});'
+    txt += '                  exceptionalPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta });'
     txt += '                  ';
     txt += '               }';
     txt += '            }';
