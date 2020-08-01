@@ -3,6 +3,11 @@
 #
 echo `date` Building darp codebase 
 ./builddarp.bash 
+if [ $? -ne 0 ]; then
+	echo `date` buildadrp failed
+	exit -1
+fi
+
 npm install && npm update
 echo `date` Building the docker container
 docker build --no-cache -t williambnorton/darp . && docker push williambnorton/darp

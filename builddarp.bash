@@ -31,9 +31,14 @@ git add *.bash
 git add . && git commit -m "$MESSAGE + " && git pull && git push 
 echo `date` Completed compiles + git push for `ls Build*`
 
+#
+#	run code on genesis node after build, effectively deploying globally
+#
 if [ $# -gt 0 ]; then
 	echo `date` Using run optio to launch the code on genesis node also 
 	docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q)
 	#(sleep 30;echo `date` Starting ~/wireguard wgwatch; cd ~/wireguard; ~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
 	docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
 fi
+
+exit 1
