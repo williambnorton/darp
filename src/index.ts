@@ -483,7 +483,7 @@ function instrumentation() {    //this should get its own file
    //txt += '                  console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
-    txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+    //txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '                  exceptionalPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta });'
     txt += '                  ';
     txt += '               }';
@@ -498,6 +498,8 @@ function instrumentation() {    //this should get its own file
     txt += 'for (var e in exceptionalPaths) {'
     txt += '    var exceptionalPath=exceptionalPaths[e];'
     txt += '    console.log("ExceptionalPath: "+JSON.stringify(exceptionalPath,null,2));'
+    txt += '    $("#exceptional").append("<tr><td>my data</td><td>more data</td></tr>");   '
+
     txt += '}'
 
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
