@@ -430,8 +430,8 @@ function instrumentation() {
     //
     //  EXCEPTIONAL PATHS
     //
-    txt += 'var exceptionalPath=[];';
-    txt += 'exceptionalPath=[];'; //each time we reset the exceptional path array
+    txt += 'var exceptionalPaths=[];';
+    txt += 'exceptionalPaths=[];'; //each time we reset the exceptional path array
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
     txt += '    for (var destP in pulseGroup.pulses) {';
@@ -449,14 +449,14 @@ function instrumentation() {
     //txt += '                  console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
     txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
-    txt += '                  exceptionalPath.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct});';
+    txt += '                  exceptionalPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct});';
     txt += '                  ';
     txt += '               }';
     txt += '            }';
     txt += '        }';
     txt += '    }';
     txt += '}';
-    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPath);';
+    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'
