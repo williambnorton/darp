@@ -437,8 +437,8 @@ function instrumentation() {
     txt += '        for (iP in pulseGroup.pulses) {';
     txt += '            var intermediaryEntry=pulseGroup.pulses[iP];';
     txt += '            if (intermediaryEntry!=srcEntry && intermediaryEntry!=destEntry) {';
-    txt += '               var srcToIntermediary=getOwlfrom(srcEntry.mint,intermediaryEntry.owls);';
-    txt += '               var intermediaryToDest=getOwlfrom(intermediaryEntry.mint,destEntry.owls);';
+    txt += '               var srcToIntermediary=getOWLfrom(srcEntry.mint,intermediaryEntry.owls);';
+    txt += '               var intermediaryToDest=getOWLfrom(intermediaryEntry.mint,destEntry.owls);';
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
     txt += '               var delta=intermediaryPathLatency-direct;';
     txt += '               if (delta<0) {';
