@@ -695,7 +695,7 @@ function instrumentation() {    //this should get its own file
                 //txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
                 txt += '<td class="' + pulseEntry.geo + '_inPulses"' + '>' + pulseEntry.inPulses + "</td>";
                 txt += '<td class="' + pulseEntry.geo + '_outPulses"' + '>' + pulseEntry.outPulses + "</td>";
-                var pktLoss=pulseEntry.seq-pulseEntry.inMsgs;
+                var pktLoss=pulseEntry.seq-pulseEntry.inPulses;
                 //console.log("pktloss=:"+pktLoss);
                 pulseEntry.pktDrops=pktLoss;
                 if (pulseEntry.pktDrops > 1)
