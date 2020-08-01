@@ -476,7 +476,11 @@ function instrumentation() {    //this should get its own file
     txt += '               var intermediaryToDest=getOwl(intermediaryEntry.mint,destEntry.mint);'
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;'
     txt += '               var delta=intermediaryPathLatency-direct;'
-    txt += '               console.log("*         "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+
+    txt += '               if (delta<0) {';
+    txt += '                  console.log("*         "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+    txt += '                  ';
+    txt += '               }';
     txt += '            }';
     txt += '        }';
     
