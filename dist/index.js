@@ -456,7 +456,7 @@ function instrumentation() {
     txt += '        }';
     txt += '    }';
     txt += '}';
-    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);';
+    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPath);';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
     //txt += '             console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );'

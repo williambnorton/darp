@@ -494,7 +494,7 @@ function instrumentation() {    //this should get its own file
     
     txt += '    }';
     txt += '}';
-    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);'
+    txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPath);'
 
 
    //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
