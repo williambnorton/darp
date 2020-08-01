@@ -444,8 +444,8 @@ function instrumentation() {
     txt += '               var intermediaryToDest=getOWLfrom(intermediaryEntry.mint,destEntry.owls);';
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
     txt += '               var delta=intermediaryPathLatency-direct;';
-    txt += '               if (delta<2) {';
-    txt += '                  console.log("*         "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
+    txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<2) {';
+    txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
     txt += '                  ';
     txt += '               }';
     txt += '            }';
