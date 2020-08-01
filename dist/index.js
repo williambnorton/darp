@@ -427,6 +427,9 @@ function instrumentation() {
     //txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);'
     txt += ' return owl;';
     txt += '}';
+    //
+    //  EXCEPTIONAL PATHS
+    //
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
     txt += '    for (var destP in pulseGroup.pulses) {';
@@ -441,7 +444,7 @@ function instrumentation() {
     txt += '               var intermediaryToDest=getOWLfrom(intermediaryEntry.mint,destEntry.owls);';
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;';
     txt += '               var delta=intermediaryPathLatency-direct;';
-    txt += '               if (delta<0) {';
+    txt += '               if (delta<2) {';
     txt += '                  console.log("*         "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
     txt += '                  ';
     txt += '               }';

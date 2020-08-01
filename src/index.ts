@@ -458,7 +458,9 @@ function instrumentation() {    //this should get its own file
     txt += '}'
 
 
-
+//
+//  EXCEPTIONAL PATHS
+//
 
 
     txt += 'for (var srcP in pulseGroup.pulses) {';
@@ -477,7 +479,7 @@ function instrumentation() {    //this should get its own file
     txt += '               var intermediaryPathLatency=srcToIntermediary+intermediaryToDest;'
     txt += '               var delta=intermediaryPathLatency-direct;'
 
-    txt += '               if (delta<0) {';
+    txt += '               if (delta<2) {';
     txt += '                  console.log("*         "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '                  ';
     txt += '               }';
