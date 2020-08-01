@@ -484,7 +484,7 @@ function instrumentation() {    //this should get its own file
     
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
     //txt += '                  console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-    txt += '                  extraordinaryPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta });'
+    txt += '                  extraordinaryPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta });'
     txt += '                  ';
     txt += '               }';
     txt += '            }';
@@ -498,7 +498,7 @@ function instrumentation() {    //this should get its own file
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinary,null,2));'
-    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td><td></td></tr>");   '
+    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td></tr>");   '
 
     txt += '}'
 
