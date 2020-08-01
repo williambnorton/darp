@@ -300,6 +300,9 @@ function instrumentation() {    //this should get its own file
     .pulses tr:first-child { \
         color: blue; \
     } \
+    .extraordinary tr:first-child { \
+        color: blue; \
+    } \
      \
      .ME{ \
         color: black;\
@@ -444,19 +447,6 @@ function instrumentation() {    //this should get its own file
     txt += '    }';
     txt += '    return -99999;'; //did not find the srcMint
     txt += '}'
-    
-    txt += 'function getOwl(srcMint,destMint) {'
-    txt += '    var srcMintEntry=pulseGroup.mintTable[srcMint];'; 
-    txt += '    if (srcMintEntry==null) return console.log("getOwl() can not find mintTableEntry for "+srcMint);'
-    txt += '    var destPulseEntry=pulseGroup.pulses[srcMintEntry.geo+":"+pulseGroup.groupName];'; 
-    txt += '    if (destPulseEntry==null) return console.log("getOwl() can not find pulse entry for "+srcMintEntry.geo+":"+pulseGroup.groupName);'; 
-    //txt += '    console.log("getOwl(): destMint="+destPulseEntry.mint+" destPulseEntry.owls="+destPulseEntry.owls);';
-
-    txt += '    var owl=getOWLfrom(srcMint,destPulseEntry.owls);'; 
-    //txt += '    console.log("getOwl("+srcMint+"-"+destMint+") returning "+owl);'
-    txt += ' return owl;'
-    txt += '}'
-
 
 //
 //  EXCEPTIONAL PATHS
