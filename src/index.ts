@@ -501,7 +501,7 @@ function instrumentation() {    //this should get its own file
     
     
     //txt += 'console.log("*  extraordinary PATHS="+extraordinaryPaths);'
-    txt += '$("#extraordinary tbody").empty();'
+    txt += '$("#extraordinary > tbody").empty();'
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
@@ -680,9 +680,9 @@ function instrumentation() {    //this should get its own file
 //
         txt += '<br><h2>Extraordinary Network Paths (Better through intermediary)</h2>';
         txt += '<table id="extraordinary">';
-        txt += '<tr><th>ts</th><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>OWL</th><th>delta</th><th></th><th>path1</th><th>path to dest</th>   </tr>'
+        txt += '<thead><tr><th>ts</th><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>OWL</th><th>delta</th><th></th><th>path1</th><th>path to dest</th>   </tr></thead><tbody>'
 
-        txt += '</table>'
+        txt += '</tbody></table>'
 
 
 
