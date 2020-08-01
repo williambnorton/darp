@@ -430,8 +430,8 @@ function instrumentation() {
     //
     //  EXCEPTIONAL PATHS
     //
-    txt += 'var exceptionalPaths=[];';
-    txt += 'exceptionalPaths=[];'; //each time we reset the exceptional path array
+    txt += 'var extraordinaryPaths=[];';
+    txt += 'extraordinaryPaths=[];'; //each time we reset the extraordinary path array
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
     txt += '    for (var destP in pulseGroup.pulses) {';
@@ -448,19 +448,19 @@ function instrumentation() {
     txt += '               var delta=intermediaryPathLatency-direct;';
     //txt += '                  console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
-    //txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-    txt += '                  exceptionalPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta });';
+    //txt += '                  console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+    txt += '                  extraordinaryPaths.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta });';
     txt += '                  ';
     txt += '               }';
     txt += '            }';
     txt += '        }';
     txt += '    }';
     txt += '}';
-    //txt += 'console.log("*  EXCEPTIONAL PATHS="+exceptionalPaths);'
-    txt += 'for (var e in exceptionalPaths) {';
-    txt += '    var exceptionalPath=exceptionalPaths[e];';
-    txt += '    console.log("ExceptionalPath: "+JSON.stringify(exceptionalPath,null,2));';
-    txt += '    $("#exceptional").append("<tr><td>my data</td><td>more data</td></tr>");   ';
+    //txt += 'console.log("*  extraordinary PATHS="+extraordinaryPaths);'
+    txt += 'for (var e in extraordinaryPaths) {';
+    txt += '    var extraordinaryPath=extraordinaryPaths[e];';
+    txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinary,null,2));';
+    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td><td></td></tr>");   ';
     txt += '}';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
@@ -582,7 +582,7 @@ function instrumentation() {
         }
         txt += "</table>";
         txt += '<br><h2>Extraordinary Network Paths (Better through intermediary)</h2>';
-        txt += '<table class="extraordinary">';
+        txt += '<table id="extraordinary">';
         txt += '<tr><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>ms</th><th>to Z Side</th><th>total ms</th><th>ms better</th>   </tr>';
         txt += '</table>';
         //
