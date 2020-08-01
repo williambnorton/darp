@@ -632,8 +632,9 @@ function instrumentation() {
                 //txt += '<td class="' + pulseEntry.geo + '_outOctets"' + '>' + pulseEntry.outOctets + "</td>";
                 txt += '<td class="' + pulseEntry.geo + '_inPulses"' + '>' + pulseEntry.inPulses + "</td>";
                 txt += '<td class="' + pulseEntry.geo + '_outPulses"' + '>' + pulseEntry.outPulses + "</td>";
-                //var pktLoss=parseInt(pulseEntry.seq)-parseInt(pulseEntry.inMsgs);
+                var pktLoss = pulseEntry.seq - pulseEntry.inMsgs;
                 //console.log("pktloss=:"+pktLoss);
+                pulseEntry.pktDrops = pktLoss;
                 if (pulseEntry.pktDrops > 1)
                     txt += '<td class="' + pulseEntry.geo + '_pktDrops WARNING"' + '>' + pulseEntry.pktDrops + "</td>";
                 else
@@ -660,7 +661,7 @@ function instrumentation() {
             }
             txt += "</tr>";
         }
-        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">' + pulseGroup.groupName + ' Earnings $' + total.toFixed(6) + '</td></tr>';
+        txt += '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="total_earn">' + pulseGroup.groupName + ' Earnings $' + total.toFixed(6) + '</td></tr>';
         txt += "</table>";
     }
     for (var p in myPulseGroups) {
