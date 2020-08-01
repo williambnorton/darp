@@ -498,7 +498,7 @@ function instrumentation() {    //this should get its own file
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinary,null,2));'
-    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td></tr>");   '
+    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td></tr>");   '
 
     txt += '}'
 
