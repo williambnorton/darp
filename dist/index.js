@@ -447,6 +447,7 @@ function instrumentation() {
     //txt += '                  console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
     txt += '                  console.log("*  EXCEPTIONAL PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);';
+    txt += '                  exceptionalPath.push({ aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct});';
     txt += '                  ';
     txt += '               }';
     txt += '            }';
