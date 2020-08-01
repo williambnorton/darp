@@ -460,7 +460,7 @@ function instrumentation() {
     txt += 'for (var e in extraordinaryPaths) {';
     txt += '    var extraordinaryPath=extraordinaryPaths[e];';
     txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinary,null,2));';
-    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediary+"</td></tr>");   ';
+    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.srcTointermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td><td>"+extraordinaryPath.delta+"</td></tr>");   ';
     txt += '}';
     //txt+= '             console.log("pulseGroup="+JSON.stringify(pulseGroup,null,2));'
     //txt += '         console.log("config="+JSON.stringify(config,null,2)+" nodeCountNow="+nodeCountNow+" nodeCountLastTime="+nodeCountLastTime+" find nodeCount somewhere delivered config in: "+JSON.stringify(config,null,2) );'
