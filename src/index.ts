@@ -345,8 +345,6 @@ function instrumentation() {    //this should get its own file
     txt += '     });';
     txt += 'var nodeCountLastTime=0;' //We start out with ourselves only
     txt += 'var sleepTime=0;' 
-    txt += 'var extraordinaryPaths=[];'  //this tracks extraordinary paths across renderings
-
     
     txt += 'function fetchState() {'
     
@@ -454,7 +452,7 @@ function instrumentation() {    //this should get its own file
 //  extraordinaryPaths PATHS
 //
 
-    //txt += 'var extraordinaryPaths=[];'  //this gets reset each time instrumetation is called - we need it outside of routine
+    txt += 'var extraordinaryPaths=[];'  //this gets reset each time instrumetation is called - we need it outside
     //txt += 'extraordinaryPaths=[];';  //each time we reset the extraordinary path array
 
     txt += 'for (var srcP in pulseGroup.pulses) {';
