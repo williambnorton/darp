@@ -445,11 +445,11 @@ function instrumentation() {
     //txt += '                  console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined")';
-    txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { ts:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
+    txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                    else {';
     txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].ts;';
     txt += '                        console.log("startTimestamp="+startTimestamp);';
-    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
+    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:startTimestamp, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                  }';
     txt += '                  ';
     txt += '               }';
@@ -476,7 +476,7 @@ function instrumentation() {
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";';
     txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));';
     //    txt += '    $("#extraordinary").append("<tr ><td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
-    txt += '    $("#extraordinary").append(trLabel+"<td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
+    txt += '    $("#extraordinary").append(trLabel+"<td>"+extraordinaryPath.startTimestamp+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
     txt += '}';
     //for every row in extraordinary table
     //if ts > 2seconds ago, delete row
