@@ -477,6 +477,7 @@ function instrumentation() {
     txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));';
     //    txt += '    $("#extraordinary").append("<tr ><td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
     txt += '         var duration=Math.round(now.getTime()-parseInt(extraordinaryPath.startTimestamp)/1000);';
+    txt += '         console.log("duration="+duration);';
     txt += '    $("#extraordinary").append(trLabel+"<td>"+duration+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
     //    txt += '    $("#extraordinary").append(trLabel+"<td>"+extraordinaryPath.startTimestamp+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
     txt += '}';
@@ -604,7 +605,7 @@ function instrumentation() {
         //
         //      extraordinaryPath
         //
-        txt += '<br><h2>Machine Learning : Better Network Paths</h2>';
+        txt += '<br><h2>Better Network Paths through intermediaries</h2>';
         txt += '<table id="extraordinary">';
         txt += '<thead><tr><th>ts</th><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>OWL</th><th>better by</th><th></th><th>path1</th><th>path to dest</th>   </tr></thead><tbody>';
         txt += '</tbody></table>';
