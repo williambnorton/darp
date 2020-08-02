@@ -466,22 +466,14 @@ function instrumentation() {
     txt += '    var extraordinaryPath=extraordinaryPaths[e];';
     //txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
     txt += '    var now=new Date();';
-    txt += '    ';
-    //      maybe use jquery here:
-    //           
-    //    txt += '    $("#ItemsTable tr").each(function(){     if (parseInt($(this).find("td:first").text()) - now.getTime()>2000) $(this).remove();     });'
-    //    txt += '    if (extraordinaryPath.ts-now.getTime() > 2000) {';
-    //    txt += '       console.log("deleting path "+JSON.stringify(extraordinaryPath,null,2));';
-    //    txt += '       $("#"+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide).remove();'
-    //    txt += '    }'
-    //    txt += '    $("#extraordinary").append("<tr><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td><td>"+extraordinaryPath.delta+"</td></tr>");   '
+    txt += '    if (no.getTime()-extraordinaryPath.startTime>2000) delete extraordinaryPaths[e]; '; //delete extraordinary not extraordinary any more
+    txt += '    else { ';
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";';
     txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));';
-    //    txt += '    $("#extraordinary").append("<tr ><td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
     txt += '         var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);';
     //txt += '         console.log("duration="+duration);'
-    txt += '    $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
-    //    txt += '    $("#extraordinary").append(trLabel+"<td>"+extraordinaryPath.startTimestamp+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
+    txt += '         $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
+    txt += '    }';
     txt += '}';
     //for every row in extraordinary table
     //if ts > 2seconds ago, delete row
