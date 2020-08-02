@@ -683,7 +683,7 @@ function instrumentation() {    //this should get its own file
 //
 //      extraordinaryPath
 //
-        txt += '<br><h2>Extraordinary Network Paths (Better through intermediary)</h2>';
+        txt += '<br><h2>Machine Learning : Better Network Paths</h2>';
         txt += '<table id="extraordinary">';
         txt += '<thead><tr><th>ts</th><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>OWL</th><th>better by</th><th></th><th>path1</th><th>path to dest</th>   </tr></thead><tbody>'
 

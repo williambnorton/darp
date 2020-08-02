@@ -14,7 +14,7 @@ export function grapher(src: string, dest: string) {
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest} ${new Date()}"
+			text: "${src}-${dest} median of medians and last 60 seconds}"
 		},
 		axisY: {
 			title: "latency in ms",
