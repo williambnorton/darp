@@ -453,7 +453,7 @@ function instrumentation() {    //this should get its own file
 //
 
     txt += 'var extraordinaryPaths=[];'
-    txt += 'extraordinaryPaths=[];';  //each time we reset the extraordinary path array
+    //txt += 'extraordinaryPaths=[];';  //each time we reset the extraordinary path array
 
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];'
@@ -480,8 +480,8 @@ function instrumentation() {    //this should get its own file
                             //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined")'
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { ts:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
-//wbn    txt += '                    else '
-//wbn    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].ts, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
+   txt += '                    else '
+   txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].ts, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
 
     txt += '                  ';
     txt += '               }';
