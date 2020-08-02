@@ -446,8 +446,8 @@ function instrumentation() {
     //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined")';
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { ts:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
-    txt += '                    else ';
-    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].ts, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
+    //wbn    txt += '                    else '
+    //wbn    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].ts, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
     txt += '                  ';
     txt += '               }';
     txt += '            }';
