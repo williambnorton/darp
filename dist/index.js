@@ -341,6 +341,7 @@ function instrumentation() {
     txt += '     });';
     txt += 'var nodeCountLastTime=0;'; //We start out with ourselves only
     txt += 'var sleepTime=0;';
+    txt += 'var extraordinaryPaths=[];'; //this tracks extraordinary paths across renderings
     txt += 'function fetchState() {';
     txt += 'var url="http://' + me.ipaddr + ":" + me.port + '/pulseGroups";'; //For instruementation show multiple pulseGorups
     //txt += 'console.log("getJSON url="+url);';
@@ -423,7 +424,7 @@ function instrumentation() {
     //
     //  extraordinaryPaths PATHS
     //
-    txt += 'var extraordinaryPaths=[];'; //this gets reset each time instrumetation is called - we need it outside
+    //txt += 'var extraordinaryPaths=[];'  //this gets reset each time instrumetation is called - we need it outside of routine
     //txt += 'extraordinaryPaths=[];';  //each time we reset the extraordinary path array
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];';
@@ -445,7 +446,7 @@ function instrumentation() {
     //txt += '                  console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {';
-    txt += '                        console.log("New path: "+);';
+    txt += '                        console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);';
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                    } else {';
     txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;';
