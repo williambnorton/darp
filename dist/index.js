@@ -444,11 +444,12 @@ function instrumentation() {
     txt += '                   var now=new Date();';
     //txt += '                  console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
     //This overwrites existing entry, replacing timestamp
-    txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined")';
+    txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {';
+    txt += '                        console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);';
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
-    txt += '                    else {';
+    txt += '                    } else {';
     txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;';
-    //txt += '                        console.log("startTimestamp="+startTimestamp);'
+    txt += '                        console.log("Existing startTimestamp="+startTimestamp);';
     txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:startTimestamp, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                  }';
     txt += '                  ';
@@ -478,7 +479,7 @@ function instrumentation() {
     //    txt += '    $("#extraordinary").append("<tr ><td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
     txt += '         var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp)));';
     txt += '         console.log("duration="+duration);';
-    txt += '    $("#extraordinary").append(trLabel+"<td>"+duration+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
+    txt += '    $("#extraordinary").append(trLabel+"<td>"+duration+" ms</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   ';
     //    txt += '    $("#extraordinary").append(trLabel+"<td>"+extraordinaryPath.startTimestamp+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
     txt += '}';
     //for every row in extraordinary table
