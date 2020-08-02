@@ -510,7 +510,9 @@ function instrumentation() {    //this should get its own file
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
     //txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
     txt += '    var now=new Date();'
-    txt += '    if (now.getTime()-extraordinaryPath.startTimestamp>2000) delete extraordinaryPaths[e]; ' //delete extraordinary not extraordinary any more
+    txt += '    var duration=now.getTime()-extraordinaryPath.startTimestamp;'
+    txt += '    console.log("duration="+duration);'
+    txt += '    if (duration>2000) delete extraordinaryPaths[e]; ' //delete extraordinary not extraordinary any more
     txt += '    else { '
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";'
     txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));'
