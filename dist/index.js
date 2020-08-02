@@ -467,7 +467,7 @@ function instrumentation() {
     //txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
     txt += '    var now=new Date();';
     txt += '    var freshness=now.getTime()-extraordinaryPath.lastUpdated;';
-    txt += '    console.log("freshness="+freshness);';
+    //txt += '    console.log("freshness="+freshness);'
     txt += '    if (freshness>2000) delete extraordinaryPaths[e]; '; //delete extraordinary not extraordinary any more
     txt += '    else { ';
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";';
