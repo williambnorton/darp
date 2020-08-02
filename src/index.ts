@@ -518,7 +518,7 @@ function instrumentation() {    //this should get its own file
     //txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));'
     txt += '         var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);'
     //txt += '         console.log("duration="+duration);'
-    txt += '         $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
+    txt += '         $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+" ms</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
     txt += '    }'
     txt += '}'
 
@@ -685,9 +685,9 @@ function instrumentation() {    //this should get its own file
 //
 //      extraordinaryPath
 //
-        txt += '<br><h2>Better Network Paths through intermediaries</h2>';
+        txt += '<br><h2>Bill questions: How often, how much better, how long do optimizations last?   Better Network Paths through intermediaries</h2>';
         txt += '<table id="extraordinary">';
-        txt += '<thead><tr><th>Duration</th><th>A Side</th><th>Z Side</th><th>OWL</th><th> </th> <th>intermediary</th><th>OWL</th><th>How much better?</th><th></th><th>path1</th><th>path to dest</th>   </tr></thead><tbody>'
+        txt += '<thead><tr><th>Duration</th><th>A Side</th><th>Z Side</th><th>Direct OWL</th><th> </th> <th>intermediary</th><th>Relay OWL</th><th>How much better?</th><th></th><th>path1</th><th>path to dest</th>   </tr></thead><tbody>'
 
         txt += '</tbody></table>'
 
