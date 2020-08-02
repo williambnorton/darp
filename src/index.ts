@@ -481,11 +481,11 @@ function instrumentation() {    //this should get its own file
     
                             //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {'
-    txt += '                        console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);'
+  //  txt += '                        console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);'
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
    txt += '                    } else {'
    txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;'
-   txt += '                        console.log("Existing startTimestamp="+startTimestamp);'
+  // txt += '                        console.log("Existing startTimestamp="+startTimestamp);'
    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:startTimestamp, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
 
      txt += '                  }'
@@ -511,11 +511,11 @@ function instrumentation() {    //this should get its own file
     //txt += '    console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));'
     txt += '    var now=new Date();'
     txt += '    var duration=now.getTime()-extraordinaryPath.startTimestamp;'
-    txt += '    console.log("duration="+duration);'
+    //txt += '    console.log("duration="+duration);'
     txt += '    if (duration>2000) delete extraordinaryPaths[e]; ' //delete extraordinary not extraordinary any more
     txt += '    else { '
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";'
-    txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));'
+    //txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));'
     txt += '         var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);'
     //txt += '         console.log("duration="+duration);'
     txt += '         $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
