@@ -447,11 +447,11 @@ function instrumentation() {
     //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {';
     //  txt += '                        console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);'
-    txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
+    txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                    } else {';
     txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;';
     // txt += '                        console.log("Existing startTimestamp="+startTimestamp);'
-    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:startTimestamp, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
+    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp, lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                  }';
     txt += '                  ';
     txt += '               }';
