@@ -448,7 +448,7 @@ function instrumentation() {
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                    else {';
     txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;';
-    txt += '                        console.log("startTimestamp="+startTimestamp);';
+    //txt += '                        console.log("startTimestamp="+startTimestamp);'
     txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:startTimestamp, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };';
     txt += '                  }';
     txt += '                  ';
