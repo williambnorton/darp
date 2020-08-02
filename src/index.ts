@@ -345,6 +345,8 @@ function instrumentation() {    //this should get its own file
     txt += '     });';
     txt += 'var nodeCountLastTime=0;' //We start out with ourselves only
     txt += 'var sleepTime=0;' 
+    txt += 'var extraordinaryPaths=[];'  //this tracks extraordinary paths across renderings
+
     
     txt += 'function fetchState() {'
     
@@ -452,7 +454,7 @@ function instrumentation() {    //this should get its own file
 //  extraordinaryPaths PATHS
 //
 
-    txt += 'var extraordinaryPaths=[];'
+    //txt += 'var extraordinaryPaths=[];'  //this gets reset each time instrumetation is called - we need it outside of routine
     //txt += 'extraordinaryPaths=[];';  //each time we reset the extraordinary path array
 
     txt += 'for (var srcP in pulseGroup.pulses) {';
@@ -479,7 +481,7 @@ function instrumentation() {    //this should get its own file
     
                             //This overwrites existing entry, replacing timestamp
     txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {'
-    txt += '                        console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);'
+    txt += '                        console.log("New path: "+);'
     txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
    txt += '                    } else {'
    txt += '                        var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;'
