@@ -449,11 +449,12 @@ function instrumentation() {    //this should get its own file
     txt += '}'
 
 //
-//  EXCEPTIONAL PATHS
+//  extraordinaryPaths PATHS
 //
 
     txt += 'var extraordinaryPaths=[];'
     txt += 'extraordinaryPaths=[];';  //each time we reset the extraordinary path array
+
     txt += 'for (var srcP in pulseGroup.pulses) {';
     txt += '    var srcEntry=pulseGroup.pulses[srcP];'
     txt += '    for (var destP in pulseGroup.pulses) {';
@@ -475,7 +476,13 @@ function instrumentation() {    //this should get its own file
     txt += '               if (srcToIntermediary!=-99999 && intermediaryToDest!= -99999 && delta<-10) {';
     txt += '                   var now=new Date();'
     //txt += '                  console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-    txt += '                  extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo]={ ts:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
+    
+                            //This overwrites existing entry, replacing timestamp
+    txt += '                   if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined")'
+    txt += '                       extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { ts:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
+    txt += '                    else '
+    txt += '                        extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].ts, aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };'
+
     txt += '                  ';
     txt += '               }';
     txt += '            }';
@@ -488,10 +495,10 @@ function instrumentation() {    //this should get its own file
     
     
     
-    
+    //extraodinary path table
     
     //txt += 'console.log("*  extraordinary PATHS="+extraordinaryPaths);'
-    //txt += '$("#extraordinary > tbody").empty();'   //emptying table and redrawing. would be better to add/del table entties by ID "#src-dest"
+    txt += '$("#extraordinary > tbody").empty();'   //emptying table and redrawing. would be better to add/del table entties by ID "#src-dest"
 
     txt += 'for (var e in extraordinaryPaths) {'
     txt += '    var extraordinaryPath=extraordinaryPaths[e];'
