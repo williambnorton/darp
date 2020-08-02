@@ -41,4 +41,4 @@ if [ $# -gt 0 ]; then
 	docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
 fi
 
-exit 1
+exit 0
