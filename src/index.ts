@@ -519,7 +519,7 @@ function instrumentation() {    //this should get its own file
     txt += '         var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";'
     txt += '         console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));'
 //    txt += '    $("#extraordinary").append("<tr ><td>"+extraordinaryPath.ts+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
-txt += '         var duration=Math.round(now.getTime()-parseInt(extraordinaryPath.startTimestamp)/1000);'
+txt += '         var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);'
 txt += '         console.log("duration="+duration);'
 
     txt += '    $("#extraordinary").append(trLabel+"<td>"+duration+"</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+"</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+"</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");   '
