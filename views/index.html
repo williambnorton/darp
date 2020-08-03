@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<meta http-equiv="refresh" content="<%= REFRESH %>">  <!-- TODO: dynamic refresh based on new node adds -->
+<head title="DARP">
+
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("document loaded");
+            fetchState();
+        });
+        
+        $(window).on( "load", function() {
+            console.log("window loaded");
+        });
+        
+        var nodeCountLastTime = 0; // We start out with ourselves only
+        var sleepTime = 0;
+        var extraordinaryPaths=[]; // This tracks extraordinary paths across renderings
+        const me_str = '<%- JSON.stringify(me) %>';
+        const me = JSON.parse(me_str);
+
+        function fetchState() {
+            var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
+            $.getJSON(url, function(config) {
+                $(document.body).css( "background", "white" );
+                for (var n in config) {
+                    var pulseGroup = config[n];
+
+                    // Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
+                    for (var src in pulseGroup.pulses) {
+                        var pulseEntry=pulseGroup.pulses[src];
+                        if (pulseEntry==null) {
+                            console.log("ERROR: pulseEntry==null");
+                        }
+                        var owls=pulseEntry.owls.split(",");
+                        for(var owlEntry in owls) {
+                            var srcMint=parseInt(owls[owlEntry].split("=")[0]);
+                            var owl=-99999;
+                            var strOwl=owls[owlEntry].split("=")[1];
+                            if (typeof strOwl != "undefined") {
+                                owl=parseInt(strOwl);
+
+                                var srcOwlMintEntry=pulseGroup.mintTable[srcMint];
+                                var destOwlMintEntry=pulseGroup.mintTable[pulseEntry.mint];
+                                // console.log("srcOwlMintEntry="+JSON.stringify(srcOwlMintEntry,null,2));
+                                // console.log("destOwlMintEntry="+JSON.stringify(destOwlMintEntry,null,2));
+
+                                if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {
+                                    var gurl="http://"+destOwlMintEntry.ipaddr+":"+destOwlMintEntry.port+"/graph/"+srcOwlMintEntry.geo+"/"+destOwlMintEntry.geo;
+                                    var myDiv="<div class=" +srcOwlMintEntry.mint+"-"+destOwlMintEntry.mint+">";
+                                    var link="<a target=_blank href="+gurl+">";
+
+                                } else {
+                                    //console.log("NULL mintEntry in owls - OK for one run "+srcOwlMintEntry+destOwlMintEntry);
+                                    var gurl="http://noMint";
+                                    var myDiv="<div class="+srcMint+"-"+pulseEntry.mint+">";
+                                    var link="<a target=_blank href="+gurl+">";
+                                }
+                                $("."+srcMint+"-"+pulseEntry.mint).html(myDiv+link+owl+" ms</a></div>");
+
+                                var regex = "/@/";
+                                var flag=strOwl.match(regex);
+                                if (flag) {
+                                    if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");
+                                    }
+                                } else {
+                                    if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (var srcP in pulseGroup.pulses) {
+                        var srcEntry = pulseGroup.pulses[srcP];
+                        for (var destP in pulseGroup.pulses) {
+                            var destEntry = pulseGroup.pulses[destP];
+                            var direct = getOwlfrom(pulseGroup, srcEntry.mint, destEntry.owls);  // get direct latency measure
+                            // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
+                            if (destEntry!=srcEntry)
+                            for (var iP in pulseGroup.pulses) {
+                                var intermediaryEntry = pulseGroup.pulses[iP];
+                                if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
+                                    var srcToIntermediary = getOwlfrom(pulseGroup, srcEntry.mint, intermediaryEntry.owls);
+                                    var intermediaryToDest = getOwlfrom(pulseGroup, intermediaryEntry.mint, destEntry.owls);
+                                    if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
+                                        var intermediaryPathLatency = parseInt(srcToIntermediary) + parseInt(intermediaryToDest);
+                                        if (typeof direct != "undefined") {
+                                            var delta=intermediaryPathLatency - direct;
+                                            // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+                                            if (srcToIntermediary != -99999 && intermediaryToDest != -99999 && delta < -10) {
+                                                var now=new Date()
+                                                // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                                // This overwrites existing entry, replacing timestamp
+                                                if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {
+                                                    // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
+                                                    extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                                } else {
+                                                    var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
+                                                    // console.log("Existing startTimestamp="+startTimestamp);
+                                                    extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp, lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    //extraodinary path table
+                    
+                    // console.log("*  extraordinary PATHS="+extraordinaryPaths);
+                    $("#extraordinary > tbody").empty();   //emptying table and redrawing. would be better to add/del table entties by ID "#src-dest"
+
+                    for (var e in extraordinaryPaths) {
+                        var extraordinaryPath=extraordinaryPaths[e];
+                        // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
+                        var now = new Date();
+                        var freshness=now.getTime()-extraordinaryPath.lastUpdated;
+                        // console.log("freshness="+freshness);
+                        if (freshness>2000) {
+                            delete extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+                        } else {
+                            var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";
+                            // console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));
+                            var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);
+                            // console.log("duration="+duration);
+                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+" ms</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
+                        }
+                    }
+
+                    //for every row in extraordinary table
+                    //if ts > 2seconds ago, delete row
+
+                    // console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
+                    if ( pulseGroup.nodeCount >= 1 ) {
+                        if (nodeCountLastTime!=0) {
+                                if ( nodeCountLastTime != pulseGroup.nodeCount ) {
+                                    // console.log("NEW NODE: HERE I LOCATION RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
+                                    location.reload();
+                                }
+                            } else nodeCountLastTime=pulseGroup.nodeCount;
+                    }
+                    nodeCountLastTime=pulseGroup.nodeCount ;
+
+                    // update the dateTime so people know the updates re coming in
+                    var d = new Date();
+                    var tsNow=d.getTime();
+                    var timeStr=d.toString().split(' ')[4];
+                    $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((tsNow-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>" ); //we show this epoch
+                    $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));  //wbnwbnwbnwbnwbnwnbn
+
+                    // Render table from information in the state fetched from node
+                    var totalEarn=0.000000;
+                    for (let [key, value] of Object.entries(pulseGroup.pulses)) {
+                        var pulse = value;
+                        if (pulse != null) {
+                            for (let [field, fieldValue] of Object.entries(pulse)) {
+                                $("."+pulse.geo+"_"+field).text(fieldValue);
+                            }
+
+                            if (pulse.owl == -99999) {
+                                //Add NR class to entire row
+                                $("."+pulse.geo+"_state").text("NR").addClass("NR").removeClass("UP");
+                            } else {
+                                //Add UP class to entire row
+                                $("."+pulse.geo+"_state").addClass("UP").text("UP").removeClass("NR");
+                            }
+                            
+                            if (pulse.owl == -99999) {
+                                //Add NR class to entire row
+                                $("."+pulse.geo).addClass("NR").removeClass("UP");
+                            } else {
+                                //Add UP class to entire row
+                                $("."+pulse.geo).addClass("UP").removeClass("NR");
+                            }
+
+                            if (pulse.pulseTimestamp != 0){
+                                $("."+pulse.geo+"_pulseTimestamp").text(""+Math.round((tsNow-pulse.pulseTimestamp)/1000)+" secs ago");
+                            }
+                            else {
+                                $("."+pulse.geo+"_pulseTimestamp").text("0");
+                            }
+                            $("."+pulse.geo+"_bootTimestamp").text(""+Math.round((tsNow-pulse.bootTimestamp)/1000)+" secs ago");
+                            $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));  //TODO : Align left for this text field
+                            pulse.inPulses = pulse.inPulses;
+                            pulse.outPulses = pulse.outPulses;
+                            $("."+pulse.geo+"_rtt").text(pulse.rtt);
+                            $("."+pulse.geo+"_pktDrops").text(pulse.seq-pulse.inPulses);
+                            var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;
+                            totalEarn += balance;
+                            balance = parseFloat(balance.toFixed(6));
+
+                            $("."+pulse.geo+"_balance").text("$" + balance);  //TODO : Align left for this text field
+                        }
+                    }
+
+                    totalEarn = parseFloat(totalEarn.toFixed(6));
+                    $(".total_earn").text("totalEarn: $"+totalEarn);
+                }
+
+            }).fail(function() {
+                console.log("JSON Fetch error");
+                $(document.body).css( "background", "pink" );
+            })
+
+            var d = new Date();
+            sleepTime = 1000 - (d.getTime() + 1000) % 1000;
+            setTimeout(fetchState, sleepTime);
+        }
+
+        function getOWLfrom(srcMint, owls) {
+            var ary = owls.split(",");
+            for (var i = 0; i < ary.length; i++) {
+                var mint = parseInt(ary[i].split("=")[0]);
+                if (mint == srcMint) {
+                    var owl = ary[i].split("=")[1];
+                    if (typeof owl != "undefined" && owl != null) {
+                        // console.log("returning srcMint="+srcMint+" owl="+owl);
+                        return parseInt(owl);
+                    } else {
+                        return -99999; // no OWL measurement
+                    }
+                }
+            }
+            return -99999; // did not find the srcMint
+        }
+
+        function startTime() {
+            const today = new Date();
+            let h_str = today.getHours().toString();
+            let m_str = checkTime(today.getMinutes());
+            let s_str = checkTime(today.getMinutes());
+            var txtElement = document.getElementById("txt");
+            if (txtElement != null) {
+                txtElement.innerHTML = h_str + ":" + m_str + ":" + s_str;
+            }
+            setTimeout(startTime, 500);
+        }
+
+        function checkTime(i) {
+            let i_str = i.toString();
+            if (i < 10) {
+                i_str = "0" + i_str
+            }
+            return i_str;
+        }
+    </script>
+</head>
+<body>    
+    <h1>DARP Node <%= me.geo %> http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %></h1>
+
+    <% var d = new Date(); %>
+    <% var timeStr = d.toString().split(' ')[4]; %>
+
+    <p id="dateTime">*Refresh: <%= timeStr %> </p>
+    
+    <!-- INSTRUMENTATION externalize pulseGroup matrix -->
+    
+    <% for (var p in myPulseGroups) { %>
+        <% var pulseGroup=myPulseGroups[p]; %>
+
+        <!-- show OWL Matrix table -->
+        <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
+        <table class="matrix">
+        <tr>
+            <th><%= pulseGroup.groupName %> OWL Matrix</th>
+
+        <!-- print OWL headers -->
+        <% for (let col in pulseGroup.pulses) { %>
+            <% let colEntry = pulseGroup.pulses[col]; %>
+            <% let colEntryUrl = "http://" + colEntry.ipaddr + ":" + colEntry.port.toString(); %>
+            <th><a target="_blank" href="<%= colEntryUrl %>"> <%= colEntry.geo %><b><%= colEntry.mint %></b></a> </th>
+        <% } %>
+        </tr>
+
+        <% for (let src in pulseGroup.matrix) { %>
+            <% let srcMintEntry = pulseGroup.mintTable[src]; %>
+            <% if (srcMintEntry != null) { %>
+                <% if (srcMintEntry.state == "UP") { %>
+                    <% let classNameUp = srcMintEntry.geo + " UP"; %>
+                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
+                    <tr class="<%= classNameUp %>">
+                        <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= srcMintEntry.geo %> <%= srcMintEntry.mint %></a></td>
+                 
+                <% } else { %>
+                    <% let classNameNr = srcMintEntry.geo + " NR"; %>
+                    <tr class="<%= classNameNr %>"><td><%= srcMintEntry.geo %> <%= srcMintEntry.mint %></td>
+
+                <% } %>
+
+                <% for (let dest in pulseGroup.matrix[src]) { %>
+                    <% let destMintEntry=pulseGroup.mintTable[parseInt(dest)]; %>
+                    <% if (destMintEntry!=null) { %>
+                        <% let classNameMintsGeos = srcMintEntry.mint + "-" + destMintEntry.mint + " " + srcMintEntry.geo + " " + destMintEntry.geo; %>
+                        <% let classNameMints = srcMintEntry.mint + "-" + destMintEntry.mint; %>
+                        <% let destMintEntryUrl = "http://" + destMintEntry.ipaddr + ":" + destMintEntry.port.toString() + "/graph/" + srcMintEntry.geo + "/" + destMintEntry.geo; %>
+                        <td class="<%= classNameMintsGeos %>">
+                            <div class="%= classNameMints %>">
+                                <a target="_blank" href="<%= destMintEntryUrl %>"><%= pulseGroup.matrix[src][dest] %> ms</a>
+                            </div>
+                        </td>
+                    <% } else { %>
+                        <% let classNameSrcDest = src + "-" + dest %>
+                        <td class="<%= classNameSrcDest %>">ERRnomint <%= pulseGroup.matrix[src][dest] %> ms</td>
+                    <% } %>
+                <% } %>
+
+                    </tr>
+
+            <% } %>
+        <% } %>
+        </table>
+
+        <!-- Display extraordinaryPath -->
+        <br><h2>Bill questions: How often, how much better, how long do optimizations last?   Better Network Paths through intermediaries</h2>
+        <table id="extraordinary">
+            <thead>
+                <tr>
+                    <th>Duration</th>
+                    <th>A Side</th>
+                    <th>Z Side</th>
+                    <th>Direct OWL</th>
+                    <th> </th>
+                    <th>intermediary</th>
+                    <th>Relay OWL</th>
+                    <th>How much better?</th>
+                    <th></th>
+                    <th>path1</th>
+                    <th>path to dest</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <!-- Display pulseGroup -->
+        <br><h2><%= pulseGroup.groupName %> pulseGroup</h2>
+        <table class="pulses">
+            <tr>
+                <th>geo</th>
+                <th>group</th>
+                <th>ipaddr</th>
+                <th>port</th>
+                <th>seq</th>
+                <th>pulseTimestamp</th>
+                <th>mint</th>
+                <th>owl</th>
+                <th>wg rtt</th>
+                <!-- <th>median</th>
+                <th>owls</th>
+                <th>inOctets</th>
+                <th>outOctets</th> -->
+                <th>inPulses</th>
+                <th>outPulses</th>
+                <th>pktDrops</th>
+                <th>pulseSz</th>
+                <th>owls</th>
+                <th>bootTimestamp</th>
+                <th>version</th>
+                <th>Net Earnings</th>
+            </tr>
+        <% var total = 0; %> <!--Add up total balance of all pulses -->
+        <% for (let a in pulseGroup.pulses) { %>
+            
+            <% let pulseEntry = pulseGroup.pulses[a]; %>
+            <% let rowMintEntry = pulseGroup.mintTable[pulseEntry.mint]; %>
+
+            <% if ((rowMintEntry != null) && (rowMintEntry.state == "UP")) { %>
+                <% let classNamePulseEntry = "UP " + pulseEntry.geo; %>
+            <tr class="<%= classNamePulseEntry %>">
+            <% } else { %>
+            <tr class="NR unknown geo"> <!-- should not happen -->
+            <% } %>
+
+            <% if (rowMintEntry != null) { %>
+                <% let classNameGeoMint = pulseEntry.geo + ":" + pulseEntry.mint; %>
+                <% let pulseEntryUrl = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port.toString() + "/"; %>
+                <td class="<%= classNameGeoMint %>"><a target="_blank" href="<%= pulseEntryUrl %>" ><%= pulseEntry.geo %></a></td>
+                <!-- <td><%= pulseEntry.geo %></td> -->
+                
+                <td><%= pulseEntry.group %></td>
+                
+                <% let pulseEntryMeUrl = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port.toString() + "/me"; %>
+                <td><a target="_blank" href="<%= pulseEntryMeUrl %>"><%= pulseEntry.ipaddr %></a></td>
+                
+                <% let pulseEntryStateUrl = "http://" + pulseEntry.ipaddr + ":" + pulseEntry.port.toString() + "/state"; %>
+                <td><a target="_blank" href="<%= pulseEntryStateUrl %>"><%= pulseEntry.port %></a></td>
+                
+                <% let classNameGeoSeq = pulseEntry.geo + "_seq"; %>
+                <td class="<%= classNameGeoSeq %>"><%= pulseEntry.seq %></td>
+                
+                <% var deltaSeconds = Math.round((now() - pulseEntry.pulseTimestamp) / 1000) + " secs ago"; %>
+                <% if (pulseEntry.pulseTimestamp == 0) { deltaSeconds = "0"; } %>
+                
+                <% let classNameGeoTs = pulseEntry.geo + "_pulseTimestamp"; %>
+                <!-- <td><%- now() %> <%= pulseEntry.pulseTimestamp %></td> -->
+                <td class="<%= classNameGeoTs %>"><%= deltaSeconds %></td>
+                
+                <td><%= pulseEntry.mint %></td>
+                
+                <!-- OWL -->
+                <% let graphUrl = "http://" + me.ipaddr + ":" + me.port.toString() + "/graph/" + pulseEntry.geo + "/" + me.geo; %>
+                <% let classNameGeoOwl = pulseEntry.geo + "_owl"; %>
+                <td class="<%= classNameGeoOwl %>"><a  target="_blank" href="<%= graphUrl %>" ><%= pulseEntry.owl %></a> ms</td>
+                
+                <% let classNameGeoRtt = pulseEntry.geo + "_rtt"; %>
+                <td class="<%= classNameGeoRtt %>"><a class="BUSY" target="_blank" href="<%= graphUrl %>" ><%= pulseEntry.rtt %></a> ms</td>
+                
+                <!-- <% let classNameGeoMedian = pulseEntry.geo + "_median"; %>
+                <td class="<%= classNameGeoMedian %>"><%= pulseEntry.median %></td>
+                <td><%= pulseEntry.owls %></td>
+                <% let classNameGeoInOctets = pulseEntry.geo + "_inOctets"; %>
+                <td class="<%= classNameGeoInOctets %>"><%= pulseEntry.inOctets %></td>
+                <% let classNameGeoOutOctets = pulseEntry.geo + "_outOctets"; %>
+                <td class="<%= classNameGeoOutOctets %>"><%= pulseEntry.outOctets %></td> -->
+                
+                <% let classNameGeoInPulses = pulseEntry.geo + "_inPulses"; %>
+                <td class="<%= classNameGeoInPulses %>"><%= pulseEntry.inPulses %></td>
+                
+                <% let classNameGeoOutPulses = pulseEntry.geo + "_outPulses"; %>
+                <td class="<%= classNameGeoOutPulses %>"><%= pulseEntry.outPulses %></td>
+                
+                <% let pktLoss = pulseEntry.seq - pulseEntry.inPulses; %>
+                <% pulseEntry.pktDrops = pktLoss; %>
+                <% if (pulseEntry.pktDrops > 1) { %>
+                    <% let classNamePktDropsWarn = pulseEntry.geo + "_pktDrops WARNING"; %>
+                    <td class="<%= classNamePktDropsWarn %>"><%= pulseEntry.pktDrops %></td>
+                <% } else { %>
+                    <% let classNamePktDrops = pulseEntry.geo + "_pktDrops"; %>
+                    <td class="<%= classNamePktDrops %>"><%= pulseEntry.pktDrops %></td>
+                <% } %>
+                
+                <% if (pulseEntry.lastMsg) { %>
+                    <% let classNameGeoOwls = pulseEntry.geo + "_owls"; %>
+                    <td><%= pulseEntry.lastMsg.length %></td>  <!-- pulse message size -->
+                    <!-- <td class="<%= classNameGeoOwls %>"><%= pulseEntry.owls.substring(0, OWLS_DISPLAYED) %></td> -->
+                    <td><%= pulseEntry.lastMsg.substring(0,50) %></td>
+                <% } else { %>
+                    <td>""</td>
+                    <td>""</td>
+                <% } %>
+                
+                <% var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago"; %>
+                <% if (pulseEntry.bootTimestamp == 0) { deltaSeconds2 = "0"; } %>
+                <% let classNameGeoBootTs = pulseEntry.geo + "_bootTimestamp"; %>
+                <!-- <td><%- now() %> <%= pulseEntry.pulseTimestamp %></td> -->
+                <td class="<%= classNameGeoBootTs %>"><%= deltaSeconds2 %></td>
+                
+                <% let classNameGeoVersion = pulseEntry.geo + "_version"; %>
+                <td class="<%= classNameGeoVersion %>"><%= pulseEntry.version %></td>
+                
+                <% let balance = (Math.min(pulseEntry.inPulses*1500, pulseEntry.outPulses*1500) / (1000000 * 1000)) * 0.5; %> <!-- GB=1000 MB @ 50 cents per -->
+                <% total = total + balance; %>
+                <% let classNameGeoBalance = pulseEntry.geo + "_balance"; %>
+                <td class="<%= classNameGeoBalance %>">$ <%= balance.toFixed(6) %></td>
+                <!-- <td><%= pulseEntry.lastMsg %></td> -->
+            <% } %>
+            </tr>
+        <% } %>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <!-- <td></td>
+                <td></td>
+                <td></td>
+                <td></td> -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="total_earn"><%= pulseGroup.groupName %> Earnings $ <%= total.toFixed(6) %></td>
+            </tr>
+        </table>
+    <% } %>
+
+    <% for (var p in myPulseGroups) { %>
+        <% var pulseGroup = myPulseGroups[p]; %>
+
+        <!-- Display mintTable -->
+        <br>
+        <h2>mintTable</h2>
+        <table class="mintTable">
+            <tr>
+                <th>mint</th>
+                <th>geo</th>
+                <th>port</th>
+                <th>ipaddr</th>
+                <th>publickey</th>
+                <th>state</th>
+                <th>lastPulseTimestamp</th>
+                <th>lastOWL</th>
+                <th>version</th>
+                <th>wallet</th>
+                <!-- <th>G</th>
+                <th>rtt</th> -->
+                <th>NODE API-based CONTROLS</th>
+                <th>adminControl</th>
+                <th>bootTimestamp</th>
+            </tr>
+
+            <% for (var a in pulseGroup.mintTable) { %>
+                <% var srcMintEntry = pulseGroup.mintTable[a]; %>
+                
+                <% if (srcMintEntry != null) { %>                
+                    <% var mintClass = ""; %>
+                    
+                    <% if (srcMintEntry.mint == 0) { %>
+                        <% mintClass += "ME "; %>
+                    <% } else if (srcMintEntry.mint == 1) { %>
+                        <% mintClass += "GENESIS "; %>
+                    <% } %>
+    
+                    <% if (srcMintEntry.state == "UP") { %>
+                        <% mintClass += "UP "; %>
+                    <% } else if (srcMintEntry.state == "NR") { %>
+                        <% mintClass += "NR "; %>
+                    <% } %>
+                    
+                    <% let classNameGeoMintClass = mintClass + srcMintEntry.geo; %>
+                    <tr class="<%= classNameGeoMintClass %>">
+                        <td><%= srcMintEntry.mint %></td>
+
+                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/"; %>
+                        <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
+                        
+                        <td><%= srcMintEntry.port %></td>
+
+                        <% let encodedUrl = encodeURI("http://127.0.0.1:8081/ssh?ip=ubuntu@"+srcMintEntry.ipaddr); %>
+                        <td><a target="_blank" href="<%= encodedUrl %>"><%= srcMintEntry.ipaddr %></a></td>
+
+                        <td><%= srcMintEntry.publickey.substring(0, 3) %>...<%= srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) %></td>
+
+                        <% let classNameGeoState = srcMintEntry.geo + " " + srcMintEntry.geo + "_state" + " " + srcMintEntry.state; %>  <!-- WEIRD CLASS NAME-->
+                        <% let pulseEntryMintTableUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/mintTable"; %>
+                        <td class="<%= classNameGeoState %>"><a target="_blank" href="<%= pulseEntryMintTableUrl %>"><%= srcMintEntry.state %></a></td>
+
+                        <% let deltaSeconds = Math.round((now() - srcMintEntry.lastPulseTimestamp) / 1000) + " secs ago"; %>
+                        <% if (srcMintEntry.lastPulseTimestamp == 0) { deltaSeconds = "0"; } %>
+                        <% let classNamePulseTs = srcMintEntry.geo + "_pulseTimestamp"; %>
+                        <td class="<%= classNamePulseTs %>"><%= deltaSeconds %></td>
+                    
+                        <% let classNameMintOwl = srcMintEntry.geo + "_owl"; %>
+                        <% let graphSrcDstUrl = "http://" + me.ipaddr + ":" + me.port.toString() + "/graph?src=" + srcMintEntry.geo + "&dst=" + me.geo + "&group=" + pulseGroup.groupName; %>
+                        <td class="<%= classNameMintOwl %>"><a target="_blank" href="<%= graphSrcDstUrl %>"><%= srcMintEntry.lastOWL %></a> ms</td>
+
+                        <% let mintVersionUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/version"; %>
+                        <td><a target="_blank" href="<%= mintVersionUrl %>"> <%= srcMintEntry.version %></a></td>
+
+                        <td><%= srcMintEntry.wallet.substring(0, 3) %>...<%= srcMintEntry.wallet.substring(40, srcMintEntry.wallet.length) %></td>
+
+                        <!-- <td><%= srcMintEntry.isGenesisNode %></td>
+                        <td><%= srcMintEntry.rtt %></td> -->
+
+                        <% let stopButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/stop"; %>
+                        <% let rebootButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/reboot"; %>
+                        <% let reloadButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/reload"; %>
+                        <% let SINGLESTEPButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/SINGLESTEP"; %>
+                        <% let pulseMsgButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/pulseMsg"; %>
+                        <td>
+                            <FORM>
+                                <INPUT Type="BUTTON" Value="PULSE1" Onclick='window.location.href="<%= pulseMsgButtonURL %>"'>
+                                <INPUT Type="BUTTON" Value="RELOAD" Onclick='window.location.href="<%= reloadButtonURL %>"'>
+                                <INPUT Type="BUTTON" Value="SINGLESTEP" Onclick='window.location.href="<%= SINGLESTEPButtonURL %>"'>
+                                <INPUT Type="BUTTON" Value="STOP" Onclick='window.location.href="<%= stopButtonURL %>"'>
+                                <INPUT Type="BUTTON" Value="REBOOT" Onclick='window.location.href="<%= rebootButtonURL %>"'>
+                            </FORM>
+                        </td>
+                        
+                        <% if (pulseGroup.adminControl) { %>
+                            <td><%= pulseGroup.adminControl %></td>
+                        <% } else { %>
+                            <td></td>
+                        <% } %>
+                        
+                        <% var deltaSeconds2 = Math.round((now() - srcMintEntry.bootTimestamp) / 1000) + " secs ago"; %>
+                        <% if (srcMintEntry.bootTimestamp == 0) { deltaSeconds2 = "0"; } %>
+                        <% let classNameMintBootTs = srcMintEntry.geo + "_bootTimestamp"; %>
+                        <td class="<%= classNameMintBootTs %>"><%= deltaSeconds2 %></td>
+
+                    </tr>
+                <% } %> <!-- null mintTable entries are OK -->
+            <% } %>
+
+        </table>
+    <% } %>
+    
+    
+    <p>Connect to this pulseGroup using:
+        docker run
+        -p <%= me.port %>:<%= me.port %>
+        -p <%= me.port %>:<%= me.port %>/udp
+        -p 80:80/udp
+        -v ~/wireguard:/etc/wireguard
+        -e GENESIS=<%= me.ipaddr %>
+        -e GENESISPORT=<%= config.GENESISPORT %>
+        -e HOSTNAME=`hostname`
+        -e WALLET=auto
+        -it williambnorton/darp:latest</p>
+    
+    <p id="raw"><%- JSON.stringify(myPulseGroups, null, 2) %></p>
+
+</body>
+</html>

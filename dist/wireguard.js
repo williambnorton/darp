@@ -1,6 +1,7 @@
 "use strict";
 /** @module wireguard configure wireguard conf file in wireguard as darp.pending.conf */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.setWireguard = exports.addPeerWGStanza = exports.addMyWGStanza = exports.wgdump = exports.getPublicKey = void 0;
 var fs = require("fs");
 var lib_1 = require("./lib");
 var WGDIR = process.env.WGDIR; //this is the direcvtory to build and evolve wg config files
