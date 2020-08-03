@@ -80,14 +80,14 @@
                         var srcEntry = pulseGroup.pulses[srcP];
                         for (var destP in pulseGroup.pulses) {
                             var destEntry = pulseGroup.pulses[destP];
-                            var direct = getOwlfrom(pulseGroup, srcEntry.mint, destEntry.owls);  // get direct latency measure
+                            var direct = getOWLfrom(srcEntry.mint, destEntry.owls);  // get direct latency measure
                             // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
                             if (destEntry!=srcEntry)
                             for (var iP in pulseGroup.pulses) {
                                 var intermediaryEntry = pulseGroup.pulses[iP];
                                 if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                                    var srcToIntermediary = getOwlfrom(pulseGroup, srcEntry.mint, intermediaryEntry.owls);
-                                    var intermediaryToDest = getOwlfrom(pulseGroup, intermediaryEntry.mint, destEntry.owls);
+                                    var srcToIntermediary = getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
+                                    var intermediaryToDest = getOWLfrom(intermediaryEntry.mint, destEntry.owls);
                                     if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                         var intermediaryPathLatency = parseInt(srcToIntermediary) + parseInt(intermediaryToDest);
                                         if (typeof direct != "undefined") {
