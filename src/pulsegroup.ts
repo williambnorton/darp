@@ -691,7 +691,7 @@ export class AugmentedPulseGroup {
                             if (typeof direct != "undefined") {
                                 var delta=intermediaryPathLatency - direct;
                                 // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-                                if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
+                                if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -5) {
                                     var now=new Date()
                                     // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                     // This overwrites existing entry, replacing timestamp
