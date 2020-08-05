@@ -121,7 +121,7 @@
                     $("#extraordinary > tbody").empty();   //emptying table and redrawing. would be better to add/del table entties by ID "#src-dest"
 
                     for (var e in pulseGroup.extraordinaryPaths) {
-                        var extraordinaryPath=pulseGroups.extraordinaryPaths[e];
+                        var extraordinaryPath=pulseGroup.extraordinaryPaths[e];
                         // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
                         var now = new Date();
                         var freshness=now.getTime()-extraordinaryPath.lastUpdated;
