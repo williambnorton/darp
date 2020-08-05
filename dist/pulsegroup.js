@@ -507,7 +507,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
                 }
             }
-            console.log("" + lib_1.dump(_this.extraordinaryPaths));
+            if (Object.keys(_this.extraordinaryPaths).length > 0)
+                console.log("" + lib_1.dump(_this.extraordinaryPaths));
         };
         //
         //  @wbnwbnwbnwbn

@@ -645,7 +645,8 @@ export class AugmentedPulseGroup {
                 delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
             } 
         }
-        console.log(`${dump(this.extraordinaryPaths)}`);
+        if (Object.keys(this.extraordinaryPaths).length>0) console.log(`${dump(this.extraordinaryPaths)}`);
+        
 
     };
 
