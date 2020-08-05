@@ -114,7 +114,7 @@ app.get('/version', function(req, res) {
     process.exit(36);
  });
 
- app.get('/asset-manifest.json', function (req, res) {
+ app.get('/asset-manifest.json', function (req, res) {  //I don't know browser complains of this absence
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify({}, null, 2));
