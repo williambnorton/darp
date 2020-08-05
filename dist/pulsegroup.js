@@ -506,10 +506,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide);
                     delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
                 }
-                else {
-                    console.log("timeout(): " + lib_1.dump(extraordinaryPath));
-                }
             }
+            console.log("" + lib_1.dump(_this.extraordinaryPaths));
         };
         //
         //  @wbnwbnwbnwbn
