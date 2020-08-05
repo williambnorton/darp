@@ -76,65 +76,18 @@
                         }
                     }
 
-                    /****    @wbn DELETE 
-                    for (var srcP in pulseGroup.pulses) {
-                        var srcEntry = pulseGroup.pulses[srcP];
-                        for (var destP in pulseGroup.pulses) {
-                            var destEntry = pulseGroup.pulses[destP];
-                            var direct = getOWLfrom(srcEntry.mint, destEntry.owls);  // get direct latency measure
-                            // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
-                            if (destEntry!=srcEntry)
-                            for (var iP in pulseGroup.pulses) {
-                                var intermediaryEntry = pulseGroup.pulses[iP];
-                                if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                                    var srcToIntermediary = getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
-                                    var intermediaryToDest = getOWLfrom(intermediaryEntry.mint, destEntry.owls);
-                                    if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
-                                        var intermediaryPathLatency = parseInt(srcToIntermediary) + parseInt(intermediaryToDest);
-                                        if (typeof direct != "undefined") {
-                                            var delta=intermediaryPathLatency - direct;
-                                            // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-                                            if (srcToIntermediary != -99999 && intermediaryToDest != -99999 && delta < -10) {
-                                                var now=new Date()
-                                                // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                                // This overwrites existing entry, replacing timestamp
-                                                if (typeof extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] == "undefined") {
-                                                    // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                    extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:now.getTime(), lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
-                                                } else {
-                                                    var startTimestamp=extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                                    // console.log("Existing startTimestamp="+startTimestamp);
-                                                    extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo] = { startTimestamp:extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp, lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                   @wbn DELETE BLOCK ******/
-
                     //extraodinary path table
                     
-                    // console.log("*  extraordinary PATHS="+extraordinaryPaths);
+                    console.log("*  extraordinary PATHS=" + extraordinaryPaths + " pulseGroup= " + dump(pulseGroup) );
                     $("#extraordinary > tbody").empty();   //emptying table and redrawing. would be better to add/del table entties by ID "#src-dest"
 
                     for (var e in pulseGroup.extraordinaryPaths) {
                         var extraordinaryPath=pulseGroup.extraordinaryPaths[e];
-                        // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
-                        var now = new Date();
-                        var freshness=now.getTime()-extraordinaryPath.lastUpdated;
-                        // console.log("freshness="+freshness);
-                        if (freshness>2000) {
-                            delete extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
-                        } else {
-                            var trLabel= "<tr id=" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " >";
-                            // console.log("trLabel="+trLabel+" extraordinaryPath="+JSON.stringify(extraordinaryPath, null, 2));
-                            var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);
-                            // console.log("duration="+duration);
-                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+" ms</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
-                        }
+                        console.log("we have an extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
+                        var trLabel= "extraordinary path =" + extraordinaryPath.aSide+ "-" + extraordinaryPath.zSide + " "+JSON.stringify(extraordinaryPath, null, 2);
+                        var duration=Math.round((now.getTime()-parseInt(extraordinaryPath.startTimestamp))/1000);
+                        console.log("duration="+duration+trLabel);
+                        $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td>"+extraordinaryPath.direct+" ms</td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
                     }
 
                     // console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
