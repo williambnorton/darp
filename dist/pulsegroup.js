@@ -491,7 +491,86 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
-            _this.buildMatrix();
+            _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
+            _this.findEfficiencies(); //find where better paths exist between intermediaries
+            //
+            //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
+            //
+            var timeNow = lib_1.now();
+            for (var e in _this.extraordinaryPaths) {
+                var extraordinaryPath = _this.extraordinaryPaths[e];
+                // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
+                var freshness = timeNow - extraordinaryPath.lastUpdated;
+                // console.log("freshness="+freshness);
+                if (freshness > 2000) {
+                    console.log("deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide);
+                    delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+                }
+            }
+        };
+        //
+        //  @wbnwbnwbnwbn
+        //
+        this.getOWLfrom = function (srcMint, owls) {
+            var ary = owls.split(",");
+            for (var i = 0; i < ary.length; i++) {
+                var mint = parseInt(ary[i].split("=")[0]);
+                if (mint == srcMint) {
+                    var owl = ary[i].split("=")[1];
+                    if (typeof owl != "undefined" && owl != null) {
+                        // console.log("returning srcMint="+srcMint+" owl="+owl);
+                        return parseInt(owl);
+                    }
+                    else {
+                        return NO_MEASURE; // no OWL measurement
+                    }
+                }
+            }
+            return NO_MEASURE; // did not find the srcMint
+        };
+        //
+        //  @wbnwbnwbnwbn
+        //
+        this.findEfficiencies = function () {
+            for (var srcP in _this.pulses) {
+                var srcEntry = _this.pulses[srcP];
+                for (var destP in _this.pulses) {
+                    var destEntry = _this.pulses[destP];
+                    var direct = _this.getOWLfrom(srcEntry.mint, destEntry.owls); // get direct latency measure
+                    // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
+                    if (destEntry != srcEntry)
+                        for (var iP in _this.pulses) {
+                            var intermediaryEntry = _this.pulses[iP];
+                            if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
+                                var srcToIntermediary = _this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
+                                var intermediaryToDest = _this.getOWLfrom(intermediaryEntry.mint, destEntry.owls);
+                                if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
+                                    var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;
+                                    if (typeof direct != "undefined") {
+                                        var delta = intermediaryPathLatency - direct;
+                                        // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+                                        if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
+                                            var now = new Date();
+                                            // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                            // This overwrites existing entry, replacing timestamp
+                                            var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
+                                            if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
+                                                // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
+                                                _this.extraordinaryPaths[pulseIndex] = { startTimestamp: now.getTime(), lastUpdated: now.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                            }
+                                            else {
+                                                //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
+                                                // console.log("Existing startTimestamp="+startTimestamp);
+                                                _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: now.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                            }
+                                            console.log(" extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                }
+            }
         };
         this.checkSWversion = function () {
             if (_this.groupOwner == _this.config.GEO) {
@@ -768,8 +847,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.nodeCount = pulseGroup.nodeCount; //how many nodes in this pulsegroup
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
-        this.matrix = pulseGroup.matrix;
-        this.csvMatrix = pulseGroup.csvMatrix;
+        this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
+        this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
+        this.csvMatrix = pulseGroup.csvMatrix; //should go away
         this.adminControl = "";
         this.config = config;
     }

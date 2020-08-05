@@ -273,8 +273,11 @@ export class AugmentedPulseGroup {
     nodeCount: number;
     nextMint: number;
     cycleTime: number;
-    matrix: number[][];
-    csvMatrix: number[];
+
+//    extraordinaryPaths: object[];   //@wbnwbnwbn
+    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number } };   //@wbnwbnwbn
+    matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
+    csvMatrix: number[];    //goes away
 
     adminControl: string;
     config: Config;
@@ -289,8 +292,11 @@ export class AugmentedPulseGroup {
         this.nodeCount = pulseGroup.nodeCount; //how many nodes in this pulsegroup
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
-        this.matrix = pulseGroup.matrix;
-        this.csvMatrix = pulseGroup.csvMatrix;
+        this.extraordinaryPaths = {};       //object array of better paths through intermediaries @wbnwbnwbn
+
+        this.matrix = pulseGroup.matrix;   //should go away - we can always peruse the pulseTable owls
+        this.csvMatrix = pulseGroup.csvMatrix;  //should go away
+
 
         this.adminControl = "";
         this.config = config;
@@ -622,8 +628,88 @@ export class AugmentedPulseGroup {
             logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
         }
         this.nodeCount = Object.keys(this.pulses).length;
-        this.buildMatrix();
+        this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
+
+        this.findEfficiencies();   //find where better paths exist between intermediaries
+        //
+        //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
+        //
+        const timeNow=now();
+        for (var e in this.extraordinaryPaths) {
+            var extraordinaryPath=this.extraordinaryPaths[e];
+            // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
+            var freshness=timeNow-extraordinaryPath.lastUpdated;
+            // console.log("freshness="+freshness);
+            if (freshness>2000) {
+                console.log(`deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide}`);
+                delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+            } 
+        }
     };
+
+    //
+    //  @wbnwbnwbnwbn
+    //
+    getOWLfrom = (srcMint:number,owls:string) : number => {
+            var ary = owls.split(",");
+            for (var i = 0; i < ary.length; i++) {
+                var mint = parseInt(ary[i].split("=")[0]);
+                if (mint == srcMint) {
+                    var owl = ary[i].split("=")[1];
+                    if (typeof owl != "undefined" && owl != null) {
+                        // console.log("returning srcMint="+srcMint+" owl="+owl);
+                        return parseInt(owl);
+                    } else {
+                        return NO_MEASURE; // no OWL measurement
+                    }
+                }
+            }
+            return NO_MEASURE; // did not find the srcMint
+    };
+    //
+    //  @wbnwbnwbnwbn
+    //
+    findEfficiencies = () => {
+        for (var srcP in this.pulses) {
+            var srcEntry = this.pulses[srcP];
+            for (var destP in this.pulses) {
+                var destEntry = this.pulses[destP];
+                var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // get direct latency measure
+                // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
+                if (destEntry!=srcEntry)
+                for (var iP in this.pulses) {
+                    var intermediaryEntry = this.pulses[iP];
+                    if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
+                        var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
+                        var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls);
+                        if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
+                            var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;
+                            if (typeof direct != "undefined") {
+                                var delta=intermediaryPathLatency - direct;
+                                // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+                                if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
+                                    var now=new Date()
+                                    // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                    // This overwrites existing entry, replacing timestamp
+                                    const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
+                                    if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
+                                        // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
+                                        this.extraordinaryPaths[pulseIndex] = { startTimestamp:now.getTime(), lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                    } else {
+                                        //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
+                                        // console.log("Existing startTimestamp="+startTimestamp);
+                                        this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:now.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                    }
+                                    console.log(` extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
     checkSWversion = () => {
         if (this.groupOwner == this.config.GEO) {
