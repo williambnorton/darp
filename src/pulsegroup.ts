@@ -641,7 +641,8 @@ export class AugmentedPulseGroup {
             var freshness=timeNow-extraordinaryPath.lastUpdated;
             // console.log("freshness="+freshness);
             if (freshness>2000) {
-                console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide}`);
+                var duration=timeNow-extraordinaryPath.startTimestamp;
+                console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
                 delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
             } 
         }

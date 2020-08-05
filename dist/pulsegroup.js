@@ -503,7 +503,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var freshness = timeNow - extraordinaryPath.lastUpdated;
                 // console.log("freshness="+freshness);
                 if (freshness > 2000) {
-                    console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide);
+                    var duration = timeNow - extraordinaryPath.startTimestamp;
+                    console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide + " lasted " + duration + " ms");
                     delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
                 }
             }
