@@ -296,8 +296,8 @@ app.get('/nodefactory', function(req, res) {
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
         augmentedPulseGroup.recvPulses();
         augmentedPulseGroup.pulse();
-        setTimeout(augmentedPulseGroup.checkSWversion, 5 * 1000);  // check that we have the best software
-        setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping every other second
+        setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
+        setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
         // augmentedPulseGroup.addNode("MAZORE",config.GEO+".1","104.42.192.234",65013,config.PUBLICKEY,config.VERSION,config.WALLET);
         // augmentedPulseGroup.addNode("MAZDAL",config.GEO+".1","23.102.167.37", 65013,config.PUBLICKEY,config.VERSION,config.WALLET);
         // augmentedPulseGroup.addNode("MAZASH",config.GEO+".1","52.251.39.60",  65013,config.PUBLICKEY,config.VERSION,config.WALLET);

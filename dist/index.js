@@ -303,8 +303,8 @@ app.get('/nodefactory', function (req, res) {
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.recvPulses();
                 augmentedPulseGroup.pulse();
-                setTimeout(augmentedPulseGroup.checkSWversion, 5 * 1000); // check that we have the best software
-                setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping every other second
+                setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
+                setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();

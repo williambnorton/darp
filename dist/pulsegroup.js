@@ -503,8 +503,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var freshness = timeNow - extraordinaryPath.lastUpdated;
                 // console.log("freshness="+freshness);
                 if (freshness > 2000) {
-                    console.log("deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide);
+                    console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide);
                     delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+                }
+                else {
+                    console.log("timeout(): " + lib_1.dump(extraordinaryPath));
                 }
             }
         };
@@ -563,7 +566,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                                 // console.log("Existing startTimestamp="+startTimestamp);
                                                 _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: now.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                             }
-                                            console.log(" extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
+                                            console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
                                         }
                                     }
                                 }
