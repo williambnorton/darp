@@ -49,6 +49,7 @@ var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 // Define constants
 var PULSEFREQ = 5; //how often to send pulses
+var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
@@ -298,7 +299,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var matrix = [];
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
-                if (lib_1.now() - pulseEntry.pulseTimestamp < 2 * 1000) {
+                if (lib_1.now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ * 1000) { //! miss 2 poll cycles
                     // valid pulse - put all my OWLs into matrix
                     var ary = pulseEntry.owls.split(",");
                     for (var owlEntry in ary) {
@@ -415,7 +416,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //var sleepTime=nextpoll*1000-now();
             // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
             //setTimeout(this.pulse, sleepTime);
-            console.log("worktime=" + lib_1.now() % 1000 + " ms");
+            console.log("pulsing took=" + lib_1.now() % 1000 + " ms");
             setTimeout(_this.pulse, PULSEFREQ * 1000 - (lib_1.now() % 1000)); //pull back to second boundaries
         };
         this.isGenesisNode = function () {
@@ -668,7 +669,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         logger_1.logger.info("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         console.log("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         self.mintTable[0].state = "UP";
-                        setInterval(self.measurertt, 1000);
+                        setInterval(self.measurertt, WG_PULSEFREQ * 1000);
                         self.secureTrafficHandler(function (data) {
                             console.log("secureChannel traffic handler callback: " + data);
                         });
@@ -823,6 +824,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _loop_1();
             }
         };
+        //
+        //  this is where the messgaes over secure qireguard mesh is handled - not working yet
+        //
         this.secureTrafficHandler = function (callback) {
             var app = express();
             var self = _this;

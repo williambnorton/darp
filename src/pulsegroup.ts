@@ -13,6 +13,7 @@ import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
 // Define constants
 const PULSEFREQ=5;  //how often to send pulses
+const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 const NO_MEASURE = -99999;
@@ -411,7 +412,7 @@ export class AugmentedPulseGroup {
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
 
-            if (now() - pulseEntry.pulseTimestamp < 2 * 1000) {
+            if (now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ*1000) {  //! miss 2 poll cycles
                 // valid pulse - put all my OWLs into matrix
                 var ary = pulseEntry.owls.split(",");
 
@@ -544,7 +545,7 @@ export class AugmentedPulseGroup {
         //var sleepTime=nextpoll*1000-now();
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
         //setTimeout(this.pulse, sleepTime);
-        console.log(`worktime=${now()%1000} ms`);
+        console.log(`pulsing took=${now()%1000} ms`);
         setTimeout(this.pulse, PULSEFREQ*1000-(now()%1000)); //pull back to second boundaries
     };
 
@@ -818,7 +819,7 @@ export class AugmentedPulseGroup {
                     logger.info(`Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                     console.log(`Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                     self.mintTable[0].state = "UP";
-                    setInterval(self.measurertt,1000);  
+                    setInterval(self.measurertt,WG_PULSEFREQ*1000);  
                     self.secureTrafficHandler((data: any) => {
                         console.log(`secureChannel traffic handler callback: ${data}`);
                     });
@@ -992,6 +993,9 @@ export class AugmentedPulseGroup {
         }
     };
 
+    //
+    //  this is where the messgaes over secure qireguard mesh is handled - not working yet
+    //
     secureTrafficHandler = (callback: CallableFunction) => {
         var app = express();
         var self = this;
