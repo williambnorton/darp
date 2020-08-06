@@ -166,7 +166,7 @@
             })
 
             var d = new Date();
-            sleepTime = 1000 - (d.getTime() + 1000) % 1000;
+            sleepTime = 1000 - (d.getTime() + 1000) % 1000;  //start on second boundaries.
             setTimeout(fetchState, sleepTime);
         }
 
