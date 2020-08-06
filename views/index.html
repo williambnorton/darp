@@ -214,6 +214,7 @@
 </head>
 <body>    
     <h1>DARP Node <%= me.geo %> http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %></h1>
+    <h2>POLLFREQ= <%= config.cycleTime %> seconds</h2>
 
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
