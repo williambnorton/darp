@@ -214,7 +214,6 @@
 </head>
 <body>    
     <h1>DARP Node <%= me.geo %> http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %></h1>
-    <h2>POLLFREQ= <%= config.cycleTime %> seconds</h2>
 
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
@@ -226,6 +225,7 @@
     
     <% for (var p in myPulseGroups) { %>
         <% var pulseGroup=myPulseGroups[p]; %>
+        <h2>groupName POLLFREQ <%= pulseGroup.cycleTime %> seconds</h2>
 
         <!-- show OWL Matrix table -->
         <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>

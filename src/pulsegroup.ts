@@ -545,7 +545,7 @@ export class AugmentedPulseGroup {
         //var sleepTime=nextpoll*1000-now();
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
         //setTimeout(this.pulse, sleepTime);
-        console.log(`pulsing took=${now()%1000} ms`);
+        console.log(ts()+`** pulsing took=${now()%1000} ms`);
         setTimeout(this.pulse, PULSEFREQ*1000-(now()%1000)); //pull back to second boundaries
     };
 
