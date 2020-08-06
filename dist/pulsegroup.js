@@ -346,6 +346,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //         then they get all nodes as needed to measure/communicate
         // TODO: pulse (measure OWLs) over secure channel - just change to private addr
         this.pulse = function () {
+            console.log("pulsing " + lib_1.now());
             var ipary = [];
             var owls = "";
             for (var pulse in _this.pulses) {
@@ -433,7 +434,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 if ((m != "0") && m != "1" && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
                     // ignore mintTable[0]
                     var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
-                    if (elapsedMSincePulse > 15 * _this.cycleTime * 1000) { //after 15 cycles
+                    if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - remove
                         // timeout after  seconds
                         logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
                         console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
