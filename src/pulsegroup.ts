@@ -12,6 +12,7 @@ import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
 // Define constants
+const PULSEFREQ=5;  //how often to send pulses
 const SECURE_PORT=65020;
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
 const NO_MEASURE = -99999;
@@ -256,7 +257,7 @@ export class PulseGroup {
         this.ts = now();
         this.nodeCount = 1; // how many nodes in this pulsegroup
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
-        this.cycleTime = 1; // pulseGroup-wide setting: number of seconds between pulses
+        this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
         this.matrix = [];
         this.csvMatrix = [];
     }
@@ -538,9 +539,13 @@ export class AugmentedPulseGroup {
         // this.mintTable[0].state = "UP";
         this.mintTable[0].lastPulseTimestamp = now();
 
-        var sleepTime = 1000 - ((now() + 1000) % 1000); // start pulse around on the second
+//        var sleepTime = 1000 - ((now() + 1000 ) % 1000); // start pulse around on the second
+        //var nextpoll = ( now()+PULSEFREQ*1000) % 1000); // start pulse around on the second
+        //var sleepTime=nextpoll*1000-now();
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
-        setTimeout(this.pulse, sleepTime);
+        //setTimeout(this.pulse, sleepTime);
+        console.log(`worktime=${now()%1000} ms`);
+        setTimeout(this.pulse, PULSEFREQ*1000-(now()%1000)); //pull back to second boundaries
     };
 
     isGenesisNode = (): Boolean => {
@@ -559,8 +564,8 @@ export class AugmentedPulseGroup {
                 // ignore mintTable[0]
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                if (elapsedMSincePulse > 15 * this.cycleTime * 1000) {
-                    // timeout after 2 seconds
+                if (elapsedMSincePulse > 15 * this.cycleTime * 1000) {  //after 15 cycles
+                    // timeout after  seconds
                     logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
 
@@ -572,7 +577,7 @@ export class AugmentedPulseGroup {
                     if (this.isGenesisNode()) {
                         // Genesis only
                         logger.debug("m=" + m + " I am genesis node not seeing him for elapsedMSincePulse=" + elapsedMSincePulse);
-                        if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {
+                        if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles
                             // timeout node after 5 seconds
                             logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
@@ -580,7 +585,7 @@ export class AugmentedPulseGroup {
                     } else {
                         // not genesis - only can time out genesis
                         var age = now() - this.mintTable[1].lastPulseTimestamp;
-                        if (age > 30 * 1000) {
+                        if (age > 30 * 1000) {              //after 30 seconds genesis is gone
                             logger.error(`Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             process.exit(36);
                         }
