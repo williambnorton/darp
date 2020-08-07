@@ -278,10 +278,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     delete _this.pulses[pulseLabel];
                 }
             }
+            /*  delete code
             //remove mint from the group owner's owls list
-            if (_this.isGenesisNode()) {
-                var groupOwnerPulseLabel = _this.groupOwner + ":" + _this.groupName;
-                var groupOwnerPulseEntry = _this.pulses[groupOwnerPulseLabel];
+            if (this.isGenesisNode()) {
+                var groupOwnerPulseLabel = this.groupOwner + ":" + this.groupName;
+                var groupOwnerPulseEntry = this.pulses[groupOwnerPulseLabel];
                 if (groupOwnerPulseEntry != null) {
                     var owlEntryAry = groupOwnerPulseEntry.owls.split(",");
                     var newOwls = ""; // copy all but deleted OWLs to control population
@@ -292,6 +293,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
             }
+            /***/
             _this.nodeCount = Object.keys(_this.pulses).length;
         };
         // Build matrix of objects for each segment

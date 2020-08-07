@@ -388,6 +388,7 @@ export class AugmentedPulseGroup {
             }
         }
 
+        /*  delete code
         //remove mint from the group owner's owls list
         if (this.isGenesisNode()) {
             var groupOwnerPulseLabel = this.groupOwner + ":" + this.groupName;
@@ -402,6 +403,7 @@ export class AugmentedPulseGroup {
                 }
             }
         }
+        /***/
 
         this.nodeCount = Object.keys(this.pulses).length;
     };
