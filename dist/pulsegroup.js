@@ -786,6 +786,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             });
         };
         this.measurertt = function () {
+            return; // can not spin up 1 ping process per node per second
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"

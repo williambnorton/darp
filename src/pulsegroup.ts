@@ -955,6 +955,7 @@ export class AugmentedPulseGroup {
     };
 
     measurertt = () => {
+        return;  // can not spin up 1 ping process per node per second
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 
