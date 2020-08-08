@@ -48,7 +48,7 @@ var pulselayer_1 = require("./pulselayer");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 // Define constants
-var PULSEFREQ = 5; //how often to send pulses
+var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
 var FIND_EFFICIENCIES = false; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
@@ -372,12 +372,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             medianOfMedians);
                         var delta = Math.abs(medianOfMedians - pulseEntry.owl);
                         //TURN ON TO DEBUG FLAGGING
-                        // if (deviation!=0) console.log(`pulse(): geo=${nodeEntry.geo} nodeEntry.owl=${nodeEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                        // if ((nodeEntry.owl>4) && (deviation>DEVIATION_THRESHOLD)) {  //flag if off by 30% from median
-                        if (delta > 10) {
-                            // flag if deviation is > 10ms - we can improve that
-                            logger_1.logger.info("pulse(): Flagging " + pulseEntry.mint + "-" + _this.mintTable[0].mint + "=" + pulseEntry.owl + "  delta=" + delta + " geo=" + pulseEntry.geo + " to " + _this.config.GEO + " nodeEntry.owl=" + pulseEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
-                            flag = "@";
+                        if (deviation != 0)
+                            console.log("pulse(): geo=" + pulseEntry.geo + " pulseEntry.owl=" + pulseEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
+                        if ((pulseEntry.owl > 4) && (deviation > 10)) { //flag if off by 30% from median
+                            if (delta > 10) {
+                                // flag if deviation is > 10ms - we can improve that
+                                logger_1.logger.info("pulse(): Flagging " + pulseEntry.mint + "-" + _this.mintTable[0].mint + "=" + pulseEntry.owl + "  delta=" + delta + " geo=" + pulseEntry.geo + " to " + _this.config.GEO + " nodeEntry.owl=" + pulseEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
+                                flag = "@";
+                            }
                         }
                     }
                 }
