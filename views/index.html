@@ -398,11 +398,11 @@
                     <td class="<%= classNamePktDrops %>"><%= pulseEntry.pktDrops %></td>
                 <% } %>
                 
-                <% if (pulseEntry.lastMsg) { %>
+                <% if (pulseEntry.owls) { %>
                     <% let classNameGeoOwls = pulseEntry.geo + "_owls"; %>
                     <td><%= pulseEntry.lastMsg.length %></td>  <!-- pulse message size -->
                     <!-- <td class="<%= classNameGeoOwls %>"><%= pulseEntry.owls.substring(0, OWLS_DISPLAYED) %></td> -->
-                    <td><%= pulseEntry.lastMsg.substring(0,50) %></td>
+                    <td><%= pulseEntry.owls.substring(0,OWLS_DISPLAYED) %></td>
                 <% } else { %>
                     <td>""</td>
                     <td>""</td>
