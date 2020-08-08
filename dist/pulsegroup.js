@@ -50,6 +50,7 @@ var wireguard_1 = require("./wireguard");
 // Define constants
 var PULSEFREQ = 5; //how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
+var FIND_EFFICIENCIES = false; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -545,6 +546,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //  @wbnwbnwbnwbn
         //
         this.findEfficiencies = function () {
+            if (!FIND_EFFICIENCIES)
+                return;
             for (var srcP in _this.pulses) {
                 var srcEntry = _this.pulses[srcP];
                 for (var destP in _this.pulses) {
