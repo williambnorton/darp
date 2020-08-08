@@ -13,6 +13,7 @@ import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
 // Define constants
 const PULSEFREQ=5;  //how often to send pulses
+const MEASURE_RTT=false;   //ping across wireguard interface
 const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -955,7 +956,8 @@ export class AugmentedPulseGroup {
     };
 
     measurertt = () => {
-        return;  // can not spin up 1 ping process per node per second
+        if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
+        console.log(`measurertt()`);
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 

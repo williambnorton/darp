@@ -49,6 +49,7 @@ var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 // Define constants
 var PULSEFREQ = 5; //how often to send pulses
+var MEASURE_RTT = false; //ping across wireguard interface
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -786,7 +787,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             });
         };
         this.measurertt = function () {
-            return; // can not spin up 1 ping process per node per second
+            if (!MEASURE_RTT)
+                return; // can not spin up 1 ping process per node per second
+            console.log("measurertt()");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
