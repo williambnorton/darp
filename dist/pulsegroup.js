@@ -503,10 +503,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
             }
-            if (startingPulseEntryCount != Object.keys(_this.pulses).length)
-                ;
-            {
+            if (startingPulseEntryCount != Object.keys(_this.pulses).length) {
                 logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
+                console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
                 _this.flashWireguard(); //node list changed recreate wireguard file
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
