@@ -473,7 +473,6 @@ export class AugmentedPulseGroup {
     //         then they get all nodes as needed to measure/communicate
     // TODO: pulse (measure OWLs) over secure channel - just change to private addr
     pulse = () => {
-        console.log(`pulsing ${now()}`);
         var ipary: string[] = [];
         var owls = "";
 
