@@ -282,7 +282,6 @@ app.get('/nodefactory', function (req, res) {
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // clone my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
-    newNodePulseGroup.adminControl = 'RESYNCH'; //this will force a wireguard re-flash wg config file with this new node
     // send response to pulse group member node
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); // send mint:0 mint:1 *mint:N groupEntry *entryN
