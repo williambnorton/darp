@@ -639,6 +639,9 @@ export class AugmentedPulseGroup {
             }
         }
 
+        //
+        // if timeout changed the population, flashWireguard files
+        //
         if (startingPulseEntryCount != Object.keys(this.pulses).length) {
             logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
             console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);

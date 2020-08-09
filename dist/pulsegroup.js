@@ -503,6 +503,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
             }
+            //
+            // if timeout changed the population, flashWireguard files
+            //
             if (startingPulseEntryCount != Object.keys(_this.pulses).length) {
                 logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
                 console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
