@@ -365,7 +365,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
                 else {
                     var medianOfMeasures = lib_1.median(pulseEntry.history);
-                    if (pulseEntry.medianHistory.length > 0) {
+                    if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl != 0) {
                         // use medianHistory to identify a median to deviate from
                         var medianOfMedians = lib_1.median(pulseEntry.medianHistory);
                         var deviation = Math.round((Math.abs(medianOfMedians - pulseEntry.owl) * 100) /
@@ -377,6 +377,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         if ((pulseEntry.owl > 4) && (deviation > 10)) { //flag if off by 30% from median
                             if (delta > 10) {
                                 // flag if deviation is > 10ms - we can improve that
+                                console.log("pulse(): Flagging " + pulseEntry.mint + "-" + _this.mintTable[0].mint + "=" + pulseEntry.owl + "  delta=" + delta + " geo=" + pulseEntry.geo + " to " + _this.config.GEO + " nodeEntry.owl=" + pulseEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                                 logger_1.logger.info("pulse(): Flagging " + pulseEntry.mint + "-" + _this.mintTable[0].mint + "=" + pulseEntry.owl + "  delta=" + delta + " geo=" + pulseEntry.geo + " to " + _this.config.GEO + " nodeEntry.owl=" + pulseEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");
                                 flag = "@";
                             }
