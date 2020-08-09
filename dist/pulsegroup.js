@@ -419,12 +419,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             // this.mintTable[0].state = "UP";
             _this.mintTable[0].lastPulseTimestamp = lib_1.now();
-            //        var sleepTime = 1000 - ((now() + 1000 ) % 1000); // start pulse around on the second
-            //var nextpoll = ( now()+PULSEFREQ*1000) % 1000); // start pulse around on the second
-            //var sleepTime=nextpoll*1000-now();
             // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
-            //setTimeout(this.pulse, sleepTime);
-            console.log(lib_1.ts() + ("** pulsing took=" + lib_1.now() % 1000 + " ms"));
+            //console.log(ts()+`** pulsing took=${now()%1000} ms`);
             setTimeout(_this.pulse, PULSEFREQ * 1000 - (lib_1.now() % 1000)); //pull back to second boundaries
         };
         this.isGenesisNode = function () {
