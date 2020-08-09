@@ -444,7 +444,7 @@ export class AugmentedPulseGroup {
                 matrix[pulseEntry.mint][this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
             } else {
                 // old pulse - clear these entries
-                logger.warning(`${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp. Entering NO_OWL for all values to this node`);
+                logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
                 // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
