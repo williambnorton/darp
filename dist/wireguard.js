@@ -19,6 +19,9 @@ function wgdump() {
     console.log("wgconfig=" + wgconfig);
 }
 exports.wgdump = wgdump;
+//
+//  addMyWGStanza() - the interface stanza for the node itself
+//
 function addMyWGStanza(geo, ipaddr, port, mint, publickey) {
     var line0 = "#  " + lib_1.ts() + " Auto generated wireguard config file for DARP";
     var line1 = "#  " + geo + " " + ipaddr + ":" + port + " mint=" + mint + " PUBLICKEY=" + publickey;
@@ -28,6 +31,9 @@ function addMyWGStanza(geo, ipaddr, port, mint, publickey) {
     return line0 + "\n" + line1 + "\n" + line2 + "\n" + line3;
 }
 exports.addMyWGStanza = addMyWGStanza;
+//
+//  addPeerWGStanza() - the peer stanzas for the node itself
+//
 function addPeerWGStanza(geo, ipaddr, port, mint, publickey) {
     var ip = lib_1.mint2IP(mint); //private address for this node
     var line1 = "#\n" +

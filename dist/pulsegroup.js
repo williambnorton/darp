@@ -238,6 +238,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             logger_1.logger.debug("flashWireguard(): myStanza=" + myStanza + " peerStanza=" + peerStanza); // create first dummy wireguard confiig file (only me)
+            console.log("flashWireguard(): myStanza=" + myStanza + " peerStanza=" + peerStanza); // create first dummy wireguard confiig file (only me)
             wireguard_1.setWireguard(myStanza + "\n" + peerStanza);
         };
         //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
@@ -435,7 +436,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            var startingPulseEntryCount = _this.pulses.length;
+            var startingPulseEntryCount = Object.keys(_this.pulses).length;
+            ;
+            console.log("startingPulseEntryCount=" + startingPulseEntryCount);
             for (var m in _this.mintTable) {
                 if ((m != "0") && m != "1" && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
                     // ignore mintTable[0]
@@ -500,8 +503,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
             }
-            if (startingPulseEntryCount != _this.pulses.length) {
+            if (startingPulseEntryCount != Object.keys(_this.pulses).length)
+                ;
+            {
                 logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
+                _this.flashWireguard(); //node list changed recreate wireguard file
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()

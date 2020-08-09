@@ -340,6 +340,7 @@ export class AugmentedPulseGroup {
             }
         }
         logger.debug(`flashWireguard(): myStanza=${myStanza} peerStanza=${peerStanza}`); // create first dummy wireguard confiig file (only me)
+        console.log(`flashWireguard(): myStanza=${myStanza} peerStanza=${peerStanza}`); // create first dummy wireguard confiig file (only me)
         setWireguard(myStanza + "\n" + peerStanza);
     };
 
@@ -566,7 +567,8 @@ export class AugmentedPulseGroup {
     //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
-        const startingPulseEntryCount = this.pulses.length;
+        const startingPulseEntryCount = Object.keys(this.pulses).length;;
+        console.log(`startingPulseEntryCount=${startingPulseEntryCount}`);
         for (var m in this.mintTable) {
             if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
                 // ignore mintTable[0]
@@ -637,8 +639,9 @@ export class AugmentedPulseGroup {
             }
         }
 
-        if (startingPulseEntryCount != this.pulses.length) {
+        if (startingPulseEntryCount != Object.keys(this.pulses).length;) {
             logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
+            this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
