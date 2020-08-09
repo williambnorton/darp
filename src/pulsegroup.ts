@@ -568,7 +568,6 @@ export class AugmentedPulseGroup {
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
         const startingPulseEntryCount = Object.keys(this.pulses).length;;
-        console.log(`startingPulseEntryCount=${startingPulseEntryCount}`);
         for (var m in this.mintTable) {
             if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
                 // ignore mintTable[0]

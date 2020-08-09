@@ -438,7 +438,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.timeout = function () {
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             ;
-            console.log("startingPulseEntryCount=" + startingPulseEntryCount);
             for (var m in _this.mintTable) {
                 if ((m != "0") && m != "1" && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
                     // ignore mintTable[0]
