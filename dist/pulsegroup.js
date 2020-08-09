@@ -365,7 +365,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
                 else {
                     var medianOfMeasures = lib_1.median(pulseEntry.history);
-                    if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl != 0) {
+                    if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl != 0) { //medianHistory will take a minute to get an entry
                         // use medianHistory to identify a median to deviate from
                         var medianOfMedians = lib_1.median(pulseEntry.medianHistory);
                         var deviation = Math.round((Math.abs(medianOfMedians - pulseEntry.owl) * 100) /
@@ -373,8 +373,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         var delta = Math.abs(medianOfMedians - pulseEntry.owl);
                         //TURN ON TO DEBUG FLAGGING
                         //if (deviation!=0) 
-                        console.log("pulse(): geo=" + pulseEntry.geo + " pulseEntry.owl=" + pulseEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "% delta=" + delta);
-                        if ((pulseEntry.owl > 3) && (deviation > 1)) { //flag if off by 30% from median
+                        if ((delta > 0 && pulseEntry.owl > 3) && (deviation > 1)) { //flag if off by 30% from median
+                            console.log("pulse(): geo=" + pulseEntry.geo + " pulseEntry.owl=" + pulseEntry.owl + " medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "% delta=" + delta);
                             if (delta > 2) {
                                 // flag if deviation is > 10ms - we can improve that
                                 console.log("pulse(): Flagging " + pulseEntry.mint + "-" + _this.mintTable[0].mint + "=" + pulseEntry.owl + "  delta=" + delta + " geo=" + pulseEntry.geo + " to " + _this.config.GEO + " nodeEntry.owl=" + pulseEntry.owl + "@ medianOfMeasures=" + medianOfMeasures + " medianOfMedians=" + medianOfMedians + " deviation=" + deviation + "%");

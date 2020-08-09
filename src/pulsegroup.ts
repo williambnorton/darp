@@ -488,7 +488,7 @@ export class AugmentedPulseGroup {
                 owls += pulseEntry.mint + ",";
             } else {
                 var medianOfMeasures = median(pulseEntry.history);
-                if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl!=0) {
+                if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl!=0) {   //medianHistory will take a minute to get an entry
                     // use medianHistory to identify a median to deviate from
                     var medianOfMedians = median(pulseEntry.medianHistory);
                     var deviation = Math.round(
@@ -498,9 +498,9 @@ export class AugmentedPulseGroup {
                     var delta = Math.abs(medianOfMedians - pulseEntry.owl);
                     //TURN ON TO DEBUG FLAGGING
                      //if (deviation!=0) 
-                     console.log(`pulse(): geo=${pulseEntry.geo} pulseEntry.owl=${pulseEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}% delta=${delta}`);
 
-                     if ((pulseEntry.owl>3) && (deviation>1)) {  //flag if off by 30% from median
+                     if (( delta>0 && pulseEntry.owl>3) && (deviation>1)) {  //flag if off by 30% from median
+                        console.log(`pulse(): geo=${pulseEntry.geo} pulseEntry.owl=${pulseEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}% delta=${delta}`);
 
                         if (delta > 2) {
                             // flag if deviation is > 10ms - we can improve that
