@@ -906,6 +906,7 @@ export class AugmentedPulseGroup {
         const self = this;
 
         recvPulses(this.config.PORT, function (incomingPulse:IncomingPulse) {
+            console.log(`recvPulse(): ${dump(incomingPulse)}`);
             self.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         });
     };
