@@ -630,7 +630,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("workerThread(): " + _this.incomingPulseQueue.length);
             setTimeout(self.workerThread, 25); //come back again to batch process in 25 milliseconds
             if (_this.incomingPulseQueue.length == 0) {
-                console.log(lib_1.ts() + "worker(): no pkts to process");
+                //console.log(ts()+`worker(): no pkts to process`);
                 return;
             }
             function processIncomingPulse(incomingPulse) {
