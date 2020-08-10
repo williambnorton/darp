@@ -301,7 +301,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         // Build matrix of objects for each segment
         this.buildMatrix = function () {
-            return;
+            //return ;
             var matrix = [];
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
@@ -327,7 +327,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
                 else {
                     // old pulse - clear these entries
-                    logger_1.logger.warning("buildMatrix(): " + pulseEntry.geo + " mint#" + pulseEntry.mint + " has an old pulseTimestamp " + pulseEntry.pulseTimestamp + ". TODO: Enter NO_OWL for all values to this node");
+                    if (pulseEntry.pulseTimestamp != 0)
+                        logger_1.logger.warning("buildMatrix(): " + pulseEntry.geo + " mint#" + pulseEntry.mint + " has an old pulseTimestamp " + pulseEntry.pulseTimestamp + ". TODO: Enter NO_OWL for all values to this node");
+                    //it is possible that the node has not received a pulse yet - so value==0
                     // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                     // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                     //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
@@ -625,6 +627,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //called every 10ms to see if there are pkts to process
         this.workerThread = function () {
             var self = _this;
+            console.log("workerThread(): " + _this.incomingPulseQueue.length);
             function processIncomingPulse(incomingPulse) {
                 // look up the pulse claimed mint
                 var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];

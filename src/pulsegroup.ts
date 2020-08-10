@@ -413,7 +413,7 @@ export class AugmentedPulseGroup {
 
     // Build matrix of objects for each segment
     buildMatrix = () => {
-        return ;
+        //return ;
         var matrix: number[][] = [];
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
@@ -445,8 +445,12 @@ export class AugmentedPulseGroup {
                 matrix[pulseEntry.mint][this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
             } else {
                 // old pulse - clear these entries
-                logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
-                // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                if (pulseEntry.pulseTimestamp!=0) 
+                    logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
+                
+                //it is possible that the node has not received a pulse yet - so value==0
+                
+                    // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
                 // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
                 //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
                 //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
@@ -770,7 +774,7 @@ export class AugmentedPulseGroup {
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
         const self = this;
-
+        console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
         function processIncomingPulse(incomingPulse: IncomingPulse) {
            // look up the pulse claimed mint
            var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];
