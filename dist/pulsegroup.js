@@ -744,6 +744,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("workerThread() handling incoming pulse: " + lib_1.dump(pulse));
                 processIncomingPulse(pulse);
             }
+            setTimeout(_this.workerThread, 10); //come back in 10 milliseconds and try again
         };
         //
         //  recvPulses
@@ -757,7 +758,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("************************** setting timeoput in 10ms to run worker thread incom,ingqueue length=" + self.incomingPulseQueue.length);
             console.log("************************** setting timeoput in 10ms to run worker thread");
             console.log("************************** setting timeoput in 10ms to run worker thread");
-            setTimeout(_this.workerThread, 10);
+            setTimeout(_this.workerThread, 10); //start workerthread to asynchronously processes pulse
         };
         // Store one-way latencies to file or graphing & history
         this.storeOWL = function (src, dst, srcMint) {
