@@ -556,8 +556,8 @@ export class AugmentedPulseGroup {
         this.mintTable[0].lastPulseTimestamp = now();
 
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
-        //console.log(ts()+`** pulsing took=${now()%1000} ms`);
-        setTimeout(this.pulse, PULSEFREQ*1000-(now()%1000)); //pull back to second boundaries
+        console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
+        setTimeout(this.pulse, PULSEFREQ*1000-(now()%1000)); //pull back to on-second boundary
     };
 
     isGenesisNode = (): Boolean => {
@@ -778,7 +778,7 @@ export class AugmentedPulseGroup {
     workerThread = () => {
         const self = this;
         //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-        setTimeout(self.workerThread,50);  //QUEUE up incoming pksts and come back again to batch process in 50 milliseconds buckets
+        setTimeout(self.workerThread,100);  //QUEUE up incoming pksts and come back again to batch process every ____ milliseconds
         //another way to do this is to time this work to tie to the timeout (500ms) point
         //pulsingis timeed to start on the second boundary for self timing ease
 
@@ -908,10 +908,10 @@ export class AugmentedPulseGroup {
                //maybe also add empty pulse records for each that don't have a pulse record
            }
         }
+        if (this.incomingPulseQueue.length>10) 
+            console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
         for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
             //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
-            if (this.incomingPulseQueue.length>0) 
-                console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incom,ing pulses`);
             processIncomingPulse(pulse);
         }
     }

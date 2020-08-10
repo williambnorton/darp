@@ -424,8 +424,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             // this.mintTable[0].state = "UP";
             _this.mintTable[0].lastPulseTimestamp = lib_1.now();
             // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
-            //console.log(ts()+`** pulsing took=${now()%1000} ms`);
-            setTimeout(_this.pulse, PULSEFREQ * 1000 - (lib_1.now() % 1000)); //pull back to second boundaries
+            console.log(lib_1.ts() + ("** pulsing took=" + lib_1.now() % 1000 + " ms since we started on second boundary"));
+            setTimeout(_this.pulse, PULSEFREQ * 1000 - (lib_1.now() % 1000)); //pull back to on-second boundary
         };
         this.isGenesisNode = function () {
             return _this.mintTable[0].geo == _this.groupOwner;
@@ -631,7 +631,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.workerThread = function () {
             var self = _this;
             //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-            setTimeout(self.workerThread, 50); //QUEUE up incoming pksts and come back again to batch process in 50 milliseconds buckets
+            setTimeout(self.workerThread, 100); //QUEUE up incoming pksts and come back again to batch process every ____ milliseconds
             //another way to do this is to time this work to tie to the timeout (500ms) point
             //pulsingis timeed to start on the second boundary for self timing ease
             if (_this.incomingPulseQueue.length == 0) {
@@ -746,10 +746,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //maybe also add empty pulse records for each that don't have a pulse record
                 }
             }
+            if (_this.incomingPulseQueue.length > 10)
+                console.log("workerthread is buffering for " + _this.incomingPulseQueue.length + " incoming pulses");
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
                 //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
-                if (_this.incomingPulseQueue.length > 0)
-                    console.log("workerthread is buffering for " + _this.incomingPulseQueue.length + " incom,ing pulses");
                 processIncomingPulse(pulse);
             }
         };
