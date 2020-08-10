@@ -426,9 +426,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var timeNow = _this.mintTable[0].lastPulseTimestamp; //
             var sleepTime = PULSEFREQ * 1000 - timeNow % 1000;
             // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
-            console.log("timeNow%1000=" + timeNow % 1000 + " sleeping " + sleepTime + " ms");
-            console.log(lib_1.ts() + ("** pulsing took=" + lib_1.now() % 1000 + " ms since we started on second boundary"));
-            setTimeout(_this.pulse, PULSEFREQ * 1000 - (lib_1.now() % 1000)); //pull back to on-second boundary
+            //console.log(`timeNow%1000=${timeNow%1000} sleeping ${sleepTime} ms`);
+            //console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
+            setTimeout(_this.pulse, sleepTime); //pull back to on-second boundary
         };
         this.isGenesisNode = function () {
             return _this.mintTable[0].geo == _this.groupOwner;
@@ -515,24 +515,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
-            _this.findEfficiencies(); //find where better paths exist between intermediaries
-            //
-            //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
-            //
-            var timeNow = lib_1.now();
-            for (var e in _this.extraordinaryPaths) {
-                var extraordinaryPath = _this.extraordinaryPaths[e];
-                // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
-                var freshness = timeNow - extraordinaryPath.lastUpdated;
-                // console.log("freshness="+freshness);
-                if (freshness > 2000) {
-                    var duration = timeNow - extraordinaryPath.startTimestamp;
-                    console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide + " lasted " + duration + " ms");
-                    delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
-                }
-            }
-            if (Object.keys(_this.extraordinaryPaths).length > 0)
-                console.log("" + lib_1.dump(_this.extraordinaryPaths));
         };
         //
         //  @wbnwbnwbnwbn
@@ -599,6 +581,24 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         }
                 }
             }
+            //
+            //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
+            //
+            var timeNow = now();
+            for (var e in _this.extraordinaryPaths) {
+                var extraordinaryPath = _this.extraordinaryPaths[e];
+                // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
+                var freshness = timeNow - extraordinaryPath.lastUpdated;
+                // console.log("freshness="+freshness);
+                if (freshness > 2000) {
+                    var duration = timeNow - extraordinaryPath.startTimestamp;
+                    console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide + " lasted " + duration + " ms");
+                    delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+                }
+            }
+            if (Object.keys(_this.extraordinaryPaths).length > 0)
+                console.log("" + lib_1.dump(_this.extraordinaryPaths));
+            setTimeout(_this.findEfficiencies, 1000); //run again in a second
         };
         this.checkSWversion = function () {
             if (_this.groupOwner == _this.config.GEO) {
@@ -765,10 +765,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`recvPulse(): ${dump(incomingPulse)}`);
                 self.incomingPulseQueue.push(incomingPulse); //tmp patch to test
             });
+            //
+            //  The following code happens only once
+            //
             console.log("************************** setting timeoput in 10ms to run worker thread incom,ingqueue length=" + self.incomingPulseQueue.length);
             console.log("************************** setting timeoput in 10ms to run worker thread");
             console.log("************************** setting timeoput in 10ms to run worker thread");
             setTimeout(_this.workerThread, 10); //start workerthread to asynchronously processes pulse - happens one time
+            setTimeout(_this.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
         };
         // Store one-way latencies to file or graphing & history
         this.storeOWL = function (src, dst, srcMint) {

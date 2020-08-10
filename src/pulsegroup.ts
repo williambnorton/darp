@@ -558,9 +558,9 @@ export class AugmentedPulseGroup {
         var sleepTime=PULSEFREQ*1000-timeNow%1000;
 
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
-        console.log(`timeNow%1000=${timeNow%1000} sleeping ${sleepTime} ms`);
-        console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
-        setTimeout(this.pulse, PULSEFREQ*1000-(now()%1000)); //pull back to on-second boundary
+        //console.log(`timeNow%1000=${timeNow%1000} sleeping ${sleepTime} ms`);
+        //console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
+        setTimeout(this.pulse, sleepTime); //pull back to on-second boundary
     };
 
     isGenesisNode = (): Boolean => {
@@ -655,26 +655,11 @@ export class AugmentedPulseGroup {
         this.nodeCount = Object.keys(this.pulses).length;
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
 
-        this.findEfficiencies();   //find where better paths exist between intermediaries
-        //
-        //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
-        //
-        const timeNow=now();
-        for (var e in this.extraordinaryPaths) {
-            var extraordinaryPath=this.extraordinaryPaths[e];
-            // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
-            var freshness=timeNow-extraordinaryPath.lastUpdated;
-            // console.log("freshness="+freshness);
-            if (freshness>2000) {
-                var duration=timeNow-extraordinaryPath.startTimestamp;
-                console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
-                delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
-            } 
-        }
-        if (Object.keys(this.extraordinaryPaths).length>0) console.log(`${dump(this.extraordinaryPaths)}`);
-        
+       
 
     };
+
+
 
     //
     //  @wbnwbnwbnwbn
@@ -738,7 +723,23 @@ export class AugmentedPulseGroup {
                 }
             }
         }
-
+                //
+        //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
+        //
+        const timeNow=now();
+        for (var e in this.extraordinaryPaths) {
+            var extraordinaryPath=this.extraordinaryPaths[e];
+            // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
+            var freshness=timeNow-extraordinaryPath.lastUpdated;
+            // console.log("freshness="+freshness);
+            if (freshness>2000) {
+                var duration=timeNow-extraordinaryPath.startTimestamp;
+                console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
+                delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+            } 
+        }
+        if (Object.keys(this.extraordinaryPaths).length>0) console.log(`${dump(this.extraordinaryPaths)}`);
+        setTimeout(this.findEfficiencies,1000);  //run again in a second
     }
 
     checkSWversion = () => {
@@ -928,10 +929,15 @@ export class AugmentedPulseGroup {
             //console.log(`recvPulse(): ${dump(incomingPulse)}`);
             self.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         });
+        //
+        //  The following code happens only once
+        //
         console.log(`************************** setting timeoput in 10ms to run worker thread incom,ingqueue length=${self.incomingPulseQueue.length}`);
         console.log(`************************** setting timeoput in 10ms to run worker thread`);
         console.log(`************************** setting timeoput in 10ms to run worker thread`);
         setTimeout(this.workerThread,10);  //start workerthread to asynchronously processes pulse - happens one time
+        setTimeout(this.findEfficiencies,1000);   //find where better paths exist between intermediaries - wait a second 
+
     };
 
     // Store one-way latencies to file or graphing & history
