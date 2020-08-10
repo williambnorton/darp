@@ -776,6 +776,8 @@ export class AugmentedPulseGroup {
     workerThread = () => {
         const self = this;
         console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
+        setTimeout(this.workerThread,10);  //come back in 10 milliseconds
+
         if (this.incomingPulseQueue.length==0) {
             console.log(ts()+`worker(): no pkts to process`);
             return;
@@ -905,7 +907,6 @@ export class AugmentedPulseGroup {
             console.log(`workerThread() handling incoming pulse: ${dump(pulse)}`);
             processIncomingPulse(pulse);
         }
-        setTimeout(this.workerThread,10);  //come back in 10 milliseconds and try again
     }
     //
     //  recvPulses

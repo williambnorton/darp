@@ -628,6 +628,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.workerThread = function () {
             var self = _this;
             console.log("workerThread(): " + _this.incomingPulseQueue.length);
+            setTimeout(_this.workerThread, 10); //come back in 10 milliseconds
             if (_this.incomingPulseQueue.length == 0) {
                 console.log(lib_1.ts() + "worker(): no pkts to process");
                 return;
@@ -744,7 +745,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("workerThread() handling incoming pulse: " + lib_1.dump(pulse));
                 processIncomingPulse(pulse);
             }
-            setTimeout(_this.workerThread, 10); //come back in 10 milliseconds and try again
         };
         //
         //  recvPulses
