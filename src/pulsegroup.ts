@@ -109,6 +109,7 @@ export class Config {
         this.GEO = GEO;
 
         this.WALLET = process.env.WALLET || "auto";
+
     }
 }
 
@@ -775,6 +776,10 @@ export class AugmentedPulseGroup {
     workerThread = () => {
         const self = this;
         console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
+        if (this.incomingPulseQueue.length==0) {
+            console.log(ts()+`worker(): no pkts to process`);
+            return;
+        }
         function processIncomingPulse(incomingPulse: IncomingPulse) {
            // look up the pulse claimed mint
            var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];
@@ -838,7 +843,6 @@ export class AugmentedPulseGroup {
                    //   Start everything
                    //
                    setInterval(self.measurertt,WG_PULSEFREQ*1000);  
-                   setInterval(self.workerThread,10);  //check incomingPulse Queue every 10ms  
                    self.secureTrafficHandler((data: any) => {
                        console.log(`secureChannel traffic handler callback: ${data}`);
                    });
@@ -902,7 +906,6 @@ export class AugmentedPulseGroup {
             processIncomingPulse(pulse);
         }
     }
-
     //
     //  recvPulses
     //
@@ -913,6 +916,7 @@ export class AugmentedPulseGroup {
             console.log(`recvPulse(): ${dump(incomingPulse)}`);
             self.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         });
+        setTimeout(this.workerThread,10);
     };
 
     // Store one-way latencies to file or graphing & history
@@ -1073,6 +1077,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         "&myip=" + config.IP +
         "&ts=" + now();
     var pulseGroupObjectURL = encodeURI(configurl);
+
     logger.info(
         `getPulseGroup(): getting pulseGroup from url=${pulseGroupObjectURL}`
     );

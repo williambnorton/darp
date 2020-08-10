@@ -628,6 +628,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.workerThread = function () {
             var self = _this;
             console.log("workerThread(): " + _this.incomingPulseQueue.length);
+            if (_this.incomingPulseQueue.length == 0) {
+                console.log(lib_1.ts() + "worker(): no pkts to process");
+                return;
+            }
             function processIncomingPulse(incomingPulse) {
                 // look up the pulse claimed mint
                 var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];
@@ -688,7 +692,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         //   Start everything
                         //
                         setInterval(self.measurertt, WG_PULSEFREQ * 1000);
-                        setInterval(self.workerThread, 10); //check incomingPulse Queue every 10ms  
                         self.secureTrafficHandler(function (data) {
                             console.log("secureChannel traffic handler callback: " + data);
                         });
@@ -751,6 +754,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("recvPulse(): " + lib_1.dump(incomingPulse));
                 self.incomingPulseQueue.push(incomingPulse); //tmp patch to test
             });
+            setTimeout(_this.workerThread, 10);
         };
         // Store one-way latencies to file or graphing & history
         this.storeOWL = function (src, dst, srcMint) {
