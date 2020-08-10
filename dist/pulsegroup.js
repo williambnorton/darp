@@ -301,6 +301,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         // Build matrix of objects for each segment
         this.buildMatrix = function () {
+            return;
             var matrix = [];
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];

@@ -413,6 +413,7 @@ export class AugmentedPulseGroup {
 
     // Build matrix of objects for each segment
     buildMatrix = () => {
+        return ;
         var matrix: number[][] = [];
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
