@@ -776,12 +776,13 @@ export class AugmentedPulseGroup {
     workerThread = () => {
         const self = this;
         console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-        setTimeout(this.workerThread,10);  //come back in 10 milliseconds
+        setTimeout(self.workerThread,25);  //come back again to batch process in 25 milliseconds
 
         if (this.incomingPulseQueue.length==0) {
             console.log(ts()+`worker(): no pkts to process`);
             return;
         }
+        
         function processIncomingPulse(incomingPulse: IncomingPulse) {
            // look up the pulse claimed mint
            var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];
