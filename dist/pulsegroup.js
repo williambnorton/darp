@@ -754,6 +754,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("recvPulse(): " + lib_1.dump(incomingPulse));
                 self.incomingPulseQueue.push(incomingPulse); //tmp patch to test
             });
+            console.log("setting timeoput in 10ms to run worker thread");
             setTimeout(_this.workerThread, 10);
         };
         // Store one-way latencies to file or graphing & history

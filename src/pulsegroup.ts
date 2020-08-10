@@ -916,6 +916,7 @@ export class AugmentedPulseGroup {
             console.log(`recvPulse(): ${dump(incomingPulse)}`);
             self.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         });
+        console.log(`setting timeoput in 10ms to run worker thread`);
         setTimeout(this.workerThread,10);
     };
 
