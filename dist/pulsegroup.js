@@ -620,10 +620,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
             });
             setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
         };
-        //  recvPulses
-        this.recvPulses = function () {
+        this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
+        //called every 10ms to see if there are pkts to process
+        this.workerThread = function () {
             var self = _this;
-            pulselayer_1.recvPulses(_this.config.PORT, function (incomingPulse) {
+            function processIncomingPulse(incomingPulse) {
                 // look up the pulse claimed mint
                 var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];
                 var incomingPulseMintEntry = self.mintTable[incomingPulse.mint];
@@ -679,7 +680,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         logger_1.logger.info("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         console.log("Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                         self.mintTable[0].state = "UP";
+                        //
+                        //   Start everything
+                        //
                         setInterval(self.measurertt, WG_PULSEFREQ * 1000);
+                        setInterval(self.workerThread, 10); //check incomingPulse Queue every 10ms  
                         self.secureTrafficHandler(function (data) {
                             console.log("secureChannel traffic handler callback: " + data);
                         });
@@ -727,6 +732,19 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
                     //maybe also add empty pulse records for each that don't have a pulse record
                 }
+            }
+            for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
+                console.log("handling incoming pulse: " + lib_1.dump(incomingPulse));
+                processIncomingPulse(pulse);
+            }
+        };
+        //
+        //  recvPulses
+        //
+        this.recvPulses = function () {
+            var self = _this;
+            pulselayer_1.recvPulses(_this.config.PORT, function (incomingPulse) {
+                self.incomingPulseQueue.push(incomingPulse); //tmp patch to test
             });
         };
         // Store one-way latencies to file or graphing & history

@@ -64,7 +64,6 @@ echo `date` "Base wireguard config: darp0.conf " `cat $WGDIR/darp0.conf`
 echo `date` $0 wgbase.conf below - the rest will be added by running code
 cat $WGDIR/wgbase.conf
 cp $DARPDIR/scripts/wgwatch.bash $WGDIR/.  #need a better way here  #forever loop around wg-quick when darp.conf file changes
-cp $DARPDIR/scripts/darpwatch.bash $WGDIR/.  
 chmod 755 $WGDIR/wgwatch.bash 
 chmod 755 $WGDIR/darpwatch.bash 
 ls -ld $WGDIR
