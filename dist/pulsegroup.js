@@ -50,7 +50,7 @@ var wireguard_1 = require("./wireguard");
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
-var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
+var FIND_EFFICIENCIES = false; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -356,6 +356,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.pulse = function () {
             var ipary = [];
             var owls = "";
+            //
+            //  First make owls list to pulse and highlight segments that should be looked aty with a FLAG '@'
+            //
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
                 ipary.push(pulseEntry.ipaddr + "_" + pulseEntry.port);

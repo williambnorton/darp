@@ -14,7 +14,7 @@ import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 // Define constants
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
 const MEASURE_RTT=false;   //ping across wireguard interface
-const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
+const FIND_EFFICIENCIES=false; //search for better paths through intermediaries
 const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -481,7 +481,9 @@ export class AugmentedPulseGroup {
     pulse = () => {
         var ipary: string[] = [];
         var owls = "";
-
+        //
+        //  First make owls list to pulse and highlight segments that should be looked aty with a FLAG '@'
+        //
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             ipary.push(pulseEntry.ipaddr + "_" + pulseEntry.port);
