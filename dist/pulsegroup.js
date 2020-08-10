@@ -599,7 +599,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             if (Object.keys(_this.extraordinaryPaths).length > 0)
                 console.log("" + lib_1.dump(_this.extraordinaryPaths));
-            setTimeout(_this.findEfficiencies, 1000); //run again in a second
+            _this.mintTable[0].lastPulseTimestamp = timeNow;
+            var sleepTime = PULSEFREQ * 1000 - timeNow % 1000 + 600; //let's run find efficiencies happens in last 400ms
+            console.log("re-running findEfficiencies() in some miiliseconds: " + sleepTime);
+            setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {
             if (_this.groupOwner == _this.config.GEO) {
