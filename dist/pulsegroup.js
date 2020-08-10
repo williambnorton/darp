@@ -734,7 +734,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
-                console.log("handling incoming pulse: " + lib_1.dump(incomingPulse));
+                console.log("workerThread() handling incoming pulse: " + lib_1.dump(pulse));
                 processIncomingPulse(pulse);
             }
         };

@@ -893,7 +893,7 @@ export class AugmentedPulseGroup {
            }
         }
         for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
-            console.log(`handling incoming pulse: ${dump(incomingPulse)}`);
+            console.log(`workerThread() handling incoming pulse: ${dump(pulse)}`);
             processIncomingPulse(pulse);
         }
     }
