@@ -775,7 +775,7 @@ export class AugmentedPulseGroup {
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
         const self = this;
-        console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
+        //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
         setTimeout(self.workerThread,25);  //come back again to batch process in 25 milliseconds
 
         if (this.incomingPulseQueue.length==0) {
