@@ -628,7 +628,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.workerThread = function () {
             var self = _this;
             //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-            setTimeout(self.workerThread, 25); //come back again to batch process in 25 milliseconds
+            setTimeout(self.workerThread, 30); //come back again to batch process in 30 milliseconds
             if (_this.incomingPulseQueue.length == 0) {
                 //console.log(ts()+`worker(): no pkts to process`);
                 return;
@@ -742,7 +742,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
-                console.log("workerThread() handling incoming pulse: " + lib_1.dump(pulse));
+                console.log("workerThread() Qlen=" + _this.incomingPulseQueue.length + " handling incoming pulse: " + lib_1.dump(pulse));
                 processIncomingPulse(pulse);
             }
         };
@@ -758,7 +758,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("************************** setting timeoput in 10ms to run worker thread incom,ingqueue length=" + self.incomingPulseQueue.length);
             console.log("************************** setting timeoput in 10ms to run worker thread");
             console.log("************************** setting timeoput in 10ms to run worker thread");
-            setTimeout(_this.workerThread, 10); //start workerthread to asynchronously processes pulse
+            setTimeout(_this.workerThread, 10); //start workerthread to asynchronously processes pulse - happens one time
         };
         // Store one-way latencies to file or graphing & history
         this.storeOWL = function (src, dst, srcMint) {
