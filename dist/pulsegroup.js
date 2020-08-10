@@ -50,7 +50,7 @@ var wireguard_1 = require("./wireguard");
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
-var FIND_EFFICIENCIES = false; //search for better paths through intermediaries
+var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -628,7 +628,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.workerThread = function () {
             var self = _this;
             //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-            setTimeout(self.workerThread, 30); //come back again to batch process in 30 milliseconds
+            setTimeout(self.workerThread, 50); //QUEUE up incoming pksts and come back again to batch process in 50 milliseconds buckets
+            //another way to do this is to time this work to tie to the timeout (500ms) point
+            //pulsingis timeed to start on the second boundary for self timing ease
             if (_this.incomingPulseQueue.length == 0) {
                 //console.log(ts()+`worker(): no pkts to process`);
                 return;
