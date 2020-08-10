@@ -584,7 +584,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //
             //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
             //
-            var timeNow = now();
+            var d = new Date();
+            var timeNow = d.getTime();
             for (var e in _this.extraordinaryPaths) {
                 var extraordinaryPath = _this.extraordinaryPaths[e];
                 // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));

@@ -723,10 +723,10 @@ export class AugmentedPulseGroup {
                 }
             }
         }
-                //
+        //
         //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
         //
-        const timeNow=now();
+        const d=new Date();const timeNow=d.getTime();
         for (var e in this.extraordinaryPaths) {
             var extraordinaryPath=this.extraordinaryPaths[e];
             // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
