@@ -742,7 +742,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
-                console.log("workerThread() Qlen=" + _this.incomingPulseQueue.length + " handling incoming pulse: " + lib_1.dump(pulse));
+                //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
+                if (_this.incomingPulseQueue.length > 0)
+                    console.log("workerthread is buffering for " + _this.incomingPulseQueue.length + " incom,ing pulses");
                 processIncomingPulse(pulse);
             }
         };

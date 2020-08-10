@@ -905,7 +905,9 @@ export class AugmentedPulseGroup {
            }
         }
         for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
-            console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
+            //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
+            if (this.incomingPulseQueue.length>0) 
+                console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incom,ing pulses`);
             processIncomingPulse(pulse);
         }
     }
