@@ -424,6 +424,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             // this.mintTable[0].state = "UP";
             _this.mintTable[0].lastPulseTimestamp = lib_1.now();
             // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
+            console.log("timeNow%1000=" + timeNow % 1000 + " sleeping " + (1000 - timeNow % 1000) + " ms");
             console.log(lib_1.ts() + ("** pulsing took=" + lib_1.now() % 1000 + " ms since we started on second boundary"));
             setTimeout(_this.pulse, PULSEFREQ * 1000 - (lib_1.now() % 1000)); //pull back to on-second boundary
         };
