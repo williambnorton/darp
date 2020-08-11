@@ -757,6 +757,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //maybe also add empty pulse records for each that don't have a pulse record
                 }
             }
+            //
+            //  workerthread 
+            //
             if (_this.incomingPulseQueue.length > 10)
                 console.log("workerthread is buffering for " + _this.incomingPulseQueue.length + " incoming pulses");
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
