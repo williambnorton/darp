@@ -702,11 +702,11 @@ export class AugmentedPulseGroup {
                             var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
                             var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls);
                             if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
-                                var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;
+                                var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //possible better path through intermeidary
                                
                                     var delta=intermediaryPathLatency - direct;
                                     // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-                                    if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -5) {
+                                    if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
                                         var dd=new Date()
                                         // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                         // This overwrites existing entry, replacing timestamp
