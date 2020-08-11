@@ -14,7 +14,7 @@ import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 // Define constants
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
 const MEASURE_RTT=false;   //ping across wireguard interface
-const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
+const FIND_EFFICIENCIES=false; //search for better paths through intermediaries
 const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
 const CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
@@ -702,7 +702,7 @@ export class AugmentedPulseGroup {
                         var intermediaryEntry = this.pulses[iP];  //this code is passed n-cubed times
 
                         if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                            var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
+                            var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //these lookups done n-cubed times
                             var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls);
                             if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                 var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //possible better path through intermeidary
@@ -710,7 +710,7 @@ export class AugmentedPulseGroup {
                                 var delta=intermediaryPathLatency - direct;
                                 // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
                                 if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
-                                    var dd=new Date()
+                                    var dd=new Date();
                                     // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                     // This overwrites existing entry, replacing timestamp
                                     const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
