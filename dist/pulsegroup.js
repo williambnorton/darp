@@ -577,7 +577,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                             // console.log("Existing startTimestamp="+startTimestamp);
                                             _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                         }
-                                        console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
+                                        //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
                                     }
                                 }
                             }
