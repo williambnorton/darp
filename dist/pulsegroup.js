@@ -538,10 +538,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         //
         //  @wbnwbnwbnwbn
+        //      Secret suace - the measures are relative so skews are systematic and offset each other
+        //                  we only need to know if it is faster through intermediary
         //
         this.findEfficiencies = function () {
             if (!FIND_EFFICIENCIES)
                 return;
+            var s = new Date();
+            var startTimestampFE = s.getTime();
             console.log(lib_1.ts() + "findEfficiencies(): ");
             for (var srcP in _this.pulses) {
                 var srcEntry = _this.pulses[srcP];
@@ -601,7 +605,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("" + lib_1.dump(_this.extraordinaryPaths));
             _this.mintTable[0].lastPulseTimestamp = timeNow;
             var sleepTime = PULSEFREQ * 1000 - timeNow % 1000 + 600; //let's run find efficiencies happens in last 400ms
-            console.log("re-running findEfficiencies() in some miiliseconds: " + sleepTime);
+            console.log("Processing finedEfficiencies() took " + (timeNow - startTimestampFE) + "ms . Launching findEfficiencies() in " + sleepTime + "ms");
             setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {

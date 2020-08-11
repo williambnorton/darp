@@ -682,9 +682,12 @@ export class AugmentedPulseGroup {
     };
     //
     //  @wbnwbnwbnwbn
+    //      Secret suace - the measures are relative so skews are systematic and offset each other
+    //                  we only need to know if it is faster through intermediary
     //
-    findEfficiencies = () => {      //run every second after timeout code
+    findEfficiencies = () => {      //run every second - compute intensive
         if (!FIND_EFFICIENCIES) return;
+        const s=new Date(); const startTimestampFE=s.getTime();
 
         console.log(ts()+`findEfficiencies(): `);
         for (var srcP in this.pulses) {
@@ -704,23 +707,23 @@ export class AugmentedPulseGroup {
                             if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                 var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //possible better path through intermeidary
                                
-                                    var delta=intermediaryPathLatency - direct;
-                                    // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-                                    if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
-                                        var dd=new Date()
-                                        // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                        // This overwrites existing entry, replacing timestamp
-                                        const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
-                                        if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                            // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
-                                            this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
-                                        } else {
-                                            //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                            // console.log("Existing startTimestamp="+startTimestamp);
-                                            this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
-                                        }
-                                        console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
+                                var delta=intermediaryPathLatency - direct;
+                                // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+                                if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
+                                    var dd=new Date()
+                                    // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                    // This overwrites existing entry, replacing timestamp
+                                    const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
+                                    if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
+                                        // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
+                                        this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                    } else {
+                                        //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
+                                        // console.log("Existing startTimestamp="+startTimestamp);
+                                        this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
                                     }
+                                    console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
+                                }
                                 
                             }
                         }
@@ -746,7 +749,7 @@ export class AugmentedPulseGroup {
         if (Object.keys(this.extraordinaryPaths).length>0) console.log(`${dump(this.extraordinaryPaths)}`);
         this.mintTable[0].lastPulseTimestamp = timeNow;
         var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
-        console.log(`re-running findEfficiencies() in some miiliseconds: ${sleepTime}`);
+        console.log(`Processing finedEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
         setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
     }
 
