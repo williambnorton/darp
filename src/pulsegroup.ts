@@ -684,6 +684,7 @@ export class AugmentedPulseGroup {
     //  @wbnwbnwbnwbn
     //      Secret suace - the measures are relative so skews are systematic and offset each other
     //                  we only need to know if it is faster through intermediary
+    //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
     //
     findEfficiencies = () => {      //run every second - compute intensive
         if (!FIND_EFFICIENCIES) return;
@@ -694,18 +695,21 @@ export class AugmentedPulseGroup {
             var srcEntry = this.pulses[srcP];
             for (var destP in this.pulses) {
                 var destEntry = this.pulses[destP];     //this code is passed n-squared times!!!
-
-                var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // get direct latency measure
+                
+                var direct = this.matrix[srcEntry.mint][destEntry.mint];  // e
+                //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
                 // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
                 if (destEntry!=srcEntry && typeof direct != "undefined" ) {  //avoid self-self, direct owl has a value
                     for (var iP in this.pulses) {
                         var intermediaryEntry = this.pulses[iP];  //this code is passed n-cubed times
 
                         if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                            var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //these lookups done n-cubed times
-                            var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls);
+                            var srcToIntermediary = this.matrix[srcEntry.mint][intermediaryEntry.mint];  //^^^^^ these lookups done n-cubed times
+                            //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
+                            var intermediaryToDest = this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
+                            //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
                             if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
-                                var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //possible better path through intermeidary
+                                var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //^^^^^^ possible better path through intermeidary
                                
                                 var delta=intermediaryPathLatency - direct;
                                 // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
