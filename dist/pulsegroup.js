@@ -605,7 +605,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("" + lib_1.dump(_this.extraordinaryPaths));
             _this.mintTable[0].lastPulseTimestamp = timeNow;
             var sleepTime = PULSEFREQ * 1000 - timeNow % 1000 + 600; //let's run find efficiencies happens in last 400ms
-            console.log("Processing finedEfficiencies() took " + (timeNow - startTimestampFE) + "ms . Launching findEfficiencies() in " + sleepTime + "ms");
+            console.log("Processing findEfficiencies() took " + (timeNow - startTimestampFE) + "ms . Launching findEfficiencies() in " + sleepTime + "ms");
             setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {

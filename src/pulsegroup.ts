@@ -749,7 +749,7 @@ export class AugmentedPulseGroup {
         if (Object.keys(this.extraordinaryPaths).length>0) console.log(`${dump(this.extraordinaryPaths)}`);
         this.mintTable[0].lastPulseTimestamp = timeNow;
         var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
-        console.log(`Processing finedEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
+        console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
         setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
     }
 
