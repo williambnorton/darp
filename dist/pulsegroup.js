@@ -546,40 +546,39 @@ var AugmentedPulseGroup = /** @class */ (function () {
             for (var srcP in _this.pulses) {
                 var srcEntry = _this.pulses[srcP];
                 for (var destP in _this.pulses) {
-                    var destEntry = _this.pulses[destP];
+                    var destEntry = _this.pulses[destP]; //this code is passed n-squared times!!!
                     var direct = _this.getOWLfrom(srcEntry.mint, destEntry.owls); // get direct latency measure
                     // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
-                    if (destEntry != srcEntry)
+                    if (destEntry != srcEntry && typeof direct != "undefined") { //avoid self-self, direct owl has a value
                         for (var iP in _this.pulses) {
-                            var intermediaryEntry = _this.pulses[iP];
+                            var intermediaryEntry = _this.pulses[iP]; //this code is passed n-cubed times
                             if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
                                 var srcToIntermediary = _this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);
                                 var intermediaryToDest = _this.getOWLfrom(intermediaryEntry.mint, destEntry.owls);
                                 if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                     var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;
-                                    if (typeof direct != "undefined") {
-                                        var delta = intermediaryPathLatency - direct;
-                                        // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
-                                        if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -5) {
-                                            var now = new Date();
-                                            // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                            // This overwrites existing entry, replacing timestamp
-                                            var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
-                                            if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                                // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                _this.extraordinaryPaths[pulseIndex] = { startTimestamp: now.getTime(), lastUpdated: now.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
-                                            }
-                                            else {
-                                                //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                                // console.log("Existing startTimestamp="+startTimestamp);
-                                                _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: now.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
-                                            }
-                                            console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
+                                    var delta = intermediaryPathLatency - direct;
+                                    // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+                                    if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -5) {
+                                        var dd = new Date();
+                                        // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                        // This overwrites existing entry, replacing timestamp
+                                        var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
+                                        if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
+                                            // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
+                                            _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                         }
+                                        else {
+                                            //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
+                                            // console.log("Existing startTimestamp="+startTimestamp);
+                                            _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                        }
+                                        console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
                                     }
                                 }
                             }
                         }
+                    }
                 }
             }
             //
