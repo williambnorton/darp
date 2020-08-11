@@ -760,8 +760,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //
             //  workerthread 
             //
-            if (_this.incomingPulseQueue.length > 10)
-                console.log("workerthread is buffering for " + _this.incomingPulseQueue.length + " incoming pulses");
+            //if (this.incomingPulseQueue.length>10) 
+            //    console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
                 //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
                 processIncomingPulse(pulse);

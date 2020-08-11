@@ -926,8 +926,8 @@ export class AugmentedPulseGroup {
         //
         //  workerthread 
         //
-        if (this.incomingPulseQueue.length>10) 
-            console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
+        //if (this.incomingPulseQueue.length>10) 
+        //    console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
         for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
             //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
             processIncomingPulse(pulse);
