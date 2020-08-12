@@ -552,6 +552,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var srcEntry = _this.pulses[srcP];
                 for (var destP in _this.pulses) {
                     var destEntry = _this.pulses[destP]; //this code is passed n-squared times!!!
+                    console.log("findEfficiencies(): " + lib_1.dump(destEntry) + " " + lib_1.dump(srcEntry));
                     var direct = _this.matrix[srcEntry.mint][destEntry.mint]; // e
                     //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
                     // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
