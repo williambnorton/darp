@@ -580,7 +580,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                         }
                                         else {
                                             //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                            console.log("Existing startTimestamp=" + startTimestamp);
+                                            //console.log("Existing startTimestamp="+startTimestamp);
                                             _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                         }
                                         console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
