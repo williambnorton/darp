@@ -568,7 +568,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                     var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
                                     var delta = intermediaryPathLatency - direct;
                                     console.log("*  PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
-                                    ';
                                     if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
                                         var dd = new Date();
                                         console.log("*  extraordinary PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
