@@ -698,19 +698,19 @@ export class AugmentedPulseGroup {
                     //console.log(`findEfficiencies(): matrix=${dump(this.matrix[srcEntry.mint])} ${dump(this.matrix[destEntry.mint])} ${dump(destEntry)} ${dump(srcEntry)}`);
                     var direct = this.matrix[srcEntry.mint][destEntry.mint];  // 
                     //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
-                    console.log(ts()+"findEfficiencies(): Here we would compare srcEntry.mint="+srcEntry.mint+"-destEntry.mint="+destEntry.mint+" direct="+direct);
+                    //console.log(ts()+"findEfficiencies(): Here we would compare srcEntry.mint="+srcEntry.mint+"-destEntry.mint="+destEntry.mint+" direct="+direct);
                     if (destEntry!=srcEntry && typeof direct != "undefined" ) {  //avoid self-self, direct owl has a value
                         for (var iP in this.pulses) {
                             var intermediaryEntry = this.pulses[iP];  //this code is passed n-cubed times
-                            console.log(`intermediaryEntry.mint=${intermediaryEntry.mint}`);
+                            //console.log(`intermediaryEntry.mint=${intermediaryEntry.mint}`);
                             if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
                                 var srcToIntermediary = this.matrix[srcEntry.mint][intermediaryEntry.mint];  //^^^^^ these lookups done n-cubed times
                                 
-                                console.log(`srcToIntermediary=${srcToIntermediary}`);
+                                //console.log(`srcToIntermediary=${srcToIntermediary}`);
                                 if (typeof srcToIntermediary != "undefined" ) {
                                 //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
                                     var intermediaryToDest = this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
-                                    console.log(`intermediaryToDest=${intermediaryToDest}`);
+                                    //console.log(`intermediaryToDest=${intermediaryToDest}`);
                                     //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
                                     if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                         //  We have a path to compare against the direct path
