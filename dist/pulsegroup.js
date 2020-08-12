@@ -537,8 +537,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             return NO_MEASURE; // did not find the srcMint
         };
         //
-        //  @wbnwbnwbnwbn
-        //      Secret suace - the measures are relative so skews are systematic and offset each other
+        //  
+        //      Secret sauce - the measures are relative so skews are systematic and offset each other
         //                  we only need to know if it is faster through intermediary
         //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
         //
@@ -609,7 +609,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // console.log("freshness="+freshness);
                 if (freshness > 2000) {
                     var duration = timeNow - extraordinaryPath.startTimestamp;
-                    console.log("timeout(): deleting old extraordoinary path " + _this.extraordinaryPaths[e].aSide + "-" + _this.extraordinaryPaths[e].zSide + " lasted " + duration + " ms");
+                    //console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
                     delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
                 }
             }
@@ -617,7 +617,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("" + lib_1.dump(_this.extraordinaryPaths));
             _this.mintTable[0].lastPulseTimestamp = timeNow;
             var sleepTime = PULSEFREQ * 1000 - timeNow % 1000 + 600; //let's run find efficiencies happens in last 400ms
-            console.log("Processing findEfficiencies() took " + (timeNow - startTimestampFE) + "ms . Launching findEfficiencies() in " + sleepTime + "ms");
+            //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
             setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {
