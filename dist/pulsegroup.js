@@ -547,7 +547,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return;
             var s = new Date();
             var startTimestampFE = s.getTime();
-            console.log(lib_1.ts() + "findEfficiencies(): ");
             for (var srcP in _this.pulses) {
                 var srcEntry = _this.pulses[srcP];
                 for (var destP in _this.pulses) {
@@ -555,7 +554,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //console.log(`findEfficiencies(): matrix=${dump(this.matrix[srcEntry.mint])} ${dump(this.matrix[destEntry.mint])} ${dump(destEntry)} ${dump(srcEntry)}`);
                     var direct = _this.matrix[srcEntry.mint][destEntry.mint]; // 
                     //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
-                    console.log("findEfficiencies(): Here we would compare srcEntry.mint=" + srcEntry.mint + "-destEntry.mint=" + destEntry.mint + " direct=" + direct);
+                    console.log(lib_1.ts() + "findEfficiencies(): Here we would compare srcEntry.mint=" + srcEntry.mint + "-destEntry.mint=" + destEntry.mint + " direct=" + direct);
                     if (destEntry != srcEntry && typeof direct != "undefined") { //avoid self-self, direct owl has a value
                         for (var iP in _this.pulses) {
                             var intermediaryEntry = _this.pulses[iP]; //this code is passed n-cubed times
@@ -563,29 +562,32 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
                                 var srcToIntermediary = _this.matrix[srcEntry.mint][intermediaryEntry.mint]; //^^^^^ these lookups done n-cubed times
                                 console.log("srcToIntermediary=" + srcToIntermediary);
-                                //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
-                                var intermediaryToDest = _this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
-                                console.log("intermediaryToDest=" + intermediaryToDest);
-                                //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
-                                if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
-                                    var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
-                                    var delta = intermediaryPathLatency - direct;
-                                    console.log("*  PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
-                                    if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
-                                        var dd = new Date();
-                                        console.log("*  extraordinary PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
-                                        // This overwrites existing entry, replacing timestamp
-                                        var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
-                                        if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                            console.log("New path: " + srcEntry.geo + "-" + destEntry.geo);
-                                            _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                if (typeof srcToIntermediary != "undefined") {
+                                    //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
+                                    var intermediaryToDest = _this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
+                                    console.log("intermediaryToDest=" + intermediaryToDest);
+                                    //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
+                                    if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
+                                        //  We have a path to compare against the direct path
+                                        var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
+                                        var delta = intermediaryPathLatency - direct;
+                                        console.log("*  PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
+                                        if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
+                                            var dd = new Date();
+                                            console.log("*  extraordinary PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
+                                            // This overwrites existing entry, replacing timestamp
+                                            var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
+                                            if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
+                                                console.log("New path: " + srcEntry.geo + "-" + destEntry.geo);
+                                                _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                            }
+                                            else {
+                                                //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
+                                                //console.log("Existing startTimestamp="+startTimestamp);
+                                                _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                            }
+                                            console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
                                         }
-                                        else {
-                                            //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                            //console.log("Existing startTimestamp="+startTimestamp);
-                                            _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
-                                        }
-                                        console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
                                     }
                                 }
                             }
