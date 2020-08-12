@@ -552,10 +552,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var srcEntry = _this.pulses[srcP];
                 for (var destP in _this.pulses) {
                     var destEntry = _this.pulses[destP]; //this code is passed n-squared times!!!
-                    console.log("findEfficiencies(): matrix=" + lib_1.dump(_this.matrix[srcEntry.mint]) + " " + lib_1.dump(_this.matrix[destEntry.mint]) + " " + lib_1.dump(destEntry) + " " + lib_1.dump(srcEntry));
-                    var direct = _this.matrix[srcEntry.mint][destEntry.mint]; // e
+                    //console.log(`findEfficiencies(): matrix=${dump(this.matrix[srcEntry.mint])} ${dump(this.matrix[destEntry.mint])} ${dump(destEntry)} ${dump(srcEntry)}`);
+                    var direct = _this.matrix[srcEntry.mint][destEntry.mint]; // 
                     //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
-                    // console.log("Here we would compare "+srcEntry.mint+"-"+destEntry.mint+"="+direct);
+                    console.log("findEfficiencies(): Here we would compare " + srcEntry.mint + "-" + destEntry.mint + "=" + direct);
                     if (destEntry != srcEntry && typeof direct != "undefined") { //avoid self-self, direct owl has a value
                         for (var iP in _this.pulses) {
                             var intermediaryEntry = _this.pulses[iP]; //this code is passed n-cubed times
@@ -567,22 +567,23 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                     var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
                                     var delta = intermediaryPathLatency - direct;
-                                    // console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);'
+                                    console.log("*  PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
+                                    ';
                                     if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
                                         var dd = new Date();
-                                        // console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                        console.log("*  extraordinary PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
                                         // This overwrites existing entry, replacing timestamp
                                         var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
                                         if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                            // console.log("New path: "+srcEntry.geo+"-"+destEntry.geo);
+                                            console.log("New path: " + srcEntry.geo + "-" + destEntry.geo);
                                             _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                         }
                                         else {
                                             //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                            // console.log("Existing startTimestamp="+startTimestamp);
+                                            console.log("Existing startTimestamp=" + startTimestamp);
                                             _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                         }
-                                        //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
+                                        console.log(" findEfficiencies(): extraordinary route: " + lib_1.dump(_this.extraordinaryPaths[pulseIndex]));
                                     }
                                 }
                             }
