@@ -572,14 +572,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                             //  We have a path to compare against the direct path
                                             var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
                                             var delta = intermediaryPathLatency - direct;
-                                            console.log("*  PATH       " + srcEntry.geo + "-" + destEntry.geo + "=" + direct + " through " + intermediaryEntry.geo + " intermediaryPathLatency=" + intermediaryPathLatency + " delta=" + delta);
+                                            //console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                             if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
                                                 var dd = new Date();
                                                 //console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                                 // This overwrites existing entry, replacing timestamp
                                                 var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
                                                 if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                                    console.log("New path: " + srcEntry.geo + "-" + destEntry.geo);
+                                                    console.log("New extraordinary path: " + srcEntry.geo + "-" + destEntry.geo);
                                                     _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                                 }
                                                 else {
