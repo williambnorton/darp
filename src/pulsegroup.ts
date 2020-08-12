@@ -719,7 +719,7 @@ export class AugmentedPulseGroup {
                                         console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                         if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
                                             var dd=new Date();
-                                            console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
+                                            //console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                             // This overwrites existing entry, replacing timestamp
                                             const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
                                             if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
