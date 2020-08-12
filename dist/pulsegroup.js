@@ -561,8 +561,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             var intermediaryEntry = _this.pulses[iP]; //this code is passed n-cubed times
                             if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
                                 var srcToIntermediary = _this.matrix[srcEntry.mint][intermediaryEntry.mint]; //^^^^^ these lookups done n-cubed times
+                                console.log("srcToIntermediary=" + srcToIntermediary);
                                 //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
                                 var intermediaryToDest = _this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
+                                console.log("intermediaryToDest=" + intermediaryToDest);
                                 //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
                                 if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                     var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary

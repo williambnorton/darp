@@ -706,8 +706,12 @@ export class AugmentedPulseGroup {
 
                         if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
                             var srcToIntermediary = this.matrix[srcEntry.mint][intermediaryEntry.mint];  //^^^^^ these lookups done n-cubed times
+                            console.log(`srcToIntermediary=${srcToIntermediary}`);
+
                             //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
                             var intermediaryToDest = this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
+                            console.log(`intermediaryToDest=${intermediaryToDest}`);
+
                             //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
                             if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                 var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //^^^^^^ possible better path through intermeidary
