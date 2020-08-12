@@ -723,14 +723,14 @@ export class AugmentedPulseGroup {
                                             // This overwrites existing entry, replacing timestamp
                                             const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
                                             if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                                console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
+                                                //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
                                                 this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
                                             } else {
                                                 //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
                                                 //console.log("Existing startTimestamp="+startTimestamp);
                                                 this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
                                             }
-                                            console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
+                                            //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
                                         }
                                         
                                     }
