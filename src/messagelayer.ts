@@ -44,7 +44,6 @@ export function recvMsg(port: number, callback: pulseDeserializer) {
     // API routine
     messagelayer_stats.port = port.toString();
     server.bind(port);
-    // Prints: server listening 0.0.0.0:41234
     server.on("message", (msg, rinfo) => {
         var incomingTimestamp = (messagelayer_stats.lastInTimestamp = now());
         messagelayer_stats.inOctets += msg.length;

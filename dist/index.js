@@ -72,6 +72,7 @@ var server = app.listen(config.PORT, '0.0.0.0', function () {
     else {
         logger_1.logger.error("Express app initialization failed");
     }
+    console.log("UDP server listening on " + config.PORT);
 }); //.on('error', console.log);
 app.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/html');
