@@ -105,7 +105,9 @@
                         //console.log(`marking extraordinary path ${JSON.stringify(extraordinaryPath,null,2)} `+extraordinaryPath.intermediary+"-"+pulseEntry.geo+'='+owl+' ms');
                         console.log(`marking extraordinary path `+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide);
                         $("."+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide).addClass("BETTER");
-                        $("."+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide).css("border-color", "purple").css("border-width", "5px");
+                        $("."+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide).css("border-color", "pink").css("border-width", "5px");
+                        $("."+extraordinaryPath.aSide+"-"+extraordinaryPath.intermediary).css("border-color", "green").css("border-width", "5px");
+                        $("."+extraordinaryPath.intermediary+"-"+extraordinaryPath.zSide).css("border-color", "green").css("border-width", "5px");
     
 
 
