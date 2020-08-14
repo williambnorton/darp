@@ -756,7 +756,7 @@ export class AugmentedPulseGroup {
                 delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
             } 
         }
-        if (Object.keys(this.extraordinaryPaths).length>0) console.log(`${dump(this.extraordinaryPaths)}`);
+        //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
         this.mintTable[0].lastPulseTimestamp = timeNow;
         var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
         //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
