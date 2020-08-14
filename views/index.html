@@ -61,7 +61,7 @@
 
                                 var flag=strOwl.match(/.*@/);
                                 if (flag) {
-                                    console.log(`fetchState(): flagged `+srcOwlMintEntry.mint+"-"+pulseEntry.mint);
+                                    console.log(`fetchState(): flagged `+srcOwlMintEntry.mint+"-"+pulseEntry.mint+'='+owl+' ms');
                                     if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");
