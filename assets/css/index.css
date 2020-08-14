@@ -62,6 +62,12 @@ table, th, td {
     border-color:yellow;
 }
 
+.BETTER {
+    color: black;
+    border-color:green;
+    border-width: 3;
+}
+
 .NR {
     color: black;
     background-color: pink;
