@@ -103,7 +103,7 @@
 
 
                         console.log(`marking extraordinary path ${JSON.stringify(extraordinaryPath,null,2)} `+extraordinaryPath.intermediary+"-"+pulseEntry.geo+'='+owl+' ms');
-                        $("."+extraordinaryPath.intermediary).addClass("BETTER");
+                        $("."+extraordinaryPath.aSide+"-"+extraordinaryPath.zSide).addClass("BETTER");
                         //$("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "purple").css("border-width", "5px");
     
 
@@ -276,7 +276,7 @@
                 <% for (let dest in pulseGroup.matrix[src]) { %>
                     <% let destMintEntry=pulseGroup.mintTable[parseInt(dest)]; %>
                     <% if (destMintEntry!=null) { %>
-                        <% let classNameMintsGeos = srcMintEntry.mint + "-" + destMintEntry.mint + " " + srcMintEntry.geo + " " + destMintEntry.geo; %>
+                        <% let classNameMintsGeos = srcMintEntry.mint + "-" + destMintEntry.mint + " " + srcMintEntry.geo + " " + destMintEntry.geo + srcMintEntry.geo + "-" + destMintEntry.geo; %>
                         <% let classNameMints = srcMintEntry.mint + "-" + destMintEntry.mint; %>
                         <% let destMintEntryUrl = "http://" + destMintEntry.ipaddr + ":" + destMintEntry.port.toString() + "/graph/" + srcMintEntry.geo + "/" + destMintEntry.geo; %>
                         <td class="<%= classNameMintsGeos %>">
