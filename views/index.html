@@ -61,7 +61,8 @@
 
                                 var flag=strOwl.match(/.*@/);
                                 if (flag) {
-                                    console.log(ts()+`fetchState(): flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' @ ms');
+                                    var d=new Date();var timeNow=d.getUTCDate();
+                                    console.log(timeNow+`fetchState(): flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' @ ms');
                                     if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");
