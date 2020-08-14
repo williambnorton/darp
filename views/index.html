@@ -61,7 +61,7 @@
 
                                 console.log(`fetchState(): strOwl=${strOwl}`);
 
-                                var regex = "/@$/";
+                                var regex = "/[0-9]*@$/";
                                 var flag=strOwl.match(regex);
                                 if (flag) {
                                     console.log(`fetchState(): flagged `+srcOwlMintEntry.mint+"-"+pulseEntry.mint);
