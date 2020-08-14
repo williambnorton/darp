@@ -61,7 +61,7 @@
 
                                 var flag=strOwl.match(/.*@/);
                                 if (flag) {
-                                    var d=new Date();var timeNow=d.getUTCDate();
+                                    var d=new Date();var timeNow=d.toString();
                                     console.log(timeNow+`fetchState(): flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' @ ms');
                                     if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
