@@ -758,10 +758,11 @@ export class AugmentedPulseGroup {
                 //  Simulate relaying 10 packets per second traffic
                 //  credit relay, debit users
                 var relay=extraordinaryPath.relayMint;
-                console.log(`HERE WE RElay packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint}`);
+                console.log(`HERE WE RElay packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
 //                var t=parseInt(this.mintTable[extraordinaryPath.relayMint].wallet)+0.01;
                 //this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
 //                this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
+                console.log(`extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary ${dump(this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary])}`);
                 this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary].inPulses+=10;   //relay meas forwrd 10 pktys/sec
                 this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary].outPulses+=10;
 // Could have bumped the inMsgs by 10 pkts
