@@ -442,7 +442,7 @@
                 <% let balance = (Math.min(pulseEntry.inPulses*1500, pulseEntry.outPulses*1500) / (1000000 * 1000)) * 0.5; %> <!-- GB=1000 MB @ 50 cents per -->
                 <% total = total + balance; %>
                 <% let classNameGeoBalance = pulseEntry.geo + "_balance"; %>
-                <td class="<%= classNameGeoBalance %>">$ <%= balance.toFixed(6) %></td>
+                <td class="<%= classNameGeoBalance %>">$ <%= balance.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
                 <!-- <td><%= pulseEntry.lastMsg %></td> -->
             <% } %>
             </tr>
