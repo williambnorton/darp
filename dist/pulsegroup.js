@@ -580,12 +580,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                                 var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
                                                 if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
                                                     //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                                 }
                                                 else {
                                                     //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
                                                     //console.log("Existing startTimestamp="+startTimestamp);
-                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
+                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
                                                 }
                                                 //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
                                             }
@@ -611,6 +611,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     var duration = timeNow - extraordinaryPath.startTimestamp;
                     //console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
                     delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+                }
+                else {
+                    //  Simulate relaying 10 packets per second traffic
+                    //  credit relay, debit users
+                    var relay = extraordinaryPath.relayMint;
+                    console.log("HERE WE RElay packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #" + extraordinaryPath.relayMint);
+                    _this.mintTable[extraordinaryPath.relayMint].wallet += 0.01;
                 }
             }
             //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
