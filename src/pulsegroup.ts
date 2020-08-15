@@ -888,6 +888,7 @@ export class AugmentedPulseGroup {
                    self.secureTrafficHandler((data: any) => {
                        console.log(`secureChannel traffic handler callback: ${data}`);
                    });
+                   self.flashWireguard(); //use thisopportunity for genesis node to add wireguard config entry
                }
            }
 

@@ -733,6 +733,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         self.secureTrafficHandler(function (data) {
                             console.log("secureChannel traffic handler callback: " + data);
                         });
+                        self.flashWireguard(); //use thisopportunity for genesis node to add wireguard config entry
                     }
                 }
                 // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
