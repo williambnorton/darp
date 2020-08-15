@@ -615,16 +615,17 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 else {
                     //  Simulate relaying 10 packets per second traffic
                     //  credit relay, debit users
-                    var relay = extraordinaryPath.relayMint;
-                    console.log("HERE WE RElay packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #" + extraordinaryPath.relayMint + " " + extraordinaryPath.aSide + "-" + extraordinaryPath.intermediary);
+                    //                var relay=extraordinaryPath.relayMint;
+                    //                console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
                     //                var t=parseInt(this.mintTable[extraordinaryPath.relayMint].wallet)+0.01;
                     //this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
                     //                this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
                     //pulse index is geo:group
                     //console.log(`${extraordinaryPath.aSide}-${extraordinaryPath.intermediary} ${dump(this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary])}`);
+                    //var relayedTraffic=this.nodeCount;
                     _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].inPulses += 10; //relay meas forwrd 10 pktys/sec
-                    _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 10;
-                    // Could have bumped the inMsgs by 10 pkts
+                    _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 10; //we assume those with better path, use it for 10 pkts
+                    // bump the in/outMsgs by 10 pkts
                 }
             }
             //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
