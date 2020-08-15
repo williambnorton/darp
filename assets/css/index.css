@@ -68,6 +68,12 @@ table, th, td {
     border-width: 3;
 }
 
+.WORSE {
+    color: black;
+    border-color:pink;
+    border-width: 3;
+}
+
 .NR {
     color: black;
     background-color: pink;
