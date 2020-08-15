@@ -762,9 +762,10 @@ export class AugmentedPulseGroup {
 //                var t=parseInt(this.mintTable[extraordinaryPath.relayMint].wallet)+0.01;
                 //this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
 //                this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
-                console.log(`extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary ${dump(this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary])}`);
-                this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary].inPulses+=10;   //relay meas forwrd 10 pktys/sec
-                this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary].outPulses+=10;
+                //pulse index is geo:group
+                //console.log(`${extraordinaryPath.aSide}-${extraordinaryPath.intermediary} ${dump(this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary])}`);
+                this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses+=10;   //relay meas forwrd 10 pktys/sec
+                this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=10;
 // Could have bumped the inMsgs by 10 pkts
             }
         }
