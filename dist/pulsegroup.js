@@ -617,8 +617,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //  credit relay, debit users
                     var relay = extraordinaryPath.relayMint;
                     console.log("HERE WE RElay packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #" + extraordinaryPath.relayMint);
-                    var t = parseInt(_this.mintTable[extraordinaryPath.relayMint].wallet) + 0.01;
-                    _this.mintTable[extraordinaryPath.relayMint].wallet = t.toString();
+                    //                var t=parseInt(this.mintTable[extraordinaryPath.relayMint].wallet)+0.01;
+                    //this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
+                    //                this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
+                    _this.pulses[extraordinaryPath.aSide + '-' + extraordinaryPath.intermediary].inPulses += 10; //relay meas forwrd 10 pktys/sec
+                    _this.pulses[extraordinaryPath.aSide + '-' + extraordinaryPath.intermediary].outPulses += 10;
+                    // Could have bumped the inMsgs by 10 pkts
                 }
             }
             //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
