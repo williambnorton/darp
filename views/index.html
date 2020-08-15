@@ -178,6 +178,8 @@
                             balance = parseFloat(balance.toFixed(6));
 
                             $("."+pulse.geo+"_balance").text("$" + balance);  //TODO : Align left for this text field
+                            if (balance<0) $("."+pulse.geo+"_balance").addClass("NR");  //TODO : Align left for this text field
+                            else $("."+pulse.geo+"_balance").addClass("UP");  //TODO : Align left for this text field
                         }
                     }
 
