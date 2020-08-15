@@ -62,7 +62,7 @@
                                 var flag=strOwl.match(/.*@/);
                                 if (flag) {
                                     var d=new Date();var timeNow=d.toString();
-                                    console.log(timeNow+`fetchState(): found entry flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' ms');
+                                    //console.log(timeNow+`fetchState(): found entry flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' ms');
                                     if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");
