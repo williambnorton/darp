@@ -625,6 +625,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //var relayedTraffic=this.nodeCount;
                     _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].inPulses += 10; //relay meas forwrd 10 pktys/sec
                     _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 10; //we assume those with better path, use it for 10 pkts
+                    _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].inPulses -= 10; //relay meas forwrd 10 pktys/sec
+                    _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].outPulses -= 10; //we assume those with better path, use it for 10 pkts
                     // bump the in/outMsgs by 10 pkts
                 }
             }
