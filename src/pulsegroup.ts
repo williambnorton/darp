@@ -759,7 +759,8 @@ export class AugmentedPulseGroup {
                 //  credit relay, debit users
                 var relay=extraordinaryPath.relayMint;
                 console.log(`HERE WE RElay packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint}`);
-                this.mintTable[extraordinaryPath.relayMint].wallet+=0.01;
+                var t=parseInt(this.mintTable[extraordinaryPath.relayMint].wallet)+0.01;
+                this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
             }
         }
         //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
