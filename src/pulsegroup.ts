@@ -757,14 +757,8 @@ export class AugmentedPulseGroup {
             } else {
                 //  Simulate relaying 10 packets per second traffic
                 //  credit relay, debit users
-//                var relay=extraordinaryPath.relayMint;
+
 //                console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
-//                var t=parseInt(this.mintTable[extraordinaryPath.relayMint].wallet)+0.01;
-                //this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
-//                this.mintTable[extraordinaryPath.relayMint].wallet=t.toString();
-                //pulse index is geo:group
-                //console.log(`${extraordinaryPath.aSide}-${extraordinaryPath.intermediary} ${dump(this.pulses[extraordinaryPath.aSide+'-'+extraordinaryPath.intermediary])}`);
-                //var relayedTraffic=this.nodeCount;
                 this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=10;   //relay meas forwrd 10 pktys/sec
                 this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=10;   //we assume those with better path, use it for 10 pkts
                 this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=10;   //relay meas forwrd 10 pktys/sec
@@ -999,7 +993,7 @@ export class AugmentedPulseGroup {
     // Sync this pulseGroup object with genesis node pulseGroup object: copy mint table and update (add/del) pulse entries so we match the genesis node
     syncGenesisPulseGroup = () => {
         if (this.isGenesisNode()) {
-            logger.warning("GENESIS node does not sync with itself but will set Wireguard files");
+            logger.warning("syncGenesisPulseGroup(): GENESIS node does not sync with itself but will set Wireguard files");
             this.flashWireguard(); // change my wg config
             return; // genesis node dies not fetch its own configuration
         }
