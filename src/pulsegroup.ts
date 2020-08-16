@@ -877,8 +877,14 @@ export class AugmentedPulseGroup {
                }
            } else {
                if (self.mintTable[0].mint==1) {    //we are group owner
-                    console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                    self.flashWireguard();
+                    if (self.mintTable[incomingPulseEntry.mint]!=null) {
+                        if (self.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {
+                            console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
+                            console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                            self.flashWireguard();
+                            
+                        }
+                    }
                 }
                // non-Genesis node pulse - we must be out of Quarantine
                if (self.mintTable[0].state == "QUARANTINE") {
