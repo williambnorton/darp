@@ -876,10 +876,14 @@ export class AugmentedPulseGroup {
                    }
                }
            } else {
+               if (self.mintTable[0].mint==1) {    //we are group owner
+                    console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                    self.flashWireguard();
+                }
                // non-Genesis node pulse - we must be out of Quarantine
                if (self.mintTable[0].state == "QUARANTINE") {
-                   logger.info(`Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
-                   console.log(`Received pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
+                   logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
+                   console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                    self.mintTable[0].state = "UP";
                    //
                    //   Start everything
@@ -888,8 +892,8 @@ export class AugmentedPulseGroup {
                    self.secureTrafficHandler((data: any) => {
                        console.log(`secureChannel traffic handler callback: ${data}`);
                    });
-                   self.flashWireguard(); //use thisopportunity for genesis node to add wireguard config entry
                }
+
            }
 
            // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
