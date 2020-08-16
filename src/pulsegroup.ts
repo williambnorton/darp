@@ -751,19 +751,23 @@ export class AugmentedPulseGroup {
             var freshness=timeNow-extraordinaryPath.lastUpdated;
             // console.log("freshness="+freshness);
             if (freshness>2000) {
-                var duration=timeNow-extraordinaryPath.startTimestamp;
                 //console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
                 delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
             } else {
-                //  Simulate relaying 10 packets per second traffic
-                //  credit relay, debit users
 
-//                console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
-                this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=10;   //relay meas forwrd 10 pktys/sec
-                this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=10;   //we assume those with better path, use it for 10 pkts
-                this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=10;   //relay meas forwrd 10 pktys/sec
-                this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=10;   //we assume those with better path, use it for 10 pkts
-                // bump the in/outMsgs by 10 pkts
+                var duration=timeNow-extraordinaryPath.startTimestamp;
+                if (duration>5000) {  //if a path lasts more than 5 seconds we assume sending 100pkts/sec
+                    //  Simulate relaying 10 packets per second traffic
+                    //  credit relay, debit users
+                    // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available
+                    //BETTER ALGO needed here
+    //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
+                    this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=100;   //relay meas forwrd 10 pktys/sec
+                    this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=100;   //we assume those with better path, use it for 10 pkts
+                    this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=100;   //relay meas forwrd 10 pktys/sec
+                    this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=100;   //we assume those with better path, use it for 10 pkts
+                    // bump the in/outMsgs by 10 pkts
+                }
             }
         }
         //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
