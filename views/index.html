@@ -137,7 +137,7 @@
                     $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));  //wbnwbnwbnwbnwbnwnbn
 
                     // Render table from information in the state fetched from node
-                    var totalEarn=0.000000;
+                    var measurementCosts=0.000000;
                     for (let [key, value] of Object.entries(pulseGroup.pulses)) {
                         var pulse = value;
                         if (pulse != null) {
@@ -174,7 +174,7 @@
                             $("."+pulse.geo+"_rtt").text(pulse.rtt);
                             $("."+pulse.geo+"_pktDrops").text(pulse.seq-pulse.inPulses);
                             var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;
-                            totalEarn += balance;
+                            measurementCosts += balance;
                             balance = parseFloat(balance.toFixed(6));
 
                             $("."+pulse.geo+"_balance").text("$" + balance);  //TODO : Align left for this text field
@@ -183,8 +183,8 @@
                         }
                     }
 
-                    totalEarn = parseFloat(totalEarn.toFixed(6));
-                    $(".total_earn").text("totalEarn: $"+totalEarn);
+                    measurementCosts = parseFloat(measurementCosts.toFixed(6));
+                    $(".total_earn").text("measurementCosts: $"+measurementCosts);
                 }
 
             }).fail(function() {
