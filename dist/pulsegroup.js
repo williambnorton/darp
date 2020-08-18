@@ -619,11 +619,17 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available
                         //BETTER ALGO needed here
                         //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
-                        _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].inPulses += 100; //relay meas forwrd 10 pktys/sec
-                        _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 100; //we assume those with better path, use it for 10 pkts
-                        _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].inPulses -= 100; //relay meas forwrd 10 pktys/sec
-                        _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].outPulses -= 100; //we assume those with better path, use it for 10 pkts
-                        // bump the in/outMsgs by 10 pkts
+                        if ((typeof _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] != "undefined") &&
+                            (typeof _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName] != "undefined")) {
+                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].inPulses += 100; //relay meas forwrd 10 pktys/sec
+                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 100; //we assume those with better path, use it for 10 pkts
+                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].inPulses -= 100; //relay meas forwrd 10 pktys/sec
+                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].outPulses -= 100; //we assume those with better path, use it for 10 pkts
+                            // bump the in/outMsgs by 10 pkts
+                        }
+                        else {
+                            console.log("findEfficiencies(): this.pulses[extraordinaryPath.intermediary+':'+this.groupName]=" + _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] + " this.pulses[extraordinaryPath.aSide+':'+this.groupName]=" + _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName]);
+                        }
                     }
                 }
             }
