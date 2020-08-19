@@ -756,7 +756,7 @@ export class AugmentedPulseGroup {
             } else {
 
                 var duration=timeNow-extraordinaryPath.startTimestamp;
-                if (duration>5000) {  //if a path lasts more than 5 seconds we assume sending 100pkts/sec
+                if (duration>10000) {  //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec
                     //  Simulate relaying 10 packets per second traffic
                     //  credit relay, debit users
                     // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available
@@ -934,6 +934,10 @@ export class AugmentedPulseGroup {
                    incomingPulseEntry.medianHistory.push(
                        median(incomingPulseEntry.history)
                    );
+                                  // store 60 samples
+                    if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
+                        incomingPulseEntry.history.shift(); // drop off the last sample
+                    }
                }
 
                //update mint entry
