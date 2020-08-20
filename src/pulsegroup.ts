@@ -3,11 +3,11 @@
 import fs = require("fs");
 import os = require("os");
 import http = require("http");
-import child_process = require("child_process");
+import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
-import { dump, now, MYVERSION, median, mint2IP, ts } from "./lib";
+import { dump, now, MYVERSION, median, mint2IP, nth_occurrence } from "./lib";
 import { logger } from "./logger";
-import { sendPulses, recvPulses } from "./pulselayer";
+import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
@@ -143,49 +143,6 @@ export class MintEntry {
     }
 }
 
-/** Incoming pulse definition, when deserialized form pulse message. Export for use in pulselayer. */
-export class IncomingPulse {
-    outgoingTimestamp: number;
-    pulseTimestamp: number;
-    msgType: string;
-    version: string;
-    geo: string;
-    group: string;
-    seq: number;
-    bootTimestamp: number;
-    mint: number;
-    owls: string;
-    owl: number;
-    lastMsg: string;
-    constructor(
-        pulseTimestamp: number,
-        outgoingTimestamp: number,
-        msgType: string,
-        version: string,
-        geo: string,
-        group: string,
-        seq: number,
-        bootTimestamp: number,
-        mint: number,
-        owls: string,
-        owl: number,
-        lastMsg: string
-    ) {
-        this.pulseTimestamp = pulseTimestamp;
-        this.outgoingTimestamp = outgoingTimestamp;
-        this.msgType = msgType;
-        this.version = version;
-        this.geo = geo;
-        this.group = group;
-        this.seq = seq;
-        this.bootTimestamp = bootTimestamp; //if genesis node reboots --> all node reload SW too
-        this.mint = mint;
-        this.owls = owls;
-        this.owl = owl;
-        this.lastMsg = lastMsg;
-    }
-}
-
 /** Contains stats for and relevent fields to configure wireguard. */
 export class PulseEntry {
     outgoingTimestamp: number; // from message layer
@@ -269,6 +226,7 @@ export class PulseGroup {
 
 /** PulseGroup object with all necessary functions for sending and receiving pulses */
 export class AugmentedPulseGroup {
+    // attributes from PulseGroup
     groupName: string;
     groupOwner: string;
     mintTable: MintEntry[];
@@ -278,14 +236,18 @@ export class AugmentedPulseGroup {
     nodeCount: number;
     nextMint: number;
     cycleTime: number;
-
-//    extraordinaryPaths: object[];   //@wbnwbnwbn
-    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number } };   //@wbnwbnwbn
     matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
     csvMatrix: number[];    //goes away
 
+    // additional attributes
     adminControl: string;
     config: Config;
+    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number } };   //@wbnwbnwbn
+    incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
+    
+    // child processes for sending and receiving the pulse messages
+    receiver: ChildProcess;
+    sender: ChildProcess;
 
     constructor(config: Config, pulseGroup: PulseGroup) {
         this.groupName = pulseGroup.groupName;
@@ -297,14 +259,30 @@ export class AugmentedPulseGroup {
         this.nodeCount = pulseGroup.nodeCount; //how many nodes in this pulsegroup
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
-        this.extraordinaryPaths = {};       //object array of better paths through intermediaries @wbnwbnwbn
-
-        this.matrix = pulseGroup.matrix;   //should go away - we can always peruse the pulseTable owls
-        this.csvMatrix = pulseGroup.csvMatrix;  //should go away
-
-
+        this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
+        this.csvMatrix = pulseGroup.csvMatrix; //should go away
+        
         this.adminControl = "";
         this.config = config;
+        this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
+        this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
+        
+        this.receiver = fork('dist/receiver.js', [config.PORT.toString()]);
+        this.receiver.on('exit', (code) => {
+            logger.warning(`Receiver process exited with code ${code}`);
+        });
+        this.receiver.on('message', (incomingMessage: string) => {
+            logger.debug(`AugmentedPulseGroup has received message from receiver: ${incomingMessage}`);
+            this.recvPulses(incomingMessage);
+        });
+        
+        this.sender = fork('dist/sender.js', [(PULSEFREQ * 1000).toString()]);
+        this.sender.on('exit', (code) => {
+            logger.warning(`Sender process exited with code ${code}`);
+        });
+        this.sender.on('message', (message) => {
+            logger.debug(`AugmentedPulseGroup has received message from sender: ${message}`);
+        });
     }
 
     forEachNode = (callback: CallableFunction) => {
@@ -479,15 +457,15 @@ export class AugmentedPulseGroup {
     //         then they get all nodes as needed to measure/communicate
     // TODO: pulse (measure OWLs) over secure channel - just change to private addr
     pulse = () => {
-        var ipary: string[] = [];
+        var nodeList: NodeAddress[] = [];
         var owls = "";
         //
         //  First make owls list to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
-            ipary.push(pulseEntry.ipaddr + "_" + pulseEntry.port);
-            ipary.push(mint2IP(pulseEntry.mint) + "_" + SECURE_PORT); // wbnwbn send to secure channel also
+            nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
+            nodeList.push(new NodeAddress(mint2IP(pulseEntry.mint), SECURE_PORT)); // wbnwbn send to secure channel also
             pulseEntry.outPulses++;
 
             // this section flags "interesting" cells to click on and explore
@@ -532,8 +510,8 @@ export class AugmentedPulseGroup {
             logger.warning(`Cannot find ${this.config.GEO}:${this.groupName}`);
         } else {
             myEntry.seq++;
-            var myMint = this.mintTable[0].mint;
-            var pulseMessage = 
+            const myMint = this.mintTable[0].mint;
+            const pulseMessage = 
                 "0," + 
                 this.config.VERSION + "," + 
                 this.config.GEO + "," + 
@@ -542,8 +520,13 @@ export class AugmentedPulseGroup {
                 this.mintTable[0].bootTimestamp + "," + 
                 myMint + "," + 
                 owls;
-            logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(ipary)}`);
-            sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
+            logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+            // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
+            const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
+            this.sender.send(nodelistMessage)
+
+            const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
+            this.sender.send(outgoingMessage)
         }
 
         this.timeout(); // and timeout the non-responders
@@ -816,13 +799,135 @@ export class AugmentedPulseGroup {
         });
         setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
     };
+    
+    processIncomingPulse = (incomingPulse: IncomingPulse) => {
+       // look up the pulse claimed mint
+       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+       var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
-    incomingPulseQueue:IncomingPulse[]=[];   //queue of incoming pulses to handle TESTING
+       if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
+           // show more specifics why pulse is ignored
+           logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
+           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
+           return;
+       }
+
+       // pulseGroup owner controls population
+       if (this.groupOwner === incomingPulseEntry.geo) {
+           // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
+
+           const owlsAry = incomingPulse.owls.split(",");
+           // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
+           for (var o in owlsAry) {
+               const owlEntry = owlsAry[o];
+               var mint = parseInt(owlEntry.split("=")[0]);
+               var srcMintEntry = this.mintTable[mint];
+               //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
+               //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
+               if (srcMintEntry == null) {
+                   console.log(`We do not have this mint the group Owner announced mint: ${mint}`);
+                   //we do not have this mint in our mintTale
+                   logger.info(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
+                   console.log(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
+                   this.syncGenesisPulseGroup();  // HACK: any membership change we need resync
+                   return;
+               }
+           }
+
+           // find each pulse in the group owner announcement or delete/resync
+           for (var pulse in this.pulses) {
+               var myPulseEntry = this.pulses[pulse];
+               var found = false;
+               //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
+               for (var o in owlsAry) {
+                   var owlmint = parseInt(owlsAry[o].split("=")[0]);
+                   if (owlmint == myPulseEntry.mint) {
+                       found = true;
+                   }
+               }
+               // deleteNode if its mint is not in announcement
+               if (!found) {
+                   logger.info(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
+                   console.log(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
+                   this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
+                   return;
+               }
+           }
+       } else {
+           if (this.mintTable[0].mint==1) {    //we are group owner
+                if (this.mintTable[incomingPulseEntry.mint]!=null) {
+                    if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {                 
+                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
+                            console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
+                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
+                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                            console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                        this.flashWireguard();
+                        
+                    }
+                }
+            }
+           // non-Genesis node pulse - we must be out of Quarantine
+           if (this.mintTable[0].state == "QUARANTINE") {
+               logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
+               console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
+               this.mintTable[0].state = "UP";
+               //
+               //   Start everything
+               //
+            //    setInterval(self.measurertt,WG_PULSEFREQ*1000);  
+            //    self.secureTrafficHandler((data: any) => {
+            //        console.log(`secureChannel traffic handler callback: ${data}`);
+            //    });
+           }
+
+       }
+
+        // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
+        if (incomingPulseEntry !== undefined) {
+            this.ts = now(); // we got a pulse - update the pulseGroup timestamp
+
+            // copy incoming pulse into my pulse record
+            incomingPulseEntry.inPulses++;
+            incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
+            incomingPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
+            incomingPulseEntry.owl = incomingPulse.owl;
+            incomingPulseEntry.seq = incomingPulse.seq;
+            incomingPulseEntry.owls = incomingPulse.owls;
+            incomingPulseEntry.history.push(incomingPulseEntry.owl);
+
+            // store 60 samples
+            if (incomingPulseEntry.history.length > 60 ) {
+                incomingPulseEntry.history.shift(); // drop off the last sample
+            }
+
+            var d = new Date(incomingPulseEntry.pulseTimestamp);
+            if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples
+                incomingPulseEntry.medianHistory.push(
+                    median(incomingPulseEntry.history)
+                );
+                                // store 60 samples
+                if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
+                    incomingPulseEntry.history.shift(); // drop off the last sample
+                }
+            }
+
+            // TODO: Also resync if the groupOwner has removed an item
+           this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
+
+       } else {
+           logger.warning(`Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: ${incomingPulse.geo}`);
+
+           //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
+           //maybe also add empty pulse records for each that don't have a pulse record
+       }
+    }
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
-        const self = this;
+        // const self = this;
         //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-        setTimeout(self.workerThread,100);  //QUEUE up incoming pksts and come back again to batch process every ____ milliseconds
+        // setTimeout(self.workerThread,100);  //QUEUE up incoming pksts and come back again to batch process every ____ milliseconds
         //another way to do this is to time this work to tie to the timeout (500ms) point
         //pulsingis timeed to start on the second boundary for self timing ease
 
@@ -831,142 +936,6 @@ export class AugmentedPulseGroup {
             return;
         }
 
-        function processIncomingPulse(incomingPulse: IncomingPulse) {
-           // look up the pulse claimed mint
-           var incomingPulseEntry = self.pulses[incomingPulse.geo + ":" + incomingPulse.group];
-           var incomingPulseMintEntry = self.mintTable[incomingPulse.mint];
-
-           if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
-               // show more specifics why pulse is ignored
-               logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
-               console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
-               return;
-           }
-
-           // pulseGroup owner controls population
-           if (self.groupOwner === incomingPulseEntry.geo) {
-               // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
-
-               const owlsAry = incomingPulse.owls.split(",");
-               // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
-               for (var o in owlsAry) {
-                   const owlEntry = owlsAry[o];
-                   var mint = parseInt(owlEntry.split("=")[0]);
-                   var srcMintEntry = self.mintTable[mint];
-                   //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
-                   //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
-                   if (srcMintEntry == null) {
-                       console.log(`We do not have this mint the group Owner announced mint: ${mint}`);
-                       //we do not have this mint in our mintTale
-                       logger.info(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
-                       console.log(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
-                       self.syncGenesisPulseGroup();  // HACK: any membership change we need resync
-                       return;
-                   }
-               }
-
-               // find each pulse in the group owner announcement or delete/resync
-               for (var pulse in self.pulses) {
-                   var myPulseEntry = self.pulses[pulse];
-                   var found = false;
-                   //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
-                   for (var o in owlsAry) {
-                       var owlmint = parseInt(owlsAry[o].split("=")[0]);
-                       if (owlmint == myPulseEntry.mint) {
-                           found = true;
-                       }
-                   }
-                   // deleteNode if its mint is not in announcement
-                   if (!found) {
-                       logger.info(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
-                       console.log(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
-                       self.deleteNode(self.mintTable[myPulseEntry.mint].ipaddr, self.mintTable[myPulseEntry.mint].port);
-                       return;
-                   }
-               }
-           } else {
-               if (self.mintTable[0].mint==1) {    //we are group owner
-                    if (self.mintTable[incomingPulseEntry.mint]!=null) {
-                        if (self.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {
-                            console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
-                            console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                            self.flashWireguard();
-                            
-                        }
-                    }
-                }
-               // non-Genesis node pulse - we must be out of Quarantine
-               if (self.mintTable[0].state == "QUARANTINE") {
-                   logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
-                   console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
-                   self.mintTable[0].state = "UP";
-                   //
-                   //   Start everything
-                   //
-                   setInterval(self.measurertt,WG_PULSEFREQ*1000);  
-                   self.secureTrafficHandler((data: any) => {
-                       console.log(`secureChannel traffic handler callback: ${data}`);
-                   });
-               }
-
-           }
-
-           // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
-           if (incomingPulseEntry !== undefined) {
-               self.ts = now(); // we got a pulse - update the pulseGroup timestamp
-
-               // copy incoming pulse into my pulse record
-               incomingPulseEntry.inPulses++;
-               incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
-               incomingPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
-               incomingPulseEntry.owl = incomingPulse.owl;
-               incomingPulseEntry.seq = incomingPulse.seq;
-               incomingPulseEntry.owls = incomingPulse.owls;
-               incomingPulseEntry.history.push(incomingPulseEntry.owl);
-
-               // store 60 samples
-               if (incomingPulseEntry.history.length > 60 ) {
-                   incomingPulseEntry.history.shift(); // drop off the last sample
-               }
-
-               var d = new Date(incomingPulseEntry.pulseTimestamp);
-               if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples
-                   incomingPulseEntry.medianHistory.push(
-                       median(incomingPulseEntry.history)
-                   );
-                                  // store 60 samples
-                    if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
-                        incomingPulseEntry.history.shift(); // drop off the last sample
-                    }
-               }
-
-               //update mint entry
-               incomingPulseMintEntry.lastPulseTimestamp = incomingPulseEntry.pulseTimestamp;  // CRASH mintEntry ==null
-               incomingPulseMintEntry.lastOWL = incomingPulseEntry.owl;
-               if (incomingPulseMintEntry.state == "QUARANTINE") {
-                   logger.warning(`incomingPulse received from ${incomingPulseMintEntry.geo} - migrating from ${incomingPulseMintEntry.state} to UP state`);
-               }
-               incomingPulseMintEntry.state = "UP";
-
-               if (incomingPulseEntry.mint == 1) {
-                   //if pulseGroup owner, make sure I have all of his mints
-                   if (incomingPulse.version != self.config.VERSION) {
-                       // Software reload and reconnect
-                       logger.error(`Group Owner has newer? software than we do my SW version: ${self.config.VERSION} vs genesis: ${incomingPulse.version}). QUit, Rejoin, and reload new SW`);
-                       process.exit(36);
-                   }
-
-                   // TODO: Also resync if the groupOwner has removed an item
-               }
-               self.storeOWL(incomingPulse.geo, self.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
-
-           } else {
-               logger.warning(`Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: ${incomingPulse.geo}`);
-
-               //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
-               //maybe also add empty pulse records for each that don't have a pulse record
-           }
-        }
         //
         //  workerthread 
         //
@@ -974,28 +943,36 @@ export class AugmentedPulseGroup {
         //    console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
         for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
             //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
-            processIncomingPulse(pulse);
+            this.processIncomingPulse(pulse);
         }
     }
     //
     //  recvPulses
     //
-    recvPulses = () => {
-        const self = this;
-
-        recvPulses(this.config.PORT, function (incomingPulse:IncomingPulse) {
-            //console.log(`recvPulse(): ${dump(incomingPulse)}`);
-            self.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
-        });
-        //
-        //  The following code happens only once
-        //
-        console.log(`************************** setting timeoput in 10ms to run worker thread incom,ingqueue length=${self.incomingPulseQueue.length}`);
-        console.log(`************************** setting timeoput in 10ms to run worker thread`);
-        console.log(`************************** setting timeoput in 10ms to run worker thread`);
-        setTimeout(this.workerThread,10);  //start workerthread to asynchronously processes pulse - happens one time
-        setTimeout(this.findEfficiencies,1000);   //find where better paths exist between intermediaries - wait a second 
-
+    recvPulses = (incomingMessage: string) => {
+        // try {
+            // const incomingPulse = await parsePulseMessage(incomingMessage)
+        var ary = incomingMessage.split(",");
+        const pulseTimestamp = parseInt(ary[0]);
+        const senderTimestamp = parseInt(ary[1]);
+        const OWL = pulseTimestamp - senderTimestamp;
+        var owlsStart = nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
+        var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
+        const incomingPulse: IncomingPulse = {
+            pulseTimestamp: pulseTimestamp,
+            outgoingTimestamp: senderTimestamp,
+            msgType: ary[2],
+            version: ary[3],
+            geo: ary[4],
+            group: ary[5],
+            seq: parseInt(ary[6]),
+            bootTimestamp: parseInt(ary[7]), //if genesis node reboots --> all node reload SW too
+            mint: parseInt(ary[8]),
+            owls: pulseOwls,
+            owl: OWL,
+            lastMsg: incomingMessage,
+        };
+        this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
     };
 
     // Store one-way latencies to file or graphing & history
@@ -1078,7 +1055,7 @@ export class AugmentedPulseGroup {
             //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
             const ip = mint2IP(pulseEntry.mint);
             const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;
-            child_process.exec(pingCmd, (error: child_process.ExecException | null, stdout: string, stderr: string) => {
+            exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
                     if (i >= 0) {
