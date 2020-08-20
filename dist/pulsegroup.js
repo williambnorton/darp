@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPulseGroup = exports.AugmentedPulseGroup = exports.PulseGroup = exports.PulseEntry = exports.MintEntry = exports.Config = void 0;
 var fs = require("fs");
 var os = require("os");
 var http = require("http");
@@ -44,9 +45,9 @@ var child_process_1 = require("child_process");
 var express = require("express");
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
-// import { sendPulses, recvPulses } from "./pulselayer";
 var types_1 = require("./types");
 var grapher_1 = require("./grapher");
+var wireguard_1 = require("./wireguard");
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
@@ -708,15 +709,32 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     if (_this.mintTable[incomingPulseEntry.mint] != null) {
                         if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") {
                             console.log("Received a pulse from a node we labeled as QUARANTINED ... flash");
+                            console.log("Received a pulse from a node we labeled as QUARANTINED ... flash");
+                            console.log("Received a pulse from a node we labeled as QUARANTINED ... flash");
+                            console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
+                            console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
                             console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
                             _this.flashWireguard();
                         }
                     }
                 }
+                // non-Genesis node pulse - we must be out of Quarantine
+                if (_this.mintTable[0].state == "QUARANTINE") {
+                    logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
+                    console.log("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
+                    _this.mintTable[0].state = "UP";
+                    //
+                    //   Start everything
+                    //
+                    //    setInterval(self.measurertt,WG_PULSEFREQ*1000);  
+                    //    self.secureTrafficHandler((data: any) => {
+                    //        console.log(`secureChannel traffic handler callback: ${data}`);
+                    //    });
+                }
             }
             // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
             if (incomingPulseEntry !== undefined) {
-                self.ts = lib_1.now(); // we got a pulse - update the pulseGroup timestamp
+                _this.ts = lib_1.now(); // we got a pulse - update the pulseGroup timestamp
                 // copy incoming pulse into my pulse record
                 incomingPulseEntry.inPulses++;
                 incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
@@ -737,24 +755,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         incomingPulseEntry.history.shift(); // drop off the last sample
                     }
                 }
-                //update mint entry
-                incomingPulseMintEntry.lastPulseTimestamp = incomingPulseEntry.pulseTimestamp; // CRASH mintEntry ==null
-                incomingPulseMintEntry.lastOWL = incomingPulseEntry.owl;
-                if (incomingPulseMintEntry.state == "QUARANTINE") {
-                    logger_1.logger.warning("incomingPulse received from " + incomingPulseMintEntry.geo + " - migrating from " + incomingPulseMintEntry.state + " to UP state");
-                }
-                incomingPulseMintEntry.state = "UP";
-                if (incomingPulseEntry.mint == 1) {
-                    //if pulseGroup owner, make sure I have all of his mints
-                    if (incomingPulse.version != self.config.VERSION) {
-                        // Software reload and reconnect
-                        logger_1.logger.error("Group Owner has newer? software than we do my SW version: " + self.config.VERSION + " vs genesis: " + incomingPulse.version + "). QUit, Rejoin, and reload new SW");
-                        process.exit(36);
-                    }
-                    // TODO: Also resync if the groupOwner has removed an item
-                }
-                self.storeOWL(incomingPulse.geo, self.mintTable[0].geo, incomingPulse.mint); // store pulse latency To me
-            } else {
+                // TODO: Also resync if the groupOwner has removed an item
+                _this.storeOWL(incomingPulse.geo, _this.mintTable[0].geo, incomingPulse.mint); // store pulse latency To me
+            }
+            else {
                 logger_1.logger.warning("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: " + incomingPulse.geo);
                 //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
                 //maybe also add empty pulse records for each that don't have a pulse record
