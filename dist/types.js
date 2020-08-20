@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SenderMessage = exports.NodeAddress = exports.SenderPayloadType = exports.IncomingPulse = exports.MessagelayerStats = exports.PulseMessageEncoding = void 0;
+exports.__esModule = true;
 var PulseMessageEncoding;
 (function (PulseMessageEncoding) {
     PulseMessageEncoding["latin1"] = "latin1";
