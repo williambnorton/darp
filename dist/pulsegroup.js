@@ -770,7 +770,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         incomingPulseEntry.history.shift(); // drop off the last sample
                     }
                     var d = new Date(incomingPulseEntry.pulseTimestamp);
-                    if (d.getSeconds() == 0) {
+                    if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples
                         incomingPulseEntry.medianHistory.push(lib_1.median(incomingPulseEntry.history));
                         // store 60 samples
                         if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now

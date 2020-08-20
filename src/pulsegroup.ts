@@ -925,12 +925,12 @@ export class AugmentedPulseGroup {
                incomingPulseEntry.history.push(incomingPulseEntry.owl);
 
                // store 60 samples
-               if (incomingPulseEntry.history.length > 60) {
+               if (incomingPulseEntry.history.length > 60 ) {
                    incomingPulseEntry.history.shift(); // drop off the last sample
                }
 
                var d = new Date(incomingPulseEntry.pulseTimestamp);
-               if (d.getSeconds() == 0) {
+               if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples
                    incomingPulseEntry.medianHistory.push(
                        median(incomingPulseEntry.history)
                    );
