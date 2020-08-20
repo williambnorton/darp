@@ -267,7 +267,7 @@ export class AugmentedPulseGroup {
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
-        this.receiver = fork('dist/receiver.js', [config.PORT.toString()]);
+        this.receiver = fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
         this.receiver.on('exit', (code) => {
             logger.warning(`Receiver process exited with code ${code}`);
         });
@@ -276,7 +276,7 @@ export class AugmentedPulseGroup {
             this.recvPulses(incomingMessage);
         });
         
-        this.sender = fork('dist/sender.js', [(PULSEFREQ * 1000).toString()]);
+        this.sender = fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
         this.sender.on('exit', (code) => {
             logger.warning(`Sender process exited with code ${code}`);
         });
