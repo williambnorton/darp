@@ -962,7 +962,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
-        this.receiver = child_process_1.fork('dist/receiver.js', [config.PORT.toString()]);
+        this.receiver = child_process_1.fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
         this.receiver.on('exit', function (code) {
             logger_1.logger.warning("Receiver process exited with code " + code);
         });
@@ -970,7 +970,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.debug("AugmentedPulseGroup has received message from receiver: " + incomingMessage);
             _this.recvPulses(incomingMessage);
         });
-        this.sender = child_process_1.fork('dist/sender.js', [(PULSEFREQ * 1000).toString()]);
+        this.sender = child_process_1.fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
         this.sender.on('exit', function (code) {
             logger_1.logger.warning("Sender process exited with code " + code);
         });
