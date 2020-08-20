@@ -1,6 +1,6 @@
 "use strict";
 /** @module sender emits pulse message to a group of nodes */
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var dgram = require("dgram");
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
