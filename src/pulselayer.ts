@@ -3,7 +3,7 @@
 import { dump, nth_occurrence } from "./lib";
 import { logger } from "./logger";
 import { sendMsg, recvMsg } from "./messagelayer";
-import { IncomingPulse } from "./pulsegroup";
+import { IncomingPulse } from "./types";
 
 type incomingPulseCallback = (incomingPulse: IncomingPulse) => void;
 
