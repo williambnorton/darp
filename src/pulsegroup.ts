@@ -908,7 +908,7 @@ export class AugmentedPulseGroup {
             var d = new Date(incomingPulseEntry.pulseTimestamp);
             if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples
                 incomingPulseEntry.medianHistory.push(
-                    Math.round(median(incomingPulseEntry.history));
+                    Math.round(median(incomingPulseEntry.history))
                 );
                                 // store 60 samples
                 if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
