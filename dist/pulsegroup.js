@@ -705,7 +705,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.mintTable[1].state = "UP"; //we received the pulse from group Owner
                 if (_this.mintTable[0].mint == 1)
                     _this.mintTable[0].state = "UP"; //  Genesis node marks self as UP
-                console.log("GroupOwner Pulse processed - marked group Owner UP");
+                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
             }
             else { //Message NOT from groupOwner.
                 if (_this.mintTable[0].mint == 1) { //Am I group owner?
