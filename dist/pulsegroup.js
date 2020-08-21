@@ -702,7 +702,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         return;
                     }
                 }
-                _this.mintTable[0].state = "UP";
+                _this.mintTable[0].state = "UP"; //we received the pulse from group Owner
             }
             else { //Message NOT from groupOwner.
                 if (_this.mintTable[0].mint == 1) { //Message NOT from groupOwner... Are we group owner?

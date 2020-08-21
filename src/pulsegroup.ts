@@ -853,7 +853,7 @@ export class AugmentedPulseGroup {
                    return;
                }
            }
-           this.mintTable[0].state = "UP";
+           this.mintTable[0].state = "UP";   //we received the pulse from group Owner
         } else {         //Message NOT from groupOwner.
            if (this.mintTable[0].mint==1) {    //Message NOT from groupOwner... Are we group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
