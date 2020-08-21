@@ -676,7 +676,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
                     //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
                     if (srcMintEntry == null) {
-                        console.log("We do not have this mint the group Owner announced mint: " + mint);
+                        console.log("We do not have this mint and group Owner announced it: " + mint);
                         //we do not have this mint in our mintTale
                         logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                         console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
@@ -730,7 +730,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
                 else {
-                    console.log("We are group owner");
+                    //console.log(`We are not group owner`);
                 }
                 // non-Genesis node pulse - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
