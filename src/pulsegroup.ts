@@ -887,6 +887,8 @@ export class AugmentedPulseGroup {
                logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                this.mintTable[0].state = "UP";
+               this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
+
                //
                //   Start everything
                //
