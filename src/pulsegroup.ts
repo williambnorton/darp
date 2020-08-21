@@ -853,9 +853,11 @@ export class AugmentedPulseGroup {
                    return;
                }
            }
-           this.mintTable[0].state = "UP";   //we received the pulse from group Owner
+           this.mintTable[1].state = "UP";   //we received the pulse from group Owner
+           if (this.mintTable[0].mint==1) this.mintTable[0].state = "UP";   //  Genesis node marks self as UP
+           console.log(`GroupOwner Pulse processed - marked group Owner UP`);
         } else {         //Message NOT from groupOwner.
-           if (this.mintTable[0].mint==1) {    //Message NOT from groupOwner... Are we group owner?
+           if (this.mintTable[0].mint==1) {    //Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
