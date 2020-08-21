@@ -47,6 +47,7 @@ var logger_1 = require("./logger");
 var types_1 = require("./types");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
+logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
@@ -707,7 +708,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
                 _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node
                 //}
-                console.log("processIncomingPulse(): Marking node UP");
+                //console.log(`processIncomingPulse(): Marking node UP`);
                 //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
             }
             else { //Message NOT from groupOwner.

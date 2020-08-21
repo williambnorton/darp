@@ -6,11 +6,12 @@ import http = require("http");
 import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
 import { dump, now, MYVERSION, median, mint2IP, nth_occurrence } from "./lib";
-import { logger } from "./logger";
+import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 
+logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
 const MEASURE_RTT=false;   //ping across wireguard interface
@@ -858,7 +859,7 @@ export class AugmentedPulseGroup {
            //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
                this.mintTable[0].state = "UP";   // mark self as UP since we got a pulse from genesis node
            //}
-           console.log(`processIncomingPulse(): Marking node UP`);
+           //console.log(`processIncomingPulse(): Marking node UP`);
                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
         } else {         //Message NOT from groupOwner.
             console.log(`====================================================    NON-Group Owner Pulse logic ....`);
