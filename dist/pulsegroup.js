@@ -665,6 +665,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
+                console.log("**************************************************       Group Owner Pulse logic ....");
                 // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
                 var owlsAry = incomingPulse.owls.split(",");
                 // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
@@ -708,6 +709,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
             }
             else { //Message NOT from groupOwner.
+                console.log("====================================================    Group Owner Pulse logic ....");
                 if (_this.mintTable[0].mint == 1) { //Am I group owner?
                     if (_this.mintTable[incomingPulseEntry.mint] != null) { //We are group owner, do we know this guy? 
                         if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarwtine?

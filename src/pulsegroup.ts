@@ -814,6 +814,7 @@ export class AugmentedPulseGroup {
 
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
+           console.log(`**************************************************       Group Owner Pulse logic ....`);
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
            const owlsAry = incomingPulse.owls.split(",");
@@ -857,14 +858,21 @@ export class AugmentedPulseGroup {
            if (this.mintTable[0].mint==1) this.mintTable[0].state = "UP";   //  Genesis node marks self as UP
            //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
         } else {         //Message NOT from groupOwner.
+            console.log(`====================================================    Group Owner Pulse logic ....`);
+
+
+
+
+
+
            if (this.mintTable[0].mint==1) {    //Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
-                            console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
+                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                            console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         this.flashWireguard();
                         this.mintTable[incomingPulseEntry.mint].state=="UP" //Genesis is READY TO ACCEPT nodes
