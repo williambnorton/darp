@@ -244,6 +244,7 @@ app.get('/nodefactory', function(req, res) {
 
     //  Or - Handle pulseGroup member case
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
@@ -265,6 +266,7 @@ app.get('/nodefactory', function(req, res) {
     logger.info(`${geo}: mint=${newMint} publickey=${publickey} version=${version} wallet=${wallet}`);
     myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION);
     logger.debug(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
+    console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
 
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
     var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
