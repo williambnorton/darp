@@ -280,6 +280,7 @@ app.get('/nodefactory', function(req, res) {
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));  // clone my pulseGroup object 
     newNodePulseGroup.mintTable[0]=newNode;  // assign him his mint and config
     logger.info("* Genesis node created newNodePulseGroup="+dump(newNodePulseGroup));
+    console.log("* Genesis node created newNodePulseGroup="+dump(newNodePulseGroup));
 
     // send response to pulse group member node
     res.setHeader('Content-Type', 'application/json');
