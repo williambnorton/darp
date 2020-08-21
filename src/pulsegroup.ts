@@ -872,13 +872,13 @@ export class AugmentedPulseGroup {
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         this.flashWireguard();
-                        this.mintTable[incomingPulseEntry.mint].state=="UP" //Genesis is READY TO ACCEPT nodes
+                        this.mintTable[incomingPulseEntry.mint].state="UP" //Genesis is READY TO ACCEPT nodes
                     }
                 } else {
                     //We are just a member of this pulseGroup - not up to us 
                 }
             } else {
-                //console.log(`We are not group owner`);
+                //console.log(`I am not group owner`);
             }
            // non-Genesis node pulse - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {

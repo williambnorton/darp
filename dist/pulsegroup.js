@@ -722,7 +722,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
                             console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
                             _this.flashWireguard();
-                            _this.mintTable[incomingPulseEntry.mint].state == "UP"; //Genesis is READY TO ACCEPT nodes
+                            _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
                         }
                     }
                     else {
@@ -730,7 +730,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
                 else {
-                    //console.log(`We are not group owner`);
+                    //console.log(`I am not group owner`);
                 }
                 // non-Genesis node pulse - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
