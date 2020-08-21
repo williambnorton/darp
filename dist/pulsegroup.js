@@ -707,12 +707,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.mintTable[1].state = "UP"; //Genesis Node is UP
                 //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
                 _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node
+                _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                 //}
                 //console.log(`processIncomingPulse(): Marking node UP`);
                 //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
             }
             else { //Message NOT from groupOwner.
-                console.log("====================================================    NON-Group Owner Pulse logic ....");
+                //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
                 if (_this.mintTable[0].mint == 1) { //Am I group owner?
                     if (_this.mintTable[incomingPulseEntry.mint] != null) { //I am group owner, do I know this guy? 
                         if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarwtine?
