@@ -854,17 +854,14 @@ export class AugmentedPulseGroup {
                    return;
                }
            }
-           this.mintTable[1].state = "UP";   //we received the pulse from group Owner
-           if (this.mintTable[0].mint==1) this.mintTable[0].state = "UP";   //  Genesis node marks self as UP
-           //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
+           this.mintTable[1].state = "UP";   //Genesis Node is UP
+           //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
+               this.mintTable[0].state = "UP";   // mark self as UP since we got a pulse from genesis node
+           //}
+           console.log(ts()+`processIncomingPulse(): Marking node UP`);
+               //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
         } else {         //Message NOT from groupOwner.
-            console.log(`====================================================    Group Owner Pulse logic ....`);
-
-
-
-
-
-
+            console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
@@ -880,6 +877,8 @@ export class AugmentedPulseGroup {
                 } else {
                     //We are just a member of this pulseGroup - not up to us 
                 }
+            } else {
+                console.log(`We are group owner`);
             }
            // non-Genesis node pulse - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {
