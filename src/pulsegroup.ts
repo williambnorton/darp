@@ -814,7 +814,7 @@ export class AugmentedPulseGroup {
 
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
-           console.log(`**************************************************       Group Owner Pulse logic ....`);
+           //console.log(`**************************************************       Group Owner Pulse logic ....`);
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
            const owlsAry = incomingPulse.owls.split(",");
@@ -863,7 +863,7 @@ export class AugmentedPulseGroup {
         } else {         //Message NOT from groupOwner.
             console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Am I group owner?
-                if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
+                if (this.mintTable[incomingPulseEntry.mint]!=null) {    //I am group owner, do I know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
