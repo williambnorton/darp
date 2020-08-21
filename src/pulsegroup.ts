@@ -813,7 +813,7 @@ export class AugmentedPulseGroup {
        }
 
        // pulseGroup owner controls population
-       if (this.groupOwner === incomingPulseEntry.geo) {
+       if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
            const owlsAry = incomingPulse.owls.split(",");
@@ -853,10 +853,10 @@ export class AugmentedPulseGroup {
                    return;
                }
            }
-       } else {
-           if (this.mintTable[0].mint==1) {    //we are group owner
-                if (this.mintTable[incomingPulseEntry.mint]!=null) {
-                    if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {                 
+       } else {         //Message NOT from groupOwner.
+           if (this.mintTable[0].mint==1) {    //Message NOT from groupOwner... Are we group owner?
+                if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
+                    if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
                             console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
@@ -864,8 +864,10 @@ export class AugmentedPulseGroup {
                             console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         this.flashWireguard();
-                        
+                        this.mintTable[incomingPulseEntry.mint].state=="UP" //Genesis is READY TO ACCEPT nodes
                     }
+                } else {
+                    //We are just a member of this pulseGroup - not up to us 
                 }
             }
            // non-Genesis node pulse - we must be out of Quarantine
