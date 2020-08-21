@@ -812,7 +812,7 @@ export class AugmentedPulseGroup {
            return;
        }
 
-       // pulseGroup owner controls population
+       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
@@ -853,7 +853,8 @@ export class AugmentedPulseGroup {
                    return;
                }
            }
-       } else {         //Message NOT from groupOwner.
+           this.mintTable[0].state = "UP";
+        } else {         //Message NOT from groupOwner.
            if (this.mintTable[0].mint==1) {    //Message NOT from groupOwner... Are we group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //We are group owner, do we know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
@@ -907,7 +908,7 @@ export class AugmentedPulseGroup {
             var d = new Date(incomingPulseEntry.pulseTimestamp);
             if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples
                 incomingPulseEntry.medianHistory.push(
-                    median(incomingPulseEntry.history)
+                    Math.round(median(incomingPulseEntry.history));
                 );
                                 // store 60 samples
                 if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now

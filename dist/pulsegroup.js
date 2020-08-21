@@ -663,7 +663,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " or mint " + incomingPulse.mint + " entry entry");
                 return;
             }
-            // pulseGroup owner controls population
+            // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
                 // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
                 var owlsAry = incomingPulse.owls.split(",");
@@ -702,6 +702,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         return;
                     }
                 }
+                _this.mintTable[0].state = "UP";
             }
             else { //Message NOT from groupOwner.
                 if (_this.mintTable[0].mint == 1) { //Message NOT from groupOwner... Are we group owner?
@@ -752,7 +753,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
                 var d = new Date(incomingPulseEntry.pulseTimestamp);
                 if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples
-                    incomingPulseEntry.medianHistory.push(lib_1.median(incomingPulseEntry.history));
+                    incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)));
+                    ;
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
                         incomingPulseEntry.history.shift(); // drop off the last sample
