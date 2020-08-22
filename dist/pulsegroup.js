@@ -440,7 +440,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             _this.mintTable[m].state = "NR"; // we don't know this node's state
                         }
                         if (_this.isGenesisNode()) {
-                            // Genesis only
+                            // Genesis only code path
                             logger_1.logger.debug("m=" + m + " I am genesis node not seeing him for elapsedMSincePulse=" + elapsedMSincePulse);
                             if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
                                 // timeout node after 5 seconds
@@ -451,8 +451,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         else {
                             // not genesis - only can time out genesis
                             var age = lib_1.now() - _this.mintTable[1].lastPulseTimestamp;
-                            if (age > 30 * 1000) { //after 30 seconds genesis is gone
-                                logger_1.logger.error("Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
+                            if (age > 10 * 1000) { //after 10 seconds we say genesis is gone
+                                logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 process.exit(36);
                             }
                             // we may timeout the group owner and kill the pulsegroup
@@ -461,10 +461,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                     }
                 }
-            }
-            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > 10000) {
-                console.log("timeout - timed out genesis node - reloading");
-                process.exit(36);
             }
             for (var p in _this.pulses) {
                 var pulseEntry = _this.pulses[p];

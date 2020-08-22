@@ -574,7 +574,7 @@ export class AugmentedPulseGroup {
                     }
 
                     if (this.isGenesisNode()) {
-                        // Genesis only
+                        // Genesis only code path
                         logger.debug("m=" + m + " I am genesis node not seeing him for elapsedMSincePulse=" + elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles
                             // timeout node after 5 seconds
@@ -584,8 +584,8 @@ export class AugmentedPulseGroup {
                     } else {
                         // not genesis - only can time out genesis
                         var age = now() - this.mintTable[1].lastPulseTimestamp;
-                        if (age > 30 * 1000) {              //after 30 seconds genesis is gone
-                            logger.error(`Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                        if (age > 10 * 1000) {              //after 10 seconds we say genesis is gone
+                            logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             process.exit(36);
                         }
                         // we may timeout the group owner and kill the pulsegroup
@@ -595,10 +595,7 @@ export class AugmentedPulseGroup {
                 }
             }
         }
-        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>10000) {
-            console.log(`timeout - timed out genesis node - reloading`);
-            process.exit(36);
-        }
+
         for (var p in this.pulses) {
             var pulseEntry = this.pulses[p];
 
