@@ -668,45 +668,47 @@ var AugmentedPulseGroup = /** @class */ (function () {
             if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
                 //console.log(`**************************************************       Group Owner Pulse logic ....`);
                 // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
-                var owlsAry = incomingPulse.owls.split(",");
-                // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
-                for (var o in owlsAry) {
-                    var owlEntry = owlsAry[o];
-                    var mint = parseInt(owlEntry.split("=")[0]);
-                    var srcMintEntry = _this.mintTable[mint];
-                    //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
-                    //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
-                    if (srcMintEntry == null) {
-                        console.log("We do not have this mint and group Owner announced it: " + mint);
-                        //we do not have this mint in our mintTale
-                        logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
-                        console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
-                        _this.syncGenesisPulseGroup(); // HACK: any membership change we need resync
-                        return;
-                    }
-                }
-                // find each pulse in the group owner announcement or delete/resync
-                for (var pulse in _this.pulses) {
-                    var myPulseEntry = _this.pulses[pulse];
-                    var found = false;
-                    //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
+                if (_this.groupOwner != _this.mintTable[0].geo) { // use genesis nodes' incoming owls to manage population
+                    var owlsAry = incomingPulse.owls.split(",");
+                    // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
                     for (var o in owlsAry) {
-                        var owlmint = parseInt(owlsAry[o].split("=")[0]);
-                        if (owlmint == myPulseEntry.mint) {
-                            found = true;
+                        var owlEntry = owlsAry[o];
+                        var mint = parseInt(owlEntry.split("=")[0]);
+                        var srcMintEntry = _this.mintTable[mint];
+                        //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
+                        //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
+                        if (srcMintEntry == null) {
+                            console.log("We do not have this mint and group Owner announced it: " + mint);
+                            //we do not have this mint in our mintTale
+                            logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
+                            console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
+                            _this.syncGenesisPulseGroup(); // HACK: any membership change we need resync
+                            return;
                         }
                     }
-                    // deleteNode if its mint is not in announcement
-                    if (!found) {
-                        logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
-                        console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
-                        _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
-                        return;
+                    // find each pulse in the group owner announcement or delete/resync
+                    for (var pulse in _this.pulses) {
+                        var myPulseEntry = _this.pulses[pulse];
+                        var found = false;
+                        //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
+                        for (var o in owlsAry) {
+                            var owlmint = parseInt(owlsAry[o].split("=")[0]);
+                            if (owlmint == myPulseEntry.mint) {
+                                found = true;
+                            }
+                        }
+                        // deleteNode if its mint is not in announcement
+                        if (!found) {
+                            logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
+                            console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
+                            _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
+                            return;
+                        }
                     }
                 }
                 _this.mintTable[1].state = "UP"; //Genesis Node is UP
                 //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
-                _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node
+                _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
                 _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                 //}
                 //console.log(`processIncomingPulse(): Marking node UP`);
