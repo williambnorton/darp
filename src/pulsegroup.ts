@@ -595,6 +595,10 @@ export class AugmentedPulseGroup {
                 }
             }
         }
+        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>10000) {
+            console.log(`timeout - timed out genesis node - reloading`);
+            process.exit(36);
+        }
         for (var p in this.pulses) {
             var pulseEntry = this.pulses[p];
 

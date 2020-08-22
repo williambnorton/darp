@@ -16,7 +16,7 @@
 echo `date` "------------------ $0 STARTING DARP v0.2 --------------------" 
 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
-MAXCYCLES=20 # of cycles before stopping
+MAXCYCLES=5 # of cycles before stopping
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
