@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var ejs = require("ejs");
 var logger_1 = require("./logger");
@@ -302,10 +302,10 @@ app.get('/nodefactory', function (req, res) {
                 myPulseGroup = _a.sent();
                 logger_1.logger.info("DARP NODE STARTED: pulseGroup=" + lib_1.dump(myPulseGroup));
                 augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
-                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; // for now genesis node has no others
+                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.pulse();
-                setInterval(augmentedPulseGroup.workerThread, 10); //start workerthread to asynchronously processes pulse - happens one time
+                augmentedPulseGroup.workerThread(); //start workerthread to asynchronously processes pulse messages
                 setTimeout(augmentedPulseGroup.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second

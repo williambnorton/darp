@@ -1,26 +1,11 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SenderMessage = exports.NodeAddress = exports.SenderPayloadType = exports.IncomingPulse = exports.PulseMessageEncoding = void 0;
 var PulseMessageEncoding;
 (function (PulseMessageEncoding) {
     PulseMessageEncoding["latin1"] = "latin1";
     PulseMessageEncoding["utf8"] = "utf8";
 })(PulseMessageEncoding = exports.PulseMessageEncoding || (exports.PulseMessageEncoding = {}));
-// TODO: remove, as this is not used anywhere 
-var MessagelayerStats = /** @class */ (function () {
-    function MessagelayerStats() {
-        this.port = "";
-        this.inMsgs = 0;
-        this.outMsgs = 0;
-        this.lastInTimestamp = 0;
-        this.lastOutTimestamp = 0;
-        this.inOctets = 0;
-        this.outOctets = 0;
-        this.lastInMsg = "";
-        this.lastOutMsg = "";
-    }
-    return MessagelayerStats;
-}());
-exports.MessagelayerStats = MessagelayerStats;
 // Incoming pulse definition, when deserialized form pulse message. Export for use in pulselayer.
 var IncomingPulse = /** @class */ (function () {
     function IncomingPulse(pulseTimestamp, outgoingTimestamp, msgType, version, geo, group, seq, bootTimestamp, mint, owls, owl, lastMsg) {

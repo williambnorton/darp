@@ -3,30 +3,6 @@ export enum PulseMessageEncoding {
     utf8 = "utf8"
 }
 
-// TODO: remove, as this is not used anywhere 
-export class MessagelayerStats {
-    port: string;
-    inMsgs: number;
-    outMsgs: number;
-    lastInTimestamp: number;
-    lastOutTimestamp: number;
-    inOctets: number;
-    outOctets: number;
-    lastInMsg: string;
-    lastOutMsg: string;
-    constructor () {
-        this.port = "";
-        this.inMsgs = 0;
-        this.outMsgs = 0;
-        this.lastInTimestamp = 0;
-        this.lastOutTimestamp = 0;
-        this.inOctets = 0;
-        this.outOctets = 0;
-        this.lastInMsg = "";
-        this.lastOutMsg = "";
-    }
-}
-
 // Incoming pulse definition, when deserialized form pulse message. Export for use in pulselayer.
 export class IncomingPulse {
     outgoingTimestamp: number;
