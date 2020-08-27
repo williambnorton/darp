@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPulseGroup = exports.AugmentedPulseGroup = exports.PulseGroup = exports.PulseEntry = exports.MintEntry = exports.Config = void 0;
 var fs = require("fs");
 var os = require("os");
 var http = require("http");
@@ -785,22 +786,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         //called every 10ms to see if there are pkts to process
         this.workerThread = function () {
-            // const self = this;
-            //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-            // setTimeout(self.workerThread,100);  //QUEUE up incoming pksts and come back again to batch process every ____ milliseconds
-            //another way to do this is to time this work to tie to the timeout (500ms) point
-            //pulsingis timeed to start on the second boundary for self timing ease
+            setTimeout(_this.workerThread, 100); // queue up incoming packets and come back again to batch process every 100 milliseconds
             if (_this.incomingPulseQueue.length == 0) {
-                //console.log(ts()+`worker(): no pkts to process`);
                 return;
             }
-            //
-            //  workerthread 
-            //
-            //if (this.incomingPulseQueue.length>10) 
-            //    console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
             for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
-                //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
                 _this.processIncomingPulse(pulse);
             }
         };
@@ -828,7 +818,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 mint: parseInt(ary[8]),
                 owls: pulseOwls,
                 owl: OWL,
-                lastMsg: incomingMessage
+                lastMsg: incomingMessage,
             };
             _this.incomingPulseQueue.push(incomingPulse); //tmp patch to test
         };

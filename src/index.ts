@@ -295,11 +295,11 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroup = await getPulseGroup(config);
         logger.info(`DARP NODE STARTED: pulseGroup=${dump(myPulseGroup)}`);
         var augmentedPulseGroup = new AugmentedPulseGroup(config, myPulseGroup);
-        myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;  // for now genesis node has no others
+        myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
         augmentedPulseGroup.pulse();
-        setInterval(augmentedPulseGroup.workerThread, 10);  //start workerthread to asynchronously processes pulse - happens one time
-        setTimeout(augmentedPulseGroup.findEfficiencies,1000);   //find where better paths exist between intermediaries - wait a second 
+        augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
+        setTimeout(augmentedPulseGroup.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
         setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
     } catch (error) {

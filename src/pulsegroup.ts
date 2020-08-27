@@ -944,24 +944,13 @@ export class AugmentedPulseGroup {
     }
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
-        // const self = this;
-        //console.log(`workerThread(): ${this.incomingPulseQueue.length}`);
-        // setTimeout(self.workerThread,100);  //QUEUE up incoming pksts and come back again to batch process every ____ milliseconds
-        //another way to do this is to time this work to tie to the timeout (500ms) point
-        //pulsingis timeed to start on the second boundary for self timing ease
-
+        setTimeout(this.workerThread, 100);  // queue up incoming packets and come back again to batch process every 100 milliseconds
+        
         if (this.incomingPulseQueue.length==0) {
-            //console.log(ts()+`worker(): no pkts to process`);
             return;
         }
-
-        //
-        //  workerthread 
-        //
-        //if (this.incomingPulseQueue.length>10) 
-        //    console.log(`workerthread is buffering for ${this.incomingPulseQueue.length} incoming pulses`);
+        
         for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
-            //console.log(`workerThread() Qlen=${this.incomingPulseQueue.length} handling incoming pulse: ${dump(pulse)}`);
             this.processIncomingPulse(pulse);
         }
     }

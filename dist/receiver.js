@@ -1,6 +1,6 @@
 "use strict";
 /** @module receiver listens to messages from a group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var dgram = require("dgram");
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
@@ -26,10 +26,3 @@ receiver.on("message", function (pulseBuffer, rinfo) {
     }
 });
 receiver.bind(LISTENING_PORT);
-// TODO: remove, as these are not used anywhere
-// messagelayerStats.port = port.toString();
-// then on every message received
-// messagelayerStats.lastInTimestamp = now();
-// messagelayerStats.inOctets += msg.length;
-// messagelayerStats.inMsgs++;
-// messagelayerStats.lastInMsg = incomingMessage;

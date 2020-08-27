@@ -1,6 +1,6 @@
 "use strict";
 /** @module sender emits pulse message to a group of nodes */
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var dgram = require("dgram");
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
@@ -28,9 +28,3 @@ setInterval(function () {
         });
     });
 }, PULSE_INTERVAL);
-// TODO: remove, as these are not used anywhere
-// on every message sent
-// messagelayerStats.outMsgs++;
-// messagelayerStats.lastOutTimestamp = now();
-// messagelayerStats.lastOutMsg = timestampedMsg;
-// messagelayerStats.outOctets += message.length;

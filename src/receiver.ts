@@ -31,11 +31,3 @@ receiver.on("message", (pulseBuffer, rinfo) => {
 });
 
 receiver.bind(LISTENING_PORT);
-
-// TODO: remove, as these are not used anywhere
-// messagelayerStats.port = port.toString();
-// then on every message received
-// messagelayerStats.lastInTimestamp = now();
-// messagelayerStats.inOctets += msg.length;
-// messagelayerStats.inMsgs++;
-// messagelayerStats.lastInMsg = incomingMessage;

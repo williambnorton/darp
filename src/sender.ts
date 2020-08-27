@@ -31,10 +31,3 @@ setInterval(() => {
         });
     });
 }, PULSE_INTERVAL);
-
-// TODO: remove, as these are not used anywhere
-// on every message sent
-// messagelayerStats.outMsgs++;
-// messagelayerStats.lastOutTimestamp = now();
-// messagelayerStats.lastOutMsg = timestampedMsg;
-// messagelayerStats.outOctets += message.length;
