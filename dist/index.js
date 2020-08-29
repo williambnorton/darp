@@ -199,7 +199,6 @@ app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
 app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    //Do not send history data- will not get loked at and is ugly
     res.end(JSON.stringify(myPulseGroups, null, 2));
     return;
 });
