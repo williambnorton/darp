@@ -185,12 +185,7 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //Do not send history data- will not get loked at and is ugly
-    var myState=JSON.parse(JSON.stringify(myPulseGroups, null, 2));  //add mintTable, pulses, and a few other rootvars
-    for (var pg in myState)
-        for (var i in myState[pg].pulses) 
-            myState[pg].pulses[i].history=myState.pulses[i].medianHistory=[];
-    console.log(`sending state in lite form`+JSON.stringify(myState, null, 2));
-    res.end(JSON.stringify(myState, null, 2)); 
+    res.end(JSON.stringify(myPulseGroups, null, 2)); 
     return;
 });
 
