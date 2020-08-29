@@ -192,7 +192,7 @@ app.get('/mintTable', function(req, res) {
     logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(myPulseGroups, null, 2)); 
+    res.end(JSON.stringify(myPulseGroups[me.geo+".1"].mintTable, null, 2)); 
     return;
 });
 

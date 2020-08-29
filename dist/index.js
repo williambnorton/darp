@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var express = require("express");
 var ejs = require("ejs");
 var logger_1 = require("./logger");
@@ -206,7 +206,7 @@ app.get('/mintTable', function (req, res) {
     logger_1.logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(myPulseGroups, null, 2));
+    res.end(JSON.stringify(myPulseGroups[me.geo + ".1"].mintTable, null, 2));
     return;
 });
 // Configuration for node - allocate a mint

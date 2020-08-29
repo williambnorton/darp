@@ -1,7 +1,6 @@
 "use strict";
 /** @module logger Basic logger, which can be extended to log into ElasticSearch */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.logger = exports.LogLevel = void 0;
+exports.__esModule = true;
 var LogLevel;
 (function (LogLevel) {
     LogLevel[LogLevel["DEBUG"] = 1] = "DEBUG";
@@ -40,7 +39,7 @@ var Logger = /** @class */ (function () {
         }
         else if (this.logTimezone === LogTimezone.PDT) {
             timestamp = now.toLocaleString("en-US", {
-                timeZone: "America/Los_Angeles",
+                timeZone: "America/Los_Angeles"
             });
         }
         else {
