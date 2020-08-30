@@ -254,7 +254,7 @@
 
     <% var gNodes=process.env.GENESISNODELIST.split(",") %>
     <% for (var p in gNodes) { %>
-        <% var gurl="http://"+gNodes[p]+"/";
+        <% var gurl="http://"+gNodes[p]+"/"; %>
         <a href=<%=gNodes[p] %></a>
     <% } %>
 
