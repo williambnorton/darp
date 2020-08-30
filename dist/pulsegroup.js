@@ -501,6 +501,15 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
+            var genesislist = process.env.GENESISNODELIST || "";
+            console.log("genesislist=" + genesislist);
+            for (var node in genesislist.split(",")) {
+                console.log("Here we would UDP pulse our matrix to every other genesis node: $node");
+            }
+            //if (isGenesisNode) {
+            //    pullState from a Genesis Node[i]
+            //    
+            //}
         };
         //
         //  @wbnwbnwbnwbn
