@@ -251,8 +251,12 @@
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
     <p id="genesisnodelist">: <%= process.env.GENESISNODELIST.split(",") %> </p>
-    
-    
+
+    <% var gNodes=process.env.GENESISNODELIST.split(",") 
+    <% for (var p in gNodes) { %>
+        <a ><%=gNodes[p] %></a>
+    <% } %>
+
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
     
     <% for (var p in myPulseGroups) { %>
