@@ -642,9 +642,10 @@ export class AugmentedPulseGroup {
         
         if (this.isGenesisNode()) { 
             var genesislist=process.env.GENESISNODELIST||"";
-//        console.log(`genesislist=${genesislist}`);
-            for (var node in genesislist.split(",") ) {
-                console.log(`Here we would UDP pulse our matrix to every other genesis node: ${node}`);
+            var genesisNodes=genesislist.split(",");
+            console.log(`genesisNodes=${genesisNodes}`);
+            for (var node in genesisNodes ) {
+                console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
                 //send UDP datagram of pulseGroupsObject
             }
         //if (isGenesisNode) {
