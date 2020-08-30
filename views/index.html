@@ -250,14 +250,9 @@
     <% var timeStr = d.toString().split(' ')[4]; %>
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
-    <p id="genesisnodelist">GenesisNodeList: <%= process.env.GENESISNODELIST; %> </p>
-
-    <% var gNodes=process.env.GENESISNODELIST; %>
-    <% for (var p in gNodes) { %>
-        <% var gurl="http://"+gNodes[p]+"/"; %>
-        <p> <%= gNodes[p] %> </p>
-    <% } %>
-
+    <p id="genesisnodelist">: <%= process.env.GENESISNODELIST %> </p>
+    
+    
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
     
     <% for (var p in myPulseGroups) { %>
