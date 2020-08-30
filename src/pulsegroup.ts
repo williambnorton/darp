@@ -5,7 +5,7 @@ import os = require("os");
 import http = require("http");
 import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
-import { dump, now, MYVERSION, median, mint2IP, nth_occurrence } from "./lib";
+import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts  } from "./lib";
 import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
@@ -646,7 +646,15 @@ export class AugmentedPulseGroup {
             console.log(`genesisNodes=${genesisNodes}`);
             for (var node in genesisNodes ) {
                 console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
+
                 //send UDP datagram of pulseGroupsObject
+                //wbnwbnwbn - here use raw send
+                var dgram = require('dgram');
+
+                var client = dgram.createSocket('udp4');
+                var matrixPulseMsg=JSON.stringify(this.mintTable);
+                client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, node);
+                console.log(`sent matrix pulse to ${node} msg=${matrixPulseMsg}`);
             }
         //if (isGenesisNode) {
         //    pullState from a Genesis Node[i]

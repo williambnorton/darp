@@ -508,6 +508,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 for (var node in genesisNodes) {
                     console.log("Here we would UDP pulse our matrix to every other genesis node: " + genesisNodes[node]);
                     //send UDP datagram of pulseGroupsObject
+                    //wbnwbnwbn - here use raw send
+                    var dgram = require('dgram');
+                    var client = dgram.createSocket('udp4');
+                    var matrixPulseMsg = JSON.stringify(_this.mintTable);
+                    client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, node);
+                    console.log("sent matrix pulse to " + node + " msg=" + matrixPulseMsg);
                 }
                 //if (isGenesisNode) {
                 //    pullState from a Genesis Node[i]
