@@ -250,7 +250,7 @@
     <% var timeStr = d.toString().split(' ')[4]; %>
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
-    <p id="genesisnodelist">: <%= process.env.GENESISNODELIST %> </p>
+    <p id="genesisnodelist">: <%= process.env.GENESISNODELIST.split(",") %> </p>
     
     
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
