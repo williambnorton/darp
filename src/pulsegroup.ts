@@ -653,7 +653,7 @@ export class AugmentedPulseGroup {
 
                 var client = dgram.createSocket('udp4');
                 var matrixPulseMsg=JSON.stringify(this.mintTable);
-                client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]);
+                //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes
                 console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
             }
         //if (isGenesisNode) {
