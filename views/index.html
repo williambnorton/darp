@@ -254,7 +254,8 @@
 
     <% var gNodes=process.env.GENESISNODELIST.split(",") 
     <% for (var p in gNodes) { %>
-        <a ><%=gNodes[p] %></a>
+        <% var gurl="http://"+gNodes[p]+"/";
+        <a href=<%=gNodes[p] %></a>
     <% } %>
 
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
