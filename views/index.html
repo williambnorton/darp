@@ -251,7 +251,7 @@
     <% var g=process.env; %>
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
-    <p id="genesisnodelist">GenesisNodes: <%= g %> </p>
+    <p id="genesisnodelist">GenesisNodes: <%= JSON.stringify(g,null,2); %> </p>
     
     
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
