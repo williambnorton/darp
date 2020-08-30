@@ -645,7 +645,7 @@ export class AugmentedPulseGroup {
             var genesisNodes=genesislist.split(",");
             console.log(`genesisNodes=${genesisNodes}`);
             for (var node in genesisNodes ) {
-                console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
+                //console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
 
                 //send UDP datagram of pulseGroupsObject
                 //wbnwbnwbn - here use raw send
@@ -653,8 +653,8 @@ export class AugmentedPulseGroup {
 
                 var client = dgram.createSocket('udp4');
                 var matrixPulseMsg=JSON.stringify(this.mintTable);
-                client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, node);
-                console.log(`sent matrix pulse to ${node} msg=${matrixPulseMsg}`);
+                client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]);
+                console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
             }
         //if (isGenesisNode) {
         //    pullState from a Genesis Node[i]
