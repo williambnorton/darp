@@ -248,7 +248,7 @@
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
     <% var timeStr = d.toString().split(' ')[4]; %>
-    <% var g=process.env; %>
+    <% var g=process.env.GENESISNODELIST; %>
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
     <p id="genesisnodelist">GenesisNodes: <%= JSON.stringify(g,null,2); %> </p>
