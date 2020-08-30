@@ -248,9 +248,10 @@
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
     <% var timeStr = d.toString().split(' ')[4]; %>
+    <% var g=process.env.GENESIS; %>
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
-    <p id="genesisnodelist">: <%= process.env.GENESISNODELIST %> </p>
+    <p id="genesisnodelist">: <%= g %> </p>
     
     
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
