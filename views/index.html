@@ -251,10 +251,7 @@
     <% var g=process.env.GENESISNODELIST.split(","); %>
 
     <p id="dateTime">*Refresh: <%= timeStr %> </p>
-    <p id="genesisnodelist">GenesisNodes: <%= JSON.stringify(g,null,2); %> </p>
-    <% for (var p in g) { %>
-        <p><a href="http://<%=g[p]%>:65013/">http://<%=g[p]%>:65013/</a></p>
-    <% } %>
+
 
     
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
@@ -608,7 +605,17 @@
         -e HOSTNAME=`hostname`
         -e WALLET=auto
         -it williambnorton/darp:latest</p>
-    
+
+        <p id="genesisnodelist">GenesisNodes: <%= JSON.stringify(g,null,2); %> </p>
+        <% for (var p in g) { %>
+            <p><a href="http://<%=g[p]%>:65013/">http://<%=g[p]%>:65013/</a></p>
+            <p><a href="http://<%=g[p]%>:65013/mintable">http://<%=g[p]%>:65013/mintable</a></p>
+            <p><a href="http://<%=g[p]%>:65013/pulsegroup">http://<%=g[p]%>:65013/pulsegroup</a></p>
+            <p><a href="http://<%=g[p]%>:65013/me">http://<%=g[p]%>:65013/me</a></p>
+            
+        <% } %>
+
+        
     <p id="raw"><%- JSON.stringify(myPulseGroups, null, 2) %></p>
 
 </body>
