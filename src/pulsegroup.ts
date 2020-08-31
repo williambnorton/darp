@@ -640,9 +640,15 @@ export class AugmentedPulseGroup {
         this.nodeCount = Object.keys(this.pulses).length;
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
         
-        if (this.isGenesisNode()) { 
+        if (this.isGenesisNode()) { //this deserves its own routine, run every second - curl, pulling a different genesis node each time
+            const fs = require('fs');
+            let data = JSON.stringify(this);
+            fs.writeFileSync(this.config.IP+this.config.PORT+'.json', data);   
+        }
+            /*
             var genesislist=process.env.GENESISNODELIST||"";
             var genesisNodes=genesislist.split(",");
+            
             console.log(`genesisNodes=${genesisNodes}`);
             for (var node in genesisNodes ) {
                 //console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
@@ -656,11 +662,12 @@ export class AugmentedPulseGroup {
                 //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes
                 console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
             }
-        //if (isGenesisNode) {
-        //    pullState from a Genesis Node[i]
-        //    
-        //}
-        }
+            
+            //if (isGenesisNode) {
+            //    pullState from a Genesis Node[i]
+            //    
+            //}
+        }  /**/
     };
 
 
