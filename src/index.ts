@@ -181,10 +181,12 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
     }
 });
 
+const fs = require('fs');
 app.get(['/pulsegroups','/state','/me'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(myPulseGroups, null, 2)); 
+    let filename=me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
+    res.end(fs.readFileSync(filename)); 
     return;
 });
 
