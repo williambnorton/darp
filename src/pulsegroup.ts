@@ -652,7 +652,7 @@ export class AugmentedPulseGroup {
             }
             delete copy.sender;
             delete copy.receiver;
-            let strCopy=JSON.stringify(copy);           //and put it backj into JSON stringify format
+            let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
