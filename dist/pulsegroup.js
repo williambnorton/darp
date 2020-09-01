@@ -501,14 +501,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
-            if (_this.isGenesisNode()) { //Dthis deserves its own routine, run every second - curl, pulling a different genesis node each time
+            if (_this.isGenesisNode()) { //save pulseGroup in JSON format in filesystem
                 var fs_1 = require('fs');
                 var data = JSON.stringify(_this);
-                var filename = _this.config.IP + _this.config.PORT + '.json';
-                fs_1.writeFile(filename, data, function (err) {
+                var filename_1 = _this.config.IP + "." + _this.config.PORT + '.json';
+                fs_1.writeFile(filename_1, data, function (err) {
                     if (err)
                         throw err;
-                    console.log('pulse group object stored in file asynchronously');
+                    console.log("pulse group object stored in file " + filename_1 + " asynchronously");
                 });
             }
             /*
