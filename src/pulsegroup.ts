@@ -646,7 +646,9 @@ export class AugmentedPulseGroup {
             delete copy.config;                         //remove stuff - this file will be fetched and procesed by many
                 //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
             for( var p in copy.pulses) {
-                console.log(`pulse=${copy.pulses[p]}`);
+                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
+                delete copy.pulses[p].history;
+                delete copy.pulses[p].medianHistory;
             }
             let strCopy=JSON.stringify(copy);           //and put it backj into JSON stringify format
             let filename=this.config.IP+"."+this.config.PORT+'.json';
