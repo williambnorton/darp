@@ -649,9 +649,9 @@ export class AugmentedPulseGroup {
 //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
                 delete copy.pulses[p].history;
                 delete copy.pulses[p].medianHistory;
-                delete copy.pulses[p].sender;
-                delete copy.pulses[p].receiver;
             }
+            delete copy.sender;
+            delete copy.receiver;
             let strCopy=JSON.stringify(copy);           //and put it backj into JSON stringify format
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {

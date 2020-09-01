@@ -510,9 +510,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
                     delete copy.pulses[p].history;
                     delete copy.pulses[p].medianHistory;
-                    delete copy.pulses[p].sender;
-                    delete copy.pulses[p].receiver;
                 }
+                delete copy.sender;
+                delete copy.receiver;
                 var strCopy = JSON.stringify(copy); //and put it backj into JSON stringify format
                 var filename = _this.config.IP + "." + _this.config.PORT + '.json';
                 fs_1.writeFile(filename, strCopy, function (err) {
