@@ -640,10 +640,14 @@ export class AugmentedPulseGroup {
         this.nodeCount = Object.keys(this.pulses).length;
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
         
-        if (this.isGenesisNode()) { //this deserves its own routine, run every second - curl, pulling a different genesis node each time
+        if (this.isGenesisNode()) { //Dthis deserves its own routine, run every second - curl, pulling a different genesis node each time
             const fs = require('fs');
             let data = JSON.stringify(this);
-            fs.writeFileSync(this.config.IP+this.config.PORT+'.json', data);   
+            let filename=this.config.IP+this.config.PORT+'.json';
+            fs.writeFile(filename, data, (err) => {
+                if (err) throw err;
+                console.log('pulse group object stored in file asynchronously');
+            });
         }
             /*
             var genesislist=process.env.GENESISNODELIST||"";
