@@ -503,8 +503,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
             if (_this.isGenesisNode()) { //save pulseGroup in JSON format in filesystem
                 var fs_1 = require('fs');
-                var copy = JSON.parse(JSON.stringify(_this)); //make a copy -
-                delete copy.config; //remove stuff - this file will be fetched and procesed by many
+                var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
                 //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
                 for (var p in copy.pulses) {
                     //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
@@ -513,6 +512,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
                 delete copy.sender;
                 delete copy.receiver;
+                delete copy.config;
                 var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
                 var filename = _this.config.IP + "." + _this.config.PORT + '.json';
                 fs_1.writeFile(filename, strCopy, function (err) {
@@ -522,28 +522,28 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
             }
             /*
-            var genesislist=process.env.GENESISNODELIST||"";
-            var genesisNodes=genesislist.split(",");
-            
-            console.log(`genesisNodes=${genesisNodes}`);
-            for (var node in genesisNodes ) {
-                //console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
-
-                //send UDP datagram of pulseGroupsObject
-                //wbnwbnwbn - here use raw send
-                var dgram = require('dgram');
-
-                var client = dgram.createSocket('udp4');
-                var matrixPulseMsg=JSON.stringify(this.mintTable);
-                //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes
-                console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
-            }
-            
-            //if (isGenesisNode) {
-            //    pullState from a Genesis Node[i]
-            //
-            //}
-        }  /**/
+                var genesislist=process.env.GENESISNODELIST||"";
+                var genesisNodes=genesislist.split(",");
+                
+                console.log(`genesisNodes=${genesisNodes}`);
+                for (var node in genesisNodes ) {
+                    //console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
+    
+                    //send UDP datagram of pulseGroupsObject
+                    //wbnwbnwbn - here use raw send
+                    var dgram = require('dgram');
+    
+                    var client = dgram.createSocket('udp4');
+                    var matrixPulseMsg=JSON.stringify(this.mintTable);
+                    //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes
+                    console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
+                }
+                
+                //if (isGenesisNode) {
+                //    pullState from a Genesis Node[i]
+                //
+                //}
+            }  /**/
         };
         //
         //  @wbnwbnwbnwbn
