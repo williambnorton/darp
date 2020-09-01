@@ -642,9 +642,15 @@ export class AugmentedPulseGroup {
         
         if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
             const fs = require('fs');
-            let data = JSON.stringify(this);
+            let copy = JSON.parse(JSON.stringify(this));  //make a copy -
+            delete copy.config;                         //remove stuff - this file will be fetched and procesed by many
+                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
+            for( var p in copy.pulses) {
+                console.log(`pulse=${copy.pulses[p]}`);
+            }
+            let strCopy=JSON.stringify(copy);           //and put it backj into JSON stringify format
             let filename=this.config.IP+"."+this.config.PORT+'.json';
-            fs.writeFile(filename, data, (err) => {
+            fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
                 console.log(`pulse group object stored in file ${filename} asynchronously`);
             });

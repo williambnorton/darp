@@ -503,9 +503,15 @@ var AugmentedPulseGroup = /** @class */ (function () {
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
             if (_this.isGenesisNode()) { //save pulseGroup in JSON format in filesystem
                 var fs_1 = require('fs');
-                var data = JSON.stringify(_this);
+                var copy = JSON.parse(JSON.stringify(_this)); //make a copy -
+                delete copy.config; //remove stuff - this file will be fetched and procesed by many
+                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
+                for (var p in copy.pulses) {
+                    console.log("pulse=" + copy.pulses[p]);
+                }
+                var strCopy = JSON.stringify(copy); //and put it backj into JSON stringify format
                 var filename_1 = _this.config.IP + "." + _this.config.PORT + '.json';
-                fs_1.writeFile(filename_1, data, function (err) {
+                fs_1.writeFile(filename_1, strCopy, function (err) {
                     if (err)
                         throw err;
                     console.log("pulse group object stored in file " + filename_1 + " asynchronously");
