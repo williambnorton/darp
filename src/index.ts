@@ -186,7 +186,7 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     let filename=me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
-    console.log(`sending contents of ${filename}`);
+    //console.log(`sending contents of ${filename}`);
     res.end(fs.readFileSync(filename)); 
     return;
 });
