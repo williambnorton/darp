@@ -202,7 +202,15 @@ app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     var filename = me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
-    res.end(fs.readFileSync(filename));
+    try {
+        var fileContents = fs.readFileSync(filename);
+        res.end(fileContents); //CRASH - catch 
+    }
+    catch (err) {
+        // Here you get the error when the file was not found,
+        // but you also get any other error
+        res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch 
+    }
     return;
 });
 app.get('/mintTable', function (req, res) {
@@ -216,7 +224,7 @@ app.get('/mintTable', function (req, res) {
 app.get('/nodefactory', function (req, res) {
     // additional nodes adding to pulseGroup
     var redirectedURL = 'http://' + genesis.ipaddr + ":" + genesis.port + "/nodeFactory/" + req.query;
-    console.log("nodefactory(): redirectURL to genesis=" + redirectedURL);
+    console.log("nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=" + redirectedURL);
     //res.redirect(redirectedURL);
     logger_1.logger.info("EXPRESS /nodefactory: config requested with params: " + lib_1.dump(req.query));
     // parse incoming parameters
