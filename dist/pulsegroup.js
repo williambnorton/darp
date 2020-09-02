@@ -74,6 +74,20 @@ var Config = /** @class */ (function () {
             process.exit(86);
         }
         this.GENESIS = process.env.GENESIS;
+        var genesisNodeList = process.env.GENESISNODELIST;
+        if (genesisNodeList) {
+            var genesisNodes = genesisNodeList.split(",");
+            var isGenesisNode = false;
+            console.log("Seaching for genesis node to use as genesis node");
+            for (var g in genesisNodes) {
+                if (genesisNodeList[g] == this.GENESIS)
+                    isGenesisNode = true;
+            }
+            if (!isGenesisNode) {
+                this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
+                console.log("Setting random genesis node: " + this.GENESIS);
+            }
+        }
         var PORT = 65013;
         if (process.env.PORT) {
             PORT = parseInt(process.env.PORT);

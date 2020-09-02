@@ -54,6 +54,25 @@ export class Config {
         }
         this.GENESIS = process.env.GENESIS;
 
+
+        let genesisNodeList=process.env.GENESISNODELIST;
+        if (genesisNodeList) {
+            let genesisNodes=genesisNodeList.split(",");
+            var isGenesisNode=false;
+            console.log(`Seaching for genesis node to use as genesis node`);
+            for (var g in genesisNodes) {
+                if (genesisNodeList[g]==this.GENESIS)
+                    isGenesisNode=true;
+            }
+            if (!isGenesisNode) {
+                this.GENESIS=genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
+                console.log(`Setting random genesis node: ${this.GENESIS}`);
+
+            }
+        }
+
+
+
         var PORT = 65013;
         if (process.env.PORT) {
             PORT = parseInt(process.env.PORT);
