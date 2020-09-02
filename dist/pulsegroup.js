@@ -75,11 +75,13 @@ var Config = /** @class */ (function () {
         }
         this.GENESIS = process.env.GENESIS;
         var genesisNodeList = process.env.GENESISNODELIST;
+        console.log("genesisNodeList=" + genesisNodeList);
         if (genesisNodeList) {
             var genesisNodes = genesisNodeList.split(",");
             var isGenesisNode = false;
             console.log("Seaching for genesis node to use as genesis node");
             for (var g in genesisNodes) {
+                console.log("checking " + genesisNodes[g] + " against " + this.GENESIS);
                 if (genesisNodeList[g] == this.GENESIS)
                     isGenesisNode = true;
             }
