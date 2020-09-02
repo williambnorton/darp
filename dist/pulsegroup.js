@@ -82,12 +82,17 @@ var Config = /** @class */ (function () {
             console.log("Seaching for genesis node to use as genesis node");
             for (var g in genesisNodes) {
                 console.log("checking " + genesisNodes[g] + " against " + this.GENESIS);
-                if (genesisNodeList[g] == this.GENESIS)
+                if (genesisNodeList[g] == this.GENESIS) {
                     isGenesisNode = true;
+                    console.log("GOT IT");
+                }
             }
             if (!isGenesisNode) {
                 this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
                 console.log("Setting random genesis node: " + this.GENESIS);
+            }
+            else {
+                console.log("WE ARE GENESIS NODE");
             }
         }
         var PORT = 65013;
