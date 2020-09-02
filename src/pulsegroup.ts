@@ -56,7 +56,7 @@ export class Config {
 
 
         let genesisNodeList=process.env.GENESISNODELIST;
-        console.log(`genesisNodeList=${genesisNodeList}`);
+        console.log(`I am ${this.GENESIS} genesisNodeList=${genesisNodeList}`);
         if (genesisNodeList) {
             let genesisNodes=genesisNodeList.split(",");
             var isGenesisNode=false;
