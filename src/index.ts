@@ -202,9 +202,13 @@ app.get('/mintTable', function(req, res) {
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function(req, res) {
     // additional nodes adding to pulseGroup
+    var redirectedURL='http://'+me.ipaddr+":"+me.port+"/nodeFactory/"+req.query;
+    console.log(`nodefactory(): redirectURL=${redirectedURL}`);
+    //res.redirect(redirectedURL);
     logger.info(`EXPRESS /nodefactory: config requested with params: ${dump(req.query)}`);
 
     // parse incoming parameters
+    
     var geo = String(req.query.geo);
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;

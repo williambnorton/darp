@@ -215,6 +215,9 @@ app.get('/mintTable', function (req, res) {
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function (req, res) {
     // additional nodes adding to pulseGroup
+    var redirectedURL = 'http://' + me.ipaddr + ":" + me.port + "/nodeFactory/" + req.query;
+    console.log("nodefactory(): redirectURL=" + redirectedURL);
+    //res.redirect(redirectedURL);
     logger_1.logger.info("EXPRESS /nodefactory: config requested with params: " + lib_1.dump(req.query));
     // parse incoming parameters
     var geo = String(req.query.geo);
