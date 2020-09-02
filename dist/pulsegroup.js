@@ -82,7 +82,7 @@ var Config = /** @class */ (function () {
             console.log("Seaching for genesis node to use as genesis node");
             for (var g in genesisNodes) {
                 console.log("checking " + genesisNodes[g] + " against " + this.GENESIS);
-                if (genesisNodeList[g] == this.GENESIS) {
+                if (genesisNodes[g] == this.GENESIS) {
                     isGenesisNode = true;
                     console.log("GOT IT");
                 }
