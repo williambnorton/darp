@@ -13,7 +13,7 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-echo `date` "------------------ $0 STARTING DARP v0.2 --------------------" 
+echo `date` "------------------ $0 STARTING DARP v0.5 --------------------" 
 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=5 # of cycles before stopping
