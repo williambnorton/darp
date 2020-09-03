@@ -50,23 +50,23 @@ export MYIP=$MYIP
 echo `date` MYIP=$MYIP
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 
-if [ "$GENESIS" == "" ]; then
-    echo `date` $0 You must specify a genesis node 
-    echo `date` $0 Add -e GENESIS=<ipaddr> into the docker run command or set the environmental variable
-    echo
-    env
-    exit -1
-fi
+#if [ "$GENESIS" == "" ]; then
+#    echo `date` $0 You must specify a genesis node 
+#    echo `date` $0 Add -e GENESIS=<ipaddr> into the docker run command or set the environmental variable
+#    echo
+#    env
+#    exit -1
+#fi
 
-echo `date` Genesis node: $GENESIS  "<--- Set GENESIS environmental variable to launch your own pulseGroup"
-GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
-echo GENESISIP=$GENESISIP
+#echo `date` Genesis node: $GENESIS  "<--- Set GENESIS environmental variable to launch your own pulseGroup"
+#GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
+#echo GENESISIP=$GENESISIP
 
 #update SW is destructive - should be done after run in docker loop
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-echo `date` "$0 STARTING loop. GENESISIP=$GENESISIP MYIP=$MYIP"
+echo `date` "$0 STARTING loop. MYIP=$MYIP"
 CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
@@ -85,7 +85,7 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * STARTING DARP $VERSION  * * * ** * * $GENESISIP $MYIP"
+    echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP"
 
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Configuring Wireguard
@@ -127,17 +127,7 @@ do
             echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
             echo `date` "$0 result: unexpected rc out of handlepulse $VERSION rc=$rc"
-            if [ "$GENESISIP" = "$MYIP" ]; then
-                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-                echo `date` "  Ctrl-C         Ctrl-C           Ctrl-C         Ctrl-C "
-                echo `date` "Ctrl-C detected --OR-- Genesis node needs updated code  "
-                exit -1
-            else
-                echo `date` "Ctrl-C detected for non-genesis node"
-            fi
+            exit -1
         fi
     fi
     #
@@ -151,18 +141,7 @@ do
 
     #ps aux
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
-    if [ $? -ne 0 ]; then
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        echo `date` cd DARPDIR failed with rc= $? EXITTING
-        exit 86
-    fi
+
     CYCLES=`expr $CYCLES + 1`
     echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME 
     if [ $CYCLES -gt $MAXCYCLES ]; then    
