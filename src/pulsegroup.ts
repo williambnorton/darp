@@ -89,10 +89,10 @@ export class Config {
         }
         this.IP = process.env.MYIP||"";
 
-        if (!process.env.GENESIS) {
-            logger.error(`No GENESIS environmental variable specified - EXITTING`);
-            process.exit(86);
-        }
+//        if (!process.env.GENESIS) {
+//            logger.error(`No GENESIS environmental variable specified - EXITTING`);
+//            process.exit(86);
+//        }
         this.GENESIS = process.env.GENESIS;
 
 
@@ -114,6 +114,7 @@ export class Config {
                 console.log(`Setting random genesis node: ${this.GENESIS}`);
             } else {
                 console.log(`WE ARE GENESIS NODE`);
+                this.GENESIS=this.IP;
             }
         } else {
             console.log(`pulseGroup(): We have no GENESISNODELIST `);

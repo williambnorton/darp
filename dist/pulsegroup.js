@@ -103,10 +103,10 @@ var Config = /** @class */ (function () {
             process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ""); //\trim string
         }
         this.IP = process.env.MYIP || "";
-        if (!process.env.GENESIS) {
-            logger_1.logger.error("No GENESIS environmental variable specified - EXITTING");
-            process.exit(86);
-        }
+        //        if (!process.env.GENESIS) {
+        //            logger.error(`No GENESIS environmental variable specified - EXITTING`);
+        //            process.exit(86);
+        //        }
         this.GENESIS = process.env.GENESIS;
         var genesisNodeList = process.env.GENESISNODELIST;
         console.log("I am " + this.IP + " genesisNodeList=" + genesisNodeList);
@@ -127,6 +127,7 @@ var Config = /** @class */ (function () {
             }
             else {
                 console.log("WE ARE GENESIS NODE");
+                this.GENESIS = this.IP;
             }
         }
         else {
