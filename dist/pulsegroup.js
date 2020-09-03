@@ -107,31 +107,34 @@ var Config = /** @class */ (function () {
         //            logger.error(`No GENESIS environmental variable specified - EXITTING`);
         //            process.exit(86);
         //        }
-        this.GENESIS = process.env.GENESIS;
-        var genesisNodeList = process.env.GENESISNODELIST;
-        console.log("I am " + this.IP + " genesisNodeList=" + genesisNodeList);
-        if (genesisNodeList) {
-            var genesisNodes = genesisNodeList.split(",");
-            var isGenesisNode = false;
-            //console.log(`Seaching for genesis node to use as genesis node`);
-            for (var g in genesisNodes) {
-                //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
-                if (genesisNodes[g] == this.IP) {
-                    isGenesisNode = true;
-                    //console.log(`GOT IT`);
+        this.GENESIS = process.env.GENESIS || "";
+        if (this.GENESIS == "") {
+            console.log("Finding a GENESIS node to connect to");
+            var genesisNodeList = process.env.GENESISNODELIST;
+            console.log("I am " + this.IP + " genesisNodeList=" + genesisNodeList);
+            if (genesisNodeList) {
+                var genesisNodes = genesisNodeList.split(",");
+                var isGenesisNode = false;
+                //console.log(`Seaching for genesis node to use as genesis node`);
+                for (var g in genesisNodes) {
+                    //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
+                    if (genesisNodes[g] == this.IP) {
+                        isGenesisNode = true;
+                        //console.log(`GOT IT`);
+                    }
+                }
+                if (!isGenesisNode) {
+                    this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
+                    console.log("Setting random genesis node: " + this.GENESIS);
+                }
+                else {
+                    console.log("WE ARE GENESIS NODE");
+                    this.GENESIS = this.IP;
                 }
             }
-            if (!isGenesisNode) {
-                this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
-                console.log("Setting random genesis node: " + this.GENESIS);
-            }
             else {
-                console.log("WE ARE GENESIS NODE");
-                this.GENESIS = this.IP;
+                console.log("pulseGroup(): We have no GENESISNODELIST ");
             }
-        }
-        else {
-            console.log("pulseGroup(): We have no GENESISNODELIST ");
         }
         var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
         if (!PUBLICKEY) {
