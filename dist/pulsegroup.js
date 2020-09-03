@@ -79,12 +79,12 @@ var Config = /** @class */ (function () {
         if (genesisNodeList) {
             var genesisNodes = genesisNodeList.split(",");
             var isGenesisNode = false;
-            console.log("Seaching for genesis node to use as genesis node");
+            //console.log(`Seaching for genesis node to use as genesis node`);
             for (var g in genesisNodes) {
-                console.log("checking " + genesisNodes[g] + " against " + this.GENESIS);
+                //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
                 if (genesisNodes[g] == this.GENESIS) {
                     isGenesisNode = true;
-                    console.log("GOT IT");
+                    //console.log(`GOT IT`);
                 }
             }
             if (!isGenesisNode) {
