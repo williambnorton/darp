@@ -24,9 +24,10 @@
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
             $.getJSON(url, function(config) {
                 $(document.body).css( "background", "white" );
-                for (var n in config) {
-                    var pulseGroup = config[n];
-
+                console.log("config="+JSON.stringify(config,null,2));
+                //for (var n in config) {
+                //    var pulseGroup = config[n];
+                    var pulseGroup=config;
                     // Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
                     for (var src in pulseGroup.pulses) {
                         var pulseEntry=pulseGroup.pulses[src];
@@ -192,7 +193,7 @@
 
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
                     $(".total_earn").text("Overhead: $"+measurementCosts);
-                }
+                //}
 
             }).fail(function() {
                 console.log("JSON Fetch error");
