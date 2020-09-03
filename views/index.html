@@ -21,6 +21,7 @@
         const me = JSON.parse(me_str);
 
         function fetchState() {
+            console.log("FETCHSTATE():");
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
             console.log("fetchState(): url="+url);
             $.getJSON(url, function(pulseGroup) {
