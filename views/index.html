@@ -22,12 +22,13 @@
 
         function fetchState() {
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
-            $.getJSON(url, function(config) {
+            $.getJSON(url, function(pulseGroup) {
                 $(document.body).css( "background", "white" );
-                console.log("config="+JSON.stringify(config,null,2));
+
+                console.log("***************************************************************** pulseGroup="+JSON.stringify(pulseGroup,null,2));
                 //for (var n in config) {
                 //    var pulseGroup = config[n];
-                    var pulseGroup=config;
+                   
                     // Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
                     for (var src in pulseGroup.pulses) {
                         var pulseEntry=pulseGroup.pulses[src];
