@@ -1092,7 +1092,7 @@ export class AugmentedPulseGroup {
             });
             res.on("end", function () {
                 var groupOwnerPulseGroup = JSON.parse(body);
-                //console.log(`syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: ${dump(groupOwnerPulseGroup)}`);
+                console.log(`syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: ${dump(groupOwnerPulseGroup)}`);
                 var mintTable = groupOwnerPulseGroup.mintTable;
 
                 if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {

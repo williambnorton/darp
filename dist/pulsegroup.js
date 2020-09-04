@@ -926,7 +926,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
                 res.on("end", function () {
                     var groupOwnerPulseGroup = JSON.parse(body);
-                    //console.log(`syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: ${dump(groupOwnerPulseGroup)}`);
+                    console.log("syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: " + lib_1.dump(groupOwnerPulseGroup));
                     var mintTable = groupOwnerPulseGroup.mintTable;
                     if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {
                         mintTable[0] = self.mintTable[0]; // wbnwbnwbn INSTALL MY mintTable[0]
