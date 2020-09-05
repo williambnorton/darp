@@ -82,7 +82,7 @@ export class Config {
         this.VERSION = process.env.VERSION || "NoVersion";
 
         if (!process.env.MYIP) {
-            logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
+            logger.warning("No MYIP environmental variable specified - GENESIS node will find IP from incoming message");
             process.env.MYIP = process.env.GENESIS; // MYIP();
         } else {
             process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ""); //\trim string

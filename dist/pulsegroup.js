@@ -96,7 +96,7 @@ var Config = /** @class */ (function () {
         }
         this.VERSION = process.env.VERSION || "NoVersion";
         if (!process.env.MYIP) {
-            logger_1.logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
+            logger_1.logger.warning("No MYIP environmental variable specified - GENESIS node will find IP from incoming message");
             process.env.MYIP = process.env.GENESIS; // MYIP();
         }
         else {
