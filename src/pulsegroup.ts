@@ -1001,7 +1001,7 @@ export class AugmentedPulseGroup {
                 );
                                 // store 60 samples
                 if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
-                    incomingPulseEntry.history.shift(); // drop off the last sample
+                    incomingPulseEntry.medianHistory.shift(); // drop off the last samples
                 }
             }
 

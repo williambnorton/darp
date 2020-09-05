@@ -842,7 +842,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)));
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
-                        incomingPulseEntry.history.shift(); // drop off the last sample
+                        incomingPulseEntry.medianHistory.shift(); // drop off the last samples
                     }
                 }
                 // TODO: Also resync if the groupOwner has removed an item
