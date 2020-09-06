@@ -587,16 +587,17 @@ export class AugmentedPulseGroup {
     //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
-        const startingPulseEntryCount = Object.keys(this.pulses).length;;
+        const startingPulseEntryCount = Object.keys(this.pulses).length;
+
+        //check all mintTable entries except GENESIS and self (mintTable[0])
         for (var m in this.mintTable) {
             if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                // ignore mintTable[0]
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
                 if (elapsedMSincePulse > 5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - remove
                     // timeout after  seconds
                     logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
-                   console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
+                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
 
                     this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE") {
@@ -618,7 +619,6 @@ export class AugmentedPulseGroup {
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             process.exit(36);
                         }
-                        // we may timeout the group owner and kill the pulsegroup
                         // if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
                     }
                     // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
@@ -883,7 +883,7 @@ export class AugmentedPulseGroup {
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
            // show more specifics why pulse is ignored
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
-           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
+           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry ${dump(incomingPulseMintEntry)}`);
            return;
        }
 

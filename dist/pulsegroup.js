@@ -454,10 +454,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
-            ;
+            //check all mintTable entries except GENESIS and self (mintTable[0])
             for (var m in _this.mintTable) {
                 if ((m != "0") && m != "1" && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
-                    // ignore mintTable[0]
                     var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
                     if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - remove
                         // timeout after  seconds
@@ -483,7 +482,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 process.exit(36);
                             }
-                            // we may timeout the group owner and kill the pulsegroup
                             // if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
                         }
                         // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
@@ -732,7 +730,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
                 logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " or mint " + incomingPulse.mint + " entry entry");
-                console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " or mint " + incomingPulse.mint + " entry entry");
+                console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " or mint " + incomingPulse.mint + " entry entry " + lib_1.dump(incomingPulseMintEntry));
                 return;
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
