@@ -913,14 +913,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.flashWireguard(); // change my wg config
                 return; // genesis node dies not fetch its own configuration
             }
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Not GENESIS NODE SYNCHING!!!!");
+            console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
+            console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
+            console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroups/"); //@wbnwbnwbn
             console.log("pulseGroups=" + url);

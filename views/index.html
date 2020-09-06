@@ -21,7 +21,7 @@
         const me = JSON.parse(me_str);
 
         function fetchState() {
-            console.log("FETCHSTATE():");
+            console.log();
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
             console.log("fetchState(): url="+url);
             $.getJSON(url, function(pulseGroup) {
@@ -610,13 +610,8 @@
         -e WALLET=auto
         -it williambnorton/darp:latest</p>
 
-        <p id="genesisnodelist">GenesisNodes: <%= JSON.stringify(g,null,2); %> </p>
         <% for (var p in g) { %>
-            <p><a href="http://<%=g[p]%>:65013/">http://<%=g[p]%>:65013/</a></p>
-            <p><a href="http://<%=g[p]%>:65013/mintTable">http://<%=g[p]%>:65013/mintTable</a></p>
-            <p><a href="http://<%=g[p]%>:65013/pulsegroups">http://<%=g[p]%>:65013/pulsegroups</a></p>
-            <p><a href="http://<%=g[p]%>:65013/me">http://<%=g[p]%>:65013/me</a></p>
-            
+            <p><a href="http://<%=g[p]%>:65013/">GENESIS NODE: http://<%=g[p]%>:65013/</a></p>           
         <% } %>
 
         
