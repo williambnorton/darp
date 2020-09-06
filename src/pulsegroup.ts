@@ -1080,6 +1080,17 @@ export class AugmentedPulseGroup {
             return; // genesis node dies not fetch its own configuration
         }
         var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + this.mintTable[0].mint);
+        
+        
+        
+        
+        var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroups/");  //@wbnwbnwbn
+        console.log(`pulseGroups=${url}`);
+
+
+
+
+
         logger.info(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
 

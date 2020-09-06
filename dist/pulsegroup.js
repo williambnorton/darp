@@ -913,6 +913,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return; // genesis node dies not fetch its own configuration
             }
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
+            var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroups/"); //@wbnwbnwbn
+            console.log("pulseGroups=" + url);
             logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
             var self = _this;
             // Fetch mintTable and pulses from genesis node
