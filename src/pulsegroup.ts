@@ -593,6 +593,7 @@ export class AugmentedPulseGroup {
         //check all mintTable entries except GENESIS and self (mintTable[0])
         for (var m in this.mintTable) {
 //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+            console.log(`timeout() processing ${dump(this.mintTable[m]))}`);
             if ((m != "0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 

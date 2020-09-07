@@ -1,5 +1,9 @@
 "use strict";
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,6 +40,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
 exports.__esModule = true;
 var fs = require("fs");
 var os = require("os");
@@ -458,583 +463,381 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //check all mintTable entries except GENESIS and self (mintTable[0])
             for (var m in _this.mintTable) {
                 //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                if ((m != "0") && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
-                    var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
-                    if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - remove
-                        console.log("TINEOUT EXCEEDED: elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
-                        // timeout after  seconds
-                        logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                        console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                        _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
-                        if (_this.mintTable[m].state != "QUARANTINE") {
-                            _this.mintTable[m].state = "NR"; // we don't know this node's state
-                        }
-                        if (_this.isGenesisNode()) {
-                            // Genesis only code path
-                            logger_1.logger.debug("m=" + m + " I am genesis node not seeing him for elapsedMSincePulse=" + elapsedMSincePulse);
-                            if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
-                                // timeout node after 5 seconds
-                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
-                            }
-                        }
-                        else {
-                            // not genesis - only can time out genesis
-                            var age = lib_1.now() - _this.mintTable[1].lastPulseTimestamp;
-                            console.log("have not heard from GENESIS node in age=" + age + " milliseconds");
-                            if (age > (10 * 1000)) { //after 10 seconds we say genesis is gone
-                                logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
-                                console.log("have not heard from GENESIS node in more than 10 seconds - exitting");
-                                process.exit(36);
-                            }
-                            // if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
-                        }
-                        // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
-                    }
-                    else {
-                        console.log("Timeout not exceeded: elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
-                    }
-                }
+                console.log("timeout() processing " + lib_1.dump(_this.mintTable[m]));
             }
-            for (var p in _this.pulses) {
-                var pulseEntry = _this.pulses[p];
-                if ((pulseEntry) && (pulseEntry.pulseTimestamp != 0) && (pulseEntry.mint != 1)) {
-                    // don't timeout genesis pulse
-                    var elapsedMSincePulse = lib_1.now() - pulseEntry.pulseTimestamp;
-                    if (elapsedMSincePulse > 2 * _this.cycleTime * 1000) {
-                        //timeout after 2 seconds
-                        pulseEntry.owl = NO_MEASURE;
-                        pulseEntry.owls = "1";
-                        pulseEntry.pktDrops++;
-                        // only Genesis can delete inactive nodes within the group
-                        if (_this.isGenesisNode()) {
-                            if (elapsedMSincePulse > 10 * _this.cycleTime * 1000) {
-                                logger_1.logger.warning("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
-                                console.log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
-                                _this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
-                                /*
-                                if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];
-                                        logger.warning(`DELETEING pulse ${p}`);  //log when timing out to debug
-                                        delete this.pulses[p];
-                                    } else {
-                                        logger.warning(`will delete pulse when mint is gone`);
-                                    }
-                                */
-                            }
-                        }
-                    }
-                }
+            ");\n            if ((m != \"0\") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {\n                var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;\n\n                if (elapsedMSincePulse > 5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - remove\n                    console.log(";
+            TINEOUT;
+            EXCEEDED: elapsedMSincePulse = $;
+            {
+                elapsedMSincePulse;
             }
-            //
-            // if timeout changed the population, flashWireguard files
-            //
-            if (startingPulseEntryCount != Object.keys(_this.pulses).length) {
-                logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
-                console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
-                _this.flashWireguard(); //node list changed recreate wireguard file
+            mintTable = $;
+            {
+                _this.mintTable[m];
             }
-            _this.nodeCount = Object.keys(_this.pulses).length;
-            _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
-            if (_this.isGenesisNode()) { //save pulseGroup in JSON format in filesystem
-                var fs_1 = require('fs');
-                var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
-                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
-                for (var p in copy.pulses) {
-                    //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                    delete copy.pulses[p].history;
-                    delete copy.pulses[p].medianHistory;
-                }
-                delete copy.sender;
-                delete copy.receiver;
-                delete copy.config;
-                var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-                var filename = _this.config.IP + "." + _this.config.PORT + '.json';
-                fs_1.writeFile(filename, strCopy, function (err) {
-                    if (err)
-                        throw err;
-                    //console.log(`pulse group object stored in file ${filename} asynchronously`);
-                });
+            ");\n\n                    // timeout after  seconds\n                    logger.debug(";
+            m = $;
+            {
+                m;
             }
-            /*
-                var genesislist=process.env.GENESISNODELIST||"";
-                var genesisNodes=genesislist.split(",");
-                
-                console.log(`genesisNodes=${genesisNodes}`);
-                for (var node in genesisNodes ) {
-                    //console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
-    
-                    //send UDP datagram of pulseGroupsObject
-                    //wbnwbnwbn - here use raw send
-                    var dgram = require('dgram');
-    
-                    var client = dgram.createSocket('udp4');
-                    var matrixPulseMsg=JSON.stringify(this.mintTable);
-                    //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes
-                    console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
-                }
-                
-                //if (isGenesisNode) {
-                //    pullState from a Genesis Node[i]
-                //
-                //}
-            }  /**/
+            elapsedMSincePulse = $;
+            {
+                elapsedMSincePulse;
+            }
+            clearing;
+            OWL in mint;
+            entry;
+            which;
+            missed;
+            at;
+            least;
+            one;
+            cycle;
+            $;
+            {
+                _this.mintTable[m].geo;
+            }
+            ");\n                    console.log(";
+            m = $;
+            {
+                m;
+            }
+            elapsedMSincePulse = $;
+            {
+                elapsedMSincePulse;
+            }
+            clearing;
+            OWL in mint;
+            entry;
+            which;
+            missed;
+            at;
+            least;
+            one;
+            cycle;
+            $;
+            {
+                _this.mintTable[m].geo;
+            }
+            ");\n\n                    this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL\n                    if (this.mintTable[m].state != \"QUARANTINE\") {\n                        this.mintTable[m].state = \"NR\";  // we don't know this node's state\n                    }\n\n                    if (this.isGenesisNode()) {\n                        // Genesis only code path\n                        logger.debug(\"m=\" + m + \" I am genesis node not seeing him for elapsedMSincePulse=\" + elapsedMSincePulse);\n                        if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles\n                            // timeout node after 5 seconds\n                            logger.debug(";
+            timeout();
+            DELETE;
+            geo = $;
+            {
+                _this.mintTable[m].geo;
+            }
+            mint = $;
+            {
+                _this.mintTable[m].mint;
+            }
+            NODE;
+            with ($) {
+                elapsedMSincePulse;
+            }
+            ms;
+            old;
+            timestamp(templateObject_1 || (templateObject_1 = __makeTemplateObject([");\n                            this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);\n                        }\n                    } else {\n                        // not genesis - only can time out genesis\n                        var age = now() - this.mintTable[1].lastPulseTimestamp;\n                        console.log("], [");\n                            this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);\n                        }\n                    } else {\n                        // not genesis - only can time out genesis\n                        var age = now() - this.mintTable[1].lastPulseTimestamp;\n                        console.log("])));
+            have;
+            not;
+            heard;
+            from;
+            GENESIS;
+            node in age;
+            $;
+            {
+                age;
+            }
+            milliseconds(templateObject_2 || (templateObject_2 = __makeTemplateObject([");\n                        if (age > (10 * 1000)) {              //after 10 seconds we say genesis is gone\n                            logger.error("], [");\n                        if (age > (10 * 1000)) {              //after 10 seconds we say genesis is gone\n                            logger.error("])));
+            timeout();
+            Genesis;
+            node;
+            disappeared.age;
+            of = $;
+            {
+                age;
+            }
+            ms;
+            Exit, our;
+            work;
+            is;
+            done.Exitting.newpulseGorup = $;
+            {
+                lib_1.dump(_this);
+            }
+            ");\n                            console.log(";
+            have;
+            not;
+            heard;
+            from;
+            GENESIS;
+            node in more;
+            than;
+            10;
+            seconds - exitting(templateObject_3 || (templateObject_3 = __makeTemplateObject([");\n\n                            process.exit(36);\n                        }\n                        // if (elapsedMSincePulse > 60 * 1000 ) console.log(\"group owner has been unreachable for 1 minute: \"+elapsedMSincePulse);\n                    }\n                    // TODO: Nodes can be upgraded to \"BUSY\" if someone else has a measurement to it\n                } else {\n                    console.log("], [");\n\n                            process.exit(36);\n                        }\n                        // if (elapsedMSincePulse > 60 * 1000 ) console.log(\"group owner has been unreachable for 1 minute: \"+elapsedMSincePulse);\n                    }\n                    // TODO: Nodes can be upgraded to \"BUSY\" if someone else has a measurement to it\n                } else {\n                    console.log("])));
+            Timeout;
+            not;
+            exceeded: elapsedMSincePulse = $;
+            {
+                elapsedMSincePulse;
+            }
+            mintTable = $;
+            {
+                _this.mintTable[m];
+            }
+            ");\n                    \n                }\n            }\n        }\n\n        for (var p in this.pulses) {\n            var pulseEntry = this.pulses[p];\n\n            if ((pulseEntry) && (pulseEntry.pulseTimestamp != 0) && (pulseEntry.mint != 1)) {\n                // don't timeout genesis pulse\n                var elapsedMSincePulse = now() - pulseEntry.pulseTimestamp;\n\n                if (elapsedMSincePulse > 2 * this.cycleTime * 1000) {\n                    //timeout after 2 seconds\n                    pulseEntry.owl = NO_MEASURE;\n                    pulseEntry.owls = \"1\";\n                    pulseEntry.pktDrops++;\n\n                    // only Genesis can delete inactive nodes within the group\n                    if (this.isGenesisNode()) {\n                        if (elapsedMSincePulse > 10 * this.cycleTime * 1000) {\n                            logger.warning(";
+            timeout();
+            Genesis;
+            DELETING;
+            Node;
+            $;
+            {
+                _this.pulses[p].geo;
+            }
+            with ($) {
+                elapsedMSincePulse;
+            }
+            ms;
+            old;
+            timestamp(templateObject_4 || (templateObject_4 = __makeTemplateObject([");\n                            console.log("], [");\n                            console.log("])));
+            timeout();
+            Genesis;
+            DELETING;
+            Node;
+            $;
+            {
+                _this.pulses[p].geo;
+            }
+            with ($) {
+                elapsedMSincePulse;
+            }
+            ms;
+            old;
+            timestamp(templateObject_5 || (templateObject_5 = __makeTemplateObject([");\n                            this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);\n                            /*\n                            if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];\n                                    logger.warning("], [");\n                            this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);\n                            /*\n                            if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];\n                                    logger.warning("])));
+            DELETEING;
+            pulse;
+            $;
+            {
+                p;
+            }
+            ");  //log when timing out to debug\n                                    delete this.pulses[p];\n                                } else {\n                                    logger.warning(";
+            will;
+            delete pulse;
+            when;
+            mint;
+            is;
+            gone(templateObject_6 || (templateObject_6 = __makeTemplateObject([");\n                                }\n                            */\n                        }\n                    }\n                }\n            }\n        }\n\n        //\n        // if timeout changed the population, flashWireguard files\n        //\n        if (startingPulseEntryCount != Object.keys(this.pulses).length) {\n            logger.info("], [");\n                                }\n                            */\n                        }\n                    }\n                }\n            }\n        }\n\n        //\n        // if timeout changed the population, flashWireguard files\n        //\n        if (startingPulseEntryCount != Object.keys(this.pulses).length) {\n            logger.info("])));
+            timeout();
+            nodeC0unt;
+            Changed;
+            from;
+            $;
+            {
+                startingPulseEntryCount;
+            }
+            setting;
+            newPulseGroup.nodeCount = $;
+            {
+                _this.pulses.length;
+            }
+            ");\n            console.log(";
+            timeout();
+            nodeC0unt;
+            Changed;
+            from;
+            $;
+            {
+                startingPulseEntryCount;
+            }
+            setting;
+            newPulseGroup.nodeCount = $;
+            {
+                _this.pulses.length;
+            }
+            ");\n            this.flashWireguard();  //node list changed recreate wireguard file\n        }\n        this.nodeCount = Object.keys(this.pulses).length;\n        this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()\n        \n        \n        if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem\n            const fs = require('fs');\n            let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many\n                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object\n            for( var p in copy.pulses) {\n//                console.log(";
+            trimming;
+            history;
+            from;
+            record;
+            pulse = $;
+            {
+                copy.pulses[p];
+            }
+            ");\n                delete copy.pulses[p].history;\n                delete copy.pulses[p].medianHistory;\n            }\n            delete copy.sender;\n            delete copy.receiver;\n            delete copy.config;                         \n\n            let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format\n            let filename=this.config.IP+\".\"+this.config.PORT+'.json';\n            fs.writeFile(filename, strCopy, (err) => {\n                if (err) throw err;\n                //console.log(";
+            pulse;
+            group;
+            object;
+            stored in file;
+            $;
+            {
+                filename;
+            }
+            asynchronously(templateObject_7 || (templateObject_7 = __makeTemplateObject([");\n            });\n        }\n\n        /*\n            var genesislist=process.env.GENESISNODELIST||\"\";\n            var genesisNodes=genesislist.split(\",\");\n            \n            console.log("], [");\n            });\n        }\n\n        /*\n            var genesislist=process.env.GENESISNODELIST||\"\";\n            var genesisNodes=genesislist.split(\",\");\n            \n            console.log("])));
+            genesisNodes = $;
+            {
+                genesisNodes;
+            }
+            ");\n            for (var node in genesisNodes ) {\n                //console.log(";
+            Here;
+            we;
+            would;
+            UDP;
+            pulse;
+            our;
+            matrix;
+            to;
+            every;
+            other;
+            genesis;
+            node: $;
+            {
+                genesisNodes[node];
+            }
+            ");\n\n                //send UDP datagram of pulseGroupsObject\n                //wbnwbnwbn - here use raw send\n                var dgram = require('dgram');\n\n                var client = dgram.createSocket('udp4');\n                var matrixPulseMsg=JSON.stringify(this.mintTable);\n                //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes\n                console.log(ts()+";
+            sent;
+            matrix;
+            pulse;
+            to;
+            $;
+            {
+                genesisNodes[node];
+            }
+            msg = $;
+            {
+                matrixPulseMsg;
+            }
+            ");\n            }\n            \n            //if (isGenesisNode) {\n            //    pullState from a Genesis Node[i]\n            //    \n            //}\n        }  /**/\n    };\n\n\n\n    //\n    //  @wbnwbnwbnwbn\n    //\n    getOWLfrom = (srcMint:number,owls:string) : number => {\n            var ary = owls.split(\",\");\n            for (var i = 0; i < ary.length; i++) {\n                var mint = parseInt(ary[i].split(\"=\")[0]);\n                if (mint == srcMint) {\n                    var owl = ary[i].split(\"=\")[1];\n                    if (typeof owl != \"undefined\" && owl != null) {\n                        // console.log(\"returning srcMint=\"+srcMint+\" owl=\"+owl);\n                        return parseInt(owl);\n                    } else {\n                        return NO_MEASURE; // no OWL measurement\n                    }\n                }\n            }\n            return NO_MEASURE; // did not find the srcMint\n    };\n    //\n    //  \n    //      Secret sauce - the measures are relative so skews are systematic and offset each other\n    //                  we only need to know if it is faster through intermediary\n    //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells\n    //\n    findEfficiencies = () => {      //run every second - compute intensive\n        if (!FIND_EFFICIENCIES) return;\n        const s=new Date(); const startTimestampFE=s.getTime();\n\n        for (var srcP in this.pulses) {\n            var srcEntry = this.pulses[srcP];\n            for (var destP in this.pulses) {\n                var destEntry = this.pulses[destP];     //this code is passed n-squared times!!!\n                if (typeof this.matrix[srcEntry.mint] != \"undefined\") {\n                    //console.log(";
+            findEfficiencies();
+            matrix = $;
+            {
+                lib_1.dump(_this.matrix[srcEntry.mint]);
+            }
+            $;
+            {
+                lib_1.dump(_this.matrix[destEntry.mint]);
+            }
+            $;
+            {
+                lib_1.dump(destEntry);
+            }
+            $;
+            {
+                lib_1.dump(srcEntry);
+            }
+            ");\n                    var direct = this.matrix[srcEntry.mint][destEntry.mint];  // \n                    //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure\n                    //console.log(ts()+\"findEfficiencies(): Here we would compare srcEntry.mint=\"+srcEntry.mint+\"-destEntry.mint=\"+destEntry.mint+\" direct=\"+direct);\n                    if (destEntry!=srcEntry && typeof direct != \"undefined\" ) {  //avoid self-self, direct owl has a value\n                        for (var iP in this.pulses) {\n                            var intermediaryEntry = this.pulses[iP];  //this code is passed n-cubed times\n                            //console.log(";
+            intermediaryEntry.mint = $;
+            {
+                intermediaryEntry.mint;
+            }
+            ");\n                            if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {\n                                var srcToIntermediary = this.matrix[srcEntry.mint][intermediaryEntry.mint];  //^^^^^ these lookups done n-cubed times\n                                \n                                //console.log(";
+            srcToIntermediary = $;
+            {
+                srcToIntermediary;
+            }
+            ");\n                                if (typeof srcToIntermediary != \"undefined\" ) {\n                                //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times\n                                    var intermediaryToDest = this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^\n                                    //console.log(";
+            intermediaryToDest = $;
+            {
+                intermediaryToDest;
+            }
+            ");\n                                    //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^\n                                    if (typeof srcToIntermediary != \"undefined\" && typeof intermediaryToDest != \"undefined\") {\n                                        //  We have a path to compare against the direct path\n                                        var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //^^^^^^ possible better path through intermeidary\n                                        var delta=intermediaryPathLatency - direct;\n                                        //console.log(\"*  PATH       \"+srcEntry.geo+\"-\"+destEntry.geo+\"=\"+direct+\" through \"+intermediaryEntry.geo+\" intermediaryPathLatency=\"+intermediaryPathLatency+\" delta=\"+delta);\n                                        if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {\n                                            var dd=new Date();\n                                            //console.log(\"*  extraordinary PATH       \"+srcEntry.geo+\"-\"+destEntry.geo+\"=\"+direct+\" through \"+intermediaryEntry.geo+\" intermediaryPathLatency=\"+intermediaryPathLatency+\" delta=\"+delta);\n                                            // This overwrites existing entry, replacing timestamp\n                                            const pulseIndex:string=srcEntry.geo+\"-\"+destEntry.geo;\n                                            if (typeof this.extraordinaryPaths[pulseIndex] == \"undefined\") {\n                                                //console.log(\"New extraordinary path: \"+srcEntry.geo+\"-\"+destEntry.geo);\n                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };\n                                            } else {\n                                                //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+\"-\"+destEntry.geo].startTimestamp;\n                                                //console.log(\"Existing startTimestamp=\"+startTimestamp);\n                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };\n                                            }\n                                            //console.log(";
+            findEfficiencies();
+            extraordinary;
+            route: $;
+            {
+                lib_1.dump(_this.extraordinaryPaths[pulseIndex]);
+            }
+            ");\n                                        }\n                                        \n                                    }\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n        //\n        //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn\n        //\n        const d=new Date();const timeNow=d.getTime();\n        for (var e in this.extraordinaryPaths) {\n            var extraordinaryPath=this.extraordinaryPaths[e];\n            // console.log(\"extraordinaryPath: \"+JSON.stringify(extraordinaryPath,null,2));\n            var freshness=timeNow-extraordinaryPath.lastUpdated;\n            // console.log(\"freshness=\"+freshness);\n            if (freshness>2000) {\n                //console.log(";
+            timeout();
+            deleting;
+            old;
+            extraordoinary;
+            path;
+            $;
+            {
+                _this.extraordinaryPaths[e].aSide;
+            }
+            -$;
+            {
+                _this.extraordinaryPaths[e].zSide;
+            }
+            lasted;
+            $;
+            {
+                duration;
+            }
+            ms(templateObject_8 || (templateObject_8 = __makeTemplateObject([");\n                delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more\n            } else {\n\n                var duration=timeNow-extraordinaryPath.startTimestamp;\n                if (duration>10000) {  //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec\n                    //  Simulate relaying 10 packets per second traffic\n                    //  credit relay, debit users\n                    // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available\n                    //BETTER ALGO needed here\n    //              console.log("], [");\n                delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more\n            } else {\n\n                var duration=timeNow-extraordinaryPath.startTimestamp;\n                if (duration>10000) {  //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec\n                    //  Simulate relaying 10 packets per second traffic\n                    //  credit relay, debit users\n                    // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available\n                    //BETTER ALGO needed here\n    //              console.log("])));
+            HERE;
+            WE;
+            simulate;
+            RElAYING;
+            packets;
+            on;
+            behalf;
+            of;
+            others, so;
+            assume;
+            10 * 1500;
+            bytes = 10;
+            messages;
+            and;
+            15;
+            KB;
+            through;
+            mint;
+            $;
+            {
+                extraordinaryPath.relayMint;
+            }
+            $;
+            {
+                extraordinaryPath.aSide;
+            }
+            -$;
+            {
+                extraordinaryPath.intermediary;
+            }
+            ");\n                    if ((typeof this.pulses[extraordinaryPath.intermediary+':'+this.groupName] != \"undefined\" ) && \n                        (typeof this.pulses[extraordinaryPath.aSide+':'+this.groupName] != \"undefined\")) {\n                        this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=100;   //relay meas forwrd 10 pktys/sec\n                        this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=100;   //we assume those with better path, use it for 10 pkts\n                        this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=100;   //relay meas forwrd 10 pktys/sec\n                        this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=100;   //we assume those with better path, use it for 10 pkts\n                        // bump the in/outMsgs by 10 pkts\n                    } else {\n                        console.log(";
+            findEfficiencies();
+            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] = $;
+            {
+                _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName];
+            }
+            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName] = $;
+            {
+                _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName];
+            }
+            ");\n                    }\n                }\n            }\n        }\n        //if (Object.keys(this.extraordinaryPaths).length>0) console.log(";
+            findEfficiencies();
+            $;
+            {
+                lib_1.dump(_this.extraordinaryPaths);
+            }
+            ");  //INSTRUMANTATION\n        this.mintTable[0].lastPulseTimestamp = timeNow;\n        var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms\n        //console.log(";
+            Processing;
+            findEfficiencies();
+            took;
+            $;
+            {
+                timeNow - startTimestampFE;
+            }
+            ms.Launching;
+            findEfficiencies() in $;
+            {
+                sleepTime;
+            }
+            ms(templateObject_9 || (templateObject_9 = __makeTemplateObject([");\n        setTimeout(this.findEfficiencies,sleepTime);  //run again in a second\n    }\n\n    checkSWversion = () => {\n        console.log(ts()+"], [");\n        setTimeout(this.findEfficiencies,sleepTime);  //run again in a second\n    }\n\n    checkSWversion = () => {\n        console.log(ts()+"])));
+            CheckSWVersion();
+            ");\n        if (this.groupOwner == this.config.GEO) {\n            return logger.info(";
+            Point;
+            your;
+            browser;
+            to;
+            Genesis;
+            Node;
+            for (instrumentation; ; )
+                : http: ; //${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
         };
-        //
-        //  @wbnwbnwbnwbn
-        //
-        this.getOWLfrom = function (srcMint, owls) {
-            var ary = owls.split(",");
-            for (var i = 0; i < ary.length; i++) {
-                var mint = parseInt(ary[i].split("=")[0]);
-                if (mint == srcMint) {
-                    var owl = ary[i].split("=")[1];
-                    if (typeof owl != "undefined" && owl != null) {
-                        // console.log("returning srcMint="+srcMint+" owl="+owl);
-                        return parseInt(owl);
-                    }
-                    else {
-                        return NO_MEASURE; // no OWL measurement
-                    }
-                }
-            }
-            return NO_MEASURE; // did not find the srcMint
-        };
-        //
-        //  
-        //      Secret sauce - the measures are relative so skews are systematic and offset each other
-        //                  we only need to know if it is faster through intermediary
-        //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
-        //
-        this.findEfficiencies = function () {
-            if (!FIND_EFFICIENCIES)
-                return;
-            var s = new Date();
-            var startTimestampFE = s.getTime();
-            for (var srcP in _this.pulses) {
-                var srcEntry = _this.pulses[srcP];
-                for (var destP in _this.pulses) {
-                    var destEntry = _this.pulses[destP]; //this code is passed n-squared times!!!
-                    if (typeof _this.matrix[srcEntry.mint] != "undefined") {
-                        //console.log(`findEfficiencies(): matrix=${dump(this.matrix[srcEntry.mint])} ${dump(this.matrix[destEntry.mint])} ${dump(destEntry)} ${dump(srcEntry)}`);
-                        var direct = _this.matrix[srcEntry.mint][destEntry.mint]; // 
-                        //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
-                        //console.log(ts()+"findEfficiencies(): Here we would compare srcEntry.mint="+srcEntry.mint+"-destEntry.mint="+destEntry.mint+" direct="+direct);
-                        if (destEntry != srcEntry && typeof direct != "undefined") { //avoid self-self, direct owl has a value
-                            for (var iP in _this.pulses) {
-                                var intermediaryEntry = _this.pulses[iP]; //this code is passed n-cubed times
-                                //console.log(`intermediaryEntry.mint=${intermediaryEntry.mint}`);
-                                if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                                    var srcToIntermediary = _this.matrix[srcEntry.mint][intermediaryEntry.mint]; //^^^^^ these lookups done n-cubed times
-                                    //console.log(`srcToIntermediary=${srcToIntermediary}`);
-                                    if (typeof srcToIntermediary != "undefined") {
-                                        //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
-                                        var intermediaryToDest = _this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
-                                        //console.log(`intermediaryToDest=${intermediaryToDest}`);
-                                        //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
-                                        if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
-                                            //  We have a path to compare against the direct path
-                                            var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
-                                            var delta = intermediaryPathLatency - direct;
-                                            //console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                            if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
-                                                var dd = new Date();
-                                                //console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                                // This overwrites existing entry, replacing timestamp
-                                                var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
-                                                if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                                    //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
-                                                }
-                                                else {
-                                                    //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                                    //console.log("Existing startTimestamp="+startTimestamp);
-                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
-                                                }
-                                                //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            //
-            //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
-            //
-            var d = new Date();
-            var timeNow = d.getTime();
-            for (var e in _this.extraordinaryPaths) {
-                var extraordinaryPath = _this.extraordinaryPaths[e];
-                // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
-                var freshness = timeNow - extraordinaryPath.lastUpdated;
-                // console.log("freshness="+freshness);
-                if (freshness > 2000) {
-                    //console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
-                    delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
-                }
-                else {
-                    var duration = timeNow - extraordinaryPath.startTimestamp;
-                    if (duration > 10000) { //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec
-                        //  Simulate relaying 10 packets per second traffic
-                        //  credit relay, debit users
-                        // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available
-                        //BETTER ALGO needed here
-                        //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
-                        if ((typeof _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] != "undefined") &&
-                            (typeof _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName] != "undefined")) {
-                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].inPulses += 100; //relay meas forwrd 10 pktys/sec
-                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 100; //we assume those with better path, use it for 10 pkts
-                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].inPulses -= 100; //relay meas forwrd 10 pktys/sec
-                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].outPulses -= 100; //we assume those with better path, use it for 10 pkts
-                            // bump the in/outMsgs by 10 pkts
-                        }
-                        else {
-                            console.log("findEfficiencies(): this.pulses[extraordinaryPath.intermediary+':'+this.groupName]=" + _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] + " this.pulses[extraordinaryPath.aSide+':'+this.groupName]=" + _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName]);
-                        }
-                    }
-                }
-            }
-            //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
-            _this.mintTable[0].lastPulseTimestamp = timeNow;
-            var sleepTime = PULSEFREQ * 1000 - timeNow % 1000 + 600; //let's run find efficiencies happens in last 400ms
-            //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
-            setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
-        };
-        this.checkSWversion = function () {
-            console.log(lib_1.ts() + "CheckSWVersion():");
-            if (_this.groupOwner == _this.config.GEO) {
-                return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
-            }
-            var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
-                "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
-            http.get(url, function (res) {
-                res.setEncoding("utf8");
-                var body = "";
-                res.on("data", function (data) {
-                    body += data;
-                });
-                res.on("error", function (error) {
-                    logger_1.logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
-                    // Error handling here never triggered TODO
-                });
-                res.on("end", function () {
-                    var genesisVersion = JSON.parse(body);
-                    var mySWversion = lib_1.MYVERSION(); // find the Build.*
-                    logger_1.logger.info("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
-                    if (genesisVersion != mySWversion) {
-                        // Software reload
-                        logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
-                        process.exit(36);
-                    }
-                });
-            });
-            setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
-        };
-        this.processIncomingPulse = function (incomingPulse) {
-            // look up the pulse claimed mint
-            var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
-            var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
-            if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
-                // show more specifics why pulse is ignored
-                logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry ");
-                console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry pulseEntry=" + incomingPulseEntry + " mintEntry=" + incomingPulseMintEntry);
-                return;
-            }
-            // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-            if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
-                //console.log(`**************************************************       Group Owner Pulse logic ....`);
-                // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
-                if (_this.groupOwner != _this.mintTable[0].geo) { // use genesis nodes' incoming owls to manage population
-                    var owlsAry = incomingPulse.owls.split(",");
-                    // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
-                    for (var o in owlsAry) {
-                        var owlEntry = owlsAry[o];
-                        var mint = parseInt(owlEntry.split("=")[0]);
-                        var srcMintEntry = _this.mintTable[mint];
-                        //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
-                        //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
-                        if (srcMintEntry == null) {
-                            console.log("We do not have this mint and group Owner announced it: " + mint);
-                            //we do not have this mint in our mintTale
-                            logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
-                            console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
-                            _this.syncGenesisPulseGroup(); // HACK: any membership change we need resync
-                            return;
-                        }
-                    }
-                    // find each pulse in the group owner announcement or delete/resync
-                    for (var pulse in _this.pulses) {
-                        var myPulseEntry = _this.pulses[pulse];
-                        var found = false;
-                        //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
-                        for (var o in owlsAry) {
-                            var owlmint = parseInt(owlsAry[o].split("=")[0]);
-                            if (owlmint == myPulseEntry.mint) {
-                                found = true;
-                            }
-                        }
-                        // deleteNode if its mint is not in announcement
-                        if (!found) {
-                            logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
-                            console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
-                            _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
-                            return;
-                        }
-                    }
-                }
-                _this.mintTable[1].state = "UP"; //Genesis Node is UP
-                //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
-                _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
-                _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
-                //}
-                //console.log(`processIncomingPulse(): Marking node UP`);
-                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
-            }
-            else { //Message NOT from groupOwner.
-                //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
-                if (_this.mintTable[0].mint == 1) { //Am I group owner?
-                    if (_this.mintTable[incomingPulseEntry.mint] != null) { //I am group owner, do I know this guy? 
-                        if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarwtine?
-                            console.log("Received a pulse from a node we labeled as QUARANTINED ... flash wireguard - we have a new node for everyone");
-                            console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
-                            _this.flashWireguard();
-                            _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
-                        }
-                    }
-                    else {
-                        //Node is not in QUARANTINE
-                    }
-                }
-                else {
-                    //console.log(`I am not group owner`);
-                }
-                // Pulse from ANYONE - we must be out of Quarantine
-                if (_this.mintTable[0].state == "QUARANTINE") {
-                    logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
-                    console.log("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
-                    _this.mintTable[0].state = "UP";
-                    _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
-                    //
-                    //   Start everything
-                    //
-                    //    setInterval(self.measurertt,WG_PULSEFREQ*1000);  
-                    //    self.secureTrafficHandler((data: any) => {
-                    //        console.log(`secureChannel traffic handler callback: ${data}`);
-                    //    });
-                }
-            }
-            // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
-            if (incomingPulseEntry !== undefined) {
-                _this.ts = lib_1.now(); // we got a pulse - update the pulseGroup timestamp
-                // copy incoming pulse into my pulse record
-                incomingPulseEntry.inPulses++;
-                incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
-                incomingPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
-                incomingPulseEntry.owl = incomingPulse.owl;
-                incomingPulseEntry.seq = incomingPulse.seq;
-                incomingPulseEntry.owls = incomingPulse.owls;
-                incomingPulseEntry.history.push(incomingPulseEntry.owl);
-                // store 60 samples
-                if (incomingPulseEntry.history.length > 60) {
-                    incomingPulseEntry.history.shift(); // drop off the last sample
-                }
-                var d = new Date(incomingPulseEntry.pulseTimestamp);
-                if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples
-                    incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)));
-                    // store 60 samples
-                    if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
-                        incomingPulseEntry.medianHistory.shift(); // drop off the last samples
-                    }
-                }
-                // TODO: Also resync if the groupOwner has removed an item
-                _this.storeOWL(incomingPulse.geo, _this.mintTable[0].geo, incomingPulse.mint); // store pulse latency To me
-            }
-            else {
-                logger_1.logger.warning("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: " + incomingPulse.geo);
-                //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
-                //maybe also add empty pulse records for each that don't have a pulse record
-            }
-        };
-        //called every 10ms to see if there are pkts to process
-        this.workerThread = function () {
-            setTimeout(_this.workerThread, 100); // queue up incoming packets and come back again to batch process every 100 milliseconds
-            if (_this.incomingPulseQueue.length == 0) {
-                return;
-            }
-            for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
-                _this.processIncomingPulse(pulse);
-            }
-        };
-        //
-        //  recvPulses
-        //
-        this.recvPulses = function (incomingMessage) {
-            // try {
-            // const incomingPulse = await parsePulseMessage(incomingMessage)
-            var ary = incomingMessage.split(",");
-            var pulseTimestamp = parseInt(ary[0]);
-            var senderTimestamp = parseInt(ary[1]);
-            var OWL = pulseTimestamp - senderTimestamp;
-            var owlsStart = lib_1.nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
-            var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-            var incomingPulse = {
-                pulseTimestamp: pulseTimestamp,
-                outgoingTimestamp: senderTimestamp,
-                msgType: ary[2],
-                version: ary[3],
-                geo: ary[4],
-                group: ary[5],
-                seq: parseInt(ary[6]),
-                bootTimestamp: parseInt(ary[7]),
-                mint: parseInt(ary[8]),
-                owls: pulseOwls,
-                owl: OWL,
-                lastMsg: incomingMessage
-            };
-            _this.incomingPulseQueue.push(incomingPulse); //tmp patch to test
-        };
-        // Store one-way latencies to file or graphing & history
-        this.storeOWL = function (src, dst, srcMint) {
-            var pulseLabel = src + ":" + _this.groupName;
-            var pulseEntry = _this.pulses[pulseLabel];
-            if (pulseEntry != null) {
-                var strDataPoints = ""; // format: { label: "22:37:49", y: 10 }, we have no timestamps yet in this model
-                for (var dp in pulseEntry.medianHistory) {
-                    strDataPoints += "{ label: \"median\", y: " + pulseEntry.medianHistory[dp] + " },";
-                }
-                for (var dp in pulseEntry.history) {
-                    strDataPoints += "{ label: \"current\", y: " + pulseEntry.history[dp] + " },";
-                }
-                grapher_1.grapherStoreOwls(src, dst, strDataPoints); // store OWL in a way the grapher can parse it
-            }
-        };
-        // Sync this pulseGroup object with genesis node pulseGroup object: copy mint table and update (add/del) pulse entries so we match the genesis node
-        this.syncGenesisPulseGroup = function () {
-            if (_this.isGenesisNode()) {
-                console.log("syncGenesisPulseGroup(): GENESIS node does not sync with itself but will set Wireguard files");
-                logger_1.logger.warning("syncGenesisPulseGroup(): GENESIS node does not sync with itself but will set Wireguard files");
-                _this.flashWireguard(); // change my wg config
-                return; // genesis node dies not fetch its own configuration
-            }
-            console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
-            console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
-            var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
-            var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroups/"); //@wbnwbnwbn
-            console.log("pulseGroups=" + url);
-            logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
-            var self = _this;
-            // Fetch mintTable and pulses from genesis node
-            http.get(url, function (res) {
-                res.setEncoding("utf8");
-                var body = "";
-                res.on("data", function (data) {
-                    body += data;
-                });
-                res.on("end", function () {
-                    var groupOwnerPulseGroup = JSON.parse(body);
-                    console.log("syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: " + lib_1.dump(groupOwnerPulseGroup));
-                    var mintTable = groupOwnerPulseGroup.mintTable;
-                    if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {
-                        mintTable[0] = self.mintTable[0]; // wbnwbnwbn INSTALL MY mintTable[0]
-                    }
-                    self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
-                    //console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
-                    // TODO - don't copy timeStamps - they are relative to genesis clock
-                    var pulses = groupOwnerPulseGroup.pulses;
-                    for (var pulse in pulses) {
-                        // Add all pulses that we don't have
-                        if (typeof self.pulses[pulse] == "undefined") {
-                            logger_1.logger.info("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
-                            self.pulses[pulse] = pulses[pulse]; // save our new pulse entry
-                        }
-                    }
-                    for (var pulse in self.pulses) {
-                        // Delete all node we have that the group owner does not
-                        if (typeof pulses[pulse] == "undefined") {
-                            logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
-                            delete self.pulses[pulse]; //delete this pulse we have but groupOwner does not have
-                        }
-                    }
-                    self.nodeCount = Object.keys(self.pulses).length;
-                    logger_1.logger.warning("Flashing Wireguard configs");
-                    self.flashWireguard(); //send mintTable to wireguard to set config
-                });
-            });
-        };
-        this.measurertt = function () {
-            if (!MEASURE_RTT)
-                return; // can not spin up 1 ping process per node per second
-            console.log("measurertt()");
-            var _loop_1 = function () {
-                var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
-                //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
-                var ip = lib_1.mint2IP(pulseEntry.mint);
-                var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)";
-                child_process_1.exec(pingCmd, function (error, stdout, stderr) {
-                    //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
-                    var i = stdout.indexOf("100%");
-                    if (i >= 0) {
-                        pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                        //console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
-                        return;
-                    }
-                    var ary = stdout.split(" ");
-                    var address = ary[8];
-                    var octets = address.split(".");
-                    var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]); //TODO: we should verify mint here
-                    if (ary[6] == "bytes") {
-                        //if we have a measure
-                        var timeEquals = ary[11];
-                        if (typeof timeEquals != "undefined") {
-                            var rtt = parseInt(timeEquals.split("=")[1]);
-                            //TODO: here we store or clear the rttMatrix element
-                            //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
-                            //TODO: store in rttHistory, rttMedian
-                            //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
-                            pulseEntry.rtt = rtt;
-                        }
-                        else {
-                            //console.log(`******measurertt(): ${pulseEntry.geo} rtt = -99999`);
-                            //clear in rttHistory, rttMedian
-                            pulseEntry.rtt = NO_MEASURE;
-                            //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
-                        }
-                    }
-                });
-            };
-            for (var p in _this.pulses) {
-                _loop_1();
-            }
-        };
-        //
-        //  this is where the messgaes over secure qireguard mesh is handled - not working yet
-        //
-        this.secureTrafficHandler = function (callback) {
-            var app = express();
-            var self = _this;
-            //        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
-            var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
-                //TODO: add error handling here
-                var serverAdddress = server.address();
-                if (typeof serverAdddress !== "string" && serverAdddress !== null) {
-                    var host = serverAdddress.address;
-                    //var port = serverAdddress.port;
-                    console.log("DARP ENCRYPTED MESH Traffic handler listening at http://" + host + ":" + SECURE_PORT);
-                }
-                else {
-                    logger_1.logger.error("Express app initialization failed");
-                    console.log("FAILED DARP ENCRYPTED MESH Traffic handler listening");
-                }
-            }).on('data', function (err, data) {
-                console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port " + SECURE_PORT);
-            }).on('error', function (err) {
-                console.log("Trying agin in 10 sec", err);
-                setTimeout(self.secureTrafficHandler, 10 * 1000);
-            });
-        };
+        this.url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + lib_1.now() +
+            "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
         this.groupName = pulseGroup.groupName;
         this.groupOwner = pulseGroup.groupOwner;
         this.mintTable = pulseGroup.mintTable; // Simplification: me should always be mintTable[0], genesis node should always be mintTable[1]
@@ -1066,9 +869,337 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.debug("AugmentedPulseGroup has received message from sender: " + message);
         });
     }
+    AugmentedPulseGroup.prototype.get = function (url) { };
     return AugmentedPulseGroup;
 }());
 exports.AugmentedPulseGroup = AugmentedPulseGroup;
+(function (res) {
+    res.setEncoding("utf8");
+    var body = "";
+    res.on("data", function (data) {
+        body += data;
+    });
+    res.on("error", function (error) {
+        logger_1.logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
+        // Error handling here never triggered TODO
+    });
+    res.on("end", function () {
+        var genesisVersion = JSON.parse(body);
+        var mySWversion = lib_1.MYVERSION(); // find the Build.*
+        logger_1.logger.info("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
+        if (genesisVersion != mySWversion) {
+            // Software reload
+            logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
+            process.exit(36);
+        }
+    });
+});
+;
+setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
+;
+processIncomingPulse = function (incomingPulse) {
+    // look up the pulse claimed mint
+    var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+    var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
+    if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
+        // show more specifics why pulse is ignored
+        logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry ");
+        console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry pulseEntry=" + incomingPulseEntry + " mintEntry=" + incomingPulseMintEntry);
+        return;
+    }
+    // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
+    if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
+        //console.log(`**************************************************       Group Owner Pulse logic ....`);
+        // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
+        if (_this.groupOwner != _this.mintTable[0].geo) { // use genesis nodes' incoming owls to manage population
+            var owlsAry = incomingPulse.owls.split(",");
+            // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
+            for (var o in owlsAry) {
+                var owlEntry = owlsAry[o];
+                var mint = parseInt(owlEntry.split("=")[0]);
+                var srcMintEntry = _this.mintTable[mint];
+                //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
+                //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
+                if (srcMintEntry == null) {
+                    console.log("We do not have this mint and group Owner announced it: " + mint);
+                    //we do not have this mint in our mintTale
+                    logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
+                    console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
+                    _this.syncGenesisPulseGroup(); // HACK: any membership change we need resync
+                    return;
+                }
+            }
+            // find each pulse in the group owner announcement or delete/resync
+            for (var pulse in _this.pulses) {
+                var myPulseEntry = _this.pulses[pulse];
+                var found = false;
+                //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
+                for (var o in owlsAry) {
+                    var owlmint = parseInt(owlsAry[o].split("=")[0]);
+                    if (owlmint == myPulseEntry.mint) {
+                        found = true;
+                    }
+                }
+                // deleteNode if its mint is not in announcement
+                if (!found) {
+                    logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
+                    console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
+                    _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
+                    return;
+                }
+            }
+        }
+        _this.mintTable[1].state = "UP"; //Genesis Node is UP
+        //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
+        _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
+        _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
+        //}
+        //console.log(`processIncomingPulse(): Marking node UP`);
+        //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
+    }
+    else { //Message NOT from groupOwner.
+        //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
+        if (_this.mintTable[0].mint == 1) { //Am I group owner?
+            if (_this.mintTable[incomingPulseEntry.mint] != null) { //I am group owner, do I know this guy? 
+                if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarwtine?
+                    console.log("Received a pulse from a node we labeled as QUARANTINED ... flash wireguard - we have a new node for everyone");
+                    console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
+                    _this.flashWireguard();
+                    _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
+                }
+            }
+            else {
+                //Node is not in QUARANTINE
+            }
+        }
+        else {
+            //console.log(`I am not group owner`);
+        }
+        // Pulse from ANYONE - we must be out of Quarantine
+        if (_this.mintTable[0].state == "QUARANTINE") {
+            logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
+            console.log("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
+            _this.mintTable[0].state = "UP";
+            _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
+            //
+            //   Start everything
+            //
+            //    setInterval(self.measurertt,WG_PULSEFREQ*1000);  
+            //    self.secureTrafficHandler((data: any) => {
+            //        console.log(`secureChannel traffic handler callback: ${data}`);
+            //    });
+        }
+    }
+    // with mintTable and pulses updated, handle valid pulse: we expect mintEntry to --> mint entry for this pulse
+    if (incomingPulseEntry !== undefined) {
+        _this.ts = lib_1.now(); // we got a pulse - update the pulseGroup timestamp
+        // copy incoming pulse into my pulse record
+        incomingPulseEntry.inPulses++;
+        incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
+        incomingPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
+        incomingPulseEntry.owl = incomingPulse.owl;
+        incomingPulseEntry.seq = incomingPulse.seq;
+        incomingPulseEntry.owls = incomingPulse.owls;
+        incomingPulseEntry.history.push(incomingPulseEntry.owl);
+        // store 60 samples
+        if (incomingPulseEntry.history.length > 60) {
+            incomingPulseEntry.history.shift(); // drop off the last sample
+        }
+        var d = new Date(incomingPulseEntry.pulseTimestamp);
+        if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples
+            incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)));
+            // store 60 samples
+            if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
+                incomingPulseEntry.medianHistory.shift(); // drop off the last samples
+            }
+        }
+        // TODO: Also resync if the groupOwner has removed an item
+        _this.storeOWL(incomingPulse.geo, _this.mintTable[0].geo, incomingPulse.mint); // store pulse latency To me
+    }
+    else {
+        logger_1.logger.warning("Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: " + incomingPulse.geo);
+        //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
+        //maybe also add empty pulse records for each that don't have a pulse record
+    }
+};
+//called every 10ms to see if there are pkts to process
+workerThread = function () {
+    setTimeout(_this.workerThread, 100); // queue up incoming packets and come back again to batch process every 100 milliseconds
+    if (_this.incomingPulseQueue.length == 0) {
+        return;
+    }
+    for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
+        _this.processIncomingPulse(pulse);
+    }
+};
+//
+//  recvPulses
+//
+recvPulses = function (incomingMessage) {
+    // try {
+    // const incomingPulse = await parsePulseMessage(incomingMessage)
+    var ary = incomingMessage.split(",");
+    var pulseTimestamp = parseInt(ary[0]);
+    var senderTimestamp = parseInt(ary[1]);
+    var OWL = pulseTimestamp - senderTimestamp;
+    var owlsStart = lib_1.nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
+    var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
+    var incomingPulse = {
+        pulseTimestamp: pulseTimestamp,
+        outgoingTimestamp: senderTimestamp,
+        msgType: ary[2],
+        version: ary[3],
+        geo: ary[4],
+        group: ary[5],
+        seq: parseInt(ary[6]),
+        bootTimestamp: parseInt(ary[7]),
+        mint: parseInt(ary[8]),
+        owls: pulseOwls,
+        owl: OWL,
+        lastMsg: incomingMessage
+    };
+    _this.incomingPulseQueue.push(incomingPulse); //tmp patch to test
+};
+// Store one-way latencies to file or graphing & history
+storeOWL = function (src, dst, srcMint) {
+    var pulseLabel = src + ":" + _this.groupName;
+    var pulseEntry = _this.pulses[pulseLabel];
+    if (pulseEntry != null) {
+        var strDataPoints = ""; // format: { label: "22:37:49", y: 10 }, we have no timestamps yet in this model
+        for (var dp in pulseEntry.medianHistory) {
+            strDataPoints += "{ label: \"median\", y: " + pulseEntry.medianHistory[dp] + " },";
+        }
+        for (var dp in pulseEntry.history) {
+            strDataPoints += "{ label: \"current\", y: " + pulseEntry.history[dp] + " },";
+        }
+        grapher_1.grapherStoreOwls(src, dst, strDataPoints); // store OWL in a way the grapher can parse it
+    }
+};
+// Sync this pulseGroup object with genesis node pulseGroup object: copy mint table and update (add/del) pulse entries so we match the genesis node
+syncGenesisPulseGroup = function () {
+    if (_this.isGenesisNode()) {
+        console.log("syncGenesisPulseGroup(): GENESIS node does not sync with itself but will set Wireguard files");
+        logger_1.logger.warning("syncGenesisPulseGroup(): GENESIS node does not sync with itself but will set Wireguard files");
+        _this.flashWireguard(); // change my wg config
+        return; // genesis node dies not fetch its own configuration
+    }
+    console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
+    console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
+    console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
+    var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
+    var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroups/"); //@wbnwbnwbn
+    console.log("pulseGroups=" + url);
+    logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
+    var self = _this;
+    // Fetch mintTable and pulses from genesis node
+    http.get(url, function (res) {
+        res.setEncoding("utf8");
+        var body = "";
+        res.on("data", function (data) {
+            body += data;
+        });
+        res.on("end", function () {
+            var groupOwnerPulseGroup = JSON.parse(body);
+            console.log("syncGenesisPulseGroup(): fetched new groupOwnerPulseGroup from genesis node: " + lib_1.dump(groupOwnerPulseGroup));
+            var mintTable = groupOwnerPulseGroup.mintTable;
+            if (groupOwnerPulseGroup.groupOwner != self.config.GEO) {
+                mintTable[0] = self.mintTable[0]; // wbnwbnwbn INSTALL MY mintTable[0]
+            }
+            self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
+            //console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
+            // TODO - don't copy timeStamps - they are relative to genesis clock
+            var pulses = groupOwnerPulseGroup.pulses;
+            for (var pulse in pulses) {
+                // Add all pulses that we don't have
+                if (typeof self.pulses[pulse] == "undefined") {
+                    logger_1.logger.info("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                    self.pulses[pulse] = pulses[pulse]; // save our new pulse entry
+                }
+            }
+            for (var pulse in self.pulses) {
+                // Delete all node we have that the group owner does not
+                if (typeof pulses[pulse] == "undefined") {
+                    logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
+                    delete self.pulses[pulse]; //delete this pulse we have but groupOwner does not have
+                }
+            }
+            self.nodeCount = Object.keys(self.pulses).length;
+            logger_1.logger.warning("Flashing Wireguard configs");
+            self.flashWireguard(); //send mintTable to wireguard to set config
+        });
+    });
+};
+measurertt = function () {
+    if (!MEASURE_RTT)
+        return; // can not spin up 1 ping process per node per second
+    console.log("measurertt()");
+    var _loop_1 = function () {
+        var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
+        //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
+        var ip = lib_1.mint2IP(pulseEntry.mint);
+        var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)";
+        child_process_1.exec(pingCmd, function (error, stdout, stderr) {
+            //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
+            var i = stdout.indexOf("100%");
+            if (i >= 0) {
+                pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
+                //console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
+                return;
+            }
+            var ary = stdout.split(" ");
+            var address = ary[8];
+            var octets = address.split(".");
+            var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]); //TODO: we should verify mint here
+            if (ary[6] == "bytes") {
+                //if we have a measure
+                var timeEquals = ary[11];
+                if (typeof timeEquals != "undefined") {
+                    var rtt = parseInt(timeEquals.split("=")[1]);
+                    //TODO: here we store or clear the rttMatrix element
+                    //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
+                    //TODO: store in rttHistory, rttMedian
+                    //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
+                    pulseEntry.rtt = rtt;
+                }
+                else {
+                    //console.log(`******measurertt(): ${pulseEntry.geo} rtt = -99999`);
+                    //clear in rttHistory, rttMedian
+                    pulseEntry.rtt = NO_MEASURE;
+                    //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
+                }
+            }
+        });
+    };
+    for (var p in _this.pulses) {
+        _loop_1();
+    }
+};
+//
+//  this is where the messgaes over secure qireguard mesh is handled - not working yet
+//
+secureTrafficHandler = function (callback) {
+    var app = express();
+    var self = _this;
+    //        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
+    var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
+        //TODO: add error handling here
+        var serverAdddress = server.address();
+        if (typeof serverAdddress !== "string" && serverAdddress !== null) {
+            var host = serverAdddress.address;
+            //var port = serverAdddress.port;
+            console.log("DARP ENCRYPTED MESH Traffic handler listening at http://" + host + ":" + SECURE_PORT);
+        }
+        else {
+            logger_1.logger.error("Express app initialization failed");
+            console.log("FAILED DARP ENCRYPTED MESH Traffic handler listening");
+        }
+    }).on('data', function (err, data) {
+        console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port " + SECURE_PORT);
+    }).on('error', function (err) {
+        console.log("Trying agin in 10 sec", err);
+        setTimeout(self.secureTrafficHandler, 10 * 1000);
+    });
+};
 /**
  * Initiates construction of the pulsegroup object by sneding the request to the genesis node
  * @param {Config} config contains constants and environmental variables, such as ip and port
@@ -1115,3 +1246,4 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
             })];
     });
 }); };
+var templateObject_1, templateObject_2, templateObject_3, templateObject_4, templateObject_5, templateObject_6, templateObject_7, templateObject_8, templateObject_9;
