@@ -454,10 +454,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            console.log(lib_1.ts() + "timeout()");
+            //console.log(ts()+`timeout()`);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             if (_this.isGenesisNode()) {
-                console.log("timeout(): GENESIS NODE path");
+                console.log(lib_1.ts() + "timeout(): GENESIS NODE path");
                 for (var m in _this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                     var mintEntry = _this.mintTable[m];
                     if (mintEntry.lastPulseTimestamp == 0) {
@@ -465,7 +465,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                     else {
                         var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
-                        if (elapsedMSincePulse > 1.5 * _this.cycleTime * 1000) { //after n cycles no mintTable updates - remove
+                        if (elapsedMSincePulse > _this.cycleTime * 1000) { //after n cycles no mintTable updates - remove
                             console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
                             // timeout the node
                             logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
@@ -492,10 +492,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             else { //I am NOT GENESIS NODE - time out 
-                console.log("timeout(): NON-GENESIS NODE path");
+                console.log(lib_1.ts() + "timeout(): NON-GENESIS NODE path");
                 if (_this.mintTable[1].lastPulseTimestamp != 0) { //All I can do is time out GENESIS node
                     var age = (lib_1.now() - _this.mintTable[1].lastPulseTimestamp) / 1000;
-                    console.log("have not heard from GENESIS node in age=" + age + " seconds");
+                    //console.log(`have not heard from GENESIS node in age=${age} seconds`);
                     if (age > 10) { //after 10 seconds we say genesis is gone
                         logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                         console.log("have not heard from GENESIS node in more than 10 seconds - exitting, reloading software");
@@ -567,11 +567,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 delete copy.receiver;
                 delete copy.config;
                 var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-                var filename = _this.config.IP + "." + _this.config.PORT + '.json';
-                fs_1.writeFile(filename, strCopy, function (err) {
+                var filename_1 = _this.config.IP + "." + _this.config.PORT + '.json';
+                fs_1.writeFile(filename_1, strCopy, function (err) {
                     if (err)
                         throw err;
-                    //console.log(`pulse group object stored in file ${filename} asynchronously`);
+                    console.log("pulse group object stored in file " + filename_1 + " asynchronously");
                 });
             }
             /*

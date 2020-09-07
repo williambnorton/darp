@@ -588,11 +588,11 @@ export class AugmentedPulseGroup {
     //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
-        console.log(ts()+`timeout()`);
+        //console.log(ts()+`timeout()`);
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
         if (this.isGenesisNode()) {  
-            console.log(`timeout(): GENESIS NODE path`);
+            console.log(ts()+`timeout(): GENESIS NODE path`);
             for (var m in this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                 const mintEntry=this.mintTable[m];
                 if (mintEntry.lastPulseTimestamp==0) {
@@ -600,7 +600,7 @@ export class AugmentedPulseGroup {
                 } else {
                     var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                    if (elapsedMSincePulse > 1.5 * this.cycleTime * 1000) {  //after n cycles no mintTable updates - remove
+                    if (elapsedMSincePulse > this.cycleTime * 1000) {  //after n cycles no mintTable updates - remove
                         console.log(`TIMEOUT : elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
                         // timeout the node
                         logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
@@ -628,10 +628,10 @@ export class AugmentedPulseGroup {
                 }
             }
         } else {    //I am NOT GENESIS NODE - time out 
-            console.log(`timeout(): NON-GENESIS NODE path`);
+            console.log(ts()+`timeout(): NON-GENESIS NODE path`);
             if (this.mintTable[1].lastPulseTimestamp!=0) {      //All I can do is time out GENESIS node
                 var age = (now() - this.mintTable[1].lastPulseTimestamp)/1000;
-                console.log(`have not heard from GENESIS node in age=${age} seconds`);
+                //console.log(`have not heard from GENESIS node in age=${age} seconds`);
                 if (age > 10) {              //after 10 seconds we say genesis is gone
                     logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                     console.log(`have not heard from GENESIS node in more than 10 seconds - exitting, reloading software`);
@@ -714,7 +714,7 @@ export class AugmentedPulseGroup {
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
-                //console.log(`pulse group object stored in file ${filename} asynchronously`);
+                console.log(`pulse group object stored in file ${filename} asynchronously`);
             });
         }
 
