@@ -544,7 +544,8 @@
                         <td><%= srcMintEntry.publickey.substring(0, 3) %>...<%= srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) %></td>
 
                         <% let classNameGeoState = srcMintEntry.geo + " " + srcMintEntry.geo + "_state" + " " + srcMintEntry.state; %>  <!-- WEIRD CLASS NAME-->
-                        <% let pulseEntryMintTableUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/mintTable"; %>
+                        <% let dddwbnwbnwbnddddpulseEntryMintTableUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/mintTable"; %>
+                        <% let pulseEntryMintTableUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/state"; %>
                         <td class="<%= classNameGeoState %>"><a target="_blank" href="<%= pulseEntryMintTableUrl %>"><%= srcMintEntry.state %></a></td>
 
                         <% let deltaSeconds = Math.round((now() - srcMintEntry.lastPulseTimestamp) / 1000) + " secs ago"; %>
