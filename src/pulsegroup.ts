@@ -844,7 +844,7 @@ export class AugmentedPulseGroup {
     }
 
     checkSWversion = () => {
-        console.log(`CheckSWVersion():`);
+        console.log(ts()+`CheckSWVersion():`);
         if (this.groupOwner == this.config.GEO) {
             return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
         }

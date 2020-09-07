@@ -697,7 +697,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {
-            console.log("CheckSWVersion():");
+            console.log(lib_1.ts() + "CheckSWVersion():");
             if (_this.groupOwner == _this.config.GEO) {
                 return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
             }
