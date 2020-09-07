@@ -587,13 +587,14 @@ export class AugmentedPulseGroup {
     //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
+        console.log(ts()+`timeout()`);
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
         //check all mintTable entries except GENESIS and self (mintTable[0])
         for (var m in this.mintTable) {
-            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+//            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+            if ((m != "0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
-
 
                 if (elapsedMSincePulse > 5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - remove
                     console.log(`TINEOUT EXCEEDED: elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
