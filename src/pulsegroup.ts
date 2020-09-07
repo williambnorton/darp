@@ -10,6 +10,7 @@ import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
+import { exit } from "process";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
@@ -663,10 +664,15 @@ export class AugmentedPulseGroup {
                                 console.log(`timeout(): Setting ${this.mintTable[m].geo} to Not Reachable`);
                             }
                             
-                            if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles
+                            if ((mintEntry.mint==1) && (elapsedMSincePulse > (5 * this.cycleTime * 1000))) {  //after 5 cycles time out Genesis Node
                                 // timeout node after 5 seconds
-                                console.log(`timeout(): TIMING OUT AND DELETING geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                                console.log(`timeout(): TIMING OUT AND DELETING GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                                console.log(`timeout(): TIMING OUT AND DELETING GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                                console.log(`timeout(): TIMING OUT AND DELETING GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                                console.log(`timeout(): TIMING OUT AND DELETING GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                                console.log(`timeout(): TIMING OUT AND DELETING GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                                 this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
+                                exit(36); //time out means this pulseGroup goews away for me
                             }
                         }
                     }
@@ -683,8 +689,8 @@ export class AugmentedPulseGroup {
         // if timeout changed the population, flashWireguard files
         //
         if (startingPulseEntryCount != Object.keys(this.pulses).length) {
-            logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
-            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
+            logger.info(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} `);
+            console.log(`timeout(): nodeC0unt Changed from ${startingPulseEntryCount} `);
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;

@@ -47,6 +47,7 @@ var logger_1 = require("./logger");
 var types_1 = require("./types");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
+var process_1 = require("process");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
@@ -525,10 +526,15 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                     _this.mintTable[m].state = "NR"; // we don't know this node's state
                                     console.log("timeout(): Setting " + _this.mintTable[m].geo + " to Not Reachable");
                                 }
-                                if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
+                                if ((mintEntry.mint == 1) && (elapsedMSincePulse > (5 * _this.cycleTime * 1000))) { //after 5 cycles time out Genesis Node
                                     // timeout node after 5 seconds
-                                    console.log("timeout(): TIMING OUT AND DELETING geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                     _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
+                                    process_1.exit(36); //time out means this pulseGroup goews away for me
                                 }
                             }
                         }
@@ -542,8 +548,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             // if timeout changed the population, flashWireguard files
             //
             if (startingPulseEntryCount != Object.keys(_this.pulses).length) {
-                logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
-                console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
+                logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " ");
+                console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " ");
                 _this.flashWireguard(); //node list changed recreate wireguard file
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
