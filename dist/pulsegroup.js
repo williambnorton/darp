@@ -704,7 +704,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {
-            console.log(lib_1.ts() + "CheckSWVersion():");
             if (_this.groupOwner == _this.config.GEO) {
                 return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
             }
@@ -799,8 +798,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 if (_this.mintTable[0].mint == 1) { //Am I group owner?
                     if (_this.mintTable[incomingPulseEntry.mint] != null) { //I am group owner, do I know this guy? 
                         if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarwtine?
-                            console.log("Received a pulse from a node we labeled as QUARANTINED ... flash wireguard - we have a new node for everyone");
-                            console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
+                            //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash wireguard - we have a new node for everyone`);                                  
+                            //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                             _this.flashWireguard();
                             _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
                         }
@@ -815,7 +814,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // Pulse from ANYONE - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
                     logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
-                    console.log("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
+                    //console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                     _this.mintTable[0].state = "UP";
                     _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                     //
