@@ -460,32 +460,34 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(ts()+`timeout(): GENESIS NODE path`);
                 for (var m in _this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                     var mintEntry = _this.mintTable[m];
-                    if (mintEntry.lastPulseTimestamp == 0) {
-                        console.log("timeout(): GENESIS node ignoring pulseStamp==0  " + mintEntry.geo + " " + mintEntry.mint);
-                    }
-                    else {
-                        var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
-                        if (elapsedMSincePulse > _this.cycleTime * 1000) { //after n cycles no mintTable updates - remove
-                            console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
-                            // timeout the node
-                            logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                            console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                            //find the p
-                            var pulseEntry = _this.pulses[mintEntry.geo + ":" + _this.groupName];
-                            if (pulseEntry) {
-                                pulseEntry.owl = NO_MEASURE;
-                                pulseEntry.owls = "1";
-                                pulseEntry.pktDrops++;
-                            }
-                            _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
-                            if (_this.mintTable[m].state != "QUARANTINE") {
-                                _this.mintTable[m].state = "NR"; // we don't know this node's state
-                                console.log("timeout(): Setting " + _this.mintTable[m].geo + " to Not Reachable");
-                            }
-                            if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
-                                // timeout node after 5 seconds
-                                console.log("timeout(): TIMING OUT AND DELETING geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
+                    if (mintEntry != null) {
+                        if (mintEntry.lastPulseTimestamp == 0) {
+                            console.log("timeout(): GENESIS node ignoring pulseStamp==0  " + mintEntry.geo + " " + mintEntry.mint);
+                        }
+                        else {
+                            var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
+                            if (elapsedMSincePulse > _this.cycleTime * 1000) { //after n cycles no mintTable updates - remove
+                                console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
+                                // timeout the node
+                                logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
+                                console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
+                                //find the p
+                                var pulseEntry = _this.pulses[mintEntry.geo + ":" + _this.groupName];
+                                if (pulseEntry) {
+                                    pulseEntry.owl = NO_MEASURE;
+                                    pulseEntry.owls = "1";
+                                    pulseEntry.pktDrops++;
+                                }
+                                _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
+                                if (_this.mintTable[m].state != "QUARANTINE") {
+                                    _this.mintTable[m].state = "NR"; // we don't know this node's state
+                                    console.log("timeout(): Setting " + _this.mintTable[m].geo + " to Not Reachable");
+                                }
+                                if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
+                                    // timeout node after 5 seconds
+                                    console.log("timeout(): TIMING OUT AND DELETING geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                    _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
+                                }
                             }
                         }
                     }
@@ -504,37 +506,39 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //NOT GENESIS NODE - timeout and update pktDrops for all mint 
                     for (var m in _this.mintTable) { // NOT-GENESIS NODE - time out expired entries 
                         var mintEntry = _this.mintTable[m];
-                        if (mintEntry.lastPulseTimestamp == 0) {
-                            console.log("timeout(): NON-GENESIS node ignoring pulseStamp==0  " + mintEntry.geo + " " + mintEntry.mint);
-                        }
-                        else {
-                            var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
-                            if (elapsedMSincePulse > 1.5 * _this.cycleTime * 1000) { //after n cycles no mintTable updates - remove
-                                console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
-                                // timeout the node
-                                logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                                console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                                //find the p
-                                var pulseEntry = _this.pulses[mintEntry.geo + ":" + _this.groupName];
-                                if (pulseEntry) {
-                                    pulseEntry.owl = NO_MEASURE;
-                                    pulseEntry.owls = "1";
-                                    pulseEntry.pktDrops++;
-                                }
-                                _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
-                                if (_this.mintTable[m].state != "QUARANTINE") {
-                                    _this.mintTable[m].state = "NR"; // we don't know this node's state
-                                    console.log("timeout(): Setting " + _this.mintTable[m].geo + " to Not Reachable");
-                                }
-                                if ((mintEntry.mint == 1) && (elapsedMSincePulse > (5 * _this.cycleTime * 1000))) { //after 5 cycles time out Genesis Node
-                                    // timeout node after 5 seconds
-                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                    console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                    _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
-                                    process_1.exit(36); //time out means this pulseGroup goews away for me
+                        if (mintEntry != null) {
+                            if (mintEntry.lastPulseTimestamp == 0) {
+                                console.log("timeout(): NON-GENESIS node ignoring pulseStamp==0  " + mintEntry.geo + " " + mintEntry.mint);
+                            }
+                            else {
+                                var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
+                                if (elapsedMSincePulse > 1.5 * _this.cycleTime * 1000) { //after n cycles no mintTable updates - remove
+                                    console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
+                                    // timeout the node
+                                    logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
+                                    console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
+                                    //find the p
+                                    var pulseEntry = _this.pulses[mintEntry.geo + ":" + _this.groupName];
+                                    if (pulseEntry) {
+                                        pulseEntry.owl = NO_MEASURE;
+                                        pulseEntry.owls = "1";
+                                        pulseEntry.pktDrops++;
+                                    }
+                                    _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
+                                    if (_this.mintTable[m].state != "QUARANTINE") {
+                                        _this.mintTable[m].state = "NR"; // we don't know this node's state
+                                        console.log("timeout(): Setting " + _this.mintTable[m].geo + " to Not Reachable");
+                                    }
+                                    if ((mintEntry.mint == 1) && (elapsedMSincePulse > (5 * _this.cycleTime * 1000))) { //after 5 cycles time out Genesis Node
+                                        // timeout node after 5 seconds
+                                        console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                        console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                        console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                        console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                        console.log("timeout(): TIMING OUT AND DELETING GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                        _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
+                                        process_1.exit(36); //time out means this pulseGroup goews away for me
+                                    }
                                 }
                             }
                         }
