@@ -567,11 +567,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 delete copy.receiver;
                 delete copy.config;
                 var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-                var filename_1 = _this.config.IP + "." + _this.config.PORT + '.json';
-                fs_1.writeFile(filename_1, strCopy, function (err) {
+                var filename = _this.config.IP + "." + _this.config.PORT + '.json';
+                fs_1.writeFile(filename, strCopy, function (err) {
                     if (err)
                         throw err;
-                    console.log("pulse group object stored in file " + filename_1 + " asynchronously");
+                    //console.log(`pulse group object stored in file ${filename} asynchronously`);
                 });
             }
             /*

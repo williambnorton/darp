@@ -714,7 +714,7 @@ export class AugmentedPulseGroup {
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
-                console.log(`pulse group object stored in file ${filename} asynchronously`);
+                //console.log(`pulse group object stored in file ${filename} asynchronously`);
             });
         }
 
