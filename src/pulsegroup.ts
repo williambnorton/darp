@@ -957,10 +957,10 @@ export class AugmentedPulseGroup {
                 }
             }
             this.mintTable[1].state = "UP";   //Genesis Node is UP
-            this.mintTable[1].lastPulseTimestamp=incomingPulse.pulseTimestamp;  //we received a pulse from the genesis node - update mintTable
-           //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
-           this.mintTable[0].state = "UP";   // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
-           this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
+            this.mintTable[1].lastPulseTimestamp=now();  //we received a pulse from the genesis node - update mintTable
+            //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
+            this.mintTable[0].state = "UP";   // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
+            this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
            //}
            //console.log(`processIncomingPulse(): Marking node UP`);
                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
@@ -980,7 +980,7 @@ export class AugmentedPulseGroup {
             } else {
                 //console.log(`I am not group owner`);
             }
-            incomingPulseMintEntry.lastPulseTimestamp=incomingPulseEntry.pulseTimestamp;
+            incomingPulseMintEntry.lastPulseTimestamp=now();
 
            // Pulse from ANYONE - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {
@@ -1007,7 +1007,7 @@ export class AugmentedPulseGroup {
             // copy incoming pulse into my pulse record
             incomingPulseEntry.inPulses++;
             incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
-            incomingPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
+            incomingPulseEntry.pulseTimestamp = now();
             incomingPulseEntry.owl = incomingPulse.owl;
             incomingPulseEntry.seq = incomingPulse.seq;
             incomingPulseEntry.owls = incomingPulse.owls;

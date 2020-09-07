@@ -803,7 +803,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
                 _this.mintTable[1].state = "UP"; //Genesis Node is UP
-                _this.mintTable[1].lastPulseTimestamp = incomingPulse.pulseTimestamp; //we received a pulse from the genesis node - update mintTable
+                _this.mintTable[1].lastPulseTimestamp = lib_1.now(); //we received a pulse from the genesis node - update mintTable
                 //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
                 _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
                 _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
@@ -829,7 +829,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 else {
                     //console.log(`I am not group owner`);
                 }
-                incomingPulseMintEntry.lastPulseTimestamp = incomingPulseEntry.pulseTimestamp;
+                incomingPulseMintEntry.lastPulseTimestamp = lib_1.now();
                 // Pulse from ANYONE - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
                     logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
@@ -851,7 +851,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // copy incoming pulse into my pulse record
                 incomingPulseEntry.inPulses++;
                 incomingPulseEntry.lastMsg = incomingPulse.lastMsg;
-                incomingPulseEntry.pulseTimestamp = incomingPulse.pulseTimestamp;
+                incomingPulseEntry.pulseTimestamp = lib_1.now();
                 incomingPulseEntry.owl = incomingPulse.owl;
                 incomingPulseEntry.seq = incomingPulse.seq;
                 incomingPulseEntry.owls = incomingPulse.owls;
