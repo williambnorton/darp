@@ -453,12 +453,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            console.log(lib_1.ts() + "timeout()");
+            //console.log(ts()+`timeout()`);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             //check all mintTable entries except GENESIS and self (mintTable[0])
             for (var m in _this.mintTable) {
                 //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                console.log("timeout() processing " + lib_1.dump(_this.mintTable[m]));
+                //console.log(`timeout() processing ${dump(this.mintTable[m])}`);
                 if ((m != "0") && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
                     var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
                     if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - remove
@@ -493,7 +493,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                     }
                     else {
-                        console.log("Timeout not exceeded: elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
+                        //console.log(`Timeout not exceeded: elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
                     }
                 }
             }
