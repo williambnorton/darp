@@ -912,7 +912,6 @@ export class AugmentedPulseGroup {
            console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry pulseEntry=${incomingPulseEntry} mintEntry=${incomingPulseMintEntry}`);
            return;
        }
-
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
            //console.log(`**************************************************       Group Owner Pulse logic ....`);
@@ -981,6 +980,8 @@ export class AugmentedPulseGroup {
             } else {
                 //console.log(`I am not group owner`);
             }
+            incomingPulseMintEntry.lastPulseTimestamp=incomingPulseEntry.pulseTimestamp;
+
            // Pulse from ANYONE - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {
                logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);

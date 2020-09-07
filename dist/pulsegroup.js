@@ -829,6 +829,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 else {
                     //console.log(`I am not group owner`);
                 }
+                incomingPulseMintEntry.lastPulseTimestamp = incomingPulseEntry.pulseTimestamp;
                 // Pulse from ANYONE - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
                     logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
