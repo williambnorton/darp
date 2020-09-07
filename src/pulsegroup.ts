@@ -615,8 +615,11 @@ export class AugmentedPulseGroup {
                     } else {
                         // not genesis - only can time out genesis
                         var age = now() - this.mintTable[1].lastPulseTimestamp;
-                        if (age > 10 * 1000) {              //after 10 seconds we say genesis is gone
+                        console.log(`have not heard from GENESIS node in age=${age} milliseconds`);
+                        if (age > (10 * 1000)) {              //after 10 seconds we say genesis is gone
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                            console.log(`have not heard from GENESIS node in more than 10 seconds - exitting`);
+
                             process.exit(36);
                         }
                         // if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
@@ -882,8 +885,8 @@ export class AugmentedPulseGroup {
 
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
            // show more specifics why pulse is ignored
-           logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
-           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry ${dump(incomingPulseMintEntry)}`);
+           logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry `);
+           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry pulseEntry=${incomingPulseEntry} mintEntry=${incomingPulseMintEntry}`);
            return;
        }
 
@@ -943,22 +946,18 @@ export class AugmentedPulseGroup {
            if (this.mintTable[0].mint==1) {    //Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //I am group owner, do I know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
-                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
-                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
-                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
+                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash wireguard - we have a new node for everyone`);                                  
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                        this.flashWireguard();
+                         this.flashWireguard();
                         this.mintTable[incomingPulseEntry.mint].state="UP" //Genesis is READY TO ACCEPT nodes
                     }
                 } else {
-                    //We are just a member of this pulseGroup - not up to us 
+                    //Node is not in QUARANTINE
                 }
             } else {
                 //console.log(`I am not group owner`);
             }
-           // non-Genesis node pulse - we must be out of Quarantine
+           // Pulse from ANYONE - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {
                logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
