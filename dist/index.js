@@ -209,7 +209,7 @@ app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
-        res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch 
+        res.end("INTERNAL ERROR - can't find pulseGroup object file: " + filename); //CRASH - catch 
     }
     return;
 });
