@@ -469,9 +469,9 @@ export class AugmentedPulseGroup {
                 // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
                 // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
 
-                if (typeof matrix[pulseEntry.mint] == "undefined") {
-                    matrix[pulseEntry.mint] = [];
-                }
+                if (typeof matrix[pulseEntry.mint] == "undefined") {        //wbnwbnwbn-TODO: should
+                    matrix[pulseEntry.mint] = [];                           //
+                }                                                           //
                 matrix[pulseEntry.mint][this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
             }
         }
@@ -594,7 +594,10 @@ export class AugmentedPulseGroup {
             if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
+
                 if (elapsedMSincePulse > 5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - remove
+                    console.log(`TINEOUT EXCEEDED: elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
+
                     // timeout after  seconds
                     logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
                     console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
@@ -625,6 +628,9 @@ export class AugmentedPulseGroup {
                         // if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
                     }
                     // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
+                } else {
+                    console.log(`Timeout not exceeded: elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
+                    
                 }
             }
         }
