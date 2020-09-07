@@ -457,7 +457,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(ts()+`timeout()`);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             if (_this.isGenesisNode()) {
-                console.log(lib_1.ts() + "timeout(): GENESIS NODE path");
+                //console.log(ts()+`timeout(): GENESIS NODE path`);
                 for (var m in _this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                     var mintEntry = _this.mintTable[m];
                     if (mintEntry.lastPulseTimestamp == 0) {
@@ -492,7 +492,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             else { //I am NOT GENESIS NODE - time out 
-                console.log(lib_1.ts() + "timeout(): NON-GENESIS NODE path");
+                //console.log(ts()+`timeout(): NON-GENESIS NODE path`);
                 if (_this.mintTable[1].lastPulseTimestamp != 0) { //All I can do is time out GENESIS node
                     var age = (lib_1.now() - _this.mintTable[1].lastPulseTimestamp) / 1000;
                     //console.log(`have not heard from GENESIS node in age=${age} seconds`);
