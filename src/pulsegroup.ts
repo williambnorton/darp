@@ -943,7 +943,8 @@ export class AugmentedPulseGroup {
                     }
                 }
             }
-           this.mintTable[1].state = "UP";   //Genesis Node is UP
+            this.mintTable[1].state = "UP";   //Genesis Node is UP
+            this.mintTable[1].lastPulseTimestamp=incomingPulse.pulseTimestamp;  //we received a pulse from the genesis node - update mintTable
            //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
            this.mintTable[0].state = "UP";   // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
            this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
