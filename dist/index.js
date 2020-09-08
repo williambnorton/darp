@@ -47,8 +47,8 @@ logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 // Load config
 var config = new pulsegroup_1.Config();
 // Construct my own pulseGroup for others to connect to
-var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET); //All nodes can count on 'me' always being present
-var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET); //All nodes also start out ready to be a genesis node for others
+var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, lib_1.now()); //All nodes can count on 'me' always being present
+var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, 0); //All nodes also start out ready to be a genesis node for others
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
 var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -238,6 +238,8 @@ app.get('/nodefactory', function (req, res) {
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
+    var bootTimestamp = req.query.bootTimestamp;
+    console.log("req.query=" + req.query + (" bootTimestamp=" + bootTimestamp));
     if (typeof incomingTimestamp == "undefined") {
         logger_1.logger.warning("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
