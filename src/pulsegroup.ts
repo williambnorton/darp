@@ -917,7 +917,13 @@ export class AugmentedPulseGroup {
            return;
        }
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
+       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
+       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
+            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
+                console.log(`processIncomingpulse(): GENESIS node rebooted - we should also`);
+                process.exit(36);
+            }
            //console.log(`**************************************************       Group Owner Pulse logic ....`);
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
@@ -969,6 +975,12 @@ export class AugmentedPulseGroup {
            //console.log(`processIncomingPulse(): Marking node UP`);
                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
         } else {         //Message NOT from groupOwner.
+                        //Message NOT from groupOwner.
+                        //Message NOT from groupOwner.
+            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
+                console.log(`processIncomingpulse(): This node ${incomingPulseEntry.geo} rebooted - its old position is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
+                return;
+            }
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //I am group owner, do I know this guy? 
