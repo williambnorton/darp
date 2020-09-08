@@ -1121,7 +1121,7 @@ export class AugmentedPulseGroup {
         
         
         var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroups/");  //@wbnwbnwbn
-        console.log(`pulseGroups=${url}`);
+        console.log(`syncGenesisPulseGroup():(): pulseGroups URL=${url}`);
 
 
 
@@ -1147,7 +1147,7 @@ export class AugmentedPulseGroup {
                 }
                 self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
 
-                //console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
+                console.log(`syncGenesisPulseGroup(): after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
                 // TODO - don't copy timeStamps - they are relative to genesis clock
 
                 var pulses = groupOwnerPulseGroup.pulses;

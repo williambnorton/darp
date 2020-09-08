@@ -947,7 +947,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("syncGenesisPulseGroup(): Non-GENESIS NODE SYNCHING!!!!");
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroup/" + _this.groupName + "/" + _this.mintTable[0].mint);
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/pulsegroups/"); //@wbnwbnwbn
-            console.log("pulseGroups=" + url);
+            console.log("syncGenesisPulseGroup():(): pulseGroups URL=" + url);
             logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
             var self = _this;
             // Fetch mintTable and pulses from genesis node
@@ -965,7 +965,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         mintTable[0] = self.mintTable[0]; // wbnwbnwbn INSTALL MY mintTable[0]
                     }
                     self.mintTable = mintTable; // with us as #0, we have the new PulseGroup mintTable
-                    //console.log(`after copy from genesisNode, self.mintTable=${dump(self.mintTable)}`);
+                    console.log("syncGenesisPulseGroup(): after copy from genesisNode, self.mintTable=" + lib_1.dump(self.mintTable));
                     // TODO - don't copy timeStamps - they are relative to genesis clock
                     var pulses = groupOwnerPulseGroup.pulses;
                     for (var pulse in pulses) {
