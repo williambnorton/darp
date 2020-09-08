@@ -288,6 +288,7 @@ app.get('/nodefactory', function (req, res) {
             if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
                 // make sure not do delete me or genesis node
                 logger_1.logger.info("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
+                console.log("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
                 myPulseGroup.mintTable.splice(parseInt(mint));
             }
         }
