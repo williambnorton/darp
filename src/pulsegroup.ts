@@ -41,6 +41,7 @@ export class Config {
     PUBLICKEY: string;
     VERSION: string;
     WALLET: string;
+    BOOTTIMESTAMP: number;
     constructor() {
         if (!process.env.DARPDIR) {
             logger.warning("No DARPDIR environmental variable specified ");
@@ -49,7 +50,7 @@ export class Config {
         }
         this.DARPDIR = process.env.DARPDIR;
 
- 
+        this.BOOTTIMESTAMP=now();
 
 
         var PORT = 65013;
@@ -1276,7 +1277,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         "&version=" + config.VERSION +
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
-        "&bootTimestamp=" + now();
+        "&bootTimestamp=" + config.BOOTTIMESTAMP;
     var pulseGroupObjectURL = encodeURI(configurl);
 
     logger.info(
@@ -1308,6 +1309,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
                 console.log(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
 
                 if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
+                    newPulseGroup.mintTable[1].bootTimestamp=config.BOOTTIMESTAMP;
                     logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
                 } else {
                     logger.info(`getPulseGroup(): Configuring non-genesis node ...`);

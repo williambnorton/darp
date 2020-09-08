@@ -70,6 +70,7 @@ var Config = /** @class */ (function () {
             logger_1.logger.warning("DARPDIR defaulted to \" + " + process.env.DARPDIR);
         }
         this.DARPDIR = process.env.DARPDIR;
+        this.BOOTTIMESTAMP = lib_1.now();
         var PORT = 65013;
         if (process.env.PORT) {
             PORT = parseInt(process.env.PORT);
@@ -1125,7 +1126,7 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
             "&version=" + config.VERSION +
             "&wallet=" + config.WALLET +
             "&myip=" + config.IP +
-            "&bootTimestamp=" + lib_1.now();
+            "&bootTimestamp=" + config.BOOTTIMESTAMP;
         pulseGroupObjectURL = encodeURI(configurl);
         logger_1.logger.info("getPulseGroup(): getting pulseGroup from url=" + pulseGroupObjectURL);
         return [2 /*return*/, new Promise(function (resolve, reject) {
@@ -1145,6 +1146,7 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
                         logger_1.logger.info("getPulseGroup(): from node factory: " + lib_1.dump(newPulseGroup));
                         console.log("getPulseGroup(): from node factory: " + lib_1.dump(newPulseGroup));
                         if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
+                            newPulseGroup.mintTable[1].bootTimestamp = config.BOOTTIMESTAMP;
                             logger_1.logger.info("getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.");
                         }
                         else {
