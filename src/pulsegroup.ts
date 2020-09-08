@@ -916,7 +916,8 @@ export class AugmentedPulseGroup {
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
            // show more specifics why pulse is ignored
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry `);
-           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry pulseEntry=${incomingPulseEntry} mintEntry=${incomingPulseMintEntry}`);
+           console.log(ts()+`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry pulseEntry=${incomingPulseEntry} mintEntry=${incomingPulseMintEntry}`);
+            console.log(`mintTable=${dump(this.mintTable)}`);
            return;
        }
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER

@@ -764,7 +764,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
                 logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry ");
-                console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry pulseEntry=" + incomingPulseEntry + " mintEntry=" + incomingPulseMintEntry);
+                console.log(lib_1.ts() + ("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as a mint #" + incomingPulse.mint + " entry pulseEntry=" + incomingPulseEntry + " mintEntry=" + incomingPulseMintEntry));
+                console.log("mintTable=" + lib_1.dump(_this.mintTable));
                 return;
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
