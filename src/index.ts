@@ -228,8 +228,7 @@ app.get('/nodefactory', function(req, res) {
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
 
-    var bootTimestamp = req.query.bootTimestamp||0;
-
+    var bootTimestamp=Number(req.query.bootTimestamp);
     console.log(`req.query=`+req.query+` bootTimestamp=${bootTimestamp}`);
     
     

@@ -238,7 +238,7 @@ app.get('/nodefactory', function (req, res) {
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
-    var bootTimestamp = req.query.bootTimestamp || 0;
+    var bootTimestamp = Number(req.query.bootTimestamp);
     console.log("req.query=" + req.query + (" bootTimestamp=" + bootTimestamp));
     if (typeof incomingTimestamp == "undefined") {
         logger_1.logger.warning("/nodeFactory called with no timestamp");
