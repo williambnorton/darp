@@ -205,7 +205,7 @@ app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     //console.log(`sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
-        res.end(fileContents); //CRASH - catch 
+        res.end(JSON.stringify(fileContents, null, 2)); //CRASH - catch 
     }
     catch (err) {
         // Here you get the error when the file was not found,
