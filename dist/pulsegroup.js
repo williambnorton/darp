@@ -833,8 +833,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //Message NOT from groupOwner.
                 //Message NOT from groupOwner.
                 if (incomingPulseMintEntry.bootTimestamp != 0 && incomingPulseEntry.bootTimestamp != incomingPulseMintEntry.bootTimestamp) {
-                    console.log("processIncomingpulse(): This node " + incomingPulseEntry.geo + " rebooted - this is an old position " + incomingPulseMintEntry.bootTimestamp + " != " + incomingPulseEntry.bootTimestamp + " for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
-                    return;
+                    console.log("processIncomingpulse(): This node " + incomingPulseEntry.geo + " rebooted - this new bootTimestamp replaces the old " + incomingPulseMintEntry.bootTimestamp + " != " + incomingPulseEntry.bootTimestamp + " for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
+                    incomingPulseMintEntry.bootTimestamp = incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
                 }
                 //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
                 if (_this.mintTable[0].mint == 1) { //Am I group owner?
