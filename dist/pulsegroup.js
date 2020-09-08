@@ -829,7 +829,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //Message NOT from groupOwner.
                 //Message NOT from groupOwner.
                 if (incomingPulseMintEntry.bootTimestamp != 0 && incomingPulseEntry.bootTimestamp != incomingPulseMintEntry.bootTimestamp) {
-                    console.log("processIncomingpulse(): This node " + incomingPulseEntry.geo + " rebooted - this is an old position for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
+                    console.log("processIncomingpulse(): This node " + incomingPulseEntry.geo + " rebooted - this is an old position " + incomingPulseMintEntry.bootTimestamp + " != " + incomingPulseEntry.bootTimestamp + " for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
                     return;
                 }
                 //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
