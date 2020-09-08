@@ -771,6 +771,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("mintTable=" + lib_1.dump(_this.mintTable));
                 return;
             }
+            console.log("incomingPulse=" + lib_1.dump(incomingPulse));
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER

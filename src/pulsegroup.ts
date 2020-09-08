@@ -923,6 +923,7 @@ export class AugmentedPulseGroup {
             console.log(`mintTable=${dump(this.mintTable)}`);
            return;
        }
+       console.log(`incomingPulse=${dump(incomingPulse)}`);
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
