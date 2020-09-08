@@ -160,14 +160,15 @@ var Config = /** @class */ (function () {
 exports.Config = Config;
 /** Node configuraton details */
 var MintEntry = /** @class */ (function () {
-    function MintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
+    function MintEntry(mint, geo, port, incomingIP, publickey, version, wallet, bootTimestamp) {
         this.mint = mint;
         this.geo = geo;
         this.port = port;
         this.ipaddr = incomingIP; //set by genesis node on connection
         this.publickey = publickey;
         this.state = DEFAULT_START_STATE;
-        this.bootTimestamp = lib_1.now(); //RemoteClock on startup  ****
+        //        this.bootTimestamp = now(); //RemoteClock on startup  ****
+        this.bootTimestamp = bootTimestamp; //sender's bootTimestamp let's us know if node has rebooted
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
         this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
@@ -253,11 +254,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
             wireguard_1.setWireguard(myStanza + "\n" + peerStanza);
         };
         //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
-        this.addNode = function (geo, group, ipaddr, port, publickey, version, wallet) {
+        this.addNode = function (geo, group, ipaddr, port, publickey, version, wallet, bootTimestamp) {
             _this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
             var newMint = _this.nextMint++; // get a new mint for new node
             _this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, _this.config.VERSION);
-            var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
+            var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
             _this.mintTable[newMint] = newNode;
             // newPulseGroup.nodeCount++;
             logger_1.logger.warning("addNode(): added mintEntry and empty pulse entry " +
@@ -420,7 +421,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.config.GEO + "," +
                     _this.groupName + "," +
                     myEntry.seq + "," +
-                    _this.mintTable[0].bootTimestamp + "," +
+                    _this.mintTable[0].bootTimestamp + "," + //Sender's bootTimestamp so we know that he rebooted
                     myMint + "," +
                     owls;
                 logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));

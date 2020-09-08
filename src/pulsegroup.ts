@@ -160,14 +160,15 @@ export class MintEntry {
     wallet: string;
     lastPulseTimestamp: number;
     lastOWL: number;
-    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string) {
+    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string, bootTimestamp:number) {
         this.mint = mint;
         this.geo = geo;
         this.port = port;
         this.ipaddr = incomingIP; //set by genesis node on connection
         this.publickey = publickey;
         this.state = DEFAULT_START_STATE;
-        this.bootTimestamp = now(); //RemoteClock on startup  ****
+//        this.bootTimestamp = now(); //RemoteClock on startup  ****
+        this.bootTimestamp = bootTimestamp; //sender's bootTimestamp let's us know if node has rebooted
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
         this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
@@ -356,11 +357,11 @@ export class AugmentedPulseGroup {
     };
 
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
-    addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string): MintEntry => {
+    addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string, bootTimestamp: number): MintEntry => {
         this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
         var newMint = this.nextMint++; // get a new mint for new node
         this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION);
-        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
+        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
         this.mintTable[newMint] = newNode;
         // newPulseGroup.nodeCount++;
         logger.warning(
@@ -549,7 +550,7 @@ export class AugmentedPulseGroup {
                 this.config.GEO + "," + 
                 this.groupName + "," + 
                 myEntry.seq + "," + 
-                this.mintTable[0].bootTimestamp + "," + 
+                this.mintTable[0].bootTimestamp + "," +     //Sender's bootTimestamp so we know that he rebooted
                 myMint + "," + 
                 owls;
             logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
@@ -719,7 +720,7 @@ export class AugmentedPulseGroup {
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             let filename=process.env.DARPDIR+"/"+this.config.IP+"."+this.config.PORT+'.json';
-            fs.writeFile(filename, strCopy, (err) => {
+            fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(`pulse group object stored in file ${filename} asynchronously`);
             });
