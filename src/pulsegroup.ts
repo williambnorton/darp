@@ -982,12 +982,13 @@ export class AugmentedPulseGroup {
            //}
            //console.log(`processIncomingPulse(): Marking node UP`);
                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
-        } else {         //Message NOT from groupOwner.
+        } else {        //Message NOT from groupOwner.
                         //Message NOT from groupOwner.
+            var mintEntry=this.mintTable[incomingPulse.mint];
                         //Message NOT from groupOwner.
-            if (incomingPulseMintEntry.bootTimestamp!=0 && incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
-                console.log(`processIncomingpulse(): This node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
-                incomingPulseMintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
+            if (mintEntry==null || (mintEntry.bootTimestamp!=0 && incomingPulseEntry.bootTimestamp!=mintEntry.bootTimestamp )) {
+                console.log(`processIncomingpulse(): This pulse shows the node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
+                mintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
            }
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Am I group owner?
