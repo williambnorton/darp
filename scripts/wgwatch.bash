@@ -19,7 +19,7 @@ export MACHINE
 echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
 
 if [ -f $PIDFILE ]; then
-		echo `date` Killing old wgwatch.bash
+		echo `date` Killing old $0 process
 		kill `cat $PIDFILE`
 		rm -f $PIDFILE
 		sleep 1
