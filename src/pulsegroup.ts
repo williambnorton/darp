@@ -707,13 +707,16 @@ export class AugmentedPulseGroup {
                 //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
             for( var p in copy.pulses) {
 //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                delete copy.pulses[p].history;
-                delete copy.pulses[p].medianHistory;
+                //delete copy.pulses[p].history;
+                //delete copy.pulses[p].medianHistory;
+                copy.pulses[p].history=[];             //clear out history 
+                copy.pulses[p].medianHistory=[];    //clear these out for small msgs
             }
             delete copy.sender;
             delete copy.receiver;
-            delete copy.config;                         
-
+//            delete copy.config;                         
+            copy.config={};                 //clear out for small msgs
+            
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             let filename=process.env.DARPDIR+"/"+this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
