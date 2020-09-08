@@ -1276,7 +1276,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         "&version=" + config.VERSION +
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
-        "&ts=" + now();
+        "&bootTimestamp=" + now();
     var pulseGroupObjectURL = encodeURI(configurl);
 
     logger.info(

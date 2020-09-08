@@ -226,17 +226,17 @@ app.get('/nodefactory', function(req, res) {
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
-    var incomingTimestamp = req.query.ts;
+    //var incomingTimestamp = req.query.ts;
 
     var bootTimestamp=Number(req.query.bootTimestamp);
-    console.log(`req.query=`+req.query+` bootTimestamp=${bootTimestamp}`);
+    console.log(` bootTimestamp=${bootTimestamp}`);
     
     
-    if (typeof incomingTimestamp == "undefined") {
-        logger.warning("/nodeFactory called with no timestamp");
+    if (typeof bootTimestamp == "undefined") {
+        logger.warning("/nodeFactory called with no bootTimestamp");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
-            "rc": "-1 nodeFactory called with no timestamp."
+            "rc": "-1 nodeFactory called with no bootTimestamp."
         }));
         return;
     }

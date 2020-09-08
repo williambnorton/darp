@@ -1125,7 +1125,7 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
             "&version=" + config.VERSION +
             "&wallet=" + config.WALLET +
             "&myip=" + config.IP +
-            "&ts=" + lib_1.now();
+            "&bootTimestamp=" + lib_1.now();
         pulseGroupObjectURL = encodeURI(configurl);
         logger_1.logger.info("getPulseGroup(): getting pulseGroup from url=" + pulseGroupObjectURL);
         return [2 /*return*/, new Promise(function (resolve, reject) {
