@@ -716,7 +716,7 @@ export class AugmentedPulseGroup {
             delete copy.receiver;
 //            delete copy.config;                         
             copy.config={};                 //clear out for small msgs
-            
+
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             let filename=process.env.DARPDIR+"/"+this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
@@ -923,7 +923,7 @@ export class AugmentedPulseGroup {
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
-            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
+            if (incomingPulseMintEntry.bootTimestamp!=0 &&  incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
                 console.log(`processIncomingpulse(): GENESIS node rebooted - we should also`);
                 process.exit(36);
             }
@@ -980,8 +980,8 @@ export class AugmentedPulseGroup {
         } else {         //Message NOT from groupOwner.
                         //Message NOT from groupOwner.
                         //Message NOT from groupOwner.
-            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
-                console.log(`processIncomingpulse(): This node ${incomingPulseEntry.geo} rebooted - its old position is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
+            if (incomingPulseMintEntry.bootTimestamp!=0 && incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
+                console.log(`processIncomingpulse(): This node ${incomingPulseEntry.geo} rebooted - this is an old position for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
                 return;
             }
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
