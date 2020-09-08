@@ -291,7 +291,7 @@ app.get('/nodefactory', function(req, res) {
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     var newMint = myPulseGroup.nextMint++;
     logger.info(`${geo}: mint=${newMint} publickey=${publickey} version=${version} wallet=${wallet}`);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, config.BOOTTIMESTAMP);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, bootTimestamp);
     logger.debug(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
     //console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
 
