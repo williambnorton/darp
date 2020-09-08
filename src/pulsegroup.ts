@@ -202,7 +202,7 @@ export class PulseEntry {
     lastMsg: string;
     rtt: number; //round trip measures help ID route asymetry and therefore optmizatioj opportuniies
 
-    constructor(mint: number, geo: string, group: string, ipaddr: string, port: number, version: string) {
+    constructor(mint: number, geo: string, group: string, ipaddr: string, port: number, version: string, bootTimestamp:number) {
         this.mint = mint;
         this.geo = geo;
         this.group = group;
@@ -216,7 +216,7 @@ export class PulseEntry {
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
 
-        this.bootTimestamp = now(); // RemoteClock on startup  **** - we abandon the pulse when this changes
+        this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
         this.inPulses = 0;
         this.outPulses = 0;
@@ -362,7 +362,7 @@ export class AugmentedPulseGroup {
     addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string, bootTimestamp: number): MintEntry => {
         this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
         var newMint = this.nextMint++; // get a new mint for new node
-        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION);
+        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION,this.config.BOOTTIMESTAMP);
         var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
         this.mintTable[newMint] = newNode;
         // newPulseGroup.nodeCount++;

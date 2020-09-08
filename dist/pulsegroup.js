@@ -181,7 +181,7 @@ var MintEntry = /** @class */ (function () {
 exports.MintEntry = MintEntry;
 /** Contains stats for and relevent fields to configure wireguard. */
 var PulseEntry = /** @class */ (function () {
-    function PulseEntry(mint, geo, group, ipaddr, port, version) {
+    function PulseEntry(mint, geo, group, ipaddr, port, version, bootTimestamp) {
         this.mint = mint;
         this.geo = geo;
         this.group = group;
@@ -194,7 +194,7 @@ var PulseEntry = /** @class */ (function () {
         this.history = [];
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
-        this.bootTimestamp = lib_1.now(); // RemoteClock on startup  **** - we abandon the pulse when this changes
+        this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
         this.inPulses = 0;
         this.outPulses = 0;
@@ -259,7 +259,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.addNode = function (geo, group, ipaddr, port, publickey, version, wallet, bootTimestamp) {
             _this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
             var newMint = _this.nextMint++; // get a new mint for new node
-            _this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, _this.config.VERSION);
+            _this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, _this.config.VERSION, _this.config.BOOTTIMESTAMP);
             var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
             _this.mintTable[newMint] = newNode;
             // newPulseGroup.nodeCount++;
