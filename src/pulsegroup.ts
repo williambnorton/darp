@@ -17,7 +17,7 @@ logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
 const MEASURE_RTT=false;   //ping across wireguard interface
 const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
-const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
+//const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
 const CHECK_SW_VERSION_CYCLE_TIME = 60; // wbnwbnwbnCHECK SW updates every 15 seconds
 const NO_MEASURE = -99999;
@@ -142,6 +142,7 @@ export class Config {
         this.GEO = GEO;
 
         this.WALLET = process.env.WALLET || "auto";
+        console.log(`finished CONFIG setup: ${dump(this)}`);
 
     }
 }

@@ -53,7 +53,7 @@ logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = false; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
-var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
+//const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 60; // wbnwbnwbnCHECK SW updates every 15 seconds
 var NO_MEASURE = -99999;
@@ -155,6 +155,7 @@ var Config = /** @class */ (function () {
         GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0]; //remove problem characters
         this.GEO = GEO;
         this.WALLET = process.env.WALLET || "auto";
+        console.log("finished CONFIG setup: " + lib_1.dump(this));
     }
     return Config;
 }());
