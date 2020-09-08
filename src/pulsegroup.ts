@@ -552,7 +552,7 @@ export class AugmentedPulseGroup {
                 this.config.GEO + "," + 
                 this.groupName + "," + 
                 myEntry.seq + "," + 
-                this.mintTable[0].bootTimestamp + "," +     //Sender's bootTimestamp so we know that he rebooted
+                this.config.BOOTTIMESTAMP + "," +     //Sender's bootTimestamp so we know that he rebooted
                 myMint + "," + 
                 owls;
             logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
