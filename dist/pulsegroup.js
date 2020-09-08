@@ -467,7 +467,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         else {
                             var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
                             if (elapsedMSincePulse > (1.9 * _this.cycleTime * 1000)) { //after n cycles no mintTable updates - remove
-                                console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
+                                console.log("GENESIS NODE TIMING OUT " + mintEntry.geo + ": elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + lib_1.dump(_this.mintTable[m]));
                                 // timeout the node
                                 logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
                                 console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
@@ -513,7 +513,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             else {
                                 var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
                                 if (elapsedMSincePulse > (1.9 * _this.cycleTime * 1000)) { //after n cycles no mintTable updates - remove
-                                    console.log("TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
+                                    console.log("NON-GENESIS TIMEOUT : elapsedMSincePulse=" + elapsedMSincePulse + " mintTable=" + _this.mintTable[m]);
                                     // timeout the node
                                     logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
                                     console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
