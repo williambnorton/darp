@@ -228,7 +228,8 @@ app.get('/nodefactory', function(req, res) {
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
 
-    var bootTimestamp = req.query.bootTimestamp;
+    var bootTimestamp = req.query.bootTimestamp||0;
+
     console.log(`req.query=`+req.query+` bootTimestamp=${bootTimestamp}`);
     
     
@@ -294,7 +295,7 @@ app.get('/nodefactory', function(req, res) {
     //console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
 
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, );
+    var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, bootTimestamp);
     myPulseGroup.mintTable[newMint] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     logger.info(`Added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);

@@ -238,7 +238,7 @@ app.get('/nodefactory', function (req, res) {
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
     var incomingTimestamp = req.query.ts;
-    var bootTimestamp = req.query.bootTimestamp;
+    var bootTimestamp = req.query.bootTimestamp || 0;
     console.log("req.query=" + req.query + (" bootTimestamp=" + bootTimestamp));
     if (typeof incomingTimestamp == "undefined") {
         logger_1.logger.warning("/nodeFactory called with no timestamp");
@@ -297,7 +297,7 @@ app.get('/nodefactory', function (req, res) {
     logger_1.logger.debug("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
     //console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
+    var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, bootTimestamp);
     myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
     logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
