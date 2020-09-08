@@ -1305,6 +1305,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
             res.on("end", () => {
                 var newPulseGroup: PulseGroup = JSON.parse(data);
                 logger.info(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
+                console.log(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
 
                 if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
                     logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);

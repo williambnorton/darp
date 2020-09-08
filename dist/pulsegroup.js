@@ -1143,6 +1143,7 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
                     res.on("end", function () {
                         var newPulseGroup = JSON.parse(data);
                         logger_1.logger.info("getPulseGroup(): from node factory: " + lib_1.dump(newPulseGroup));
+                        console.log("getPulseGroup(): from node factory: " + lib_1.dump(newPulseGroup));
                         if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
                             logger_1.logger.info("getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.");
                         }
