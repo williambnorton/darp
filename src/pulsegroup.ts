@@ -601,7 +601,7 @@ export class AugmentedPulseGroup {
                     } else {
                         var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                        if (elapsedMSincePulse > this.cycleTime * 1000) {  //after n cycles no mintTable updates - remove
+                        if (elapsedMSincePulse > (1.5 * this.cycleTime * 1000) ) {  //after n cycles no mintTable updates - remove
                             console.log(`TIMEOUT : elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
                             // timeout the node
                             logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
@@ -648,7 +648,7 @@ export class AugmentedPulseGroup {
                         } else {
                             var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
         
-                            if (elapsedMSincePulse > 1.5 * this.cycleTime * 1000) {  //after n cycles no mintTable updates - remove
+                            if (elapsedMSincePulse > (1.5 * this.cycleTime * 1000) ) {  //after n cycles no mintTable updates - remove
                                 console.log(`TIMEOUT : elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
                                 // timeout the node
                                 logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
