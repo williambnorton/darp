@@ -701,7 +701,7 @@ export class AugmentedPulseGroup {
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
         
         
-        if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
+        //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
             const fs = require('fs');
             let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many
                 //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
@@ -720,7 +720,7 @@ export class AugmentedPulseGroup {
                 if (err) throw err;
                 //console.log(`pulse group object stored in file ${filename} asynchronously`);
             });
-        }
+        //}
 
         /*
             var genesislist=process.env.GENESISNODELIST||"";
