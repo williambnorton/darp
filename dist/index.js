@@ -295,7 +295,7 @@ app.get('/nodefactory', function (req, res) {
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     var newMint = myPulseGroup.nextMint++;
     logger_1.logger.info(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, config.BOOTTIMESTAMP);
     logger_1.logger.debug("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
     //console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
