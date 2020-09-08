@@ -927,7 +927,7 @@ export class AugmentedPulseGroup {
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
             if (incomingPulseMintEntry.bootTimestamp!=0 &&  incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
-                console.log(`processIncomingpulse(): GENESIS node rebooted - we should also`);
+                console.log(`processIncomingpulse(): GENESIS node rebooted - we should also ${incomingPulseEntry.bootTimestamp} ${incomingPulseMintEntry.bootTimestamp} }`);
                 process.exit(36);
             }
            //console.log(`**************************************************       Group Owner Pulse logic ....`);
