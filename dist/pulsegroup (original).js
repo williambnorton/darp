@@ -1,4 +1,5 @@
 "use strict";
+/** @module pulsegroup Create Configuration for joining our pulseGroup object */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,8 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-/** @module pulsegroup Create Configuration for joining our pulseGroup object */
-/*  NOON CUT  */
 var fs = require("fs");
 var os = require("os");
 var http = require("http");
@@ -343,18 +342,18 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 else {
                     // old pulse - clear these entries
                     if (pulseEntry.pulseTimestamp != 0)
-                        //logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
-                        //it is possible that the node has not received a pulse yet - so value==0
-                        // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                        // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
-                        //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
-                        //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
-                        //});
-                        // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                        // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-                        if (typeof matrix[pulseEntry.mint] == "undefined") { //wbnwbnwbn-TODO: should
-                            matrix[pulseEntry.mint] = []; //
-                        } //
+                        logger_1.logger.warning("buildMatrix(): " + pulseEntry.geo + " mint#" + pulseEntry.mint + " has an old pulseTimestamp " + pulseEntry.pulseTimestamp + ". TODO: Enter NO_OWL for all values to this node");
+                    //it is possible that the node has not received a pulse yet - so value==0
+                    // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                    // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                    //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
+                    //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
+                    //});
+                    // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                    // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
+                    if (typeof matrix[pulseEntry.mint] == "undefined") { //wbnwbnwbn-TODO: should
+                        matrix[pulseEntry.mint] = []; //
+                    } //
                     matrix[pulseEntry.mint][_this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
                 }
             }
@@ -442,30 +441,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             // this.mintTable[0].state = "UP";
             _this.mintTable[0].lastPulseTimestamp = lib_1.now();
-            if (_this.isGenesisNode()) { //save pulseGroup in JSON format in filesystem
-                var fs_1 = require('fs');
-                var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
-                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
-                for (var p in copy.pulses) {
-                    //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                    //delete copy.pulses[p].history;
-                    //delete copy.pulses[p].medianHistory;
-                    copy.pulses[p].history = []; //clear out history 
-                    copy.pulses[p].medianHistory = []; //clear these out for small msgs
-                }
-                delete copy.sender;
-                delete copy.receiver;
-                //            delete copy.config;                         
-                copy.config = {}; //clear out for small msgs
-                var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-                var filename_1 = _this.config.IP + "." + _this.config.PORT + '.json';
-                console.log("writeing filename=" + filename_1);
-                fs_1.writeFile(filename_1, strCopy, function (err) {
-                    if (err)
-                        throw err;
-                    console.log("pulse group object stored in file " + filename_1 + " asynchronously");
-                });
-            }
             var timeNow = _this.mintTable[0].lastPulseTimestamp; //
             var sleepTime = PULSEFREQ * 1000 - timeNow % 1000;
             // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
@@ -482,10 +457,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            console.log(lib_1.ts() + "timeout()");
+            //console.log(ts()+`timeout()`);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             if (_this.isGenesisNode()) {
-                console.log(lib_1.ts() + "timeout(): GENESIS NODE path");
+                //console.log(ts()+`timeout(): GENESIS NODE path`);
                 for (var m in _this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                     var mintEntry = _this.mintTable[m];
                     if (mintEntry != null) {
@@ -522,7 +497,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             else { //I am NOT GENESIS NODE - time out 
-                console.log(lib_1.ts() + "timeout(): NON-GENESIS NODE path");
+                //console.log(ts()+`timeout(): NON-GENESIS NODE path`);
                 if (_this.mintTable[1].lastPulseTimestamp != 0) { //All I can do is time out GENESIS node
                     var age = (lib_1.now() - _this.mintTable[1].lastPulseTimestamp) / 1000;
                     //console.log(`have not heard from GENESIS node in age=${age} seconds`);
@@ -586,6 +561,29 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
+            //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
+            var fs = require('fs');
+            var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
+            //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
+            for (var p in copy.pulses) {
+                //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
+                //delete copy.pulses[p].history;
+                //delete copy.pulses[p].medianHistory;
+                copy.pulses[p].history = []; //clear out history 
+                copy.pulses[p].medianHistory = []; //clear these out for small msgs
+            }
+            delete copy.sender;
+            delete copy.receiver;
+            //            delete copy.config;                         
+            copy.config = {}; //clear out for small msgs
+            var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
+            var filename = process.env.DARPDIR + "/" + _this.config.IP + "." + _this.config.PORT + '.json';
+            fs.writeFile(filename, strCopy, function (err) {
+                if (err)
+                    throw err;
+                //console.log(`pulse group object stored in file ${filename} asynchronously`);
+            });
+            //}
             /*
                 var genesislist=process.env.GENESISNODELIST||"";
                 var genesisNodes=genesislist.split(",");
@@ -764,7 +762,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.processIncomingPulse = function (incomingPulse) {
             // look up the pulse claimed mint
-            var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + _this.groupName];
+            var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
@@ -773,7 +771,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("mintTable=" + lib_1.dump(_this.mintTable));
                 return;
             }
-            console.log("incomingPulse=" + lib_1.dump(incomingPulse) + " incomingPulseEntry=" + incomingPulseEntry + " incomingPulseMintEntry=" + incomingPulseMintEntry + " ");
+            //console.log(`incomingPulse=${dump(incomingPulse)}`);
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
@@ -829,16 +827,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                 //}
                 //console.log(`processIncomingPulse(): Marking node UP`);
-                //console.log(`GENESIS Pulse processed - marked group Owner UP`);
+                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
             }
-            else { //Message NOT from GENESIS.
-                //       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
-                //  ABOVE     var incomingPulseMintEntry = this.mintTable[incomingPulse.mint]; 
-                //Message NOT from GENESIS.
-                //var mintEntry=this.mintTable[incomingPulse.mint];
+            else { //Message NOT from groupOwner.
                 //Message NOT from groupOwner.
-                if (incomingPulseEntry.bootTimestamp != incomingPulseMintEntry.bootTimestamp) {
-                    console.log("processIncomingpulse(): This pulse shows the node " + incomingPulseEntry.geo + " rebooted - this new bootTimestamp replaces the old " + incomingPulseMintEntry.bootTimestamp + " != " + incomingPulseEntry.bootTimestamp + " for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
+                //Message NOT from groupOwner.
+                if (incomingPulseMintEntry.bootTimestamp != 0 && incomingPulseEntry.bootTimestamp != incomingPulseMintEntry.bootTimestamp) {
+                    console.log("processIncomingpulse(): This node " + incomingPulseEntry.geo + " rebooted - this new bootTimestamp replaces the old " + incomingPulseMintEntry.bootTimestamp + " != " + incomingPulseEntry.bootTimestamp + " for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
                     incomingPulseMintEntry.bootTimestamp = incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
                 }
                 //console.log(`====================================================    NON-Group Owner Pulse logic ....`);

@@ -1,5 +1,4 @@
 /** entry point */
-/*  NOON CUT  */
 
 import express = require('express');
 import ejs = require('ejs');
@@ -187,20 +186,16 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
 //    let filename=me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
-    let filename=me.ipaddr+"."+me.port+'.json'
-    console.log(`fetching /pulseGroups filename=${filename}`);
+    let filename=process.env.DARPDIR+"/"+me.ipaddr+"."+me.port+'.json'
     //console.log(`sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
         var str=JSON.stringify(JSON.parse(fileContents),null,2);
-        console.log(`filecontents=${str}`);
-
         res.end(str); //CRASH - catch 
         //res.end(fileContents); //CRASH - catch 
     } catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
-        console.log(`INTERNAL ERROR - can't find pulseGroup object file: `+filename);
         res.end("INTERNAL ERROR - can't find pulseGroup object file: "+filename); //CRASH - catch 
     }
 
