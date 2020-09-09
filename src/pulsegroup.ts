@@ -587,6 +587,7 @@ export class AugmentedPulseGroup {
     //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
+        console.log(`timeout() `);
         const startingPulseEntryCount = Object.keys(this.pulses).length;;
         for (var m in this.mintTable) {
             if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
@@ -688,7 +689,7 @@ export class AugmentedPulseGroup {
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
-                //console.log(`pulse group object stored in file ${filename} asynchronously`);
+                console.log(`pulse group object stored in file ${filename} asynchronously`);
             });
         }
 
