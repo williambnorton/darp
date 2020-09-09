@@ -581,7 +581,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
-                //console.log(`pulse group object stored in file ${filename} asynchronously`);
+                console.log("pulse group object stored in file " + filename + " asynchronously");
             });
             //}
             /*
