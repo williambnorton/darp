@@ -988,7 +988,7 @@ export class AugmentedPulseGroup {
                         //Message NOT from GENESIS.
             //var mintEntry=this.mintTable[incomingPulse.mint];
                         //Message NOT from groupOwner.
-            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp )) {
+            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
                 console.log(`processIncomingpulse(): This pulse shows the node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
                 incomingPulseMintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
            }
