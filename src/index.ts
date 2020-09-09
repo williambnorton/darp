@@ -1,6 +1,5 @@
 /** entry point */
-/*  NOON CUT */
-
+/*  ALPHA  CODE  */
 import express = require('express');
 import ejs = require('ejs');
 import { logger, LogLevel } from './logger';
@@ -19,9 +18,9 @@ const config = new Config();
 
 // Construct my own pulseGroup for others to connect to
 
-const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
-var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
+const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET);  //All nodes can count on 'me' always being present
+const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET);  //All nodes also start out ready to be a genesis node for others
+var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new PulseGroup(me, genesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
 var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 logger.info(`Starting with my own pulseGroup=${dump(myPulseGroup)}`);
@@ -186,18 +185,15 @@ const fs = require('fs');
 app.get(['/pulsegroups','/state','/me'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-//    let filename=me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
-    let filename=process.env.DARPDIR+"/"+me.ipaddr+"."+me.port+'.json'
+    let filename=me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
-        var str=JSON.stringify(JSON.parse(fileContents),null,2);
-        res.end(str); //CRASH - catch 
-        //res.end(fileContents); //CRASH - catch 
+        res.end(fileContents); //CRASH - catch 
     } catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
-        res.end("INTERNAL ERROR - can't find pulseGroup object file: "+filename); //CRASH - catch 
+        res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch 
     }
 
     return;
@@ -207,7 +203,6 @@ app.get('/mintTable', function(req, res) {
     logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log(`fetching /mintTable `);
     res.end(JSON.stringify(myPulseGroups[me.geo+".1"].mintTable, null, 2)); 
     return;
 });
@@ -215,12 +210,9 @@ app.get('/mintTable', function(req, res) {
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function(req, res) {
     // additional nodes adding to pulseGroup
-    var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+    var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+"/nodeFactory/"+req.originalUrl;
     console.log(`nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=${redirectedURL}`);
-    if (me.mint!=1) {
-        console.log(`request to non-genesis node - forwarding to my parent.`);
-        return(res.redirect(redirectedURL));
-    }
+    //res.redirect(redirectedURL);
     logger.info(`EXPRESS /nodefactory: config requested with params: ${dump(req.query)}`);
 
     // parse incoming parameters
@@ -229,17 +221,12 @@ app.get('/nodefactory', function(req, res) {
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
-    //var incomingTimestamp = req.query.ts;
-
-    var bootTimestamp=Number(req.query.bootTimestamp);
-    console.log(` bootTimestamp=${bootTimestamp}`);
-    
-    
-    if (typeof bootTimestamp == "undefined") {
-        logger.warning("/nodeFactory called with no bootTimestamp");
+    var incomingTimestamp = req.query.ts;
+    if (typeof incomingTimestamp == "undefined") {
+        logger.warning("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
-            "rc": "-1 nodeFactory called with no bootTimestamp."
+            "rc": "-1 nodeFactory called with no timestamp."
         }));
         return;
     }
@@ -284,7 +271,6 @@ app.get('/nodefactory', function(req, res) {
             if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
                 // make sure not do delete me or genesis node
                 logger.info(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
-                console.log(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
                 myPulseGroup.mintTable.splice(parseInt(mint));
             }
         }
@@ -293,12 +279,12 @@ app.get('/nodefactory', function(req, res) {
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     var newMint = myPulseGroup.nextMint++;
     logger.info(`${geo}: mint=${newMint} publickey=${publickey} version=${version} wallet=${wallet}`);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, bootTimestamp);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION);
     logger.debug(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
-    //console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
+    console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
 
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, bootTimestamp);
+    var newNode = new MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
     myPulseGroup.mintTable[newMint] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     logger.info(`Added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
