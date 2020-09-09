@@ -198,11 +198,27 @@ app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
     }
 });
 var fs = require('fs');
-app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
+app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     var filename = me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
+    try {
+        var fileContents = fs.readFileSync(filename);
+        res.end(fileContents); //CRASH - catch 
+    }
+    catch (err) {
+        // Here you get the error when the file was not found,
+        // but you also get any other error
+        res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch 
+    }
+    return;
+});
+app.get('/me', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    var filename = me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
+    console.log("/me sending contents of " + filename);
     try {
         var fileContents = fs.readFileSync(filename);
         res.end(fileContents); //CRASH - catch 

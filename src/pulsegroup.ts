@@ -877,6 +877,7 @@ export class AugmentedPulseGroup {
     
     processIncomingPulse = (incomingPulse: IncomingPulse) => {
        // look up the pulse claimed mint
+       console.log(`incomingPulse=${dump(incomingPulse)}`);
        var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 

@@ -728,6 +728,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.processIncomingPulse = function (incomingPulse) {
             // look up the pulse claimed mint
+            console.log("incomingPulse=" + lib_1.dump(incomingPulse));
             var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
