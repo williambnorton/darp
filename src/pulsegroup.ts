@@ -882,8 +882,8 @@ export class AugmentedPulseGroup {
 
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
            // show more specifics why pulse is ignored
-           logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
-        //   console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry entry`);
+           logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry `);
+           //console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} or mint ${incomingPulse.mint} entry returning`);
            return;
        }
 
