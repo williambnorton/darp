@@ -17,9 +17,9 @@ logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
 const MEASURE_RTT=false;   //ping across wireguard interface
 const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
-//const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
+const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
-const CHECK_SW_VERSION_CYCLE_TIME = 60; // wbnwbnwbnCHECK SW updates every 15 seconds
+const CHECK_SW_VERSION_CYCLE_TIME = 15; // wbnwbnwbnCHECK SW updates every 15 seconds
 const NO_MEASURE = -99999;
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
@@ -41,7 +41,6 @@ export class Config {
     PUBLICKEY: string;
     VERSION: string;
     WALLET: string;
-    BOOTTIMESTAMP: number;
     constructor() {
         if (!process.env.DARPDIR) {
             logger.warning("No DARPDIR environmental variable specified ");
@@ -50,7 +49,7 @@ export class Config {
         }
         this.DARPDIR = process.env.DARPDIR;
 
-        this.BOOTTIMESTAMP=now();
+ 
 
 
         var PORT = 65013;
@@ -142,7 +141,6 @@ export class Config {
         this.GEO = GEO;
 
         this.WALLET = process.env.WALLET || "auto";
-        console.log(`finished CONFIG setup: ${dump(this)}`);
 
     }
 }
@@ -162,15 +160,14 @@ export class MintEntry {
     wallet: string;
     lastPulseTimestamp: number;
     lastOWL: number;
-    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string, bootTimestamp:number) {
+    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string) {
         this.mint = mint;
         this.geo = geo;
         this.port = port;
         this.ipaddr = incomingIP; //set by genesis node on connection
         this.publickey = publickey;
         this.state = DEFAULT_START_STATE;
-//        this.bootTimestamp = now(); //RemoteClock on startup  ****
-        this.bootTimestamp = bootTimestamp; //sender's bootTimestamp let's us know if node has rebooted
+        this.bootTimestamp = now(); //RemoteClock on startup  ****
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
         this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
@@ -202,7 +199,7 @@ export class PulseEntry {
     lastMsg: string;
     rtt: number; //round trip measures help ID route asymetry and therefore optmizatioj opportuniies
 
-    constructor(mint: number, geo: string, group: string, ipaddr: string, port: number, version: string, bootTimestamp:number) {
+    constructor(mint: number, geo: string, group: string, ipaddr: string, port: number, version: string) {
         this.mint = mint;
         this.geo = geo;
         this.group = group;
@@ -216,7 +213,7 @@ export class PulseEntry {
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
 
-        this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
+        this.bootTimestamp = now(); // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
         this.inPulses = 0;
         this.outPulses = 0;
@@ -359,11 +356,11 @@ export class AugmentedPulseGroup {
     };
 
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
-    addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string, bootTimestamp: number): MintEntry => {
+    addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string): MintEntry => {
         this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
         var newMint = this.nextMint++; // get a new mint for new node
-        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION,this.config.BOOTTIMESTAMP);
-        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
+        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION);
+        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
         this.mintTable[newMint] = newNode;
         // newPulseGroup.nodeCount++;
         logger.warning(
@@ -552,7 +549,7 @@ export class AugmentedPulseGroup {
                 this.config.GEO + "," + 
                 this.groupName + "," + 
                 myEntry.seq + "," + 
-                this.config.BOOTTIMESTAMP + "," +     //Sender's bootTimestamp so we know that he rebooted
+                this.mintTable[0].bootTimestamp + "," + 
                 myMint + "," + 
                 owls;
             logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
@@ -604,8 +601,8 @@ export class AugmentedPulseGroup {
                     } else {
                         var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                        if (elapsedMSincePulse > (1.9 * this.cycleTime * 1000) ) {  //after n cycles no mintTable updates - remove
-                            console.log(`GENESIS NODE TIMING OUT ${mintEntry.geo}: elapsedMSincePulse=${elapsedMSincePulse} mintTable=${dump(this.mintTable[m])}`);
+                        if (elapsedMSincePulse > (1.5 * this.cycleTime * 1000) ) {  //after n cycles no mintTable updates - remove
+                            console.log(`TIMEOUT : elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
                             // timeout the node
                             logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
                             console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
@@ -651,8 +648,8 @@ export class AugmentedPulseGroup {
                         } else {
                             var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
         
-                            if (elapsedMSincePulse > (1.9 * this.cycleTime * 1000) ) {  //after n cycles no mintTable updates - remove
-                                console.log(`NON-GENESIS TIMEOUT : elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
+                            if (elapsedMSincePulse > (1.5 * this.cycleTime * 1000) ) {  //after n cycles no mintTable updates - remove
+                                console.log(`TIMEOUT : elapsedMSincePulse=${elapsedMSincePulse} mintTable=${this.mintTable[m]}`);
                                 // timeout the node
                                 logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
                                 console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
@@ -710,19 +707,16 @@ export class AugmentedPulseGroup {
                 //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
             for( var p in copy.pulses) {
 //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                //delete copy.pulses[p].history;
-                //delete copy.pulses[p].medianHistory;
-                copy.pulses[p].history=[];             //clear out history 
-                copy.pulses[p].medianHistory=[];    //clear these out for small msgs
+                delete copy.pulses[p].history;
+                delete copy.pulses[p].medianHistory;
             }
             delete copy.sender;
             delete copy.receiver;
-//            delete copy.config;                         
-            copy.config={};                 //clear out for small msgs
+            delete copy.config;                         
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             let filename=process.env.DARPDIR+"/"+this.config.IP+"."+this.config.PORT+'.json';
-            fs.writeFile(filename, strCopy, (err:string) => {
+            fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
                 //console.log(`pulse group object stored in file ${filename} asynchronously`);
             });
@@ -919,19 +913,11 @@ export class AugmentedPulseGroup {
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
            // show more specifics why pulse is ignored
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry `);
-           console.log(ts()+`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry pulseEntry=${incomingPulseEntry} mintEntry=${incomingPulseMintEntry}`);
-            console.log(`mintTable=${dump(this.mintTable)}`);
+           console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as a mint #${incomingPulse.mint} entry pulseEntry=${incomingPulseEntry} mintEntry=${incomingPulseMintEntry}`);
            return;
        }
-       //console.log(`incomingPulse=${dump(incomingPulse)}`);
-       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo) {  //Is this a groupOwner PULSE?
-            if (incomingPulseMintEntry.bootTimestamp!=0 &&  incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
-                console.log(`processIncomingpulse(): GENESIS node rebooted - we should also ${incomingPulseEntry.bootTimestamp} ${incomingPulseMintEntry.bootTimestamp} }`);
-                process.exit(36);
-            }
            //console.log(`**************************************************       Group Owner Pulse logic ....`);
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
@@ -983,12 +969,6 @@ export class AugmentedPulseGroup {
            //console.log(`processIncomingPulse(): Marking node UP`);
                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
         } else {         //Message NOT from groupOwner.
-                        //Message NOT from groupOwner.
-                        //Message NOT from groupOwner.
-            if (incomingPulseMintEntry.bootTimestamp!=0 && incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
-                console.log(`processIncomingpulse(): This node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
-                incomingPulseMintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
-           }
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //I am group owner, do I know this guy? 
@@ -1279,7 +1259,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         "&version=" + config.VERSION +
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
-        "&bootTimestamp=" + config.BOOTTIMESTAMP;
+        "&ts=" + now();
     var pulseGroupObjectURL = encodeURI(configurl);
 
     logger.info(
@@ -1308,10 +1288,8 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
             res.on("end", () => {
                 var newPulseGroup: PulseGroup = JSON.parse(data);
                 logger.info(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
-                console.log(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
 
                 if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
-                    newPulseGroup.mintTable[1].bootTimestamp=config.BOOTTIMESTAMP;
                     logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
                 } else {
                     logger.info(`getPulseGroup(): Configuring non-genesis node ...`);

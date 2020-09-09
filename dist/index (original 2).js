@@ -1,6 +1,5 @@
 "use strict";
 /** entry point */
-/*  NOON CUT */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -48,9 +47,9 @@ logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 // Load config
 var config = new pulsegroup_1.Config();
 // Construct my own pulseGroup for others to connect to
-var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes can count on 'me' always being present
-var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
-var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
+var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET); //All nodes can count on 'me' always being present
+var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET); //All nodes also start out ready to be a genesis node for others
+var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
 var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
@@ -206,9 +205,7 @@ app.get(['/pulsegroups', '/state', '/me'], function (req, res) {
     //console.log(`sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
-        var str = JSON.stringify(JSON.parse(fileContents), null, 2);
-        res.end(str); //CRASH - catch 
-        //res.end(fileContents); //CRASH - catch 
+        res.end(fileContents); //CRASH - catch 
     }
     catch (err) {
         // Here you get the error when the file was not found,
@@ -240,14 +237,12 @@ app.get('/nodefactory', function (req, res) {
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
-    //var incomingTimestamp = req.query.ts;
-    var bootTimestamp = Number(req.query.bootTimestamp);
-    console.log(" bootTimestamp=" + bootTimestamp);
-    if (typeof bootTimestamp == "undefined") {
-        logger_1.logger.warning("/nodeFactory called with no bootTimestamp");
+    var incomingTimestamp = req.query.ts;
+    if (typeof incomingTimestamp == "undefined") {
+        logger_1.logger.warning("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
-            "rc": "-1 nodeFactory called with no bootTimestamp."
+            "rc": "-1 nodeFactory called with no timestamp."
         }));
         return;
     }
@@ -289,7 +284,6 @@ app.get('/nodefactory', function (req, res) {
             if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
                 // make sure not do delete me or genesis node
                 logger_1.logger.info("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
-                console.log("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
                 myPulseGroup.mintTable.splice(parseInt(mint));
             }
         }
@@ -297,11 +291,11 @@ app.get('/nodefactory', function (req, res) {
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
     var newMint = myPulseGroup.nextMint++;
     logger_1.logger.info(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, bootTimestamp);
+    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION);
     logger_1.logger.debug("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
     //console.log(`Added pulse: ${geo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName])}`);
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, bootTimestamp);
+    var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet);
     myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
     logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));

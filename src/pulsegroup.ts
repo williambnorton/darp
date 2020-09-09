@@ -1,5 +1,6 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
-/*  NOON CUT  */
+/*  NOON CUT */
+
 import fs = require("fs");
 import os = require("os");
 import http = require("http");
@@ -460,7 +461,7 @@ export class AugmentedPulseGroup {
             } else {
                 // old pulse - clear these entries
                 if (pulseEntry.pulseTimestamp!=0) 
-                    //logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
+                    logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
                 
                 //it is possible that the node has not received a pulse yet - so value==0
                 
@@ -572,37 +573,6 @@ export class AugmentedPulseGroup {
         }
         // this.mintTable[0].state = "UP";
         this.mintTable[0].lastPulseTimestamp = now();
-
-
-        if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
-            const fs = require('fs');
-            let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many
-                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
-            for( var p in copy.pulses) {
-//                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                //delete copy.pulses[p].history;
-                //delete copy.pulses[p].medianHistory;
-                copy.pulses[p].history=[];             //clear out history 
-                copy.pulses[p].medianHistory=[];    //clear these out for small msgs
-            }
-            delete copy.sender;
-            delete copy.receiver;
-//            delete copy.config;                         
-            copy.config={};                 //clear out for small msgs
-
-            let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
-            let filename=this.config.IP+"."+this.config.PORT+'.json';
-            console.log(`writeing filename=${filename}`);
-            fs.writeFile(filename, strCopy, (err:string) => {
-                if (err) throw err;
-                console.log(`pulse group object stored in file ${filename} asynchronously`);
-            });
-        }
-
-
-
-
-
         var timeNow=this.mintTable[0].lastPulseTimestamp;  //
         var sleepTime=PULSEFREQ*1000-timeNow%1000;
 
@@ -622,11 +592,11 @@ export class AugmentedPulseGroup {
     //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
-        console.log(ts()+`timeout()`);
+        //console.log(ts()+`timeout()`);
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
         if (this.isGenesisNode()) {  
-            console.log(ts()+`timeout(): GENESIS NODE path`);
+            //console.log(ts()+`timeout(): GENESIS NODE path`);
             for (var m in this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                 const mintEntry=this.mintTable[m];
                 if (mintEntry!=null) {
@@ -664,7 +634,7 @@ export class AugmentedPulseGroup {
                 }
             }
         } else {    //I am NOT GENESIS NODE - time out 
-            console.log(ts()+`timeout(): NON-GENESIS NODE path`);
+            //console.log(ts()+`timeout(): NON-GENESIS NODE path`);
             if (this.mintTable[1].lastPulseTimestamp!=0) {      //All I can do is time out GENESIS node
                 var age = (now() - this.mintTable[1].lastPulseTimestamp)/1000;
                 //console.log(`have not heard from GENESIS node in age=${age} seconds`);
@@ -735,7 +705,29 @@ export class AugmentedPulseGroup {
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
         
         
+        //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
+            const fs = require('fs');
+            let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many
+                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
+            for( var p in copy.pulses) {
+//                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
+                //delete copy.pulses[p].history;
+                //delete copy.pulses[p].medianHistory;
+                copy.pulses[p].history=[];             //clear out history 
+                copy.pulses[p].medianHistory=[];    //clear these out for small msgs
+            }
+            delete copy.sender;
+            delete copy.receiver;
+//            delete copy.config;                         
+            copy.config={};                 //clear out for small msgs
 
+            let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
+            let filename=process.env.DARPDIR+"/"+this.config.IP+"."+this.config.PORT+'.json';
+            fs.writeFile(filename, strCopy, (err:string) => {
+                if (err) throw err;
+                //console.log(`pulse group object stored in file ${filename} asynchronously`);
+            });
+        //}
 
         /*
             var genesislist=process.env.GENESISNODELIST||"";
@@ -922,7 +914,7 @@ export class AugmentedPulseGroup {
     
     processIncomingPulse = (incomingPulse: IncomingPulse) => {
        // look up the pulse claimed mint
-       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + this.groupName];
+       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
@@ -932,7 +924,7 @@ export class AugmentedPulseGroup {
             console.log(`mintTable=${dump(this.mintTable)}`);
            return;
        }
-       console.log(`incomingPulse=${dump(incomingPulse)} incomingPulseEntry=${incomingPulseEntry} incomingPulseMintEntry=${incomingPulseMintEntry} `);
+       //console.log(`incomingPulse=${dump(incomingPulse)}`);
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
@@ -990,15 +982,12 @@ export class AugmentedPulseGroup {
             this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
            //}
            //console.log(`processIncomingPulse(): Marking node UP`);
-               //console.log(`GENESIS Pulse processed - marked group Owner UP`);
-        } else {        //Message NOT from GENESIS.
-            //       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
-            //  ABOVE     var incomingPulseMintEntry = this.mintTable[incomingPulse.mint]; 
-                        //Message NOT from GENESIS.
-            //var mintEntry=this.mintTable[incomingPulse.mint];
+               //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
+        } else {         //Message NOT from groupOwner.
                         //Message NOT from groupOwner.
-            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
-                console.log(`processIncomingpulse(): This pulse shows the node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
+                        //Message NOT from groupOwner.
+            if (incomingPulseMintEntry.bootTimestamp!=0 && incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp ) {
+                console.log(`processIncomingpulse(): This node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
                 incomingPulseMintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
            }
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
