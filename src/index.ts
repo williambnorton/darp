@@ -188,8 +188,6 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
 //    let filename=me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
     let filename=me.ipaddr+"."+me.port+'.json'
     console.log(`fetching /pulseGroups filename=${filename}`);
-    var fileContents = fs.readFileSync(filename);
-    console.log(`filecontents=${fileContents}`);
     //console.log(`sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
@@ -201,6 +199,7 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
     } catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
+        console.log(`INTERNAL ERROR - can't find pulseGroup object file: `+filename);
         res.end("INTERNAL ERROR - can't find pulseGroup object file: "+filename); //CRASH - catch 
     }
 

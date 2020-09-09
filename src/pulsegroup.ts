@@ -572,6 +572,37 @@ export class AugmentedPulseGroup {
         }
         // this.mintTable[0].state = "UP";
         this.mintTable[0].lastPulseTimestamp = now();
+
+
+        if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
+            const fs = require('fs');
+            let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many
+                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
+            for( var p in copy.pulses) {
+//                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
+                //delete copy.pulses[p].history;
+                //delete copy.pulses[p].medianHistory;
+                copy.pulses[p].history=[];             //clear out history 
+                copy.pulses[p].medianHistory=[];    //clear these out for small msgs
+            }
+            delete copy.sender;
+            delete copy.receiver;
+//            delete copy.config;                         
+            copy.config={};                 //clear out for small msgs
+
+            let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
+            let filename=this.config.IP+"."+this.config.PORT+'.json';
+            console.log(`writeing filename=${filename}`);
+            fs.writeFile(filename, strCopy, (err:string) => {
+                if (err) throw err;
+                console.log(`pulse group object stored in file ${filename} asynchronously`);
+            });
+        }
+
+
+
+
+
         var timeNow=this.mintTable[0].lastPulseTimestamp;  //
         var sleepTime=PULSEFREQ*1000-timeNow%1000;
 
@@ -704,30 +735,7 @@ export class AugmentedPulseGroup {
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
         
         
-        //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
-            const fs = require('fs');
-            let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many
-                //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
-            for( var p in copy.pulses) {
-//                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                //delete copy.pulses[p].history;
-                //delete copy.pulses[p].medianHistory;
-                copy.pulses[p].history=[];             //clear out history 
-                copy.pulses[p].medianHistory=[];    //clear these out for small msgs
-            }
-            delete copy.sender;
-            delete copy.receiver;
-//            delete copy.config;                         
-            copy.config={};                 //clear out for small msgs
 
-            let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
-            let filename=this.config.IP+"."+this.config.PORT+'.json';
-            console.log(`writeing filename=${filename}`);
-            fs.writeFile(filename, strCopy, (err:string) => {
-                if (err) throw err;
-                console.log(`pulse group object stored in file ${filename} asynchronously`);
-            });
-        //}
 
         /*
             var genesislist=process.env.GENESISNODELIST||"";
