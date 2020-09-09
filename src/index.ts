@@ -192,6 +192,7 @@ app.get(['/pulsegroups','/state','/me'], function(req, res) {
         var fileContents = fs.readFileSync(filename);
         //var str=JSON.stringify(JSON.parse(fileContents),null,2);
         //res.end(str); //CRASH - catch 
+        console.log(`filecontents=${fileContents}`);
         res.end(fileContents); //CRASH - catch 
     } catch (err) {
         // Here you get the error when the file was not found,
