@@ -457,10 +457,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            //console.log(ts()+`timeout()`);
+            console.log(lib_1.ts() + "timeout()");
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             if (_this.isGenesisNode()) {
-                //console.log(ts()+`timeout(): GENESIS NODE path`);
+                console.log(lib_1.ts() + "timeout(): GENESIS NODE path");
                 for (var m in _this.mintTable) { // GENESIS NODE - time out and delete expired entries 
                     var mintEntry = _this.mintTable[m];
                     if (mintEntry != null) {
@@ -497,7 +497,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             else { //I am NOT GENESIS NODE - time out 
-                //console.log(ts()+`timeout(): NON-GENESIS NODE path`);
+                console.log(lib_1.ts() + "timeout(): NON-GENESIS NODE path");
                 if (_this.mintTable[1].lastPulseTimestamp != 0) { //All I can do is time out GENESIS node
                     var age = (lib_1.now() - _this.mintTable[1].lastPulseTimestamp) / 1000;
                     //console.log(`have not heard from GENESIS node in age=${age} seconds`);
@@ -578,6 +578,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             copy.config = {}; //clear out for small msgs
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
             var filename = _this.config.IP + "." + _this.config.PORT + '.json';
+            console.log("writeing filename=" + filename);
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
