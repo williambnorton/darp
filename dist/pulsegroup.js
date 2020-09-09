@@ -342,18 +342,18 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 else {
                     // old pulse - clear these entries
                     if (pulseEntry.pulseTimestamp != 0)
-                        logger_1.logger.warning("buildMatrix(): " + pulseEntry.geo + " mint#" + pulseEntry.mint + " has an old pulseTimestamp " + pulseEntry.pulseTimestamp + ". TODO: Enter NO_OWL for all values to this node");
-                    //it is possible that the node has not received a pulse yet - so value==0
-                    // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                    // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
-                    //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
-                    //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
-                    //});
-                    // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                    // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-                    if (typeof matrix[pulseEntry.mint] == "undefined") { //wbnwbnwbn-TODO: should
-                        matrix[pulseEntry.mint] = []; //
-                    } //
+                        //logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
+                        //it is possible that the node has not received a pulse yet - so value==0
+                        // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                        // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                        //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
+                        //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
+                        //});
+                        // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                        // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
+                        if (typeof matrix[pulseEntry.mint] == "undefined") { //wbnwbnwbn-TODO: should
+                            matrix[pulseEntry.mint] = []; //
+                        } //
                     matrix[pulseEntry.mint][_this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
                 }
             }
@@ -762,7 +762,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.processIncomingPulse = function (incomingPulse) {
             // look up the pulse claimed mint
-            var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+            var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + _this.groupName];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
@@ -771,7 +771,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("mintTable=" + lib_1.dump(_this.mintTable));
                 return;
             }
-            //console.log(`incomingPulse=${dump(incomingPulse)}`);
+            console.log("incomingPulse=" + lib_1.dump(incomingPulse) + " incomingPulseEntry=" + incomingPulseEntry + " incomingPulseMintEntry=" + incomingPulseMintEntry + " ");
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
@@ -827,15 +827,19 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                 //}
                 //console.log(`processIncomingPulse(): Marking node UP`);
-                //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
+                //console.log(`GENESIS Pulse processed - marked group Owner UP`);
             }
-            else { //Message NOT from groupOwner.
+            else { //Message NOT from GENESIS.
+                //       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+                //  ABOVE     var incomingPulseMintEntry = this.mintTable[incomingPulse.mint]; 
+                //Message NOT from GENESIS.
+                //var mintEntry=this.mintTable[incomingPulse.mint];
                 //Message NOT from groupOwner.
-                var mintEntry = _this.mintTable[incomingPulse.mint];
-                //Message NOT from groupOwner.
-                if (mintEntry == null || (mintEntry.bootTimestamp != 0 && incomingPulseEntry.bootTimestamp != mintEntry.bootTimestamp)) {
+                if (incomingPulseEntry.bootTimestamp != incomingPulseMintEntry.bootTimestamp)
+                    ;
+                {
                     console.log("processIncomingpulse(): This pulse shows the node " + incomingPulseEntry.geo + " rebooted - this new bootTimestamp replaces the old " + incomingPulseMintEntry.bootTimestamp + " != " + incomingPulseEntry.bootTimestamp + " for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory");
-                    mintEntry.bootTimestamp = incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
+                    incomingPulseMintEntry.bootTimestamp = incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
                 }
                 //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
                 if (_this.mintTable[0].mint == 1) { //Am I group owner?

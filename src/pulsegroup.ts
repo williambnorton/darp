@@ -460,7 +460,7 @@ export class AugmentedPulseGroup {
             } else {
                 // old pulse - clear these entries
                 if (pulseEntry.pulseTimestamp!=0) 
-                    logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
+                    //logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
                 
                 //it is possible that the node has not received a pulse yet - so value==0
                 
@@ -913,7 +913,7 @@ export class AugmentedPulseGroup {
     
     processIncomingPulse = (incomingPulse: IncomingPulse) => {
        // look up the pulse claimed mint
-       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + this.groupName];
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
@@ -923,7 +923,7 @@ export class AugmentedPulseGroup {
             console.log(`mintTable=${dump(this.mintTable)}`);
            return;
        }
-       //console.log(`incomingPulse=${dump(incomingPulse)}`);
+       console.log(`incomingPulse=${dump(incomingPulse)} incomingPulseEntry=${incomingPulseEntry} incomingPulseMintEntry=${incomingPulseMintEntry} `);
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
@@ -981,14 +981,16 @@ export class AugmentedPulseGroup {
             this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
            //}
            //console.log(`processIncomingPulse(): Marking node UP`);
-               //console.log(`GroupOwner Pulse processed - marked group Owner UP`);
-        } else {        //Message NOT from groupOwner.
+               //console.log(`GENESIS Pulse processed - marked group Owner UP`);
+        } else {        //Message NOT from GENESIS.
+            //       var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
+            //  ABOVE     var incomingPulseMintEntry = this.mintTable[incomingPulse.mint]; 
+                        //Message NOT from GENESIS.
+            //var mintEntry=this.mintTable[incomingPulse.mint];
                         //Message NOT from groupOwner.
-            var mintEntry=this.mintTable[incomingPulse.mint];
-                        //Message NOT from groupOwner.
-            if (mintEntry==null || (mintEntry.bootTimestamp!=0 && incomingPulseEntry.bootTimestamp!=mintEntry.bootTimestamp )) {
+            if (incomingPulseEntry.bootTimestamp!=incomingPulseMintEntry.bootTimestamp )) {
                 console.log(`processIncomingpulse(): This pulse shows the node ${incomingPulseEntry.geo} rebooted - this new bootTimestamp replaces the old ${incomingPulseMintEntry.bootTimestamp} != ${incomingPulseEntry.bootTimestamp} for a node that is no longer there - IGNORE PULSE - It must rejoin through /nodefactory`);
-                mintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
+                incomingPulseMintEntry.bootTimestamp=incomingPulseEntry.bootTimestamp; //We adopt the new bootTimestamp
            }
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Am I group owner?
