@@ -721,7 +721,7 @@ export class AugmentedPulseGroup {
             copy.config={};                 //clear out for small msgs
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
-            let filename=this.config.DARPDIR+"/"+this.config.IP+"."+this.config.PORT+'.json';
+            let filename="/tmp/"+this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(`pulse group object stored in file ${filename} asynchronously`);
