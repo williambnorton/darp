@@ -577,7 +577,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //            delete copy.config;                         
             copy.config = {}; //clear out for small msgs
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-            var filename = "/tmp/" + _this.config.IP + "." + _this.config.PORT + '.json';
+            var filename = _this.config.IP + "." + _this.config.PORT + '.json';
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
