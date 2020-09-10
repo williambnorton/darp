@@ -734,13 +734,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.processIncomingPulse = function (incomingPulse) {
             // look up the pulse claimed mint
-            //console.log(`incomingPulse=${dump(incomingPulse)}`);
+            console.log("incomingPulse=" + lib_1.dump(incomingPulse));
             var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
-                logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " or mint " + incomingPulse.mint + " entry ");
-                console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " or mint " + incomingPulse.mint + " entry returning");
+                logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
+                console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
                 return;
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
