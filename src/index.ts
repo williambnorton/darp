@@ -208,7 +208,7 @@ app.get('/me', function(req, res) {
         var fileContents = fs.readFileSync(filename);
         //console.log(`filecontents=${fileContents}`);
 
-        res.end(JSON.stringify(fileContents,null,2)); //CRASH - catch 
+        res.end(JSON.stringify(JSON.parse(fileContents),null,2)); //CRASH - catch 
     } catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
