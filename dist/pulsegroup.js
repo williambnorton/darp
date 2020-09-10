@@ -454,7 +454,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            console.log("timeout() ");
+            console.log(lib_1.ts() + "timeout() ");
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             ;
             for (var m in _this.mintTable) {
@@ -548,7 +548,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 fs_1.writeFile(filename_1, strCopy, function (err) {
                     if (err)
                         throw err;
-                    console.log("pulse group object stored in file " + filename_1 + " asynchronously");
+                    console.log(lib_1.ts() + ("pulse group object stored in file " + filename_1 + " asynchronously"));
                 });
             }
             /*
