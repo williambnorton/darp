@@ -611,6 +611,7 @@ export class AugmentedPulseGroup {
                             // timeout node after 5 seconds
                             logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
+                            delete this.pulses[this.mintTable[m].geo+":"+this.groupName];  //delete the pulse Entry also
                         }
                     } else {
                         // not genesis - only can time out genesis

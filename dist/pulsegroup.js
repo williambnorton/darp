@@ -476,6 +476,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 // timeout node after 5 seconds
                                 logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
+                                delete _this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]; //delete the pulse Entry also
                             }
                         }
                         else {
