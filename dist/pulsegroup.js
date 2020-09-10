@@ -373,7 +373,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
                 nodeList.push(new types_1.NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
-                nodeList.push(new types_1.NodeAddress(lib_1.mint2IP(pulseEntry.mint), SECURE_PORT)); // wbnwbn send to secure channel also
+                //nodeList.push(new NodeAddress(mint2IP(pulseEntry.mint), SECURE_PORT)); // wbnwbn send to secure channel also
                 pulseEntry.outPulses++;
                 // this section flags "interesting" cells to click on and explore
                 var flag = "";
