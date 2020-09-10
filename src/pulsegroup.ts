@@ -491,7 +491,8 @@ export class AugmentedPulseGroup {
         var nodeList: NodeAddress[] = [];
         var owls = "";
         //
-        //  First make owls list to pulse and highlight segments that should be looked aty with a FLAG '@'
+        //  First make OWL list for the pulse message
+        //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
@@ -558,6 +559,7 @@ export class AugmentedPulseGroup {
 
             const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
             this.sender.send(outgoingMessage)
+            console.log(`pulse(): sent ${outgoingMessage}`);
         }
 
         this.timeout(); // and timeout the non-responders

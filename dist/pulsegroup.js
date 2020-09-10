@@ -368,7 +368,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var nodeList = [];
             var owls = "";
             //
-            //  First make owls list to pulse and highlight segments that should be looked aty with a FLAG '@'
+            //  First make OWL list for the pulse message
+            //      to pulse and highlight segments that should be looked aty with a FLAG '@'
             //
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
@@ -429,6 +430,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.sender.send(nodelistMessage);
                 var outgoingMessage = new types_1.SenderMessage(types_1.SenderPayloadType.OutgoingMessage, pulseMessage);
                 _this.sender.send(outgoingMessage);
+                console.log("pulse(): sent " + outgoingMessage);
             }
             _this.timeout(); // and timeout the non-responders
             if (_this.adminControl == "RESYNCH") {
