@@ -610,6 +610,10 @@ export class AugmentedPulseGroup {
                         if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles
                             // timeout node after 5 seconds
                             logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                             delete this.pulses[this.mintTable[m].geo+":"+this.groupName];  //delete the pulse Entry also
                         }
@@ -690,7 +694,7 @@ export class AugmentedPulseGroup {
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err) => {
                 if (err) throw err;
-                console.log(ts()+`pulse group object stored in file ${filename} asynchronously`);
+                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously`);
             });
         //}
 

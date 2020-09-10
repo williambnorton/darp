@@ -475,6 +475,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
                                 // timeout node after 5 seconds
                                 logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
                                 delete _this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]; //delete the pulse Entry also
                             }
@@ -549,7 +553,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
-                console.log(lib_1.ts() + ("pulse group object stored in file " + filename + " asynchronously"));
+                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously`);
             });
             //}
             /*
