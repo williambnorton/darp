@@ -221,6 +221,7 @@ app.get('/me', function (req, res) {
     console.log("/me sending contents of " + filename);
     try {
         var fileContents = fs.readFileSync(filename);
+        console.log("filecontents=" + fileContents);
         res.end(fileContents); //CRASH - catch 
     }
     catch (err) {
