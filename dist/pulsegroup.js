@@ -454,7 +454,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //    or non-genesis nodes remove the group when genesis node goes away for n=~15 seconds
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
-            console.log(lib_1.ts() + "timeout() ");
+            //console.log(ts()+`timeout() `);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             ;
             for (var m in _this.mintTable) {
