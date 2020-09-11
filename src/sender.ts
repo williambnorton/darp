@@ -25,7 +25,6 @@ setInterval(() => {
         const pulseMessage = outgoingTimestamp + "," + outgoingMessage;
         const pulseBuffer = Buffer.from(pulseMessage, PulseMessageEncoding.latin1);
         logger.info(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
-        console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
         sender.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
             if (error) {
                 logger.error(`Sender error: ${error.message}`);
