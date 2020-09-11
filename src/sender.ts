@@ -17,7 +17,7 @@ process.on('message', (senderMessage: SenderMessage) => {
 
 
 // Send same message to all nodes in nodelist
-setInterval(() => {
+//setInterval(() => {
     const nodeList: NodeAddress[] = pulseGroupMap.get(SenderPayloadType.NodeList)
     const outgoingMessage: string = pulseGroupMap.get(SenderPayloadType.OutgoingMessage)
     nodeList.forEach(function (node: NodeAddress) {
@@ -32,4 +32,4 @@ setInterval(() => {
             }
         });
     });
-}, PULSE_INTERVAL);
+//}, PULSE_INTERVAL);
