@@ -425,6 +425,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     myMint + "," +
                     owls;
                 logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
+                console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 var nodelistMessage = new types_1.SenderMessage(types_1.SenderPayloadType.NodeList, nodeList);
                 _this.sender.send(nodelistMessage);
