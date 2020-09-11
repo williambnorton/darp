@@ -559,7 +559,7 @@ export class AugmentedPulseGroup {
 
             const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
             this.sender.send(outgoingMessage)
-            console.log(`pulse(): sent ${outgoingMessage}`);
+            console.log(`pulse(): sent ${dump(outgoingMessage)}`);
         }
 
         this.timeout(); // and timeout the non-responders

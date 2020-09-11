@@ -430,7 +430,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.sender.send(nodelistMessage);
                 var outgoingMessage = new types_1.SenderMessage(types_1.SenderPayloadType.OutgoingMessage, pulseMessage);
                 _this.sender.send(outgoingMessage);
-                console.log("pulse(): sent " + outgoingMessage);
+                console.log("pulse(): sent " + lib_1.dump(outgoingMessage));
             }
             _this.timeout(); // and timeout the non-responders
             if (_this.adminControl == "RESYNCH") {
