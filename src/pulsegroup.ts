@@ -553,14 +553,14 @@ export class AugmentedPulseGroup {
                 myMint + "," + 
                 owls;
             logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-            console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+            //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
             const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
             this.sender.send(nodelistMessage)
 
             const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
             this.sender.send(outgoingMessage)
-            console.log(`pulse(): sent ${dump(outgoingMessage)}`);
+            //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
         }
 
         this.timeout(); // and timeout the non-responders

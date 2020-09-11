@@ -425,13 +425,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     myMint + "," +
                     owls;
                 logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
-                console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
+                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 var nodelistMessage = new types_1.SenderMessage(types_1.SenderPayloadType.NodeList, nodeList);
                 _this.sender.send(nodelistMessage);
                 var outgoingMessage = new types_1.SenderMessage(types_1.SenderPayloadType.OutgoingMessage, pulseMessage);
                 _this.sender.send(outgoingMessage);
-                console.log("pulse(): sent " + lib_1.dump(outgoingMessage));
+                //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
             }
             _this.timeout(); // and timeout the non-responders
             if (_this.adminControl == "RESYNCH") {
