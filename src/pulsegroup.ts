@@ -40,6 +40,7 @@ export class Config {
     PUBLICKEY: string;
     VERSION: string;
     WALLET: string;
+    BOOTTIMESTAMP: number;
     constructor() {
         if (!process.env.DARPDIR) {
             logger.warning("No DARPDIR environmental variable specified ");
@@ -48,8 +49,7 @@ export class Config {
         }
         this.DARPDIR = process.env.DARPDIR;
 
- 
-
+        this.BOOTTIMESTAMP = now();
 
         var PORT = 65013;
         if (process.env.PORT) {
@@ -159,14 +159,14 @@ export class MintEntry {
     wallet: string;
     lastPulseTimestamp: number;
     lastOWL: number;
-    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string) {
+    constructor(mint: number, geo: string, port: number, incomingIP: string, publickey: string, version: string, wallet: string, bootTimestamp: number) {
         this.mint = mint;
         this.geo = geo;
         this.port = port;
         this.ipaddr = incomingIP; //set by genesis node on connection
         this.publickey = publickey;
         this.state = DEFAULT_START_STATE;
-        this.bootTimestamp = now(); //RemoteClock on startup  ****
+        this.bootTimestamp = bootTimestamp; //RemoteClock when node started  ****
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
         this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
@@ -198,7 +198,7 @@ export class PulseEntry {
     lastMsg: string;
     rtt: number; //round trip measures help ID route asymetry and therefore optmizatioj opportuniies
 
-    constructor(mint: number, geo: string, group: string, ipaddr: string, port: number, version: string) {
+    constructor(mint: number, geo: string, group: string, ipaddr: string, port: number, version: string, bootTimestamp: number) {
         this.mint = mint;
         this.geo = geo;
         this.group = group;
@@ -212,7 +212,7 @@ export class PulseEntry {
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
 
-        this.bootTimestamp = now(); // RemoteClock on startup  **** - we abandon the pulse when this changes
+        this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
         this.inPulses = 0;
         this.outPulses = 0;
@@ -355,11 +355,11 @@ export class AugmentedPulseGroup {
     };
 
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
-    addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string): MintEntry => {
+    addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string, bootTimestamp: number): MintEntry => {
         this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
         var newMint = this.nextMint++; // get a new mint for new node
-        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION);
-        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
+        this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, this.config.VERSION, bootTimestamp );
+        var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
         this.mintTable[newMint] = newNode;
         // newPulseGroup.nodeCount++;
         logger.warning(
@@ -695,7 +695,7 @@ export class AugmentedPulseGroup {
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             let filename=this.config.IP+"."+this.config.PORT+'.json';
-            fs.writeFile(filename, strCopy, (err) => {
+            fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously`);
             });

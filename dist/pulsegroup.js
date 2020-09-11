@@ -70,6 +70,7 @@ var Config = /** @class */ (function () {
             logger_1.logger.warning("DARPDIR defaulted to \" + " + process.env.DARPDIR);
         }
         this.DARPDIR = process.env.DARPDIR;
+        this.BOOTTIMESTAMP = lib_1.now();
         var PORT = 65013;
         if (process.env.PORT) {
             PORT = parseInt(process.env.PORT);
@@ -160,14 +161,14 @@ var Config = /** @class */ (function () {
 exports.Config = Config;
 /** Node configuraton details */
 var MintEntry = /** @class */ (function () {
-    function MintEntry(mint, geo, port, incomingIP, publickey, version, wallet) {
+    function MintEntry(mint, geo, port, incomingIP, publickey, version, wallet, bootTimestamp) {
         this.mint = mint;
         this.geo = geo;
         this.port = port;
         this.ipaddr = incomingIP; //set by genesis node on connection
         this.publickey = publickey;
         this.state = DEFAULT_START_STATE;
-        this.bootTimestamp = lib_1.now(); //RemoteClock on startup  ****
+        this.bootTimestamp = bootTimestamp; //RemoteClock when node started  ****
         this.version = version; //software version running on remote system ********
         this.wallet = wallet; // **
         this.lastPulseTimestamp = 0; //for timing out and validating lastOWL
@@ -178,7 +179,7 @@ var MintEntry = /** @class */ (function () {
 exports.MintEntry = MintEntry;
 /** Contains stats for and relevent fields to configure wireguard. */
 var PulseEntry = /** @class */ (function () {
-    function PulseEntry(mint, geo, group, ipaddr, port, version) {
+    function PulseEntry(mint, geo, group, ipaddr, port, version, bootTimestamp) {
         this.mint = mint;
         this.geo = geo;
         this.group = group;
@@ -191,7 +192,7 @@ var PulseEntry = /** @class */ (function () {
         this.history = [];
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
-        this.bootTimestamp = lib_1.now(); // RemoteClock on startup  **** - we abandon the pulse when this changes
+        this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
         this.inPulses = 0;
         this.outPulses = 0;
@@ -253,11 +254,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
             wireguard_1.setWireguard(myStanza + "\n" + peerStanza);
         };
         //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
-        this.addNode = function (geo, group, ipaddr, port, publickey, version, wallet) {
+        this.addNode = function (geo, group, ipaddr, port, publickey, version, wallet, bootTimestamp) {
             _this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
             var newMint = _this.nextMint++; // get a new mint for new node
-            _this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, _this.config.VERSION);
-            var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet);
+            _this.pulses[geo + ":" + group] = new PulseEntry(newMint, geo, group, ipaddr, port, _this.config.VERSION, bootTimestamp);
+            var newNode = new MintEntry(newMint, geo, port, ipaddr, publickey, version, wallet, bootTimestamp);
             _this.mintTable[newMint] = newNode;
             // newPulseGroup.nodeCount++;
             logger_1.logger.warning("addNode(): added mintEntry and empty pulse entry " +
