@@ -287,6 +287,10 @@ app.get('/nodefactory', function (req, res) {
     //  Or - Handle pulseGroup member case
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    if (myPulseGroup.groupOwner != me.geo) {
+        console.log("I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE " + redirectedURL + " ");
+        res.redirect(redirectedURL);
+    }
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
