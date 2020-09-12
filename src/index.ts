@@ -229,9 +229,7 @@ app.get('/mintTable', function(req, res) {
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function(req, res) {
     // additional nodes adding to pulseGroup
-    var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
-    console.log(`nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=${redirectedURL}`);
-    //res.redirect(redirectedURL);
+
     logger.info(`EXPRESS /nodefactory: config requested with params: ${dump(req.query)}`);
 
     // parse incoming parameters
@@ -282,10 +280,50 @@ app.get('/nodefactory', function(req, res) {
     //  Or - Handle pulseGroup member case
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+
+
+
+
+
+
+
+
     if (myPulseGroup.groupOwner!=me.geo) {
         console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-        res.redirect(redirectedURL);
+
+        var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+        console.log(`nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=${redirectedURL}`);
+
+        const http = require('http');
+
+        http.get(redirectedURL,(res2) => {
+        let body2 = "";
+
+        res2.on("data", (chunk2) => {
+            body2 += chunk2;
+        });
+
+        res2.on("end", () => {
+            res.end(body2);     //SEND the proxied genesis node config
+        });
+
+        }).on("error", (error) => {
+            console.error(error.message);
+        });
+        return;
+
+    } else {
+        console.log(`I am Group Owner - answering query myself`);
     }
+
+
+
+
+
+
+
+
+
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
