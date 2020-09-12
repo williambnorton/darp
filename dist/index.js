@@ -295,6 +295,7 @@ app.get('/nodefactory', function (req, res) {
                 body2 += chunk2;
             });
             res2.on("end", function () {
+                console.log("PROXIED: for caller from redirectedURL");
                 res.end(body2); //SEND the proxied genesis node config
             });
         }).on("error", function (error) {

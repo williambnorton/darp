@@ -304,6 +304,7 @@ app.get('/nodefactory', function(req, res) {
         });
 
         res2.on("end", () => {
+            console.log(`PROXIED: for caller from redirectedURL`);
             res.end(body2);     //SEND the proxied genesis node config
         });
 
