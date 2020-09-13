@@ -502,6 +502,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                     }
                 }
+                else { /* Genesis Node or Me - we timeout Genesis node elsewhere */ }
             }
             for (var p in _this.pulses) {
                 var pulseEntry = _this.pulses[p];
@@ -519,6 +520,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 logger_1.logger.warning("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
                                 console.log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
+                                delete _this.pulses[pulseEntry.geo + ":" + _this.groupName]; //delete the pulse Entry also
                                 /*
                                 if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];
                                         logger.warning(`DELETEING pulse ${p}`);  //log when timing out to debug
