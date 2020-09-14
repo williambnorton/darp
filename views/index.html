@@ -504,7 +504,8 @@
         <!-- Display mintTable -->
         <br>
         <h2>mintTable</h2>
-        <table class="mintTable">
+        <table id="mintTable" class="mintTable">
+            <thead>
             <tr>
                 <th>mint</th>
                 <th>geo</th>
@@ -522,7 +523,8 @@
                 <th>adminControl</th>
                 <th>bootTimestamp</th>
             </tr>
-
+            </thead>
+            <tbody>
             <% for (var a in pulseGroup.mintTable) { %>
                 <% var srcMintEntry = pulseGroup.mintTable[a]; %>
                 
@@ -606,7 +608,7 @@
                     </tr>
                 <% } %> <!-- null mintTable entries are OK -->
             <% } %>
-
+            </tbody>
         </table>
     <% } %>
     
