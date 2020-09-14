@@ -274,7 +274,7 @@
 
         <!-- show OWL Matrix table -->
         <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
-        <table id="pulses" class="matrix">
+        <table id="matrix" >
             <thead>
             <tr>
             <th><%= pulseGroup.groupName %> OWL Matrix</th>
@@ -312,7 +312,7 @@
                         <% let destMintEntryUrl = "http://" + destMintEntry.ipaddr + ":" + destMintEntry.port.toString() + "/graph/" + srcMintEntry.geo + "/" + destMintEntry.geo; %>
                         <td class="<%= classNameMintsGeos %>">
                             <div class="%= classNameMints %>">
-                                <a target="_blank" href="<%= destMintEntryUrl %>"><%= pulseGroup.matrix[src][dest] %> ms</a>
+                                <a target="_blank" href="<%= destMintEntryUrl %>"><%= pulseGroup.matrix[src][dest] %></a>
                             </div>
                         </td>
                     <% } else { %>
