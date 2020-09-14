@@ -14,7 +14,7 @@
                 $('#extraordinary').DataTable();
                 $('#pulses').DataTable();
                 $('#mintTable').DataTable();
-                $('#matrix').DataTable();
+                //$('#matrix').DataTable();
             } );
         });
         
@@ -275,7 +275,8 @@
         <!-- show OWL Matrix table -->
         <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
         <table id="pulses" class="matrix">
-        <tr>
+            <thead>
+            <tr>
             <th><%= pulseGroup.groupName %> OWL Matrix</th>
 
         <!-- print OWL headers -->
@@ -285,7 +286,8 @@
             <th><a target="_blank" href="<%= colEntryUrl %>"> <%= colEntry.geo %>@<b><%= colEntry.mint %></b></a> </th>
         <% } %>
         </tr>
-
+        </thead>
+        <tbody>
         <% for (let src in pulseGroup.matrix) { %>
             <% let srcMintEntry = pulseGroup.mintTable[src]; %>
             <% if (srcMintEntry != null) { %>
@@ -322,6 +324,7 @@
 
             <% } %>
         <% } %>
+        </tbody>
         </table>
 
         <!-- Display extraordinaryPath -->
