@@ -283,7 +283,8 @@
         <% for (let col in pulseGroup.pulses) { %>
             <% let colEntry = pulseGroup.pulses[col]; %>
             <% let colEntryUrl = "http://" + colEntry.ipaddr + ":" + colEntry.port.toString(); %>
-            <th><a target="_blank" href="<%= colEntryUrl %>"> <%= colEntry.geo %>@<b><%= colEntry.mint %></b></a> </th>
+            <th><%= colEntry.geo %>-<%= colEntry.mint %></th>
+            <!--<th><a target="_blank" href="<%= colEntryUrl %>"> <%= colEntry.geo %>@<b><%= colEntry.mint %></b></a> </th> -->
         <% } %>
         </tr>
         </thead>
