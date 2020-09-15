@@ -117,9 +117,7 @@
                             //TODO: use the jquery data update APIs to add/remove rows so we get the sorting feature in jquery UI
                             //  add extraordinary path entry
 //                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td><div class='WORSE'>"+extraordinaryPath.direct+" ms</div></td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
-                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.intermediary+"</td> <td>"+extraordinaryPath.zSide+"</td> <td>"+extraordinaryPath.delta+" ms</td><td>"+extraordinaryPath.direct+" ms</td><td>"+extraordinaryPath.delta+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
-
-
+                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.intermediary+"</td> <td>"+extraordinaryPath.zSide+"</td> <td>"+extraordinaryPath.delta+" ms</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.directLatency+" ms</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
 
 
 
@@ -354,6 +352,7 @@
                     <th>intermediary</th>
                     <th>Z Side</th>
                     <th>How much better?</th>
+                    <th>InDirect OWL</th>
                     <th>Direct OWL</th>
                     <th>segment1</th>
                     <th>segment2</th>
