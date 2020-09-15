@@ -141,10 +141,17 @@ do
     #ps aux |grep -v grep | grep node | awk '{ print $1}'
     #echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
+    
+    echo `date` Before killing other processes...
+    ps aux 
+
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep sender.js | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep receiver.js | awk '{ print $1}'`
-ps aux
+    sleep 1
+    echo `date` After killing other processes...
+
+    ps aux
     #ps aux
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
