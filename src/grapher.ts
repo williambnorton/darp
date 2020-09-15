@@ -9,14 +9,14 @@ export function grapher(src: string, dest: string) {
 <meta http-equiv="refresh" content="60">
 <html>
 <head>
-<title>${src}-${dest} ${YYMMDD}</title> 
+<title>${src}-${dest} ${myYYMMDD}</title> 
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 <script type="text/javascript">
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest} RAW OWLs %{YYMMDD} }"
+			text: "${src}-${dest} RAW OWLs ${myYYMMDD} }"
 		},
 		axisY: {
 			title: "latency in ms",
