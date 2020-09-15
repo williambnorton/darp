@@ -1,5 +1,7 @@
 p, hr, tr, th {
-    font-size: 14px
+    font-size: 14px;
+    font-weight: bold;
+
 }
 .right {
     text-align: right;
@@ -25,7 +27,6 @@ h2 {
 table, th, td {
     border: 1px solid black;
     padding: 1px;
-    font-weight: bold;
 }
 
 .mintTable tr:first-child td {
