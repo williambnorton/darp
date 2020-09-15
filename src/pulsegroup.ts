@@ -1066,18 +1066,29 @@ export class AugmentedPulseGroup {
     };
 
     // Store one-way latencies to file or graphing & history
+    //
+    //  TOSO: This is called for EACH Measure - do not do a lot here! store and move on
+    //      Thos that want the data will parse through and make it
+    //      This will not scale well, being called exonential times
+    //      Probably the reason this system can not get beyond 25 nodes.
+    //
     storeOWL = (src: string, dst: string, srcMint: number) => {
         const pulseLabel = src + ":" + this.groupName;
         const pulseEntry = this.pulses[pulseLabel];
         if (pulseEntry != null) {
+            //
             var strDataPoints = ""; // format: { label: "22:37:49", y: 10 }, we have no timestamps yet in this model
-            for (var dp in pulseEntry.medianHistory) {
-                strDataPoints += `{ label: "median", y: ${pulseEntry.medianHistory[dp]} },`;
-            }
-            for (var dp in pulseEntry.history) {
-                strDataPoints += `{ label: "current", y: ${pulseEntry.history[dp]} },`;
-            }
+//            for (var dp in pulseEntry.medianHistory) {
+//                strDataPoints += `{ label: "median", y: ${pulseEntry.medianHistory[dp]} },`;
+//            }
+//            for (var dp in pulseEntry.history) {
+//                strDataPoints += `{ label: "current", y: ${pulseEntry.history[dp]} },`;
+//            }
+            //
+            strDataPoints=`{ label: "${ts()}", y: ${pulseEntry.history[0]} }`  //TODO: VERIFY-CHECK - is [0] always the latest measure?
+//            grapherStoreOwls(src, dst, strDataPoints); // store OWL in a way the grapher can parse it
             grapherStoreOwls(src, dst, strDataPoints); // store OWL in a way the grapher can parse it
+            
         }
     };
 
