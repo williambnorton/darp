@@ -2,19 +2,21 @@ import { YYMMDD } from "./lib";
 import fs = require("fs");
 
 export function grapher(src: string, dest: string) {
+    var myYYMMDD = YYMMDD();
+
     var txt = `
 <!DOCTYPE HTML>
 <meta http-equiv="refresh" content="60">
 <html>
 <head>
-<title>${src}-${dest}</title> 
+<title>${src}-${dest} ${YYMMDD}</title> 
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 <script type="text/javascript">
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest} median of medians and last 60 seconds}"
+			text: "${src}-${dest} RAW OWLs %{YYMMDD} }"
 		},
 		axisY: {
 			title: "latency in ms",
@@ -31,7 +33,6 @@ $(function() {
                 //fetched data from file goes here
                 `;
 
-    var myYYMMDD = YYMMDD();
     var path = src + "-" + dest + "." + myYYMMDD + ".txt";
     try {
         if (fs.existsSync(path)) {
