@@ -106,7 +106,7 @@ do
     echo `date` 'Starting DARP...'
 	node index
     rc=$?
-    echo `date` index done rc=$rc
+    echo `date` DARP Protocol index.js done rc=$rc
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -146,10 +146,11 @@ do
     ps aux 
 
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep sender.js | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep receiver.js | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep index | awk '{ print $1}'`
     sleep 1
-    echo `date` After killing other processes...
+    echo `date` After killing other processes..ps aux.
 
     ps aux
     #ps aux
