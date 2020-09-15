@@ -907,7 +907,7 @@ export class AugmentedPulseGroup {
        }
 
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-       if (this.groupOwner === incomingPulseEntry.geo {  //Is this a groupOwner PULSE?
+       if (this.groupOwner === incomingPulseEntry.geo ) {  //Is this a groupOwner PULSE?
             if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
                 console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
                 process.exit(36);

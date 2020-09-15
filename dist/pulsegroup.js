@@ -755,8 +755,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return;
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-            if (_this.groupOwner === incomingPulseEntry.geo) //Is this a groupOwner PULSE?
-             { //Is this a groupOwner PULSE?
+            if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
                 if (incomingPulseEntry.bootTimestamp != _this.mintTable[1].bootTimestamp) {
                     console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we");
                     process.exit(36);
