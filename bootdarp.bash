@@ -143,7 +143,8 @@ do
     #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep sender.js | awk '{ print $1}'`
-
+    kill -9 `ps aux |grep -v grep | grep receiver.js | awk '{ print $1}'`
+ps aux
     #ps aux
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
