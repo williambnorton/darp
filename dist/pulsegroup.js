@@ -464,33 +464,30 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             ;
             for (var m in _this.mintTable) {
-                if ((m != "0") && m != "1" && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
+                //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+                if ((m != "0") && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp != 0) {
                     // ignore mintTable[0]
                     var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
-                    if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - remove
-                        // timeout after  seconds
+                    if (elapsedMSincePulse > 2 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - mark as pkt loss
                         logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
                         console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
                         _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
                         if (_this.mintTable[m].state != "QUARANTINE") {
                             _this.mintTable[m].state = "NR"; // we don't know this node's state
                         }
+                        //TODO: Update pktDrop
                         if (_this.isGenesisNode()) {
                             // Genesis only code path
-                            logger_1.logger.debug("m=" + m + " I am genesis node not seeing him for elapsedMSincePulse=" + elapsedMSincePulse);
+                            logger_1.logger.debug("I am genesis node not seeing mint ${m} him for elapsedMSincePulse=" + elapsedMSincePulse);
                             if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
                                 // timeout node after 5 seconds
-                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
-                                logger_1.logger.debug("timeout(): DELETE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                logger_1.logger.debug("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
                                 delete _this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]; //delete the pulse Entry also
                             }
                         }
                         else {
-                            // not genesis - only can time out genesis
+                            // not genesis - we can only time out genesis
                             var age = lib_1.now() - _this.mintTable[1].lastPulseTimestamp;
                             if (age > 10 * 1000) { //after 10 seconds we say genesis is gone
                                 logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));

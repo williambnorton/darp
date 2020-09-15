@@ -594,35 +594,31 @@ export class AugmentedPulseGroup {
         //console.log(ts()+`timeout() `);
         const startingPulseEntryCount = Object.keys(this.pulses).length;;
         for (var m in this.mintTable) {
-            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
-                // ignore mintTable[0]
+//            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+            if ((m != "0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
+                    // ignore mintTable[0]
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                if (elapsedMSincePulse > 5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - remove
-                    // timeout after  seconds
+                if (elapsedMSincePulse > 2*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - mark as pkt loss
                     logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
-                   console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
+                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
 
                     this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE") {
                         this.mintTable[m].state = "NR";  // we don't know this node's state
                     }
-
+                    //TODO: Update pktDrop
                     if (this.isGenesisNode()) {
                         // Genesis only code path
-                        logger.debug("m=" + m + " I am genesis node not seeing him for elapsedMSincePulse=" + elapsedMSincePulse);
+                        logger.debug("I am genesis node not seeing mint ${m} him for elapsedMSincePulse=" + elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles
                             // timeout node after 5 seconds
-                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
-                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
-                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
-                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
-                            logger.debug(`timeout(): DELETE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            logger.debug(`timeout(): DELETE GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                             delete this.pulses[this.mintTable[m].geo+":"+this.groupName];  //delete the pulse Entry also
                         }
                     } else {
-                        // not genesis - only can time out genesis
+                        // not genesis - we can only time out genesis
                         var age = now() - this.mintTable[1].lastPulseTimestamp;
                         if (age > 10 * 1000) {              //after 10 seconds we say genesis is gone
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
