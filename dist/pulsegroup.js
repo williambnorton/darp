@@ -647,6 +647,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                                 //console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                                 // This overwrites existing entry, replacing timestamp
                                                 var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
+                                                //TODO: Create a URL and clickable link Z:port ==> (A=ip:port,I=ip:port,Z=ip:port)
+                                                //Create a graph pulling from A --> or all nodes store all owl threads ?     A->I    I->Z    A->Z    
+                                                // All store all means 100 node network appends a record 10,000 every second.
+                                                //TODO: Instead, store all in native format - Log the pulseRecords
+                                                //TODO write routine to go through the Log'd pulseRecords pulling out archiveOWLs(A,Z)
+                                                //write glue code to spew out graph format from these owls
                                                 if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
                                                     //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
                                                     _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta };
