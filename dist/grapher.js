@@ -45,7 +45,7 @@ function grapherStoreOwls(src, dst, dataPoints) {
     //}
     //var logMsg = "{y:" + owl + "},\n";
     //    fs.writeFile(filename, dataPoints, (err) => {
-    fs.appendFile(filename, dataPoints, function (err) {
+    fs.appendFile(filename, dataPoints + ',', function (err) {
         if (err)
             throw err;
     });

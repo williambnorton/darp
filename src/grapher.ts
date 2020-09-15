@@ -83,7 +83,7 @@ export function grapherStoreOwls(src: String, dst: String, dataPoints: String) {
     //}
     //var logMsg = "{y:" + owl + "},\n";
 //    fs.writeFile(filename, dataPoints, (err) => {
-    fs.appendFile(filename, dataPoints, (err) => {  //appended asynchronously
+    fs.appendFile(filename, dataPoints+',', (err) => {  //appended asynchronously
             if (err) throw err;
     });
 }
