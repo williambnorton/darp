@@ -70,7 +70,7 @@ echo `date` MYIP=$MYIP
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-echo `date` "$0 STARTING loop. MYIP=$MYIP" | tee -a NOIA.log 
+echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" | tee -a NOIA.log 
 CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :

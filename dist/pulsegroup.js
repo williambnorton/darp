@@ -278,21 +278,25 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     // ignore first mints me and genesis node - don't delete those
                     if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
                         logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
+                        console.log("deleteNode(): deleting pulse " + (mintEntry.geo + ":" + _this.groupName));
+                        delete _this.pulses[mintEntry.geo + ":" + _this.groupName];
                         console.log("deleteNode(): deleting mint " + mintEntry.mint);
                         delete _this.mintTable[mintEntry.mint];
                     }
                 }
             }
-            var deletedMint = -1;
-            for (var pulseLabel in _this.pulses) {
-                var pulseEntry = _this.pulses[pulseLabel];
-                if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
-                    logger_1.logger.warning("deleteNode: deleting pulse " + pulseLabel);
-                    console.log("deleteNode: deleting pulse " + pulseLabel);
-                    deletedMint = pulseEntry.mint;
-                    delete _this.pulses[pulseLabel];
-                }
-            }
+            /*
+                    //var deletedMint = -1;
+                    for (var pulseLabel in this.pulses) {
+                        const pulseEntry = this.pulses[pulseLabel];
+                        if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
+                            logger.warning(`deleteNode: deleting pulse ${pulseLabel}`);
+                            console.log(`deleteNode: deleting pulse ${pulseLabel}`);
+                            //deletedMint = pulseEntry.mint;
+                            delete this.pulses[pulseLabel];
+                        }
+                    }
+            */
             /*  delete code
             //remove mint from the group owner's owls list
             if (this.isGenesisNode()) {
@@ -748,16 +752,17 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(`incomingPulse=${dump(incomingPulse)}`);
             var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
-            // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-            if (_this.groupOwner === incomingPulse.geo) //Is this a groupOwner PULSE?
+            // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
+            if (_this.groupOwner === incomingPulse.geo) { //Is this a groupOwner PULSE?
                 if (incomingPulse.bootTimestamp != _this.mintTable[1].bootTimestamp) { //GROUP OWNER PULSE w/new bootTimestamp?
                     console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we");
                     console.log(lib_1.ts() + ("processIncomingPulse(): " + incomingPulse.bootTimestamp + " != " + _this.mintTable[1].bootTimestamp));
                     process.exit(36);
                 }
-            //co
+            }
+            //
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
-                // show more specifics why pulse is ignored
+                // 
                 logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
                 console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
                 return;

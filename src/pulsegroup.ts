@@ -385,21 +385,26 @@ export class AugmentedPulseGroup {
                 // ignore first mints me and genesis node - don't delete those
                 if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
                     logger.warning( `deleteNode(): deleting mint ${mintEntry.mint}`);
+                    console.log( `deleteNode(): deleting pulse ${mintEntry.geo+":"+this.groupName}`);
+                    delete this.pulses[mintEntry.geo+":"+this.groupName];
                     console.log( `deleteNode(): deleting mint ${mintEntry.mint}`);
                     delete this.mintTable[mintEntry.mint];
                 }
             }
         }
-        var deletedMint = -1;
+
+/*
+        //var deletedMint = -1;
         for (var pulseLabel in this.pulses) {
             const pulseEntry = this.pulses[pulseLabel];
             if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
                 logger.warning(`deleteNode: deleting pulse ${pulseLabel}`);
                 console.log(`deleteNode: deleting pulse ${pulseLabel}`);
-                deletedMint = pulseEntry.mint;
+                //deletedMint = pulseEntry.mint;
                 delete this.pulses[pulseLabel];
             }
         }
+*/
 
         /*  delete code
         //remove mint from the group owner's owls list
@@ -899,17 +904,18 @@ export class AugmentedPulseGroup {
        var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
-       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-       if (this.groupOwner === incomingPulse.geo )   //Is this a groupOwner PULSE?
+       // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
+       if (this.groupOwner === incomingPulse.geo ) {  //Is this a groupOwner PULSE?
           if ( incomingPulse.bootTimestamp != this.mintTable[1].bootTimestamp ) {  //GROUP OWNER PULSE w/new bootTimestamp?
-            console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
-            console.log(ts()+`processIncomingPulse(): ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp}`);            
-            process.exit(36);
+             console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
+             console.log(ts()+`processIncomingPulse(): ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp}`);            
+             process.exit(36);
+          }
         } 
-       //co
+       //
 
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
-           // show more specifics why pulse is ignored
+           // 
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint}  `);
            console.log(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint}  `);
            return;
@@ -959,6 +965,7 @@ export class AugmentedPulseGroup {
                         logger.info(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
                         console.log(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} in owls (${myPulseEntry.owls}) - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
                         this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
+
                         return;
                     }
                 }

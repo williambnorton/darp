@@ -16,7 +16,7 @@ export function grapher(src: string, dest: string) {
 $(function() {
 	$(".chartContainer").CanvasJSChart({
 		title: {
-			text: "${src}-${dest} RAW OWLs ${myYYMMDD} }"
+			text: "${src} -----> ${dest} (${myYYMMDD}) }"
 		},
 		axisY: {
 			title: "latency in ms",
