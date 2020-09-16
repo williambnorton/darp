@@ -1096,7 +1096,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.debug("AugmentedPulseGroup has received message from receiver: " + incomingMessage);
             _this.recvPulses(incomingMessage);
         });
-        this.receiver.on('error', function (incomingMessage) {
+        this.receiver.on('close', function (incomingMessage) {
             console.log(lib_1.ts() + "pulseGroup(): receiver died - exitting");
             process.exit(36); //reload software
         });
@@ -1107,7 +1107,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.sender.on('message', function (message) {
             logger_1.logger.debug("AugmentedPulseGroup has received message from sender: " + message);
         });
-        this.sender.on('error', function (incomingMessage) {
+        this.sender.on('close', function (incomingMessage) {
             console.log(lib_1.ts() + "pulseGroup(): sender died - exitting");
             process.exit(36); //reload software
         });

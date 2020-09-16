@@ -307,7 +307,7 @@ export class AugmentedPulseGroup {
             logger.debug(`AugmentedPulseGroup has received message from receiver: ${incomingMessage}`);
             this.recvPulses(incomingMessage);
         });
-        this.receiver.on('error', (incomingMessage: string) => {
+        this.receiver.on('close', (incomingMessage: string) => {
             console.log(ts()+`pulseGroup(): receiver died - exitting`);
             process.exit(36);  //reload software
         });        
@@ -319,7 +319,7 @@ export class AugmentedPulseGroup {
         this.sender.on('message', (message) => {
             logger.debug(`AugmentedPulseGroup has received message from sender: ${message}`);
         });
-        this.sender.on('error', (incomingMessage: string) => {
+        this.sender.on('close', (incomingMessage: string) => {
             console.log(ts()+`pulseGroup(): sender died - exitting`);
             process.exit(36);  //reload software
         }); 
