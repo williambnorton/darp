@@ -732,6 +732,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
                 res.on("error", function (error) {
                     logger_1.logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
+                    process.exit(36);
                     // Error handling here never triggered TODO
                 });
                 res.on("end", function () {
@@ -1095,12 +1096,20 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.debug("AugmentedPulseGroup has received message from receiver: " + incomingMessage);
             _this.recvPulses(incomingMessage);
         });
+        this.receiver.on('error', function (incomingMessage) {
+            console.log(lib_1.ts() + "pulseGroup(): receiver died - exitting");
+            process.exit(36); //reload software
+        });
         this.sender = child_process_1.fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
         this.sender.on('exit', function (code) {
             logger_1.logger.warning("Sender process exited with code " + code);
         });
         this.sender.on('message', function (message) {
             logger_1.logger.debug("AugmentedPulseGroup has received message from sender: " + message);
+        });
+        this.sender.on('error', function (incomingMessage) {
+            console.log(lib_1.ts() + "pulseGroup(): sender died - exitting");
+            process.exit(36); //reload software
         });
     }
     return AugmentedPulseGroup;

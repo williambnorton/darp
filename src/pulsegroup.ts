@@ -10,6 +10,7 @@ import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
+import { POINT_CONVERSION_COMPRESSED } from "constants";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
@@ -306,6 +307,10 @@ export class AugmentedPulseGroup {
             logger.debug(`AugmentedPulseGroup has received message from receiver: ${incomingMessage}`);
             this.recvPulses(incomingMessage);
         });
+        this.receiver.on('error', (incomingMessage: string) => {
+            console.log(ts()+`pulseGroup(): receiver died - exitting`);
+            process.exit(36);  //reload software
+        });        
         
         this.sender = fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
         this.sender.on('exit', (code) => {
@@ -314,6 +319,10 @@ export class AugmentedPulseGroup {
         this.sender.on('message', (message) => {
             logger.debug(`AugmentedPulseGroup has received message from sender: ${message}`);
         });
+        this.sender.on('error', (incomingMessage: string) => {
+            console.log(ts()+`pulseGroup(): sender died - exitting`);
+            process.exit(36);  //reload software
+        }); 
     }
 
     forEachNode = (callback: CallableFunction) => {
@@ -881,6 +890,7 @@ export class AugmentedPulseGroup {
 
             res.on("error", (error) => {
                 logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
+                process.exit(36);
                 // Error handling here never triggered TODO
             });
 
