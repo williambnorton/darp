@@ -55,7 +55,7 @@ var MEASURE_RTT = false; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
-var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
+var CHECK_SW_VERSION_CYCLE_TIME = 115; // CHECK SW updates every 15 seconds
 var NO_MEASURE = 99999;
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
