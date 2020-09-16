@@ -12,7 +12,7 @@ const receiver = dgram.createSocket("udp4");
 
 receiver.on("error", (err) => {
     logger.error(`Receiver error:\n${err.stack}`);
-    //receiver.close();
+    receiver.close();
 });
 
 receiver.on("listening", () => {

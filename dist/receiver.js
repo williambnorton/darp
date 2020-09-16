@@ -10,7 +10,7 @@ var LISTENING_PORT = parseInt(process.argv[2]);
 var receiver = dgram.createSocket("udp4");
 receiver.on("error", function (err) {
     logger_1.logger.error("Receiver error:\n" + err.stack);
-    //receiver.close();
+    receiver.close();
 });
 receiver.on("listening", function () {
     var address = receiver.address();
