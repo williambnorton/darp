@@ -106,7 +106,7 @@ do
     echo `date` 'Starting DARP...'
 	node index | tee -a NOIA.log
     rc=$?
-    echo `date` DARP Protocol index.js done rc=$rc
+    echo `date` DARP Protocol index.js done rc=$rc | tee -a NOIA.log
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"

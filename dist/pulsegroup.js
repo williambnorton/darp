@@ -748,6 +748,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(`incomingPulse=${dump(incomingPulse)}`);
             var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
+            // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
+            if (_this.groupOwner === incomingPulseEntry.geo) //Is this a groupOwner PULSE?
+                if (incomingPulseEntry.bootTimestamp != _this.mintTable[1].bootTimestamp) { //GROUP OWNER PULSE w/new bootTimestamp?
+                    console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we");
+                    console.log(lib_1.ts() + ("processIncomingPulse(): " + incomingPulseEntry.bootTimestamp + " != " + _this.mintTable[1].bootTimestamp));
+                    process.exit(36);
+                }
+            //co
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
                 // show more specifics why pulse is ignored
                 logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
@@ -756,10 +764,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
-                if (incomingPulseEntry.bootTimestamp != _this.mintTable[1].bootTimestamp) {
-                    console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we");
-                    process.exit(36);
-                }
+                //if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
+                //    console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
+                //    process.exit(36);
+                //} 
                 //console.log(`**************************************************       Group Owner Pulse logic ....`);
                 // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
                 if (_this.groupOwner != _this.mintTable[0].geo) { // use genesis nodes' incoming owls to manage population

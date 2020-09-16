@@ -899,6 +899,15 @@ export class AugmentedPulseGroup {
        var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
+       // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
+       if (this.groupOwner === incomingPulseEntry.geo )   //Is this a groupOwner PULSE?
+          if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {  //GROUP OWNER PULSE w/new bootTimestamp?
+            console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
+            console.log(ts()+`processIncomingPulse(): ${incomingPulseEntry.bootTimestamp} != ${this.mintTable[1].bootTimestamp}`);            
+            process.exit(36);
+        } 
+       //co
+
        if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
            // show more specifics why pulse is ignored
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint}  `);
@@ -908,10 +917,10 @@ export class AugmentedPulseGroup {
 
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulseEntry.geo ) {  //Is this a groupOwner PULSE?
-            if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
-                console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
-                process.exit(36);
-            } 
+            //if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
+            //    console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
+            //    process.exit(36);
+            //} 
            //console.log(`**************************************************       Group Owner Pulse logic ....`);
            // group owner pulse here (SECURITY HOLE-more authentiction needed ip:port)
 
