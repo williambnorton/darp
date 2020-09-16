@@ -104,11 +104,11 @@ do
         kill `cat $DARPDIR/index.pid`
     fi
     echo `date` 'Starting DARP...'
-	node index | tee -a NOIA.log
+	node index #| tee -a NOIA.log
     rc=$?
     echo `date` DARP Protocol index.js done rc=$rc | tee -a NOIA.log
 
-    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"| tee -a NOIA.log 
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" #| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -122,7 +122,7 @@ do
     
 #    sleep 1
 
-    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED"| tee -a NOIA.log ; exit 86; fi     #STOP COMMAND
+    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 1 ]; then
         echo "rc=1"
@@ -142,22 +142,16 @@ do
     #echo `date` killing `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     
-    echo `date` Before killing other processes...
-    ps aux 
+    
 
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep index | awk '{ print $1}'`
-    sleep 1
-    echo `date` After killing other processes..ps aux.
-
-    ps aux
-    #ps aux
 
 
 
-exit 86
+
 
 
 
