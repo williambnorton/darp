@@ -89,7 +89,7 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP" | tee -a NOIA.log 
+    echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP" #| tee -a NOIA.log 
 
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Configuring Wireguard
@@ -103,10 +103,11 @@ do
     if [ -f  $DARPDIR/index.pid ]; then
         kill `cat $DARPDIR/index.pid`
     fi
-    echo `date` 'Starting DARP...'
-	node index | tee -a NOIA.log
+    echo `date` 'Starting DARP $VERSION ...'
+#	node index | tee -a NOIA.log
+	node index 
     rc=$?
-    echo `date` FINISHED DARP Protocol index.js done rc=$rc | tee -a NOIA.log
+    echo `date` "FINISHED DARP Protocol index.js done rc=$rc" #| tee -a NOIA.log
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" #| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -130,7 +131,7 @@ do
         if [ $rc -ne 36 ]; then
             echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-            echo `date` "$0 result: unexpected rc out of handlepulse $VERSION rc=$rc"| tee -a NOIA.log 
+            echo `date` "$0 result: unexpected rc out of handlepulse $VERSION rc=$rc"    #| tee -a NOIA.log 
             exit -1
         fi
     fi
@@ -160,9 +161,9 @@ do
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
     CYCLES=`expr $CYCLES + 1`
-    echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME | tee -a NOIA.log 
+    echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME #| tee -a NOIA.log 
     if [ $CYCLES -gt $MAXCYCLES ]; then    
-        echo `date` "RAN 100 CYCLES - $0 EXiTTING"| tee -a NOIA.log 
+        echo `date` "RAN 100 CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         exit 86;
     fi
     sleep $SLEEPTIME
