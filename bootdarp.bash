@@ -70,7 +70,7 @@ echo `date` MYIP=$MYIP
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-echo `date` "$0 STARTING loop. MYIP=$MYIP"
+echo `date` "$0 STARTING loop. MYIP=$MYIP" | tee -a NOIA.log 
 CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
@@ -89,7 +89,7 @@ do
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP"
+    echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP" | tee -a NOIA.log 
 
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Configuring Wireguard
@@ -108,7 +108,7 @@ do
     rc=$?
     echo `date` DARP Protocol index.js done rc=$rc
 
-    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -122,7 +122,7 @@ do
     
 #    sleep 1
 
-    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED"; exit 86; fi     #STOP COMMAND
+    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED"| tee -a NOIA.log ; exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 1 ]; then
         echo "rc=1"
@@ -130,7 +130,7 @@ do
         if [ $rc -ne 36 ]; then
             echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-            echo `date` "$0 result: unexpected rc out of handlepulse $VERSION rc=$rc"
+            echo `date` "$0 result: unexpected rc out of handlepulse $VERSION rc=$rc"| tee -a NOIA.log 
             exit -1
         fi
     fi
@@ -166,9 +166,9 @@ exit 86
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
     CYCLES=`expr $CYCLES + 1`
-    echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME 
+    echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME | tee -a NOIA.log 
     if [ $CYCLES -gt $MAXCYCLES ]; then    
-        echo `date` "RAN 100 CYCLES - $0 EXiTTING"
+        echo `date` "RAN 100 CYCLES - $0 EXiTTING"| tee -a NOIA.log 
         exit 86;
     fi
     sleep $SLEEPTIME
