@@ -106,7 +106,7 @@ do
     echo `date` 'Starting DARP...'
 	node index #| tee -a NOIA.log
     rc=$?
-    echo `date` DARP Protocol index.js done rc=$rc | tee -a NOIA.log
+    echo `date` FINISHED DARP Protocol index.js done rc=$rc | tee -a NOIA.log
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" #| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -143,7 +143,7 @@ do
     #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     
     
-
+    echo `date` killing lingering processes
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`
