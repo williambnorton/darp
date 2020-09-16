@@ -154,6 +154,15 @@ do
 
     ps aux
     #ps aux
+
+
+
+exit 86
+
+
+
+
+
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
     CYCLES=`expr $CYCLES + 1`
