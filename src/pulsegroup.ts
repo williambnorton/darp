@@ -887,7 +887,7 @@ export class AugmentedPulseGroup {
 
         const url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
-
+        console.log(`checkSWversion()`);
         http.get(url, (res) => {
             res.setEncoding("utf8");
             let body = "";
@@ -896,8 +896,9 @@ export class AugmentedPulseGroup {
                 body += data;
             });
 
-            res.on("error", (error) => {
+            res.on('error', (error) => {
                 logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
+                console.log(`checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE`);
                 process.exit(36);
                 // Error handling here never triggered TODO
             });
@@ -909,6 +910,7 @@ export class AugmentedPulseGroup {
                 if (genesisVersion != mySWversion) {
                     // Software reload
                     logger.error(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
+                    console.log(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
                     process.exit(36);
                 }
             });

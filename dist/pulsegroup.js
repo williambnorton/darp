@@ -724,14 +724,16 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
                 "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
+            console.log("checkSWversion()");
             http.get(url, function (res) {
                 res.setEncoding("utf8");
                 var body = "";
                 res.on("data", function (data) {
                     body += data;
                 });
-                res.on("error", function (error) {
+                res.on('error', function (error) {
                     logger_1.logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
+                    console.log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
                     process.exit(36);
                     // Error handling here never triggered TODO
                 });
@@ -742,6 +744,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     if (genesisVersion != mySWversion) {
                         // Software reload
                         logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
+                        console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
                         process.exit(36);
                     }
                 });
