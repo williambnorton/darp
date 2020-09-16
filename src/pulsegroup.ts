@@ -900,10 +900,10 @@ export class AugmentedPulseGroup {
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-       if (this.groupOwner === incomingPulseEntry.geo )   //Is this a groupOwner PULSE?
-          if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {  //GROUP OWNER PULSE w/new bootTimestamp?
+       if (this.groupOwner === incomingPulse.geo )   //Is this a groupOwner PULSE?
+          if ( incomingPulse.bootTimestamp != this.mintTable[1].bootTimestamp ) {  //GROUP OWNER PULSE w/new bootTimestamp?
             console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
-            console.log(ts()+`processIncomingPulse(): ${incomingPulseEntry.bootTimestamp} != ${this.mintTable[1].bootTimestamp}`);            
+            console.log(ts()+`processIncomingPulse(): ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp}`);            
             process.exit(36);
         } 
        //co
@@ -916,7 +916,7 @@ export class AugmentedPulseGroup {
        }
 
        // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-       if (this.groupOwner === incomingPulseEntry.geo ) {  //Is this a groupOwner PULSE?
+       if (this.groupOwner === incomingPulse.geo ) {  //Is this a groupOwner PULSE?
             //if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
             //    console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
             //    process.exit(36);

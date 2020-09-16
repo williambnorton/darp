@@ -749,10 +749,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-            if (_this.groupOwner === incomingPulseEntry.geo) //Is this a groupOwner PULSE?
-                if (incomingPulseEntry.bootTimestamp != _this.mintTable[1].bootTimestamp) { //GROUP OWNER PULSE w/new bootTimestamp?
+            if (_this.groupOwner === incomingPulse.geo) //Is this a groupOwner PULSE?
+                if (incomingPulse.bootTimestamp != _this.mintTable[1].bootTimestamp) { //GROUP OWNER PULSE w/new bootTimestamp?
                     console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we");
-                    console.log(lib_1.ts() + ("processIncomingPulse(): " + incomingPulseEntry.bootTimestamp + " != " + _this.mintTable[1].bootTimestamp));
+                    console.log(lib_1.ts() + ("processIncomingPulse(): " + incomingPulse.bootTimestamp + " != " + _this.mintTable[1].bootTimestamp));
                     process.exit(36);
                 }
             //co
@@ -763,7 +763,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return;
             }
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
-            if (_this.groupOwner === incomingPulseEntry.geo) { //Is this a groupOwner PULSE?
+            if (_this.groupOwner === incomingPulse.geo) { //Is this a groupOwner PULSE?
                 //if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
                 //    console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
                 //    process.exit(36);
