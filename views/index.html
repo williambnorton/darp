@@ -112,7 +112,7 @@
                             var segment2PathSelector=extraordinaryPath.intermediary+"-"+extraordinaryPath.zSide;
 
 
-                            var link=`http://${extraordinaryPath.ipaddr}:${extraordinaryPath.port}/extra?a=${extraordinaryPath.aSide}&i=${extraordinaryPath.intermediary}&z=${extraordinaryPath.zSide}`
+                            var link=`http://${me.ipaddr}:${me.port}/extra?a=${extraordinaryPath.aSide}&i=${extraordinaryPath.intermediary}&z=${extraordinaryPath.zSide}`
                             console.log(`link=${link}`);
 
                             //TODO: use the jquery data update APIs to add/remove rows so we get the sorting feature in jquery UI
@@ -269,7 +269,7 @@
     </script>
 </head>
 <body>    
-    <h1><%= me.geo %> PulseGroup Encrypted Mesh WAN http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %> ALPHA Test 0.6  LINGERING PULSERS !joinAnyNode</h1>
+    <h1><%= me.geo %> PulseGroup Encrypted Mesh WAN http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %> ALPHA Test 0.7 !joinAnyNode</h1>
 
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
