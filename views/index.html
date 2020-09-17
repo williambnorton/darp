@@ -467,10 +467,10 @@
                     <% let classNameGeoOwls = pulseEntry.geo + "_owls"; %>
                     <td><%= pulseEntry.lastMsg.length %></td>  <!-- pulse message size -->
                     <!-- <td class="<%= classNameGeoOwls %>"><%= pulseEntry.owls.substring(0, OWLS_DISPLAYED) %></td> -->
-                    <td><%= pulseEntry.owls.substring(0,OWLS_DISPLAYED) %></td>
+                    <td class="<%= classNameGeoOwls %>"> <%= pulseEntry.owls.substring(0,OWLS_DISPLAYED) %> </td>
                 <% } else { %>
-                    <td>""</td>
-                    <td>""</td>
+                    <td>"badpulse"</td>
+                    <td>"badpulse"</td>
                 <% } %>
                 
                 <% var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago"; %>
