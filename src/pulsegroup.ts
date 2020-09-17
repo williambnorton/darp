@@ -929,9 +929,10 @@ export class AugmentedPulseGroup {
 
        // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulse.geo ) {  //Is this a groupOwner PULSE?
-          if ( incomingPulse.bootTimestamp != this.mintTable[1].bootTimestamp ) {  //GROUP OWNER PULSE w/new bootTimestamp?
-             console.log(ts()+`processIncomingPulse(): new bootTimestamp from genesis node - it rebooted so so shall we`);
-             console.log(ts()+`processIncomingPulse(): ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp}`);            
+        if (( incomingPulse.bootTimestamp != this.mintTable[1].bootTimestamp ) ||  //GROUP OWNER PULSE w/new bootTimestamp?
+            ( incomingPulse.version != this.mintTable[1].version )) {  //GROUP OWNER running same SW as us?
+                console.log(ts()+`processIncomingPulse(): new bootTimestamp or new software reuirement from genesis node - it rebooted so so shall we`);
+             console.log(ts()+`processIncomingPulse(): NEW SOFTWARE ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp} || ${incomingPulse.version} != ${this.mintTable[1].version}`);            
              process.exit(36);
           }
         } 
