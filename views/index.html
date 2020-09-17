@@ -310,11 +310,11 @@
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
                     <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
                     <tr class="<%= classNameUp %>">
-                        <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= srcMintEntry.geo %> <%= srcMintEntry.mint %></a></td>
+                        <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= srcMintEntry.mint %> <%= srcMintEntry.geo %> </a></td>
                  
                 <% } else { %>
                     <% let classNameNr = srcMintEntry.geo + " NR"; %>
-                    <tr class="<%= classNameNr %>"><td><%= srcMintEntry.mint %>-<%= srcMintEntry.geo %> </td>
+                    <tr class="<%= classNameNr %>"><td><%= srcMintEntry.mint %> <%= srcMintEntry.geo %> </td>
 
                 <% } %>
 
