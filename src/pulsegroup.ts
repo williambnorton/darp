@@ -887,7 +887,7 @@ export class AugmentedPulseGroup {
 
         const url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
-        console.log(`checkSWversion()`);
+        //console.log(`checkSWversion()`);
         http.get(url, (res) => {
             res.setEncoding("utf8");
             let body = "";

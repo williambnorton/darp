@@ -724,7 +724,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
                 "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
-            console.log("checkSWversion()");
+            //console.log(`checkSWversion()`);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
                 var body = "";
