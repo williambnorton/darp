@@ -467,7 +467,7 @@
                     <% let classNameGeoOwls = pulseEntry.geo + "_owls"; %>
                     <td><%= pulseEntry.lastMsg.length %></td>  <!-- pulse message size -->
                     <!-- <td class="<%= classNameGeoOwls %>"><%= pulseEntry.owls.substring(0, OWLS_DISPLAYED) %></td> -->
-                    <td class="<%= classNameGeoOwls %>"> <%= pulseEntry.owls.substring(0,OWLS_DISPLAYED) %> </td>
+                    <td class="<%= classNameGeoOwls %>"> <%= pulseEntry.owls.substring(0,20) %> </td>
                 <% } else { %>
                     <td>"badpulse"</td>
                     <td>"badpulse"</td>
