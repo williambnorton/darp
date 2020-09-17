@@ -104,22 +104,6 @@ app.get('/extra/:src/:intermediary/:dst', function (req, res) {
     var intermediary = req.params.intermediary;
     var txt = '';
     txt += grapher_1.grapher(src, dest); //get the HTML to display and show graph
-    // txt+='<meta http-equiv="refresh" content="'+60+'">';
-    // txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
-    // var myYYMMDD=YYMMDD();
-    // var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
-    // try {
-    //     if (fs.existsSync(path)) {
-    //         txt+=fs.readFileSync(path);
-    //         console.log(`found graph data file ${path}:${txt}`);
-    //     }
-    //     else console.log("could not find live pulseGroup graph data from "+path);
-    // } catch(err) {
-    //     return console.error(err)
-    // }
-    // txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
-    // txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
-    // console.log(`graph txt=${txt}`);
     res.end(txt);
     return;
 });
