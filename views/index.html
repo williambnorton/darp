@@ -112,7 +112,7 @@
                             var segment2PathSelector=extraordinaryPath.intermediary+"-"+extraordinaryPath.zSide;
 
 
-                            var link=`http://${destIP}:${destPort}/extra?a=${extraordinaryPath.aSide}&i=${extraordinaryPath.intermediary}&z=${extraordinaryPath.zSide}`
+                            var link=`http://${extraordinaryPath.ipaddr}:${extraordinaryPath.port}/extra?a=${extraordinaryPath.aSide}&i=${extraordinaryPath.intermediary}&z=${extraordinaryPath.zSide}`
                             console.log(`link=${link}`);
 
                             //TODO: use the jquery data update APIs to add/remove rows so we get the sorting feature in jquery UI
