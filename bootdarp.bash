@@ -151,7 +151,7 @@ do
     kill -9 `ps aux |grep -v grep | grep index | awk '{ print $1}'`
 
 
-
+    ps aux
 
 
 
