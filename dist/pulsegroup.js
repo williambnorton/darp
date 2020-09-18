@@ -545,7 +545,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
             _this.buildMatrix(); //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
-            //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
+            //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
             var fs = require('fs');
             var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
             //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
@@ -775,7 +775,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + " -it is OK for a few of these to show up during transditions. ");
                 return;
             }
-            var filename = incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+            var filename = incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
             fs.appendFile(filename, incomingPulse.lastMsg + "/n", function (err) {
                 if (err)
                     throw err;
@@ -887,12 +887,18 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     incomingPulseEntry.history.shift(); // drop off the last sample
                 }
                 var d = new Date(incomingPulseEntry.pulseTimestamp);
-                if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples
+                if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples - once a minute
                     incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)));
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
                         incomingPulseEntry.history.shift(); // drop off the last sample
                     }
+                    var filename = incomingPulse.geo + ".medianHistory.txt"; //once a minute peel off the median history and store for later grapher calls
+                    var str = JSON.stringify(incomingPulseEntry.medianHistory);
+                    fs.writeFile(filename, str, function (err) {
+                        if (err)
+                            throw err;
+                    });
                 }
                 // TODO: Also resync if the groupOwner has removed an item
                 _this.storeOWL(incomingPulse.geo, _this.mintTable[0].geo, incomingPulse.mint); // store pulse latency To me

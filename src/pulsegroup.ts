@@ -5,7 +5,7 @@ import os = require("os");
 import http = require("http");
 import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
-import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts  } from "./lib";
+import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD  } from "./lib";
 import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
@@ -701,7 +701,7 @@ export class AugmentedPulseGroup {
         this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
         
         
-        //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem
+        //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
             const fs = require('fs');
             let copy = JSON.parse(JSON.stringify(this));  //make a copy -//remove stuff - this file will be fetched and procesed by many
                 //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
@@ -947,7 +947,7 @@ export class AugmentedPulseGroup {
 
 
        var filename = incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
-       fs.appendFile(filename, incomingPulse.lastMsg+"/n", (err) => {  //appended RAW pulse message asynchronously
+       fs.appendFile(filename, incomingPulse.lastMsg+"/n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
                if (err) throw err;
        });
 
@@ -1067,7 +1067,7 @@ export class AugmentedPulseGroup {
             }
 
             var d = new Date(incomingPulseEntry.pulseTimestamp);
-            if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples
+            if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples - once a minute
                 incomingPulseEntry.medianHistory.push(
                     Math.round(median(incomingPulseEntry.history))
                 );
@@ -1075,6 +1075,19 @@ export class AugmentedPulseGroup {
                 if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
                     incomingPulseEntry.history.shift(); // drop off the last sample
                 }
+
+
+
+
+                var filename = incomingPulse.geo + ".medianHistory.txt";    //once a minute peel off the median history and store for later grapher calls
+                var str=JSON.stringify(incomingPulseEntry.medianHistory);
+                fs.writeFile(filename, str, (err) => {  //appended asynchronously
+                        if (err) throw err;
+                });
+
+
+
+
             }
 
             // TODO: Also resync if the groupOwner has removed an item
