@@ -775,6 +775,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + " -it is OK for a few of these to show up during transditions. ");
                 return;
             }
+            var filename = incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+            fs.appendFile(filename, incomingPulse.lastMsg + "/n", function (err) {
+                if (err)
+                    throw err;
+            });
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulse.geo) { //Is this a groupOwner PULSE?
                 //if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
