@@ -95,7 +95,7 @@ export class Config {
 //            process.exit(86);
 //        }
         this.GENESIS = process.env.GENESIS||"";
-        if (this.GENESIS=="") {
+        if (this.GENESIS=="" || this.GENESIS=="auto") {
             console.log(`Finding a GENESIS node to connect to`);
             let genesisNodeList=process.env.GENESISNODELIST;
             console.log(`I am ${this.IP} genesisNodeList=${genesisNodeList}`);
@@ -118,7 +118,8 @@ export class Config {
                     this.GENESIS=this.IP;
                 }
             } else {
-                console.log(`pulseGroup(): We have no GENESISNODELIST `);
+                console.log(`pulseGroup(): We have no GENESISNODELIST EXITTING `);
+                process.exit(86);
             }
         }
 
@@ -409,36 +410,6 @@ export class AugmentedPulseGroup {
                 }
             }
         }
-
-/*
-        //var deletedMint = -1;
-        for (var pulseLabel in this.pulses) {
-            const pulseEntry = this.pulses[pulseLabel];
-            if (pulseEntry.ipaddr == ipaddr && pulseEntry.port == port) {
-                logger.warning(`deleteNode: deleting pulse ${pulseLabel}`);
-                console.log(`deleteNode: deleting pulse ${pulseLabel}`);
-                //deletedMint = pulseEntry.mint;
-                delete this.pulses[pulseLabel];
-            }
-        }
-*/
-
-        /*  delete code
-        //remove mint from the group owner's owls list
-        if (this.isGenesisNode()) {
-            var groupOwnerPulseLabel = this.groupOwner + ":" + this.groupName;
-            var groupOwnerPulseEntry = this.pulses[groupOwnerPulseLabel];
-            if (groupOwnerPulseEntry != null) {
-                var owlEntryAry = groupOwnerPulseEntry.owls.split(",");
-                var newOwls = ""; // copy all but deleted OWLs to control population
-                for (var o in owlEntryAry) {
-                    if (parseInt(owlEntryAry[o]) != deletedMint) {
-                        newOwls += owlEntryAry[o] + ",";
-                    }
-                }
-            }
-        }
-        /***/
 
         this.nodeCount = Object.keys(this.pulses).length;
     };

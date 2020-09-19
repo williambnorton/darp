@@ -13,4 +13,5 @@ echo `date` Building the docker container
 docker build --no-cache -t williambnorton/darp . && docker push williambnorton/darp
 echo `date` New docker `ls Build*`
 echo `date` Finished $0 Force genesis node to reload SW and the group will follow
-#./builddarp.bash #always force a updateSW
+
+./builddarp.bash              ####This deals with a timing issue - nodes keep reloading trying to get same SW as genesis, but it is not possible
