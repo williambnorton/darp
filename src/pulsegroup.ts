@@ -669,7 +669,7 @@ export class AugmentedPulseGroup {
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
-        this.buildMatrix();    //goes way - eventually remove this - it is easy enough to search existing pulse OWLs with getOWLs.from()
+        this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
         
         
         //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
@@ -689,7 +689,7 @@ export class AugmentedPulseGroup {
             let filename=this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously`);
+                console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
         //}
 
