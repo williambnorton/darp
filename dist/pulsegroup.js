@@ -127,15 +127,15 @@ var Config = /** @class */ (function () {
                 }
                 if (!isGenesisNode) {
                     this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
-                    console.log("Setting random genesis node: " + this.GENESIS);
+                    console.log("============================================================== Setting random genesis node: " + this.GENESIS);
                 }
                 else {
-                    console.log("WE ARE GENESIS NODE");
+                    console.log("============================================================== WE ARE GENESIS NODE at " + this.IP);
                     this.GENESIS = this.IP;
                 }
             }
             else {
-                console.log("pulseGroup(): We have no GENESISNODELIST EXITTING ");
+                console.log("================ pulseGroup(): We have no GENESISNODELIST EXITTING ");
                 process.exit(86);
             }
         }
