@@ -494,7 +494,7 @@ export class AugmentedPulseGroup {
             //nodeList.push(new NodeAddress(mint2IP(pulseEntry.mint), SECURE_PORT)); // wbnwbn send to secure channel also
             pulseEntry.outPulses++;
 
-            // this section flags "interesting" cells to click on and explore
+            // this section flags "interesting" cells to click on and explore (Compute cost: order N)
             var flag = "";
             if (pulseEntry.owl == NO_MEASURE) {
                 owls += pulseEntry.mint + ",";
@@ -1040,7 +1040,7 @@ export class AugmentedPulseGroup {
             var d = new Date(incomingPulseEntry.pulseTimestamp);
             if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60 ) {   //no median until we have 60 samples - once a minute
                 incomingPulseEntry.medianHistory.push(
-                    Math.round(median(incomingPulseEntry.history))
+                    Math.round(median(incomingPulseEntry.history))   //wbnwbnwbn TODO: Here push { ts:timestamp, data: dataPoint }
                 );
                                 // store 60 samples
                 if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
