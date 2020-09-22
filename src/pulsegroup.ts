@@ -123,6 +123,11 @@ export class Config {
             }
         }
 
+        var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
+        fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
+                if (err) throw err;
+        });
+
 
         var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
         if (!PUBLICKEY) {

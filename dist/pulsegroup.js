@@ -139,6 +139,11 @@ var Config = /** @class */ (function () {
                 process.exit(86);
             }
         }
+        var filename = "../GENESIS." + this.GENESIS + ":" + this.GENESISPORT;
+        fs.appendFile(filename, this.GENESIS + ":" + this.GENESISPORT, function (err) {
+            if (err)
+                throw err;
+        });
         var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
         if (!PUBLICKEY) {
             try {
