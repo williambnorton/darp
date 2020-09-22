@@ -686,7 +686,7 @@ export class AugmentedPulseGroup {
             delete copy.config;                         
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
-            let filename=this.config.IP+"."+this.config.PORT+'.json';
+            let filename="../"+this.config.IP+"."+this.config.PORT+'.json';
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
@@ -919,7 +919,7 @@ export class AugmentedPulseGroup {
        }
 
 
-       var filename = incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+       var filename = "../"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
        fs.appendFile(filename, incomingPulse.lastMsg+"/n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
                if (err) throw err;
        });
@@ -1052,7 +1052,7 @@ export class AugmentedPulseGroup {
 
 
 
-                var filename = incomingPulse.geo + ".medianHistory.txt";    //once a minute peel off the median history and store for later grapher calls
+                var filename = "../"+incomingPulse.geo + ".medianHistory.txt";    //once a minute peel off the median history and store for later grapher calls
                 var str=JSON.stringify(incomingPulseEntry.medianHistory);
                 fs.writeFile(filename, str, (err) => {  //appended asynchronously
                         if (err) throw err;

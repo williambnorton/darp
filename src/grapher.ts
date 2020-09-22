@@ -76,7 +76,7 @@ $(function() {
 export function grapherStoreOwls(src: String, dst: String, dataPoints: String) {
     //var d = new Date();
     //var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
-    var filename = src + "-" + dst + "." + YYMMDD() + ".txt";
+    var filename = "../"+src + "-" + dst + "." + YYMMDD() + ".txt";  //filepath assumes running in /dist folder
     //console.log("storeOwl() About to store sample "+owl+" in ("+filename+") owl measurement:"+sample); //INSTRUMENTATION POINT
     //if (owl > 2000 || owl < 0) {
     //    console.log("storeOWL(src=" + src + " dst=" + dst + " owl=" + owl + ") one-way latency out of spec: " + owl + "STORING...0");

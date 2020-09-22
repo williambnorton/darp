@@ -214,7 +214,7 @@ var fs = require('fs');
 app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    var filename = me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
+    var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
@@ -230,7 +230,7 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
 app.get('/me', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    var filename = me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
+    var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
     console.log("/me sending contents of " + filename);
     try {
         var fileContents = fs.readFileSync(filename);

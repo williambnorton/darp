@@ -531,7 +531,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             delete copy.receiver;
             delete copy.config;
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-            var filename = _this.config.IP + "." + _this.config.PORT + '.json';
+            var filename = "../" + _this.config.IP + "." + _this.config.PORT + '.json';
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
@@ -748,7 +748,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + " -it is OK for a few of these to show up during transditions. ");
                 return;
             }
-            var filename = incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
+            var filename = "../" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
             fs.appendFile(filename, incomingPulse.lastMsg + "/n", function (err) {
                 if (err)
                     throw err;
@@ -867,7 +867,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
                         incomingPulseEntry.history.shift(); // drop off the last sample
                     }
-                    var filename = incomingPulse.geo + ".medianHistory.txt"; //once a minute peel off the median history and store for later grapher calls
+                    var filename = "../" + incomingPulse.geo + ".medianHistory.txt"; //once a minute peel off the median history and store for later grapher calls
                     var str = JSON.stringify(incomingPulseEntry.medianHistory);
                     fs.writeFile(filename, str, function (err) {
                         if (err)
