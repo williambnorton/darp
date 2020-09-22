@@ -111,7 +111,7 @@ var Config = /** @class */ (function () {
         //        }
         this.GENESIS = process.env.GENESIS || "";
         if (this.GENESIS == "" || this.GENESIS == "auto") {
-            console.log("Finding a GENESIS node to connect to");
+            console.log("===================                                             Finding a GENESIS node to connect to");
             var genesisNodeList = process.env.GENESISNODELIST;
             console.log("I am " + this.IP + " genesisNodeList=" + genesisNodeList);
             if (genesisNodeList) {
