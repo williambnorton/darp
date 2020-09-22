@@ -925,7 +925,7 @@ export class AugmentedPulseGroup {
 
 
        var filename = "../"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
-       fs.appendFile(filename, incomingPulse.lastMsg+"/n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
+       fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
                if (err) throw err;
        });
 

@@ -754,7 +754,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return;
             }
             var filename = "../" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
-            fs.appendFile(filename, incomingPulse.lastMsg + "/n", function (err) {
+            fs.appendFile(filename, incomingPulse.lastMsg + "\n", function (err) {
                 if (err)
                     throw err;
             });

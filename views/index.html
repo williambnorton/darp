@@ -165,7 +165,7 @@
                     var d = new Date();
                     var tsNow=d.getTime();
                     var timeStr=d.toString().split(' ')[4];
-                    $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((tsNow-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>" ); //we show this epoch
+                    $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((tsNow-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>HIT %R to refresh the page if you see partial matrix" ); //we show this epoch
                     $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));  //wbnwbnwbnwbnwbnwnbn
 
                     // Render table from information in the state fetched from node
@@ -309,8 +309,10 @@
                 <% if (srcMintEntry.state == "UP") { %>
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
                     <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
+                    <% var leadingDigitMint="0"+srcMintEntry.mint; %>
+                    <%  leadingDigitMint=leadingDigitMint.slice(-2); %>
                     <tr class="<%= classNameUp %>">
-                        <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= srcMintEntry.mint %> <%= srcMintEntry.geo %> </a></td>
+                        <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= leadingDigitMint %> <%= srcMintEntry.geo %> </a></td>
                  
                 <% } else { %>
                     <% let classNameNr = srcMintEntry.geo + " NR"; %>
