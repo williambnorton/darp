@@ -1057,7 +1057,7 @@ export class AugmentedPulseGroup {
 
 
 
-                var filename = "../"+incomingPulse.geo + ".medianHistory.txt";    //once a minute peel off the median history and store for later grapher calls
+                var filename = "../"+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.txt";    //once a minute peel off the median history and store for later grapher calls
                 var str=JSON.stringify(incomingPulseEntry.medianHistory);
                 fs.writeFile(filename, str, (err) => {  //appended asynchronously
                         if (err) throw err;

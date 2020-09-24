@@ -872,7 +872,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
                         incomingPulseEntry.history.shift(); // drop off the last sample
                     }
-                    var filename = "../" + incomingPulse.geo + ".medianHistory.txt"; //once a minute peel off the median history and store for later grapher calls
+                    var filename = "../" + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.txt"; //once a minute peel off the median history and store for later grapher calls
                     var str = JSON.stringify(incomingPulseEntry.medianHistory);
                     fs.writeFile(filename, str, function (err) {
                         if (err)
