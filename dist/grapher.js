@@ -13,8 +13,10 @@ function grapher(src, dest) {
             // file exists
             var data = fs.readFileSync(path, "UTF-8").toString();
             // split the contents by new line
-            var lines = data.split(/\r?\n/);
+            var dataPoints = JSON.parse(data);
             console.log("grapher() " + path + " exists data=" + data);
+            for (var d in dataPoints)
+                txt += "{ \"data\" : " + dataPoints[d] + " },";
             //            var last300: string[] = []; // show 5*60 samples - four hours of medianhistory and 1 minute of second by second
             //            // print all lines
             //            lines.forEach((line: string) => {
