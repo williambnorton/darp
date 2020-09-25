@@ -19,7 +19,10 @@ SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=100 # of cycles before stopping
 
 #This is a starting list of Bill's public genesis nodes located across clouds 
-export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
+#export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
+GENESISNODELIST=`cat genesis.config`
+export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`
+
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
 
 echo EXITTING $0
