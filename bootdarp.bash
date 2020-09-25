@@ -20,6 +20,7 @@ MAXCYCLES=100 # of cycles before stopping
 
 #This is a starting list of Bill's public genesis nodes located across clouds 
 export GENESISNODELIST=`cat genesis.config`
+echo starting list of genesis nodes : $GENESISNODELIST
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
