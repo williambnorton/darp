@@ -23,6 +23,12 @@ export GENESISNODELIST=`cat genesis.config|sed '1,$s/ \t\n\r/,/g'`
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
 
 
+
+
+exit 2
+
+
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
