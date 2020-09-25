@@ -19,8 +19,8 @@ SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=100 # of cycles before stopping
 
 #This is a starting list of Bill's public genesis nodes located across clouds 
-export GENESISNODELIST=`cat genesis.config|sed '1,$s/ /,/g'`
-echo starting list of genesis nodes : $GENESISNODELIST
+export GENESISNODELIST=`cat genesis.config|sed '1,$s/ \t\n\r/,/g'`
+echo `date` Starting list of genesis nodes : $GENESISNODELIST
 
 unameOut="$(uname -s)"
 case "${unameOut}" in
