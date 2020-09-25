@@ -13,17 +13,14 @@
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #
-echo `date` "------------------ $0 STARTING DARP v0.5 --------------------" 
+echo `date` "------------------ $0 STARTING DARP v1.0 --------------------" 
 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=100 # of cycles before stopping
 
-#This is a list of 50 genesis nodes collected from clouds
-export GENESISNODELIST=138.91.172.190,40.112.50.65,40.127.188.109,52.233.170.100,13.70.39.116,13.76.221.15,52.240.148.3,104.215.99.105,52.176.160.128,40.70.41.9,20.48.23.201,191.237.254.39,20.193.66.26,13.73.116.142,13.71.23.119,52.172.3.173,52.228.59.73,52.250.10.210,51.11.143.229,52.231.12.15,52.231.143.200,51.103.23.44,102.37.49.240,40.123.229.233,51.103.151.110,51.116.114.238
-# we will use feew so we can test the group code
-#export GENESISNODELIST=20.48.23.201,51.11.143.229,51.103.23.44,51.116.114.238,52.176.160.128,51.116.114.238
-#AWSnodes=35.183.12.252,54.66.225.145,52.10.8.19,54.183.237.188,3.14.252.23,157.175.82.116,13.244.111.113,13.233.206.71,18.162.246.217,100.25.119.250,3.8.160.148,54.246.137.23,3.121.201.31,15.161.44.84,54.95.7.86
-#This is a list of Azure nodes
+#This is a starting list of Bill's public genesis nodes located across clouds 
+export GENESISNODELIST=`cat genesis.config`
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
