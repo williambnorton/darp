@@ -1058,8 +1058,10 @@ export class AugmentedPulseGroup {
 
 
                 var filename = "../"+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
+                console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
+
                 var dataPoints=incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
-                console.log(`writing datapoints ${dataPoints}`);
+                console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
                 var str=JSON.stringify(dataPoints);
                 fs.writeFile(filename, str, (err) => {  //appended asynchronously
                         if (err) throw err;
