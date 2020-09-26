@@ -35,14 +35,14 @@ $(function() {
 
 //    var path = src + "-medians" + myYYMMDD + ".txt";
     var path = "../" + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
-    console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
+    //console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
     try {
         if (fs.existsSync(path)) {
             // file exists
             const data = fs.readFileSync(path, "UTF-8").toString();
             // split the contents by new line
             const dataPoints=JSON.parse(data);
-            console.log(`grapher() ${path} exists data=${data}`);
+            //console.log(`grapher() ${path} exists data=${data}`);
 
             var x=0;
             for (var d in dataPoints)
@@ -58,7 +58,7 @@ $(function() {
 //                    last300.shift(); // drop first entries
 //            });
 //            txt += last300.join("\n");
-            console.log(`going to send txt=${txt}`);
+            //console.log(`going to send txt=${txt}`);
 
         } else {
             console.log("could not find live pulseGroup graph data from " + path);
