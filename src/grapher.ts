@@ -44,8 +44,9 @@ $(function() {
             const dataPoints=JSON.parse(data);
             console.log(`grapher() ${path} exists data=${data}`);
 
+            var x=0;
             for (var d in dataPoints)
-                txt+=`{ "data" : ${dataPoints[d]} },`
+                txt+=`{ x : ${++x}, y : ${dataPoints[d]} },`
 
 
 //            var last300: string[] = []; // show 5*60 samples - four hours of medianhistory and 1 minute of second by second
@@ -58,6 +59,7 @@ $(function() {
 //            });
 //            txt += last300.join("\n");
             console.log(`going to send txt=${txt}`);
+
         } else {
             console.log("could not find live pulseGroup graph data from " + path);
             txt += `/* grapher() could not find live pulseGroup graph data from ${path} */`;
