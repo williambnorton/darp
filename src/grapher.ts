@@ -35,7 +35,7 @@ $(function() {
 
 //    var path = src + "-medians" + myYYMMDD + ".txt";
     var path = "../" + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
-    console.log(`grapher(): reading path=${path}`);
+    console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
     try {
         if (fs.existsSync(path)) {
             // file exists
@@ -57,6 +57,7 @@ $(function() {
 //                    last300.shift(); // drop first entries
 //            });
 //            txt += last300.join("\n");
+            console.log(`going to send txt=${txt}`);
         } else {
             console.log("could not find live pulseGroup graph data from " + path);
             txt += `/* grapher() could not find live pulseGroup graph data from ${path} */`;

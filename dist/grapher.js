@@ -7,7 +7,7 @@ function grapher(src, dest) {
     var txt = "\n<!DOCTYPE HTML>\n<meta http-equiv=\"refresh\" content=\"60\">\n<html>\n<head>\n<title>" + src + "-" + dest + " " + myYYMMDD + "</title> \n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery-1.11.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery.canvasjs.min.js\"></script>\n<script type=\"text/javascript\">\n$(function() {\n\t$(\".chartContainer\").CanvasJSChart({\n\t\ttitle: {\n\t\t\ttext: \"" + src + " -> " + dest + " " + myYYMMDD + " \"\n\t\t},\n\t\taxisY: {\n\t\t\ttitle: \"latency in ms\",\n\t\t\tincludeZero: false\n\t\t},\n\t\taxisX: {\n\t\t\tinterval: 1\n\t\t},\n\t\tdata: [\n\t\t{\n\t\t\ttype: \"line\", //try changing to column, area\n\t\t\ttoolTipContent: \"{label}: {y} ms\",\n\t\t\tdataPoints: [\n                //fetched data from file goes here\n                ";
     //    var path = src + "-medians" + myYYMMDD + ".txt";
     var path = "../" + src + "-" + dest + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
-    console.log("grapher(): reading path=" + path);
+    console.log("grapher(): src=" + src + " - " + dest + " reading path=" + path);
     try {
         if (fs.existsSync(path)) {
             // file exists
@@ -26,6 +26,7 @@ function grapher(src, dest) {
             //                    last300.shift(); // drop first entries
             //            });
             //            txt += last300.join("\n");
+            console.log("going to send txt=" + txt);
         }
         else {
             console.log("could not find live pulseGroup graph data from " + path);
