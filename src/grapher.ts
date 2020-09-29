@@ -45,6 +45,7 @@ $(function() {
             //console.log(`grapher() ${path} exists data=${data}`);
 
             var x=0;
+            console.log(`grapher(): dataPoint count=${dataPoints.length}`);
             for (var d in dataPoints)
                 txt+=`{ x : ${++x}, y : ${dataPoints[d]} },`
 

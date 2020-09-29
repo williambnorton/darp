@@ -16,6 +16,7 @@ function grapher(src, dest) {
             var dataPoints = JSON.parse(data);
             //console.log(`grapher() ${path} exists data=${data}`);
             var x = 0;
+            console.log("grapher(): dataPoint count=" + dataPoints.length);
             for (var d in dataPoints)
                 txt += "{ x : " + ++x + ", y : " + dataPoints[d] + " },";
             //            var last300: string[] = []; // show 5*60 samples - four hours of medianhistory and 1 minute of second by second

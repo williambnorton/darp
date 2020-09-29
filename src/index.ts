@@ -301,7 +301,7 @@ app.get('/nodefactory', function(req, res) {
 
 
     if (myPulseGroup.nodeCount>=5) {
-        console.log(ts()+`EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST`);
+        console.log(ts()+`EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null)); 
         return;
