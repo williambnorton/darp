@@ -297,6 +297,11 @@ app.get('/nodefactory', function (req, res) {
     //  Or - Handle pulseGroup member case
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    if (myPulseGroup.nodeCount > 5) {
+        console.log(ts() + "EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST");
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(null));
+    }
     if (myPulseGroup.groupOwner != me.geo) {
         console.log("I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE " + redirectedURL + " ");
         var redirectedURL = 'http://' + genesis.ipaddr + ":" + genesis.port + req.originalUrl;
