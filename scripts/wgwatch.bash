@@ -27,7 +27,7 @@ fi
 echo $$ >/tmp/wgwatch.pid
 
 docker inspect -f '{{ .Created }}' `docker ps | grep -v CONTAINER | awk '{ print $1}'` >DOCKER_SW_VERSION
-echo `dte` Running Docker Version `cat DOCKER_SW_VERSION`
+echo `date` Running DARP Docker Created `cat DOCKER_SW_VERSION`
 
 while :
 do

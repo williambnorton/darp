@@ -35,7 +35,7 @@ $(function() {
 
 //    var path = src + "-medians" + myYYMMDD + ".txt";
     var path = "../" + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
-    //console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
+    console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
     try {
         if (fs.existsSync(path)) {
             // file exists
@@ -84,6 +84,7 @@ $(function() {
 }
 
 export function grapherStoreOwls(src: String, dst: String, dataPoints: String) {
+    return; //This created 5MB of measures! Use the cached last medians instead for graphing
     //var d = new Date();
     //var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var filename = "../"+src + "-" + dst + "." + YYMMDD() + ".txt";  //filepath assumes running in /dist folder
