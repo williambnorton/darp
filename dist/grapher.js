@@ -38,6 +38,7 @@ function grapher(src, dest) {
         return console.error(err);
     }
     txt += "]\n\t\t}\n\t\t]\n\t});\n});\n</script>\n</head>\n<body>\n<div class=\"chartContainer\" style=\"height: 300px; width: 100%;\"></div>\n</body>\n</html>\n";
+    console.log("grapher returning txt=" + txt);
     return txt;
 }
 exports.grapher = grapher;

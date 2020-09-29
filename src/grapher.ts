@@ -80,6 +80,7 @@ $(function() {
 </body>
 </html>
 `;
+console.log(`grapher returning txt=${txt}`);
     return txt;
 }
 
