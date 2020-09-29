@@ -3,7 +3,7 @@
 import express = require('express');
 import ejs = require('ejs');
 import { logger, LogLevel } from './logger';
-import { dump, Log, now } from './lib';
+import { dump, Log, now, ts } from './lib';
 import { grapher } from './grapher';
 import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup, PulseGroups } from './pulsegroup';
 

@@ -298,7 +298,7 @@ app.get('/nodefactory', function (req, res) {
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     if (myPulseGroup.nodeCount > 5) {
-        console.log(ts() + "EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST");
+        console.log(lib_1.ts() + "EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null));
     }
