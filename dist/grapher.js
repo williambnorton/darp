@@ -43,7 +43,7 @@ function grapher(src, dest) {
 }
 exports.grapher = grapher;
 function grapherStoreOwls(src, dst, dataPoints) {
-    return; //This created 5MB of measures! Use the cached last medians instead for graphing
+    return; //This created 5MB of measures! Use the cached last medians instead for graphing, and raw pulses 
     //var d = new Date();
     //var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var filename = "../" + src + "-" + dst + "." + lib_1.YYMMDD() + ".txt"; //filepath assumes running in /dist folder

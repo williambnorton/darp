@@ -85,7 +85,7 @@ console.log(`grapher returning txt=${txt}`);
 }
 
 export function grapherStoreOwls(src: String, dst: String, dataPoints: String) {
-    return; //This created 5MB of measures! Use the cached last medians instead for graphing
+    return; //This created 5MB of measures! Use the cached last medians instead for graphing, and raw pulses 
     //var d = new Date();
     //var sampleLabel=d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     var filename = "../"+src + "-" + dst + "." + YYMMDD() + ".txt";  //filepath assumes running in /dist folder
