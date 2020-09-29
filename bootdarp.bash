@@ -52,8 +52,9 @@ MYIP=`curl ifconfig.io`
 #MYIP=`curl https://ip.noia.network/|sed '1,$s/\"//g'`  #NOIA has extra "surrounding"
 echo `date` "MYIP fetch rc=$? MYIP=$MYIP"
 export MYIP=$MYIP
-echo `date` MYIP=$MYIP
-#MAY NOT NEED TO DO THIS ANYMORE - done in code
+echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
+
+
 
 #if [ "$GENESIS" == "" ]; then
 #    echo `date` $0 You must specify a genesis node 
