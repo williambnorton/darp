@@ -1156,6 +1156,10 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
                     res.on("end", function () {
                         var newPulseGroup = JSON.parse(data);
                         logger_1.logger.info("getPulseGroup(): from node factory: " + lib_1.dump(newPulseGroup));
+                        if (newPulseGroup == null) {
+                            console.log("ERROR: Genesis node refused connection request @" + pulseGroupObjectURL + " exitting...");
+                            process.exit(36); //reload software and take another pass
+                        }
                         if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
                             logger_1.logger.info("getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.");
                         }

@@ -1319,7 +1319,10 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
             res.on("end", () => {
                 var newPulseGroup: PulseGroup = JSON.parse(data);
                 logger.info(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
-
+                if (newPulseGroup==null) {
+                    console.log(`ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    process.exit(36);  //reload software and take another pass
+                }
                 if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
                     logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
                 } else {
