@@ -9,7 +9,7 @@ import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, Puls
 
 
 logger.setLevel(LogLevel.WARNING);
-
+const MAXNODES=10;
 
 // Load config
 
@@ -300,7 +300,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    if (myPulseGroup.nodeCount>=5) {
+    if (myPulseGroup.nodeCount>=MAXNODES) {
         console.log(ts()+`EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null)); 
