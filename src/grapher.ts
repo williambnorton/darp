@@ -45,10 +45,15 @@ $(function() {
             //console.log(`grapher() ${path} exists data=${data}`);
 
             var x=0;
+            var t=new Date();
+            var timeStamp=t.getTime();
             console.log(`grapher(): dataPoint count=${dataPoints.length}`);
-            for (var d in dataPoints)
-                txt+=`{ x : ${++x}, y : ${dataPoints[d]} },`
-
+            //We know the last 60 are second-by second measures
+            //Before that are median measures
+            for (var d in dataPoints) {
+                if (dataPoints.length-x < 60*5)
+                     txt+=`{ x : ${++x}, y : ${dataPoints[d]} },`
+            }
 
 //            var last300: string[] = []; // show 5*60 samples - four hours of medianhistory and 1 minute of second by second
 //            // print all lines
