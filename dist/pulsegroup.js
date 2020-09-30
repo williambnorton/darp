@@ -872,16 +872,16 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
                         incomingPulseEntry.history.shift(); // drop off the last sample
                     }
-                    var filename = "../" + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
-                    //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
-                    var dataPoints = incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
-                    //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
-                    var str = JSON.stringify(dataPoints);
-                    fs.writeFile(filename, str, function (err) {
-                        if (err)
-                            throw err;
-                    });
                 }
+                var filename = "../" + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
+                //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
+                var dataPoints = incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
+                //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
+                var str = JSON.stringify(dataPoints);
+                fs.writeFile(filename, str, function (err) {
+                    if (err)
+                        throw err;
+                });
                 // TODO: Also resync if the groupOwner has removed an item
                 _this.storeOWL(incomingPulse.geo, _this.mintTable[0].geo, incomingPulse.mint); // store pulse latency To me
             }

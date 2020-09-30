@@ -1054,7 +1054,7 @@ export class AugmentedPulseGroup {
                     incomingPulseEntry.history.shift(); // drop off the last sample
                 }
 
-
+            }
 
 
                 var filename = "../"+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
@@ -1070,7 +1070,7 @@ export class AugmentedPulseGroup {
 
 
 
-            }
+            
 
             // TODO: Also resync if the groupOwner has removed an item
            this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
