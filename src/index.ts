@@ -182,6 +182,22 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
                 
                 let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));  // clone my pulseGroup obecjt 
                 clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
+
+
+
+                //TODO: Here clear the clone's history and median history for each pulse @wbnwbnwbn
+                //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
+                //Also clear the mintTable lastOWL and PulseTimestamps
+                for (var m in clonedPulseGroup.pulses) {
+                    clonedPulseGroup.pulses[m].history=clonedPulseGroup.pulses[m].medianHistory=[];
+                    clonedPulseGroup.pulses[m].pulseTimestamp=0;
+                    //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+                }
+                for (var m in clonedPulseGroup.mintTable) {
+                    clonedPulseGroup.pulses[m].pulseTimestamp=clonedPulseGroup.pulses[m].lastOWL=0;
+                    //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+                }
+                console.log(`new clones pulseGroup: ${dump(clonedPulseGroup)}`);
                 res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
                 return;  // we sent the more specific
             }
@@ -300,8 +316,8 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    if (myPulseGroup.nodeCount>=MAXNODES) {
-        console.log(ts()+`EXCEEDED MAX NODES IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
+    if (myPulseGroup.nodeCount >= MAXNODES) {
+        console.log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null)); 
         return;
