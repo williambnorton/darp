@@ -22,8 +22,9 @@ function grapher(src, dest) {
             //We know the last 60 are second-by second measures
             //Before that are median measures
             for (var d in dataPoints) {
+                x++;
                 if (dataPoints.length - x < 60 * 5)
-                    txt += "{ x : " + ++x + ", y : " + dataPoints[d] + " },";
+                    txt += "{ x : " + x + ", y : " + dataPoints[d] + " },";
             }
             //            var last300: string[] = []; // show 5*60 samples - four hours of medianhistory and 1 minute of second by second
             //            // print all lines
