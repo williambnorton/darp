@@ -364,13 +364,6 @@ app.get('/nodefactory', function (req, res) {
         newNodePulseGroup.pulses[m].newNodePulseGroup = 99999;
         //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
     }
-    /*
-                    for (var m in newNodePulseGroup.mintTable) {
-                        newNodePulseGroup.mintTable[m].pulseTimestamp=newNodePulseGroup.mintTable[m].lastOWL=0;
-                        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
-                    }
-      */
-    console.log("NODEFACTORY():  new cloned pulseGroup: " + lib_1.dump(newNodePulseGroup));
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     console.log("* Genesis node /nodefactory created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     // send response to pulse group member node
