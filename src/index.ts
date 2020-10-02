@@ -388,7 +388,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-/*
+
 
                 // Here clear the clone's history and median history for each pulse @wbnwbnwbn
                 //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
@@ -398,6 +398,7 @@ app.get('/nodefactory', function(req, res) {
                     newNodePulseGroup.pulses[m].newNodePulseGroup=99999;
                     //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
                 }
+/*
                 for (var m in newNodePulseGroup.mintTable) {
                     newNodePulseGroup.mintTable[m].pulseTimestamp=newNodePulseGroup.mintTable[m].lastOWL=0;
                     //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
