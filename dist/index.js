@@ -365,7 +365,7 @@ app.get('/nodefactory', function (req, res) {
         //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
     }
     for (var m in newNodePulseGroup.mintTable) {
-        newNodePulseGroup.mintTable[m].pulseTimestamp = newNodePulseGroup.pulses[m].lastOWL = 0;
+        newNodePulseGroup.mintTable[m].pulseTimestamp = newNodePulseGroup.mintTable[m].lastOWL = 0;
         //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
     }
     console.log("NODEFACTORY():  new cloned pulseGroup: " + lib_1.dump(newNodePulseGroup));
