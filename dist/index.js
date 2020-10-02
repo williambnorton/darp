@@ -356,18 +356,21 @@ app.get('/nodefactory', function (req, res) {
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
-    // Here clear the clone's history and median history for each pulse @wbnwbnwbn
-    //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
-    //Also clear the mintTable lastOWL and PulseTimestamps
-    for (var m in newNodePulseGroup.pulses) {
-        newNodePulseGroup.pulses[m].history = newNodePulseGroup.pulses[m].medianHistory = [];
-        newNodePulseGroup.pulses[m].newNodePulseGroup = 99999;
-        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
-    }
-    for (var m in newNodePulseGroup.mintTable) {
-        newNodePulseGroup.mintTable[m].pulseTimestamp = newNodePulseGroup.mintTable[m].lastOWL = 0;
-        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
-    }
+    /*
+    
+                    // Here clear the clone's history and median history for each pulse @wbnwbnwbn
+                    //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway
+                    //Also clear the mintTable lastOWL and PulseTimestamps
+                    for (var m in newNodePulseGroup.pulses) {
+                        newNodePulseGroup.pulses[m].history=newNodePulseGroup.pulses[m].medianHistory=[];
+                        newNodePulseGroup.pulses[m].newNodePulseGroup=99999;
+                        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+                    }
+                    for (var m in newNodePulseGroup.mintTable) {
+                        newNodePulseGroup.mintTable[m].pulseTimestamp=newNodePulseGroup.mintTable[m].lastOWL=0;
+                        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+                    }
+      */
     console.log("NODEFACTORY():  new cloned pulseGroup: " + lib_1.dump(newNodePulseGroup));
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     console.log("* Genesis node /nodefactory created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
