@@ -9,7 +9,7 @@ import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, Puls
 
 
 logger.setLevel(LogLevel.WARNING);
-const MAXNODES=15;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
+const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 
 // Load config
 
@@ -190,14 +190,15 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
                 //Also clear the mintTable lastOWL and PulseTimestamps
                 for (var m in clonedPulseGroup.pulses) {
                     clonedPulseGroup.pulses[m].history=clonedPulseGroup.pulses[m].medianHistory=[];
-                    clonedPulseGroup.pulses[m].pulseTimestamp=0;
+                    clonedPulseGroup.pulses[m].pulseTimestamp=99999;
                     //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
                 }
                 for (var m in clonedPulseGroup.mintTable) {
-                    clonedPulseGroup.pulses[m].pulseTimestamp=clonedPulseGroup.pulses[m].lastOWL=0;
+                    clonedPulseGroup.mintTable[m].pulseTimestamp=clonedPulseGroup.pulses[m].lastOWL=0;
                     //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
                 }
-                console.log(`new clones pulseGroup: ${dump(clonedPulseGroup)}`);
+                
+                console.log(`NODEFACTORY():  new cloned pulseGroup: ${dump(clonedPulseGroup)}`);
                 res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
                 return;  // we sent the more specific
             }
