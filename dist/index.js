@@ -199,19 +199,6 @@ app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
                     mint = parseInt(req.params.mint); // or send mint0 of caller
                 var clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup])); // clone my pulseGroup obecjt 
                 clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; // assign him his mint and config
-                //TODO: Here clear the clone's history and median history for each pulse @wbnwbnwbn
-                //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
-                //Also clear the mintTable lastOWL and PulseTimestamps
-                for (var m in clonedPulseGroup.pulses) {
-                    clonedPulseGroup.pulses[m].history = clonedPulseGroup.pulses[m].medianHistory = [];
-                    clonedPulseGroup.pulses[m].pulseTimestamp = 99999;
-                    //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
-                }
-                for (var m in clonedPulseGroup.mintTable) {
-                    clonedPulseGroup.mintTable[m].pulseTimestamp = clonedPulseGroup.pulses[m].lastOWL = 0;
-                    //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
-                }
-                console.log("NODEFACTORY():  new cloned pulseGroup: " + lib_1.dump(clonedPulseGroup));
                 res.end(JSON.stringify(clonedPulseGroup, null, 2)); // send the cloned group with his mint as mint0
                 return; // we sent the more specific
             }
@@ -367,8 +354,21 @@ app.get('/nodefactory', function (req, res) {
     logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
     myPulseGroup.nodeCount++;
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
-    var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // clone my pulseGroup object 
+    var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
+    // Here clear the clone's history and median history for each pulse @wbnwbnwbn
+    //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
+    //Also clear the mintTable lastOWL and PulseTimestamps
+    for (var m in newNodePulseGroup.pulses) {
+        newNodePulseGroup.pulses[m].history = newNodePulseGroup.pulses[m].medianHistory = [];
+        newNodePulseGroup.pulses[m].newNodePulseGroup = 99999;
+        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+    }
+    for (var m in newNodePulseGroup.mintTable) {
+        newNodePulseGroup.mintTable[m].pulseTimestamp = newNodePulseGroup.pulses[m].lastOWL = 0;
+        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+    }
+    console.log("NODEFACTORY():  new cloned pulseGroup: " + lib_1.dump(newNodePulseGroup));
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     console.log("* Genesis node /nodefactory created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     // send response to pulse group member node
