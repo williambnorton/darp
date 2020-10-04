@@ -381,6 +381,7 @@ app.get('/nodefactory', function (req, res) {
             case 1:
                 myPulseGroup = _a.sent();
                 logger_1.logger.info("DARP NODE STARTED: pulseGroup=" + lib_1.dump(myPulseGroup));
+                console.log("DARP NODE STARTED: GENESIS=" + myPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(myPulseGroup));
                 augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
                 myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
