@@ -297,7 +297,7 @@ app.get('/nodefactory', function(req, res) {
 
     //  Or - Handle pulseGroup member case
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
+    console.log(ts()+"........................ SETTING UP NON-GENESIS PULSE NODE ...................");
 
 
 
