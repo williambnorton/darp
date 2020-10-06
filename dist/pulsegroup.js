@@ -270,9 +270,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.warning("addNode(): added mintEntry and empty pulse entry " +
                 lib_1.dump(newNode) +
                 lib_1.dump(_this.pulses[geo + ":" + group]));
-            console.log("addNode(): added mintEntry and empty pulse entry " +
-                lib_1.dump(newNode) +
-                lib_1.dump(_this.pulses[geo + ":" + group]));
+            lib_1.Log(lib_1.ts() + "addNode(): added mintEntry and empty pulse entry " + geo + ":" + group + " " + ipaddr);
             _this.nodeCount = Object.keys(_this.pulses).length;
             return _this.mintTable[newMint];
         };
@@ -284,7 +282,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     // ignore first mints me and genesis node - don't delete those
                     if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
                         logger_1.logger.warning("deleteNode(): deleting mint " + mintEntry.mint);
-                        console.log("deleteNode(): deleting pulse " + (mintEntry.geo + ":" + _this.groupName));
+                        lib_1.Log(lib_1.ts() + ("deleteNode(): deleting pulse " + (mintEntry.geo + ":" + _this.groupName) + " " + mintEntry.ipaddr));
                         delete _this.pulses[mintEntry.geo + ":" + _this.groupName];
                         console.log("deleteNode(): deleting mint " + mintEntry.mint);
                         delete _this.mintTable[mintEntry.mint];

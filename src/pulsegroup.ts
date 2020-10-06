@@ -5,7 +5,7 @@ import os = require("os");
 import http = require("http");
 import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
-import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD  } from "./lib";
+import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD, Log  } from "./lib";
 import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
@@ -390,11 +390,7 @@ export class AugmentedPulseGroup {
                 dump(newNode) +
                 dump(this.pulses[geo + ":" + group])
         );
-        console.log(
-            "addNode(): added mintEntry and empty pulse entry " +
-                dump(newNode) +
-                dump(this.pulses[geo + ":" + group])
-        );
+        Log(ts()+"addNode(): added mintEntry and empty pulse entry " + geo + ":" + group + " " + ipaddr );
         this.nodeCount = Object.keys(this.pulses).length;
 
         return this.mintTable[newMint];
@@ -408,7 +404,7 @@ export class AugmentedPulseGroup {
                 // ignore first mints me and genesis node - don't delete those
                 if (mintEntry.ipaddr == ipaddr && mintEntry.port == port) {
                     logger.warning( `deleteNode(): deleting mint ${mintEntry.mint}`);
-                    console.log( `deleteNode(): deleting pulse ${mintEntry.geo+":"+this.groupName}`);
+                    Log( ts()+`deleteNode(): deleting pulse ${mintEntry.geo+":"+this.groupName} ${mintEntry.ipaddr}`);
                     delete this.pulses[mintEntry.geo+":"+this.groupName];
                     console.log( `deleteNode(): deleting mint ${mintEntry.mint}`);
                     delete this.mintTable[mintEntry.mint];
