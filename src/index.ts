@@ -292,6 +292,8 @@ app.get('/nodefactory', function(req, res) {
         logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
+        Log(ts()+" NEW NODEFAcTORY Created GENESIS NODE ");
+
         return;
     }
 

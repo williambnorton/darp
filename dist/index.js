@@ -293,6 +293,7 @@ app.get('/nodefactory', function (req, res) {
         logger_1.logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup));
+        lib_1.Log(lib_1.ts() + " NEW NODEFAcTORY Created GENESIS NODE ");
         return;
     }
     //  Or - Handle pulseGroup member case

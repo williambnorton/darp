@@ -94,7 +94,7 @@ export function Log(logMsg: string, filename?: string) {
         filename = 'DARP.log';
     let root = process.env.HOME;  //created by bootdarp
     filename = root+"/"+filename + '.log';
-    console.log(`Logging ${logMsg} into ${filename}`);
+    console.log(ts()+`Log(): Logging ${logMsg} into ${filename}`);
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, (err) => {
         if (err)
