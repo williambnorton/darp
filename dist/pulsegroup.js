@@ -1164,6 +1164,7 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
                         else {
                             logger_1.logger.info("getPulseGroup(): Configuring non-genesis node ...");
                         }
+                        lib_1.Log("JOINED NEW PULSEGROUP: " + JSON.stringify(newPulseGroup));
                         return resolve(newPulseGroup);
                     });
                 });
