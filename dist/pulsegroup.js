@@ -462,6 +462,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
                                 // timeout node after 5 seconds
                                 logger_1.logger.debug("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                lib_1.Log("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
                                 delete _this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]; //delete the pulse Entry also
                             }
@@ -471,6 +472,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             var age = lib_1.now() - _this.mintTable[1].lastPulseTimestamp;
                             if (age > 10 * 1000) { //after 10 seconds we say genesis is gone
                                 logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
+                                lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 process.exit(36);
                             }
                             // we may timeout the group owner and kill the pulsegroup
@@ -515,8 +517,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             // if timeout changed the population, flashWireguard files
             //
             if (startingPulseEntryCount != Object.keys(_this.pulses).length) {
-                logger_1.logger.info("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
-                console.log("timeout(): nodeC0unt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
+                logger_1.logger.info("timeout(): nodeCunt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
+                console.log("timeout(): nodeCunt Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + _this.pulses.length);
                 _this.flashWireguard(); //node list changed recreate wireguard file
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
