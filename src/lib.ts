@@ -91,7 +91,7 @@ export function dump(obj: object): string {
  */
 export function Log(logMsg: string, filename?: string) {
     if (typeof filename == "undefined")
-        filename = 'DARP.log';
+        filename = 'DARP';
     let root = process.env.HOME;  //created by bootdarp
     filename = root+"/"+filename + '.log';
     console.log(ts()+`Log(): Logging ${logMsg} into ${filename}`);
