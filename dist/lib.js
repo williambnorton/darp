@@ -98,8 +98,9 @@ exports.dump = dump;
 function Log(logMsg, filename) {
     if (typeof filename == "undefined")
         filename = 'DARP.log';
-    var darpdir = process.env.DARPDIR;
-    filename = darpdir + "/wireguard/" + filename + '.log';
+    var wgdir = process.env.WGDIR; //created by bootdarp
+    filename = wgdir + "/" + filename + '.log';
+    console.log("Logging " + logMsg + " into " + filename);
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, function (err) {
         if (err)

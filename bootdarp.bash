@@ -12,6 +12,7 @@
 #       We create
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
+#           WGDIR - the root for DARP wireguard info and log info
 #
 echo `date` "------------------ $0 STARTING DARP v1.0 --------------------" 
 

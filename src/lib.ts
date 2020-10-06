@@ -92,9 +92,9 @@ export function dump(obj: object): string {
 export function Log(logMsg: string, filename?: string) {
     if (typeof filename == "undefined")
         filename = 'DARP.log';
-    let darpdir = process.env.DARPDIR;
-    filename = darpdir+"/wireguard/"+filename + '.log';
-    
+    let wgdir = process.env.WGDIR;  //created by bootdarp
+    filename = wgdir+"/"+filename + '.log';
+    console.log(`Logging ${logMsg} into ${filename}`);
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, (err) => {
         if (err)
