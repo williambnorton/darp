@@ -292,7 +292,11 @@ app.get('/nodefactory', function(req, res) {
         logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
-        Log(ts()+" NEW NODEFAcTORY Created GENESIS NODE ");
+
+
+
+        Log(ts()+" NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}");
+
 
         return;
     }
@@ -402,7 +406,7 @@ app.get('/nodefactory', function(req, res) {
             
 
 
-Log(ts()+" NEW NODEFAcTORY Created: ");
+    Log(ts()+" NEW NODEFACTORY Created GENESIS NODE ${newPulseGroup.groupOwner} : ${newPulseGroup.groupName} Starting DARP routines");
 
 
 
