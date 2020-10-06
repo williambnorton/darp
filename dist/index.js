@@ -365,7 +365,7 @@ app.get('/nodefactory', function (req, res) {
         newNodePulseGroup.pulses[m].newNodePulseGroup = 99999;
         //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
     }
-    lib_1.Log(lib_1.ts() + " NEW NODEFACTORY Created GENESIS NODE ${newPulseGroup.groupOwner} : ${newPulseGroup.groupName} Starting DARP routines");
+    lib_1.Log(lib_1.ts() + " NEW NODEFACTORY Created Member NODE ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${JSON.stringify(newNodePulseGroup)}");
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     console.log("* Genesis node /nodefactory created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     // send response to pulse group member node
