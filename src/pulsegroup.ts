@@ -1325,7 +1325,8 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
                 } else {
                     logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
                 }
-                Log(`JOINED NEW PULSEGROUP: ${JSON.stringify(newPulseGroup)}`);
+                Log(`JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
+
                 return resolve(newPulseGroup);
             });
         });

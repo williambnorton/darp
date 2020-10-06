@@ -295,7 +295,8 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-        Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
+        //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
+        Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
 
 
         return;
@@ -406,7 +407,7 @@ app.get('/nodefactory', function(req, res) {
             
 
 
-    Log(ts()+`NEW NODEFACTORY Created Member NODE ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${JSON.stringify(newNodePulseGroup)}`);
+    Log(`NEW NODEFACTORY Created Member NODE   ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${newNodePulseGroup.mintTable[0].ipaddr}:${newNodePulseGroup.mintTable[0].port}`);
 
 
 

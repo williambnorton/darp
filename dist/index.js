@@ -293,7 +293,8 @@ app.get('/nodefactory', function (req, res) {
         logger_1.logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup));
-        lib_1.Log(lib_1.ts() + (" NEW NODEFACTORY Created GENESIS NODE " + myPulseGroup.groupOwner + " : " + myPulseGroup.groupName + " " + JSON.stringify(myPulseGroup)));
+        //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
+        lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
         return;
     }
     //  Or - Handle pulseGroup member case
@@ -365,7 +366,7 @@ app.get('/nodefactory', function (req, res) {
         newNodePulseGroup.pulses[m].newNodePulseGroup = 99999;
         //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
     }
-    lib_1.Log(lib_1.ts() + ("NEW NODEFACTORY Created Member NODE " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + JSON.stringify(newNodePulseGroup)));
+    lib_1.Log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     console.log("* Genesis node /nodefactory created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     // send response to pulse group member node
