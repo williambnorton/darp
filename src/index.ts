@@ -400,7 +400,7 @@ app.get('/nodefactory', function(req, res) {
             
 
 
-
+Log(ts()+" NEW NODEFAcTORY Created: ");
 
 
 
