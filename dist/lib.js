@@ -91,7 +91,7 @@ function dump(obj) {
 }
 exports.dump = dump;
 /**
- * Saves a data backup into disk, should we lose connection
+ * Saves to NODE disk /root/darp/DARP.log by default
  * @param {string} logMsg Log message to save
  * @param {string} filename Log file
  */
