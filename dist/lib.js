@@ -98,7 +98,8 @@ exports.dump = dump;
 function Log(logMsg, filename) {
     if (typeof filename == "undefined")
         filename = 'NOIA.log';
-    filename = filename + '.log';
+    var darpdir = process.env.DARPDIR;
+    filename = darpdir + "/wireguard/" + filename + '.log';
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, function (err) {
         if (err)
