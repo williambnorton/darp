@@ -109,8 +109,8 @@ do
         kill `cat $DARPDIR/index.pid`
     fi
     echo `date` 'Starting DARP $VERSION ...'
-#	node index | tee -a NOIA.log
-	node index 
+	node index | tee -a DARP.log
+#	node index 
     rc=$?
     echo `date` "FINISHED DARP Protocol index.js done rc=$rc" #| tee -a NOIA.log
 
