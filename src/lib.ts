@@ -91,7 +91,7 @@ export function dump(obj: object): string {
  */
 export function Log(logMsg: string, filename?: string) {
     if (typeof filename == "undefined")
-        filename = 'NOIA.log';
+        filename = 'DARP.log';
     let darpdir = process.env.DARPDIR;
     filename = darpdir+"/wireguard/"+filename + '.log';
     
