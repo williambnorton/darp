@@ -105,6 +105,9 @@ var Config = /** @class */ (function () {
             process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ""); //\trim string
         }
         this.IP = process.env.MYIP || "";
+        var GEO = HOSTNAME; //passed into docker
+        GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0]; //remove problem characters
+        this.GEO = GEO;
         //        if (!process.env.GENESIS) {
         //            logger.error(`No GENESIS environmental variable specified - EXITTING`);
         //            process.exit(86);
@@ -117,14 +120,19 @@ var Config = /** @class */ (function () {
             if (genesisNodeList) {
                 var genesisNodes = genesisNodeList.split(",");
                 var isGenesisNode = false;
-                //console.log(`Seaching for genesis node to use as genesis node`);
-                for (var g in genesisNodes) {
-                    //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
-                    if (genesisNodes[g] == this.IP) {
-                        isGenesisNode = true;
-                        //console.log(`GOT IT`);
-                    }
+                if (this.GEO.slice(-3) == "-00") {
+                    console.log("********************** GENESIS **************** HIT**********************************");
+                    //console.log(`Seaching for genesis node to use as genesis node`);
+                    isGenesisNode = true;
                 }
+                else
+                    for (var g in genesisNodes) {
+                        //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
+                        if (genesisNodes[g] == this.IP) {
+                            isGenesisNode = true;
+                            //console.log(`GOT IT`);
+                        }
+                    }
                 if (!isGenesisNode) {
                     this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
                     console.log("============================================================== Setting random genesis node: " + this.GENESIS);
@@ -157,9 +165,6 @@ var Config = /** @class */ (function () {
             }
         }
         this.PUBLICKEY = PUBLICKEY;
-        var GEO = HOSTNAME; //passed into docker
-        GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0]; //remove problem characters
-        this.GEO = GEO;
         this.WALLET = process.env.WALLET || "auto";
     }
     return Config;
