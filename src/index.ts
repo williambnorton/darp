@@ -316,9 +316,8 @@ app.get('/nodefactory', function(req, res) {
 
 
     if (myPulseGroup.groupOwner!=me.geo) {
-        console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-
         var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+        console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log(`nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=${redirectedURL}`);
 
         const http = require('http');
