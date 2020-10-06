@@ -453,6 +453,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
                         _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
                         if (_this.mintTable[m].state != "QUARANTINE") {
+                            lib_1.Log("STATE CHANGE: " + _this.mintTable[m].geo + " " + _this.mintTable[m].state + " -> Not Reachable");
                             _this.mintTable[m].state = "NR"; // we don't know this node's state
                         }
                         //TODO: Update pktDrop
@@ -493,11 +494,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         pulseEntry.owl = NO_MEASURE;
                         pulseEntry.owls = "1";
                         pulseEntry.pktDrops++;
+                        lib_1.Log(pulseEntry.geo + ":" + pulseEntry.group + " PKT DROP  pktDrops=" + pulseEntry.pktDrops);
                         // only Genesis can delete inactive nodes within the group
                         if (_this.isGenesisNode()) {
                             if (elapsedMSincePulse > 10 * _this.cycleTime * 1000) {
                                 logger_1.logger.warning("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
                                 console.log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
+                                lib_1.Log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                                 delete _this.pulses[pulseEntry.geo + ":" + _this.groupName]; //delete the pulse Entry also
                                 /*

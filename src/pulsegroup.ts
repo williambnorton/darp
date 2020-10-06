@@ -599,6 +599,7 @@ export class AugmentedPulseGroup {
 
                     this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE") {
+                        Log(`STATE CHANGE: ${this.mintTable[m].geo} ${this.mintTable[m].state} -> Not Reachable`);
                         this.mintTable[m].state = "NR";  // we don't know this node's state
                     }
                     //TODO: Update pktDrop
@@ -640,12 +641,14 @@ export class AugmentedPulseGroup {
                     pulseEntry.owl = NO_MEASURE;
                     pulseEntry.owls = "1";
                     pulseEntry.pktDrops++;
+                    Log(`${pulseEntry.geo}:${pulseEntry.group} PKT DROP  pktDrops=${pulseEntry.pktDrops}`);
 
                     // only Genesis can delete inactive nodes within the group
                     if (this.isGenesisNode()) {
                         if (elapsedMSincePulse > 10 * this.cycleTime * 1000) {
                             logger.warning(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
                             console.log(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
+                            Log(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                             delete this.pulses[pulseEntry.geo+":"+this.groupName];  //delete the pulse Entry also
 
