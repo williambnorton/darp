@@ -98,8 +98,8 @@ exports.dump = dump;
 function Log(logMsg, filename) {
     if (typeof filename == "undefined")
         filename = 'DARP.log';
-    var wgdir = process.env.WGDIR; //created by bootdarp
-    filename = wgdir + "/" + filename + '.log';
+    var root = process.env.HOME; //created by bootdarp
+    filename = root + "/" + filename + '.log';
     console.log("Logging " + logMsg + " into " + filename);
     logMsg = ts() + logMsg + '\n';
     fs.appendFile(filename, logMsg, function (err) {
