@@ -447,7 +447,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.timeout = function () {
             //console.log(ts()+`timeout() `);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
-            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > 3) {
+            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > 3000) {
                 console.log("timeout(): GENESIS NODE MIA...");
             }
             for (var m in _this.mintTable) {
