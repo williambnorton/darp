@@ -118,7 +118,7 @@ export class Config {
                 }
                 else
 
-                
+
                     for (var g in genesisNodes) {
                         //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
                         if (genesisNodes[g]==this.IP) {
@@ -655,7 +655,7 @@ export class AugmentedPulseGroup {
                     pulseEntry.owl = NO_MEASURE;
                     pulseEntry.owls = "1";
                     pulseEntry.pktDrops++;
-                    Log(`${pulseEntry.geo}:${pulseEntry.group} PKT DROP  pktDrops=${pulseEntry.pktDrops}`);
+                    Log(`timeout(): ${pulseEntry.geo}:${pulseEntry.group} PKT DROP  pktDrops=${pulseEntry.pktDrops}`);
 
                     // only Genesis can delete inactive nodes within the group
                     if (this.isGenesisNode()) {

@@ -499,7 +499,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         pulseEntry.owl = NO_MEASURE;
                         pulseEntry.owls = "1";
                         pulseEntry.pktDrops++;
-                        lib_1.Log(pulseEntry.geo + ":" + pulseEntry.group + " PKT DROP  pktDrops=" + pulseEntry.pktDrops);
+                        lib_1.Log("timeout(): " + pulseEntry.geo + ":" + pulseEntry.group + " PKT DROP  pktDrops=" + pulseEntry.pktDrops);
                         // only Genesis can delete inactive nodes within the group
                         if (_this.isGenesisNode()) {
                             if (elapsedMSincePulse > 10 * _this.cycleTime * 1000) {
