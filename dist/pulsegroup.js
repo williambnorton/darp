@@ -776,13 +776,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulse.geo) { //Is this a groupOwner PULSE?
+                _this.mintTable[1].lastPulseTimestamp = lib_1.now(); //@wbnwbnwbn mark genesis node as alive
+                _this.mintTable[1].state = "UP"; //@wbnwbnwbn mark genesis node as alive
                 if ((incomingPulse.bootTimestamp != _this.mintTable[1].bootTimestamp) || //GROUP OWNER PULSE w/new bootTimestamp?
                     (incomingPulse.version != _this.mintTable[1].version)) { //GROUP OWNER running same SW as us?
                     console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp or new software reuirement from genesis node - it rebooted so so shall we");
                     console.log(lib_1.ts() + ("processIncomingPulse(): NEW SOFTWARE " + incomingPulse.bootTimestamp + " != " + _this.mintTable[1].bootTimestamp + " || " + incomingPulse.version + " != " + _this.mintTable[1].version));
                     process.exit(36);
                 }
-                _this.mintTable[1].lastPulseTimestamp = lib_1.now(); //@wbnwbnwbn mark genesis node as alive
             }
             //
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {
