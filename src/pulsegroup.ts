@@ -620,9 +620,11 @@ export class AugmentedPulseGroup {
                     if (this.isGenesisNode()) {
                         // Genesis only code path
                         logger.debug("I am genesis node not seeing mint ${m} him for elapsedMSincePulse=" + elapsedMSincePulse);
+                        console.log("I am genesis node not seeing mint ${m} him for elapsedMSincePulse=" + elapsedMSincePulse);
                         if (elapsedMSincePulse > 5 * this.cycleTime * 1000) {  //after 5 cycles
                             // timeout node after 5 seconds
                             logger.debug(`timeout(): DELETE GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
+                            console.log(`timeout(): DELETE GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             Log(`timeout(): DELETE GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                             delete this.pulses[this.mintTable[m].geo+":"+this.groupName];  //delete the pulse Entry also
@@ -935,7 +937,7 @@ export class AugmentedPulseGroup {
            // 
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint}  `);
            console.log(ts()+`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint} -it is OK for a few of these to show up during transditions.  `);
-        
+            //Sender should not receive pulses from genesis node for 20 seconds and time out
            return;
        }
 
@@ -991,7 +993,8 @@ export class AugmentedPulseGroup {
                     if (!found) {
                         logger.info(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
                         console.log(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} in owls (${myPulseEntry.owls}) - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
-                        this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
+                        if (this.mintTable[myPulseEntry.mint])
+                            this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
 
                         return;
                     }

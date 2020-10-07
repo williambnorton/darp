@@ -465,9 +465,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         if (_this.isGenesisNode()) {
                             // Genesis only code path
                             logger_1.logger.debug("I am genesis node not seeing mint ${m} him for elapsedMSincePulse=" + elapsedMSincePulse);
+                            console.log("I am genesis node not seeing mint ${m} him for elapsedMSincePulse=" + elapsedMSincePulse);
                             if (elapsedMSincePulse > 5 * _this.cycleTime * 1000) { //after 5 cycles
                                 // timeout node after 5 seconds
                                 logger_1.logger.debug("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
+                                console.log("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 lib_1.Log("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
                                 delete _this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]; //delete the pulse Entry also
@@ -759,6 +761,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // 
                 logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
                 console.log(lib_1.ts() + ("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + " -it is OK for a few of these to show up during transditions.  "));
+                //Sender should not receive pulses from genesis node for 20 seconds and time out
                 return;
             }
             var filename = "../" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
@@ -807,7 +810,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         if (!found) {
                             logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
                             console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
-                            _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
+                            if (_this.mintTable[myPulseEntry.mint])
+                                _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
                             return;
                         }
                     }
