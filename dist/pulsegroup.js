@@ -782,6 +782,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     console.log(lib_1.ts() + ("processIncomingPulse(): NEW SOFTWARE " + incomingPulse.bootTimestamp + " != " + _this.mintTable[1].bootTimestamp + " || " + incomingPulse.version + " != " + _this.mintTable[1].version));
                     process.exit(36);
                 }
+                _this.mintTable[1].lastPulseTimestamp = lib_1.now(); //mark genesis node as alive
             }
             //
             if (incomingPulseEntry == null || incomingPulseMintEntry == null) {

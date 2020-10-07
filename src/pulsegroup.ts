@@ -962,6 +962,7 @@ export class AugmentedPulseGroup {
              console.log(ts()+`processIncomingPulse(): NEW SOFTWARE ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp} || ${incomingPulse.version} != ${this.mintTable[1].version}`);            
              process.exit(36);
           }
+          this.mintTable[1].lastPulseTimestamp = now();  //mark genesis node as alive
         } 
        //
 
