@@ -295,12 +295,13 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(myPulseGroup));
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
+        myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
         return;
     }
     //  Or - Handle pulseGroup member case
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log(lib_1.ts() + "........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    if (myPulseGroup.nodeCount >= MAXNODES) {
+    if (Object.keys(myPulseGroup.pulses).length >= MAXNODES) {
         console.log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + geo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
         lib_1.Log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + geo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
         res.setHeader('Content-Type', 'application/json');
@@ -355,7 +356,7 @@ app.get('/nodefactory', function (req, res) {
     myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
     logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
-    myPulseGroup.nodeCount++;
+    myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config

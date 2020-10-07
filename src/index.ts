@@ -297,7 +297,7 @@ app.get('/nodefactory', function(req, res) {
 
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
-
+        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
 
         return;
     }
@@ -310,7 +310,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    if (myPulseGroup.nodeCount >= MAXNODES) {
+    if ( Object.keys(myPulseGroup.pulses).length >= MAXNODES) {
         console.log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         Log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         res.setHeader('Content-Type', 'application/json');
@@ -387,7 +387,7 @@ app.get('/nodefactory', function(req, res) {
     
     logger.info(`Added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
     logger.info(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
-    myPulseGroup.nodeCount++;
+    myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
      
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));  // CLONE my pulseGroup object 
