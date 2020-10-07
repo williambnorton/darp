@@ -634,6 +634,7 @@ export class AugmentedPulseGroup {
                         var age = now() - this.mintTable[1].lastPulseTimestamp;
                         if (age > 10 * 1000) {              //after 10 seconds we say genesis is gone
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                            console.log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             process.exit(36);
                         }
