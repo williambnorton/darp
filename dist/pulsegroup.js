@@ -55,7 +55,7 @@ var MEASURE_RTT = false; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
-var CHECK_SW_VERSION_CYCLE_TIME = 15; // CHECK SW updates every 15 seconds
+var CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK SW updates every 60 seconds
 var NO_MEASURE = 99999;
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
@@ -747,6 +747,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 res.on('error', function (error) {
                     logger_1.logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
                     console.log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
+                    lib_1.Log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
                     process.exit(36);
                     // Error handling here never triggered TODO
                 });
@@ -758,6 +759,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // Software reload
                         logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
                         console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
+                        lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
                         process.exit(36);
                     }
                 });
