@@ -602,7 +602,7 @@ export class AugmentedPulseGroup {
         //console.log(ts()+`timeout() `);
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
-        console.log(ts()+`timeout() `);
+        console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
 
         if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>3000) {
             console.log(`timeout(): GENESIS NODE MIA...`);
