@@ -600,7 +600,12 @@ export class AugmentedPulseGroup {
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
         //console.log(ts()+`timeout() `);
-        const startingPulseEntryCount = Object.keys(this.pulses).length;;
+        const startingPulseEntryCount = Object.keys(this.pulses).length;
+
+        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>3) {
+            console.log(`timeout(): GENESIS NODE MIA...`);
+        }
+
         for (var m in this.mintTable) {
 //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
             if ((m != "0") && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {
@@ -638,6 +643,7 @@ export class AugmentedPulseGroup {
                             Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             process.exit(36);
                         }
+
                         // we may timeout the group owner and kill the pulsegroup
                         // if (elapsedMSincePulse > 60 * 1000 ) console.log("group owner has been unreachable for 1 minute: "+elapsedMSincePulse);
                     }
@@ -687,8 +693,8 @@ export class AugmentedPulseGroup {
         // if timeout changed the population, flashWireguard files
         //
         if (startingPulseEntryCount != Object.keys(this.pulses).length) {
-            logger.info(`timeout(): nodeCunt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
-            console.log(`timeout(): nodeCunt Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
+            logger.info(`timeout(): nodeCount Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
+            console.log(`timeout(): nodeCount Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${this.pulses.length}`);
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
