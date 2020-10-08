@@ -454,23 +454,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("timeout(): GENESIS NODE MIA...");
                 console.log("timeout(): GENESIS NODE MIA...");
                 console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
             }
             for (var m in _this.mintTable) {
                 //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {

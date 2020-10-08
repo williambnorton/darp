@@ -610,23 +610,7 @@ export class AugmentedPulseGroup {
             console.log(`timeout(): GENESIS NODE MIA...`);
             console.log(`timeout(): GENESIS NODE MIA...`);
             console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
+
         }
 
         for (var m in this.mintTable) {
