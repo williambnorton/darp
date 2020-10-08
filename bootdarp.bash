@@ -108,7 +108,7 @@ do
     if [ -f  $DARPDIR/index.pid ]; then
         kill `cat $DARPDIR/index.pid`
     fi
-    echo `date` 'Starting DARP $VERSION ...'
+    echo `date` "Starting DARP $VERSION ..."
 	node index #> $DARPDIR/darp.log
 #	node index 
     rc=$?
