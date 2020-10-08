@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+	<title>alpha1</title>
+	<style>
+		html {
+			height:100%;
+		}
+		body {
+			background-color:#FFF;
+			margin:0;
+			height:100%;
+		}
+	</style>
+	<!-- copy these lines to your document head: -->
+
+	<meta name="viewport" content="user-scalable=yes, width=1920" />
+	<script type="text/javascript" src="alpha1.5.hyperesources/jquery-3.2.1.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+	<script>
+
+var gConfig={}; //global config for all nodes we discover
+
+var ditex={};	//global object updated
+
+var gDisplayConfig=new Array();
+
+// ---- //
+// paste config from configurator to ensure Genesis nodes have current IPs
+gDisplayConfig["MAZ-WESTUS-00"]={"geo":"MAZ-WESTUS-00","ipaddr":"138.91.176.189","port":"65013"};
+gDisplayConfig["MAZ-EASTUS-00"]={"geo":"MAZ-EASTUS-00","ipaddr":"168.61.35.22","port":"65013"};
+gDisplayConfig["MAZ-NORTHEUROPE-00"]={"geo":"MAZ-NORTHEUROPE-00","ipaddr":"40.112.90.115","port":"65013"};
+gDisplayConfig["MAZ-WESTEUROPE-00"]={"geo":"MAZ-WESTEUROPE-00","ipaddr":"52.136.231.41","port":"65013"};
+gDisplayConfig["MAZ-EASTASIA-00"]={"geo":"MAZ-EASTASIA-00","ipaddr":"23.98.39.100","port":"65013"};
+gDisplayConfig["MAZ-SOUTHEASTASIA-00"]={"geo":"MAZ-SOUTHEASTASIA-00","ipaddr":"207.46.225.103","port":"65013"};
+gDisplayConfig["MAZ-NORTHCENTRALUS-00"]={"geo":"MAZ-NORTHCENTRALUS-00","ipaddr":"52.252.133.234","port":"65013"};
+gDisplayConfig["MAZ-SOUTHCENTRALUS-00"]={"geo":"MAZ-SOUTHCENTRALUS-00","ipaddr":"23.98.130.150","port":"65013"};
+gDisplayConfig["MAZ-CENTRALUS-00"]={"geo":"MAZ-CENTRALUS-00","ipaddr":"104.43.217.251","port":"65013"};
+gDisplayConfig["MAZ-EASTUS2-00"]={"geo":"MAZ-EASTUS2-00","ipaddr":"13.77.67.108","port":"65013"};
+gDisplayConfig["MAZ-JAPANEAST-00"]={"geo":"MAZ-JAPANEAST-00","ipaddr":"52.185.148.22","port":"65013"};
+gDisplayConfig["MAZ-BRAZILSOUTH-00"]={"geo":"MAZ-BRAZILSOUTH-00","ipaddr":"191.235.65.144","port":"65013"};
+gDisplayConfig["MAZ-AUSTRALIAEAST-00"]={"geo":"MAZ-AUSTRALIAEAST-00","ipaddr":"13.75.218.12","port":"65013"};
+gDisplayConfig["MAZ-AUSTRALIASOUTHEAST-00"]={"geo":"MAZ-AUSTRALIASOUTHEAST-00","ipaddr":"52.189.239.154","port":"65013"};
+gDisplayConfig["MAZ-CENTRALINDIA-00"]={"geo":"MAZ-CENTRALINDIA-00","ipaddr":"52.140.103.4","port":"65013"};
+gDisplayConfig["MAZ-SOUTHINDIA-00"]={"geo":"MAZ-SOUTHINDIA-00","ipaddr":"13.71.84.129","port":"65013"};
+gDisplayConfig["MAZ-CANADACENTRAL-00"]={"geo":"MAZ-CANADACENTRAL-00","ipaddr":"52.156.3.4","port":"65013"};
+gDisplayConfig["MAZ-WESTUS2-00"]={"geo":"MAZ-WESTUS2-00","ipaddr":"51.143.40.147","port":"65013"};
+gDisplayConfig["MAZ-UKSOUTH-00"]={"geo":"MAZ-UKSOUTH-00","ipaddr":"51.140.10.31","port":"65013"};
+gDisplayConfig["MAZ-KOREACENTRAL-00"]={"geo":"MAZ-KOREACENTRAL-00","ipaddr":"20.194.46.5","port":"65013"};
+gDisplayConfig["MAZ-KOREASOUTH-00"]={"geo":"MAZ-KOREASOUTH-00","ipaddr":"52.231.195.16","port":"65013"};
+gDisplayConfig["MAZ-FRANCECENTRAL-00"]={"geo":"MAZ-FRANCECENTRAL-00","ipaddr":"40.89.164.136","port":"65013"};
+gDisplayConfig["MAZ-SOUTHAFRICANORTH-00"]={"geo":"MAZ-SOUTHAFRICANORTH-00","ipaddr":"102.133.227.141","port":"65013"};
+gDisplayConfig["MAZ-UAENORTH-00"]={"geo":"MAZ-UAENORTH-00","ipaddr":"40.123.232.5","port":"65013"};
+gDisplayConfig["MAZ-SWITZERLANDNORTH-00"]={"geo":"MAZ-SWITZERLANDNORTH-00","ipaddr":"51.103.143.221","port":"65013"};
+gDisplayConfig["MAZ-GERMANYWESTCENTRAL-00"]={"geo":"MAZ-GERMANYWESTCENTRAL-00","ipaddr":"20.52.47.184","port":"65013"};
+
+
+
+// ---- //
+
+
+gDisplayConfig["DEVOPS"]= {"geo":"DEVOPS", "ipaddr":"127.0.0.1","port":"65013"};
+
+
+gDisplayConfig["AWS-AP-SOUTHEAST-1B"]={"geo":"AWS-AP-SOUTHEAST-1B","ipaddr":"3.0.93.178",    "port":"65013"};
+gDisplayConfig["AWS-AP-NORTHEAST-2C"]={"geo":"AWS-AP-NORTHEAST-2C","ipaddr":"52.78.168.254",  "port":"65013"};
+gDisplayConfig["AWS-EU-CENTRAL-1B"]={"geo":"AWS-EU-CENTRAL-1B","ipaddr":"3.121.201.31",     "port":"65013"};
+gDisplayConfig["AWS-US-WEST-1A"]={"geo":"AWS-US-WEST-1A","ipaddr":"54.183.237.188",      "port":"65013"};
+gDisplayConfig["AWS-CA-CENTRAL-1B"]={"geo":"AWS-CA-CENTRAL-1B","ipaddr":"35.183.12.252",    "port":"65013"};
+gDisplayConfig["AWS-US-EAST-2A"]={"geo":"AWS-US-EAST-2A","ipaddr":"3.14.252.232",        "port":"65013"};
+gDisplayConfig["AWS-US-EAST-1C"]={"geo":"AWS-US-EAST-1C","ipaddr":"100.25.119.250",      "port":"65013"};
+gDisplayConfig["AWS-AP-SOUTH-1A"]={"geo":"AWS-AP-SOUTH-1A","ipaddr":"13.233.206.71",      "port":"65013"};
+gDisplayConfig["AWS-EU-WEST-1B"]={"geo":"AWS-EU-WEST-1B","ipaddr":"54.246.137.23",       "port":"65013"};
+gDisplayConfig["AWS-US-WEST-2B"]={"geo":"AWS-US-WEST-2B","ipaddr":"52.10.8.19",          "port":"65013"};
+gDisplayConfig["AWS-EU-NORTH-1C"]={"geo":"AWS-EU-NORTH-1C","ipaddr":"13.48.248.81",       "port":"65013"};
+gDisplayConfig["AWS-AP-SOUTHEAST-2A"]={"geo":"AWS-AP-SOUTHEAST-2A","ipaddr":"54.66.225.145",  "port":"65013"};
+gDisplayConfig["AWS-AP-NORTHEAST-1B"]={"geo":"AWS-AP-NORTHEAST-1B","ipaddr":"3.114.179.181",     "port":"65013"}; //3.114.179.181
+gDisplayConfig["AWS-EU-WEST-2A"]={"geo":"AWS-EU-WEST-2A","ipaddr":"3.8.160.148",         "port":"65013"};
+gDisplayConfig["AWS-ME-SOUTH-1C"]={"geo":"AWS-ME-SOUTH-1C","ipaddr":"15.185.213.56",         "port":"65013"};//15.185.213.56
+gDisplayConfig["AWS-AF-SOUTH-1C"]={"geo":"AWS-AF-SOUTH-1C","ipaddr":"13.244.137.158", "port":"65013"}; //13.244.137.158
+gDisplayConfig["AWS-EU-SOUTH-1A"]={"geo":"AWS-EU-SOUTH-1A","ipaddr":"15.161.44.84", "port":"65013"};
+gDisplayConfig["AWS-AP-EAST-1"]={"geo":"AWS-AP-EAST-1","ipaddr":"18.162.246.217", "port":"65013"};
+
+
+
+//=52.162.154.113
+
+var executiveMode="WEB";
+$( document ).ready(function() {
+  			// Handler for .ready() called.
+  			console.log("JQuery Ready.");
+});
+
+function dump(str) {return JSON.stringify(str,null,2)}
+function ts() {return new Date().toLocaleTimeString()+" "}
+function now() {return new Date().getTime()}
+</script>
+	
+
+	<!-- end copy -->
+  </head>
+  <body>
+	<!-- copy these lines to your document: -->
+
+	<div id="alpha1_hype_container" class="HYPE_document" style="margin:auto;position:relative;width:1920px;height:1080px;overflow:hidden;">
+		<script type="text/javascript" charset="utf-8" src="alpha1.5.hyperesources/alpha1_hype_generated_script.js?40259"></script>
+	</div>
+
+	<!-- end copy -->
+  </body>
+</html>
