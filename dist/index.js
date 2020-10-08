@@ -140,18 +140,6 @@ app.get('/reboot', function (req, res) {
     }
     process.exit(86);
 });
-app.get('/map', function (req, res) {
-    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    lib_1.Log("SHOWING MAP: " + ip);
-    var referer = req.get('Referer');
-    if (referer !== undefined) {
-        res.redirect("http://" + ip + ":65013/alpha1.5/alpha1.5.html");
-    }
-    else {
-        //TODO
-    }
-    return;
-});
 app.get('/reload', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger_1.logger.info("EXITTING to reload the system request from: " + ip);
