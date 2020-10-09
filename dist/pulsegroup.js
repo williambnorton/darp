@@ -448,12 +448,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(ts()+`timeout() `);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
-            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > 3000) {
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
-                console.log("timeout(): GENESIS NODE MIA...");
+            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > 15000) {
+                console.log("timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...");
+                lib_1.Log("timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...");
+                process.exit(36);
             }
             for (var m in _this.mintTable) {
                 //            if ((m != "0") && m != "1" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp != 0) {

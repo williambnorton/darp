@@ -604,13 +604,11 @@ export class AugmentedPulseGroup {
 
         //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
 
-        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>3000) {
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
-            console.log(`timeout(): GENESIS NODE MIA...`);
+        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>15000) {
+            console.log(`timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...`);
+            Log(`timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...`);
 
+            process.exit(36);
         }
 
         for (var m in this.mintTable) {
