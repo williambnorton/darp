@@ -528,6 +528,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         }
                     }
                 }
+                if (_this.isGenesisNode() && pulseEntry.pulseTimestamp == 0 && pulseEntry.outPulses > 15 && pulseEntry.inPulses == 0) {
+                    logger_1.logger.warning("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim ");
+                    console.log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim");
+                    lib_1.Log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim");
+                    _this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
+                    delete _this.pulses[pulseEntry.geo + ":" + _this.groupName]; //delete the pulse Entry also
+                }
             }
             //
             // if timeout changed the population, flashWireguard files
