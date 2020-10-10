@@ -205,6 +205,7 @@ var PulseEntry = /** @class */ (function () {
         this.rtt = NO_MEASURE;
         this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
+        this.relayCount = 0;
         this.inPulses = 0;
         this.outPulses = 0;
         this.pktDrops = 0;
@@ -528,7 +529,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         }
                     }
                 }
-                if (_this.isGenesisNode() && pulseEntry.pulseTimestamp == 0 && pulseEntry.outPulses > 15 && pulseEntry.inPulses == 0) {
+                if (_this.isGenesisNode() && pulseEntry.pulseTimestamp == 0 && pulseEntry.outPulses > 10 && pulseEntry.inPulses == 0) {
                     logger_1.logger.warning("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim ");
                     console.log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim");
                     lib_1.Log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim");
@@ -701,10 +702,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
                         if ((typeof _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] != "undefined") &&
                             (typeof _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName] != "undefined")) {
-                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].inPulses += 100; //relay meas forwrd 10 pktys/sec
-                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].outPulses += 100; //we assume those with better path, use it for 10 pkts
-                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].inPulses -= 100; //relay meas forwrd 10 pktys/sec
-                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].outPulses -= 100; //we assume those with better path, use it for 10 pkts
+                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].relayCount++;
+                            //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=100;   //relay meas forwrd 10 pktys/sec
+                            //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=100;   //we assume those with better path, use it for 10 pkts
+                            //this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=100;   //relay meas forwrd 10 pktys/sec
+                            //this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=100;   //we assume those with better path, use it for 10 pkts
+                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].relayCount--; //we assume those with better path, use it for 10 pkts
                             // bump the in/outMsgs by 10 pkts
                         }
                         else {
