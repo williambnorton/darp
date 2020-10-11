@@ -657,8 +657,8 @@ export class AugmentedPulseGroup {
                     // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                 }
             } else { 
-                /* Mint0, lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere @wbnwbnwbn */ 
-                if (this.mintTable[m] && this.mintTable[m].lastPulseTimestamp==0 &&  typeof(this.pulses[this.mintTable[m].geo+":"+this.groupName])=="undefined") {
+                /* Skipping over self (Mint0) and empty mint entries BUT lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere @wbnwbnwbn */ 
+                if (m!="0" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp==0 &&  typeof(this.pulses[this.mintTable[m].geo+":"+this.groupName])=="undefined") {
                     console.log(`HERE We delete abandoned mintEntry - there is no longer a pulse entry for it`);
                     Log(`timeout(): deleting abandoned ${this.mintTable[m].geo} (${this.mintTable[m].ipaddr}:${this.mintTable[m].port}) mintEntry - there is no longer a pulse entry for it`);
                     delete this.mintTable[m];     //Remove abandoned mintTable entry - ToDo: investigate why a mint is abandoned - not deleted when the pulse timedout
