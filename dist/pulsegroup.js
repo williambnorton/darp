@@ -496,7 +496,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                     }
                 }
-                else { /* Genesis Node or Me - we timeout Genesis node elsewhere */ }
+                else {
+                    /* Mint0, lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere @wbnwbnwbn */
+                    if (_this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp == 0 && typeof (_this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]) == "undefined") {
+                        console.log("HERE We delete abandoned mintEntry - there is no longer a pulse entry for it");
+                        lib_1.Log("timeout(): deleting abandoned " + _this.mintTable[m].geo + " (" + _this.mintTable[m].ipaddr + ":" + _this.mintTable[m].port + ") mintEntry - there is no longer a pulse entry for it");
+                        delete _this.mintTable[m]; //Remove abandoned mintTable entry - ToDo: investigate why a mint is abandoned - not deleted when the pulse timedout
+                    }
+                }
             }
             for (var p in _this.pulses) {
                 var pulseEntry = _this.pulses[p];
