@@ -9,7 +9,7 @@ export function grapher(src: string, dest: string) {
 <meta http-equiv="refresh" content="60">
 <html>
 <head>
-<title>${src}-${dest} ${myYYMMDD}</title> 
+<title>${src}-${dest} ${myYYMMDD} medianOfMedians & last60secs</title> 
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 <script type="text/javascript">
