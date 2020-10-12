@@ -345,7 +345,7 @@ app.get('/nodefactory', function (req, res) {
             }
         }
     }
-    // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup
+    // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup CLONE CLONE CLONE
     var newMint = myPulseGroup.nextMint++;
     logger_1.logger.info(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
     myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
@@ -360,13 +360,19 @@ app.get('/nodefactory', function (req, res) {
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
+    //
+    //Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
+    //
     // Here clear the clone's history and median history for each pulse @wbnwbnwbn
     //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
     //Also clear the mintTable lastOWL and PulseTimestamps
     for (var m in newNodePulseGroup.pulses) {
         newNodePulseGroup.pulses[m].history = newNodePulseGroup.pulses[m].medianHistory = [];
-        newNodePulseGroup.pulses[m].newNodePulseGroup = 99999;
-        //clonedPulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse?
+        newNodePulseGroup.pulses[m].owl = 99999; //no measures
+        newNodePulseGroup.pulses[m].inPulses = newNodePulseGroup.pulses[m].outPulses = newNodePulseGroup.pulses[m].relayCount = newNodePulseGroup.pulses[m].pktDrops = newNodePulseGroup.pulses[m].pulseTimestamp;
+        newNodePulseGroup.pulses[m].lastMsg = "";
+        newNodePulseGroup.pulses[m].state = "QUARANTINE"; //   ???   mark UP when we receive a pulse from this node?
+        newNodePulseGroup.pulses[m].owls = "1"; //   ???   mark UP when we receive a pulse?
     }
     lib_1.Log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
