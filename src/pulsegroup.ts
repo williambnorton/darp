@@ -961,11 +961,11 @@ export class AugmentedPulseGroup {
 
        // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulse.geo ) {  //Is this a groupOwner PULSE?
-        this.mintTable[1].lastPulseTimestamp = now();  //@wbnwbnwbn mark genesis node as alive
-        this.mintTable[1].state = "UP";  //@wbnwbnwbn mark genesis node as alive
+           this.mintTable[1].lastPulseTimestamp = now();  //@wbnwbnwbn mark genesis node as alive
+           this.mintTable[1].state = "UP";  //@wbnwbnwbn mark genesis node as alive
 
            if (( incomingPulse.bootTimestamp != this.mintTable[1].bootTimestamp ) ||  //GROUP OWNER PULSE w/new bootTimestamp?
-            ( incomingPulse.version != this.mintTable[1].version )) {  //GROUP OWNER running same SW as us?
+               ( incomingPulse.version != this.mintTable[1].version )) {  //GROUP OWNER running same SW as us?
                 console.log(ts()+`processIncomingPulse(): new bootTimestamp or new software reuirement from genesis node - it rebooted so so shall we`);
                 console.log(ts()+`processIncomingPulse(): NEW SOFTWARE ${incomingPulse.bootTimestamp} != ${this.mintTable[1].bootTimestamp} || ${incomingPulse.version} != ${this.mintTable[1].version}`);            
                 process.exit(36);
@@ -1057,12 +1057,13 @@ export class AugmentedPulseGroup {
                         console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`); 
+                        Log(`migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP`);                   
                         this.flashWireguard();
                         this.mintTable[incomingPulseEntry.mint].state="UP" //Genesis is READY TO ACCEPT nodes
                     }
                 } else {
-                    //We are just a member of this pulseGroup - not up to us 
+                    //We are just a member of this pulseGroup - not up to us to adjust population
                 }
             } else {
                 //console.log(`I am not group owner`);
@@ -1073,6 +1074,7 @@ export class AugmentedPulseGroup {
                console.log(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
                this.mintTable[0].state = "UP";
                this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
+               Log(`Not groupOwner pulse - migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP`);                   
 
                //
                //   Start everything
@@ -1245,6 +1247,7 @@ export class AugmentedPulseGroup {
                     // Add all pulses that we don't have
                     if (typeof self.pulses[pulse] == "undefined") {
                         logger.info(`syncGenesisPulseGroup(): Adding new pulse entry as my own: ${pulse}`);
+                        Log(`syncGenesisPulseGroup(): Adding new pulse entry that genesis told us about ${pulse}`);
                         self.pulses[pulse] = pulses[pulse];  // save our new pulse entry
                     }
                 }
@@ -1253,6 +1256,7 @@ export class AugmentedPulseGroup {
                     if (typeof pulses[pulse] == "undefined") {
                         logger.info(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
                         delete self.pulses[pulse];  //delete this pulse we have but groupOwner does not have
+                        Log(`syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: ${pulse}`);
                     }
                 }
                 self.nodeCount = Object.keys(self.pulses).length;

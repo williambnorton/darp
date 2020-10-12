@@ -862,12 +862,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
                             console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
                             console.log("FLASHING WG group ower receiving pulse from non-genesis node " + lib_1.dump(incomingPulse));
+                            lib_1.Log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
                             _this.flashWireguard();
                             _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
                         }
                     }
                     else {
-                        //We are just a member of this pulseGroup - not up to us 
+                        //We are just a member of this pulseGroup - not up to us to adjust population
                     }
                 }
                 else {
@@ -879,6 +880,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     console.log("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
                     _this.mintTable[0].state = "UP";
                     _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
+                    lib_1.Log("Not groupOwner pulse - migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
                     //
                     //   Start everything
                     //
@@ -1025,6 +1027,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         // Add all pulses that we don't have
                         if (typeof self.pulses[pulse] == "undefined") {
                             logger_1.logger.info("syncGenesisPulseGroup(): Adding new pulse entry as my own: " + pulse);
+                            lib_1.Log("syncGenesisPulseGroup(): Adding new pulse entry that genesis told us about " + pulse);
                             self.pulses[pulse] = pulses[pulse]; // save our new pulse entry
                         }
                     }
@@ -1033,6 +1036,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         if (typeof pulses[pulse] == "undefined") {
                             logger_1.logger.info("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                             delete self.pulses[pulse]; //delete this pulse we have but groupOwner does not have
+                            lib_1.Log("syncGenesisPulseGroup(): Removing pulse entry that genesis node does not have: " + pulse);
                         }
                     }
                     self.nodeCount = Object.keys(self.pulses).length;

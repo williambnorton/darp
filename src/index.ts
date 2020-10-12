@@ -409,7 +409,8 @@ app.get('/nodefactory', function(req, res) {
     for (var m in newNodePulseGroup.pulses) {
         newNodePulseGroup.pulses[m].history=newNodePulseGroup.pulses[m].medianHistory=[];
         newNodePulseGroup.pulses[m].owl=99999;  //no measures
-        newNodePulseGroup.pulses[m].inPulses=newNodePulseGroup.pulses[m].outPulses=newNodePulseGroup.pulses[m].relayCount=newNodePulseGroup.pulses[m].pktDrops=newNodePulseGroup.pulses[m].pulseTimestamp;
+        newNodePulseGroup.pulses[m].inPulses=newNodePulseGroup.pulses[m].outPulses=newNodePulseGroup.pulses[m].relayCount=newNodePulseGroup.pulses[m].pktDrops=0;
+        newNodePulseGroup.pulses[m].pulseTimestamp=0;
         newNodePulseGroup.pulses[m].lastMsg="";
         newNodePulseGroup.pulses[m].state="QUARANTINE";  //   ???   mark UP when we receive a pulse from this node?
         newNodePulseGroup.pulses[m].owls="1";  //   ???   mark UP when we receive a pulse?
