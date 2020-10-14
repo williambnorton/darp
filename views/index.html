@@ -111,24 +111,17 @@
 
 
                             //var link=`http://${me.ipaddr}:${me.port}/extra/${extraordinaryPath.aSide}/${extraordinaryPath.intermediary}/${extraordinaryPath.zSide}`
-                            var asideTerm=`http://127.0.0.1:8000/ssh?ip=${extraordinaryPath.aSideIP}`   //@WBNWBNWBNWBN
+                            var aSideTerm=`http://127.0.0.1:8000/ssh?ip=${extraordinaryPath.aSideIP}`   //@WBNWBNWBNWBN
                             var intermediaryTerm=`http://127.0.0.1:8000/ssh?ip=${extraordinaryPath.intermediaryIP}`   //@WBNWBNWBNWBN
-                            var zsideTerm=`http://127.0.0.1:8000/ssh?ip=${extraordinaryPath.zSideIP}`   //@WBNWBNWBNWBN
+                            var zSideTerm=`http://127.0.0.1:8000/ssh?ip=${extraordinaryPath.zSideIP}`   //@WBNWBNWBNWBN
                            
                             //console.log(`links are:   asideTerm=${asideTerm} intermediaryTerm=${intermediaryTerm} zsideTerm=${zsideTerm}`);
 
-                            //TODO: use the jquery data update APIs to add/remove rows so we get the sorting feature in jquery UI
-                            //  add extraordinary path entry
 //                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td><div class='WORSE'>"+extraordinaryPath.direct+" ms</div></td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
-                            $("#extraordinary").append(trLabel+'<td><a href="'+asideTerm+'">'+duration+' secs</a></td><td><a href="'+aSideTerm+'">'+extraordinaryPath.aSide+'</a></td> <td><a href="'+intermediaryTerm+'>'+extraordinaryPath.intermediary+'</td> <td><a href="'+zsideTerm+'">'+extraordinaryPath.zSide+'</a></td> <td>'+extraordinaryPath.delta+" ms</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+(extraordinaryPath.intermediaryPathLatency-extraordinaryPath.delta)+" ms</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
+                            $("#extraordinary").append(trLabel+'<td><a href="'+aSideTerm+'">'+duration+' secs</a></td><td><a href="'+aSideTerm+'">'+extraordinaryPath.aSide+'</a></td> <td><a href="'+intermediaryTerm+'>'+extraordinaryPath.intermediary+'</td> <td><a href="'+zSideTerm+'">'+extraordinaryPath.zSide+'</a></td> <td>'+extraordinaryPath.delta+" ms</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+(extraordinaryPath.intermediaryPathLatency-extraordinaryPath.delta)+" ms</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
 
 
-
-
-
-                            //
-//  I want thee links to the matrix graphs first
-//                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td><div class='WORSE'>"+extraordinaryPath.direct+" ms</div></td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
+                            //$("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td><div class='WORSE'>"+extraordinaryPath.direct+" ms</div></td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
                             pulseEntryCount++;
 
                             //$("."+srcOwlMintEntry.mint+"-"+extraordinaryPath.).addClass("BETTER"); //marking the revenue node
