@@ -296,7 +296,7 @@ export class AugmentedPulseGroup {
     // additional attributes
     adminControl: string;
     config: Config;
-    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number } };   //@wbnwbnwbn
+    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, asideIP:string, asidePort:number, zsideIP:string, zsidePort:number, intermediaryIP:string, intermediaryPort:number } };   //@wbnwbnwbn
     incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     
     // child processes for sending and receiving the pulse messages
@@ -846,15 +846,15 @@ export class AugmentedPulseGroup {
                                             //TODO write routine to go through the Log'd pulseRecords pulling out archiveOWLs(A,Z)
                                             //write glue code to spew out graph format from these owls
 
-
+                                            //asideIP:srcEntry.ipaddr,asidePort:srcEntry.port,zsideIP:destEntry.ipaddr,zsidePort:destEntry.port,intermediaryIP:intermediaryEntry.ipaddr,intermediaryPort:intermediaryEntry.port,
 
                                             if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
                                                 //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta, asideIP:srcEntry.ipaddr, asidePort:srcEntry.port, zsideIP:destEntry.ipaddr, zsidePort:destEntry.port, intermediaryIP:intermediaryEntry.ipaddr, intermediaryPort:intermediaryEntry.port };
                                             } else {
                                                 //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
                                                 //console.log("Existing startTimestamp="+startTimestamp);
-                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta };
+                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta, asideIP:srcEntry.ipaddr, asidePort:srcEntry.port, zsideIP:destEntry.ipaddr, zsidePort:destEntry.port, intermediaryIP:intermediaryEntry.ipaddr, intermediaryPort:intermediaryEntry.port };
                                             }
                                             //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
                                         }
