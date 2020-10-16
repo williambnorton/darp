@@ -372,7 +372,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // this section flags "interesting" cells to click on and explore (Compute cost: order N)
                 var flag = "";
                 if (pulseEntry.owl == NO_MEASURE) {
-                    owls += pulseEntry.mint + ",";
+                    //owls += pulseEntry.mint + ",";
                 }
                 else {
                     var medianOfMeasures = lib_1.median(pulseEntry.history);
@@ -394,7 +394,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
                 if (pulseEntry.owl == NO_MEASURE) {
-                    //owls += pulseEntry.mint + ",";
+                    owls += pulseEntry.mint + ",";
                 }
                 else {
                     owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";

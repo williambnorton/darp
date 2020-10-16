@@ -518,7 +518,7 @@ export class AugmentedPulseGroup {
             // this section flags "interesting" cells to click on and explore (Compute cost: order N)
             var flag = "";
             if (pulseEntry.owl == NO_MEASURE) {
-                owls += pulseEntry.mint + ",";
+                //owls += pulseEntry.mint + ",";
             } else {
                 var medianOfMeasures = median(pulseEntry.history);
                 if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl!=0) {   //medianHistory will take a minute to get an entry
@@ -543,7 +543,7 @@ export class AugmentedPulseGroup {
             }
 
             if (pulseEntry.owl == NO_MEASURE) {
-                //owls += pulseEntry.mint + ",";
+                owls += pulseEntry.mint + ",";
             } else {
                 owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
             }
