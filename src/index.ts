@@ -324,7 +324,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-
+/* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP.
     if (myPulseGroup.groupOwner!=me.geo) {
         var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
@@ -353,7 +353,7 @@ app.get('/nodefactory', function(req, res) {
         console.log(`I am Group Owner - answering query myself`);
     }
 
-
+*/
 
 
 

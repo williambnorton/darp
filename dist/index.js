@@ -308,28 +308,36 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(null));
         return;
     }
-    if (myPulseGroup.groupOwner != me.geo) {
-        var redirectedURL = 'http://' + genesis.ipaddr + ":" + genesis.port + req.originalUrl;
-        console.log("I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE " + redirectedURL + " ");
-        console.log("nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=" + redirectedURL);
-        var http = require('http');
-        http.get(redirectedURL, function (res2) {
-            var body2 = "";
-            res2.on("data", function (chunk2) {
+    /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP.
+        if (myPulseGroup.groupOwner!=me.geo) {
+            var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+            console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
+            console.log(`nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=${redirectedURL}`);
+    
+            const http = require('http');
+    
+            http.get(redirectedURL,(res2) => {
+            let body2 = "";
+    
+            res2.on("data", (chunk2) => {
                 body2 += chunk2;
             });
-            res2.on("end", function () {
-                console.log("PROXIED: for caller from redirectedURL");
-                res.end(body2); //SEND the proxied genesis node config
+    
+            res2.on("end", () => {
+                console.log(`PROXIED: for caller from redirectedURL`);
+                res.end(body2);     //SEND the proxied genesis node config
             });
-        }).on("error", function (error) {
-            console.error(error.message);
-        });
-        return;
-    }
-    else {
-        console.log("I am Group Owner - answering query myself");
-    }
+    
+            }).on("error", (error) => {
+                console.error(error.message);
+            });
+            return;
+    
+        } else {
+            console.log(`I am Group Owner - answering query myself`);
+        }
+    
+    */
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
