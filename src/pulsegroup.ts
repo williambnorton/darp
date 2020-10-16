@@ -543,7 +543,7 @@ export class AugmentedPulseGroup {
             }
 
             if (pulseEntry.owl == NO_MEASURE) {
-                owls += pulseEntry.mint + ",";
+                //owls += pulseEntry.mint + ",";
             } else {
                 owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
             }
