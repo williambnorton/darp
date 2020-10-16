@@ -667,6 +667,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                                 //TODO write routine to go through the Log'd pulseRecords pulling out archiveOWLs(A,Z)
                                                 //write glue code to spew out graph format from these owls
                                                 //asideIP:srcEntry.ipaddr,asidePort:srcEntry.port,zsideIP:destEntry.ipaddr,zsidePort:destEntry.port,intermediaryIP:intermediaryEntry.ipaddr,intermediaryPort:intermediaryEntry.port,
+                                                //@SETextraordinaryPath
                                                 if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
                                                     //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
                                                     _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta, aSideIP: srcEntry.ipaddr, aSidePort: srcEntry.port, zSideIP: destEntry.ipaddr, zSidePort: destEntry.port, intermediaryIP: intermediaryEntry.ipaddr, intermediaryPort: intermediaryEntry.port };
