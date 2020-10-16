@@ -127,7 +127,7 @@ export class Config {
                         }
                     }
                 if (!isGenesisNode) {
-                    this.GENESIS=genesisNodes[Math.floor(Math.random() * genesisNodes.length)+1];  //let's avoid the 1st entry - that is our test node to manually add members to
+                    this.GENESIS=genesisNodes[Math.floor(Math.random() * genesisNodes.length)+1];  //let's avoid the 1st entry - that is our test deployment GENESIS node to manually add members to
                     if (this.GENESIS==null) {
                         console.log(`===== bootdarp going around for another run because random Genesis= ${this.GENESIS}`);
                         process.exit(36);
