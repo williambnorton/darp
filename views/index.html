@@ -312,8 +312,12 @@
                         <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= leadingDigitMint %> <%= srcMintEntry.geo %> </a></td>
                  
                 <% } else { %>
-                    <% let classNameNr = srcMintEntry.geo + " NR"; %>
-                    <tr class="<%= classNameNr %>"><td><%= srcMintEntry.mint %> <%= srcMintEntry.geo %> </td>
+                    <% let classNameNr = srcMintEntry.geo + " " + srcMintEntry.state; %>
+                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
+                    <% var leadingDigitMint="0"+srcMintEntry.mint; %>
+                    <%  leadingDigitMint=leadingDigitMint.slice(-2); %>
+                    <tr class="<%= classNameNr %>">
+                        <td><a target="_blank" href="<%= srcMintEntryUrl %>"><%= leadingDigitMint %> <%= srcMintEntry.geo %> </a></td>
 
                 <% } %>
 
