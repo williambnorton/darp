@@ -61,7 +61,7 @@ app.get('/', function(req, res) {
         OWLS_DISPLAYED: OWLS_DISPLAYED
     }, (err,data) => {
         if (err) {
-            logger.error(`${err.name} caused redering of index.html to fail: ${err.message}`);
+            logger.error(`${err.name} caused rendering of index.html to fail: ${err.message}`);
         } else if (data) {
             res.end(data);
         }
@@ -324,12 +324,16 @@ app.get('/nodefactory', function(req, res) {
 
 // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?
 
-/* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP.
+/* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner!=me.geo) {
         var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-        console.log(`nodefactory(): if we were not genesis we are redirecting to genesis node nodefactory. redirectURL to genesis=${redirectedURL}`);
+        console.log(`nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
+        Log(`nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
 
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(null)); 
+        return;
         const http = require('http');
 
         http.get(redirectedURL,(res2) => {
@@ -353,7 +357,7 @@ app.get('/nodefactory', function(req, res) {
         console.log(`I am Group Owner - answering query myself`);
     }
 
-*/
+/*    */
 
 
 
