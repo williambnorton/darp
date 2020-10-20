@@ -337,12 +337,6 @@ app.get('/nodefactory', function (req, res) {
         console.log("I am Group Owner - answering query myself");
     }
     /*    */
-    if (Math.abs(incomingBootTimestamp - lib_1.now()) > 5 * 60 * 1000) {
-        lib_1.Log("nodefactory(): REJECTING " + incomingIP + ": CLOCK SKEW " + incomingBootTimestamp + " CLOCK SKEW CLOCK SKEW  incoming clock more than 5 minutes off");
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(null));
-        return;
-    }
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {

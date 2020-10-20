@@ -358,13 +358,7 @@ app.get('/nodefactory', function(req, res) {
     }
 
 /*    */
-    if (Math.abs(incomingBootTimestamp-now())>5*60*1000) {
-        Log(`nodefactory(): REJECTING ${incomingIP}: CLOCK SKEW ${incomingBootTimestamp} CLOCK SKEW CLOCK SKEW  incoming clock more than 5 minutes off`);
 
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(null)); 
-        return;
-    }
 
 
 
