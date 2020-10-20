@@ -1155,7 +1155,7 @@ export class AugmentedPulseGroup {
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     Log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
-                    this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
+                    //this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
                 }
 
 

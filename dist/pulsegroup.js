@@ -947,7 +947,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         lib_1.Log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
+                        //this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
                     }
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
