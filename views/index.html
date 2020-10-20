@@ -111,10 +111,16 @@
 
 
                             //var link=`http://${me.ipaddr}:${me.port}/extra/${extraordinaryPath.aSide}/${extraordinaryPath.intermediary}/${extraordinaryPath.zSide}`
-                            var aSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.aSideIP;   //@WBNWBNWBNWBN  Mgmt console 
-                            var intermediaryTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.intermediaryIP;   //@WBNWBNWBNWBN
-                            var zSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.zSideIP;   //@WBNWBNWBNWBN
+                            
+                            let aSideTerm =        "http://" + extraordinaryPath.zSideIP + ":" + extraordinaryPath.zSidePort.toString() +               "/graph/" + extraordinaryPath.aSide + "/" + extraordinaryPath.zSide; 
+                            let intermediaryTerm = "http://" + extraordinaryPath.intermediaryIP + ":" + extraordinaryPath.intermediaryPort.toString() + "/graph/" + extraordinaryPath.aSide + "/" + extraordinaryPath.intermediary; 
+                            let zSideTerm =        "http://" + extraordinaryPath.zSideIP + ":" + extraordinaryPath.zSidePort.toString() +               "/graph/" + extraordinaryPath.intermediary + "/" + extraordinaryPath.zSide; 
+                            
+                            //var aSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.aSideIP;   //@WBNWBNWBNWBN  Mgmt console 
+                            //var intermediaryTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.intermediaryIP;   //@WBNWBNWBNWBN
+                            //var zSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.zSideIP;   //@WBNWBNWBNWBN
                            
+
                             console.log("links are:   aSideTerm="+aSideTerm+" intermediaryTerm="+intermediaryTerm+" zSideTerm="+zSideTerm);
 
 //                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td><div class='WORSE'>"+extraordinaryPath.direct+" ms</div></td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
