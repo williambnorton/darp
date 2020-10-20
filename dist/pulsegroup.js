@@ -284,7 +284,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             _this.nodeCount = Object.keys(_this.pulses).length;
             return _this.mintTable[newMint];
         };
-        // Genesis node controls population - it can delete mintTable, pulse and owl for the mint
+        // Genesis node controls population - it can delete mintTable, pulse and owl for the mint, also delete pulse entries with this node
         this.deleteNode = function (ipaddr, port) {
             for (var m in _this.mintTable) {
                 var mintEntry = _this.mintTable[m];
@@ -794,6 +794,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 // 
                 logger_1.logger.info("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + "  ");
                 console.log(lib_1.ts() + ("IGNORING " + incomingPulse.geo + ":" + incomingPulse.group + " - we do not have this pulse " + (incomingPulse.geo + ":" + incomingPulse.group) + " as mint " + incomingPulse.mint + " -it is OK for a few of these to show up during transditions.  "));
+                lib_1.Log("UnExpected incoming pulse: send instead a ");
                 //Sender should not receive pulses from genesis node for 20 seconds and time out
                 return;
             }
@@ -915,6 +916,39 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples - once a minute
                     incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)) //wbnwbnwbn TODO: Here push { ts:timestamp, data: dataPoint }
                     );
+                    //
+                    //  Check for clock drift - remove nodes with all of the last 60 samples increasing or decreasing
+                    //
+                    var norm = 99999;
+                    var direction = "";
+                    var DONE = false;
+                    for (var h in incomingPulseEntry.history) {
+                        var dataPoint = incomingPulseEntry.history[h];
+                        if (norm == 99999)
+                            norm = dataPoint;
+                        if (dataPoint > norm) {
+                            if (direction == "FALLING")
+                                DONE = true;
+                            else
+                                direction = "RISING";
+                        }
+                        if (dataPoint < norm) {
+                            if (direction == "RISING")
+                                DONE = true;
+                            else
+                                direction = "FALLING";
+                        }
+                        norm = dataPoint;
+                    }
+                    if (!DONE) {
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        lib_1.Log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
+                    }
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
                         incomingPulseEntry.history.shift(); // drop off the last sample

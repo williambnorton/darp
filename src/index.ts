@@ -360,11 +360,6 @@ app.get('/nodefactory', function(req, res) {
 /*    */
 
 
-
-
-
-
-
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
