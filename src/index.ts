@@ -322,7 +322,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-// WE are getting nodes coming in to nodeFactory of a sub. Could accept also?
+// WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
 
 /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner!=me.geo) {
@@ -358,7 +358,13 @@ app.get('/nodefactory', function(req, res) {
     }
 
 /*    */
+    if (Math.abs(incomingBootTimestamp-now())>5*60*1000) {
+        Log(`nodefactory(): REJECTING ${incomingIP}: CLOCK SKEW ${incomingBootTimestamp} CLOCK SKEW CLOCK SKEW  incoming clock more than 5 minutes off`);
 
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(null)); 
+        return;
+    }
 
 
 
