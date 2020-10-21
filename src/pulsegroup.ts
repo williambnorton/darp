@@ -986,7 +986,8 @@ export class AugmentedPulseGroup {
 
             Log(`IGNORING UnExpected incoming pulse: To Do: send instead a pulse Quarantine Config: Genesis and newNode only. then he can die immediately. `);
             //Opportunity to reply with a config 
-
+            //OR Could use this as an add request - just add it to the mintTable and pulseTable with new mint#?
+            //Better to put it into Quarttine mode
 
 
            //Sender should not receive pulses from genesis node for 20 seconds and time out
