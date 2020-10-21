@@ -1125,37 +1125,40 @@ export class AugmentedPulseGroup {
                 );
 
 
-                //
+                // Also, once a minute, check for only rising or only falling measurements as clock drift
                 //  Check for clock drift - remove nodes with all of the last 60 samples increasing or decreasing
                 //
-                var norm=99999;
+                var norm=999999;
                 var direction="";
-                var DONE=false;
+                var UPANDDOWNMEASURES=false;
 
                 for (var h in incomingPulseEntry.history) {
                     var dataPoint=incomingPulseEntry.history[h];
-                    if (norm==99999) 
+                    console.log(`dataPoint=${dataPoint} norm=${norm} direction=${direction} ${UPANDDOWNMEASURES}`);
+                    if (norm==999999) 
                         norm=dataPoint;
                     if (dataPoint>norm) {
-                        if (direction=="FALLING") 
-                            DONE=true;
-                        else direction="RISING";
+                        if (direction=="ONLYFALLING") 
+                            UPANDDOWNMEASURES=true;
+                        else direction="ONLYRISING";
                     }
                     if (dataPoint<norm) {
-                        if (direction=="RISING") 
-                            DONE=true;
-                        else direction="FALLING";
+                        if (direction=="ONLYRISING") 
+                            UPANDDOWNMEASURES=true;
+                        else direction="ONLYFALLING";
                     }                        
                     norm=dataPoint;
                 }
-                if (!DONE) {
+                if (!UPANDDOWNMEASURES && direction!="") {    //make sure we don't delete a node with 0 variance
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
                     Log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} DELETING NODE`);
-                    //this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
+                    this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
+                } else {
+                    console.log(`No clock skew found: direction=${direction} UPANDDOWNMEASURES=${UPANDDOWNMEASURES} ${incomingPulseEntry.history[h]}`);
                 }
 
 

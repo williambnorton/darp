@@ -919,38 +919,42 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples - once a minute
                     incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)) //wbnwbnwbn TODO: Here push { ts:timestamp, data: dataPoint }
                     );
-                    //
+                    // Also, once a minute, check for only rising or only falling measurements as clock drift
                     //  Check for clock drift - remove nodes with all of the last 60 samples increasing or decreasing
                     //
-                    var norm = 99999;
+                    var norm = 999999;
                     var direction = "";
-                    var DONE = false;
+                    var UPANDDOWNMEASURES = false;
                     for (var h in incomingPulseEntry.history) {
                         var dataPoint = incomingPulseEntry.history[h];
-                        if (norm == 99999)
+                        console.log("dataPoint=" + dataPoint + " norm=" + norm + " direction=" + direction + " " + UPANDDOWNMEASURES);
+                        if (norm == 999999)
                             norm = dataPoint;
                         if (dataPoint > norm) {
-                            if (direction == "FALLING")
-                                DONE = true;
+                            if (direction == "ONLYFALLING")
+                                UPANDDOWNMEASURES = true;
                             else
-                                direction = "RISING";
+                                direction = "ONLYRISING";
                         }
                         if (dataPoint < norm) {
-                            if (direction == "RISING")
-                                DONE = true;
+                            if (direction == "ONLYRISING")
+                                UPANDDOWNMEASURES = true;
                             else
-                                direction = "FALLING";
+                                direction = "ONLYFALLING";
                         }
                         norm = dataPoint;
                     }
-                    if (!DONE) {
+                    if (!UPANDDOWNMEASURES && direction != "") { //make sure we don't delete a node with 0 variance
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
                         lib_1.Log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        //this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
+                        _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
+                    }
+                    else {
+                        console.log("No clock skew found: direction=" + direction + " UPANDDOWNMEASURES=" + UPANDDOWNMEASURES + " " + incomingPulseEntry.history[h]);
                     }
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
