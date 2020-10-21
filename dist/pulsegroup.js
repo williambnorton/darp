@@ -946,7 +946,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                     if (!UPANDDOWNMEASURES && direction != "") { //make sure we don't delete a node with 0 variance
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
-                        lib_1.Log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        lib_1.Log("DELETING node for CLOCK SKEW ISSUES " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
                         _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
                     }
                     else {

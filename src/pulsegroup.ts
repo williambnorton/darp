@@ -1151,7 +1151,7 @@ export class AugmentedPulseGroup {
                 }
                 if (!UPANDDOWNMEASURES && direction!="") {    //make sure we don't delete a node with 0 variance
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.ipaddr} DELETING NODE`);
-                    Log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.ipaddr} DELETING NODE`);
+                    Log(`DELETING node for CLOCK SKEW ISSUES ${incomingPulseEntry.geo} ${incomingPulseEntry.ipaddr} DELETING NODE`);
                     this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
                 } else {
                     //console.log(`No clock skew found: direction=${direction} UPANDDOWNMEASURES=${UPANDDOWNMEASURES} ${incomingPulseEntry.history[h]}`);
