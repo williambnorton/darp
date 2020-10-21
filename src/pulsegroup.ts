@@ -1134,7 +1134,7 @@ export class AugmentedPulseGroup {
 
                 for (var h in incomingPulseEntry.history) {
                     var dataPoint=incomingPulseEntry.history[h];
-                    console.log(`dataPoint=${dataPoint} norm=${norm} direction=${direction} ${UPANDDOWNMEASURES}`);
+                    //console.log(`dataPoint=${dataPoint} norm=${norm} direction=${direction} ${UPANDDOWNMEASURES}`);
                     if (norm==999999) 
                         norm=dataPoint;
                     if (dataPoint>norm) {
