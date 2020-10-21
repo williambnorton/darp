@@ -984,9 +984,8 @@ export class AugmentedPulseGroup {
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint}  `);
            console.log(ts()+`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint} -it is OK for a few of these to show up during transditions.  `);
 
-           
-            Log(`UnExpected incoming pulse: send instead a `);
-
+            Log(`IGNORING UnExpected incoming pulse: To Do: send instead a pulse Quarantine Config: Genesis and newNode only. then he can die immediately. `);
+            //Opportunity to reply with a config 
 
 
 
