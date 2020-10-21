@@ -945,16 +945,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         norm = dataPoint;
                     }
                     if (!UPANDDOWNMEASURES && direction != "") { //make sure we don't delete a node with 0 variance
-                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
-                        lib_1.Log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        lib_1.Log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
                         _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
                     }
                     else {
-                        console.log("No clock skew found: direction=" + direction + " UPANDDOWNMEASURES=" + UPANDDOWNMEASURES + " " + incomingPulseEntry.history[h]);
+                        //console.log(`No clock skew found: direction=${direction} UPANDDOWNMEASURES=${UPANDDOWNMEASURES} ${incomingPulseEntry.history[h]}`);
                     }
                     // store 60 samples
                     if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
