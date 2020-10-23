@@ -1326,9 +1326,17 @@ export class AugmentedPulseGroup {
         });
     };
 
+    //
+    //
+    //
     measurertt = () => {
-        if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
-        console.log(`measurertt()`);
+        //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 
@@ -1360,14 +1368,14 @@ export class AugmentedPulseGroup {
                             pulseEntry.rtt = rtt;
                         } else {
                             pulseEntry.rtt = NO_MEASURE;
-                            console.log(`**  WIREGUARD PING RESPONDED    ****measurertt(): ${pulseEntry.geo} rtt = ${pulseEntry.rtt}`);
+                            console.log(`**  WIREGUARD PING RESPONDED    **** measurertt(): ${pulseEntry.geo} rtt = ${pulseEntry.rtt}`);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
                     }
                 }
             );
         }
-        setTimeout(this.measurertt,120 * 1000 );  // ping every node every 2 minutes
+        setTimeout(this.measurertt, 1 * 60 * 1000 );  // ping every node every n minutes
     };
 
     //

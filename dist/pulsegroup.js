@@ -1095,10 +1095,17 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
             });
         };
+        //
+        //
+        //
         this.measurertt = function () {
-            if (!MEASURE_RTT)
-                return; // can not spin up 1 ping process per node per second
-            console.log("measurertt()");
+            //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
+            console.log("-------------------------------------------------------------------------------------- measurertt()");
+            console.log("-------------------------------------------------------------------------------------- measurertt()");
+            console.log("-------------------------------------------------------------------------------------- measurertt()");
+            console.log("-------------------------------------------------------------------------------------- measurertt()");
+            console.log("-------------------------------------------------------------------------------------- measurertt()");
+            console.log("-------------------------------------------------------------------------------------- measurertt()");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
@@ -1129,7 +1136,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         }
                         else {
                             pulseEntry.rtt = NO_MEASURE;
-                            console.log("**  WIREGUARD PING RESPONDED    ****measurertt(): " + pulseEntry.geo + " rtt = " + pulseEntry.rtt);
+                            console.log("**  WIREGUARD PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " rtt = " + pulseEntry.rtt);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
                     }
@@ -1138,7 +1145,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             for (var p in _this.pulses) {
                 _loop_1();
             }
-            setTimeout(_this.measurertt, 120 * 1000); // ping every node every 2 minutes
+            setTimeout(_this.measurertt, 1 * 60 * 1000); // ping every node every n minutes
         };
         //
         //  this is where the messgaes over secure qireguard mesh is handled - not working yet
