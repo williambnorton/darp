@@ -109,6 +109,16 @@ do
     if [ -f  $DARPDIR/index.pid ]; then
         kill `cat $DARPDIR/index.pid`
     fi
+
+
+    echo "Here we could / should? send a pulse to a genesis node that verify ports are bidirectionally open.... For this, genesis should respond with a NO_SUCH message Verifying the ports have been opened in both directions"
+    #echo PORTCHECK
+    #BSMSG="1603288999696,1603288999611,0,Build.201021.0619,UNRECOGNIZEDGEO,UNRECOGNIZEDGROUP,3,1603288998189,99999,1"
+
+
+
+
+
     echo `date` "Starting DARP $VERSION ..."
 	node index #> $DARPDIR/darp.log
 #	node index 
