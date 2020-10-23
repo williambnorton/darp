@@ -51,7 +51,7 @@ var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
-var MEASURE_RTT = false; //ping across wireguard interface
+var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
@@ -853,6 +853,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         }
                     }
                 }
+                //
+                //      PUT NODE INTO UP STATE - Maybe we need a finitte state machine to emit state transition events?
+                // UP Means Authoratitive Genesis Node sent us a pulse with our own mint shpwing up
+                //
                 _this.mintTable[1].state = "UP"; //Genesis Node is UP
                 //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
                 _this.mintTable[0].state = "UP"; // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
@@ -884,6 +888,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 else {
                     //console.log(`I am not group owner`);
                 }
+                //
+                //  TAKE NODE OUT OF QUARANTINE
+                //
                 // non-Genesis node pulse - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
                     logger_1.logger.info("Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine");
@@ -1117,7 +1124,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             //TODO: here we store or clear the rttMatrix element
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
-                            //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
+                            console.log("*******  mint=" + mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo);
                             pulseEntry.rtt = rtt;
                         }
                         else {

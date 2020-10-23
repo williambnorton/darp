@@ -15,7 +15,7 @@ import { POINT_CONVERSION_COMPRESSED } from "constants";
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
-const MEASURE_RTT=false;   //ping across wireguard interface
+const MEASURE_RTT=true;   //ping across wireguard interface
 const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
@@ -989,7 +989,6 @@ export class AugmentedPulseGroup {
             //OR Could use this as an add request - just add it to the mintTable and pulseTable with new mint#?
             //Better to put it into Quarttine mode
 
-
            //Sender should not receive pulses from genesis node for 20 seconds and time out
            return;
        }
@@ -1053,6 +1052,10 @@ export class AugmentedPulseGroup {
                     }
                 }
             }
+            //
+            //      PUT NODE INTO UP STATE - Maybe we need a finitte state machine to emit state transition events?
+            // UP Means Authoratitive Genesis Node sent us a pulse with our own mint shpwing up
+            //
            this.mintTable[1].state = "UP";   //Genesis Node is UP
            //if (incomingPulseEntry.owls.match(/[0-9]*=[0-9]*/)myMint)) {  //if Genesis node is sending me my OWL, we are UP
            this.mintTable[0].state = "UP";   // mark self as UP since we got a pulse from genesis node  - this should be when he sees his owl measurement in the announcement
@@ -1081,6 +1084,10 @@ export class AugmentedPulseGroup {
             } else {
                 //console.log(`I am not group owner`);
             }
+
+            //
+            //  TAKE NODE OUT OF QUARANTINE
+            //
            // non-Genesis node pulse - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {
                logger.info(`Received non-genesis pulse - I am accepted in this pulse group - I must have transitioned out of Quarantine`);
@@ -1349,7 +1356,7 @@ export class AugmentedPulseGroup {
                             //TODO: here we store or clear the rttMatrix element
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
-                            //console.log(`*******  mint=${mint} saving measure to record of pulseEntry.geo=${pulseEntry.geo}`);
+                            console.log(`*******  mint=${mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
                             pulseEntry.rtt = rtt;
                         } else {
                             //console.log(`******measurertt(): ${pulseEntry.geo} rtt = -99999`);
