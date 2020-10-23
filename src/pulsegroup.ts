@@ -1366,7 +1366,7 @@ export class AugmentedPulseGroup {
                             //TODO: here we store or clear the rttMatrix element
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
-                            console.log(`-------------------------------------------------------------------------------------- measurertt() *******  mint=${mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
+                            console.log(`-------------------------------------------------------------------------------------- measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
                             pulseEntry.rtt = rtt;
                         } else {
                             pulseEntry.rtt = NO_MEASURE;
