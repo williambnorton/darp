@@ -1128,9 +1128,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             pulseEntry.rtt = rtt;
                         }
                         else {
-                            //console.log(`******measurertt(): ${pulseEntry.geo} rtt = -99999`);
-                            //clear in rttHistory, rttMedian
                             pulseEntry.rtt = NO_MEASURE;
+                            console.log("**  WIREGUARD PING RESPONDED    ****measurertt(): " + pulseEntry.geo + " rtt = " + pulseEntry.rtt);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
                     }
@@ -1139,6 +1138,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             for (var p in _this.pulses) {
                 _loop_1();
             }
+            setTimeout(_this.measurertt, 120 * 1000); // ping every node every 2 minutes
         };
         //
         //  this is where the messgaes over secure qireguard mesh is handled - not working yet
