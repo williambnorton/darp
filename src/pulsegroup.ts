@@ -1342,7 +1342,9 @@ export class AugmentedPulseGroup {
 
             //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
             const ip = mint2IP(pulseEntry.mint);
-            const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;
+            const ip0 = pulseEntry.ipaddr;
+            //const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;
+            const pingCmd = `(ping -c 1 -W 1 ${ip0} 2>&1)`;
             exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
