@@ -1348,7 +1348,7 @@ export class AugmentedPulseGroup {
                     var i = stdout.indexOf("100%");
                     if (i >= 0) {
                         pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                        //console.log(`${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
+                        console.log(`-------------------------------------------------------------------------------------- measurertt() ${pulseEntry.geo} did not respond to ping over encrypted tunnel ${ip}`);
                         return;
                     }
 
@@ -1364,11 +1364,11 @@ export class AugmentedPulseGroup {
                             //TODO: here we store or clear the rttMatrix element
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
-                            console.log(`*******  mint=${mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
+                            console.log(`-------------------------------------------------------------------------------------- measurertt() *******  mint=${mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
                             pulseEntry.rtt = rtt;
                         } else {
                             pulseEntry.rtt = NO_MEASURE;
-                            console.log(`**  WIREGUARD PING RESPONDED    **** measurertt(): ${pulseEntry.geo} rtt = ${pulseEntry.rtt}`);
+                            console.log(`-------------------------------------------------------------------------------------- measurertt() **  WIREGUARD PING RESPONDED    **** measurertt(): ${pulseEntry.geo} rtt = ${pulseEntry.rtt}`);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
                     }
