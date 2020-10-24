@@ -926,13 +926,22 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 if (d.getSeconds() == 0 && incomingPulseEntry.history.length >= 60) { //no median until we have 60 samples - once a minute
                     incomingPulseEntry.medianHistory.push(Math.round(lib_1.median(incomingPulseEntry.history)) //wbnwbnwbn TODO: Here push { ts:timestamp, data: dataPoint }
                     );
-                    // Also, once a minute, check for only rising or only falling measurements as clock drift
-                    //  Check for clock drift - remove nodes with all of the last 60 samples increasing or decreasing
-                    //
+                    // store 60 samples
+                    if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
+                        incomingPulseEntry.history.shift(); // drop off the last sample
+                    }
+                }
+                var dataPoints = incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
+                if (dataPoints.length > 60) {
+                    //  Check for only rising or only falling measurements as clock drift
+                    //  Check for clock drift - remove nodes with all of the last 60 samples in a row increasing or decreasing
+                    //                  allow up to half the time to be steady and still be considered clock drift and killed
+                    //Note that high jitter  on links with clock drift will be seen as valid for a minute and removed after an hour
                     var norm = 999999;
                     var direction = "";
                     var UPANDDOWNMEASURES = false;
-                    for (var h in incomingPulseEntry.history) {
+                    var steady = 0; //how many steady measures do I see?
+                    for (var h in dataPoints) {
                         var dataPoint = incomingPulseEntry.history[h];
                         //console.log(`dataPoint=${dataPoint} norm=${norm} direction=${direction} ${UPANDDOWNMEASURES}`);
                         if (norm == 999999)
@@ -949,9 +958,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             else
                                 direction = "ONLYFALLING";
                         }
+                        if (norm == dataPoint)
+                            steady++; //We like steady network segments KEEP THEM                  
                         norm = dataPoint;
                     }
-                    if (!UPANDDOWNMEASURES && direction != "") { //make sure we don't delete a node with 0 variance
+                    if (!UPANDDOWNMEASURES && direction != "" && steady < (dataPoints.length / 2)) { //kill always increasing/decreasing latency but leave steady ones alone
                         console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
                         lib_1.Log("DELETING node for CLOCK SKEW ISSUES " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
                         _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
@@ -962,14 +973,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //
                     //  We could repeat the same logic to the medianHistory - kill it if we see 60 minuutes of continuously rising or falling latency measures
                     //
-                    // store 60 samples
-                    if (incomingPulseEntry.medianHistory.length > 60 * 4) { //save only 4 hours worth of data for now
-                        incomingPulseEntry.history.shift(); // drop off the last sample
-                    }
                 }
                 var filename = "../" + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
                 //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
-                var dataPoints = incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
+                //
+                //  Could more easily go through array here and kill any node with more than 60 measures in a row in the same direction
+                //      so slow clock drift (<60ms/min) machines can live in the ecocytem for an hour
+                //
                 //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
                 var str = JSON.stringify(dataPoints);
                 fs.writeFile(filename, str, function (err) {

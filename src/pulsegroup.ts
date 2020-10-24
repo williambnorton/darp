@@ -1132,14 +1132,27 @@ export class AugmentedPulseGroup {
                 );
 
 
-                // Also, once a minute, check for only rising or only falling measurements as clock drift
-                //  Check for clock drift - remove nodes with all of the last 60 samples increasing or decreasing
-                //
+                
+                
+                
+                
+                // store 60 samples
+                if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
+                    incomingPulseEntry.history.shift(); // drop off the last sample
+                }
+                
+            }
+            var dataPoints=incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
+            if (dataPoints.length>60) {
+                //  Check for only rising or only falling measurements as clock drift
+                //  Check for clock drift - remove nodes with all of the last 60 samples in a row increasing or decreasing
+                //                  allow up to half the time to be steady and still be considered clock drift and killed
+                //Note that high jitter  on links with clock drift will be seen as valid for a minute and removed after an hour
                 var norm=999999;
                 var direction="";
                 var UPANDDOWNMEASURES=false;
-
-                for (var h in incomingPulseEntry.history) {
+                    var steady=0;  //how many steady measures do I see?
+                for (var h in dataPoints) {
                     var dataPoint=incomingPulseEntry.history[h];
                     //console.log(`dataPoint=${dataPoint} norm=${norm} direction=${direction} ${UPANDDOWNMEASURES}`);
                     if (norm==999999) 
@@ -1153,10 +1166,11 @@ export class AugmentedPulseGroup {
                         if (direction=="ONLYRISING") 
                             UPANDDOWNMEASURES=true;
                         else direction="ONLYFALLING";
-                    }                        
+                    }
+                    if (norm==dataPoint) steady++;      //We like steady network segments KEEP THEM                  
                     norm=dataPoint;
                 }
-                if (!UPANDDOWNMEASURES && direction!="") {    //make sure we don't delete a node with 0 variance
+                if (!UPANDDOWNMEASURES && direction!="" && steady < (dataPoints.length/2) ) {    //kill always increasing/decreasing latency but leave steady ones alone
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.ipaddr} DELETING NODE`);
                     Log(`DELETING node for CLOCK SKEW ISSUES ${incomingPulseEntry.geo} ${incomingPulseEntry.ipaddr} DELETING NODE`);
                     this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
@@ -1166,42 +1180,36 @@ export class AugmentedPulseGroup {
                 //
                 //  We could repeat the same logic to the medianHistory - kill it if we see 60 minuutes of continuously rising or falling latency measures
                 //
-
-
-
-
-                                // store 60 samples
-                if (incomingPulseEntry.medianHistory.length > 60*4) {   //save only 4 hours worth of data for now
-                    incomingPulseEntry.history.shift(); // drop off the last sample
-                }
-
-            }
-
-
-                var filename = "../"+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
-                //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
-
-                var dataPoints=incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
-                //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
-                var str=JSON.stringify(dataPoints);
-                fs.writeFile(filename, str, (err) => {  //appended asynchronously
-                        if (err) throw err;
-                });
-
-
-
-
+            }               
             
-
+            var filename = "../"+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
+            //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
+            
+            //
+            //  Could more easily go through array here and kill any node with more than 60 measures in a row in the same direction
+            //      so slow clock drift (<60ms/min) machines can live in the ecocytem for an hour
+            //
+            
+            //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
+            var str=JSON.stringify(dataPoints);
+            fs.writeFile(filename, str, (err) => {  //appended asynchronously
+                if (err) throw err;
+            });
+            
+            
+            
+            
+            
+            
             // TODO: Also resync if the groupOwner has removed an item
-           this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
-
-       } else {
-           logger.warning(`Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: ${incomingPulse.geo}`);
-
-           //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
-           //maybe also add empty pulse records for each that don't have a pulse record
-       }
+            this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
+            
+        } else {
+            logger.warning(`Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: ${incomingPulse.geo}`);
+            
+            //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
+            //maybe also add empty pulse records for each that don't have a pulse record
+        }
     }
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
@@ -1221,7 +1229,7 @@ export class AugmentedPulseGroup {
     recvPulses = (incomingMessage: string) => {
         // try {
             // const incomingPulse = await parsePulseMessage(incomingMessage)
-        var ary = incomingMessage.split(",");
+            var ary = incomingMessage.split(",");
         const pulseTimestamp = parseInt(ary[0]);
         const senderTimestamp = parseInt(ary[1]);
         const OWL = pulseTimestamp - senderTimestamp;
