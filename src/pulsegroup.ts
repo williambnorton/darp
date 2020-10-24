@@ -1163,7 +1163,9 @@ export class AugmentedPulseGroup {
                 } else {
                     //console.log(`No clock skew found: direction=${direction} UPANDDOWNMEASURES=${UPANDDOWNMEASURES} ${incomingPulseEntry.history[h]}`);
                 }
-
+                //
+                //  We could repeat the same logic to the medianHistory - kill it if we see 60 minuutes of continuously rising or falling latency measures
+                //
 
 
 
