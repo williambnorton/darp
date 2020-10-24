@@ -639,7 +639,8 @@
     
     
     <p>Connect to this pulseGroup using:
-        docker run
+        (sleep 30;~/wireguard/wgwatch.bash)& docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); 
+                docker run
         -p <%= me.port %>:<%= me.port %>
         -p <%= me.port %>:<%= me.port %>/udp
         -p 80:80/udp
