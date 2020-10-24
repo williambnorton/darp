@@ -932,8 +932,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
                 var dataPoints = incomingPulseEntry.medianHistory.concat(incomingPulseEntry.history);
-                if (dataPoints.length > 60) {
-                    //  Check for only rising or only falling measurements as clock drift
+                //if (dataPoints.length>60 ) {    //Option B - Distributed - all with same algorithm come to aprox same conclusion, all delete node.
+                if (dataPoints.length > 60 && _this.isGenesisNode()) { //Not sure I like having every node look for clock skew - could be done only by genesis node
+                    //  GENESIS NODE: Check for only rising or only falling measurements as clock drift
                     //  Check for clock drift - remove nodes with all of the last 60 samples in a row increasing or decreasing
                     //                  allow up to half the time to be steady and still be considered clock drift and killed
                     //Note that high jitter  on links with clock drift will be seen as valid for a minute and removed after an hour
@@ -963,7 +964,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         norm = dataPoint;
                     }
                     if (!UPANDDOWNMEASURES && direction != "" && steady < (dataPoints.length / 2)) { //kill always increasing/decreasing latency but leave steady ones alone
-                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.group + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.group + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.group + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.group + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
+                        console.log("FOUND CLOCK SKEW for node " + incomingPulseEntry.geo + " " + incomingPulseEntry.group + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
                         lib_1.Log("DELETING node for CLOCK SKEW ISSUES " + incomingPulseEntry.geo + " " + incomingPulseEntry.ipaddr + " DELETING NODE");
                         _this.deleteNode(_this.mintTable[incomingPulseEntry.mint].ipaddr, _this.mintTable[incomingPulseEntry.mint].port);
                     }
