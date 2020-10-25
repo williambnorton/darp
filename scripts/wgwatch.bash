@@ -34,7 +34,7 @@ do
 	if [ -w $WGDIR ]; then
 		cd $WGDIR
 		if [ -f $WGDIR/darp0.pending.conf ]; then
-			echo `date` pushing pending darp config change 
+			echo `date` `hostname` pushing pending darp config change `grep -i PUBLICKEY $WGDIR/darp0.pending.conf|lc` ENCRYPTED PATHS to PEERS 
 			/usr/bin/wg-quick down $WGDIR/darp0.conf
 			mv -f $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
 			/usr/bin/wg-quick up $WGDIR/darp0.conf

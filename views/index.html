@@ -386,6 +386,7 @@
                 <th>mint</th>
                 <th>owl</th>
                 <th>wg rtt</th>
+                <th>relayCount</th>
                 <!-- <th>median</th>
                 <th>owls</th>
                 <th>inOctets</th>
@@ -447,7 +448,12 @@
                 
                 <% let classNameGeoRtt = pulseEntry.geo + "_rtt"; %>
                 <td class="<%= classNameGeoRtt %>"><a class="BUSY" target="_blank" href="<%= graphUrl %>" ><%= pulseEntry.rtt %></a> ms</td>
-                
+                                
+                <% let classNameGeoRelayCount = pulseEntry.geo + "_relayCount"; %>
+                <td class="<%= classNameGeoRelayCount %>"> <%= pulseEntry.relayCount %>ms</td>
+
+
+
                 <!-- <% let classNameGeoMedian = pulseEntry.geo + "_median"; %>
                 <td class="<%= classNameGeoMedian %>"><%= pulseEntry.median %></td>
                 <td><%= pulseEntry.owls %></td>
