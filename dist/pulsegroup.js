@@ -1129,8 +1129,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
                 var ip = lib_1.mint2IP(pulseEntry.mint);
                 var ip0 = pulseEntry.ipaddr;
-                //const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;
-                var pingCmd = "(ping -c 1 -W 1 " + ip0 + " 2>&1)";
+                var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)"; //ping PRIVATE ADDRESS: 10.10.x.y
+                //const pingCmd = `(ping -c 1 -W 1 ${ip0} 2>&1)`;   //ping public IP address
                 child_process_1.exec(pingCmd, function (error, stdout, stderr) {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
