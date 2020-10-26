@@ -1159,7 +1159,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
                             console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo);
-                            pulseEntry.rtt = rtt;
+                            if (wgMeasure == 0)
+                                pulseEntry.rtt = rtt;
+                            else
+                                pulseEntry.wgrtt = rtt;
                         }
                         else {
                             if (wgMeasure == 0)
@@ -1176,7 +1179,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             for (var p in _this.pulses) {
                 _loop_1();
             }
-            setTimeout(_this.measurertt, 60 * 1000); // ping every node every n minutes
+            setTimeout(_this.measurertt, 60 * 1000); // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms 
         };
         //
         //  this is where the messgaes over secure qireguard mesh is handled - not working yet

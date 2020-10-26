@@ -1367,6 +1367,7 @@ export class AugmentedPulseGroup {
                 var pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;      //ping PRIVATE ADDRESS: 10.10.x.y
             else
                 var pingCmd = `(ping -c 1 -W 1 ${ip0} 2>&1)`;   //ping public IP address
+
             exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
@@ -1390,7 +1391,8 @@ export class AugmentedPulseGroup {
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
                             console.log(`--------------------------------------------------------------------------------------${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
-                            pulseEntry.rtt = rtt;
+                            if (wgMeasure==0) pulseEntry.rtt = rtt;
+                            else pulseEntry.wgrtt = rtt;
                         } else {
                             if (wgMeasure==0) pulseEntry.rtt = NO_MEASURE;
                             else pulseEntry.wgrtt = NO_MEASURE;
@@ -1401,7 +1403,7 @@ export class AugmentedPulseGroup {
                 }
             );
         }
-        setTimeout(this.measurertt, 60 * 1000 );  // ping every node every n minutes
+        setTimeout(this.measurertt, 60 * 1000 );  // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms 
     };
 
     //
