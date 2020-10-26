@@ -1143,7 +1143,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
                         else
                             pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
-                        console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() " + pulseEntry.geo + " did not respond to ping over encrypted tunnel " + ip);
+                        console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over encrypted tunnel " + ip);
                         return;
                     }
                     var ary = stdout.split(" ");
@@ -1169,7 +1169,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 pulseEntry.rtt = NO_MEASURE;
                             else
                                 pulseEntry.wgrtt = NO_MEASURE;
-                            console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() **  WIREGUARD PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " rtt = " + pulseEntry.rtt);
+                            console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
                     }
