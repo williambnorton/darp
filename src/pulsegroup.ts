@@ -1363,7 +1363,7 @@ export class AugmentedPulseGroup {
 
             const ip = mint2IP(pulseEntry.mint);
             const ip0 = pulseEntry.ipaddr;
-            if (wgMeasure==0)
+            if (wgMeasure==1)
                 var pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;      //ping PRIVATE ADDRESS: 10.10.x.y
             else
                 var pingCmd = `(ping -c 1 -W 1 ${ip0} 2>&1)`;   //ping public IP address
@@ -1372,7 +1372,7 @@ export class AugmentedPulseGroup {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
                     if (i >= 0) {
-                        if (wgMeasure==0) pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
+                        if (wgMeasure!=1) pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
                         else pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
                         console.log(`--------------------------------------------------------------------------------------${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over encrypted tunnel ${ip}`);
                         return;
@@ -1391,10 +1391,10 @@ export class AugmentedPulseGroup {
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
                             console.log(`--------------------------------------------------------------------------------------${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
-                            if (wgMeasure==0) pulseEntry.rtt = rtt;
+                            if (wgMeasure!=1) pulseEntry.rtt = rtt;
                             else pulseEntry.wgrtt = rtt;
                         } else {
-                            if (wgMeasure==0) pulseEntry.rtt = NO_MEASURE;
+                            if (wgMeasure!=1) pulseEntry.rtt = NO_MEASURE;
                             else pulseEntry.wgrtt = NO_MEASURE;
                             console.log(`--------------------------------------------------------------------------------------${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
