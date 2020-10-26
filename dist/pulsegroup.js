@@ -1122,7 +1122,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
             console.log("-------------------------------------------------------------------------------------- measurertt()");
             var d = new Date();
-            var wgMeasure = d.getMinutes() % 1; //even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
+            var wgMeasure = d.getMinutes(); //even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
+            console.log("wgMeasure=" + wgMeasure);
+            wgMeasure = wgMeasure % 1;
+            console.log("AFTER wgMeasure%1 = " + wgMeasure);
             console.log("measurertt() would measure " + wgMeasure + " 0=publicInternet, 1=wireguard measure");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
