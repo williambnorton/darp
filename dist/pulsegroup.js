@@ -207,6 +207,7 @@ var PulseEntry = /** @class */ (function () {
         this.history = [];
         this.medianHistory = [];
         this.rtt = NO_MEASURE;
+        this.wgrtt = NO_MEASURE;
         this.bootTimestamp = bootTimestamp; // RemoteClock on startup  **** - we abandon the pulse when this changes
         this.version = version; // software version running on sender's node
         this.relayCount = 0;
@@ -1114,24 +1115,32 @@ var AugmentedPulseGroup = /** @class */ (function () {
             });
         };
         //
-        //
+        //  measurertt() - run once a minute - this measures rtt in a separate ping process (25 nodes = 25 processes spun off every minuiute) 
+        //              would be better to have separate process create/remove files based on ping results, then code checks files once a second
         //
         this.measurertt = function () {
             //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
             console.log("-------------------------------------------------------------------------------------- measurertt()");
+            var d = new Date();
+            var wgMeasure = d.getMinutes() % 1; //even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
+            console.log("measurertt() would measure " + wgMeasure + " 0=publicInternet, 1=wireguard measure");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
-                //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
                 var ip = lib_1.mint2IP(pulseEntry.mint);
                 var ip0 = pulseEntry.ipaddr;
-                //const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;      //ping PRIVATE ADDRESS: 10.10.x.y
-                var pingCmd = "(ping -c 1 -W 1 " + ip0 + " 2>&1)"; //ping public IP address
+                if (wgMeasure == 0)
+                    pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)"; //ping PRIVATE ADDRESS: 10.10.x.y
+                else
+                    pingCmd = "(ping -c 1 -W 1 " + ip0 + " 2>&1)"; //ping public IP address
                 child_process_1.exec(pingCmd, function (error, stdout, stderr) {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
                     if (i >= 0) {
-                        pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                        console.log("-------------------------------------------------------------------------------------- measurertt() " + pulseEntry.geo + " did not respond to ping over encrypted tunnel " + ip);
+                        if (wgMeasure == 0)
+                            pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
+                        else
+                            pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
+                        console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() " + pulseEntry.geo + " did not respond to ping over encrypted tunnel " + ip);
                         return;
                     }
                     var ary = stdout.split(" ");
@@ -1146,17 +1155,21 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             //TODO: here we store or clear the rttMatrix element
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
-                            console.log("-------------------------------------------------------------------------------------- measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo);
+                            console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo);
                             pulseEntry.rtt = rtt;
                         }
                         else {
-                            pulseEntry.rtt = NO_MEASURE;
-                            console.log("-------------------------------------------------------------------------------------- measurertt() **  WIREGUARD PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " rtt = " + pulseEntry.rtt);
+                            if (wgMeasure == 0)
+                                pulseEntry.rtt = NO_MEASURE;
+                            else
+                                pulseEntry.wgrtt = NO_MEASURE;
+                            console.log("--------------------------------------------------------------------------------------" + wgMeasure + " measurertt() **  WIREGUARD PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " rtt = " + pulseEntry.rtt);
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
                     }
                 });
             };
+            var pingCmd, pingCmd;
             for (var p in _this.pulses) {
                 _loop_1();
             }

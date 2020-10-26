@@ -206,16 +206,17 @@
                             pulse.inPulses = pulse.inPulses;
                             pulse.outPulses = pulse.outPulses;
                             $("."+pulse.geo+"_rtt").text(pulse.rtt);
+                            $("."+pulse.geo+"_wgrtt").text(pulse.wgrtt);
                             $("."+pulse.geo+"_pktDrops").text(pulse.seq-pulse.inPulses);
                             //var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;
                             
                             
                             
-                            var balance = (pulse.relayCount*1500 / (1000000 * 1000)) * .5;
+                            var balance = ((pulse.relayCount*1500 + pulse.inPulses*1500) / (1000000 * 1000)) * .5;  //Assume 1 relayed pkts/sec count and measurement inPulses
                             
                             
                             
-                            measurementCosts += balance;
+                            measurementCosts += ((pulse.outPulses*1500) / (1000000 * 1000)) * .5;  //measurementCosts are the costs for node to send pulses
                             balance = parseFloat(balance.toFixed(6));
 
                             $("."+pulse.geo+"_balance").text("$" + balance);  //TODO : Align left for this text field
@@ -392,6 +393,7 @@
                 <th>pulseTimestamp</th>
                 <th>mint</th>
                 <th>owl</th>
+                <th>rtt</th>
                 <th>wg rtt</th>
                 <th>relayCount</th>
                 <!-- <th>median</th>
@@ -456,6 +458,9 @@
                 <% let classNameGeoRtt = pulseEntry.geo + "_rtt"; %>
                 <td class="<%= classNameGeoRtt %>"><a class="BUSY" target="_blank" href="<%= graphUrl %>" ><%= pulseEntry.rtt %></a> ms</td>
                                 
+                <% let classNameGeoWgRtt = pulseEntry.geo + "_wgrtt"; %>
+                <td class="<%= classNameGeoWgRtt %>"><a class="BUSY" target="_blank" href="<%= graphUrl %>" ><%= pulseEntry.wgrtt %></a> ms</td>
+
                 <% let classNameGeoRelayCount = pulseEntry.geo + "_relayCount"; %>
                 <td class="<%= classNameGeoRelayCount %>"> <%= pulseEntry.relayCount %>ms</td>
 
