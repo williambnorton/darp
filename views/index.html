@@ -207,7 +207,14 @@
                             pulse.outPulses = pulse.outPulses;
                             $("."+pulse.geo+"_rtt").text(pulse.rtt);
                             $("."+pulse.geo+"_pktDrops").text(pulse.seq-pulse.inPulses);
-                            var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;
+                            //var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;
+                            
+                            
+                            
+                            var balance = (pulse.relayCount*1500 / (1000000 * 1000)) * .5;
+                            
+                            
+                            
                             measurementCosts += balance;
                             balance = parseFloat(balance.toFixed(6));
 
