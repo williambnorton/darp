@@ -496,8 +496,8 @@
                     <!-- <td class="<%= classNameGeoOwls %>"><%= pulseEntry.owls.substring(0, OWLS_DISPLAYED) %></td> -->
                     <td class="<%= classNameGeoOwls %>"> <%= pulseEntry.owls.substring(0,20) %> </td>
                 <% } else { %>
-                    <td>"badLastMsg"</td>
-                    <td>"badLastMsg"</td>
+                    <td>"--"</td>
+                    <td>"--"</td>
                 <% } %>
                 
                 <% var deltaSeconds2 = Math.round((now() - pulseEntry.bootTimestamp) / 1000) + " secs ago"; %>
