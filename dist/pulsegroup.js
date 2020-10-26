@@ -1141,11 +1141,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     if (i >= 0) {
                         if (wgMeasure != 1) {
                             pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                            console.log("----------------------- > " + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over public Internet end point " + ip);
+                            console.log(lib_1.ts() + ("----------------------- > " + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over public Internet end point " + ip));
                         }
                         else {
                             pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
-                            console.log("======================= > " + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over encrypted tunnel to " + ip);
+                            console.log(lib_1.ts() + ("======================= > " + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over encrypted tunnel to " + ip));
                         }
                         return;
                     }
@@ -1162,22 +1162,22 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
                             //TODO: store in rttHistory, rttMedian
                             if (wgMeasure != 1) {
-                                console.log("----------------------- >" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo);
+                                console.log(lib_1.ts() + ("----------------------- >" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo));
                                 pulseEntry.rtt = rtt;
                             }
                             else {
                                 pulseEntry.wgrtt = rtt;
-                                console.log("======================= >" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo);
+                                console.log(lib_1.ts() + ("======================= >" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo));
                             }
                         }
                         else {
                             if (wgMeasure != 1) {
                                 pulseEntry.rtt = NO_MEASURE;
-                                console.log("----------------------- >" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt);
+                                console.log(lib_1.ts() + ("----------------------- >" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt));
                             }
                             else {
                                 pulseEntry.wgrtt = NO_MEASURE;
-                                console.log("======================= >" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt);
+                                console.log(lib_1.ts() + ("======================= >" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt));
                             }
                             //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
                         }
