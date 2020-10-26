@@ -1353,9 +1353,9 @@ export class AugmentedPulseGroup {
         console.log(`-------------------------------------------------------------------------------------- measurertt()`);
         var d = new Date();
         var wgMeasure=d.getMinutes();   //even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
-        console.log(`wgMeasure=${wgMeasure}`);
-        wgMeasure=wgMeasure%1;
-        console.log(`AFTER wgMeasure%1 = ${wgMeasure}`);
+        //console.log(`wgMeasure=${wgMeasure}`);
+        wgMeasure=wgMeasure%2;
+        console.log(`AFTER minutes=${d.getMinutes()} wgMeasure%2 = ${wgMeasure}`);
 
         console.log(`measurertt() would measure ${wgMeasure} 0=publicInternet, 1=wireguard measure`);
         for (var p in this.pulses) {
@@ -1401,7 +1401,7 @@ export class AugmentedPulseGroup {
                 }
             );
         }
-        setTimeout(this.measurertt, 1 * 60 * 1000 );  // ping every node every n minutes
+        setTimeout(this.measurertt, 60 * 1000 );  // ping every node every n minutes
     };
 
     //

@@ -1123,9 +1123,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("-------------------------------------------------------------------------------------- measurertt()");
             var d = new Date();
             var wgMeasure = d.getMinutes(); //even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
-            console.log("wgMeasure=" + wgMeasure);
-            wgMeasure = wgMeasure % 1;
-            console.log("AFTER wgMeasure%1 = " + wgMeasure);
+            //console.log(`wgMeasure=${wgMeasure}`);
+            wgMeasure = wgMeasure % 2;
+            console.log("AFTER minutes=" + d.getMinutes() + " wgMeasure%2 = " + wgMeasure);
             console.log("measurertt() would measure " + wgMeasure + " 0=publicInternet, 1=wireguard measure");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
@@ -1176,7 +1176,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             for (var p in _this.pulses) {
                 _loop_1();
             }
-            setTimeout(_this.measurertt, 1 * 60 * 1000); // ping every node every n minutes
+            setTimeout(_this.measurertt, 60 * 1000); // ping every node every n minutes
         };
         //
         //  this is where the messgaes over secure qireguard mesh is handled - not working yet
