@@ -222,7 +222,7 @@
                             $("."+pulse.geo+"_balance").text("$" + balance);  //TODO : Align left for this text field
                             if (balance<0) $("."+pulse.geo+"_balance").addClass("NR");  //TODO : Align left for this text field
                             else $("."+pulse.geo+"_balance").addClass("UP");  //TODO : Align left for this text field
-                            $("."+pulse.geo+"_owls").text(pulse.owls.substring(20));
+                            $("."+pulse.geo+"_owls").text(pulse.owls.substring(0,20));
                         }
                     }
 
