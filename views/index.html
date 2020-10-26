@@ -216,7 +216,7 @@
                             
                             
                             
-                            measurementCosts += ((pulse.outPulses*1500) / (1000000 * 1000)) * .5;  //measurementCosts are the costs for node to send pulses
+                            measurementCosts += (pulse.inPulses*1500 * 0.0000001275);  //measurementCosts are the costs for node to send pulses
                             balance = parseFloat(balance.toFixed(6));
 
                             $("."+pulse.geo+"_balance").text("$" + balance);  //TODO : Align left for this text field
@@ -509,7 +509,7 @@
                 <% let classNameGeoVersion = pulseEntry.geo + "_version"; %>
                 <td class="<%= classNameGeoVersion %>"><%= pulseEntry.version %></td>
                 
-                <% let balance = (Math.min(pulseEntry.inPulses*1500, pulseEntry.outPulses*1500) / (1000000 * 1000)) * 0.5; %> <!-- GB=1000 MB @ 50 cents per -->
+                <% let balance = pulseEntry.inPulses*0.0000001275 + pulseEntry.relayCount*0.0000001275 %> <!-- 1500 bytes at 8 cents per GB -->
                 <% total = total + balance; %>
                 <% let classNameGeoBalance = pulseEntry.geo + "_balance"; %>
                 <td class="<%= classNameGeoBalance %>">$ <%= balance.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
