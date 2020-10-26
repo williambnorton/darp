@@ -1119,18 +1119,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.measurertt = function () {
             //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
             console.log("-------------------------------------------------------------------------------------- measurertt()");
-            console.log("-------------------------------------------------------------------------------------- measurertt()");
-            console.log("-------------------------------------------------------------------------------------- measurertt()");
-            console.log("-------------------------------------------------------------------------------------- measurertt()");
-            console.log("-------------------------------------------------------------------------------------- measurertt()");
-            console.log("-------------------------------------------------------------------------------------- measurertt()");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 //TODO: This code should not launch upto 150 ping processes per second - needs to be a simple ping daemon in "C"
                 var ip = lib_1.mint2IP(pulseEntry.mint);
                 var ip0 = pulseEntry.ipaddr;
-                var pingCmd = "(ping -c 1 -W 1 " + ip + " 2>&1)"; //ping PRIVATE ADDRESS: 10.10.x.y
-                //const pingCmd = `(ping -c 1 -W 1 ${ip0} 2>&1)`;   //ping public IP address
+                //const pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;      //ping PRIVATE ADDRESS: 10.10.x.y
+                var pingCmd = "(ping -c 1 -W 1 " + ip0 + " 2>&1)"; //ping public IP address
                 child_process_1.exec(pingCmd, function (error, stdout, stderr) {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
                     var i = stdout.indexOf("100%");
