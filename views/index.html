@@ -210,11 +210,10 @@
                             $("."+pulse.geo+"_pktDrops").text(pulse.seq-pulse.inPulses);
                             //var balance = (Math.min(pulse.inPulses*1500, pulse.outPulses*1500) / (1000000 * 1000)) * .5;
                             
+                            //WBNWBNWBNWBNWBN
                             
-                            
-                            var balance = ((pulse.relayCount*1500 + pulse.inPulses*1500) / (1000000 * 1000)) * .5;  //Assume 1 relayed pkts/sec count and measurement inPulses
-                            
-                            
+                            //var balance = ((pulse.relayCount*1500 + pulse.inPulses*1500) / (1000000 * 1000)) * .5;  //Assume 1 relayed pkts/sec count and measurement inPulses
+                            var balance = ((pulse.relayCount*1500 + pulse.inPulses*1500) * 0.0000001275);  //Earn for relayed and measured pkts
                             
                             measurementCosts += (pulse.inPulses*1500 * 0.0000001275);  //measurementCosts are the costs for node to send pulses
                             balance = parseFloat(balance.toFixed(6));
@@ -227,7 +226,7 @@
                     }
 
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
-                    $(".total_earn").text("Overhead: $"+measurementCosts);
+                    $(".total_earn").text("PulseGroupBalance: $"+measurementCosts);
                 //}
 
             }).fail(function() {
@@ -519,6 +518,8 @@
         <% } %>
             <tr>
                 <td>Node Earnings</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
