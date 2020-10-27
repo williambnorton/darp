@@ -1352,7 +1352,7 @@ export class AugmentedPulseGroup {
         //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
         console.log(`-------------------------------------------------------------------------------------- measurertt()`);
         var d = new Date();
-        var wgMeasure=d.getMinutes();   //even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
+        var wgMeasure=d.getMinutes();   //alternate pinging once a minute : even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
         //console.log(`wgMeasure=${wgMeasure}`);
         wgMeasure=wgMeasure%2;
         console.log(`AFTER minutes=${d.getMinutes()} wgMeasure%2 = ${wgMeasure}`);
