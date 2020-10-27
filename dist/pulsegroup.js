@@ -716,12 +716,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
                         if ((typeof _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] != "undefined") &&
                             (typeof _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName] != "undefined")) {
-                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].relayCount += 100;
+                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].relayCount += 10;
                             //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=100;   //relay meas forwrd 100 pktys/sec
                             //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=100;   //we assume those with better path, use it for 10 pkts
                             //this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=100;   //relay meas forwrd 100 pktys/sec
                             //this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=100;   //we assume those with better path, use it for 10 pkts
-                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].relayCount -= 100; //we assume those with better path, use it for 10 pkts
+                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].relayCount -= 10; //we assume those with better path, use it for 10 pkts
                             // bump the in/outMsgs by 10 pkts
                         }
                         else {
