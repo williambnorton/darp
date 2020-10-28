@@ -43,6 +43,11 @@ table, th, td {
     color: blue;
 } 
 
+.BOLD {
+    color: rgb(45, 36, 162);
+    font-weight: bold;
+}
+
 .ME {
     color: black;
     background-color: tan;
