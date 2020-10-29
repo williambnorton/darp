@@ -579,10 +579,11 @@ export class AugmentedPulseGroup {
                 //TEST
             var dgram = require("dgram");
             var client = dgram.createSocket('udp4');
+            const outgoingTimestamp = now().toString();
+            pulseMessage = outgoingTimestamp + "," + pulseMessage;
+            const pulseBuffer = Buffer.from(pulseMessage);
+
             nodeList.forEach(function (node: NodeAddress) {
-                    const outgoingTimestamp = now().toString();
-                    pulseMessage = outgoingTimestamp + "," + pulseMessage;
-                    const pulseBuffer = Buffer.from(pulseMessage);
                     console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                     client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
                         if (error) {
@@ -1091,12 +1092,12 @@ export class AugmentedPulseGroup {
            if (this.mintTable[0].mint==1) {    //Not a group owner pulse Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //I am group owner, do I know this guy? 
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarwtine?
-                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
-                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
-                        console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
-                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
-                        console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`); 
+                        //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
+                        //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
+                        //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
+                        //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                        //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
+                        //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`); 
                         Log(`migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP`);                   
                         this.flashWireguard();
                         this.mintTable[incomingPulseEntry.mint].state="UP" //Genesis is READY TO ACCEPT nodes
