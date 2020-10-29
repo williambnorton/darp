@@ -571,7 +571,7 @@ export class AugmentedPulseGroup {
                 myMint + "," + 
                 owls;
                 logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                console.log(`pulseGroup.pulse(): nodeList=${nodeList} pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                //console.log(`pulseGroup.pulse(): nodeList=${nodeList} pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
 
@@ -583,7 +583,7 @@ export class AugmentedPulseGroup {
                     const outgoingTimestamp = now().toString();
                     pulseMessage = outgoingTimestamp + "," + pulseMessage;
                     const pulseBuffer = Buffer.from(pulseMessage);
-                    console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                    //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                     client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
                         if (error) {
                             logger.error(`Sender error: ${error.message}`);

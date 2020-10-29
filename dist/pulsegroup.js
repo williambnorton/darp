@@ -419,7 +419,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     myMint + "," +
                     owls;
                 logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
-                console.log("pulseGroup.pulse(): nodeList=" + nodeList + " pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
+                //console.log(`pulseGroup.pulse(): nodeList=${nodeList} pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST
@@ -429,7 +429,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     var outgoingTimestamp = lib_1.now().toString();
                     pulseMessage = outgoingTimestamp + "," + pulseMessage;
                     var pulseBuffer = Buffer.from(pulseMessage);
-                    console.log("Sending " + pulseMessage + " to " + node.ipaddr + ":" + node.port);
+                    //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                     client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, function (error) {
                         if (error) {
                             logger_1.logger.error("Sender error: " + error.message);
