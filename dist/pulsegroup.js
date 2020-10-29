@@ -421,11 +421,28 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
-                var nodelistMessage = new types_1.SenderMessage(types_1.SenderPayloadType.NodeList, nodeList);
-                _this.sender.send(nodelistMessage);
-                var outgoingMessage = new types_1.SenderMessage(types_1.SenderPayloadType.OutgoingMessage, pulseMessage);
-                _this.sender.send(outgoingMessage);
-                //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
+                //TEST
+                var dgram = require("dgram");
+                var client = dgram.createSocket('udp4');
+                nodeList.forEach(function (node) {
+                    var outgoingTimestamp = lib_1.now().toString();
+                    pulseMessage = outgoingTimestamp + "," + pulseMessage;
+                    var pulseBuffer = Buffer.from(pulseMessage);
+                    console.log("Sending " + pulseMessage + " to " + node.ipaddr + ":" + node.port);
+                    client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, function (error) {
+                        if (error) {
+                            logger_1.logger.error("Sender error: " + error.message);
+                        }
+                    });
+                });
+                /*
+                            const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
+                            this.sender.send(nodelistMessage)
+                
+                            const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
+                            this.sender.send(outgoingMessage)
+                            //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
+                            */
             }
             _this.timeout(); // and timeout the non-responders
             if (_this.adminControl == "RESYNCH") {
@@ -1125,8 +1142,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var wgMeasure = d.getMinutes(); //alternate pinging once a minute : even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
             //console.log(`wgMeasure=${wgMeasure}`);
             wgMeasure = wgMeasure % 2;
-            console.log("AFTER minutes=" + d.getMinutes() + " wgMeasure%2 = " + wgMeasure);
-            console.log("measurertt() would measure " + wgMeasure + " 0=publicInternet, 1=wireguard measure");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 var ip = lib_1.mint2IP(pulseEntry.mint);
@@ -1185,6 +1200,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
             };
             var pingCmd, pingCmd;
+            //console.log(`AFTER minutes=${d.getMinutes()} wgMeasure%2 = ${wgMeasure}`);
+            //console.log(`measurertt() would measure ${wgMeasure} 0=publicInternet, 1=wireguard measure`);
             for (var p in _this.pulses) {
                 _loop_1();
             }
