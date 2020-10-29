@@ -422,7 +422,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`pulseGroup.pulse(): nodeList=${nodeList} pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
-                //TEST
+                //TEST - Chasing down measurement difference running by hand and in code
                 var dgram = require("dgram");
                 var client = dgram.createSocket('udp4');
                 var outgoingTimestamp = lib_1.now().toString();
@@ -437,13 +437,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     });
                 });
                 /*
-                            const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
-                            this.sender.send(nodelistMessage)
-                
-                            const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
-                            this.sender.send(outgoingMessage)
-                            //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
-                            */
+                const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
+                this.sender.send(nodelistMessage)
+    
+                const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
+                this.sender.send(outgoingMessage)
+                //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
+                */
             }
             _this.timeout(); // and timeout the non-responders
             if (_this.adminControl == "RESYNCH") {

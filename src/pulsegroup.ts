@@ -576,7 +576,7 @@ export class AugmentedPulseGroup {
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
 
 
-                //TEST
+                //TEST - Chasing down measurement difference running by hand and in code
             var dgram = require("dgram");
             var client = dgram.createSocket('udp4');
             const outgoingTimestamp = now().toString();
@@ -584,15 +584,15 @@ export class AugmentedPulseGroup {
             const pulseBuffer = Buffer.from(pulseMessage);
 
             nodeList.forEach(function (node: NodeAddress) {
-                    console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
-                    client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
-                        if (error) {
-                            logger.error(`Sender error: ${error.message}`);
-                        }
-                    });
+                console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
+                    if (error) {
+                        logger.error(`Sender error: ${error.message}`);
+                    }
+                });
             });
 
-/*
+            /*
             const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
             this.sender.send(nodelistMessage)
 
