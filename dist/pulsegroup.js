@@ -419,6 +419,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     myMint + "," +
                     owls;
                 logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
+                console.log("pulseGroup.pulse(): nodeList=" + nodeList + " pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST
