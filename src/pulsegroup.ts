@@ -360,6 +360,45 @@ export class AugmentedPulseGroup {
             console.log(ts()+`pulseGroup(): sender died - exitting`);
             process.exit(36);  //reload software
         }); 
+
+
+
+
+
+        
+//TESTING if receiver in one process affects the anomalous measures
+
+var dgram = require("dgram");
+
+const receiver = dgram.createSocket("udp4");
+
+receiver.on("error", (err) => {
+    logger.error(`Receiver error:\n${err.stack}`);
+    receiver.close();
+});
+
+receiver.on("listening", () => {
+    const address = receiver.address();
+    logger.info(`Receiver listening ${address.address}:${address.port}`);
+});
+
+receiver.on("message", (pulseBuffer, rinfo) => {
+    const incomingTimestamp = now().toString();
+    logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+    // prepend our timeStamp
+    const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+    this.recvPulses(incomingMessage);
+});
+
+receiver.bind(this.config.PORT);
+
+
+
+
+
+
+
+
     }
 
     forEachNode = (callback: CallableFunction) => {
@@ -1527,3 +1566,6 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         req.end();
     });
 };
+
+
+

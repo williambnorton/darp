@@ -1280,6 +1280,25 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log(lib_1.ts() + "pulseGroup(): sender died - exitting");
             process.exit(36); //reload software
         });
+        //TESTING if receiver in one process affects the anomalous measures
+        var dgram = require("dgram");
+        var receiver = dgram.createSocket("udp4");
+        receiver.on("error", function (err) {
+            logger_1.logger.error("Receiver error:\n" + err.stack);
+            receiver.close();
+        });
+        receiver.on("listening", function () {
+            var address = receiver.address();
+            logger_1.logger.info("Receiver listening " + address.address + ":" + address.port);
+        });
+        receiver.on("message", function (pulseBuffer, rinfo) {
+            var incomingTimestamp = lib_1.now().toString();
+            logger_1.logger.info("Received " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
+            // prepend our timeStamp
+            var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+            _this.recvPulses(incomingMessage);
+        });
+        receiver.bind(this.config.PORT);
     }
     return AugmentedPulseGroup;
 }());
