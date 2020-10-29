@@ -1249,37 +1249,40 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
-        this.receiver = child_process_1.fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
-        this.receiver.on('exit', function (code) {
-            logger_1.logger.warning("Receiver process exited with code " + code);
+        /*
+        this.receiver = fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
+        this.receiver.on('exit', (code) => {
+            logger.warning(`Receiver process exited with code ${code}`);
         });
-        this.receiver.on('message', function (incomingMessage) {
-            logger_1.logger.debug("AugmentedPulseGroup has received message from receiver: " + incomingMessage);
-            _this.recvPulses(incomingMessage);
+        this.receiver.on('message', (incomingMessage: string) => {
+            logger.debug(`AugmentedPulseGroup has received message from receiver: ${incomingMessage}`);
+            this.recvPulses(incomingMessage);
         });
-        this.receiver.on('close', function (incomingMessage) {
-            console.log(lib_1.ts() + "pulseGroup(): receiver closed - exitting");
-            process.exit(36); //reload software
+        this.receiver.on('close', (incomingMessage: string) => {
+            console.log(ts()+`pulseGroup(): receiver closed - exitting`);
+            process.exit(36);  //reload software
         });
-        this.receiver.on('error', function (incomingMessage) {
-            console.log(lib_1.ts() + "pulseGroup(): receiver died - exitting");
-            process.exit(36); //reload software
+        this.receiver.on('error', (incomingMessage: string) => {
+            console.log(ts()+`pulseGroup(): receiver died - exitting`);
+            process.exit(36);  //reload software
         });
-        this.sender = child_process_1.fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
-        this.sender.on('exit', function (code) {
-            logger_1.logger.warning("Sender process exited with code " + code);
+        
+        this.sender = fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
+        this.sender.on('exit', (code) => {
+            logger.warning(`Sender process exited with code ${code}`);
         });
-        this.sender.on('message', function (message) {
-            logger_1.logger.debug("AugmentedPulseGroup has received message from sender: " + message);
+        this.sender.on('message', (message) => {
+            logger.debug(`AugmentedPulseGroup has received message from sender: ${message}`);
         });
-        this.sender.on('close', function (incomingMessage) {
-            console.log(lib_1.ts() + "pulseGroup(): sender closed - exitting");
-            process.exit(36); //reload software
+        this.sender.on('close', (incomingMessage: string) => {
+            console.log(ts()+`pulseGroup(): sender closed - exitting`);
+            process.exit(36);  //reload software
         });
-        this.sender.on('error', function (incomingMessage) {
-            console.log(lib_1.ts() + "pulseGroup(): sender died - exitting");
-            process.exit(36); //reload software
+        this.sender.on('error', (incomingMessage: string) => {
+            console.log(ts()+`pulseGroup(): sender died - exitting`);
+            process.exit(36);  //reload software
         });
+*/
         //TESTING if receiver in one process affects the anomalous measures
         var dgram = require("dgram");
         var receiver = dgram.createSocket("udp4");

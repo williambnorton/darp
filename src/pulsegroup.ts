@@ -327,7 +327,7 @@ export class AugmentedPulseGroup {
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
-        
+        /*
         this.receiver = fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
         this.receiver.on('exit', (code) => {
             logger.warning(`Receiver process exited with code ${code}`);
@@ -360,7 +360,7 @@ export class AugmentedPulseGroup {
             console.log(ts()+`pulseGroup(): sender died - exitting`);
             process.exit(36);  //reload software
         }); 
-
+*/
 
 
 
