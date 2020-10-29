@@ -583,13 +583,13 @@ export class AugmentedPulseGroup {
                     const outgoingTimestamp = now().toString();
                     pulseMessage = outgoingTimestamp + "," + pulseMessage;
                     const pulseBuffer = Buffer.from(pulseMessage);
-                    //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                    console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                     client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
                         if (error) {
                             logger.error(`Sender error: ${error.message}`);
                         }
                     });
-                });
+            });
 
 /*
             const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
