@@ -1021,7 +1021,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         //called every 10ms to see if there are pkts to process
         this.workerThread = function () {
-            setTimeout(_this.workerThread, 100); // queue up incoming packets and come back again to batch process every 100 milliseconds
+            setTimeout(_this.workerThread, 10); // queue up incoming packets and come back again to batch process every 10 milliseconds
             if (_this.incomingPulseQueue.length == 0) {
                 return;
             }
