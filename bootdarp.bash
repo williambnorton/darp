@@ -22,7 +22,7 @@ MAXCYCLES=1000 # of cycles before stopping
 #This is a starting list of Bill's public genesis nodes located across clouds 
 #export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
 
-GENESISNODELIST=`cat genesis.config awsgenesis.config`   #ipublic NOIA DARP nodes From darpazure create scripts
+GENESISNODELIST=`cat genesis.config awsgenesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`
 
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
