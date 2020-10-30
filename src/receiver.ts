@@ -1,5 +1,6 @@
 /** @module receiver listens to messages from a group of nodes */
 
+/*
 import dgram = require("dgram");
 import { now } from "./lib";
 import { logger, LogLevel } from "./logger";
@@ -31,3 +32,5 @@ receiver.on("message", (pulseBuffer, rinfo) => {
 });
 
 receiver.bind(LISTENING_PORT);
+
+*/
