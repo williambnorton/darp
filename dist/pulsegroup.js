@@ -429,7 +429,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 pulseMessage = outgoingTimestamp + "," + pulseMessage;
                 var pulseBuffer_1 = Buffer.from(pulseMessage);
                 nodeList.forEach(function (node) {
-                    console.log("Sending " + pulseMessage + " to " + node.ipaddr + ":" + node.port);
+                    //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                     client.send(pulseBuffer_1, 0, pulseBuffer_1.length, node.port, node.ipaddr, function (error) {
                         if (error) {
                             logger_1.logger.error("Sender error: " + error.message);

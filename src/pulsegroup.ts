@@ -623,7 +623,7 @@ receiver.bind(this.config.PORT);
             const pulseBuffer = Buffer.from(pulseMessage);
 
             nodeList.forEach(function (node: NodeAddress) {
-                console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                 client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
                     if (error) {
                         logger.error(`Sender error: ${error.message}`);
