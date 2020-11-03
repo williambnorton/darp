@@ -11,11 +11,16 @@ FROM node:current-alpine3.10
 RUN apk add wireguard-tools wget curl iproute2 git && \
     rm -rf /var/cache/apk/* && \
     git clone https://github.com/williambnorton/darp.git /root/darp
-# COPY . /root/darp
+# COPY . /root/dare
 RUN npm update && npm install express && npm install ejs
 
 #My docker couldn't find the node express module...
 ADD node_modules node_modules
+
+FROM nginx
+COPY srwan /usr/share/nginx/html
+RUN rm -f /usr/share/nginx/html/index.html
+RUN ln -s /usr/share/nginx/html/srwan.html /usr/share/nginx/html/index.html
 
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
 WORKDIR /root/darp

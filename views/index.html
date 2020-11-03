@@ -121,7 +121,7 @@
                             //var zSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.zSideIP;   //@WBNWBNWBNWBN
                            
 
-                            console.log("links are:   aSideTerm="+aSideTerm+" intermediaryTerm="+intermediaryTerm+" zSideTerm="+zSideTerm);
+                            //console.log("links are:   aSideTerm="+aSideTerm+" intermediaryTerm="+intermediaryTerm+" zSideTerm="+zSideTerm);
 
 //                            $("#extraordinary").append(trLabel+"<td>"+duration+" secs</td><td>"+extraordinaryPath.aSide+"</td> <td>"+extraordinaryPath.zSide+"</td><td><div class='WORSE'>"+extraordinaryPath.direct+" ms</div></td><td></td><td>"+extraordinaryPath.intermediary+"</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+extraordinaryPath.delta+" ms</td><td></td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
                             $("#extraordinary").append(trLabel+'<td><a target="_blank" href="'+aSideTerm+'">'+duration+' secs</a></td><td><a target="_blank" href="'+aSideTerm+'">'+extraordinaryPath.aSide+'</a></td> <td><a target="_blank" href="'+intermediaryTerm+'">'+extraordinaryPath.intermediary+'</a></td> <td><a target="_blank" href="'+zSideTerm+'">'+extraordinaryPath.zSide+'</a></td> <td>'+extraordinaryPath.delta+" ms</td><td>"+extraordinaryPath.intermediaryPathLatency+" ms</td><td>"+(extraordinaryPath.intermediaryPathLatency-extraordinaryPath.delta)+" ms</td><td>"+extraordinaryPath.srcToIntermediary+"</td><td>"+extraordinaryPath.intermediaryToDest+"</td></tr>");
