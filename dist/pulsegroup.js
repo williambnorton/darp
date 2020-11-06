@@ -51,7 +51,7 @@ var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
-var MEASURE_RTT = true; //ping across wireguard interface
+var MEASURE_RTT = false; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
@@ -1137,7 +1137,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //              would be better to have separate process create/remove files based on ping results, then code checks files once a second
         //
         this.measurertt = function () {
-            //if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
+            if (!MEASURE_RTT)
+                return; // can not spin up 1 ping process per node per second
             console.log("-------------------------------------------------------------------------------------- measurertt()");
             var d = new Date();
             var wgMeasure = d.getMinutes(); //alternate pinging once a minute : even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
