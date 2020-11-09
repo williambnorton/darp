@@ -686,7 +686,7 @@ receiver.bind(this.config.PORT);
                     // ignore mintTable[0]
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
-                if (elapsedMSincePulse > 2*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - mark as pkt loss
+                if (elapsedMSincePulse > 2.5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - mark as pkt loss
                     logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
                     console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
 
