@@ -297,9 +297,6 @@
         <h2> <%= pulseGroup.groupName %>  POLLFREQ <%= pulseGroup.cycleTime %> seconds</h2>
 
         <!-- show OWL Matrix table -->
-        <% if (pulseGroup.owner==me.geo) %>
-            <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
-        <% else %>
             <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
 
         <table id="matrix" >
