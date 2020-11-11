@@ -412,10 +412,11 @@
                 <th>owls</th>
                 <th>bootTimestamp</th>
                 <th>version</th>
-                <th>Simulated Net Segment Earnings (@50cents/GB relayed-8.5 cents/GB cost=41.5 cent/GB)**</th>
+                <th>Simulated Net Segment Earnings **</th>
             </tr>
             </thead>
             <tbody>
+                <p>**simulating relaying 10 pkts whenever better path exists (@50cents/GB relayed - 8.5cents/GB cost=41.5cents/GB)</p>
         <% var total = 0; %> <!--Add up total balance of all pulses -->
         <% for (let a in pulseGroup.pulses) { %>
             
@@ -541,7 +542,6 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="total_earn@41.5cents/GB*"><%= pulseGroup.groupName %> Simuluted Net earnings $ <%= total.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
             <!--  <td class="total_earn"><%= pulseGroup.groupName %> Earnings $ <%= total.toFixed(6) %></td>  -->
             </tr>
         </tbody>
