@@ -45,7 +45,7 @@ var lib_1 = require("./lib");
 var grapher_1 = require("./grapher");
 var pulsegroup_1 = require("./pulsegroup");
 logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
-var config, MAXNODES = 25; //MAX NODES PER PULSEGROUP - reject after this popiulation size
+//const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 // Load config
 var config = new pulsegroup_1.Config();
 // Construct my own pulseGroup for others to connect to

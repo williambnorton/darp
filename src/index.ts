@@ -9,7 +9,7 @@ import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, Puls
 
 
 logger.setLevel(LogLevel.WARNING);
-const config.MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
+//const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 
 // Load config
 
