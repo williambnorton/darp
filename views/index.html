@@ -213,7 +213,7 @@
                             //WBNWBNWBNWBNWBN
                             
                             //var balance = ((pulse.relayCount*1500 + pulse.inPulses*1500) / (1000000 * 1000)) * .5;  //Assume 1 relayed pkts/sec count and measurement inPulses
-                            var balance = ((pulse.relayCount + pulse.inPulses) * 0.0000001275);  //Earn for relayed and measured pkts
+                            var balance = ((pulse.relayCount  * 5 * 0.0000001275) + (pulse.inPulses*0.0000001275));  //Earn 50 cents/GB - 8.5 cents cost = 41.5cents/GB per relayed +  measured pkts
                             
                             measurementCosts += (pulse.inPulses * 0.0000001275);  //measurementCosts are the costs for node to send pulses
                             balance = parseFloat(balance.toFixed(6));
@@ -226,7 +226,7 @@
                     }
 
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
-                    $(".total_earn").text("measurementCosts: $"+measurementCosts);
+                    $(".total_earn").text("measurementCosts @8.5cents/GB: $"+measurementCosts);
                 //}
 
             }).fail(function() {
@@ -412,7 +412,7 @@
                 <th>owls</th>
                 <th>bootTimestamp</th>
                 <th>version</th>
-                <th>Simulated Net Segment Earnings (@8.5cents/GB)**</th>
+                <th>Simulated Net Segment Earnings (@50cents/GB relayed-8.5 cents/GB cost=41.5 cent/GB)**</th>
             </tr>
             </thead>
             <tbody>
@@ -541,7 +541,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="total_earn@8.5cents/GB*"><%= pulseGroup.groupName %> Simuluted Net earnings $ <%= total.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
+                <td class="total_earn@41.5cents/GB*"><%= pulseGroup.groupName %> Simuluted Net earnings $ <%= total.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
             <!--  <td class="total_earn"><%= pulseGroup.groupName %> Earnings $ <%= total.toFixed(6) %></td>  -->
             </tr>
         </tbody>
