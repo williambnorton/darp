@@ -51,7 +51,7 @@ var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
-var MEASURE_RTT = false; //ping across wireguard interface
+var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
@@ -170,6 +170,7 @@ var Config = /** @class */ (function () {
         }
         this.PUBLICKEY = PUBLICKEY;
         this.WALLET = process.env.WALLET || "auto";
+        this.MAXNODES = 25;
     }
     return Config;
 }());

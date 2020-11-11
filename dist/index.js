@@ -45,7 +45,7 @@ var lib_1 = require("./lib");
 var grapher_1 = require("./grapher");
 var pulsegroup_1 = require("./pulsegroup");
 logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
-var MAXNODES = 25; //MAX NODES PER PULSEGROUP - reject after this popiulation size
+var config, MAXNODES = 25; //MAX NODES PER PULSEGROUP - reject after this popiulation size
 // Load config
 var config = new pulsegroup_1.Config();
 // Construct my own pulseGroup for others to connect to
@@ -301,9 +301,9 @@ app.get('/nodefactory', function (req, res) {
     //  Or - Handle pulseGroup member case
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log(lib_1.ts() + "........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    if (Object.keys(myPulseGroup.pulses).length >= MAXNODES) {
-        console.log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + geo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
-        lib_1.Log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + geo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
+    if (Object.keys(myPulseGroup.pulses).length >= config.MAXNODES) {
+        console.log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + config.MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + geo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
+        lib_1.Log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + config.MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + geo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null));
         return;

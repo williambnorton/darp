@@ -9,7 +9,7 @@ import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, Puls
 
 
 logger.setLevel(LogLevel.WARNING);
-const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
+const config.MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 
 // Load config
 
@@ -312,9 +312,9 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    if ( Object.keys(myPulseGroup.pulses).length >= MAXNODES) {
-        console.log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
-        Log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
+    if ( Object.keys(myPulseGroup.pulses).length >= config.MAXNODES) {
+        console.log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${config.MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
+        Log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${config.MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${geo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null)); 
         return;

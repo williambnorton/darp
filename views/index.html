@@ -286,8 +286,13 @@
     <% var timeStr = d.toString().split(' ')[4]; %>
     <% var g=process.env.GENESISNODELIST.split(","); %>
 
-    <p id="dateTime">*Refresh: <%= timeStr %> Your Docker: <a href="http://localhost:65013/"> http://localhost:65013/ </a></p>
 
+
+
+    <p id="dateTime">*Refresh: <%= timeStr %> Your Docker: <a href="http://localhost:65013/"> http://localhost:65013/ </a> MAXNODES= <%= config.MAXNODES %></p>
+
+
+    
 
     
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
@@ -407,7 +412,7 @@
                 <th>owls</th>
                 <th>bootTimestamp</th>
                 <th>version</th>
-                <th>Net Earnings</th>
+                <th>Simulated Net Segment Earnings (@8.5cents/GB)**</th>
             </tr>
             </thead>
             <tbody>
@@ -518,7 +523,6 @@
             </tr>
         <% } %>
             <tr>
-                <td>___ Node Earnings</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -536,7 +540,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="total_earn"><%= pulseGroup.groupName %> Earnings $ <%= total.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
+                <td></td>
+                <td class="total_earn@8.5cents/GB*"><%= pulseGroup.groupName %> Simuluted Net earnings $ <%= total.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
             <!--  <td class="total_earn"><%= pulseGroup.groupName %> Earnings $ <%= total.toFixed(6) %></td>  -->
             </tr>
         </tbody>

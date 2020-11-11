@@ -10,12 +10,11 @@ import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
-import { POINT_CONVERSION_COMPRESSED } from "constants";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
-const MEASURE_RTT=false;   //ping across wireguard interface
+const MEASURE_RTT=true;   //ping across wireguard interface
 const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 const WG_PULSEFREQ=2; //send pings over wireguard mesh every other second
 const SECURE_PORT=65020;
@@ -42,6 +41,7 @@ export class Config {
     VERSION: string;
     WALLET: string;
     BOOTTIMESTAMP: number;
+    MAXNODES: number;
     constructor() {
         if (!process.env.DARPDIR) {
             logger.warning("No DARPDIR environmental variable specified ");
@@ -166,7 +166,7 @@ export class Config {
 
 
         this.WALLET = process.env.WALLET || "auto";
-
+        this.MAXNODES = 25;
     }
 }
 
