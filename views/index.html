@@ -167,7 +167,7 @@
                     var d = new Date();
                     var tsNow=d.getTime();
                     var timeStr=d.toString().split(' ')[4];
-                    $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((tsNow-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>HIT %R to refresh the page if you see partial matrix. MAXNODES="+config.MAXNODES ); //we show this epoch
+                    $("#dateTime").html( "<div class=\'fade-out updated\'><h1>*Updated: " + timeStr + " renderTime="+(1000-sleepTime)+" ms Uptime:"+Math.round(((tsNow-pulseGroup.mintTable[0].bootTimestamp)/1000)/60)+" minutes</h1></div>HIT %R to refresh the page if you see partial matrix. MAXNODES=+config.MAXNODES" ); //we show this epoch
                     $("#raw").text( "RAW (best rendered when view source): ["+pulseGroup.groupName+"]="+JSON.stringify(pulseGroup,null,2));  //wbnwbnwbnwbnwbnwnbn
 
                     // Render table from information in the state fetched from node
@@ -524,7 +524,7 @@
             </tr>
         <% } %>
             <tr>
-                <td></td>
+                <td>Z</td>
                 <td></td>
                 <td></td>
                 <td></td>
