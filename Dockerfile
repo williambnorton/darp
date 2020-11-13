@@ -18,6 +18,6 @@ RUN npm update && npm install express && npm install ejs
 #My docker couldn't find the node express module...
 ADD node_modules node_modules
 
-EXPOSE 65013/tcp 65013/udp
+EXPOSE 65013/tcp 65013-65200/udp
 WORKDIR /root/darp
 ENTRYPOINT ["/bin/bash","-c","./bootdarp.bash"]
