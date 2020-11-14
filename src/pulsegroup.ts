@@ -1281,7 +1281,7 @@ receiver.bind(this.config.PORT);
     }
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
-        setTimeout(this.workerThread, 10);  // queue up incoming packets and come back again to batch process every 10 milliseconds
+        setTimeout(this.workerThread, 50);  // queue up incoming packets and come back again to batch process every 50 milliseconds
         
         if (this.incomingPulseQueue.length==0) {
             return;
