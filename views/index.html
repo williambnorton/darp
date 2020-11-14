@@ -116,8 +116,13 @@
                             let intermediaryTerm = "http://" + extraordinaryPath.intermediaryIP + ":" + extraordinaryPath.intermediaryPort.toString() + "/graph/" + extraordinaryPath.aSide + "/" + extraordinaryPath.intermediary; 
                             let zSideTerm =        "http://" + extraordinaryPath.zSideIP + ":" + extraordinaryPath.zSidePort.toString() +               "/graph/" + extraordinaryPath.intermediary + "/" + extraordinaryPath.zSide; 
 
-                            let showBetterPath = "/validate/" + extraordinaryPath.aSide + "/" + extraordinaryPath.aSideIP + "/"  + extraordinaryPath.aSidePort + "/"  + extraordinaryPath.zSide + "/" + extraordinaryPath.zSideIP + "/"  + extraordinaryPath.zSidePort + "/"+ "/"  + extraordinaryPath.intermediary + "/" + extraordinaryPath.intermediaryIP + "/"  + extraordinaryPath.intermediaryPort + "/";
+
+
+                            let showBetterPath = "http://127.0.0.1:8081/showbetterpath?aSide=" + extraordinaryPath.aSide + "&aSideIP=" + extraordinaryPath.aSideIP + "&aSidePort="  + extraordinaryPath.aSidePort + "&zSide="  + extraordinaryPath.zSide + "&zSideIP=" + extraordinaryPath.zSideIP + "zSidePort="  + extraordinaryPath.zSidePort + "&intermediary="  + extraordinaryPath.intermediary + "&intermediaryIP=" + extraordinaryPath.intermediaryIP + "&intermediaryPort="  + extraordinaryPath.intermediaryPort;
                             
+
+
+
                             //var aSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.aSideIP;   //@WBNWBNWBNWBN  Mgmt console 
                             //var intermediaryTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.intermediaryIP;   //@WBNWBNWBNWBN
                             //var zSideTerm="http://127.0.0.1:8081/ssh?ip="+extraordinaryPath.zSideIP;   //@WBNWBNWBNWBN
