@@ -1022,7 +1022,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         //called every 10ms to see if there are pkts to process
         this.workerThread = function () {
-            setTimeout(_this.workerThread, 50); // queue up incoming packets and come back again to batch process every 50 milliseconds
+            //setTimeout(this.workerThread, 50);  // queue up incoming packets and come back again to batch process every 50 milliseconds
             if (_this.incomingPulseQueue.length == 0) {
                 return;
             }
@@ -1056,7 +1056,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 owl: OWL,
                 lastMsg: incomingMessage
             };
-            _this.incomingPulseQueue.push(incomingPulse); //tmp patch to test
+            //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
+            _this.processIncomingPulse(incomingPulse);
         };
         // Store one-way latencies to file or graphing & history
         //

@@ -1281,7 +1281,7 @@ receiver.bind(this.config.PORT);
     }
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
-        setTimeout(this.workerThread, 50);  // queue up incoming packets and come back again to batch process every 50 milliseconds
+        //setTimeout(this.workerThread, 50);  // queue up incoming packets and come back again to batch process every 50 milliseconds
         
         if (this.incomingPulseQueue.length==0) {
             return;
@@ -1317,7 +1317,8 @@ receiver.bind(this.config.PORT);
             owl: OWL,
             lastMsg: incomingMessage,
         };
-        this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
+        //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
+        this.processIncomingPulse(incomingPulse);
     };
 
     // Store one-way latencies to file or graphing & history
