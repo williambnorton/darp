@@ -69,5 +69,6 @@ cp $DARPDIR/scripts/udplistener.bash $WGDIR/.  #half of port checking script
 cp $DARPDIR/scripts/portcheck.bash $WGDIR/.  #other half of port checking script
 
 chmod 755 $WGDIR/wgwatch.bash $WGDIR/scripts/udplistener.bash $WGDIR/scripts/portcheck.bash
-#ls -ld $WGDIR
-#ls -l $WGDIR
+ls -ld $WGDIR
+ls -l $WGDIR
+echo `date` $0 COMPLETED
