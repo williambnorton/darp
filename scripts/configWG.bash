@@ -64,9 +64,11 @@ echo `date` "Base wireguard config: darp0.conf " `cat $WGDIR/darp0.conf`
 echo `date` $0 wgbase.conf below - the rest will be added by running code
 cat $WGDIR/wgbase.conf
 
-cp $DARPDIR/scripts/wgwatch.bash $WGDIR/.  #wireguard watch script - watch for wg pending files
-cp $DARPDIR/scripts/udplistener.bash $WGDIR/.  #half of port checking script
-cp $DARPDIR/scripts/portcheck.bash $WGDIR/.  #other half of port checking script
+cd
+cd scripts
+cp wgwatch.bash $WGDIR/.  #wireguard watch script - watch for wg pending files
+cp udplistener.bash $WGDIR/.  #half of port checking script
+cp portcheck.bash $WGDIR/.  #other half of port checking script
 
 chmod 755 $WGDIR/wgwatch.bash $WGDIR/scripts/udplistener.bash $WGDIR/scripts/portcheck.bash
 ls -ld $WGDIR
