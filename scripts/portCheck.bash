@@ -1,4 +1,10 @@
 #!/bin/bash
+#       convenince test bash script
 PORT=65014
-echo `date` $0 ready to receive UDP pkts on port $PORT
-timeout 10 nc -l -u $PORT | while read line ; do echo "$(date +%s.%N) ${line}" ; done | awk '{ if ($1<$2) print 1000*($2-$1);else  print 1000*($1-$2)" ms"}'
+if [ $# -gt 1 ]; then
+    PORT=$2
+fi
+echo `date` $0 Testing port $PORT
+timeout 20 (while true; do date +%s.%N;sleep 1;done ) | nc -u  $1 $PORT
+echo `date` $0 Done
+
