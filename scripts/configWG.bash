@@ -4,6 +4,8 @@
 #			~/wireguard outside the Docker is our $WGDIR/wireguard
 #			(outside Docker watcher script will re-run wg-quick UP)
 #
+if [ "$WGDIR" = "" ]; then WGDIR=/etc/wireguard; fi
+
 echo `date` setting up our $WGDIR configuration directory for wireguard public keyes
 if [ ! -d $WGDIR ]; then umask 077; mkdir -p $WGDIR; echo `date` "ERROR: Should not hve to but Created $WGDIR"; fi  #make sure wireguard directory exists
 echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
@@ -64,6 +66,7 @@ echo `date` "Base wireguard config: darp0.conf " `cat $WGDIR/darp0.conf`
 echo `date` $0 wgbase.conf below - the rest will be added by running code
 cat $WGDIR/wgbase.conf
 
+echo `date` WGDIR=$WGDIR
 cd
 cd darp/scripts
 cp wgwatch.bash $WGDIR/.  #wireguard watch script - watch for wg pending files
