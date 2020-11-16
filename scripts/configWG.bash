@@ -68,6 +68,6 @@ cp $DARPDIR/scripts/wgwatch.bash $WGDIR/.  #wireguard watch script - watch for w
 cp $DARPDIR/scripts/udplistener.bash $WGDIR/.  #half of port checking script
 cp $DARPDIR/scripts/portcheck.bash $WGDIR/.  #other half of port checking script
 
-chmod 755 $WGDIR/wgwatch.bash $DARPDIR/scripts/udplistener.bash $DARPDIR/scripts/portcheck.bash
+chmod 755 $WGDIR/wgwatch.bash $WGDIR/scripts/udplistener.bash $WGDIR/scripts/portcheck.bash
 #ls -ld $WGDIR
 #ls -l $WGDIR
