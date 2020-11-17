@@ -31,6 +31,7 @@ git add *.bash
 git add . && git commit -m "$MESSAGE + " && git pull && git push 
 echo `date` Completed compiles + git push for `ls Build*`
 
+rm -f subagents/rtt/ip*
 #
 #	run code on genesis node after build, effectively deploying globally
 #
