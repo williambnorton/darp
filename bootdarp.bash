@@ -123,7 +123,7 @@ do
 
 
 echo `date` "Starting subagents * * * * * * * * * * * * * * * * * * * * * * * * "
-(sleep 30;cd subagents/rtt/;./launchrtt.bash )& 
+(sleep 5;cd subagents/rtt/;./launchrtt.bash )& 
 cd $DARPDIR
 
 
