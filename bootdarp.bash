@@ -58,8 +58,7 @@ echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
 
 
 
-cd $DARPDIR/subagents/rtt;
-./launchrtt.bash &
+
 
 
 
@@ -121,6 +120,11 @@ do
     #echo "Here we could / should? send a pulse to a genesis node that verify ports are bidirectionally open.... For this, genesis should respond with a NO_SUCH message Verifying the ports have been opened in both directions"
     #echo PORTCHECK
     #BSMSG="1603288999696,1603288999611,0,Build.201021.0619,UNRECOGNIZEDGEO,UNRECOGNIZEDGROUP,3,1603288998189,99999,1"
+
+
+(slleep 30;cd $DARPDIR/subagents/rtt;./launchrtt.bash )& 
+
+
 
 
     echo `date` "Starting DARP $VERSION ..."
