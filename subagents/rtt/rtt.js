@@ -1,37 +1,61 @@
+//
+//  rtt.ts - a simple batch ping using files to hold latency measures
+//
+//run this once a minute out of cron
 var http = require('http');
+var fs = require('fs');
+var PINGCOUNT = 60;
+setTimeout(finish, (PINGCOUNT + 1) * 1000);
+function finish() {
+    timeout(); //timeout last nodes
+    process.exit();
+}
+function skulker() {
+    //console.log(`SKULKING`);
+    var DIRPATH = './';
+    fs.readdir(DIRPATH, function (err, files) {
+        if (err)
+            return console.log(err);
+        //console.log(`files=${files}`);
+        files.forEach(function (file) {
+            if (file.indexOf("ip") == 0) {
+                var filePath = DIRPATH + file;
+                fs.stat(filePath, function (err, stat) {
+                    if (err)
+                        return console.log(err);
+                    //console.log(`filePath=${filePath}`);
+                    var fileAge = Number(Date.now()) - stat.ctime;
+                    //console.log(`fileAge=${fileAge}`);
+                    if (fileAge > 2000) {
+                        console.log("DELETEING " + filePath);
+                        fs.unlink(filePath, function (err) {
+                            if (err)
+                                return console.log(err);
+                        });
+                    }
+                });
+            }
+        });
+        setTimeout(skulker, 1000);
+    });
+}
+skulker();
+//process.exit();
 function ping(ip, name, callback) {
-    var terminal = require('child_process').exec('ping -c 5 -W 5 ' + ip);
+    //var terminal = require('child_process').exec('ping -c 5 -W 5 '+ip);
+    var terminal = require('child_process').exec("ping -c " + PINGCOUNT + " " + ip);
     terminal.stdout.on('data', function (stdout) {
-        var rtt = 99999; //Assume no answer
         var lines = stdout.split(/\r?\n/);
         for (var line in lines) {
             //console.log('line: ' + lines[line]);
             var ary = lines[line].split(" ");
             //console.log("ary="+ary+" ary.length="+ary.length);
-            if (ary[2] == "=") {
-                var stats = ary[3];
-                var statsAry = stats.split("/");
-                //console.log("ary="+ary+" ary.length="+ary.length+" statsAry="+statsAry);
-                if (statsAry.length >= 3) {
-                    var min = statsAry[0];
-                    var avg = statsAry[1];
-                    var max = statsAry[2];
-                    var stddev = statsAry[3];
-                    rtt = avg;
-                    //if we have a measure
-                    //console.log(`FOUND A MEASUREMENT min=${min} avg=${avg} max=${max}`);
-                    //console.log(`-------- > PING RESPONDED rtt() ***** ${name} ${ip} ${rtt} `);
-                    //pulseEntry.rtt = rtt;
-                    callback(ip, name, rtt, min, max, avg, stddev);
-                    return;
-                }
-                else {
-                    //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
-                }
+            if (ary.length == 8) {
+                callback(ip, name, ary[6]);
             }
         }
-        //        console.log(`---------- > PING DID NOT RESPOND `);
-        callback(ip, name, 99999, 99999, 99999, 99999, 99999); //fall through result we didn't find a measurement "bytes" in the output
+        //console.log(`PING DID NOT RESPOND ${ip} ${name} ****************************************`);
+        //callback(ip,name);  //fall through result we didn't find a measurement "bytes" in the output
     });
     terminal.stderr.on('data', function (data) {
         console.log('stderr: ' + data);
@@ -40,13 +64,28 @@ function ping(ip, name, callback) {
         //console.log('child process exited with code ' + code);
     });
 }
+var gNodeAry = [];
+function timeout() {
+    //Now mark as NO RESPONSE those with times > 1 sec ago
+    for (var ip in gNodeAry) {
+        //console.log(`timeout() checking node=${ip}`);
+        if (Number(Date.now()) - gNodeAry[ip] > 1000 && typeof (deleted[ip]) == "undefined") {
+            console.log("TIMEOUT for ip=" + ip + " ");
+            fs.unlink("ip." + ip, function (err) { });
+            deleted[ip] = "DELETED ALREADY";
+        }
+    }
+    //setTimeout(timeout,1000);
+}
+//var timerID=timeout();
+var refreshIntervalId = setInterval(timeout, 1000);
+var deleted = []; // a list of nodes already deleted, so we don't hammer the disk
 http.get("http://127.0.0.1:65013/state", function (res2) {
     var json = "";
     res2.on("data", function (chunk2) {
         json += chunk2;
     });
     res2.on("end", function () {
-        var fs = require('fs');
         var pulseGroup = JSON.parse(json);
         //for ( var pulseGroup in pulseGroups ) {
         for (var node in pulseGroup.pulses) {
@@ -56,101 +95,28 @@ http.get("http://127.0.0.1:65013/state", function (res2) {
             var mintIP = "10.10." + (pulseGroup.pulses[node].mint / 253).toFixed(0) + "." + (pulseGroup.pulses[node].mint % 253);
             var publicIP = pulseGroup.pulses[node].ipaddr;
             var name = pulseGroup.pulses[node].geo;
-            ping(publicIP, name, function (publicIP, name, rtt, min, avg, max, stddev) {
-                switch (rtt) {
-                    case 99999:
-                        console.log("PUBLIC INTERNET NO PING RESPONSE callback: publicIP=" + publicIP + " name=" + name + " rtt=" + rtt);
-                        fs.unlink("ip." + publicIP, function (err) { });
-                        break;
-                    default:
-                        console.log("PUBLIC INTERNET PING RESPONSE callback: publicIP=" + publicIP + " name=" + name + " rtt=" + rtt);
-                        fs.writeFile("ip." + publicIP, rtt, function (err) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                        break;
-                }
+            gNodeAry[publicIP] = Number(Date.now());
+            ping(publicIP, name, function (publicIP, name, rtt) {
+                delete gNodeAry[publicIP];
+                console.log("PUBLIC INTERNET PING RESPONSE callback: publicIP=" + publicIP + " name=" + name + " rtt=" + rtt);
+                delete deleted[publicIP];
+                fs.writeFile("ip." + publicIP, rtt, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             });
-            ping(mintIP, name, function (mintIP, name, rtt, min, avg, max, stddev) {
-                switch (rtt) {
-                    case 99999:
-                        console.log("WIREGUARD NO PING RESPONSE callback: publicIP=" + mintIP + " name=" + name + " rtt=" + rtt);
-                        fs.unlink("ip." + mintIP, function (err) { });
-                        break;
-                    default:
-                        console.log("WIREGUARD PING RESPONSE callback: publicIP=" + mintIP + " name=" + name + " rtt=" + rtt);
-                        fs.writeFile("ip." + mintIP, rtt, function (err) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                        break;
-                }
+            gNodeAry[mintIP] = Number(Date.now());
+            ping(mintIP, name, function (mintIP, name, rtt) {
+                delete gNodeAry[mintIP];
+                delete deleted[mintIP];
+                console.log("WIREGUARD PING RESPONSE callback: publicIP=" + mintIP + " name=" + name + " rtt=" + rtt);
+                fs.writeFile("ip." + mintIP, rtt, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             });
         }
     });
 });
-/***
-
-            exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
-                    //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
-                    var i = stdout.indexOf("100%");
-                    if (i >= 0) {
-                        if (wgMeasure!=1) {
-                            //pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                            console.log(ts()+`----------------------- > ${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over public Internet end point ${ip}`);
-                        
-            } else {
-                            //pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
-                            console.log(ts()+`======================= > ${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over encrypted tunnel to ${ip}`);
-                        }
-                        return;
-                    }
-
-                    var ary = stdout.split(" ");
-                    var address = ary[8];
-                    var octets = address.split(".");
-                    var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]); //TODO: we should verify mint here
-                    if (ary[6] == "bytes") {
-                        //if we have a measure
-                        var timeEquals = ary[11];
-                        if (typeof timeEquals != "undefined") {
-                            var rtt = parseInt(timeEquals.split("=")[1]);
-                            //TODO: here we store or clear the rttMatrix element
-                            //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
-                            //TODO: store in rttHistory, rttMedian
-                            if (wgMeasure!=1) {
-                                console.log(ts()+`----------------------- >${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
-                                pulseEntry.rtt = rtt;
-                            } else {
-                                pulseEntry.wgrtt = rtt;
-                                console.log(ts()+`======================= >${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
-
-                            }
-                        } else {
-                            if (wgMeasure!=1) {
-                                pulseEntry.rtt = NO_MEASURE;
-                                console.log(ts()+`----------------------- >${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
-                            } else {
-                                pulseEntry.wgrtt = NO_MEASURE;
-                                console.log(ts()+`======================= >${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
-                            }
-                            //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
-                        }
-                    }
-                }
-            );
-        }
-
-
-
-
-    //	}
-    }
-        });
-
-        }).on("error", (error) => {
-            console.error(error.message);
-        });
-*/ 

@@ -19,6 +19,7 @@ find . -name '*.pid' -delete
 MESSAGE="DARP Protocol with matrix and basic data graphs"
 date>"Build."`date +%y%m%d.%H%M`
 ls -l Build.*
+rm -f subagents/rtt/ip*
 
 #
 #	The same flow should work on boot darp - simple extensible loop
@@ -31,7 +32,6 @@ git add *.bash
 git add . && git commit -m "$MESSAGE + " && git pull && git push 
 echo `date` Completed compiles + git push for `ls Build*`
 
-rm -f subagents/rtt/ip*
 #
 #	run code on genesis node after build, effectively deploying globally
 #
