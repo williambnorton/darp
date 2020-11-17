@@ -27,7 +27,7 @@ function skulker() {
                     var fileAge = Number(Date.now()) - stat.ctime;
                     //console.log(`fileAge=${fileAge}`);
                     if (fileAge > 2000) {
-                        console.log("DELETEING " + filePath);
+                        console.log("DELETEING OLD ping data file " + filePath);
                         fs.unlink(filePath, function (err) {
                             if (err)
                                 return console.log(err);
@@ -70,7 +70,7 @@ function timeout() {
     for (var ip in gNodeAry) {
         //console.log(`timeout() checking node=${ip}`);
         if (Number(Date.now()) - gNodeAry[ip] > 1000 && typeof (deleted[ip]) == "undefined") {
-            console.log("TIMEOUT for ip=" + ip + " ");
+            //console.log(`TIMEOUT for ip=${ip} `);
             fs.unlink("ip." + ip, function (err) { });
             deleted[ip] = "DELETED ALREADY";
         }
@@ -98,7 +98,7 @@ http.get("http://127.0.0.1:65013/state", function (res2) {
             gNodeAry[publicIP] = Number(Date.now());
             ping(publicIP, name, function (publicIP, name, rtt) {
                 delete gNodeAry[publicIP];
-                console.log("PUBLIC INTERNET PING RESPONSE callback: publicIP=" + publicIP + " name=" + name + " rtt=" + rtt);
+                //console.log("PUBLIC INTERNET PING RESPONSE callback: publicIP="+publicIP+" name="+name+" rtt="+rtt);
                 delete deleted[publicIP];
                 fs.writeFile("ip." + publicIP, rtt, function (err) {
                     if (err) {
@@ -110,7 +110,7 @@ http.get("http://127.0.0.1:65013/state", function (res2) {
             ping(mintIP, name, function (mintIP, name, rtt) {
                 delete gNodeAry[mintIP];
                 delete deleted[mintIP];
-                console.log("WIREGUARD PING RESPONSE callback: publicIP=" + mintIP + " name=" + name + " rtt=" + rtt);
+                //console.log("WIREGUARD PING RESPONSE callback: publicIP="+mintIP+" name="+name+" rtt="+rtt);
                 fs.writeFile("ip." + mintIP, rtt, function (err) {
                     if (err) {
                         console.log(err);
