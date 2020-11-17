@@ -58,6 +58,11 @@ echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
 
 
 
+cd $DARPDIR/subagents/rtt;
+./launchrtt.bash &
+
+
+
 #if [ "$GENESIS" == "" ]; then
 #    echo `date` $0 You must specify a genesis node 
 #    echo `date` $0 Add -e GENESIS=<ipaddr> into the docker run command or set the environmental variable
@@ -81,6 +86,7 @@ CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
+    
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
@@ -111,9 +117,8 @@ do
     if [ -f  $DARPDIR/index.pid ]; then
         kill `cat $DARPDIR/index.pid`
     fi
-
-
-    echo "Here we could / should? send a pulse to a genesis node that verify ports are bidirectionally open.... For this, genesis should respond with a NO_SUCH message Verifying the ports have been opened in both directions"
+    
+    #echo "Here we could / should? send a pulse to a genesis node that verify ports are bidirectionally open.... For this, genesis should respond with a NO_SUCH message Verifying the ports have been opened in both directions"
     #echo PORTCHECK
     #BSMSG="1603288999696,1603288999611,0,Build.201021.0619,UNRECOGNIZEDGEO,UNRECOGNIZEDGROUP,3,1603288998189,99999,1"
 
@@ -164,6 +169,7 @@ do
     kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep index | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
 
 
     ps aux
