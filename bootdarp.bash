@@ -75,7 +75,6 @@ echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
 #
 #The order of startup is important here
 
-crontab subagents/subagents.crontab
 
 echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" | tee -a NOIA.log 
 CYCLES=0;
