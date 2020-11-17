@@ -51,7 +51,7 @@ function ping(ip, name, callback) {
             var ary = lines[line].split(" ");
             //console.log("ary="+ary+" ary.length="+ary.length);
             if (ary.length == 8) {
-                callback(ip, name, ary[6]);
+                callback(ip, name, ary[6].split("=")[1]);
             }
         }
         //console.log(`PING DID NOT RESPOND ${ip} ${name} ****************************************`);

@@ -55,7 +55,7 @@ function ping(ip, name, callback) {
                 //console.log("ary="+ary+" ary.length="+ary.length);
 
                 if (ary.length==8) {
-                    callback(ip,name,ary[6]);
+                    callback(ip,name,ary[6].split("=")[1]);
                 }
       
             }
