@@ -125,7 +125,9 @@ do
 
 
     echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
-    ( sleep 5; cd subagents/rtt/; ./launchrtt.bash ) & 
+    cd subagents/rtt/
+    ./launchrtt.bash & 
+    echo `date` launch pid=$$
     cd $DARPDIR
 
 
