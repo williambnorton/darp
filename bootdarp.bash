@@ -127,8 +127,13 @@ do
     echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
     cd /root/darp/subagents/rtt/
     ./launchrtt.bash & 
+
+#
+#   Then do the same with tr
+#
     echo `date` launch pid=$$
     ps
+    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
     cd $DARPDIR
 
 
