@@ -124,15 +124,12 @@ do
 
 
 
-    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
-    /root/darp/subagents/rtt/launchrtt.bash & 
 
-#
-#   Then do the same with tr
-#
-    echo `date` launch pid=$$
-    ps
+    echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
+    cd /root/darp/subagents/rtt/; ./launchrtt.bash </dev/null & 
+    echo `date` launchrtt.bash pid=$$
+    ps
     cd $DARPDIR
 
 
