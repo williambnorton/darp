@@ -128,6 +128,7 @@ do
     cd /root/darp/subagents/rtt/
     ./launchrtt.bash & 
     echo `date` launch pid=$$
+    ps
     cd $DARPDIR
 
 
