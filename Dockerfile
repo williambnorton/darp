@@ -3,15 +3,16 @@
 #	diagnostics and debugging tools
 #
 FROM ubuntu:18.04 as base
+
 RUN apt-get update -yq  && \ 
-    apt-get install -yq curl git npm inetutils-traceroute traceroute && \
+    apt-get install -yq wireguard wireguard-tools curl wget git npm inetutils-traceroute iproute2 traceroute && \
     apt-get upgrade -yq
+
 WORKDIR /opt
 
 FROM node:14
-RUN apk add wireguard-tools wget curl iproute2 git && \
-    rm -rf /var/cache/apk/* && \
-    git clone https://github.com/williambnorton/darp.git /root/darp
+#RUN apk add wireguard-tools  && \
+RUN git clone https://github.com/williambnorton/darp.git /root/darp
 # COPY . /root/dare
 
 RUN echo INSTALLING EXPRESS AND EJS
