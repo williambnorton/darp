@@ -85,7 +85,7 @@ CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
-    
+    echo `date` TOP OF LOOP
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
