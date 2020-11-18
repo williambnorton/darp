@@ -3,7 +3,7 @@
 #	diagnostics and debugging tools
 #
 FROM ubuntu:18.04 as base
-RUN apt-get update -yq && apt-get upgrade -yq \ 
+RUN apt-get update -yq && apt-get upgrade -yq && \ 
     apt-get install -yq curl git npm  
 WORKDIR /opt
 
