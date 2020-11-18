@@ -104,6 +104,15 @@ do
     export VERSION=`ls Build*`
     echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP" #| tee -a NOIA.log 
 
+
+    echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
+    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
+    cd /root/darp/subagents/rtt/; ./launchrtt.bash </dev/null & 
+    echo `date` launchrtt.bash pid=$$
+    ps
+    cd $DARPDIR
+
+
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Configuring Wireguard
     cd $DARPDIR/scripts/
@@ -124,13 +133,6 @@ do
 
 
 
-
-    echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
-    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
-    cd /root/darp/subagents/rtt/; ./launchrtt.bash </dev/null & 
-    echo `date` launchrtt.bash pid=$$
-    ps
-    cd $DARPDIR
 
 
 
