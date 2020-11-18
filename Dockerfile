@@ -4,7 +4,8 @@
 #
 FROM ubuntu:18.04 as base
 RUN apt-get update -yq  && \ 
-    apt-get install -yq curl git npm  && apt-get upgrade -yq
+    apt-get install -yq curl git npm inetutils-traceroute traceroute && \
+    apt-get upgrade -yq
 WORKDIR /opt
 
 FROM node:14
