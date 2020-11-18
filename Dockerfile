@@ -15,7 +15,7 @@ RUN apk add wireguard-tools wget curl iproute2 git && \
 
 RUN echo INSTALLING EXPRESS AND EJS
 
-RUN npm update 
+#RUN npm update 
 RUN npm install express
 RUN npm install ejs
 
