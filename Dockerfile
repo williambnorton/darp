@@ -4,7 +4,7 @@
 #
 FROM ubuntu:18.04 as base
 RUN apt-get update && \ 
-    apt install node-typescript -y \
+    apt install node-typescript -y && \
     apt install -y npm  
 WORKDIR /opt
 
