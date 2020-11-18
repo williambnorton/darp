@@ -15,7 +15,9 @@ RUN apk add wireguard-tools wget curl iproute2 git && \
 
 RUN echo INSTALLING EXPRESS AND EJS
 
-RUN npm update && npm install express && npm install ejs
+RUN npm update 
+RUN npm install express
+RUN npm install ejs
 
 #My docker couldn't find the node express module...
 ADD node_modules node_modules
