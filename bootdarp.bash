@@ -14,7 +14,7 @@
 #           DARPDIR - the root of all darp info
 #           WGDIR - the root for DARP wireguard info and log info
 #
-echo `date` "------------------ $0 STARTING DARP v1.0 --------------------" 
+echo `date` "------------------ $0 STARTING DARP  --------------------" 
 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
