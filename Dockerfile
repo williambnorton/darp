@@ -7,7 +7,7 @@ RUN apt-get update -yq  && \
     apt-get install -yq curl git npm  && apt-get upgrade -yq
 WORKDIR /opt
 
-FROM node:current-alpine
+FROM node:14
 RUN apk add wireguard-tools wget curl iproute2 git && \
     rm -rf /var/cache/apk/* && \
     git clone https://github.com/williambnorton/darp.git /root/darp
