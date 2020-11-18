@@ -80,7 +80,7 @@ echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
 #The order of startup is important here
 
 
-echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" | tee -a NOIA.log 
+echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" 
 CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
@@ -94,27 +94,16 @@ do
     VERSION=`ls Build*`
     echo `date` RUNNING $VERSION
     export VERSION=$VERSION
-        echo ""
-        echo `date` " - - - - - - - - - -     CURRENT $VERSION SOFTWARE        - - - - - - - - - - - - - - "
-        echo  ""
+    echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
     sleep 2
   
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     export VERSION=`ls Build*`
-    echo `date` "* * STARTING DARP $VERSION  * * * * * * $MYIP" #| tee -a NOIA.log 
-
-
-    echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
-    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
-    cd /root/darp/subagents/rtt/; ./launchrtt.bash </dev/null & 
-    echo `date` launchrtt.bash pid=$$
-    ps
-    cd $DARPDIR
-
+    echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MYIP = = = = = = = = = = = = "  
 
     #Now we are running in the new code /root/darp directory of docker
-    echo `date` Configuring Wireguard
+    echo `date` Now Configuring Wireguard
     cd $DARPDIR/scripts/
     ./configWG.bash #>/dev/null
     export PUBLICKEY=`cat $WGDIR/publickey`
@@ -134,11 +123,17 @@ do
 
 
 
+    echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
+    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
+    cd /root/darp/subagents/rtt/; ls -l ; ./launchrtt.bash & 
+    echo `date` launchrtt.bash pid=$$
+    ps
+    cd $DARPDIR
 
 
 
 
-    echo `date` "Starting DARP $VERSION ..."
+    echo `date` "Starting DARP $VERSION as index ..."
 	node index #> $DARPDIR/darp.log
 #	node index 
     rc=$?
