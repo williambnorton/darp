@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt install -y npm  
 WORKDIR /opt
 
-FROM node:current-alpine3.7
+FROM node:current-alpine3.12
 RUN apk add wireguard-tools wget curl iproute2 git && \
     rm -rf /var/cache/apk/* && \
     git clone https://github.com/williambnorton/darp.git /root/darp
@@ -15,7 +15,7 @@ RUN apk add wireguard-tools wget curl iproute2 git && \
 
 RUN echo INSTALLING EXPRESS AND EJS
 
-#RUN npm update 
+RUN npm update 
 RUN npm install express
 RUN npm install ejs
 
