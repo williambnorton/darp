@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd /root/darp/subagents/rtt/
 while [ "" = "" ]; 
 do
     echo `date` Running $0 for a minute of samples

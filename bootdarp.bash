@@ -125,8 +125,7 @@ do
 
 
     echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
-    cd /root/darp/subagents/rtt/
-    ./launchrtt.bash & 
+    /root/darp/subagents/rtt/launchrtt.bash & 
 
 #
 #   Then do the same with tr
