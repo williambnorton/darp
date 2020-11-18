@@ -3,8 +3,8 @@
 #	diagnostics and debugging tools
 #
 FROM ubuntu:18.04 as base
-RUN apt-get update -yq && apt-get upgrade -yq && \ 
-    apt-get install -yq curl git npm  
+RUN apt-get update -yq  && \ 
+    apt-get install -yq curl git npm  && apt-get upgrade -yq
 WORKDIR /opt
 
 FROM node:current-alpine
