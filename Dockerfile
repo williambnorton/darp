@@ -12,6 +12,9 @@ RUN apk add wireguard-tools wget curl iproute2 git && \
     rm -rf /var/cache/apk/* && \
     git clone https://github.com/williambnorton/darp.git /root/darp
 # COPY . /root/dare
+
+RUN echo INSTALLING EXPRESS AND EJS
+
 RUN npm update && npm install express && npm install ejs
 
 #My docker couldn't find the node express module...
