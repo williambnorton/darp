@@ -1,6 +1,7 @@
 #
 # Dockerfile for DARP - eventually add in popular open source network i
 #	diagnostics and debugging tools
+#   build a new docker when bootdarp.bash changes or when node_modules needs change
 #
 FROM alpine as base
 

@@ -133,15 +133,18 @@ do
 
 
     echo `date` "BYPASSING * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
-    echo `date` "BYPASSING * * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
     cd 
-    #cd /root/darp/subagents/rtt/; ls -l ; ./launchrtt.bash & 
-    #echo `date` launchrtt.bash pid=$$
+    cd /root/darp/subagents/rtt/; ls -l ; 
+    ./launchrtt.bash & 
+    echo $$ >$DARPDIR/launchrtt.pid
+
+    echo `date` "BYPASSING * * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
+
     #ps
+
+
+
     cd $DARPDIR/dist
-
-
-
     echo `date` "Starting DARP $VERSION as index ..."
 	node index #> $DARPDIR/darp.log
     echo $$ > $DARPDIR/index.pid
