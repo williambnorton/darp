@@ -26,7 +26,8 @@ RUN npm install ejs
 RUN npm install
 
 #My docker couldn't find the node express module...
-ADD node_modules node_modules
+COPY node_modules .
+COPY package.json .
 
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
 WORKDIR /root/darp
