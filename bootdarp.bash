@@ -134,7 +134,7 @@ do
 
 
 
-if [ "" == "q"]; then
+if [ "" == "q" ]; then
     echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     echo `date` "* * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
     cd 
