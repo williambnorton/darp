@@ -38,8 +38,12 @@ do
         #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
 
         #killList=`cat $DARPDIR/*.pid`
-        kill `ps aux|grep "node dist" | grep -v grep | awk '{ print $2}'`
-       
+        kill `ps aux|grep "node" | grep -v grep | awk '{ print $2}'`
+
+        echo 'FORGETTING ABOUT the original darp code - moving new code into'
+
+ps aux
+
         cd /tmp
 
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
