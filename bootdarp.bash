@@ -132,7 +132,7 @@ do
     #BSMSG="1603288999696,1603288999611,0,Build.201021.0619,UNRECOGNIZEDGEO,UNRECOGNIZEDGROUP,3,1603288998189,99999,1"
 
 
-    echo `date` "BYPASSING * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
+    echo `date` " * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     cd 
     cd /root/darp/subagents/rtt/; ls -l ; 
     ./launchrtt.bash & 
