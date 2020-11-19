@@ -132,13 +132,13 @@ do
     #BSMSG="1603288999696,1603288999611,0,Build.201021.0619,UNRECOGNIZEDGEO,UNRECOGNIZEDGROUP,3,1603288998189,99999,1"
 
 
-    echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
-    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
+    echo `date` "BYPASSING * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
+    echo `date` "BYPASSING * * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
     cd 
-    cd /root/darp/subagents/rtt/; ls -l ; ./launchrtt.bash & 
-    echo `date` launchrtt.bash pid=$$
-    ps
-    cd $DARPDIR
+    #cd /root/darp/subagents/rtt/; ls -l ; ./launchrtt.bash & 
+    #echo `date` launchrtt.bash pid=$$
+    #ps
+    cd $DARPDIR/dist
 
 
 
