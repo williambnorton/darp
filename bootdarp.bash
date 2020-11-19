@@ -111,7 +111,7 @@ do
  echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
  
  
-#    ./configWG.bash #>/dev/null
+    ./configWG.bash #>/dev/null
  
  
  echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
@@ -144,6 +144,10 @@ do
 
     echo `date` "Starting DARP $VERSION as index ..."
 	node index #> $DARPDIR/darp.log
+    echo $$ > $DARPDIR/index.pid
+    #
+    #       darp exitted 
+    #
 #	node index 
     rc=$?
     echo `date` "FINISHED DARP Protocol index.js done rc=$rc" #| tee -a NOIA.log
@@ -190,6 +194,10 @@ do
     kill -9 `ps aux |grep -v grep | grep index | awk '{ print $1}'`
     kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
 
+
+    if [ -f  $DARPDIR/index.pid ]; then
+        kill `cat $DARPDIR/index.pid`
+    fi
 
     ps aux
 
