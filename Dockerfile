@@ -15,8 +15,8 @@ WORKDIR /opt
 #COPY package.json /opt
 
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
-# COPY . /root/dare
-
+#COPY . /root/darp
+RUN ls -l /root/darp/Build*
 RUN echo INSTALLING EXPRESS AND EJS
 
 RUN npm update 
@@ -24,7 +24,7 @@ RUN npm install express
 RUN npm install ejs
 
 #My docker couldn't find the node express module...
-ADD node_modules darp/node_modules
+#ADD node_modules darp/dist/node_modules
 
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
 WORKDIR /root/darp
