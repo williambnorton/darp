@@ -11,7 +11,8 @@ RUN apk add iputils iproute2
 RUN apk add wireguard-tools
 #RUN apk add --no-cache --update wireguard-tools
 
-WORKDIR /opt
+#WORKDIR /opt
+WORKDIR /root/darp
 #COPY package.json /opt
 
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
