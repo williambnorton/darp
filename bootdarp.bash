@@ -105,7 +105,19 @@ do
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Now Configuring Wireguard
     cd $DARPDIR/scripts/
-    ./configWG.bash #>/dev/null
+
+ 
+ 
+ echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
+ 
+ 
+#    ./configWG.bash #>/dev/null
+ 
+ 
+ echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
+ 
+ 
+ 
     export PUBLICKEY=`cat $WGDIR/publickey`
     echo PUBLICKEY=$PUBLICKEY
 

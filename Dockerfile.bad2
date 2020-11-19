@@ -3,11 +3,15 @@
 #	diagnostics and debugging tools
 #
 #FROM ubuntu:18.04 as base
-FROM alpine:3.7 as base
+FROM ubuntu:18.04 as base
+
+#RUN add-apt-repository ppa:wireguard/wireguard
 
 RUN apt-get update -yq  && \ 
     apt-get install -yq wireguard wireguard-tools curl wget git npm inetutils-traceroute iproute2 traceroute && \
     apt-get upgrade -yq
+
+RUN apt install wireguard
 
 WORKDIR /opt
 
