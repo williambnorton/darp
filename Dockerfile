@@ -11,8 +11,7 @@ RUN apk add iputils iproute2
 RUN apk add wireguard-tools
 #RUN apk add --no-cache --update wireguard-tools
 
-#WORKDIR /opt
-WORKDIR /root/darp
+WORKDIR /opt
 #COPY package.json /opt
 
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
@@ -26,7 +25,7 @@ RUN npm install ejs
 RUN npm install
 
 #My docker couldn't find the node express module...
-COPY node_modules .
+COPY node_modules /root/darp/.
 COPY package.json .
 
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
