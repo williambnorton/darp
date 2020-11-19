@@ -40,14 +40,17 @@ do
         #killList=`cat $DARPDIR/*.pid`
         kill `ps aux|grep "node" | grep -v grep | awk '{ print $2}'`
 
-        echo 'FORGETTING ABOUT the original darp code - moving new code into'
+        echo 'FORGETTING ABOUT the original darp code - movi
+        ng new code into'
 
 ps aux
 
         cd /tmp
 
         mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
+
         mv darp $HOME
+        cp -R /tmp/darp.`date +%y%m%d.%H%M`/node_modules /root/darp/node_modules
         echo `date` New Code installed:
         cd $DARPDIR; ls
 	    exit 1
