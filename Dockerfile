@@ -12,7 +12,7 @@ RUN apk add wireguard-tools
 #RUN apk add --no-cache --update wireguard-tools
 
 WORKDIR /opt
-COPY package.json /opt
+#COPY package.json /opt
 
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
 # COPY . /root/dare
@@ -24,7 +24,7 @@ RUN npm install express
 RUN npm install ejs
 
 #My docker couldn't find the node express module...
-ADD node_modules node_modules
+ADD node_modules darp/node_modules
 
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
 WORKDIR /root/darp

@@ -134,15 +134,15 @@ do
 
 
 
-
+if [ "" == "q"]; then
     echo `date` "* * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
-    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents * * * * * * * * * * * * * * * * * * * * * * "
+    echo `date` "* * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
     cd 
     cd /root/darp/subagents/rtt/; ls -l ; ./launchrtt.bash & 
     echo `date` launchrtt.bash pid=$$
     ps
     cd $DARPDIR
-
+fi
 
 
 
