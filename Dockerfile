@@ -22,6 +22,7 @@ RUN echo INSTALLING EXPRESS AND EJS
 RUN npm update 
 RUN npm install express
 RUN npm install ejs
+RUN npm install
 
 #My docker couldn't find the node express module...
 ADD node_modules node_modules
