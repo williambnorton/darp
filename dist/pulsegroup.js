@@ -1149,7 +1149,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var filename = '/root/darp/subagents/rtt/ip.' + publicIP;
                 fs.access(filename, function (err) {
                     if (err) {
-                        console.log("file not exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " must have failed " + filename + "=>" + err);
+                        //console.log("file not exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" must have failed "+filename+"=>"+err);
                         pulseEntry.rtt = NO_MEASURE;
                     }
                     else {
@@ -1158,7 +1158,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 console.error(err);
                                 return;
                             }
-                            console.log(data);
+                            //console.log(data)
                             console.log("file  exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " responded " + data);
                             pulseEntry.rtt = parseInt(data);
                         });
@@ -1167,7 +1167,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var wgfilename = '/root/darp/subagents/rtt/' + 'ip.' + mintIP;
                 fs.access(wgfilename, function (err) {
                     if (err) {
-                        console.log("file not exist - wg ping " + pulseEntry.geo + " " + mintIP + " must have failed " + filename + "=>" + err);
+                        //console.log("file not exist - wg ping "+pulseEntry.geo+" "+mintIP+" must have failed "+filename+"=>"+err);
                         pulseEntry.wgrtt = NO_MEASURE;
                     }
                     else {
@@ -1176,7 +1176,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 console.error(err);
                                 return;
                             }
-                            console.log(data);
+                            //console.log(data)
                             console.log("file  exist - wg ping " + pulseEntry.geo + " " + mintIP + " responded " + data);
                             pulseEntry.wgrtt = parseInt(data);
                         });
