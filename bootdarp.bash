@@ -137,7 +137,6 @@ do
     cd /root/darp/subagents/rtt/; ls -l ; 
     ./launchrtt.bash & 
     echo $$ >$DARPDIR/launchrtt.pid
-
     echo `date` "BYPASSING * * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
 
     #ps
