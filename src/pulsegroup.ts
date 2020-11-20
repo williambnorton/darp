@@ -1412,23 +1412,36 @@ receiver.bind(this.config.PORT);
     //
     measurertt = () => {
         if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
-        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
-        var d = new Date();
-        var wgMeasure=d.getMinutes();   //alternate pinging once a minute : even minute/odd minute if 0, measure publicInternet, if 1 measure wg link
-        //console.log(`wgMeasure=${wgMeasure}`);
-        wgMeasure=wgMeasure%2;
-        //console.log(`AFTER minutes=${d.getMinutes()} wgMeasure%2 = ${wgMeasure}`);
 
-        //console.log(`measurertt() would measure ${wgMeasure} 0=publicInternet, 1=wireguard measure`);
+        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
+
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 
             const ip = mint2IP(pulseEntry.mint);
             const ip0 = pulseEntry.ipaddr;
-            if (wgMeasure==1)
-                var pingCmd = `(ping -c 1 -W 1 ${ip} 2>&1)`;      //ping PRIVATE ADDRESS: 10.10.x.y
-            else
-                var pingCmd = `(ping -c 1 -W 1 ${ip0} 2>&1)`;   //ping public IP address
+
+            fs.access('ip.'+ip, (err) => {
+                if (err) {
+                    console.log("The file does not exist.");
+                } else {
+                    console.log("The file exists.");
+                    fs.readFile('ip.'+ip, 'utf8' , (err, data) => {
+                        if (err) {
+                            console.log("file not exist - ping must have failed");
+                          console.error(err)
+                          return
+                        }
+                        console.log(data)
+                      })
+                }
+            });
+
+        }
+return;
+
+
+
 
             exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
                     //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
