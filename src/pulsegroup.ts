@@ -1408,7 +1408,7 @@ receiver.bind(this.config.PORT);
 
     //
     //  measurertt() - run once a minute - this measures rtt in a separate ping process (25 nodes = 25 processes spun off every minuiute) 
-    //              would be better to have separate process create/remove files based on ping results, then code checks files once a second
+    //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n files. up to 25/sec
     //
     measurertt = () => {
         if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
@@ -1439,6 +1439,8 @@ receiver.bind(this.config.PORT);
             });
 
         }
+        setTimeout(this.measurertt, 1 * 1000 );  // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms 
+
         return;
     }
 /*
