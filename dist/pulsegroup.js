@@ -1146,7 +1146,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 var mintIP = lib_1.mint2IP(pulseEntry.mint);
                 var publicIP = pulseEntry.ipaddr;
-                var filename = '../subagents/rtt/ip' + publicIP;
+                var filename = '/root/darp/subagents/rtt/ip' + publicIP;
                 fs.access(filename, function (err) {
                     if (err) {
                         console.log("file not exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " must have failed");
@@ -1164,7 +1164,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         });
                     }
                 });
-                var wgfilename = '../subagents/rtt/' + 'ip.' + mintIP;
+                var wgfilename = '/root/darp/subagents/rtt/' + 'ip.' + mintIP;
                 fs.access(wgfilename, function (err) {
                     if (err) {
                         console.log("file not exist - wg ping " + pulseEntry.geo + " " + mintIP + " must have failed");

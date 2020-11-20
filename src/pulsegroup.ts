@@ -1420,7 +1420,7 @@ receiver.bind(this.config.PORT);
 
             const mintIP = mint2IP(pulseEntry.mint);
             const publicIP = pulseEntry.ipaddr;
-            const filename='../subagents/rtt/ip'+publicIP;
+            const filename='/root/darp/subagents/rtt/ip'+publicIP;
             fs.access(filename, (err) => {
                 if (err) {
                     console.log("file not exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" must have failed");
@@ -1437,7 +1437,7 @@ receiver.bind(this.config.PORT);
                       })
                 }
             });
-            const wgfilename='../subagents/rtt/'+'ip.'+mintIP;
+            const wgfilename='/root/darp/subagents/rtt/'+'ip.'+mintIP;
             fs.access(wgfilename, (err) => {
                 if (err) {
                     console.log("file not exist - wg ping "+pulseEntry.geo+" "+mintIP+" must have failed");
