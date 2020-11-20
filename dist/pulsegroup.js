@@ -35,14 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
 exports.__esModule = true;
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 /*  ALPHA  CODE  */
 var fs = require("fs");
 var os = require("os");
 var http = require("http");
-var child_process_1 = require("child_process");
 var express = require("express");
 var lib_1 = require("./lib");
 var logger_1 = require("./logger");
@@ -1169,53 +1167,85 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _loop_1();
             }
             return;
-            child_process_1.exec(pingCmd, function (error, stdout, stderr) {
-                //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
-                var i = stdout.indexOf("100%");
-                if (i >= 0) {
-                    if (wgMeasure != 1) {
-                        pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                        console.log(lib_1.ts() + ("----------------------- > " + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over public Internet end point " + ip));
-                    }
-                    else {
-                        pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
-                        console.log(lib_1.ts() + ("======================= > " + wgMeasure + " measurertt() " + pulseEntry.geo + " " + pulseEntry.ipaddr + " did not respond to ping over encrypted tunnel to " + ip));
-                    }
-                    return;
+        };
+        /*
+        
+        
+                    exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
+                            //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
+                            var i = stdout.indexOf("100%");
+                            if (i >= 0) {
+                                if (wgMeasure!=1) {
+                                    pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
+                                    console.log(ts()+`----------------------- > ${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over public Internet end point ${ip}`);
+                                } else {
+                                    pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
+                                    console.log(ts()+`======================= > ${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over encrypted tunnel to ${ip}`);
+                                }
+                                return;
+                            }
+        
+                            var ary = stdout.split(" ");
+                            var address = ary[8];
+                            var octets = address.split(".");
+                            var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]); //TODO: we should verify mint here
+                            if (ary[6] == "bytes") {
+                                //if we have a measure
+                                var timeEquals = ary[11];
+                                if (typeof timeEquals != "undefined") {
+                                    var rtt = parseInt(timeEquals.split("=")[1]);
+                                    //TODO: here we store or clear the rttMatrix element
+                                    //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
+                                    //TODO: store in rttHistory, rttMedian
+                                    if (wgMeasure!=1) {
+                                        console.log(ts()+`----------------------- >${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
+                                        pulseEntry.rtt = rtt;
+                                    } else {
+                                        pulseEntry.wgrtt = rtt;
+                                        console.log(ts()+`======================= >${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
+        
+                                    }
+                                } else {
+                                    if (wgMeasure!=1) {
+                                        pulseEntry.rtt = NO_MEASURE;
+                                        console.log(ts()+`----------------------- >${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
+                                    } else {
+                                        pulseEntry.wgrtt = NO_MEASURE;
+                                        console.log(ts()+`======================= >${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
+                                    }
+                                    //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
+                                }
+                            }
+                        }
+                    );
                 }
-                var ary = stdout.split(" ");
-                var address = ary[8];
-                var octets = address.split(".");
-                var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]); //TODO: we should verify mint here
-                if (ary[6] == "bytes") {
-                    //if we have a measure
-                    var timeEquals = ary[11];
-                    if (typeof timeEquals != "undefined") {
-                        var rtt = parseInt(timeEquals.split("=")[1]);
-                        //TODO: here we store or clear the rttMatrix element
-                        //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
-                        //TODO: store in rttHistory, rttMedian
-                        if (wgMeasure != 1) {
-                            console.log(lib_1.ts() + ("----------------------- >" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo));
-                            pulseEntry.rtt = rtt;
-                        }
-                        else {
-                            pulseEntry.wgrtt = rtt;
-                            console.log(lib_1.ts() + ("======================= >" + wgMeasure + " measurertt() ******* " + _this.mintTable[0].geo + "-" + pulseEntry.geo + " mint=" + pulseEntry.mint + " saving measure " + rtt + " to record of pulseEntry.geo=" + pulseEntry.geo));
-                        }
-                    }
-                    else {
-                        if (wgMeasure != 1) {
-                            pulseEntry.rtt = NO_MEASURE;
-                            console.log(lib_1.ts() + ("----------------------- >" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt));
-                        }
-                        else {
-                            pulseEntry.wgrtt = NO_MEASURE;
-                            console.log(lib_1.ts() + ("======================= >" + wgMeasure + " measurertt() **  PING RESPONDED    **** measurertt(): " + pulseEntry.geo + " ipaddr=" + pulseEntry.ipaddr + " rtt = " + pulseEntry.rtt));
-                        }
-                        //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
-                    }
+                setTimeout(this.measurertt, 60 * 1000 );  // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms
+            };
+        */
+        //
+        //  this is where the messgaes over secure qireguard mesh is handled - not working yet
+        //
+        this.secureTrafficHandler = function (callback) {
+            var app = express();
+            var self = _this;
+            //        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
+            var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
+                //TODO: add error handling here
+                var serverAdddress = server.address();
+                if (typeof serverAdddress !== "string" && serverAdddress !== null) {
+                    var host = serverAdddress.address;
+                    //var port = serverAdddress.port;
+                    console.log("DARP ENCRYPTED MESH Traffic handler listening at http://" + host + ":" + SECURE_PORT);
                 }
+                else {
+                    logger_1.logger.error("Express app initialization failed");
+                    console.log("FAILED DARP ENCRYPTED MESH Traffic handler listening");
+                }
+            }).on('data', function (err, data) {
+                console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port " + SECURE_PORT);
+            }).on('error', function (err) {
+                console.log("Trying agin in 10 sec", err);
+                setTimeout(self.secureTrafficHandler, 10 * 1000);
             });
         };
         this.groupName = pulseGroup.groupName;
@@ -1290,33 +1320,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
     return AugmentedPulseGroup;
 }());
 exports.AugmentedPulseGroup = AugmentedPulseGroup;
-;
-//
-//  this is where the messgaes over secure qireguard mesh is handled - not working yet
-//
-secureTrafficHandler = function (callback) {
-    var app = express();
-    var self = _this;
-    //        var server = app.listen(SECURE_PORT, mint2IP(this.mintTable[0].mint), function () {
-    var server = app.listen(SECURE_PORT, '0.0.0.0', function () {
-        //TODO: add error handling here
-        var serverAdddress = server.address();
-        if (typeof serverAdddress !== "string" && serverAdddress !== null) {
-            var host = serverAdddress.address;
-            //var port = serverAdddress.port;
-            console.log("DARP ENCRYPTED MESH Traffic handler listening at http://" + host + ":" + SECURE_PORT);
-        }
-        else {
-            logger_1.logger.error("Express app initialization failed");
-            console.log("FAILED DARP ENCRYPTED MESH Traffic handler listening");
-        }
-    }).on('data', function (err, data) {
-        console.log("secureTrafficHandler(): got secure data " + err + " " + data + " on port " + SECURE_PORT);
-    }).on('error', function (err) {
-        console.log("Trying agin in 10 sec", err);
-        setTimeout(self.secureTrafficHandler, 10 * 1000);
-    });
-};
 /**
  * Initiates construction of the pulsegroup object by sneding the request to the genesis node
  * @param {Config} config contains constants and environmental variables, such as ip and port

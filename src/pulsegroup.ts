@@ -1438,9 +1438,9 @@ receiver.bind(this.config.PORT);
             });
 
         }
-return;
-
-
+        return;
+    }
+/*
 
 
             exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
@@ -1493,7 +1493,7 @@ return;
         }
         setTimeout(this.measurertt, 60 * 1000 );  // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms 
     };
-
+*/
     //
     //  this is where the messgaes over secure qireguard mesh is handled - not working yet
     //
