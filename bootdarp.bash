@@ -14,6 +14,8 @@
 #           DARPDIR - the root of all darp info
 #           WGDIR - the root for DARP wireguard info and log info
 #
+# WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
+#
 echo `date` "------------------ $0 STARTING DARP  --------------------" 
 
 SLEEPTIME=5 #time in seconds between software runs in forever loop

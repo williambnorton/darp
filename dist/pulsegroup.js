@@ -1148,17 +1148,18 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var ip0 = pulseEntry.ipaddr;
                 fs.access('ip.' + ip, function (err) {
                     if (err) {
-                        console.log("The file does not exist.");
+                        console.log("file not exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " must have failed");
+                        pulseEntry.rtt = NO_MEASURE;
                     }
                     else {
-                        console.log("The file exists.");
                         fs.readFile('ip.' + ip, 'utf8', function (err, data) {
                             if (err) {
-                                console.log("file not exist - ping must have failed");
                                 console.error(err);
                                 return;
                             }
                             console.log(data);
+                            console.log("file  exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " responded " + data);
+                            pulseEntry.rtt = parseInt(data);
                         });
                     }
                 });
