@@ -1423,7 +1423,7 @@ receiver.bind(this.config.PORT);
             const filename='/root/darp/subagents/rtt/ip'+publicIP;
             fs.access(filename, (err) => {
                 if (err) {
-                    console.log("file not exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" must have failed");
+                    console.log("file not exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" must have failed "+filename+"=>"+err);
                     pulseEntry.rtt = NO_MEASURE;
                 } else {
                     fs.readFile(filename, 'utf8' , (err, data) => {
@@ -1440,7 +1440,7 @@ receiver.bind(this.config.PORT);
             const wgfilename='/root/darp/subagents/rtt/'+'ip.'+mintIP;
             fs.access(wgfilename, (err) => {
                 if (err) {
-                    console.log("file not exist - wg ping "+pulseEntry.geo+" "+mintIP+" must have failed");
+                    console.log("file not exist - wg ping "+pulseEntry.geo+" "+mintIP+" must have failed "+filename+"=>"+err);
                     pulseEntry.wgrtt = NO_MEASURE;
                 } else {
                     fs.readFile(wgfilename, 'utf8' , (err, data) => {
