@@ -1408,7 +1408,7 @@ receiver.bind(this.config.PORT);
 
     //
     //  measurertt() - run once a minute - this measures rtt in a separate ping process (25 nodes = 25 processes spun off every minuiute) 
-    //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n files. up to 25/sec
+    //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n files. up to 50/sec
     //
     measurertt = () => {
         if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
@@ -1418,15 +1418,15 @@ receiver.bind(this.config.PORT);
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 
-            const ip = mint2IP(pulseEntry.mint);
-            const ip0 = pulseEntry.ipaddr;
-
-            fs.access('ip.'+ip, (err) => {
+            const mintIP = mint2IP(pulseEntry.mint);
+            const publicIP = pulseEntry.ipaddr;
+            const filename='../subagents/rtt/ip'+publicIP;
+            fs.access(filename, (err) => {
                 if (err) {
                     console.log("file not exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" must have failed");
                     pulseEntry.rtt = NO_MEASURE;
                 } else {
-                    fs.readFile('ip.'+ip, 'utf8' , (err, data) => {
+                    fs.readFile(filename, 'utf8' , (err, data) => {
                         if (err) {
                           console.error(err)
                           return
@@ -1434,6 +1434,23 @@ receiver.bind(this.config.PORT);
                         console.log(data)
                         console.log("file  exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" responded "+data);
                         pulseEntry.rtt = parseInt(data);
+                      })
+                }
+            });
+            const wgfilename='../subagents/rtt/'+'ip.'+mintIP;
+            fs.access(wgfilename, (err) => {
+                if (err) {
+                    console.log("file not exist - wg ping "+pulseEntry.geo+" "+mintIP+" must have failed");
+                    pulseEntry.wgrtt = NO_MEASURE;
+                } else {
+                    fs.readFile(wgfilename, 'utf8' , (err, data) => {
+                        if (err) {
+                          console.error(err)
+                          return
+                        }
+                        console.log(data)
+                        console.log("file  exist - wg ping "+pulseEntry.geo+" "+mintIP+" responded "+data);
+                        pulseEntry.wgrtt = parseInt(data);
                       })
                 }
             });

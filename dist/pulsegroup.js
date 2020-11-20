@@ -1136,7 +1136,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         //
         //  measurertt() - run once a minute - this measures rtt in a separate ping process (25 nodes = 25 processes spun off every minuiute) 
-        //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n files. up to 25/sec
+        //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n files. up to 50/sec
         //
         this.measurertt = function () {
             if (!MEASURE_RTT)
@@ -1144,15 +1144,16 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("-------------------------------------------------------------------------------------- measurertt()");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
-                var ip = lib_1.mint2IP(pulseEntry.mint);
-                var ip0 = pulseEntry.ipaddr;
-                fs.access('ip.' + ip, function (err) {
+                var mintIP = lib_1.mint2IP(pulseEntry.mint);
+                var publicIP = pulseEntry.ipaddr;
+                var filename = '../subagents/rtt/ip' + publicIP;
+                fs.access(filename, function (err) {
                     if (err) {
                         console.log("file not exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " must have failed");
                         pulseEntry.rtt = NO_MEASURE;
                     }
                     else {
-                        fs.readFile('ip.' + ip, 'utf8', function (err, data) {
+                        fs.readFile(filename, 'utf8', function (err, data) {
                             if (err) {
                                 console.error(err);
                                 return;
@@ -1160,6 +1161,24 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log(data);
                             console.log("file  exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " responded " + data);
                             pulseEntry.rtt = parseInt(data);
+                        });
+                    }
+                });
+                var wgfilename = '../subagents/rtt/' + 'ip.' + mintIP;
+                fs.access(wgfilename, function (err) {
+                    if (err) {
+                        console.log("file not exist - wg ping " + pulseEntry.geo + " " + mintIP + " must have failed");
+                        pulseEntry.wgrtt = NO_MEASURE;
+                    }
+                    else {
+                        fs.readFile(wgfilename, 'utf8', function (err, data) {
+                            if (err) {
+                                console.error(err);
+                                return;
+                            }
+                            console.log(data);
+                            console.log("file  exist - wg ping " + pulseEntry.geo + " " + mintIP + " responded " + data);
+                            pulseEntry.wgrtt = parseInt(data);
                         });
                     }
                 });
