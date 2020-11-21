@@ -28,7 +28,7 @@ fs.readdir( DIRPATH, function( err, files ) {
                 var fileAge=Number(Date.now())-stat.ctime;
                 //console.log(`fileAge=${fileAge}`);
                 if (fileAge>2000) {
-                    console.log(`DELETEING OLD ping data file ${filePath}`);
+                    //console.log(`DELETEING OLD ping data file ${filePath}`);
                     fs.unlink( filePath, function( err ) {
                         if ( err ) return console.log( err );
                      });

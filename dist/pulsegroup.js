@@ -1143,7 +1143,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.measurertt = function () {
             if (!MEASURE_RTT)
                 return; // can not spin up 1 ping process per node per second
-            console.log("-------------------------------------------------------------------------------------- measurertt()");
             var _loop_1 = function () {
                 var pulseEntry = _this.pulses[p]; //do we need to check if this pulse still exists?
                 var mintIP = lib_1.mint2IP(pulseEntry.mint);
@@ -1161,7 +1160,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 return;
                             }
                             //console.log(data)
-                            console.log("file  exist - ping " + pulseEntry.geo + " " + pulseEntry.ipaddr + " responded " + data);
                             pulseEntry.rtt = parseInt(data);
                         });
                     }
@@ -1179,7 +1177,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 return;
                             }
                             //console.log(data)
-                            console.log("file  exist - wg ping " + pulseEntry.geo + " " + mintIP + " responded " + data);
                             pulseEntry.wgrtt = parseInt(data);
                         });
                     }

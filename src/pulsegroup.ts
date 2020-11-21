@@ -1415,8 +1415,6 @@ receiver.bind(this.config.PORT);
     measurertt = () => {
         if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
 
-        console.log(`-------------------------------------------------------------------------------------- measurertt()`);
-
         for (var p in this.pulses) {
             const pulseEntry = this.pulses[p]; //do we need to check if this pulse still exists?
 
@@ -1434,7 +1432,6 @@ receiver.bind(this.config.PORT);
                           return
                         }
                         //console.log(data)
-                        console.log("file  exist - ping "+pulseEntry.geo+" "+pulseEntry.ipaddr+" responded "+data);
                         pulseEntry.rtt = parseInt(data);
                       })
                 }
@@ -1451,7 +1448,6 @@ receiver.bind(this.config.PORT);
                           return
                         }
                         //console.log(data)
-                        console.log("file  exist - wg ping "+pulseEntry.geo+" "+mintIP+" responded "+data);
                         pulseEntry.wgrtt = parseInt(data);
                       })
                 }
