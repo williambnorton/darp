@@ -148,7 +148,6 @@ do
     cd $DARPDIR/dist
     echo `date` "Starting DARP $VERSION as index ..."
 	node index #> $DARPDIR/darp.log
-    echo $$ > $DARPDIR/index.pid
     #
     #       darp exitted 
     #
@@ -193,9 +192,8 @@ do
     
     echo `date` killing lingering processes
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep index | awk '{ print $1}'`
+    kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
+    kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
 
 
