@@ -166,7 +166,7 @@ export class Config {
 
 
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 25;
+        this.MAXNODES = 50;
     }
 }
 
@@ -1407,8 +1407,10 @@ receiver.bind(this.config.PORT);
     };
 
     //
-    //  measurertt() - run once a minute - this measures rtt in a separate ping process (25 nodes = 25 processes spun off every minuiute) 
-    //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n files. up to 50/sec
+    //  measurertt() - subagents/rtt doing measurements based on pulling pulseGroup once a minute
+    //              it creates a file ip.<ipaddr> if it responds to ping, deletes if it does not respond
+    //              launchrtt.bash will do the measures and create/delete files based on results.  Here we check n*2 files. up to 50/sec
+    //              in a docker this is a memory exercize so less painful than it dsounds.
     //
     measurertt = () => {
         if (!MEASURE_RTT) return;  // can not spin up 1 ping process per node per second
@@ -1456,64 +1458,9 @@ receiver.bind(this.config.PORT);
             });
 
         }
-        setTimeout(this.measurertt, 1 * 1000 );  // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms 
-
-        return;
+        setTimeout(this.measurertt, 1 * 1000 );  // check ping every node every 
     }
-/*
 
-
-            exec(pingCmd, (error: ExecException | null, stdout: string, stderr: string) => {
-                    //64 bytes from 10.10.0.1: seq=0 ttl=64 time=0.064 ms
-                    var i = stdout.indexOf("100%");
-                    if (i >= 0) {
-                        if (wgMeasure!=1) {
-                            pulseEntry.rtt = NO_MEASURE; // UNREACHABLE
-                            console.log(ts()+`----------------------- > ${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over public Internet end point ${ip}`);
-                        } else {
-                            pulseEntry.wgrtt = NO_MEASURE; // UNREACHABLE
-                            console.log(ts()+`======================= > ${wgMeasure} measurertt() ${pulseEntry.geo} ${pulseEntry.ipaddr} did not respond to ping over encrypted tunnel to ${ip}`);
-                        }
-                        return;
-                    }
-
-                    var ary = stdout.split(" ");
-                    var address = ary[8];
-                    var octets = address.split(".");
-                    var mint = parseInt(octets[2]) * 254 + parseInt(octets[3]); //TODO: we should verify mint here
-                    if (ary[6] == "bytes") {
-                        //if we have a measure
-                        var timeEquals = ary[11];
-                        if (typeof timeEquals != "undefined") {
-                            var rtt = parseInt(timeEquals.split("=")[1]);
-                            //TODO: here we store or clear the rttMatrix element
-                            //console.log(`**** address: ${address} to see who replied... measurertt(): ${pulseEntry.geo} rtt = `+rtt);
-                            //TODO: store in rttHistory, rttMedian
-                            if (wgMeasure!=1) {
-                                console.log(ts()+`----------------------- >${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
-                                pulseEntry.rtt = rtt;
-                            } else {
-                                pulseEntry.wgrtt = rtt;
-                                console.log(ts()+`======================= >${wgMeasure} measurertt() ******* ${this.mintTable[0].geo}-${pulseEntry.geo} mint=${pulseEntry.mint} saving measure ${rtt} to record of pulseEntry.geo=${pulseEntry.geo}`);
-
-                            }
-                        } else {
-                            if (wgMeasure!=1) {
-                                pulseEntry.rtt = NO_MEASURE;
-                                console.log(ts()+`----------------------- >${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
-                            } else {
-                                pulseEntry.wgrtt = NO_MEASURE;
-                                console.log(ts()+`======================= >${wgMeasure} measurertt() **  PING RESPONDED    **** measurertt(): ${pulseEntry.geo} ipaddr=${pulseEntry.ipaddr} rtt = ${pulseEntry.rtt}`);
-                            }
-                            //console.log(`*******clearing measure to record of pulseEntry.geo=${pulseEntry.geo}`);
-                        }
-                    }
-                }
-            );
-        }
-        setTimeout(this.measurertt, 60 * 1000 );  // ping every node every n minutes  BUG - This is inefficient - 25 proceses spun up - should be one process with 25 parms 
-    };
-*/
     //
     //  this is where the messgaes over secure qireguard mesh is handled - not working yet
     //
