@@ -1,10 +1,10 @@
 #!/bin/bash
 #		wgwatch - RUNS ON HOST outside of docker enviuronment
 #			invokes wg-quick when this wireguard config file is changed is created by docker - runs on host
-#
+#	Nov 23 - using $HOME/wireguard directory   <--- this should not use a wireguard name - maybe a darp or noia or syntropy
 WGDIR=$HOME/wireguard
 echo `date` $0 starting with WGDIR=$WGDIR 
-PIDFILE=/tmp/wgwatch.pid 
+PIDFILE=wgwatch.pid 
 umask 077
 
 unameOut="$(uname -s)"
@@ -24,7 +24,7 @@ if [ -f $PIDFILE ]; then
 		rm -f $PIDFILE
 		sleep 1
 fi
-echo $$ >/tmp/wgwatch.pid
+echo $$ >$PIDFILE
 
 docker inspect -f '{{ .Created }}' `docker ps | grep -v CONTAINER | awk 'END{print NR}' ` >DOCKER_SW_VERSION
 echo `date` Running DARP Docker Created `cat DOCKER_SW_VERSION`
