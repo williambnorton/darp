@@ -1,5 +1,20 @@
 #!/bin/bash
 # kill previously running version of darp
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac;;
+    CYGWIN*)    MACHINE=Cygwin;;
+    MINGW*)     MACHINE=MinGw;;
+    *)          MACHINE="UNKNOWN:${unameOut}"
+esac
+export MACHINE
+echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
+
+
+
+
 if [ -r darp.pid ]; then
         kill -9 darp.pid
 fi
@@ -7,8 +22,20 @@ echo $$ > darp.pid
 #install docker and wireguard if not installed already
 docker ps >/dev/null
 if [ $? -ne 0 ]; then
-echo `date` making UBUNTU machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
-        sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
+
+    case $MACHINE  in
+        Linux) 
+            echo `date` making UBUNTU machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
+            sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
+            ;;
+        Mac) 
+           echo `date` making Mac machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
+            sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
+            ;;
+        *)
+          echo `date` UNKNOWN machine VM ready to run darp by installing  docker and wireguard
+            ;;
+    esac
 fi
 
 # forever loop to run darp and auto update docker images
