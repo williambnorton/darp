@@ -29,7 +29,7 @@ if [ $? -ne 0 ]; then
             sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
             ;;
         Mac) 
-           echo `date` making Mac machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
+           echo `date` making Mac machine DARP Ready by installing  docker and wireguard 
             sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
             ;;
         *)
@@ -42,6 +42,7 @@ fi
 
 while [ "" = "" ]; 
 do
+    # wireguard will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
         (sleep 30;~/wireguard/wgwatch.bash) &
 
         #this is not nice - killing all dockers on system - fix this
