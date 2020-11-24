@@ -80,7 +80,7 @@ echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-
+env
 
 echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" 
 CYCLES=0;
