@@ -47,7 +47,7 @@ do
         #this is not nice - killing all dockers on system - fix this
         docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);
 
-        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=52.53.222.151 -e "WALLET=auto"   williambnorton/darp:latest < /dev/null
+        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=$GENESIS -e "WALLET=auto"   williambnorton/darp:latest < /dev/null
         rc=$?
         echo `date` "Docker exitted rc=$rc- sleeping 10 seconds and fetching new docker and restarting"
         sleep 10

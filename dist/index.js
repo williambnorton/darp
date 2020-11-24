@@ -427,6 +427,6 @@ app.get('/darp.bash', function (req, res) {
     res.setHeader('Content-Type', 'text/javascript');
     res.setHeader("Access-Control-Allow-Origin", "*");
     fs.readFile('darp.bash', function (err, data) {
-        res.send(data.toString());
+        res.send("export GENESIS=" + myPulseGroup.mintTable[1].ipaddr + ";" + data.toString());
     });
 });
