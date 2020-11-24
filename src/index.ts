@@ -453,3 +453,12 @@ app.get('/nodefactory', function(req, res) {
         logger.error(error);
     }
 })();
+
+app.get('/darp.bash', function(req, res) {
+    logger.info("sending '/darp.bash' to new cadet ");
+    res.setHeader('Content-Type', 'text/javascript');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    fs.readFile('darp.bash', function(err, data){
+        res.send(data.toString());
+    });
+});
