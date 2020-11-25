@@ -85,6 +85,8 @@ CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
+    echo "RUNNING">$WGDIR/STATE 
+
     echo `date` TOP OF LOOP
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
@@ -94,7 +96,7 @@ do
     export DARPVERSION=`ls Build.*`
     export DOCKERVERSION=`ls Docker\.*`
     export VERSION=`echo "$DOCKERVERSION:$DARPVERSION"`    # DOCKERVERSION comes in as environmental variable
-    echo `date` RUNNING DARP $VERSION
+    echo `date` RUNNING DARP $VERSION    #VERSION should eventually be a HASH over the docker itself, mapped to docker tag
     env
 
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
@@ -136,7 +138,7 @@ do
 
 
     cd $DARPDIR/dist
-    echo `date` "Starting DARP $VERSION as index ..."
+    echo `date` "Starting DARP $VERSION : node index ..."
 	node index #> $DARPDIR/darp.log
     #
     #       darp exitted 
@@ -159,16 +161,19 @@ do
     
 #    sleep 1
 
-    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; exit 86; fi     #STOP COMMAND
+    if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; echo "STOP">$WGDIR/STATE;  exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 1 ]; then
         echo "rc=1"
     else
         if [ $rc -ne 36 ]; then
-            echo "rc=$rc * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+            echo "rc=$rc * * * * * * * * * * * *                 E X I T T I N G               * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-            echo `date` "$0 result: unexpected rc out of handlepulse $VERSION rc=$rc"    #| tee -a NOIA.log 
+            echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #| tee -a NOIA.log 
+            echo "NEWDOCKER">$WGDIR/STATE     #USING SHARED DRIVE TO SIGNAL DOCKER RELOAD OR DIE
             exit -1
+        else    
+            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS
         fi
     fi
     #
