@@ -93,8 +93,8 @@ do
     cd $DARPDIR
     export DARPVERSION=`ls Build.*`
     export DOCKERVERSION=`ls Docker*`
-    export VERSION="$DOCKERVERSION/$DARPVERSION"    # DOCKERVERSION comes in as environmental variable
-    echo `date` RUNNING $VERSION
+    export VERSION=`echo "$DOCKERVERSION:$DARPVERSION"`    # DOCKERVERSION comes in as environmental variable
+    echo `date` RUNNING DARP $VERSION
     env
 
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
