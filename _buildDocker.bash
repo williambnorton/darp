@@ -1,6 +1,10 @@
 #!/bin/bash
 #   _builddocker.bash - build a new docker - takes 5 minutes
 #
+rm Docker.??????.????
+date>"Docker."`date +%y%m%d.%H%M`
+ls -l Docker.*
+
 echo `date` Building darp codebase 
 ./builddarp.bash 
 if [ $? -ne 0 ]; then
