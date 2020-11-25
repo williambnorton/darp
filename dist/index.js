@@ -111,7 +111,7 @@ app.get('/extra/:src/:intermediary/:dst', function (req, res) {
 app.get('/version', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(me.version));
+    res.end(JSON.stringify(config.VERSION));
     return;
 });
 app.get('/stop', function (req, res) {
