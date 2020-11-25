@@ -61,6 +61,8 @@ do
                 ;;
             STOP
                 echo `date` STOP exit and do not restart
+                rm ~/wireguard/STATE     #this will eventually also delete the directory, which should be ~/darp instead of ~/wireguard  wg-quick takes a file as input
+                exit 1
 
                 ;;
             *)
