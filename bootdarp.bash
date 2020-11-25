@@ -102,7 +102,7 @@ do
   
     ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
-    export VERSION=`ls Build*`
+    #export VERSION=`ls Build*`
     echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MYIP = = = = = = = = = = = = "  
 
     #Now we are running in the new code /root/darp directory of docker
