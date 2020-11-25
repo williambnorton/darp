@@ -17,7 +17,7 @@
 # WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
 #
 echo `date` "------------------ $0 STARTING DARP  --------------------" 
-
+env
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 
@@ -107,18 +107,10 @@ do
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Now Configuring Wireguard
     cd $DARPDIR/scripts/
-
  
- 
- echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
- 
- 
+    echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
     ./configWG.bash #>/dev/null
- 
- 
- echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
- 
- 
+    echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
  
     export PUBLICKEY=`cat $WGDIR/publickey`
     echo PUBLICKEY=$PUBLICKEY
