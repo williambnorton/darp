@@ -92,7 +92,7 @@ do
 
     cd $DARPDIR
     export DARPVERSION=`ls Build.*`
-    export DOCKERVERSION=`ls Docker*`
+    export DOCKERVERSION=`ls Docker\.*`
     export VERSION=`echo "$DOCKERVERSION:$DARPVERSION"`    # DOCKERVERSION comes in as environmental variable
     echo `date` RUNNING DARP $VERSION
     env
@@ -107,11 +107,8 @@ do
 
     #Now we are running in the new code /root/darp directory of docker
     echo `date` Now Configuring Wireguard
-    cd $DARPDIR/scripts/
- 
-    echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
+    cd $DARPDIR/scripts/ 
     ./configWG.bash #>/dev/null
-    echo `date` " ****************************************     WOULD DO CONFIGWG HERE   ************************************"
  
     export PUBLICKEY=`cat $WGDIR/publickey`
     echo PUBLICKEY=$PUBLICKEY
