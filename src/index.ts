@@ -290,6 +290,8 @@ app.get('/nodefactory', function(req, res) {
     logger.info(`incomingIP=${incomingIP} clientIncomingIP=${clientIncomingIP} req.myip=${req.query.myip}`);
 
     var version = String(req.query.version);
+    version=config.VERSION=MYVERSION(); 
+    console.log(`setting version and config.VERSION to  ${version}`);
 
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port==config.GENESISPORT)) {  // Genesis node instantiating itself - don't need to add anything
@@ -303,7 +305,6 @@ app.get('/nodefactory', function(req, res) {
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
-        config.VERSION=MYVERSION();  //
         return;
     }
 

@@ -292,6 +292,8 @@ app.get('/nodefactory', function (req, res) {
         return logger_1.logger.error("incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
     logger_1.logger.info("incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP + " req.myip=" + req.query.myip);
     var version = String(req.query.version);
+    version = config.VERSION = lib_1.MYVERSION();
+    console.log("setting version and config.VERSION to  " + version);
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port == config.GENESISPORT)) { // Genesis node instantiating itself - don't need to add anything
         console.log("I AM GENESIS NODE incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
@@ -301,7 +303,6 @@ app.get('/nodefactory', function (req, res) {
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
         myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
-        config.VERSION = lib_1.MYVERSION(); //
         return;
     }
     //  Or - Handle pulseGroup member case
