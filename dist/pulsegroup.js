@@ -779,6 +779,15 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     var mySWversion = lib_1.MYVERSION(); // find the Build.*
                     logger_1.logger.info("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
                     if (genesisVersion != mySWversion) {
+                        var dockerVersion = genesisVersion.split(":")[0];
+                        var myDockerVersion = mySWversion.split(":")[0];
+                        if (dockerVersion != myDockerVersion) {
+                            // Docker reload
+                            logger_1.logger.error("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
+                            console.log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
+                            lib_1.Log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
+                            process.exit(-1);
+                        }
                         // Software reload
                         logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
                         console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");

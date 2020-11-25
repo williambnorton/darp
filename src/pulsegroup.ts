@@ -1008,6 +1008,15 @@ receiver.bind(this.config.PORT);
                 var mySWversion = MYVERSION();  // find the Build.*
                 logger.info(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 if (genesisVersion != mySWversion) {
+                    const dockerVersion=genesisVersion.split(":")[0];
+                    const myDockerVersion=mySWversion.split(":")[0];
+                    if (dockerVersion!=myDockerVersion) {
+                        // Docker reload
+                        logger.error(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
+                        console.log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
+                        Log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
+                        process.exit(-1);                        
+                    }
                     // Software reload
                     logger.error(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
                     console.log(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
