@@ -93,7 +93,9 @@ do
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
 
     cd $DARPDIR
-    VERSION=`ls Build*`$DOCKERVERSION    # DOCKERVERSION comes in as environmental variable
+    DARPVERSION=`ls Build.*`
+    DOCKERVERSION=`ls Docker*`
+    VERSION=$DOCKERVERSION/$DARPVERSION    # DOCKERVERSION comes in as environmental variable
     echo `date` RUNNING $VERSION
     export VERSION=$VERSION
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "

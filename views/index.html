@@ -677,25 +677,9 @@
     <% } %>
     
     
-    <p>Connect to this pulseGroup using:
-        (sleep 30;~/wireguard/wgwatch.bash)& docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); 
-                docker run
-        -p <%= me.port %>:<%= me.port %>
-        -p <%= me.port %>:<%= me.port %>/udp
-        -p 80:80/udp
-        -v ~/wireguard:/etc/wireguard
-        -e GENESIS=<%= me.ipaddr %>
-        -e GENESISPORT=<%= config.GENESISPORT %>
-        -e HOSTNAME=`hostname`
-        -e WALLET=auto
-        -it williambnorton/darp:latest</p>
-
-        <% for (var p in g) { %>
-            <p><a href="http://<%=g[p]%>:65013/">GENESIS NODE: http://<%=g[p]%>:65013/</a></p>           
-        <% } %>
-
-        
-    <p id="raw"><%- JSON.stringify(myPulseGroups, null, 2) %></p>
+    <p>Connect to this pulseGroup: </p> <p>curl http://<%= me.ipaddr %>:<%= me.port %>/darp.bash | bash</p>
+         
+    <!--   <p id="raw"><%- JSON.stringify(myPulseGroups, null, 2) %></p>-->
 
 </body>
 </html>

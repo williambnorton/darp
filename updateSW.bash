@@ -1,15 +1,7 @@
 #!/bin/bash
 #		    updateSW.bash
 #
-if [ $# -ne 0 ]; then
-    echo `date` Running $0 in DAEMON mode. $#
-    DAEMON="YES"
-fi
-POLLFREQ=45
 
-echo `date` updateSW.bash
-while :
-do
     DARPDIR=~/darp
     cd $DARPDIR
     CURRENT=`ls Build*`
@@ -25,35 +17,22 @@ do
    echo UPDATESW.BASH "$CURRENT" "$NEW" 
 
    if [ "$CURRENT" == "$NEW" ]; then
-	    #echo `date` No Change DAEMON=$DAEMON
-        if [ "$DAEMON" != "YES" ]; then
-            echo "updateSW.bash DONE WITH SINGLE STARTUP RUN....Exitting $0";
-	        exit 0
-        fi
-        
+	    #echo `date` No Change       
     else
 	    echo `date` $0 Software changed. Was $CURRENT Now is $NEW
         cd /tmp/darp
-        echo 'CLONED INTO /tmp directory.      YOU NEED A new Bash shell:      cd ~;cd darp;ls'
+        echo 'CLONED INTO /tmp/darp directory.'
         #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
-
-        #killList=`cat $DARPDIR/*.pid`
-        kill `ps aux|grep "index" | grep -v grep | awk '{ print $2}'`
-
-        ps aux
-
         cd /tmp
         echo `date` moving current code into root directory
-        mv $DARPDIR /tmp/darp.`date +%y%m%d.%H%M`
+        SUFFIX=`date +%y%m%d.%H%M`
+        mv $DARPDIR /tmp/darp.$SUFFIX
 
         mv darp $HOME
-        cp -R /tmp/darp.`date +%y%m%d.%H%M`/node_modules /root/darp/node_modules
+        cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules
         echo `date` New Code installed:
         cd $DARPDIR; ls
-	    exit 1
     fi
 
     echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
 
-    sleep $POLLFREQ
-done
