@@ -37,5 +37,5 @@
         echo `date` NEW Build - Build = $NEW
     fi
 
-    echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
+    echo `date` Completed git clone into ~/darp - OLD=$CURRENT NEW=$NEW
 
