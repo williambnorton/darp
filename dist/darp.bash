@@ -53,6 +53,19 @@ do
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=__MYGENESISIP__ -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         rc=$?
         echo `date` "Docker exitted rc=$rc- sleeping 10 seconds and fetching new docker and restarting"
+        STATE=`cat ~/wireguard/STATE`
+        echo `date` STATE=$STATE
+        case $STATE in
+            NEWDOCKER)
+                echo `date` NEWDOCKER  fall through and refetch new docker
+                ;;
+            STOP
+                echo `date` STOP exit and do not restart
+
+                ;;
+            *)
+                ;;
+        esac
         sleep 10
 
 done
