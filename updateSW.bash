@@ -17,7 +17,7 @@
    echo UPDATESW.BASH "$CURRENT" "$NEW" 
 
    if [ "$CURRENT" == "$NEW" ]; then
-	    #echo `date` No Change       
+	    echo `date` No Change       
     else
 	    echo `date` $0 Software changed. Was $CURRENT Now is $NEW
         cd /tmp/darp
