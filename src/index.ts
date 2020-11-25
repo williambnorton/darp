@@ -3,7 +3,7 @@
 import express = require('express');
 import ejs = require('ejs');
 import { logger, LogLevel } from './logger';
-import { dump, Log, now, ts } from './lib';
+import { dump, Log, now, ts, MYVERSION } from './lib';
 import { grapher } from './grapher';
 import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup, PulseGroups } from './pulsegroup';
 
@@ -114,7 +114,7 @@ app.get('/version', function(req, res) {
     } else {
         //TODO
     }
-    process.exit(86) 
+    process.exit(-1) 
  });
  
 
@@ -303,7 +303,7 @@ app.get('/nodefactory', function(req, res) {
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
-
+        config.VERSION=MYVERSION();  //
         return;
     }
 

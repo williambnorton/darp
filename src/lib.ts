@@ -106,7 +106,7 @@ export function Log(logMsg: string, filename?: string) {
  * Returns the Build version
  * @returns {string} Build version
  */
-export function MYVERSION(): string | null {
+export function MYVERSION(): string {
     let darpdir = process.env.DARPDIR;
     var darpBuild = null;  //we set this from Build. file contents
     var dockerBuild = null;  //we set this from Docker. file contents
