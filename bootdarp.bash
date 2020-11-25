@@ -17,7 +17,6 @@
 # WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
 #
 echo `date` "------------------ $0 STARTING DARP  --------------------" 
-env
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 
@@ -38,7 +37,7 @@ case "${unameOut}" in
     *)          MACHINE="UNKNOWN:${unameOut}"
 esac
 export MACHINE
-echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
+#echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
 
 
 export DARPDIR=$HOME/darp
@@ -80,7 +79,6 @@ echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
 #when genesis node leanrs of new SW it quits and downloads 
 #
 #The order of startup is important here
-env
 
 echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" 
 CYCLES=0;
@@ -98,6 +96,8 @@ do
     VERSION=$DOCKERVERSION/$DARPVERSION    # DOCKERVERSION comes in as environmental variable
     echo `date` RUNNING $VERSION
     export VERSION=$VERSION
+    env
+
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
     sleep 2
   
