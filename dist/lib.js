@@ -127,7 +127,7 @@ function MYVERSION() {
         }
     });
     fs.readdirSync(darpdir).forEach(function (fn) {
-        var Docker = fn.match(/Docker\..*/);
+        var Docker = fn.match(/Docker\.[0-9]*.*/);
         if (Docker !== null) {
             dockerBuild = Docker[0];
         }
