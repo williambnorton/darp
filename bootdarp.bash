@@ -93,7 +93,7 @@ do
     cd $DARPDIR
     export DARPVERSION=`ls Build.*`
     export DOCKERVERSION=`ls Docker*`
-    export VERSION=$DOCKERVERSION/$DARPVERSION    # DOCKERVERSION comes in as environmental variable
+    export VERSION="$DOCKERVERSION/$DARPVERSION"    # DOCKERVERSION comes in as environmental variable
     echo `date` RUNNING $VERSION
     env
 
