@@ -1,5 +1,6 @@
 #!/bin/bash
-#		    updateSW.bash
+#		    updateSW.bash - Update internal software running in the DARP Docker
+#
 #   This is run one-time each cycle to clone into /tmp/ and see if things changed.
 #   TRhere is probably a better way to do this, so this remains a separate script
 #
@@ -30,9 +31,10 @@
         mv $DARPDIR /tmp/darp.$SUFFIX
 
         mv darp $HOME
-        cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules
+        cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
         echo `date` New Code installed:
         cd $DARPDIR; ls
+        echo `date` NEW Build - Build = $NEW
     fi
 
     echo `date` Completed git clone into ~/darp - CURRENT=$CURRENT NEW=$NEW
