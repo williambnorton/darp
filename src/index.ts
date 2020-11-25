@@ -426,7 +426,7 @@ app.get('/nodefactory', function(req, res) {
 
 
     logger.info("* Genesis node created newNodePulseGroup="+dump(newNodePulseGroup));
-    console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
+    //console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
 
     // send response to pulse group member node
     res.setHeader('Content-Type', 'application/json');
