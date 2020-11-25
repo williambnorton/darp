@@ -1,7 +1,8 @@
 #!/bin/bash
 #		    updateSW.bash
+#   This is run one-time each cycle to clone into /tmp/ and see if things changed.
+#   TRhere is probably a better way to do this, so this remains a separate script
 #
-
     DARPDIR=~/darp
     cd $DARPDIR
     CURRENT=`ls Build*`
