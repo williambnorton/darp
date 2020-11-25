@@ -108,18 +108,25 @@ export function Log(logMsg: string, filename?: string) {
  */
 export function MYVERSION(): string | null {
     let darpdir = process.env.DARPDIR;
-    var darpBuild = null;  //we set this in the readir call
+    var darpBuild = null;  //we set this from Build. file contents
+    var dockerBuild = null;  //we set this from Docker. file contents
     if (typeof darpdir == "undefined") {
         console.log(`MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...`);
         process.exit(36); //reload SW - this should not happen
     }
     fs.readdirSync(darpdir).forEach((fn: string) => { 
-        const Build=fn.match(/Build.*/);
+        const Build=fn.match(/Build\..*/);
         if (Build !== null) {
             darpBuild=Build[0];
         }
     });
-    return darpBuild;
+    fs.readdirSync(darpdir).forEach((fn: string) => { 
+        const Docker=fn.match(/Docker\..*/);
+        if (Docker !== null) {
+            dockerBuild=Docker[0];
+        }
+    });
+    return dockerBuild+":"+darpBuild;
 }
 
 export function mint2IP(mint:number):string {
