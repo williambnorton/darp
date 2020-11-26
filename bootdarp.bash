@@ -163,15 +163,17 @@ do
 
     if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; echo "STOP">$WGDIR/STATE;  exit 86; fi     #STOP COMMAND
 
-    if [ $rc -eq 1 ]; then
-        echo "rc=1"
+    if [ $rc -eq 0 ]; then
+        echo "rc=0 - New Docker Available"
+        echo "NEWDOCKER" > $WGDIR/STATE;
+        exit 0
     else
         if [ $rc -ne 36 ]; then
             echo "rc=$rc * * * * * * * * * * * *                 E X I T T I N G               * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
             echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #| tee -a NOIA.log 
             echo "NEWDOCKER">$WGDIR/STATE     #USING SHARED DRIVE TO SIGNAL DOCKER RELOAD OR DIE
-            exit -1
+            exit 36
         else    
             echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS
         fi

@@ -1016,7 +1016,7 @@ receiver.bind(this.config.PORT);
                         logger.error(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
                         console.log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
                         Log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
-                        process.exit(-1);                        
+                        process.exit(0);                        
                     }
                     // Software reload
                     logger.error(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
