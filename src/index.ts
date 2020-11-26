@@ -463,7 +463,7 @@ app.get('/darp.bash', function(req, res) {
     fs.readFile('darp.bash', function(err, data){
         //console.log(`sending data ${data}`);
         console.log(`config.GENESIS=${config.GENESIS}`);
-        console.log(`indexof __MYGENESISIP__=${data.indexOf("__MYGENESISIP__")}`);
+        console.log(`indexof __MYGENESISIP__=${data.replace(/__MYGENESISIP__/.config.GENESIS)}`);
         res.send(data.toString().replace("__MYGENESISIP__", config.GENESIS) );
 
     });
