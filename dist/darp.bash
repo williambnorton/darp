@@ -50,7 +50,7 @@ do
         #
         #   __MYGENESISIP__   <-- when delivered in index.ts , this is replaced with this node's GENESIS node.
         #
-        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=__MYGENESISIP__ -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
+        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=MYGENESISIP -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         rc=$?
         echo `date` "$0 Docker exitted rc=$rc- sleeping 10 seconds and fetching new docker and restarting"
         STATE=`cat ~/wireguard/STATE`
