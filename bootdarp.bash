@@ -169,11 +169,11 @@ do
         exit 0
     else
         if [ $rc -ne 36 ]; then
-            echo "rc=$rc * * * * * * * * * * * *                 E X I T T I N G               * * * * * * * * * * * * * * * * * * *"
+            echo "rc=$rc * * * * * * * * * * * *         uNKNOWN rc        E X I T T I N G               * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
             echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #| tee -a NOIA.log 
             echo "NEWDOCKER">$WGDIR/STATE     #USING SHARED DRIVE TO SIGNAL DOCKER RELOAD OR DIE
-            exit 36
+            exit 0
         else    
             echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS
         fi
