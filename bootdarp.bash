@@ -92,17 +92,18 @@ do
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
 
+    ./updateSW.bash #>/dev/null - we want to start with the newest software
+    rc=$$
     cd $DARPDIR
     export DARPVERSION=`ls Build.*`
     export DOCKERVERSION=`ls Docker\.*`
     export VERSION=`echo "$DOCKERVERSION:$DARPVERSION"`    # DOCKERVERSION comes in as environmental variable
-    echo `date` RUNNING DARP $VERSION    #VERSION should eventually be a HASH over the docker itself, mapped to docker tag
+    echo `date` "RUNNING DARP $VERSION rc=$rc from updateSW.bash"    #VERSION should eventually be a HASH over the docker itself, mapped to docker tag
     env
 
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
     sleep 2
   
-    ./updateSW.bash #>/dev/null - we want to start with the newest software
     cd $DARPDIR
     #export VERSION=`ls Build*`
     echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MYIP = = = = = = = = = = = = "  
