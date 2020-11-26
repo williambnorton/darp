@@ -430,7 +430,9 @@ app.get('/darp.bash', function (req, res) {
     res.setHeader('Content-Type', 'text/javascript');
     res.setHeader("Access-Control-Allow-Origin", "*");
     fs.readFile('darp.bash', function (err, data) {
-        console.log("sending data " + data);
-        res.send(data.toString().replace("__MYGENESISIP__", "" + config.GENESIS));
+        //console.log(`sending data ${data}`);
+        console.log("config.GENESIS=" + config.GENESIS);
+        console.log("indexof MYGENE=" + data.indexOf("__MYGENESISIP__"));
+        res.send(data.toString().replace("__MYGENESISIP__", config.GENESIS));
     });
 });

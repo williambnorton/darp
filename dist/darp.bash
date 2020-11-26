@@ -52,20 +52,20 @@ do
         #
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=__MYGENESISIP__ -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         rc=$?
-        echo `date` "Docker exitted rc=$rc- sleeping 10 seconds and fetching new docker and restarting"
+        echo `date` "$0 Docker exitted rc=$rc- sleeping 10 seconds and fetching new docker and restarting"
         STATE=`cat ~/wireguard/STATE`
-        echo `date` STATE=$STATE
+        echo `date` $0 STATE=$STATE
         case $STATE in
             NEWDOCKER)
-                echo `date` NEWDOCKER  fall through and refetch new docker
+                echo `date` $0 NEWDOCKER  fall through and refetch new docker
                 ;;
             STOP)
-                echo `date` STOP exit and do not restart
+                echo `date` $0 STOP exit and do not restart
                 rm ~/wireguard/STATE     #this will eventually also delete the directory, which should be ~/darp instead of ~/wireguard  wg-quick takes a file as input
                 exit 1
                 ;;
             *)
-                echo `date` not sure  STATE=$STATE
+                echo `date` $0 not sure  STATE=$STATE
                 ;;
         esac
         sleep 10
