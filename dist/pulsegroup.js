@@ -786,13 +786,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             // Docker reload
                             logger_1.logger.error("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
                             console.log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
-                            lib_1.Log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
+                            lib_1.Log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
                             process.exit(0);
                         }
                         // Software reload
                         logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
                         console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
-                        lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
+                        lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         process.exit(36);
                     }
                 });
