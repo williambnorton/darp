@@ -463,7 +463,12 @@ app.get('/darp.bash', function(req, res) {
     fs.readFile('darp.bash', function(err, data){
         //console.log(`sending data ${data}`);
         console.log(`config.GENESIS=${config.GENESIS}`);
-        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );
+        console.log(`data=${data}`);
+        var str=data.toString();
+        str=str.replace(/__MYGENESISIP__/, config.GENESIS );
+        console.log("str="+str);
+        res.send( str );
+//        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );
 
     });
 });
