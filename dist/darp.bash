@@ -4,6 +4,7 @@
 #           2) starts DARP docker
 #       After starting DARP you should be able to see network instrumentation on your http://127.0.0.1:65013/
 #
+echo `date` $0 Starting Distributed Autonomous Routing Protocol
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
