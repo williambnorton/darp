@@ -434,7 +434,16 @@ app.get('/darp.bash', function (req, res) {
         console.log("config.GENESIS=" + config.GENESIS);
         //console.log(`data=${data}`);
         var str = data.toString();
-        str = str.replace(/MYGENESISIP/gi, config.GENESIS);
+        //here we can take options for initial set up - ?mode=auto
+        //option 1 -  use my GENESIS node so private wireguard can be used right away.
+        //str=str.replace(/MYGENESISIP/gi, config.GENESIS );
+        //option 1a - conditionally configure node connected to my GENESIS . Send darp.bash iff (condition goes here) 
+        //option 2 - connect to the ndoe that responds first.
+        //option 3 - get code and config from 1st genesis node on genesislist
+        var genesislist = process.env.GENESISNODELIST || "";
+        var genesisNodes = genesislist.split(",");
+        str = str.replace(/MYGENESISIP/gi, genesisNodes[0]);
+        console.log("genesisNodes[0]=" + genesisNodes[0]);
         console.log("str=" + str);
         res.send(str);
         //        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );

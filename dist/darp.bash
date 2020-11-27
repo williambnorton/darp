@@ -2,8 +2,10 @@
 #       darp.bash - bash script to 
 #           1) installs docker and wireguard if they are not already installed
 #           2) starts DARP docker
-#       After starting DARP you should be able to see network instrumentation on your http://127.0.0.1:65013/
+#           3) starts host liaison script to control wireguard tunnels
 #
+#       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
+#       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
 echo `date` $0 Starting Distributed Autonomous Routing Protocol
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -21,20 +23,20 @@ if [ -r darp.pid ]; then
 fi
 echo $$ > darp.pid
 #install docker and wireguard if not installed already
-docker ps >/dev/null
+docker ps 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
-    echo `date` $0 "DOCKER NOT INSTALLED"
+    echo `date` $0 "DARP INSTALLING docker and wireguard "
     case $MACHINE  in
         Linux) 
             echo `date` making UBUNTU machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
             sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
             ;;
         Mac) 
-           echo `date` making Mac machine DARP Ready by installing  docker and wireguard 
+            echo `date` making Mac machine DARP Ready by installing  docker and wireguard 
             sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
             ;;
         *)
-          echo `date` UNKNOWN machine VM ready to run darp by installing  docker and wireguard
+            echo `date` UNKNOWN machine VM ready to run darp by installing  docker and wireguard
             ;;
     esac
     echo `date` $0 docker should be installed now...
@@ -42,7 +44,7 @@ fi
 
 # forever loop to run darp and auto update docker images
 
-docker ps >/dev/null    #final test to see if installed
+docker ps 2>&1 >/dev/null    #final test to see if installed
 docker_rc=$?
 wg 2>&1 >/dev/null
 wireguard_rc=$?
@@ -58,7 +60,7 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
         #this is not nice - killing all dockers on system - fix this to grep
         docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);
         #
-        #   __MYGENESISIP__   <-- when delivered in index.ts , this is replaced with this node's GENESIS node.
+        #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.
         #
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=MYGENESISIP -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         rc=$?
@@ -67,6 +69,6 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
 
     done
 else
-    echo `date` $0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. 
+    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. "
 fi
 echo `date` $0 DARP EXITTED.

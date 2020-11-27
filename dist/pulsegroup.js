@@ -146,7 +146,7 @@ var Config = /** @class */ (function () {
                 }
             }
             else {
-                console.log("================ pulseGroup(): We have no GENESISNODELIST EXITTING ");
+                console.log("================ pulseGroup(): We have no GENESISNODELIST... EXITTING ");
                 process.exit(86);
             }
         }

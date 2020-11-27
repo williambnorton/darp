@@ -139,7 +139,7 @@ export class Config {
                     this.GENESIS=this.IP;
                 }
             } else {
-                console.log(`================ pulseGroup(): We have no GENESISNODELIST EXITTING `);
+                console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
                 process.exit(86);
             }
         }
