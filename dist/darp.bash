@@ -1,6 +1,9 @@
 #!/bin/bash
-# kill previously running version of darp
-
+#       darp.bash - bash script to 
+#           1) installs docker and wireguard if they are not already installed
+#           2) starts DARP docker
+#       After starting DARP you should be able to see network instrumentation on your http://127.0.0.1:65013/
+#
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -11,9 +14,6 @@ case "${unameOut}" in
 esac
 export MACHINE
 echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
-
-
-
 
 if [ -r darp.pid ]; then
         kill -9 darp.pid
@@ -40,12 +40,19 @@ fi
 
 # forever loop to run darp and auto update docker images
 
-while [ "" = "" ]; 
-do
-    # wgwatch will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
+docker ps >/dev/null    #if installed
+docker_rc=$?
+wg 2>&1 >/dev/null
+wireguard_rc=$?
+if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
+    while [ "" = "" ]; 
+    do
+        # spin off liaison gateway script that ties together host network and docker 
+        # wgwatch.bash (docker will create it in shared wireguard directory)
+        # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
         (sleep 30;~/wireguard/wgwatch.bash) &
 
-        #this is not nice - killing all dockers on system - fix this
+        #this is not nice - killing all dockers on system - fix this to grep
         docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);
         #
         #   __MYGENESISIP__   <-- when delivered in index.ts , this is replaced with this node's GENESIS node.
@@ -65,9 +72,14 @@ do
                 exit 1
                 ;;
             *)
-                echo `date` $0 not sure  STATE=$STATE
+                echo `date` $0 UNKNOWN STATE=$STATE Exitting...
+                sleep 5
+                exit 1
                 ;;
         esac
         sleep 10
 
-done
+    done
+else
+    echo `date` $0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. 
+fi
