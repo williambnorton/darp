@@ -69,6 +69,6 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
 
     done
 else
-    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. "
+    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="+docker_rc+" wireguard_rc="+wireguard_rc
 fi
 echo `date` $0 DARP EXITTED.
