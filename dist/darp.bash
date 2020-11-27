@@ -27,7 +27,7 @@ if [ $? -ne 0 ]; then
     case $MACHINE  in
         Linux) 
             echo `date` making UBUNTU machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
-            sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
+            apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker";
             ;;
         Mac) 
            echo `date` making Mac machine DARP Ready by installing  docker and wireguard 
@@ -49,7 +49,7 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
     while [ "" = "" ]; 
     do
         # spin off liaison gateway script that ties together host network and docker 
-        # wgwatch.bash (docker will create it in shared wireguard directory)
+        # wgwatch.bash (docker will create it in shared ~/wireguard directory)
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
         (sleep 30;~/wireguard/wgwatch.bash) &
 
@@ -78,6 +78,7 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
                 exit 1
                 ;;
         esac
+        echo `date` Sleeping for 10 seconds.
         sleep 10
 
     done
