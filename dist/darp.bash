@@ -64,11 +64,11 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
         #
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=MYGENESISIP -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         rc=$?
-        echo `date` "$0 Docker exitted rc=$rc- sleeping 10 seconds and fetching new docker and restarting"
-        sleep 10
+        echo `date` "$0 Docker exitted with rc=$rc- sleeping 15 seconds and fetching new docker and restarting"
+        sleep 15
 
     done
 else
-    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="+docker_rc+" wireguard_rc="+wireguard_rc
+    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc+" wireguard_rc="$wireguard_rc
 fi
 echo `date` $0 DARP EXITTED.
