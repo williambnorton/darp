@@ -1373,11 +1373,12 @@ receiver.bind(this.config.PORT);
             //
             //
         } else {
+            console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
             if (parseInt(incomingPulse.msgType)==12) {    //PONG response
-                console.log(`12.... incomingPulse.msgType=${incomingPulse.msgType}`);
+                console.log(`INCOMING 12.... incomingPulse.msgType=${incomingPulse.msgType}`);
                 console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse)}`);
             } else {  //default pass up the stack
-                console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
+                console.log(`INCOMING PULSE incomingPulse.msgType=${incomingPulse.msgType}`);
                 this.processIncomingPulse(incomingPulse);
             }
         }
