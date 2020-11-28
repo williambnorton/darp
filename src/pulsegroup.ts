@@ -1337,8 +1337,7 @@ receiver.bind(this.config.PORT);
         if (incomingPulse.msgType=="11") {
             console.log(`incomingPulse=${JSON.stringify(incomingPulse)}`);
             var pong = {
-                pulseTimestamp: pulseTimestamp,
-                outgoingTimestamp: senderTimestamp,
+                outgoingTimestamp: now(),
                 msgType: "12",              //match into mgmt processing layer here
                 version:this.config.VERSION,
                 geo:this.config.GEO,
@@ -1348,12 +1347,11 @@ receiver.bind(this.config.PORT);
                 mint:0,
                 owls:"",  //hee we should store the rtts that we measure from this interogatory for later decision on whether to accept
                 owl:"",    //mYBE CALACULATED RTT FROM INCLUDING TIMESTAMP IN REQUEST
-                lastMsg: "",   //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
+                lastMsg: ""   //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
                 //genesisgebnesisport
                 //genesis public key?
                 //betterPathCount=10
                 //relays min and max vaky=ues show the singws at the moment
-                relayTimestamp: now()
             }
             
 

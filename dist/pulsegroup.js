@@ -1072,8 +1072,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             if (incomingPulse.msgType == "11") {
                 console.log("incomingPulse=" + JSON.stringify(incomingPulse));
                 var pong = {
-                    pulseTimestamp: pulseTimestamp,
-                    outgoingTimestamp: senderTimestamp,
+                    outgoingTimestamp: lib_1.now(),
                     msgType: "12",
                     version: _this.config.VERSION,
                     geo: _this.config.GEO,
@@ -1083,12 +1082,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     mint: 0,
                     owls: "",
                     owl: "",
-                    lastMsg: "",
+                    lastMsg: "" //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
                     //genesisgebnesisport
                     //genesis public key?
                     //betterPathCount=10
                     //relays min and max vaky=ues show the singws at the moment
-                    relayTimestamp: lib_1.now()
                 };
                 // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
                 //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
