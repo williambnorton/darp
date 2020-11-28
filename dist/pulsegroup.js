@@ -1105,7 +1105,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
             }
             else {
-                _this.processIncomingPulse(incomingPulse);
+                if (incomingPulse.msgType == "12") {
+                    console.log("pulsegroup.ts: PONG RESPONSE: " + JSON.stringify(incomingPulse));
+                }
+                else {
+                    _this.processIncomingPulse(incomingPulse);
+                }
             }
             //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         };

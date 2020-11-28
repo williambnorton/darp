@@ -1373,7 +1373,11 @@ receiver.bind(this.config.PORT);
             //
             //
         } else {
-            this.processIncomingPulse(incomingPulse);
+            if (incomingPulse.msgType=="12") {
+                console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse)}`);
+            } else {
+                this.processIncomingPulse(incomingPulse);
+            }
         }
         //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
     };
