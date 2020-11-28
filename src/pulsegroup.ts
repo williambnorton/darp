@@ -1345,8 +1345,8 @@ receiver.bind(this.config.PORT);
                 seq: 0,
                 bootTimestamp:this.config.BOOTTIMESTAMP,
                 mint:0,
-                owls:"",
-                owl:"",
+                owls:"",  //hee we should store the rtts that we measure from this interogatory for later decision on whether to accept
+                owl:"",    //mYBE CALACULATED RTT FROM INCLUDING TIMESTAMP IN REQUEST
                 lastMsg: "",   //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
                 //genesisgebnesisport
                 //genesis public key?
@@ -1366,11 +1366,12 @@ receiver.bind(this.config.PORT);
             const message="http://"+ipaddr+":"+port+"/darp.bash&ps="+JSON.stringify(pong);
             console.log(`Sending PONG to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
-//
-//
-//
-//
-//
+
+            //
+            //
+            //
+            //
+            //
         } else {
             this.processIncomingPulse(incomingPulse);
         }
