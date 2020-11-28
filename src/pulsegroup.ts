@@ -1376,6 +1376,7 @@ receiver.bind(this.config.PORT);
             if (incomingPulse.msgType=="12") {
                 console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse)}`);
             } else {
+                console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
                 this.processIncomingPulse(incomingPulse);
             }
         }

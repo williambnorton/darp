@@ -1109,6 +1109,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     console.log("pulsegroup.ts: PONG RESPONSE: " + JSON.stringify(incomingPulse));
                 }
                 else {
+                    console.log("incomingPulse.msgType=" + incomingPulse.msgType);
                     _this.processIncomingPulse(incomingPulse);
                 }
             }
