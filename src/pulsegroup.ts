@@ -10,6 +10,7 @@ import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
+import e = require("express");
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
@@ -387,7 +388,7 @@ receiver.on("message", (pulseBuffer, rinfo) => {
     logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
     // prepend our timeStamp
     const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-    this.recvPulses(incomingMessage);
+    this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
 });
 
 receiver.bind(this.config.PORT);
@@ -1306,7 +1307,10 @@ receiver.bind(this.config.PORT);
     //
     //  recvPulses
     //
-    recvPulses = (incomingMessage: string) => {
+     dgram = require("dgram");
+
+     udp = this.dgram.createSocket("udp4");    
+    recvPulses = (incomingMessage: string, ipaddr: string, port: string) => {
         // try {
             // const incomingPulse = await parsePulseMessage(incomingMessage)
             var ary = incomingMessage.split(",");
@@ -1315,7 +1319,7 @@ receiver.bind(this.config.PORT);
         const OWL = pulseTimestamp - senderTimestamp;
         var owlsStart = nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
         var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-        const incomingPulse: IncomingPulse = {
+        var incomingPulse: IncomingPulse = {
             pulseTimestamp: pulseTimestamp,
             outgoingTimestamp: senderTimestamp,
             msgType: ary[2],
@@ -1329,8 +1333,15 @@ receiver.bind(this.config.PORT);
             owl: OWL,
             lastMsg: incomingMessage,
         };
+        //  Mgmt layer
+        if (incomingPulse.msgType=="11") {
+            incomingPulse.msgType="12";   // to avoid ping pong infinite loop
+            console.log(`Sending PONG to ${ipaddr}:${port}`);
+            this.udp.send("http://"+ipaddr+":"+port+"/darp.bash");
+        } else {
+            this.processIncomingPulse(incomingPulse);
+        }
         //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
-        this.processIncomingPulse(incomingPulse);
     };
 
     // Store one-way latencies to file or graphing & history

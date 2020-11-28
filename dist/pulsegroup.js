@@ -1043,7 +1043,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //
         //  recvPulses
         //
-        this.recvPulses = function (incomingMessage) {
+        this.dgram = require("dgram");
+        this.udp = this.dgram.createSocket("udp4");
+        this.recvPulses = function (incomingMessage, ipaddr, port) {
             // try {
             // const incomingPulse = await parsePulseMessage(incomingMessage)
             var ary = incomingMessage.split(",");
@@ -1066,8 +1068,16 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 owl: OWL,
                 lastMsg: incomingMessage
             };
+            //  Mgmt layer
+            if (incomingPulse.msgType == "11") {
+                incomingPulse.msgType = "12"; // to avoid ping pong infinite loop
+                console.log("Sending PONG to " + ipaddr + ":" + port);
+                _this.udp.send("http://" + ipaddr + ":" + port + "/darp.bash");
+            }
+            else {
+                _this.processIncomingPulse(incomingPulse);
+            }
             //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
-            _this.processIncomingPulse(incomingPulse);
         };
         // Store one-way latencies to file or graphing & history
         //
@@ -1288,7 +1298,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             logger_1.logger.info("Received " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
             // prepend our timeStamp
             var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-            _this.recvPulses(incomingMessage);
+            _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
         });
         receiver.bind(this.config.PORT);
     }
