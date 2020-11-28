@@ -1353,6 +1353,7 @@ receiver.bind(this.config.PORT);
                 //betterPathCount=10
                 //relays min and max vaky=ues show the singws at the moment
             }
+            var pongMsgEncoded=`${now()},12,${this.config.VERSION},stuff,here`
             
 
             // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
@@ -1362,7 +1363,7 @@ receiver.bind(this.config.PORT);
             //
             //
 
-            const message="http://"+ipaddr+":"+65013+"/darp.bash?ip="+ipaddr+"&port=65013&ps="+JSON.stringify(pong);
+            const message="http://"+ipaddr+":"+65013+"/darp.bash?ip="+ipaddr+"&port=65013&ps="+pongMsgEncoded;
             console.log(`Sending PONG to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
 
