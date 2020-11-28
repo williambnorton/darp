@@ -48,7 +48,7 @@ docker ps 2>&1 >/dev/null    #final test to see if installed
 docker_rc=$?
 wg 2>&1 >/dev/null
 wireguard_rc=$?
-if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
+if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     echo `date` $0 DARP Starting 
     while [ `cat ~/wireguard/STATE` != "STOP" ]; 
     do
@@ -69,6 +69,6 @@ if [ $wireguard_rc -eq 1 -a $docker_rc -eq 0 ]; then
 
     done
 else
-    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc+" wireguard_rc="$wireguard_rc
+    echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
 fi
 echo `date` $0 DARP EXITTED.
