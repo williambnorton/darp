@@ -1363,7 +1363,7 @@ receiver.bind(this.config.PORT);
             //
             //
 
-            const message="http://"+ipaddr+":"+port+"/darp.bash&ps="+JSON.stringify(pong);
+            const message="http://"+ipaddr+":"+65013+"/darp.bash?ip="+ipaddr+"&port=65013&ps="+JSON.stringify(pong);
             console.log(`Sending PONG to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
 
