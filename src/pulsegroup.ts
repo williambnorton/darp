@@ -1337,7 +1337,7 @@ receiver.bind(this.config.PORT);
         if (incomingPulse.msgType=="11") {
             incomingPulse.msgType="12";   // to avoid ping pong infinite loop
             console.log(`Sending PONG to ${ipaddr}:${port}`);
-            this.udp.send("http://"+ipaddr+":"+port+"/darp.bash");
+            this.udp.send("http://"+ipaddr+":"+port+"/darp.bash",port,ipaddr);
         } else {
             this.processIncomingPulse(incomingPulse);
         }
