@@ -1105,11 +1105,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
             }
             else {
-                console.log("NOT 11.... incomingPulse.msgType=" + incomingPulse.msgType);
-                if (parseInt(incomingPulse.msgType) == 12) {
+                if (parseInt(incomingPulse.msgType) == 12) { //PONG response
+                    console.log("12.... incomingPulse.msgType=" + incomingPulse.msgType);
                     console.log("pulsegroup.ts: PONG RESPONSE: " + JSON.stringify(incomingPulse));
                 }
-                else {
+                else { //default pass up the stack
                     console.log("incomingPulse.msgType=" + incomingPulse.msgType);
                     _this.processIncomingPulse(incomingPulse);
                 }
