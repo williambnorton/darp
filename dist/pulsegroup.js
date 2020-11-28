@@ -1071,6 +1071,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //  Mgmt layer
             if (incomingPulse.msgType == "11") {
                 console.log("incomingPulse=" + JSON.stringify(incomingPulse));
+                console.log("process.env=" + process.env);
                 var pong = {
                     outgoingTimestamp: lib_1.now(),
                     msgType: "12",
