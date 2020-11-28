@@ -1071,8 +1071,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //  Mgmt layer
             if (incomingPulse.msgType == "11") {
                 incomingPulse.msgType = "12"; // to avoid ping pong infinite loop
-                console.log("Sending PONG to " + ipaddr + ":65013");
-                _this.udp.send("http://" + ipaddr + ":" + port + "/darp.bash", 65013, ipaddr);
+                var message = "http://" + ipaddr + ":" + port + "/darp.bash&ps=" + JSON.stringify(incomingPulse);
+                console.log("Sending PONG to " + ipaddr + ":65013 message=" + message);
+                _this.udp.send(message, 65013, ipaddr);
             }
             else {
                 _this.processIncomingPulse(incomingPulse);
