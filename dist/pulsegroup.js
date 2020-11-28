@@ -1088,14 +1088,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //betterPathCount=10
                     //relays min and max vaky=ues show the singws at the moment
                 };
-                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + ",stuff,here";
+                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + ",GENESISPUBLICKEY,as,proof,ports,ok,and,stuff,here";
                 // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
                 //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
                 // 
                 //
                 //
                 //
-                var message = "http://" + ipaddr + ":" + 65013 + "/darp.bash?ip=" + ipaddr + "&port=65013&ps=" + pongMsgEncoded;
+                var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&ps=" + pongMsgEncoded;
                 console.log("Sending PONG to " + ipaddr + ":65013 message=" + message);
                 _this.udp.send(message, 65013, ipaddr);
                 //
