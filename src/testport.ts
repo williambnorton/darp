@@ -21,6 +21,7 @@ var message="11,11,11,11,11,11,11,11,11,11,11"
        if (err) throw err;
        console.log('UDP message sent to ' + GENESISIP +':'+ GENESISPORT);
    });
+   setTimeout(DARPping,1000);
 }
 DARPping();
 
