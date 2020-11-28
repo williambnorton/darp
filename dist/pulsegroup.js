@@ -1070,10 +1070,39 @@ var AugmentedPulseGroup = /** @class */ (function () {
             };
             //  Mgmt layer
             if (incomingPulse.msgType == "11") {
-                incomingPulse.msgType = "12"; // to avoid ping pong infinite loop
-                var message = "http://" + ipaddr + ":" + port + "/darp.bash&ps=" + JSON.stringify(incomingPulse);
+                var pong = {
+                    pulseTimestamp: pulseTimestamp,
+                    outgoingTimestamp: senderTimestamp,
+                    msgType: "12",
+                    version: _this.config.VERSION,
+                    geo: _this.config.GEO,
+                    group: _this.config.GEO + '.1',
+                    seq: 0,
+                    bootTimestamp: _this.config.BOOTTIMESTAMP,
+                    mint: 0,
+                    owls: "",
+                    owl: "",
+                    lastMsg: "",
+                    //genesisgebnesisport
+                    //genesis public key?
+                    //betterPathCount=10
+                    //relays min and max vaky=ues show the singws at the moment
+                    relayTimestamp: lib_1.now()
+                };
+                // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
+                //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
+                // 
+                //
+                //
+                //
+                var message = "http://" + ipaddr + ":" + port + "/darp.bash&ps=" + JSON.stringify(pong);
                 console.log("Sending PONG to " + ipaddr + ":65013 message=" + message);
                 _this.udp.send(message, 65013, ipaddr);
+                //
+                //
+                //
+                //
+                //
             }
             else {
                 _this.processIncomingPulse(incomingPulse);
