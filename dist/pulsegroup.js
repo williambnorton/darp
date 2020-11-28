@@ -1070,6 +1070,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             };
             //  Mgmt layer
             if (incomingPulse.msgType == "11") {
+                console.log("incomingPulse=" + JSON.stringify(incomingPulse));
                 var pong = {
                     pulseTimestamp: pulseTimestamp,
                     outgoingTimestamp: senderTimestamp,

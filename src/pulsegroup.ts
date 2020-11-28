@@ -1335,6 +1335,7 @@ receiver.bind(this.config.PORT);
         };
         //  Mgmt layer
         if (incomingPulse.msgType=="11") {
+            console.log(`incomingPulse=${JSON.stringify(incomingPulse)}`);
             var pong = {
                 pulseTimestamp: pulseTimestamp,
                 outgoingTimestamp: senderTimestamp,
