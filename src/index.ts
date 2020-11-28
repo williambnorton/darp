@@ -478,6 +478,8 @@ app.get('/darp.bash', function(req, res) {
         //option 3 - get code and config from 1st genesis node on genesislist
         var genesislist=process.env.GENESISNODELIST||"";
         var genesisNodes=genesislist.split(",");
+
+        
         str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
         console.log(`genesisNodes[0]=${genesisNodes[0]}`);
 

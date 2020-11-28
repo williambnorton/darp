@@ -1336,8 +1336,8 @@ receiver.bind(this.config.PORT);
         //  Mgmt layer
         if (incomingPulse.msgType=="11") {
             incomingPulse.msgType="12";   // to avoid ping pong infinite loop
-            console.log(`Sending PONG to ${ipaddr}:${port}`);
-            this.udp.send("http://"+ipaddr+":"+port+"/darp.bash",port,ipaddr);
+            console.log(`Sending PONG to ${ipaddr}:65013`);
+            this.udp.send("http://"+ipaddr+":"+port+"/darp.bash",65013,ipaddr);
         } else {
             this.processIncomingPulse(incomingPulse);
         }

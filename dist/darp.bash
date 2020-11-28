@@ -6,7 +6,7 @@
 #
 #       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
-echo `date` $0 Starting Distributed Autonomous Routing Protocol
+echo `date` $0 Starting Distributed Autonomous Routing Protocol 00
 SUDO=sudo
 unameOut="$(uname -s)"
 case "${unameOut}" in
@@ -45,9 +45,14 @@ fi
 
 # forever loop to run darp and auto update docker images
 
+#
+#   Would be cool to do a port test here - listen for an echo, don't continue until a port 65013 datagram arrives on our puboiched port
+#
+
+
 docker ps 2>&1 >/dev/null    #final test to see if installed
 docker_rc=$?
-${SUDO} wg 2>&1 >/dev/null
+#${SUDO} wg 2>&1 >/dev/null   #this will prevent running if wireguard not installed
 wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     echo `date` $0 DARP Starting 
