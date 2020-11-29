@@ -1070,7 +1070,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             };
             //  Mgmt layer
             if (incomingPulse.msgType == "11") {
-                console.log("incomingPulse DARP PING (testport) request=" + JSON.stringify(incomingPulse));
+                console.log("incomingPulse DARP PING (testport)"); // request=${JSON.stringify(incomingPulse)}`);
                 //console.log(`process.env=${JSON.stringify(process.env)}`);
                 var pong = {
                     outgoingTimestamp: lib_1.now(),
@@ -1090,7 +1090,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //relays min and max vaky=ues show the singws at the moment
                 };
                 console.log("" + JSON.stringify(_this.pulses));
-                //JOIN MY GENESIS NODE RESPONSE
+                //JOIN MY GENESIS NODE DARP RESPONSE (12)
                 var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.mintTable[1].ipaddr + "," + _this.mintTable[1].port + "," + _this.mintTable[1].publickey + "," + _this.mintTable[1].geo + "," + (_this.mintTable[1].geo + ".1") + "," + _this.nodeCount + "," + _this.pulses[_this.mintTable[1].geo + ":" + _this.mintTable[1].geo + ".1"].owls + ",Join,my,Genesis,Group";
                 //JOIN MY GROUP RESPONSE
                 //            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
@@ -1102,7 +1102,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
                 //
                 //
-                var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&ps=" + pongMsgEncoded;
+                var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&pong=" + pongMsgEncoded;
                 console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
                 _this.udp.send(message, 65013, ipaddr);
                 //

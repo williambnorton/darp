@@ -1335,7 +1335,8 @@ receiver.bind(this.config.PORT);
         };
         //  Mgmt layer
         if (incomingPulse.msgType=="11") {
-            console.log(`incomingPulse DARP PING (testport) request=${JSON.stringify(incomingPulse)}`);
+            console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
+
             //console.log(`process.env=${JSON.stringify(process.env)}`);
             var pong = {
                 outgoingTimestamp: now(),
@@ -1356,7 +1357,7 @@ receiver.bind(this.config.PORT);
             }
             console.log(`${JSON.stringify(this.pulses)}`);
 
-            //JOIN MY GENESIS NODE RESPONSE
+            //JOIN MY GENESIS NODE DARP RESPONSE (12)
             var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[1].geo+":"+this.mintTable[1].geo+".1"].owls},Join,my,Genesis,Group`
             
             //JOIN MY GROUP RESPONSE
@@ -1375,7 +1376,7 @@ receiver.bind(this.config.PORT);
             //
             //
 
-            const message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash&ps="+pongMsgEncoded;
+            const message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash&pong="+pongMsgEncoded;
             console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
 
