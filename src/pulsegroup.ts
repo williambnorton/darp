@@ -1336,7 +1336,7 @@ receiver.bind(this.config.PORT);
         //  Mgmt layer
         if (incomingPulse.msgType=="11") {
             console.log(`incomingPulse=${JSON.stringify(incomingPulse)}`);
-            console.log(`process.env=${process.env}`);
+            console.log(`process.env=${JSON.stringify(process.env)}`);
             var pong = {
                 outgoingTimestamp: now(),
                 msgType: "12",              //match into mgmt processing layer here

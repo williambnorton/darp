@@ -48,7 +48,12 @@ fi
 #
 #   Would be cool to do a port test here - listen for an echo, don't continue until a port 65013 datagram arrives on our puboiched port
 #
-
+MYIP=`curl ifconfig.io`
+MYPORT=65013
+echo "TESTING PORTS $MYGENESISIP : $GENESISPORT <==> $MYIP : $MYPORT"
+node portcheck.ts
+#send MYIP in port test 
+#if we get an incoming message on MYPORT
 
 docker ps 2>&1 >/dev/null    #final test to see if installed
 docker_rc=$?
