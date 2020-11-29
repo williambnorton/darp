@@ -26,8 +26,10 @@ client.on('listening', function () {
     console.log('UDP Server listening on ' + address.address + ":" + address.port);
 });
 
+var startTimestamp=0;
 client.on('message', function (message, remote) {
-    console.log(remote.address + ':' + remote.port +' - ' + message);
+    var timeNow=new Date(); 
+    console.log(remote.address + ':' + remote.port +' - ' + (timeNow.getTime()-startTimestamp) +" ms"+ message);
     console.log(`PORTS WORK`);
     //this proves the port works both directions
     //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
@@ -35,19 +37,19 @@ client.on('message', function (message, remote) {
 });
 
 function finish() {
-    
+    process.exit(0);
 }
-
 function DARPping() {
     var timeNow=new Date();
     var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,11,couldSendHost"
     if (--numberPings==0) {
        console.log(`FAILED`);
-       process.exit(1);
+       finish()
     }
     if (done) {
-        process.exit(0);
+        finish();
     }
+    startTimestamp=timeNow.getTime();
     for (var i=2;i<myArgs.length; i=i+2) {
         let IP=myArgs[i];
         let Port=myArgs[i+1];
