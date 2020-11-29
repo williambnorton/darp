@@ -1090,7 +1090,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //relays min and max vaky=ues show the singws at the moment
                 };
                 console.log("" + JSON.stringify(_this.pulses));
-                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.mintTable[1].ipaddr + "," + _this.mintTable[1].port + "," + _this.mintTable[1].publickey + "," + _this.mintTable[1].geo + "," + (_this.mintTable[1].geo + ".1") + "," + _this.pulses[_this.mintTable[1].geo + ":" + _this.mintTable[1].geo + ".1"].owls + ",stuff,here";
+                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.mintTable[1].ipaddr + "," + _this.mintTable[1].port + "," + _this.mintTable[1].publickey + "," + _this.mintTable[1].geo + "," + (_this.mintTable[1].geo + ".1") + "," + _this.nodeCount + "," + _this.pulses[_this.mintTable[1].geo + ":" + _this.mintTable[1].geo + ".1"].owls + ",stuff,here";
                 // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
                 //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
                 // 
