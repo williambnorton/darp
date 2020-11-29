@@ -26,7 +26,7 @@ MAXCYCLES=1000 # of cycles before stopping
 GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`
 
-
+node scripts/testport `curl http://ifconfig.io` 65013 `cat awsgenesis.config genesis.config operators.config`
 
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
 
