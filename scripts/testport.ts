@@ -18,7 +18,8 @@ const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=2;
 var first={};
-console.log("GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+//console.log("GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+console.log(" MYIP="+MYIP+" MYPORT="+MYPORT );
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -35,7 +36,7 @@ client.on('message', function (message, remote) {
     var timeNow=new Date(); 
     var inmsg=message.toString();
     
-    console.log(remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
+    //console.log(remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
     var response={ srcIP:remote.address, latency:(timeNow.getTime()-startTimestamp), url:inmsg };
     if (first=={}) 
         first=response;
@@ -47,8 +48,10 @@ client.on('message', function (message, remote) {
 
 function finish() {
     //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
-    console.log(`closest=${JSON.stringify(responses[ 0 ],null,2)}`);  //pick one in the middle
-    console.log(`auto=${JSON.stringify(responses[ Math.floor(responses.length/2) ],null,2)}`);  //pick one in the middle
+    var selectURL=responses.pop();
+    console.log(`${selectURL.url}`);  //pick one in the middle
+    console.log(`${JSON.stringify(selectURL,null,2)}`);  //pick one in the middle
+    //console.log(`auto=${JSON.stringify(responses[ Math.floor(responses.length/2) ].url,null,2)}`);  //pick one in the middle
     process.exit(responses.length);
 }
 
@@ -56,19 +59,18 @@ function DARPping() {
     var timeNow=new Date();
     var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,11,couldSendHost,could,send,MYIP,MYPORT,MYPUBLICKEY,,,"
     if (--numberPings==0) {
-       console.log(`FAILED`);
        finish()
     }
     if (done) {
         finish();
     }
     startTimestamp=timeNow.getTime();
-    for (var i=2;i<myArgs.length; i=i+2) {
+    for (var i=2;i<myArgs.length; i=i+1) {
         let IP=myArgs[i];
-        let Port=myArgs[i+1];
+        let Port=65013;
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
            if (err) throw err;
-            console.log('UDP message sent to ' + IP +':'+ Port);
+            //console.log('UDP message sent to ' + IP +':'+ Port);
         });
     }
    setTimeout(DARPping,1000);
