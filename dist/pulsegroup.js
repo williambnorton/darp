@@ -1089,7 +1089,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //betterPathCount=10
                     //relays min and max vaky=ues show the singws at the moment
                 };
-                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + ",GENESISPUBLICKEY,as,proof,ports,ok,and,stuff,here";
+                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.mintTable[1].ipaddr + "," + _this.mintTable[1].port + "," + _this.mintTable[1].publickey + "," + _this.mintTable[1].geo + "," + (_this.mintTable[1].geo + ".1") + ",ok,and,stuff,here";
                 // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
                 //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
                 // 
