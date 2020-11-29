@@ -1097,7 +1097,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
                 //
                 var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&ps=" + pongMsgEncoded;
-                console.log("Sending PONG to " + ipaddr + ":65013 message=" + message);
+                console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
                 _this.udp.send(message, 65013, ipaddr);
                 //
                 //
@@ -1108,11 +1108,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
             else {
                 console.log("incomingPulse.msgType=" + incomingPulse.msgType);
                 if (parseInt(incomingPulse.msgType) == 12) { //PONG response
-                    console.log("INCOMING 12.... incomingPulse.msgType=" + incomingPulse.msgType);
+                    console.log("INCOMING DARP PONG (12).... incomingPulse.msgType=" + incomingPulse.msgType);
                     console.log("pulsegroup.ts: PONG RESPONSE: " + JSON.stringify(incomingPulse));
                 }
                 else { //default pass up the stack
-                    console.log("INCOMING PULSE incomingPulse.msgType=" + incomingPulse.msgType);
+                    //console.log(`INCOMING PULSE incomingPulse.msgType=${incomingPulse.msgType}`);
                     _this.processIncomingPulse(incomingPulse);
                 }
             }
