@@ -30,9 +30,18 @@ client.on('message', function (message, remote) {
     //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
     done = true;
 });
+function finish() {
+}
 function DARPping() {
     var timeNow = new Date();
     var message = timeNow.getTime() + ",11,?,PUBLICKEY,11,11,11,11,11,11,couldSendHost";
+    if (--numberPings == 0) {
+        console.log("FAILED");
+        process.exit(1);
+    }
+    if (done) {
+        process.exit(0);
+    }
     var _loop_1 = function () {
         var IP = myArgs[i];
         var Port = myArgs[i + 1];
@@ -45,14 +54,7 @@ function DARPping() {
     for (var i = 2; i < myArgs.length; i = i + 2) {
         _loop_1();
     }
-    if (--numberPings == 0) {
-        console.log("FAILED");
-        process.exit(1);
-    }
-    if (done)
-        process.exit(0);
-    else
-        setTimeout(DARPping, 1000);
+    setTimeout(DARPping, 1000);
 }
 client.bind(MYPORT); //server listening 0.0.0.0:65013
 DARPping();

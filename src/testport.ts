@@ -34,10 +34,20 @@ client.on('message', function (message, remote) {
     done=true;
 });
 
+function finish() {
+    
+}
+
 function DARPping() {
     var timeNow=new Date();
     var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,11,couldSendHost"
- 
+    if (--numberPings==0) {
+       console.log(`FAILED`);
+       process.exit(1);
+    }
+    if (done) {
+        process.exit(0);
+    }
     for (var i=2;i<myArgs.length; i=i+2) {
         let IP=myArgs[i];
         let Port=myArgs[i+1];
@@ -46,12 +56,7 @@ function DARPping() {
             console.log('UDP message sent to ' + IP +':'+ Port);
         });
     }
-   if (--numberPings==0) {
-        console.log(`FAILED`);
-      process.exit(1);
-   }
-   if (done) process.exit(0);
-   else setTimeout(DARPping,1000);
+   setTimeout(DARPping,1000);
 }
 client.bind(MYPORT);  //server listening 0.0.0.0:65013
 
