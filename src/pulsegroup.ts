@@ -1354,7 +1354,7 @@ receiver.bind(this.config.PORT);
                 //betterPathCount=10
                 //relays min and max vaky=ues show the singws at the moment
             }
-            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},ok,and,stuff,here`
+            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.mintTable.length},and,stuff,here`
             
 
             // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
