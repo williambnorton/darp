@@ -1374,7 +1374,7 @@ receiver.bind(this.config.PORT);
             //
             //
         } else {
-            console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
+            //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
             if (parseInt(incomingPulse.msgType)==12) {    //PONG response
                 console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
                 console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse)}`);
