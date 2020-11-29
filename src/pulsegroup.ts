@@ -1355,7 +1355,7 @@ receiver.bind(this.config.PORT);
                 //relays min and max vaky=ues show the singws at the moment
             }
             console.log(`${JSON.stringify(this.pulses)}`);
-            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.pulses[this.mintTable[1].geo].owls},stuff,here`
+            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.pulses[this.mintTable[1].geo+":"+this.mintTable[1].geo+".1"].owls},stuff,here`
             
 
             // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
@@ -1378,7 +1378,7 @@ receiver.bind(this.config.PORT);
             //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
             if (parseInt(incomingPulse.msgType)==12) {    //PONG response
                 console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
-                console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse)}`);
+                console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
             } else {  //default pass up the stack
                 //console.log(`INCOMING PULSE incomingPulse.msgType=${incomingPulse.msgType}`);
                 this.processIncomingPulse(incomingPulse);
