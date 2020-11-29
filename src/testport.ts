@@ -43,7 +43,7 @@ function DARPping() {
         let Port=myArgs[i+1];
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
            if (err) throw err;
-            console.log('UDP message sent to ' + IP +':'+ port);
+            console.log('UDP message sent to ' + IP +':'+ Port);
         });
     }
    if (--numberPings==0) {

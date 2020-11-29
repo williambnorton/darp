@@ -39,7 +39,7 @@ function DARPping() {
         client.send(message, 0, message.length, Port, IP, function (err, bytes) {
             if (err)
                 throw err;
-            console.log('UDP message sent to ' + IP + ':' + port);
+            console.log('UDP message sent to ' + IP + ':' + Port);
         });
     };
     for (var i = 2; i < myArgs.length; i = i + 2) {
