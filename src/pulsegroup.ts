@@ -1335,8 +1335,8 @@ receiver.bind(this.config.PORT);
         };
         //  Mgmt layer
         if (incomingPulse.msgType=="11") {
-            console.log(`incomingPulse=${JSON.stringify(incomingPulse)}`);
-            console.log(`process.env=${JSON.stringify(process.env)}`);
+            console.log(`incomingPulse DARP PING (testport) request=${JSON.stringify(incomingPulse)}`);
+            //console.log(`process.env=${JSON.stringify(process.env)}`);
             var pong = {
                 outgoingTimestamp: now(),
                 msgType: "12",              //match into mgmt processing layer here
@@ -1360,7 +1360,12 @@ receiver.bind(this.config.PORT);
             var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[1].geo+":"+this.mintTable[1].geo+".1"].owls},Join,my,Genesis,Group`
             
             //JOIN MY GROUP RESPONSE
-            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
+//            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
+
+
+           //JOIN Random Genesis Node = "auto"   -- here pick a random genesis node and port
+//           var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
+
 
 
             // could send back things to make me attracive - the best path count as proxy for gold rush, node count 

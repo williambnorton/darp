@@ -15,6 +15,7 @@ var MYPORT = myArgs[1];
 var GENESISIP = myArgs[2];
 var GENESISPORT = myArgs[3];
 var numberPings = 3;
+var URL = "";
 console.log("GENESISIP=" + GENESISIP + " GENESISPORT=" + GENESISPORT + " MYIP=" + MYIP + " MYPORT=" + MYPORT);
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -26,13 +27,14 @@ client.on('listening', function () {
 var startTimestamp = 0;
 client.on('message', function (message, remote) {
     var timeNow = new Date();
-    console.log(remote.address + ':' + remote.port + ' - ' + (timeNow.getTime() - startTimestamp) + " ms" + message);
-    console.log("PORTS WORK");
+    console.log(remote.address + ':' + remote.port + ' - ' + (timeNow.getTime() - startTimestamp) + " ms " + message);
+    URL = message;
     //this proves the port works both directions
     //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
     done = true;
 });
 function finish() {
+    console.log("First to respond: URL=" + URL);
     process.exit(0);
 }
 function DARPping() {
