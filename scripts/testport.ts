@@ -71,7 +71,7 @@ function DARPping() {
     for (var i=2;i<myArgs.length; i=i+1) {
         let IP=myArgs[i];
         let Port=65013;
-        if (IP!=MYIP) {
+        if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
             //console.log('UDP message sent to ' + IP +':'+ Port);
@@ -80,7 +80,7 @@ function DARPping() {
     }
    setTimeout(DARPping,1000);
 }
-console.log(`bind...`);
+console.log(`bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
 client.bind(MYPORT);  //server listening 0.0.0.0:65013
 console.log(`bind done`);
 
