@@ -1010,9 +1010,12 @@ receiver.bind(this.config.PORT);
             res.on('error', (error) => {
                 logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
                 console.log(`checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE`);
-                Log(`checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE`);
-                process.exit(36);
-                // Error handling here never triggered TODO
+                Log(`checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE WITH SW`);
+                //there needs to be a way for old Genesis nodes that get a new Internet IP 
+                //don't result in forever trying to get updates from an IP that doesn't exist anymore
+   
+                //process.exit(36);
+                // 
             });
 
             res.on("end", () => {

@@ -780,9 +780,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 res.on('error', function (error) {
                     logger_1.logger.info("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
                     console.log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
-                    lib_1.Log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE");
-                    process.exit(36);
-                    // Error handling here never triggered TODO
+                    lib_1.Log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE WITH SW");
+                    //there needs to be a way for old Genesis nodes that get a new Internet IP 
+                    //don't result in forever trying to get updates from an IP that doesn't exist anymore
+                    //process.exit(36);
+                    // 
                 });
                 res.on("end", function () {
                     var genesisVersion = JSON.parse(body);
