@@ -75,7 +75,9 @@ function DARPping() {
     }
    setTimeout(DARPping,1000);
 }
+console.log(`bind...`);
 client.bind(MYPORT);  //server listening 0.0.0.0:65013
+console.log(`bind done`);
 
 DARPping();
 

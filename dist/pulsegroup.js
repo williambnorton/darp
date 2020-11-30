@@ -755,11 +755,20 @@ var AugmentedPulseGroup = /** @class */ (function () {
             setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
         };
         this.checkSWversion = function () {
-            if (_this.groupOwner == _this.config.GEO) {
-                return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
-            }
             var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
                 "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
+            if (_this.groupOwner == _this.config.GEO) {
+                //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
+                var firstGenesisNode = process.env.GENESISNODELIST;
+                if (typeof firstGenesisNode == "undefined") {
+                    console.log("no GENESISNODELIST environmental variable - not doing software check ffrom this genesis node ");
+                    return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
+                }
+                firstGenesisNode = firstGenesisNode.split(",")[0];
+                url = encodeURI("http://" + firstGenesisNode + ":" + 65013 + "/version?ts=" + lib_1.now() +
+                    "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
+            }
+            console.log("checkSWversion url=" + url);
             //console.log(`checkSWversion()`);
             http.get(url, function (res) {
                 res.setEncoding("utf8");

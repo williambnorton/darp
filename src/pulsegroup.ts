@@ -981,12 +981,22 @@ receiver.bind(this.config.PORT);
     }
 
     checkSWversion = () => {
-        if (this.groupOwner == this.config.GEO) {
-            return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
-        }
-
-        const url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
+        var url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
+
+        if (this.groupOwner == this.config.GEO) { 
+            //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
+            var firstGenesisNode=process.env.GENESISNODELIST;
+            if (typeof firstGenesisNode == "undefined" ) {
+                console.log(`no GENESISNODELIST environmental variable - not doing software check ffrom this genesis node `);                
+                return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
+            }
+            firstGenesisNode=firstGenesisNode.split(",")[0];
+            url = encodeURI("http://" + firstGenesisNode + ":" + 65013 + "/version?ts=" + now() +
+                              "&x=" + (now() % 2000)); //add garbage to avoid caches
+        }
+        console.log(`checkSWversion url=${url}`);
+
         //console.log(`checkSWversion()`);
         http.get(url, (res) => {
             res.setEncoding("utf8");
