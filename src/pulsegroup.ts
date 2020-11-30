@@ -988,9 +988,10 @@ receiver.bind(this.config.PORT);
             //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
             var firstGenesisNode=process.env.GENESISNODELIST;
             if (typeof firstGenesisNode == "undefined" ) {
-                console.log(`no GENESISNODELIST environmental variable - not doing software check ffrom this genesis node `);                
+                console.log(`no GENESISNODELIST environmental variable - not doing software check from this genesis node `);                
                 return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
             }
+            console.log(`GENESIS NODE: CHecking first Genesis node for `);
             firstGenesisNode=firstGenesisNode.split(",")[0];
             url = encodeURI("http://" + firstGenesisNode + ":" + 65013 + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
