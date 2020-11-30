@@ -805,6 +805,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         process.exit(36);
                     }
+                    else {
+                        console.log(lib_1.ts() + "Software running is up-to-date");
+                    }
                 });
             }).on("error", function () {
                 console.log("checkSW(): fetching version failed - genesis node out of reach - exitting");
