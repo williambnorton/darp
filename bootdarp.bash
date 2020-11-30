@@ -26,7 +26,12 @@ MAXCYCLES=1000 # of cycles before stopping
 GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
 
-node scripts/testport.ts `curl http://ifconfig.io` 65013 `cat awsgenesis.config genesis.config operators.config` 
+#MAY NOT NEED TO DO THIS ANYMORE - done in code
+export MYIP=`curl ifconfig.io`
+
+echo `date` Starting PORT TEST
+node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` 
+echo `date` DONE PORT TEST
 
 
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
@@ -53,12 +58,7 @@ export WGDIR=/etc/wireguard
 export PORT
 echo PORT=$PORT
 
-#MAY NOT NEED TO DO THIS ANYMORE - done in code
-MYIP=`curl ifconfig.io`
-#MYIP=`curl https://ip.noia.network/|sed '1,$s/\"//g'`  #NOIA has extra "surrounding"
-echo `date` "MYIP fetch rc=$? MYIP=$MYIP"
-export MYIP=$MYIP
-echo `date` MYIP=$MYIP     #MAY NOT NEED TO DO THIS ANYMORE - done in code
+
 
 
 
