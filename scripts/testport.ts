@@ -49,7 +49,7 @@ client.on('message', function (message, remote) {
 function finish() {
     //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
     for (var g in responses) {
-        console.log(`GenesisNode:${responses[g].srcIP}:{responses[g].latency}:${responses[g].url}`);
+        console.log(`GenesisNode:${responses[g].srcIP}:${responses[g].latency}:${responses[g].url}`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
