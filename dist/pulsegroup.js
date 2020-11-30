@@ -891,8 +891,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         if (!found) {
                             logger_1.logger.info("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
                             console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
-                            if (_this.mintTable[myPulseEntry.mint])
-                                _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
+                            //if (this.mintTable[myPulseEntry.mint])
+                            _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
                             return;
                         }
                     }
