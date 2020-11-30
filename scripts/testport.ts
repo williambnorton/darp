@@ -36,7 +36,7 @@ client.on('message', function (message, remote) {
     var timeNow=new Date(); 
     var inmsg=message.toString();
     
-    //console.log(remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
+    console.log(remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
     var response={ srcIP:remote.address, latency:(timeNow.getTime()-startTimestamp), url:inmsg };
     if (first=={}) 
         first=response;
@@ -48,9 +48,12 @@ client.on('message', function (message, remote) {
 
 function finish() {
     //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
-    var selectURL=responses.pop();
-    console.log(`${selectURL.url}`);  //pick one in the middle
-    console.log(`${JSON.stringify(selectURL,null,2)}`);  //pick one in the middle
+    for (var g in responses) {
+        console.log(`${responses[g].latency}:${responses[g].url}`);
+    }
+    //var selectURL=responses.pop();
+    //console.log(`${selectURL.url}`);  //pick one in the middle
+    //console.log(`${JSON.stringify(selectURL,null,2)}`);  //pick one in the middle
     //console.log(`auto=${JSON.stringify(responses[ Math.floor(responses.length/2) ].url,null,2)}`);  //pick one in the middle
     process.exit(responses.length);
 }
@@ -70,7 +73,7 @@ function DARPping() {
         let Port=65013;
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
            if (err) throw err;
-            //console.log('UDP message sent to ' + IP +':'+ Port);
+            console.log('UDP message sent to ' + IP +':'+ Port);
         });
     }
    setTimeout(DARPping,1000);
