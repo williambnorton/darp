@@ -1037,7 +1037,9 @@ receiver.bind(this.config.PORT);
                    
                     process.exit(36);
                 }
-                else { console.log(ts()+`Software running is up-to-date`);}
+                else { 
+                    console.log(ts()+`Software running ${mySWversion} is up-to-daten with ${url}`);
+                }
             });
         }).on("error", function () {
             console.log(`checkSW(): fetching version failed - genesis node out of reach - exitting`);

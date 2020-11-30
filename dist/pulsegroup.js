@@ -806,7 +806,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         process.exit(36);
                     }
                     else {
-                        console.log(lib_1.ts() + "Software running is up-to-date");
+                        console.log(lib_1.ts() + ("Software running " + mySWversion + " is up-to-daten with " + url));
                     }
                 });
             }).on("error", function () {
