@@ -30,7 +30,8 @@ export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comm
 export MYIP=`curl ifconfig.io`
 
 echo `date` Starting PORT TEST
-node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` 
+node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+cat porttest.txt
 echo `date` DONE PORT TEST
 
 
