@@ -19,7 +19,7 @@ const GENESISPORT=65013;
 var numberPings=2;
 var first={};
 //console.log("GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
-console.log(" MYIP="+MYIP+" MYPORT="+MYPORT );
+console.log("testport.ts  MYIP="+MYIP+" MYPORT="+MYPORT );
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -27,7 +27,7 @@ var done=false;
 
 client.on('listening', function () {
     var address = client.address();
-    console.log('UDP Server listening on ' + address.address + ":" + address.port);
+    console.log('testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 
 var startTimestamp=0;
@@ -49,7 +49,7 @@ client.on('message', function (message, remote) {
 function finish() {
     //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
     for (var g in responses) {
-        console.log(`${responses[g].latency}:${responses[g].url}:GenesisNode:${responses[g].srcIP}:`);
+        console.log(`testport.ts  ${responses[g].latency}:${responses[g].url}:GenesisNode:${responses[g].srcIP}:`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
@@ -80,9 +80,9 @@ function DARPping() {
     }
    setTimeout(DARPping,1000);
 }
-console.log(`bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
+console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
 client.bind(MYPORT);  //server listening 0.0.0.0:65013
-console.log(`bind done`);
+console.log(`testport.ts  bind done`);
 
 DARPping();
 
