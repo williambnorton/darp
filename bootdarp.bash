@@ -34,10 +34,15 @@ export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comm
 export MYIP=`curl ifconfig.io`
 grep $MYIP awsgenesis.config operators.config
 if [ $? -eq 0 ]; then
-    echo `date` bootdarp.bash says we are GENESIS NODE 
     export GENESIS=$MYIP
+    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
 else
-        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
 
         #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
         node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
@@ -132,7 +137,7 @@ do
     echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MYIP = = = = = = = = = = = = "  
 
     #Now we are running in the new code /root/darp directory of docker
-    echo `date` Now Configuring Wireguard
+    echo `date` "bootdarp Now Configuring Wireguard"
     cd $DARPDIR/scripts/ 
     ./configWG.bash #>/dev/null
  
@@ -162,7 +167,11 @@ do
 
 
     cd $DARPDIR/dist
-    echo `date` "Starting DARP $VERSION : node index ..."
+    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
+    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
+    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
+    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
+    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
 	node index #> $DARPDIR/darp.log
     #
     #       darp exitted 
