@@ -16,7 +16,7 @@
 #
 # WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
 #
-echo `date` "------------------ $0 STARTING DARP  --------------------" 
+echo `date` "---------------------------------------------------------- $0 STARTING bootdarp.bash  ------------------------------------------------------------" 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 
@@ -28,16 +28,23 @@ GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipubl
 #Let's force AZURE instances to be non-genesis nodes
 GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
 
-
-
 export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
+grep $MYIP awsgenesis.config operators.config
+if [ $? -eq 0 ]; then
+    export GENESIS=$MYIP
+else
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
 
-
-
-
+        #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+        node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+        cat porttest.txt
+        export GENESIS=`head -1 porttest.txt`
+        echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
+fi
+echo `date` GENESIS=$GENESIS
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
 
 unameOut="$(uname -s)"
@@ -99,15 +106,6 @@ do
 
 
 
-    if [ "$GENESIS" == "auto" -a "$GENESIS" == "" ]; then
-        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
-
-        #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
-        node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
-        cat porttest.txt
-        export GENESIS=`head -1 porttest.txt`
-        echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
-    fi
 
 
 

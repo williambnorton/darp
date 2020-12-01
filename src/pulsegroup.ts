@@ -122,7 +122,7 @@ export class Config {
 
                 if (!isGenesisNode) {
                     this.GENESIS="auto"
-                    console.log(`We do not have a GENESIS NODE yet GENESIS=${this.GENESIS}`);
+                    console.log(`I am not a GENESIS NODE so GENESIS=${this.GENESIS}`);
                 }
             } else {
                 console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
