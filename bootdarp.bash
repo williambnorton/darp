@@ -36,6 +36,10 @@ grep $MYIP awsgenesis.config operators.config
 if [ $? -eq 0 ]; then
     export GENESIS=$MYIP
     echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
+    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
+    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
+    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
+    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
 else
         echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
         echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"

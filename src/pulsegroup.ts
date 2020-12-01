@@ -122,14 +122,16 @@ export class Config {
 
                 if (!isGenesisNode) {
                     this.GENESIS="auto"
-                    console.log(`I am not a GENESIS NODE so GENESIS=${this.GENESIS}`);
+                    console.log(`I am not a GENESIS NODE  GENESIS=${this.GENESIS}  -- no one to connect to so I EXIT`);  /// WBNWBNWBN
+                    process.exit(36);  //reload software maybe get a better 
                 }
             } else {
                 console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
                 process.exit(86);
             }
         }
-        console.log(`pulseGroup constructor GENESIS=${this.GENESIS}`);
+        console.log(`pulseGroup constructor GENESIS=${this.GENESIS}`); /// WBNWBNWBN
+
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
 
         //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
