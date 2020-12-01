@@ -60,7 +60,7 @@ export class Config {
         logger.info(`Starting with PORT=${PORT}`);
         this.PORT = PORT;
 
-        var GENESISPORT = PORT;
+        var GENESISPORT = PORT;  //DEFAULT TO 65013
         if (process.env.GENESISPORT) {
             GENESISPORT = parseInt(process.env.GENESISPORT); //Unless otherwise specified GENESIS PORT is same as user's port
             logger.info(`Setting GENESISPORT to ${GENESISPORT}`);
@@ -119,25 +119,8 @@ export class Config {
                 }
 
 
-/*
-                if (this.GEO.slice(-3)=="-00") {
-                    console.log(`********************** GENESIS **************** HIT**********************************`);
-                    //console.log(`Seaching for genesis node to use as genesis node`);
-                    isGenesisNode=true;
-                }
-                else
-*/
                 if (!isGenesisNode) {
-                    this.GENESIS=genesisNodes[Math.floor(Math.random() * genesisNodes.length)];  //assign a random one
-
-                    if (this.GENESIS==null) {
-                        console.log(`===== bootdarp going around for another run because random Genesis= ${this.GENESIS}`);
-                        process.exit(36);
-                    }
-                    console.log(`============================================================== Setting random genesis node: ${this.GENESIS}`);
-                } else {
-                    console.log(`============================================================== WE ARE GENESIS NODE at ${this.IP}`);
-                    this.GENESIS=this.IP;
+                    console.log(`We do not have a GENESIS NODE yet GENESIS=${this.GENESIS}`);
                 }
             } else {
                 console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
