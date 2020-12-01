@@ -50,7 +50,11 @@ else
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
     node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
-    echo `date` porttest.txt=`cat porttest.txt | awk -F, '{ print $5}'`
+    echo `date` porttest.txt=`cat porttest.txt | grep Build `
+    echo now with head
+    echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 `
+    echo now with awk
+    echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $5}'`
     cat porttest.txt
     
     export GENESIS=`head -1 porttest.txt`
