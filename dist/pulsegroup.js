@@ -129,6 +129,7 @@ var Config = /** @class */ (function () {
                 }
                 if (!isGenesisNode) {
                     console.log("We do not have a GENESIS NODE yet GENESIS=" + this.GENESIS);
+                    this.GENESIS = "auto";
                 }
             }
             else {
@@ -136,6 +137,7 @@ var Config = /** @class */ (function () {
                 process.exit(86);
             }
         }
+        //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
         var filename = "../GENESIS." + this.GENESIS + ":" + this.GENESISPORT;
         fs.appendFile(filename, this.GENESIS + ":" + this.GENESISPORT, function (err) {
             if (err)

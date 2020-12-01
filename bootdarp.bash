@@ -99,12 +99,15 @@ do
 
 
 
-    echo `date` Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS
-    node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
-    cat porttest.txt
-    GENESIS=`head -1 porttest.txt`
-    echo `date` DONE PORT TEST - SETTING GENESIS TO $GENESIS
+    if ("$GENESIS" == "auto" ) {
+        echo `date` "GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
 
+        #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+        node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+        cat porttest.txt
+        GENESIS=`head -1 porttest.txt`
+        echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
+    }
 
 
 

@@ -3,7 +3,7 @@
 #			invokes wg-quick when this wireguard config file is changed is created by docker - runs on host
 #	Nov 23 - using $HOME/wireguard directory   <--- this should not use a wireguard name - maybe a darp or noia or syntropy
 WGDIR=$HOME/wireguard
-echo `date` $0 starting with WGDIR=$WGDIR 
+echo `date` "$0 starting with WGDIR=$WGDIR" 
 PIDFILE=wgwatch.pid 
 umask 077
 
@@ -41,7 +41,7 @@ do
 		fi
 		sleep 15
 	else
-		echo `date` wireguard directory not writable or not ready. Changing ownership
+		echo `date` "wireguard directory not writable or not ready. Changing ownership"
 		sudo chown `whoami` $WGDIR
 		sleep 6   #Wait until wireguard dir exists
 	fi

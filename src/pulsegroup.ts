@@ -121,12 +121,14 @@ export class Config {
 
                 if (!isGenesisNode) {
                     console.log(`We do not have a GENESIS NODE yet GENESIS=${this.GENESIS}`);
+                    this.GENESIS="auto"
                 }
             } else {
                 console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
                 process.exit(86);
             }
         }
+        //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
 
         var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
         fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
