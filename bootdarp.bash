@@ -62,15 +62,11 @@ else
 fi
 echo `date` Choosing GENESIS=$GENESIS
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
-exit 1
 
-
-
-
-
-
-
-
+if [ "$GENESIS" == "" ]; then
+    echo `date` Could not find genesis node to connect to...EXITTING...
+    exit 36; 
+fi
 
 
 
