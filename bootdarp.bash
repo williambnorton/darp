@@ -99,7 +99,7 @@ do
 
 
 
-    if (("$GENESIS" == "auto") || ("$GENESIS" == "" )) {
+    if [ "$GENESIS" == "auto" -a "$GENESIS" == "" ]; then
         echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
 
         #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
@@ -107,7 +107,7 @@ do
         cat porttest.txt
         export GENESIS=`head -1 porttest.txt`
         echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
-    }
+    fi
 
 
 
