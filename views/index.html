@@ -219,7 +219,7 @@
                             
                             //WBNWBNWBNWBNWBN  $0.0000001275   <--- price per packet (1500 bytes) at 8.5 cents/GB   *5=42 cents profit per GB for better path
                             
-                            var balance = ((pulse.relayCount  * 10 * 0.0000001275) + (pulse.inPulses*0.0000001275));  //Earn 10x for relaying cents/GB - 80.5 cents cost = 41.5cents/GB per relayed +  measured pkts
+                            var balance = ((100*10*pulse.relayCount  * 10 * 0.0000001275) + (100*pulse.inPulses*0.0000001275));  //Earn 10x for relaying cents/GB - 80.5 cents cost = 41.5cents/GB per relayed +  measured pkts
                             
                             measurementCosts += (pulse.inPulses * 0.0000001275);  //measurementCosts are the costs for node to send pulses
                             balance = parseFloat(balance.toFixed(6));
@@ -422,7 +422,7 @@
             </tr>
             </thead>
             <tbody>
-                <p>**simulating relaying 10 pkts whenever better path exists ( @ 10x premium over 8.5cents/GB relayed - 80.5cents/GB cost=8.5cents/GB)</p>
+                <p>**simulating relaying 10 pkts whenever better path exists, paying 10x premium over 8.5cents/GB relayed - 80.5cents/GB cost=8.5cents/GB) all values measured in CENTS</p>
         <% var total = 0; %> <!--Add up total balance of all pulses -->
         <% for (let a in pulseGroup.pulses) { %>
             
@@ -523,7 +523,7 @@
                 
 
 
-                <% let balance = pulseEntry.inPulses*0.0000001275 + pulseEntry.relayCount*10*0.0000001275 %> <!-- 1500 bytes at 8 cents per GB -->
+                <% let balance = 100*pulseEntry.inPulses*0.0000001275 + 100*10*pulseEntry.relayCount*10*0.0000001275 %> <!-- measured in cents 10 packets priced 10 times higher than measurement packets 1500 bytes at 8 cents per GB -->
                 <% total = total + balance; %>
                 <% let classNameGeoBalance = pulseEntry.geo + "_balance"; %>
                 <td class="<%= classNameGeoBalance %>">$ <%= balance.toFixed(6) %></td>
