@@ -35,10 +35,7 @@ export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comm
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
 
-echo `date` Starting PORT TEST RANDOM
-node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
-cat porttest.txt
-echo `date` DONE PORT TEST
+
 
 
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
@@ -98,6 +95,18 @@ do
     echo "RUNNING">$WGDIR/STATE 
 
     echo `date` TOP OF LOOP
+
+
+
+
+    echo `date` Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS
+    node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+    cat porttest.txt
+    GENESIS=`head -1 porttest.txt`
+    echo `date` DONE PORT TEST - SETTING GENESIS TO $GENESIS
+
+
+
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
@@ -200,9 +209,9 @@ do
     
     echo `date` killing lingering processes
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
+    #kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep ping | awk '{ print $1}'`  #can delete this
-    kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
+    #kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
 
 
