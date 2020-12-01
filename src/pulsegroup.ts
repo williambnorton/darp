@@ -167,7 +167,7 @@ export class Config {
 
 
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 50;
+        this.MAXNODES = 25;
     }
 }
 
@@ -1393,7 +1393,7 @@ receiver.bind(this.config.PORT);
             //
             //
 
-            const message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash&pong="+pongMsgEncoded;
+            const message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash&pongMsg="+pongMsgEncoded;
             console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
 

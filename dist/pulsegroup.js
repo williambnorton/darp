@@ -169,7 +169,7 @@ var Config = /** @class */ (function () {
         }
         this.PUBLICKEY = PUBLICKEY;
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 50;
+        this.MAXNODES = 25;
     }
     return Config;
 }());
@@ -1117,7 +1117,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
                 //
                 //
-                var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&pong=" + pongMsgEncoded;
+                var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&pongMsg=" + pongMsgEncoded;
                 console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
                 _this.udp.send(message, 65013, ipaddr);
                 //
