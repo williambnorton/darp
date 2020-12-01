@@ -54,10 +54,12 @@ else
     echo now with head
     echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 `
     echo now with awk
-    echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $5}'`
+    echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
     cat porttest.txt
     
-    export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $5}'`
+    export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
+    export GENESISIP=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
+    export GENESISPORT=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $5}'`
     echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
 fi
 echo `date` Choosing GENESIS=$GENESIS
