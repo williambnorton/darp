@@ -119,21 +119,24 @@ var Config = /** @class */ (function () {
             if (genesisNodeList) {
                 var genesisNodes = genesisNodeList.split(",");
                 var isGenesisNode = false;
-                if (this.GEO.slice(-3) == "-00") {
-                    console.log("********************** GENESIS **************** HIT**********************************");
-                    //console.log(`Seaching for genesis node to use as genesis node`);
-                    isGenesisNode = true;
-                }
-                else
-                    for (var g in genesisNodes) {
-                        //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
-                        if (genesisNodes[g] == this.IP) {
-                            isGenesisNode = true;
-                            //console.log(`GOT IT`);
-                        }
+                //First rule - if this is a genesis node it starts as
+                for (var g in genesisNodes) {
+                    //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
+                    if (genesisNodes[g] == this.IP) {
+                        isGenesisNode = true;
+                        //console.log(`GOT IT`);
                     }
+                }
+                /*
+                                if (this.GEO.slice(-3)=="-00") {
+                                    console.log(`********************** GENESIS **************** HIT**********************************`);
+                                    //console.log(`Seaching for genesis node to use as genesis node`);
+                                    isGenesisNode=true;
+                                }
+                                else
+                */
                 if (!isGenesisNode) {
-                    this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)];
+                    this.GENESIS = genesisNodes[Math.floor(Math.random() * genesisNodes.length)]; //assign a random one
                     if (this.GENESIS == null) {
                         console.log("===== bootdarp going around for another run because random Genesis= " + this.GENESIS);
                         process.exit(36);
@@ -1117,7 +1120,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
                 //
                 //
-                var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash&pongMsg=" + pongMsgEncoded;
+                if (_this.isGenesisNode())
+                    var message = "http://" + _this.config.IP + ":" + _this.config.PORT + "/darp.bash?GENESISIP=" + _this.config.IP + "&GENESISPORT=" + _this.config.PORT + " pongMsg=" + pongMsgEncoded; //specify GENESIS Node directly
+                else
+                    var message = "http://" + _this.config.GENESIS + ":" + _this.config.GENESISPORT + "/darp.bash?pongMsg=" + pongMsgEncoded;
                 console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
                 _this.udp.send(message, 65013, ipaddr);
                 //

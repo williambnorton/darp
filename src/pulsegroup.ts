@@ -108,27 +108,27 @@ export class Config {
             if (genesisNodeList) {
                 let genesisNodes=genesisNodeList.split(",");
                 var isGenesisNode=false;
+                
+                //First rule - if this is a genesis node it starts as
+                for (var g in genesisNodes) {
+                    //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
+                    if (genesisNodes[g]==this.IP) {
+                        isGenesisNode=true;
+                        //console.log(`GOT IT`);
+                    }
+                }
 
 
-
-
+/*
                 if (this.GEO.slice(-3)=="-00") {
                     console.log(`********************** GENESIS **************** HIT**********************************`);
                     //console.log(`Seaching for genesis node to use as genesis node`);
                     isGenesisNode=true;
                 }
                 else
-
-
-                    for (var g in genesisNodes) {
-                        //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
-                        if (genesisNodes[g]==this.IP) {
-                            isGenesisNode=true;
-                            //console.log(`GOT IT`);
-                        }
-                    }
+*/
                 if (!isGenesisNode) {
-                    this.GENESIS=genesisNodes[Math.floor(Math.random() * genesisNodes.length)];  
+                    this.GENESIS=genesisNodes[Math.floor(Math.random() * genesisNodes.length)];  //assign a random one
 
                     if (this.GENESIS==null) {
                         console.log(`===== bootdarp going around for another run because random Genesis= ${this.GENESIS}`);
@@ -1392,8 +1392,11 @@ receiver.bind(this.config.PORT);
             //
             //
             //
+            if (this.isGenesisNode())
+                var message="http://"+this.config.IP+":"+this.config.PORT+"/darp.bash?GENESISIP="+this.config.IP+"&GENESISPORT="+this.config.PORT+" pongMsg="+pongMsgEncoded;  //specify GENESIS Node directly
+            else
+                var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
-            const message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash&pongMsg="+pongMsgEncoded;
             console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
 
