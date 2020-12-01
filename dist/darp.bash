@@ -75,7 +75,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.
         # by default not specifying GENEIS NODE means auto - choose a random or placed
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=MYGENESISIP -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
-        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
+        # we explicitly say GENESIS="auto" to force all through ordered process - my list of GENESIS NODES are only ones to be GENESSIS NODES
+        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         rc=$?
         echo `date` "$0 Docker exitted with rc=$rc- sleeping 15 seconds and fetching new docker and restarting"
         sleep 15
