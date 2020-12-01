@@ -26,7 +26,7 @@ MAXCYCLES=1000 # of cycles before stopping
 GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 
 #Let's force AZURE instances to be non-genesis nodes
-GENESISNODELIST=`cat awsgenesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
+GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
 
 
 
@@ -99,13 +99,13 @@ do
 
 
 
-    if ("$GENESIS" == "auto" ) {
-        echo `date` "GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
+    if ("$GENESIS" == "auto" || "$GENESIS" == "" ) {
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
 
         #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
         node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
         cat porttest.txt
-        GENESIS=`head -1 porttest.txt`
+        export GENESIS=`head -1 porttest.txt`
         echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
     }
 
