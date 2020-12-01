@@ -104,6 +104,7 @@ var Config = /** @class */ (function () {
             process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ""); //\trim string
         }
         this.IP = process.env.MYIP || "";
+        console.log("pulseGroup constructor this.IP=" + this.IP);
         var GEO = HOSTNAME; //passed into docker
         GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0]; //remove problem characters
         this.GEO = GEO;
@@ -137,6 +138,7 @@ var Config = /** @class */ (function () {
                 process.exit(86);
             }
         }
+        console.log("pulseGroup constructor GENESIS=" + this.GENESIS);
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
         //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
         //fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
@@ -239,7 +241,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.forEachMint = function (callback) {
             for (var mint in _this.mintTable)
-                callback(mint, _this.mintTable[mint]);
+                if (_this.mintTable[mint] != null)
+                    callback(mint, _this.mintTable[mint]);
         };
         this.flashWireguard = function () {
             logger_1.logger.info("flashWireguard()");
@@ -1333,7 +1336,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             process.exit(36);  //reload software
         });
 */
-        // Thia constructur binds 65013 UDP PORT and 
+        // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
         var dgram = require("dgram");
         var receiver = dgram.createSocket("udp4");
         receiver.on("error", function (err) {

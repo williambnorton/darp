@@ -90,6 +90,7 @@ export class Config {
             process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ""); //\trim string
         }
         this.IP = process.env.MYIP||"";
+        console.log(`pulseGroup constructor this.IP=${this.IP}`);
 
         var GEO = HOSTNAME; //passed into docker
         GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];  //remove problem characters
@@ -127,6 +128,7 @@ export class Config {
                 process.exit(86);
             }
         }
+        console.log(`pulseGroup constructor GENESIS=${this.GENESIS}`);
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
 
         //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
@@ -353,7 +355,7 @@ export class AugmentedPulseGroup {
 
 
         
-    // Thia constructur binds 65013 UDP PORT and 
+    // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
 
     var dgram = require("dgram");
 
@@ -393,7 +395,7 @@ export class AugmentedPulseGroup {
     };
 
     forEachMint = (callback: CallableFunction) => {
-        for (var mint in this.mintTable) callback(mint, this.mintTable[mint]);
+        for (var mint in this.mintTable) if (this.mintTable[mint]!=null) callback(mint, this.mintTable[mint]);
     };
 
     flashWireguard = () => {
