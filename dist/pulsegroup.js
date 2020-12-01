@@ -113,7 +113,7 @@ var Config = /** @class */ (function () {
         //        }
         this.GENESIS = process.env.GENESIS || "";
         if (this.GENESIS == "" || this.GENESIS == "auto") {
-            console.log("===================                                             Finding a GENESIS node to connect to");
+            console.log("===================                       Finding a GENESIS node to connect to                 =================");
             var genesisNodeList = process.env.GENESISNODELIST;
             console.log("I am " + this.IP + " genesisNodeList=" + genesisNodeList);
             if (genesisNodeList) {
@@ -138,11 +138,11 @@ var Config = /** @class */ (function () {
             }
         }
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
-        var filename = "../GENESIS." + this.GENESIS + ":" + this.GENESISPORT;
-        fs.appendFile(filename, this.GENESIS + ":" + this.GENESISPORT, function (err) {
-            if (err)
-                throw err;
-        });
+        //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
+        //fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
+        //        if (err) throw err;
+        //});
+        //At this point GENESIS is auto, an IP of a node to use as GENESIS NODE
         var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
         if (!PUBLICKEY) {
             try {
@@ -1333,7 +1333,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             process.exit(36);  //reload software
         });
 */
-        //TESTING if receiver in one process affects the anomalous measures
+        // Thia constructur binds 65013 UDP PORT and 
         var dgram = require("dgram");
         var receiver = dgram.createSocket("udp4");
         receiver.on("error", function (err) {

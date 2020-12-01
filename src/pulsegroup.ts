@@ -101,7 +101,7 @@ export class Config {
 //        }
         this.GENESIS = process.env.GENESIS||"";
         if (this.GENESIS=="" || this.GENESIS=="auto") {
-            console.log(`===================                                             Finding a GENESIS node to connect to`);
+            console.log(`===================                       Finding a GENESIS node to connect to                 =================`);
             let genesisNodeList=process.env.GENESISNODELIST;
             console.log(`I am ${this.IP} genesisNodeList=${genesisNodeList}`);
 
@@ -118,7 +118,6 @@ export class Config {
                     }
                 }
 
-
                 if (!isGenesisNode) {
                     console.log(`We do not have a GENESIS NODE yet GENESIS=${this.GENESIS}`);
                     this.GENESIS="auto"
@@ -130,10 +129,12 @@ export class Config {
         }
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
 
-        var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
-        fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
-                if (err) throw err;
-        });
+        //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
+        //fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
+        //        if (err) throw err;
+        //});
+
+        //At this point GENESIS is auto, an IP of a node to use as GENESIS NODE
 
 
         var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
@@ -352,31 +353,31 @@ export class AugmentedPulseGroup {
 
 
         
-//TESTING if receiver in one process affects the anomalous measures
+    // Thia constructur binds 65013 UDP PORT and 
 
-var dgram = require("dgram");
+    var dgram = require("dgram");
 
-const receiver = dgram.createSocket("udp4");
+    const receiver = dgram.createSocket("udp4");
 
-receiver.on("error", (err) => {
-    logger.error(`Receiver error:\n${err.stack}`);
-    receiver.close();
-});
+    receiver.on("error", (err) => {
+        logger.error(`Receiver error:\n${err.stack}`);
+        receiver.close();
+    });
 
-receiver.on("listening", () => {
-    const address = receiver.address();
-    logger.info(`Receiver listening ${address.address}:${address.port}`);
-});
+    receiver.on("listening", () => {
+        const address = receiver.address();
+        logger.info(`Receiver listening ${address.address}:${address.port}`);
+    });
 
-receiver.on("message", (pulseBuffer, rinfo) => {
-    const incomingTimestamp = now().toString();
-    logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
-    // prepend our timeStamp
-    const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-    this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
-});
+    receiver.on("message", (pulseBuffer, rinfo) => {
+        const incomingTimestamp = now().toString();
+        logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        // prepend our timeStamp
+        const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+        this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
+    });
 
-receiver.bind(this.config.PORT);
+    receiver.bind(this.config.PORT);
 
 
 

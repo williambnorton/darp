@@ -62,6 +62,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     echo `date` $0 DARP Starting 
     while [ `cat ~/wireguard/STATE` != "STOP" ]; 
     do
+        
+
         # spin off liaison gateway script that ties together host network and docker 
         # wgwatch.bash (docker will create it in shared ~/wireguard directory)
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
