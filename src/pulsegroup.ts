@@ -116,6 +116,7 @@ export class Config {
                     if (genesisNodes[g]==this.IP) {
                         isGenesisNode=true;
                         //console.log(`GOT IT`);
+                        this.GENESIS=this.IP
                     }
                 }
 

@@ -126,6 +126,7 @@ var Config = /** @class */ (function () {
                     if (genesisNodes[g] == this.IP) {
                         isGenesisNode = true;
                         //console.log(`GOT IT`);
+                        this.GENESIS = this.IP;
                     }
                 }
                 if (!isGenesisNode) {
