@@ -316,7 +316,6 @@ app.get('/nodefactory', function (req, res) {
         return;
     }
     // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
-    console.log("GOT HERE........");
     /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner != me.geo) {
         var redirectedURL = 'http://' + genesis.ipaddr + ":" + genesis.port + req.originalUrl;
@@ -432,7 +431,7 @@ app.get('/darp.bash', function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     fs.readFile('darp.bash', function (err, data) {
         //console.log(`sending data ${data}`);
-        console.log("config.GENESIS=" + config.GENESIS);
+        console.log("retrieving darp.bash config.GENESIS=" + config.GENESIS);
         //console.log(`data=${data}`);
         var str = data.toString();
         //here we can take options for initial set up - ?mode=auto
@@ -443,8 +442,9 @@ app.get('/darp.bash', function (req, res) {
         //option 3 - get code and config from 1st genesis node on genesislist
         var genesislist = process.env.GENESISNODELIST || "";
         var genesisNodes = genesislist.split(",");
-        str = str.replace(/MYGENESISIP/gi, genesisNodes[0]);
-        console.log("genesisNodes[0]=" + genesisNodes[0]);
+        //str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
+        str = str.replace(/MYGENESISIP/gi, "auto");
+        console.log("genesisNodes[0]=" + genesisNodes[0] + "   <--- Here I plug in the First Genesis node in list - ");
         console.log("str=" + str);
         res.send(str);
         //        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );
