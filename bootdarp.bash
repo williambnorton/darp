@@ -34,13 +34,16 @@ export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comm
 export MYIP=`curl ifconfig.io`
 grep $MYIP awsgenesis.config operators.config
 if [ $? -eq 0 ]; then
+    echo `date` bootdarp.bash says we are GENESIS NODE 
     export GENESIS=$MYIP
 else
         echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Befroe STARTING GENESIS=$GENESIS"
 
         #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
-        node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+        node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
+        echo `date` porttest.txt=`cat porttest.txt | awk -F, '{ print $5}'`
         cat porttest.txt
+        
         export GENESIS=`head -1 porttest.txt`
         echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
 fi
@@ -94,7 +97,7 @@ echo PORT=$PORT
 #
 #The order of startup is important here
 
-echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP" 
+echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP GENESIS=$GENESIS" 
 CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
