@@ -53,11 +53,24 @@ else
     echo `date` porttest.txt=`cat porttest.txt | awk -F, '{ print $5}'`
     cat porttest.txt
     
-    export GENESIS=`head -1 porttest.txt| awk -F, '{ print $4 }'`
+    export GENESIS=`head -1 porttest.txt`
     echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
 fi
-echo `date` GENESIS=$GENESIS
+echo `date` Choosing GENESIS=$GENESIS
 echo `date` Starting list of genesis nodes : $GENESISNODELIST
+exit 1
+
+
+
+
+
+
+
+
+
+
+
+
 
 unameOut="$(uname -s)"
 case "${unameOut}" in

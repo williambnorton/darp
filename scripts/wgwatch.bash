@@ -11,7 +11,7 @@ unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
     *)    MACHINE=MacPCnotLinux
-				echo `date` $0 NOTE: does not support Mac at this time Wireguard is NOT set up
+				echo `date` "$0 NOTE: does not support Mac at this time Wireguard is NOT set up"
 				exit
 	;;
 esac
