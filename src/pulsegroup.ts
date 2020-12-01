@@ -1392,10 +1392,10 @@ receiver.bind(this.config.PORT);
             //
             //
             //
-            if (this.isGenesisNode())
-                var message="http://"+this.config.IP+":"+this.config.PORT+"/darp.bash?GENESISIP="+this.config.IP+"&GENESISPORT="+this.config.PORT+" pongMsg="+pongMsgEncoded;  //specify GENESIS Node directly
-            else
-                var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
+            if (this.isGenesisNode()&&this.nodeCount<this.config.MAXNODES)
+                var message=`${now()},12,${this.config.VERSION},${this.config.IP}+":"+${this.config.PORT}+ ":"+ ${this.config.GEO}+":"+ ${this.config.BOOTTIMESTAMP}+ ${this.config.PUBLICKEY}`; //specify GENESIS Node directly
+            //else
+            //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
             console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
             this.udp.send(message, 65013, ipaddr);
