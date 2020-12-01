@@ -130,8 +130,8 @@ var Config = /** @class */ (function () {
                     }
                 }
                 if (!isGenesisNode) {
-                    console.log("We do not have a GENESIS NODE yet GENESIS=" + this.GENESIS);
                     this.GENESIS = "auto";
+                    console.log("We do not have a GENESIS NODE yet GENESIS=" + this.GENESIS);
                 }
             }
             else {

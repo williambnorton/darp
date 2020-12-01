@@ -327,7 +327,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
-
+console.log(`GOT HERE........`);
 /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner!=me.geo) {
         var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
