@@ -44,7 +44,7 @@ else
         echo `date` porttest.txt=`cat porttest.txt | awk -F, '{ print $5}'`
         cat porttest.txt
         
-        export GENESIS=`head -1 porttest.txt`
+        export GENESIS=`head -1 porttest.txt| awk -F, '{ print $4 }'`
         echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
 fi
 echo `date` GENESIS=$GENESIS
