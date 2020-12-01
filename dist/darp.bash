@@ -26,7 +26,7 @@ echo $$ > darp.pid
 #install docker and wireguard if not installed already
 docker ps 2>&1 >/dev/null
 if [ $? -ne 0 ]; then
-    echo `date` $0 "DARP INSTALLING docker and wireguard "
+    echo `date` $0 "DARP INSTALLING docker and wireguard docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
     case $MACHINE  in
         Linux) 
             echo `date` making UBUNTU machine VM ready to run darp by installing  docker and wireguard ;sudo apt-get update;
