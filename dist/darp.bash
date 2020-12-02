@@ -53,14 +53,14 @@ fi
 
 #send MYIP in port test 
 #if we get an incoming message on MYPORT
-
+touch ~/wireguard/STATE  #make sure it exists
 docker ps 2>&1 >/dev/null    #final test to see if installed
 docker_rc=$?
 #${SUDO} wg 2>&1 >/dev/null   #this will prevent running if wireguard not installed
 wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     echo `date` $0 DARP Starting 
-    while [ `cat ~/wireguard/STATE` != "STOP" ]; 
+    while [ `cat ~/wireguard/STATE` != "STOP" ]
     do
         
 
