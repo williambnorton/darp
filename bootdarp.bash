@@ -49,7 +49,8 @@ if [ $? -eq 0 ]; then
 fi
 
 if [ "$GENESIS" == "" ]; then
-    echo `date` Could not find genesis node to connect to...EXITTING...
+    echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
+    echo `date` "$0 Confifgure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
     exit 36; 
 fi
 
