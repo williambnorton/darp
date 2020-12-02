@@ -53,12 +53,12 @@ fi
 
 #send MYIP in port test 
 #if we get an incoming message on MYPORT
-touch ~/wireguard/STATE  #make sure it exists
-if [ $? -ne 0 ]; then
-    echo `date` $0 DARP FAILURE ~/wireguard needs to be writable... 
+#touch ~/wireguard/STATE  #make sure it exists
+#if [ $? -ne 0 ]; then
+#    echo `date` $0 DARP FAILURE ~/wireguard needs to be writable... 
     
-    exit 36
-fi
+#    exit 36
+#fi
 docker ps 2>&1 >/dev/null    #final test to see if installed
 docker_rc=$?
 #${SUDO} wg 2>&1 >/dev/null   #this will prevent running if wireguard not installed
