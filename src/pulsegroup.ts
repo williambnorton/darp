@@ -1383,14 +1383,16 @@ export class AugmentedPulseGroup {
             //
             //
             //
-            if (this.isGenesisNode()&&this.nodeCount<this.config.MAXNODES)
+            if (this.isGenesisNode()&&this.nodeCount<this.config.MAXNODES) {
                 var message=`${now()},12,${this.config.VERSION},${this.config.IP},${this.config.PORT},${this.config.GEO},${this.config.BOOTTIMESTAMP},${this.config.PUBLICKEY},,,,,,,,,,,,`; //specify GENESIS Node directly
-            //else
-            //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
+                //else
+                //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
-            console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
-            this.udp.send(message, 65013, ipaddr);
-
+                console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
+                this.udp.send(message, 65013, ipaddr);
+            } else {
+                console.log(`pulseGroup full - not answering request to join`);
+            }
             //
             //
             //
