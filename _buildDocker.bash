@@ -15,7 +15,7 @@ fi
 
 npm install && npm update
 echo `date` Building the docker container
-docker build --no-cache -t williambnorton/darp:$DOCKERVERSION -t williambnorton/darp:latest. && docker push williambnorton/darp
+docker build --no-cache -t williambnorton/darp:$DOCKERVERSION . && docker push williambnorton/darp:$DOCKERVERSION
 echo `date` New docker $DOCKERVERSION running DARP `ls Build*`
 echo `date` Finished $0 Force genesis node to reload SW and the group will follow
 
