@@ -79,7 +79,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #this is not nice - killing all dockers on system - fix this to grep
         #docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);
         echo `date` "$0 KILLING docker instead of deleting image"
-        docker kill `grep darp | awk '{ print $1 }'`
+        docker kill `docker ps | grep darp | awk '{ print $1 }'`
 
         #
         #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.
@@ -90,7 +90,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # Here we should use the Docker tag the genesis node says he is using.  Maybe the code that sends darp.bash would affix its DockerBuild# :Docker.201202.0518
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         echo `date` "$0 BEV would be starting darp: DOCKERTAG"
-        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG #< /dev/null
+        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
         
         rc=$?
         echo `date` "$0 Docker exitted with rc=$rc- sleeping 15 seconds and fetching new docker and restarting"
