@@ -16,14 +16,13 @@
 #
 # WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
 #
-echo `date` "---------------------------------------------------------- $0 STARTING bootdarp.bash  ------------------------------------------------------------" 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 
 #This is a starting list of Bill's public genesis nodes located across clouds 
 #export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
 
-GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
+#GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 
 #Let's force AZURE instances to be non-genesis nodes
 GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
@@ -48,16 +47,11 @@ if [ $? -eq 0 ]; then
     export GENESISPORT=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $5}'`
     echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
 fi
-echo `date` Choosing GENESIS=$GENESIS
-echo `date` Starting list of genesis nodes : $GENESISNODELIST
 
 if [ "$GENESIS" == "" ]; then
     echo `date` Could not find genesis node to connect to...EXITTING...
     exit 36; 
 fi
-
-
-
 
 
 unameOut="$(uname -s)"
@@ -89,12 +83,6 @@ do
     echo "RUNNING">$WGDIR/STATE 
 
     echo `date` TOP OF LOOP
-
-
-
-
-
-
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
