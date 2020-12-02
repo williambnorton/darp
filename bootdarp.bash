@@ -183,7 +183,7 @@ do
     #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     
     
-    echo `date` killing lingering processes
+    echo `date` "killing lingering processes"
     kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
     #kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep ping | awk '{ print $1}'`  #can delete this

@@ -27,14 +27,14 @@ fi
 echo $$ >$PIDFILE
 
 docker inspect -f '{{ .Created }}' `docker ps | grep -v CONTAINER | awk 'END{print NR}' ` >DOCKER_SW_VERSION
-echo `date` Running DARP Docker Created `cat DOCKER_SW_VERSION`
+echo `date` "Running DARP Docker Created "`cat DOCKER_SW_VERSION`
 
 while :
 do
 	if [ -w $WGDIR ]; then
 		cd $WGDIR
 		if [ -f $WGDIR/darp0.pending.conf ]; then
-			echo `date` $0 `hostname` pushing pending darp config change `grep -i PUBLICKEY $WGDIR/darp0.pending.conf|awk '{ print $NR}'` ENCRYPTED PATHS to PEERS 
+			echo `date` $0 `hostname` "pushing pending darp config change" `grep -i PUBLICKEY $WGDIR/darp0.pending.conf|awk '{ print $NR}'` " ENCRYPTED PATHS to PEERS "
 			/usr/bin/wg-quick down $WGDIR/darp0.conf
 			mv -f $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
 			/usr/bin/wg-quick up $WGDIR/darp0.conf

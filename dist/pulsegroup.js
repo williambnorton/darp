@@ -52,12 +52,12 @@ logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
-var WG_PULSEFREQ = 2; //send pings over wireguard mesh every other second
 var SECURE_PORT = 65020;
-var CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK SW updates every 60 seconds
-var NO_MEASURE = 99999;
+var CHECK_SW_VERSION_CYCLE_TIME = 120; // CHECK for new SW updates every 60 seconds
+var NO_MEASURE = 99999; //value to indis=cate no measurement exists
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
+var GENESIS_NODE_TIMEOUT = 60;
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // Define data structures used in the protocol
 /** App configuration settings obtained from ENV variables */
@@ -500,7 +500,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         else {
                             // not genesis - we can only time out genesis
                             var age = lib_1.now() - _this.mintTable[1].lastPulseTimestamp;
-                            if (age > 10 * 1000) { //after 10 seconds we say genesis is gone
+                            if (age > GENESIS_NODE_TIMEOUT * 1000) { //after 60 seconds we say genesis is gone
                                 logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 console.log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
@@ -1079,31 +1079,37 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //  Mgmt layer
             if (incomingPulse.msgType == "11") {
                 console.log("incomingPulse DARP PING (testport)"); // request=${JSON.stringify(incomingPulse)}`);
+                /*
                 //console.log(`process.env=${JSON.stringify(process.env)}`);
                 var pong = {
-                    outgoingTimestamp: lib_1.now(),
-                    msgType: "12",
-                    version: _this.config.VERSION,
-                    geo: _this.config.GEO,
-                    group: _this.config.GEO + '.1',
+                    outgoingTimestamp: now(),
+                    msgType: "12",              //match into mgmt processing layer here
+                    version:this.config.VERSION,
+                    geo:this.config.GEO,
+                    group:this.config.GEO+'.1',
                     seq: 0,
-                    bootTimestamp: _this.config.BOOTTIMESTAMP,
-                    mint: 0,
-                    owls: "",
-                    owl: "",
-                    lastMsg: "" //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
+                    bootTimestamp:this.config.BOOTTIMESTAMP,
+                    mint:0,
+                    owls:"",  //hee we should store the rtts that we measure from this interogatory for later decision on whether to accept
+                    owl:"",    //mYBE CALACULATED RTT FROM INCLUDING TIMESTAMP IN REQUEST
+                    lastMsg: ""   //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
                     //genesisgebnesisport
                     //genesis public key?
                     //betterPathCount=10
                     //relays min and max vaky=ues show the singws at the moment
-                };
-                console.log("" + JSON.stringify(_this.pulses));
+                }
+                console.log(`${JSON.stringify(this.pulses)}`);
+    
                 //JOIN MY GENESIS NODE DARP RESPONSE (12)
-                var pongMsgEncoded = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.mintTable[1].ipaddr + "," + _this.mintTable[1].port + "," + _this.mintTable[1].publickey + "," + _this.mintTable[1].geo + "," + (_this.mintTable[1].geo + ".1") + "," + _this.nodeCount + "," + _this.pulses[_this.mintTable[1].geo + ":" + _this.mintTable[1].geo + ".1"].owls + ",Join,my,Genesis,Group";
+                var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[1].geo+":"+this.mintTable[1].geo+".1"].owls},Join,my,Genesis,Group`
+                
                 //JOIN MY GROUP RESPONSE
-                //            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
-                //JOIN Random Genesis Node = "auto"   -- here pick a random genesis node and port
-                //           var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
+    //            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
+    
+    
+               //JOIN Random Genesis Node = "auto"   -- here pick a random genesis node and port
+    //           var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
+    */
                 // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
                 //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
                 // 
@@ -1111,6 +1117,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
                 //
                 if (_this.isGenesisNode() && _this.nodeCount < _this.config.MAXNODES) {
+                    //HERE put the nodeCount and the # better paths
                     var message = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.config.IP + "," + _this.config.PORT + "," + _this.config.GEO + "," + _this.config.BOOTTIMESTAMP + "," + _this.config.PUBLICKEY + ",,,,,,,,,,,,"; //specify GENESIS Node directly
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
@@ -1118,7 +1125,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.udp.send(message, 65013, ipaddr);
                 }
                 else {
-                    console.log("pulseGroup full - not answering request to join");
+                    console.log("pulseGroup full - not answering request to join... ");
                 }
                 //
                 //

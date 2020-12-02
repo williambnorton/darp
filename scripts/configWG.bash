@@ -6,9 +6,9 @@
 #
 if [ "$WGDIR" = "" ]; then WGDIR=/etc/wireguard; fi
 
-echo `date` setting up our $WGDIR configuration directory for wireguard public keyes
+echo `date` "setting up our $WGDIR configuration directory for wireguard public keys"
 if [ ! -d $WGDIR ]; then umask 077; mkdir -p $WGDIR; echo `date` "ERROR: Should not hve to but Created $WGDIR"; fi  #make sure wireguard directory exists
-echo `date` $0 creating wireguard configuration in $WGDIR from $GENESIS
+echo `date` "$0 creating wireguard configuration in $WGDIR from $GENESIS"
 ls -l $WGDIR
 #chown ubuntu $WGDIR  #we know our docker runs ubuntu HACK breaks in native mode where no ubuntu exists
 #if [ $? -ne 0 ]; then sudo chown ubuntu $WGDIR; fi
@@ -63,10 +63,10 @@ echo "#" >>$WGDIR/wgbase.conf
 cp $WGDIR/wgbase.conf $WGDIR/darp0.conf
 echo `date` "Base wireguard config: darp0.conf " `cat $WGDIR/darp0.conf` 
 
-echo `date` $0 wgbase.conf below - the rest will be added by running code
+echo `date` "$0 wgbase.conf below - the rest will be added by running code"
 cat $WGDIR/wgbase.conf
 
-echo `date` WGDIR=$WGDIR
+echo `date` "WGDIR=$WGDIR"
 cd
 cd darp/scripts
 cp wgwatch.bash $WGDIR/.  #wireguard watch script - watch for wg pending files
