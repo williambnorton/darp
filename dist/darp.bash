@@ -60,7 +60,9 @@ docker_rc=$?
 wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     echo `date` $0 DARP Starting 
-    while [ `cat ~/wireguard/STATE` != "STOP" ]
+    STATE=`cat ~/wireguard/STATE`
+    echo `date` STATE=$STATE
+    while [ "$STATE" != "STOP" ]
     do
         
 
