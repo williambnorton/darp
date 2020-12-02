@@ -36,26 +36,12 @@ grep $MYIP awsgenesis.config operators.config
 if [ $? -eq 0 ]; then
     export GENESIS=$MYIP
     echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
-    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
-    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
-    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
-    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
-else
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+ lse
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
     node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
-    echo `date` porttest.txt=`cat porttest.txt | grep Build `
-    echo now with head
-    echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 `
-    echo now with awk
-    echo `date` porttest.txt=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
-    cat porttest.txt
+     cat porttest.txt
     
     export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
     export GENESISIP=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
@@ -94,32 +80,6 @@ fi
 #export WGDIR=$DARPDIR/wireguard
 export WGDIR=/etc/wireguard
 export PORT
-echo PORT=$PORT
-
-
-
-
-
-
-
-
-
-#if [ "$GENESIS" == "" ]; then
-#    echo `date` $0 You must specify a genesis node 
-#    echo `date` $0 Add -e GENESIS=<ipaddr> into the docker run command or set the environmental variable
-#    echo
-#    env
-#    exit -1
-#fi
-
-#echo `date` Genesis node: $GENESIS  "<--- Set GENESIS environmental variable to launch your own pulseGroup"
-#GENESISIP=`echo $GENESIS | awk -F: '{ print $1 }'`
-#echo GENESISIP=$GENESISIP
-
-#update SW is destructive - should be done after run in docker loop
-#when genesis node leanrs of new SW it quits and downloads 
-#
-#The order of startup is important here
 
 echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP GENESIS=$GENESIS" 
 CYCLES=0;
@@ -179,7 +139,6 @@ do
     cd /root/darp/subagents/rtt/; ls -l ; 
     ./launchrtt.bash & 
     echo $$ >$DARPDIR/launchrtt.pid
-    echo `date` "BYPASSING * * * * * * * * * * * * * * * * * Starting subagents  rtt wg_rtt traceroute * * * * * * * * * * * * * * * * * * * * * * "
 
     #ps
 
@@ -187,10 +146,7 @@ do
 
     cd $DARPDIR/dist
     echo `date` "============================================================ Starting DARP $VERSION : node index ..."
-    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
-    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
-    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
-    echo `date` "============================================================ Starting DARP $VERSION : node index ..."
+
 	node index #> $DARPDIR/darp.log
     #
     #       darp exitted 
