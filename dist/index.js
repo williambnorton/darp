@@ -445,6 +445,7 @@ app.get('/darp.bash', function (req, res) {
         //str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
         str = str.replace(/MYGENESISIP/gi, "auto");
         str = str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0]);
+        str = str.replace(/GITTAG/gi, config.VERSION.split(":")[1]);
         console.log("genesisNodes[0]=" + genesisNodes[0] + "   <--- Here I plug in the First Genesis node in list - ");
         console.log("str=" + str);
         res.send(str);
