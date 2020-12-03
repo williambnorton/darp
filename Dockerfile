@@ -13,7 +13,7 @@ RUN apk add wireguard-tools
 #RUN apk add --no-cache --update wireguard-tools
 
 WORKDIR /opt
-#COPY package.json /opt
+COPY package.json /opt
 
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
 #COPY . /root/darp
