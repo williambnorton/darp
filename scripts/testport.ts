@@ -16,7 +16,7 @@ const MYIP=myArgs[0];
 const MYPORT=myArgs[1];
 const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
-var numberPings=2;
+var numberPings=3;
 var first={};
 //console.log("GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
 console.log("testport.ts  MYIP="+MYIP+" MYPORT="+MYPORT );

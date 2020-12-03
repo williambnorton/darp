@@ -1388,6 +1388,7 @@ export class AugmentedPulseGroup {
             //
             if (this.isGenesisNode()&&this.nodeCount<this.config.MAXNODES) {
                 //HERE put the nodeCount and the # better paths
+                //PONG MESSAGE
                 var message=`${now()},12,${this.config.VERSION},${this.config.IP},${this.config.PORT},${this.config.GEO},${this.config.BOOTTIMESTAMP},${this.config.PUBLICKEY},,,,,,,,,,,,`; //specify GENESIS Node directly
                 //else
                 //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
