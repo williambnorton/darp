@@ -40,17 +40,26 @@ if [ $? -eq 0 ]; then
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
     node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
-     cat porttest.txt
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    cat porttest.txt
     
+    export SWVERSION=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $3}'`
+    export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
     export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
     export GENESISIP=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
     export GENESISPORT=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $5}'`
-    echo `date` "DONE PORT TEST - SETTING GENESIS TO $GENESIS"
+    export GEBNESISGEO=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $6}'`
+    export GEBNESISGROUP=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $7}'`
+    echo `date` "SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 fi
 
 if [ "$GENESIS" == "" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
-    echo `date` "$0 Confifgure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
+    echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
     exit 36; 
 fi
 
@@ -144,7 +153,7 @@ do
     rc=$?
     echo `date` "FINISHED DARP Protocol index.js done rc=$rc" #| tee -a NOIA.log
 
-    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" #| tee -a NOIA.log 
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  -   either new DARP code or new docker  - - - - -  rc=$rc" #| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
