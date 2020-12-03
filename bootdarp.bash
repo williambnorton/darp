@@ -41,12 +41,9 @@ if [ $? -eq 0 ]; then
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
     node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
     echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+
     cat porttest.txt
-    
+    echo "BEST CHOICES IN ORDER OF LATENCY"
     export SWVERSION=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $3}'`
     export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
     export GENESIS=`cat porttest.txt | grep Build | head -1 | awk -F, '{ print $4}'`
@@ -60,6 +57,12 @@ fi
 if [ "$GENESIS" == "" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
     echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
+    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+
     exit 36; 
 fi
 
