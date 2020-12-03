@@ -12,8 +12,11 @@ fi
     DARPDIR=~/darp
     cd $DARPDIR
     ls -l
+    CURRENTDOCKER=`ls Docker.*`
+    CURRENTDARP=`ls Build*`
+    echo `date` $0 "CURRENTDOCKER=$CURRENTDOCKER CURRENTDARP=$CURRENTDARP"
     CURRENT=`ls Build*`
-    echo `date` "$0 Current SW is "`ls Docker.[0-9].*`":"`ls Build*`
+    echo `date` "$0 Current SW is "`ls Docker.*`":"`ls Build*`
     cd /tmp
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
