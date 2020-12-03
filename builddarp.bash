@@ -18,6 +18,7 @@ rm Build.??????.????
 find . -name '*.pid' -delete
 MESSAGE="DARP Protocol with matrix and basic data graphs"
 date>"Build."`date +%y%m%d.%H%M`
+BUILD_TAG=`ls -l Build.*`
 ls -l Build.*
 rm -f subagents/rtt/ip*
 
@@ -29,7 +30,9 @@ cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
-git add . && git commit -m "$MESSAGE + " && git pull && git push 
+#git tag $BUILD_TAG
+#git add . && git commit -m "$MESSAGE + " && git pull && git push 
+git add . && git commit -m "$MESSAGE + " && git pull && git push origin $BUILD_TAG
 echo `date` Completed compiles + git push for `ls Build*`
 
 #
