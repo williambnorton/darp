@@ -102,6 +102,7 @@ export class Config {
 //            process.exit(86);
 //        }
         this.GENESIS = process.env.GENESIS||"";
+        console.log(`starting with GENESIS=${GENESIS}`);
         if (this.GENESIS=="" || this.GENESIS=="auto") {
             console.log(`===================                       Finding a GENESIS node to connect to                 =================`);
             let genesisNodeList=process.env.GENESISNODELIST;
