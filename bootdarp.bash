@@ -93,7 +93,6 @@ CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
-    echo "RUNNING">$WGDIR/STATE 
 
     echo `date` TOP OF LOOP
 
@@ -143,7 +142,7 @@ do
 
     #ps
 
-
+    echo "RUNNING " + $VERSION > $WGDIR/STATE 
 
     cd $DARPDIR/dist
     echo `date` "============================================================ Starting DARP $VERSION : node index ..."
