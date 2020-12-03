@@ -60,8 +60,8 @@ if [ "$GENESIS" == "" ]; then
     echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
     echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
     echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
+    echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
 
     exit 36; 
 fi
