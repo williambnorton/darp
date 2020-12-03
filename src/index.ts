@@ -95,6 +95,12 @@ app.get('/version', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger.info(`EXITTING and Stopping the node request from ${ip}`);
     Log("EXITTING and Stopping the node request from "+ip);
+    console.log("#################################### STOP MESSAGE RECEIVED -  EXITTING and Stopping the node request from "+ip);
+    console.log("#################################### STOP MESSAGE RECEIVED -  EXITTING and Stopping the node request from "+ip);
+    console.log("#################################### STOP MESSAGE RECEIVED -  EXITTING and Stopping the node request from "+ip);
+    console.log("#################################### STOP MESSAGE RECEIVED -  EXITTING and Stopping the node request from "+ip);
+    console.log("#################################### STOP MESSAGE RECEIVED -  EXITTING and Stopping the node request from "+ip);
+    console.log("#################################### STOP MESSAGE RECEIVED -  EXITTING and Stopping the node request from "+ip);
     var referer = req.get('Referer');
     if (referer !== undefined) {
         res.redirect(referer);
@@ -108,6 +114,13 @@ app.get('/version', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger.info(`/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from ${ip}`);
     Log("reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from "+ip);
+    console.log("#################################### REBOOT MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### REBOOT MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### REBOOT MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### REBOOT MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### REBOOT MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### REBOOT MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+
     var referer = req.get('Referer');
     if (referer !== undefined) {
         res.redirect(referer);
@@ -123,6 +136,12 @@ app.get('/version', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger.info(`EXITTING to reload the system request from: ${ip}`)
     Log("EXITTING to reload the system request from: "+ip)
+    console.log("#################################### RELOAD SOFTWARE MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### RELOAD SOFTWARE MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### RELOAD SOFTWARE MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### RELOAD SOFTWARE MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+    console.log("#################################### RELOAD SOFTWARE MESSAGE RECEIVED -  EXITTING docker requested from "+ip);
+
     var referer = req.get('Referer');
     if (referer !== undefined) {
         res.redirect(referer);
