@@ -5,7 +5,7 @@
 #   TRhere is probably a better way to do this, so this remains a separate script
 #
 if [ $# -gt 0 ]; then
-    BRANCH=$1       #We specify when a new Build is pulsed or discovered on GENESIS NODE during SW chewck
+    BRANCH=$1
 else   
     BRANCH=testnet
 fi
