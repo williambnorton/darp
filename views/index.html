@@ -12,7 +12,7 @@
             console.log("document loaded");
             fetchState();
             $('#matrix').DataTable({'iDisplayLength': 25});
-            $('#extraordinary').DataTable({'iDisplayLength': 25});
+            $('#extraordinary').DataTable({'iDisplayLength': 100});
             $('#pulses').DataTable({'iDisplayLength': 25});
             $('#mintTable').DataTable({'iDisplayLength': 25});
         });
@@ -161,8 +161,8 @@
                     // console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                     if ( pulseGroup.nodeCount >= 1 ) {
                         if (nodeCountLastTime!=0) {
-                            //if ( nodeCountLastTime != pulseGroup.nodeCount ) {  //immediately show changes so screen reflects reality
-                            if (( nodeCountLastTime > pulseGroup.nodeCount+1) || (nodeCountLastTime < pulseGroup.nodeCount-1 )) {
+                            if ( nodeCountLastTime != pulseGroup.nodeCount ) {  //immediately show changes so screen reflects reality
+                            //if (( nodeCountLastTime > pulseGroup.nodeCount+1) || (nodeCountLastTime < pulseGroup.nodeCount-1 )) {
                                     console.log("index.html: RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                                     location.reload();
                             }
