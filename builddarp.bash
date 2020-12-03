@@ -18,7 +18,7 @@ rm Build.??????.????
 find . -name '*.pid' -delete
 MESSAGE="DARP Protocol with matrix and basic data graphs"
 date>"Build."`date +%y%m%d.%H%M`
-BUILD_TAG=`ls -l Build.*`
+BUILD_TAG=`ls Build.*`
 ls -l Build.*
 rm -f subagents/rtt/ip*
 
