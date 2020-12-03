@@ -11,6 +11,7 @@ else
 fi
     DARPDIR=~/darp
     cd $DARPDIR
+    ls -l
     CURRENT=`ls Build*`
     echo `date` "$0 Current SW is "`ls Docker.[0-9].*`":"`ls Build*`
     cd /tmp
