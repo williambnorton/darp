@@ -792,7 +792,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             // Docker reload
                             logger_1.logger.error("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
                             console.log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
+                            console.log("checkSWversion(): writing " + myDockerVersion + " to /etc/wireguard/STATE");
                             lib_1.Log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
+                            fs.writeFileSync('/etc/wireguard/STATE', dockerVersion);
                             process.exit(0);
                         }
                         // Software reload
