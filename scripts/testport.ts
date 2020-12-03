@@ -6,7 +6,7 @@
 //	$1 is MYIP curl'd from public utility - what if not on public internet?
 //	$2 is optional port specified DEFAULT=65013
 
-import { argv } from "process";
+//import { argv } from "process";
 
 //
 var myArgs=process.argv.slice(2);
