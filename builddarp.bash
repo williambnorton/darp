@@ -32,7 +32,7 @@ git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
 #git tag $BUILD_TAG
 #git add . && git commit -m "$MESSAGE + " && git pull && git push 
-git add . && git commit -m "$MESSAGE + " && git pull && git push origin $BUILD_TAG
+git add . && git commit -m "$MESSAGE + " && git pull && git push $BUILD_TAG
 echo `date` Completed compiles + git push for `ls Build*`
 
 #
