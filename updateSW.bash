@@ -4,6 +4,11 @@
 #   This is run one-time each cycle to clone into /tmp/ and see if things changed.
 #   TRhere is probably a better way to do this, so this remains a separate script
 #
+if [ $# -gt 0 ]; then
+    BRANCH=$1       #We specify when a new Build is pulsed or discovered on GENESIS NODE during SW chewck
+else   
+    BRANCH=testnet
+fi
     DARPDIR=~/darp
     cd $DARPDIR
     CURRENT=`ls Build*`
@@ -11,8 +16,8 @@
     cd /tmp
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
-    echo `date` "Cloning 'latest' darp code from github"
-    ( git clone --depth 1 --branch latest https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+    echo `date` "updateSW.bash: Cloning 'latest' darp code from github"
+    ( git clone --depth 1 --branch $BRANCH https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
     cd /tmp/darp
     NEW=`ls Build*`
 
