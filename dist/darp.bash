@@ -69,7 +69,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     echo `date` STATE=$STATE
     while [ "$STATE" != "STOP" ]
     do
-        
+        echo "==================== darp.bash STATE is $STATE"
 
         # spin off liaison gateway script that ties together host network and docker 
         # wgwatch.bash (docker will create it in shared ~/wireguard directory)
