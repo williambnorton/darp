@@ -113,7 +113,7 @@ var Config = /** @class */ (function () {
         //            process.exit(86);
         //        }
         this.GENESIS = process.env.GENESIS || "";
-        console.log("starting with GENESIS=" + GENESIS);
+        console.log("starting with GENESIS=" + this.GENESIS);
         if (this.GENESIS == "" || this.GENESIS == "auto") {
             console.log("===================                       Finding a GENESIS node to connect to                 =================");
             var genesisNodeList = process.env.GENESISNODELIST;
