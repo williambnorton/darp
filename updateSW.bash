@@ -16,7 +16,7 @@ fi
     cd /tmp
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
-    echo `date` "updateSW.bash: Cloning 'latest' darp code from github"
+    echo `date` "updateSW.bash: Cloning $BRANCH darp code from github"
     ( git clone --depth 1 --branch $BRANCH https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
     cd /tmp/darp
     NEW=`ls Build*`
