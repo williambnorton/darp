@@ -20,4 +20,4 @@ docker build --no-cache -t williambnorton/darp:$DOCKERVERSION . && docker push w
 echo `date` New docker $DOCKERVERSION running DARP `ls Build*`
 echo `date` Finished $0 Force genesis node to reload SW and the group will follow
 
-./builddarp.bash              ####This deals with a timing issue - nodes keep reloading trying to get same SW as genesis, but it is not possible
+#./builddarp.bash              ####This deals with a timing issue - nodes keep reloading trying to get same SW as genesis, but it is not possible
