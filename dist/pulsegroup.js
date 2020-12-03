@@ -783,7 +783,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 res.on("end", function () {
                     var genesisVersion = JSON.parse(body);
                     var mySWversion = lib_1.MYVERSION(); // find the Build.*
-                    logger_1.logger.info("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
+                    console.log("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
                     //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                     if (genesisVersion != mySWversion) {
                         var dockerVersion = genesisVersion.split(":")[0];
@@ -804,7 +804,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         process.exit(36);
                     }
                     else {
-                        console.log(lib_1.ts() + ("Software running " + mySWversion + " is up-to-daten with " + url));
+                        console.log(lib_1.ts() + ("Software running " + mySWversion + " is up-to-date with " + url));
                     }
                 });
             }).on("error", function () {

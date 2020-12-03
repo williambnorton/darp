@@ -1014,7 +1014,7 @@ export class AugmentedPulseGroup {
             res.on("end", () => {
                 var genesisVersion = JSON.parse(body);
                 var mySWversion = MYVERSION();  // find the Build.*
-                logger.info(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
+                console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 if (genesisVersion != mySWversion) {
                     const dockerVersion=genesisVersion.split(":")[0];
@@ -1036,7 +1036,7 @@ export class AugmentedPulseGroup {
                     process.exit(36);
                 }
                 else { 
-                    console.log(ts()+`Software running ${mySWversion} is up-to-daten with ${url}`);
+                    console.log(ts()+`Software running ${mySWversion} is up-to-date with ${url}`);
                 }
             });
         }).on("error", function () {
