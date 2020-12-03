@@ -53,11 +53,11 @@ var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var SECURE_PORT = 65020;
-var CHECK_SW_VERSION_CYCLE_TIME = 120; // CHECK for new SW updates every 60 seconds
+var CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
 var NO_MEASURE = 99999; //value to indis=cate no measurement exists
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
-var GENESIS_NODE_TIMEOUT = 60;
+var GENESIS_NODE_TIMEOUT = 15; // go away when our GENESIS node is unreachable, our optimization group no longer helps its creator.
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // Define data structures used in the protocol
 /** App configuration settings obtained from ENV variables */
@@ -465,8 +465,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(ts()+`timeout() `);
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
-            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > 15000) {
-                console.log("timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...");
+            if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > (GENESIS_NODE_TIMEOUT * 1000)) {
+                console.log("timeout(): GENESIS NODE MIA for " + GENESIS_NODE_TIMEOUT + " seconds -- EXITTING...");
                 lib_1.Log("timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...");
                 process.exit(36);
             }

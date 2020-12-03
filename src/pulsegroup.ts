@@ -20,11 +20,11 @@ const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 
 const SECURE_PORT=65020;    
 
-const CHECK_SW_VERSION_CYCLE_TIME = 120; // CHECK for new SW updates every 60 seconds
+const CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
 const NO_MEASURE = 99999;       //value to indis=cate no measurement exists
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
-const GENESIS_NODE_TIMEOUT=60;
+const GENESIS_NODE_TIMEOUT=15;    // go away when our GENESIS node is unreachable, our optimization group no longer helps its creator.
 
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 
@@ -666,8 +666,8 @@ export class AugmentedPulseGroup {
 
         //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
 
-        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp>15000) {
-            console.log(`timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...`);
+        if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp> (GENESIS_NODE_TIMEOUT*1000) ) {
+            console.log(`timeout(): GENESIS NODE MIA for ${GENESIS_NODE_TIMEOUT} seconds -- EXITTING...`);
             Log(`timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...`);
 
             process.exit(36);
