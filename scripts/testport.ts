@@ -5,6 +5,9 @@
 // standlone utility
 //	$1 is MYIP curl'd from public utility - what if not on public internet?
 //	$2 is optional port specified DEFAULT=65013
+
+import { argv } from "process";
+
 //
 var myArgs=process.argv.slice(2);
 if (myArgs.length<3) {
@@ -50,6 +53,9 @@ function finish() {
     //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
     for (var g in responses) {
         console.log(`testport.ts  ${responses[g].latency}:${responses[g].url}:GenesisNode:${responses[g].srcIP}:`);
+    }
+    if (responses.length==0) {
+        console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISPORT} ${JSON.stringify(argv)}`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
