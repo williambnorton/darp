@@ -30,7 +30,9 @@ fi
    if [ "$CURRENT" == "$NEW" ]; then
 	    echo `date` No Change       
     else
-	    echo `date` "$0 Software changed. Was $CURRENT Now is $NEW"
+        NEWDOCKERVERSION=`echo $NEW|awk -F: '{ print $1 }'`
+        NEWDARPVERSION=`echo $NEW|awk -F: '{ print $2 }'`
+        echo `date` "$0 Software changed. Was $CURRENT Now is $NEW NEWDOCKERVERSION=$NEWDOCKERVERSION NEWDARPVERSION=$NEWDARPVERSION"
         cd /tmp/darp
         echo 'CLONED INTO /tmp/darp directory.'
         #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
@@ -44,7 +46,10 @@ fi
         echo `date` "New Code installed:"
         cd $DARPDIR; ls
         echo `date` "NEW Build - Build = $NEW"
+        rm Build.* Docker.*
+        echo $NEWDARPVERSION>$NEWDARPVERSION
+        echo $NEWDOCKERVERSION>$NEWDOCKERVERSION
     fi
 
     echo `date` "Completed git clone into ~/darp - OLD=$CURRENT NEW=$NEW"
-
+    ls

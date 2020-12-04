@@ -112,7 +112,6 @@ do
     sleep 2
   
     cd $DARPDIR
-    #export VERSION=`ls Build*`
     echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MYIP = = = = = = = = = = = = "  
 
     #Now we are running in the new code /root/darp directory of docker
@@ -143,6 +142,7 @@ do
     #ps
 
     echo "RUNNING " + $VERSION > $WGDIR/STATE 
+
 
     cd $DARPDIR/dist
     echo `date` "============================================================ Starting DARP $VERSION : node index ..."
