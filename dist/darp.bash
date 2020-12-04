@@ -101,7 +101,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         fi
         echo `date` "$0 Docker exitted with rc=$rc- sleeping 15 seconds and fetching new docker and restarting"
         sleep 15
-
+        STATE=`cat ~/wireguard/STATE`
+        echo `date` "$0 STATE=$STATE"
     done
 else
     echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
