@@ -26,8 +26,8 @@ if [ -f $PIDFILE ]; then
 fi
 echo $$ >$PIDFILE
 
-docker inspect -f '{{ .Created }}' `docker ps | grep -v CONTAINER | awk 'END{print NR}' ` >DOCKER_SW_VERSION
-echo `date` "Running DARP Docker Created "`cat DOCKER_SW_VERSION`
+#docker inspect -f '{{ .Created }}' `docker ps | grep -v CONTAINER | awk 'END{print NR}' ` >DOCKER_SW_VERSION
+#echo `date` "Running DARP Docker Created "`cat DOCKER_SW_VERSION`
 
 while :
 do

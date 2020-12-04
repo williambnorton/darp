@@ -93,6 +93,7 @@ CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
 do
+    cd $DARPDIR
 
     echo `date` TOP OF LOOP
 
@@ -104,7 +105,6 @@ do
     rc=$?
     cd /tmp
     cd /root/drp
-    #cd $DARPDIR
     export DARPVERSION=`ls Build*`
     export DOCKERVERSION=`ls Docker.*`
     export VERSION="${DOCKERVERSION}:${DARPVERSION}"    # DOCKERVERSION comes in as environmental variable
