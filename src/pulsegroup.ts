@@ -1013,6 +1013,8 @@ export class AugmentedPulseGroup {
 
             res.on("end", () => {
                 var genesisVersion = JSON.parse(body);
+                console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} this.config=${this.config}  this.config.VERSION=${this.config.VERSION} MYVERSION()=${MYVERSION()}`);
+
                 var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
                 console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
