@@ -310,10 +310,12 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    var version = String(req.query.version);   ///why do we look at caller's version param?
+    var version = String(req.query.version);   ///why do we look at client version param
 
-    version=config.VERSION=MYVERSION(); 
-    console.log(`setting version and config.VERSION to  ${version}`);
+    version=MYVERSION(); 
+    console.log(`index.ts incoming version is ${version}`);
+    version=config.VERSION;
+    console.log(`index.ts setting version to  ${version}`);
 
 
 

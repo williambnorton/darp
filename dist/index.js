@@ -308,9 +308,11 @@ app.get('/nodefactory', function (req, res) {
     if (typeof incomingIP == "undefined")
         return logger_1.logger.error("incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
     logger_1.logger.info("incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP + " req.myip=" + req.query.myip);
-    var version = String(req.query.version); ///why do we look at caller's version param?
-    version = config.VERSION = lib_1.MYVERSION();
-    console.log("setting version and config.VERSION to  " + version);
+    var version = String(req.query.version); ///why do we look at client version param
+    version = lib_1.MYVERSION();
+    console.log("index.ts incoming version is " + version);
+    version = config.VERSION;
+    console.log("index.ts setting version to  " + version);
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port == config.GENESISPORT)) { // Genesis node instantiating itself - don't need to add anything
         console.log("I AM GENESIS NODE incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
