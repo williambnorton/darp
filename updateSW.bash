@@ -36,7 +36,6 @@ fi
 	    echo `date` No Change       
     else
         echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
-        cd /tmp/darp
         echo 'CLONED INTO /tmp/darp directory.'
         #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
         cd /tmp
