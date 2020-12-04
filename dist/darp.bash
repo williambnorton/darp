@@ -89,9 +89,10 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
         # Here we should use the Docker tag the genesis node says he is using.  Maybe the code that sends darp.bash would affix its DockerBuild# :Docker.201202.0518
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
-        echo `date` "HOST: darp.bash: would be starting darp: DOCKERTAG running GITTAG"
+        echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
 
-        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
+        #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
+        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp
         
         rc=$?
         if [ $? -eq 86 ]; then
