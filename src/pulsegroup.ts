@@ -1025,7 +1025,7 @@ export class AugmentedPulseGroup {
                         // Docker reload
                         logger.error(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting 0`);
                         console.log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting 0`);
-                        console.log(`checkSWversion(): writing ${myDockerVersion} to /etc/wireguard/STATE`);
+                        console.log(`checkSWversion(): writing ${dockerVersion} to /etc/wireguard/STATE`);
                         Log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting 0`);
                         fs.writeFileSync('/etc/wireguard/STATE', dockerVersion );
                         process.exit(0);                        
