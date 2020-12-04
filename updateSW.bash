@@ -39,10 +39,15 @@ fi
         SUFFIX=`date +%y%m%d.%H%M`
         mv $DARPDIR /tmp/darp.$SUFFIX
 
-        mv darp $HOME
+        cd /root/darp/
         cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
-        rm Build* Docker.*
+        mv darp $HOME
+        #
+        #   
+        #
+        rm Build* 
         echo $NEWDARPVERSION > $NEWDARPVERSION
+        ls -l $NEWDARPVERSION
     fi
 
     echo `date` "Completed git clone into ~/darp - OLD=$CURRENTDARP NEW=$NEW"
