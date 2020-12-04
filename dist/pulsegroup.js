@@ -96,6 +96,7 @@ var Config = /** @class */ (function () {
             logger_1.logger.warning("No VERSION environmental variable specified - setting to " + process.env.VERSION);
         }
         this.VERSION = process.env.VERSION || "NoVersion";
+        console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=" + this.VERSION + " MYVERSION()=" + lib_1.MYVERSION());
         if (!process.env.MYIP) {
             logger_1.logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
             process.env.MYIP = process.env.GENESIS; // MYIP();
@@ -751,8 +752,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.checkSWversion = function () {
             var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
                 "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
-            if (_this.groupOwner == _this.config.GEO) {
-                //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
+            if (_this.groupOwner == _this.config.GEO) { //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
                 var firstGenesisNode = process.env.GENESISNODELIST;
                 if (typeof firstGenesisNode == "undefined") {
                     console.log("no GENESISNODELIST environmental variable - not doing software check from this genesis node ");
@@ -777,7 +777,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     lib_1.Log("checkSWversion():: checkSWversion CAN'T REACH GENESIS NODE WITH SW");
                     //there needs to be a way for old Genesis nodes that get a new Internet IP 
                     //don't result in forever trying to get updates from an IP that doesn't exist anymore
-                    //process.exit(36);
+                    //process.exit(36);  //think about think - software update failure..... do what?
                     // 
                 });
                 res.on("end", function () {
@@ -790,7 +790,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         var myDockerVersion = mySWversion.split(":")[0];
                         if (dockerVersion != myDockerVersion) {
                             // Docker reload
-                            logger_1.logger.error("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting");
+                            logger_1.logger.error("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
                             console.log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
                             console.log("checkSWversion(): writing " + myDockerVersion + " to /etc/wireguard/STATE");
                             lib_1.Log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
@@ -798,7 +798,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             process.exit(0);
                         }
                         // Software reload
-                        logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting");
+                        logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         process.exit(36);

@@ -83,6 +83,7 @@ export class Config {
             logger.warning(`No VERSION environmental variable specified - setting to ${process.env.VERSION}`);
         }
         this.VERSION = process.env.VERSION || "NoVersion";
+        console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=${this.VERSION} MYVERSION()=${MYVERSION()}`);
 
         if (!process.env.MYIP) {
             logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
@@ -977,8 +978,7 @@ export class AugmentedPulseGroup {
         var url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
 
-        if (this.groupOwner == this.config.GEO) { 
-            //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
+        if (this.groupOwner == this.config.GEO) {        //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
             var firstGenesisNode=process.env.GENESISNODELIST;
             if (typeof firstGenesisNode == "undefined" ) {
                 console.log(`no GENESISNODELIST environmental variable - not doing software check from this genesis node `);                
@@ -1007,13 +1007,13 @@ export class AugmentedPulseGroup {
                 //there needs to be a way for old Genesis nodes that get a new Internet IP 
                 //don't result in forever trying to get updates from an IP that doesn't exist anymore
    
-                //process.exit(36);
+                //process.exit(36);  //think about think - software update failure..... do what?
                 // 
             });
 
             res.on("end", () => {
                 var genesisVersion = JSON.parse(body);
-                var mySWversion = this.config.VERSION=MYVERSION();  // find the Build.*
+                var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
                 console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 if (genesisVersion != mySWversion) {
@@ -1021,7 +1021,7 @@ export class AugmentedPulseGroup {
                     const myDockerVersion=mySWversion.split(":")[0];
                     if (dockerVersion!=myDockerVersion) {
                         // Docker reload
-                        logger.error(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting`);
+                        logger.error(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting 0`);
                         console.log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting 0`);
                         console.log(`checkSWversion(): writing ${myDockerVersion} to /etc/wireguard/STATE`);
                         Log(`checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said ${dockerVersion} we are running ${myDockerVersion}. Process exitting 0`);
@@ -1029,7 +1029,7 @@ export class AugmentedPulseGroup {
                         process.exit(0);                        
                     }
                     // Software reload
-                    logger.error(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting`);
+                    logger.error(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting 36`);
                     console.log(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting 36`);
                     Log(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting 36`);
                    
