@@ -26,11 +26,11 @@ fi
     ls -l $HOME/darp
 
     cd /tmp/darp
-    echo /tmp/darp directopry:
+    echo /tmp/darp directory:
     ls -l /tmp/darp
     NEWDARPVERSION=`ls Build*`
 
-   echo UPDATESW.BASH "$CURRENTDARP" "$NEWDARPVERSION" 
+   echo `date` Starting darp.bash "$CURRENTDARP" "$NEWDARPVERSION" 
 
    if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
 	    echo `date` No Change       
