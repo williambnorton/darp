@@ -22,10 +22,10 @@ fi
     #mv $DARPDIR /tmp/darp
     echo `date` "updateSW.bash: Cloning $BRANCH darp code from github"
     ( git clone --depth 1 --branch $BRANCH https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
-    echo $HOME/darp directopry:
-    ls -l $HOME/darp
+    echo "New DARP Code in /tmp/darp directory:"
+    ls -lR /tmp/darp
 
-    cd /tmp/darp
+    cd /tmp
     echo /tmp/darp directory:
     ls -l /tmp/darp
     NEWDARPVERSION=`ls Build*`
