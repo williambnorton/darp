@@ -156,7 +156,7 @@ do
     #
 #	node index 
     rc=$?
-    echo `date` "FINISHED DARP Protocol index.js done rc=$rc" #| tee -a NOIA.log
+    echo `date` "FINISHED DARP Protocol index.js done rc=$rc  wireguard DOCKER=`cat /etc/wireguard/STATE`" #| tee -a NOIA.log
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  -   either new DARP code or new docker  - - - - -  rc=$rc" #| tee -a NOIA.log 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -175,7 +175,7 @@ do
     if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; echo "STOP">$WGDIR/STATE;  exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 0 ]; then
-        echo "rc=0 - New Docker Available"
+        echo "rc=0 - New Docker Available: "`cat /etc/wireguard/STATE` 
         exit 0
     else
         if [ $rc -ne 36 ]; then
