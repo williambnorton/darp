@@ -85,9 +85,9 @@ function DARPping() {
     }
    setTimeout(DARPping,1000);
 }
-console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
+//console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
 client.bind(MYPORT);  //server listening 0.0.0.0:65013
-console.log(`testport.ts  bind done`);
+
 
 DARPping();
 
