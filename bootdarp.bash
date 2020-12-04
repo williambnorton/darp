@@ -102,7 +102,9 @@ do
     ./updateSW.bash `cat Build*`   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
 
     rc=$?
-    cd $DARPDIR
+    cd /tmp
+    cd /root/drp
+    #cd $DARPDIR
     export DARPVERSION=`ls Build*`
     export DOCKERVERSION=`ls Docker.*`
     export VERSION="${DOCKERVERSION}:${DARPVERSION}"    # DOCKERVERSION comes in as environmental variable
