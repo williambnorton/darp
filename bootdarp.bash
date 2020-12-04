@@ -104,7 +104,7 @@ do
 
     rc=$?
     cd /tmp
-    cd /root/drp
+    cd /root/darp
     export DARPVERSION=`ls Build*`
     export DOCKERVERSION=`ls Docker.*`
     export VERSION="${DOCKERVERSION}:${DARPVERSION}"    # DOCKERVERSION comes in as environmental variable
