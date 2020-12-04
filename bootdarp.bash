@@ -99,7 +99,8 @@ do
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
 
-    ./updateSW.bash #>/dev/null - we want to start with the newest software
+    ./updateSW.bash `cat Build*`   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
+
     rc=$?
     cd $DARPDIR
     export DARPVERSION=`ls Build*`
