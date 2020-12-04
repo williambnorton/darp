@@ -308,7 +308,7 @@ app.get('/nodefactory', function (req, res) {
     if (typeof incomingIP == "undefined")
         return logger_1.logger.error("incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
     logger_1.logger.info("incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP + " req.myip=" + req.query.myip);
-    var version = String(req.query.version);
+    var version = String(req.query.version); ///why do we look at caller's version param?
     version = config.VERSION = lib_1.MYVERSION();
     console.log("setting version and config.VERSION to  " + version);
     // handle Genesis node case - first to start up

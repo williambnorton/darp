@@ -308,9 +308,15 @@ app.get('/nodefactory', function(req, res) {
         return logger.error(`incomingIP unavailable from geo=${geo} incomingIP=${incomingIP} clientIncomingIP=${clientIncomingIP}`);
     logger.info(`incomingIP=${incomingIP} clientIncomingIP=${clientIncomingIP} req.myip=${req.query.myip}`);
 
-    var version = String(req.query.version);
+
+
+    var version = String(req.query.version);   ///why do we look at caller's version param?
+
     version=config.VERSION=MYVERSION(); 
     console.log(`setting version and config.VERSION to  ${version}`);
+
+
+
 
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port==config.GENESISPORT)) {  // Genesis node instantiating itself - don't need to add anything

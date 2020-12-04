@@ -100,7 +100,7 @@ do
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
 
     ./updateSW.bash #>/dev/null - we want to start with the newest software
-    rc=$$
+    rc=$?
     cd $DARPDIR
     export DARPVERSION=`ls Build*`
     export DOCKERVERSION=`ls Docker.*`
