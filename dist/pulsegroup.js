@@ -782,7 +782,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 });
                 res.on("end", function () {
                     var genesisVersion = JSON.parse(body);
-                    console.log("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " this.config=" + _this.config + "  this.config.VERSION=" + _this.config.VERSION + " MYVERSION()=" + lib_1.MYVERSION());
+                    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " this.config=" + JSON.stringify(_this.config, null, 2) + "  this.config.VERSION=" + _this.config.VERSION + " MYVERSION()=" + lib_1.MYVERSION());
                     var mySWversion = _this.config.VERSION = lib_1.MYVERSION(); // find the Build.*
                     console.log("checkSWversion(): genesis SWversion==" + lib_1.dump(genesisVersion) + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
                     //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
