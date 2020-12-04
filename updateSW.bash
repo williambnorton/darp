@@ -49,9 +49,9 @@ fi
         #
         #   
         #
-        rm Build* 
-        echo $NEWDARPVERSION > $NEWDARPVERSION
-        ls -l $NEWDARPVERSION
+        #rm Build* 
+        #echo $NEWDARPVERSION > $NEWDARPVERSION
+        #ls -l $NEWDARPVERSION
     fi
 
     echo `date` "Completed git clone into ~/darp - OLD=$CURRENTDARP NEW=$NEW"
