@@ -53,7 +53,7 @@ fi
 END=`date +%s`
 DELTA=`expr $END - $START`
 DELTA_MIN=`expr $DELTA / 60`
-echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA_MIN minutes
+echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA seconds
 
 
 

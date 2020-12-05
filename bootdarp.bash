@@ -219,5 +219,7 @@ do
         echo `date` "RAN 100 CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         exit 86;
     fi
+    find /root/darp/history -type f -mmin +7 -print       #This could be done out of cron every minute
+
     sleep $SLEEPTIME
 done
