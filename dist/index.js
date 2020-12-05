@@ -287,20 +287,27 @@ function findPublicKey(incomingKey) {
 //
 app.get('/publickey/:publickey', function (req, res) {
     logger_1.logger.info("fetching '/publickey' searching for " + req.params.publickey);
-    var G = findPublicKey(req.params.publickey);
-    if (G == null) {
-        console.log("/publickey - could not find publickey");
-        return; //do nothing -- silently fail
+    if (typeof req.params.publickey == "undefined") {
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify(myPulseGroups[me.geo + ".1"].mintTable, null, 2));
     }
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    try {
-        //we found public key - option A) return the genesis node that has this public key 
-        res.end({ genesisIP: myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr, genesisPort: myPulseGroups[me.geo + ".1"].mintTable[1].port, destIP: G.ipaddr, destPort: G.port }); // IPADDR : PORT of my genesis node 
+    else {
+        var G = findPublicKey(req.params.publickey);
+        if (G == null) {
+            console.log("/publickey - could not find publickey");
+            return; //do nothing -- silently fail
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        try {
+            //we found public key - option A) return the genesis node that has this public key 
+            res.end({ genesisIP: myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr, genesisPort: myPulseGroups[me.geo + ".1"].mintTable[1].port, destIP: G.ipaddr, destPort: G.port, publickey: G.publickey }); // IPADDR : PORT of my genesis node 
+        }
+        catch (e) { }
+        ;
+        return;
     }
-    catch (e) { }
-    ;
-    return;
 });
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function (req, res) {
