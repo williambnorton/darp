@@ -18,7 +18,6 @@
 #
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
-mkdir /root/darp/history
 #This is a starting list of Bill's public genesis nodes located across clouds 
 #export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
 
@@ -94,7 +93,6 @@ echo `date` >$DARPDIR/forever
 while :
 do
     cd $DARPDIR
-
     echo `date` TOP OF LOOP
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever

@@ -34,9 +34,12 @@ $(function() {
                 `;
 
 //    var path = src + "-medians" + myYYMMDD + ".txt";
-    var path = "/root/darp/"+"history/" + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
+    const dir = "/root/darp/history/"
+    const path = dir + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
+
     //console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
     try {
+
         if (fs.existsSync(path)) {
             // file exists
             const data = fs.readFileSync(path, "UTF-8").toString();

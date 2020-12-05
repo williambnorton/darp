@@ -1275,8 +1275,14 @@ export class AugmentedPulseGroup {
                 //  We could repeat the same logic to the medianHistory - kill it if we see 60 minuutes of continuously rising or falling latency measures
                 //
             }               
-            
-            var filename = this.config.DARPDIR+"/history/"+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
+
+            const dir = "/root/darp/history/"
+        
+            if ( ! fs.existsSync(dir)) {
+                fs.mkdirSync(dir);
+                console.log(`pulsegroup.ts created ${dir} history directrory`);
+            }       
+            var filename = dir+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
             //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
             
             //
@@ -1284,7 +1290,7 @@ export class AugmentedPulseGroup {
             //      so slow clock drift (<60ms/min) machines can live in the ecocytem for an hour
             //
             
-            //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
+            console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
             var str=JSON.stringify(dataPoints);
             fs.writeFile(filename, str, (err) => {  //appended asynchronously
                 if (err) throw err;

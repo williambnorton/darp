@@ -6,7 +6,8 @@ function grapher(src, dest) {
     var myYYMMDD = lib_1.YYMMDD();
     var txt = "\n<!DOCTYPE HTML>\n<meta http-equiv=\"refresh\" content=\"60\">\n<html>\n<head>\n<title>" + src + "-" + dest + " " + myYYMMDD + " medianOfMedians & last60secs</title> \n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery-1.11.1.min.js\"></script>\n<script type=\"text/javascript\" src=\"https://canvasjs.com/assets/script/jquery.canvasjs.min.js\"></script>\n<script type=\"text/javascript\">\n$(function() {\n\t$(\".chartContainer\").CanvasJSChart({\n\t\ttitle: {\n\t\t\ttext: \"" + src + " -> " + dest + " " + myYYMMDD + " medians+last60Seconds\"\n\t\t},\n\t\taxisY: {\n\t\t\ttitle: \"latency in ms\",\n\t\t\tincludeZero: false\n\t\t},\n\t\taxisX: {\n\t\t\tinterval: 1\n\t\t},\n\t\tdata: [\n\t\t{\n\t\t\ttype: \"line\", //try changing to column, area\n\t\t\ttoolTipContent: \"{label}: {y} ms\",\n\t\t\tdataPoints: [\n                //fetched data from file goes here\n                ";
     //    var path = src + "-medians" + myYYMMDD + ".txt";
-    var path = "/root/darp/" + "history/" + src + "-" + dest + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
+    var dir = "/root/darp/history/";
+    var path = dir + src + "-" + dest + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
     //console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
     try {
         if (fs.existsSync(path)) {
