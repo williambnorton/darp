@@ -99,8 +99,9 @@ do
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
-
-    ./updateSW.bash testnet   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
+    PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`
+    echo `date` "PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
+    ./updateSW.bash $PRESCRIBED_DOCKERVERSION   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
 
     rc=$?
     cd /tmp
