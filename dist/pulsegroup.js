@@ -843,7 +843,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return;
             }
             //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
-            var filename = "../history/" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
+            var filename = "/root/darp/history/" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
             fs.appendFile(filename, incomingPulse.lastMsg + "\n", function (err) {
                 if (err)
                     throw err;

@@ -1083,7 +1083,7 @@ export class AugmentedPulseGroup {
        }
 
        //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
-       var filename = "../history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
        fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
                if (err) throw err;
        });

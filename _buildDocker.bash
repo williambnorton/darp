@@ -25,4 +25,4 @@ echo `date` New docker $DOCKERVERSION running DARP `ls Docker.*`
 echo `date` Finished $0 build docker took $DELTA_MIN minutes to make this $DOCKERVERSION docker
 
 #./builddarp.bash              ####This deals with a timing issue - nodes keep reloading trying to get same SW as genesis, but it is not possible
-say the docker build is complete Bill
+say Bill, the docker build is complete. it took $DELTA_MIN minutes to complete.
