@@ -286,8 +286,8 @@ function findPublicKey(incomingKey) {
 //  only return if you have it
 //
 app.get('/publickey/:publickey', function (req, res) {
-    logger_1.logger.info("fetching '/publickey' searching for " + req.params.publickey);
-    if (typeof req.params.publickey == "undefined") {
+    console.log("fetching '/publickey' searching for " + req.params.publickey);
+    if (typeof req.params.publickey == "undefined" || req.params.publickey == "" || req.params.publickey == null) {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.send(JSON.stringify(myPulseGroups[me.geo + ".1"].mintTable, null, 2));
