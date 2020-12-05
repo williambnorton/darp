@@ -34,7 +34,7 @@ $(function() {
                 `;
 
 //    var path = src + "-medians" + myYYMMDD + ".txt";
-    var path = "../" + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
+    var path = "../history/" + src + "-" + dest + ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
     //console.log(`grapher(): src=${src} - ${dest} reading path=${path}`);
     try {
         if (fs.existsSync(path)) {
