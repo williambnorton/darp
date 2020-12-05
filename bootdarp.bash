@@ -18,7 +18,7 @@
 #
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
-
+mkdir /root/darp/history
 #This is a starting list of Bill's public genesis nodes located across clouds 
 #export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
 
@@ -35,7 +35,7 @@ grep $MYIP awsgenesis.config operators.config
 if [ $? -eq 0 ]; then
     export GENESIS=$MYIP
     echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
- else
+else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
@@ -204,6 +204,7 @@ do
     #kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
 
+    find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
     if [ -f  $DARPDIR/index.pid ]; then
         kill `cat $DARPDIR/index.pid`
@@ -219,7 +220,6 @@ do
         echo `date` "RAN 100 CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         exit 86;
     fi
-    find /root/darp/history -type f -mmin +7 -print       #This could be done out of cron every minute
 
     sleep $SLEEPTIME
 done
