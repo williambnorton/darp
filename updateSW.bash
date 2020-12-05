@@ -22,7 +22,15 @@ fi
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
     echo `date` "updateSW.bash: Cloning $BRANCH darp code from github"
-    ( git clone --depth 1 --branch $BRANCH https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+
+    if [ "$BRANCH" == "testnet" ]; then
+        echo `date` STARTING testnet
+        ( git clone --depth 1 https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+    else
+        echo `date` STARTING $BRANCH
+        ( git clone --depth 1 --branch $BRANCH https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+    fi
+
     echo "New DARP Code in /tmp/darp directory:"
     ls -lR /tmp/darp
 
