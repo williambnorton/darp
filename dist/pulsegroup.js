@@ -1020,7 +1020,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //  We could repeat the same logic to the medianHistory - kill it if we see 60 minuutes of continuously rising or falling latency measures
                     //
                 }
-                var filename = "../history/" + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
+                var filename = _this.config.DARPDIR + "/history/" + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
                 //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
                 //
                 //  Could more easily go through array here and kill any node with more than 60 measures in a row in the same direction

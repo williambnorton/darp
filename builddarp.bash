@@ -16,7 +16,9 @@ fi
 echo `date` $0 compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="DARP Protocol with matrix and basic data graphs"
+MESSAGE="DARP Protocol"
+START=`date +%s`
+
 date>"Build."`date +%y%m%d.%H%M`
 BUILD_TAG=`ls Build.*`
 ls -l Build.*
@@ -47,5 +49,12 @@ if [ $# -gt 0 ]; then
 	#(sleep 30;echo `date` Starting ~/wireguard wgwatch; cd ~/wireguard; ~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
 	docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
 fi
+
+END=`date +%s`
+DELTA=`expr $END - $START`
+DELTA_MIN=`expr $DELTA / 60`
+echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA_MIN minutes
+
+
 
 exit 0

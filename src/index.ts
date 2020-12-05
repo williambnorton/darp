@@ -268,6 +268,35 @@ app.get('/mintTable', function(req, res) {
     return;
 });
 
+function findPublicKey(incomingKey:string) {
+const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
+
+    for (var m in myMintTable) {
+        if (myMintTable[m]!=null && myMintTable[m].publickey==incomingKey)
+            return myMintTable[m];
+    }
+    return null;
+}
+//
+//  only return if you have it
+//
+app.get('/publickey/:publickey', function(req, res) {
+    logger.info("fetching '/publickey' searching for "+ req.params.publickey );
+    var G=findPublicKey(req.params.publickey);
+    if (G==null) {
+        console.log(`/publickey - could not find publickey`);
+        return;  //do nothing -- silently fail
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    try {
+            //we found public key - option A) return the genesis node that has this public key 
+        res.end({ genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr, genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port, destIP:G.ipaddr, destPort:G.port}); // IPADDR : PORT of my genesis node 
+    } catch(e) {};
+    return;
+});
+
+
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function(req, res) {
     // additional nodes adding to pulseGroup
