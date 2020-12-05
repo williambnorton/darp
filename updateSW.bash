@@ -52,9 +52,10 @@ fi
         SUFFIX=`date +%y%m%d.%H%M`
         mv $DARPDIR /tmp/darp.$SUFFIX
 
-        cd /root/darp/
+        cd /tmp
         cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
         mv darp $HOME
+        cd $DARPDIR
         #
         #   
         #
