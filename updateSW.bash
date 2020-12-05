@@ -9,6 +9,7 @@ if [ $# -gt 0 ]; then
 else   
     BRANCH=testnet
 fi
+    echo `date` $0 BRANCH=$BRANCH
     DARPDIR=~/darp
     cd $DARPDIR
     ls -l
