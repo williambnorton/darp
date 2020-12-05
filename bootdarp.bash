@@ -146,7 +146,7 @@ do
     #ps
 
     echo $DOCKERVERSION > $WGDIR/STATE 
-    echo `date` wire guard STATE file is `cat /etc/wireguard/STATE`
+    echo `date` wireguard STATE file says we should be running DOCKER: `cat /etc/wireguard/STATE`
 
     cd $DARPDIR/dist
     echo `date` "============================================================ Starting DARP $VERSION : node index ..."
