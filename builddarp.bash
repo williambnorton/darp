@@ -56,5 +56,5 @@ DELTA_MIN=`expr $DELTA / 60`
 echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA seconds
 
 #Here we could press the reload button on the first genesisnode and deploy
-#curl http://52.53.222.151:65013/
+curl http://52.53.222.151:65013/reload
 exit 0
