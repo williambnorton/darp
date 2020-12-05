@@ -1082,8 +1082,8 @@ export class AugmentedPulseGroup {
            return;
        }
 
-
-       var filename = "../"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+       //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
+       var filename = "../history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
        fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
                if (err) throw err;
        });
@@ -1290,7 +1290,7 @@ export class AugmentedPulseGroup {
             //      so slow clock drift (<60ms/min) machines can live in the ecocytem for an hour
             //
             
-            console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
+            //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
             var str=JSON.stringify(dataPoints);
             fs.writeFile(filename, str, (err) => {  //appended asynchronously
                 if (err) throw err;

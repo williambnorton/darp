@@ -842,7 +842,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //Sender should not receive pulses from genesis node for 20 seconds and time out
                 return;
             }
-            var filename = "../" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
+            //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
+            var filename = "../history/" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
             fs.appendFile(filename, incomingPulse.lastMsg + "\n", function (err) {
                 if (err)
                     throw err;
@@ -1031,7 +1032,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //  Could more easily go through array here and kill any node with more than 60 measures in a row in the same direction
                 //      so slow clock drift (<60ms/min) machines can live in the ecocytem for an hour
                 //
-                console.log("...writing dataPoints to " + filename + " : " + dataPoints);
+                //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
                 var str = JSON.stringify(dataPoints);
                 fs.writeFile(filename, str, function (err) {
                     if (err)
