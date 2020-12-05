@@ -843,6 +843,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 return;
             }
             //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
+            var dir = "/root/darp/history/";
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir);
+                console.log("pulsegroup.ts created " + dir + " history directrory");
+            }
             var filename = "/root/darp/history/" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
             fs.appendFile(filename, incomingPulse.lastMsg + "\n", function (err) {
                 if (err)
@@ -1021,12 +1026,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //  We could repeat the same logic to the medianHistory - kill it if we see 60 minuutes of continuously rising or falling latency measures
                     //
                 }
-                var dir = "/root/darp/history/";
-                if (!fs.existsSync(dir)) {
-                    fs.mkdirSync(dir);
-                    console.log("pulsegroup.ts created " + dir + " history directrory");
+                var dir_1 = "/root/darp/history/";
+                if (!fs.existsSync(dir_1)) {
+                    fs.mkdirSync(dir_1);
+                    console.log("pulsegroup.ts created " + dir_1 + " history directrory");
                 }
-                var filename = dir + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
+                var filename = dir_1 + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
                 //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
                 //
                 //  Could more easily go through array here and kill any node with more than 60 measures in a row in the same direction
