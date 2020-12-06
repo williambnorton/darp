@@ -1013,10 +1013,10 @@ export class AugmentedPulseGroup {
 
             res.on("end", () => {
                 var genesisVersion = JSON.parse(body);
-                console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    checkSWversion(): genesis SWversion==${dump(genesisVersion)} this.config=${JSON.stringify(this.config,null,2)}  this.config.VERSION=${this.config.VERSION} MYVERSION()=${MYVERSION()}`);
+                //console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    checkSWversion(): genesis SWversion==${dump(genesisVersion)} this.config=${JSON.stringify(this.config,null,2)}  this.config.VERSION=${this.config.VERSION} MYVERSION()=${MYVERSION()}`);
 
                 var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
-                console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
+                //console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 if (genesisVersion != mySWversion) {
                     const dockerVersion=genesisVersion.split(":")[0];
@@ -1038,7 +1038,7 @@ export class AugmentedPulseGroup {
                     process.exit(36);
                 }
                 else { 
-                    console.log(ts()+`Software running ${mySWversion} is up-to-date with ${url}`);
+                    //console.log(ts()+`Software running ${mySWversion} is up-to-date with ${url}`);
                 }
             });
         }).on("error", function () {
@@ -1410,21 +1410,22 @@ export class AugmentedPulseGroup {
                 //else
                 //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
-                console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
+                //console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
                 this.udp.send(message, 65013, ipaddr);
             } else {
                 console.log(`pulseGroup full - not answering request to join... `);
             }
             //
             //
-            //
+            // STILL DEVELOPING THIS AREA -- PING should include stuff to allow receiver to decide if it is a better connection for it
+            //  PONG should include enough to advocate the desired outcome - connect to me, to my genesis node, to this obne closer to you.
             //
             //
         } else {
             //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
             if (parseInt(incomingPulse.msgType)==12) {    //PONG response
-                console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
-                console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
+                //console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
+                //console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
             } else {  //default pass up the stack
                 //console.log(`INCOMING PULSE incomingPulse.msgType=${incomingPulse.msgType}`);
                 this.processIncomingPulse(incomingPulse);

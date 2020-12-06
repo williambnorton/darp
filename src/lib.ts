@@ -126,7 +126,7 @@ export function MYVERSION(): string {
             dockerBuild=Docker[0];
         }
     });
-    console.log(`MYVERSION() returning ${dockerBuild}:${darpBuild}`);
+    //console.log(`MYVERSION() returning ${dockerBuild}:${darpBuild}`);
     return dockerBuild+":"+darpBuild;
 }
 
