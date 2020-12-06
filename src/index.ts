@@ -283,6 +283,7 @@ const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
 app.get(['/publickey','/publickey/:publickey'], function(req, res) {
     console.log("fetching '/publickey' searching for "+ req.params.publickey );
     if (typeof req.params.publickey == "undefined" || req.params.publickey=="" || req.params.publickey == null) {
+        console.log(`NULL key searched - sending all mintTable`);
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.send(JSON.stringify(myPulseGroups[me.geo+".1"].mintTable,null,2));
