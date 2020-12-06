@@ -80,7 +80,6 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);
         echo `date` "$0    HOST   KILLING docker instead of deleting image"
         docker kill `docker ps | grep darp | awk '{ print $1 }'`      #kill docker running darp
-        docker kill `docker ps | grep srwan | awk '{ print $1 }'`      #kill docker running darp
 
         #
         #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.
@@ -92,8 +91,10 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         clear #CLEA THE SCREEN
         echo `date` " for testing, start the instrumentation docker: connect at http://"`curl http://ifconfig.io`":80 "
-        docker run -p 80:80 -d williambnorton/srwan &     #docker for genesis level instrumentation (owners of the pulseGroup)
-        (sleep 2;open http://`curl http://ifconfig.io`:80 )&
+        #docker kill `docker ps | grep srwan | awk '{ print $1 }'`      #kill docker running darp  <-- let's force a reload to start new instrumentation
+        docker run -p 80:80 -d williambnorton/srwan &     #docker for genesis level instrumentation (owners of the pulseGroup)  <-- this will fail if one already running
+        
+        #(sleep 2;open http://`curl http://ifconfig.io`:80 )&
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         #start docker with this node's SWVERSION copied in by 
         #
