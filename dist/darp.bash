@@ -78,9 +78,9 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
         #this is not nice - killing all dockers on system - fix this to grep
         #docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);
-        echo `date` "$0    HOST   KILLING docker instead of deleting image"
+        echo `date` "$0   HOST KILLING docker instead of deleting image"
         docker kill `docker ps | grep darp | awk '{ print $1 }'`      #kill docker running darp
-        echo `date` $0 After killing docker we have these running
+        echo `date` $0 After killing docker we have these running dockers
         docker ps
         #
         #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.

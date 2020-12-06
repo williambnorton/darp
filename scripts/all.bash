@@ -15,12 +15,16 @@ CMD="curl http://52.53.222.151:65013/darp.bash | bash "  #watch it run
 #
 #	reboot to ensure old docker killed and we start fresh
 #
-if [ 0 -eq 0 ]; then
+if [ $# -ne 0 ]; then
 for node in `cat ../genesis.config`
 do
 	echo `date` $node
-	ssh ubuntu@$node "sudo reboot" &
+	#ssh ubuntu@$node "sudo reboot" &
+	ssh ubuntu@$node "$*" &
+	exit
+
 done
+exit
 echo `date` Allowing  $REBOOTSLEEPTIME   seconds for  nodes to all reboot
 sleep $REBOOTSLEEPTIME 
 fi
