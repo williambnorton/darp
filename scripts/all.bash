@@ -12,7 +12,10 @@ CMD="curl http://52.53.222.151:65013/darp.bash | bash "  #watch it run
 #CMD="(curl http://52.53.222.151:65013/darp.bash | bash) </dev/null >autodarp.log &"  #let it run
 #echo curl http://52.53.222.151:65013/darp.bash
 
-
+#
+#	reboot to ensure old docker killed and we start fresh
+#
+if [ 0 -eq 0 ]; then
 for node in `cat ../genesis.config`
 do
 	echo `date` $node
@@ -20,14 +23,15 @@ do
 done
 echo `date` Allowing  $REBOOTSLEEPTIME   seconds for  nodes to all reboot
 sleep $REBOOTSLEEPTIME 
+fi
 
 for node in `cat ../genesis.config`
 do
-	echo `date` ssh ubuntu@$node running command $CMD
+	echo `date` ssh ubuntu@$node LAUNCHING
 	echo -n -e "\033]0;all.bash: AZURE G $node \007"
 
 #	ssh ubuntu@$node "$CMD"
 
-ssh ubuntu@$node '(sleep 30;~/wireguard/wgwatch.bash)& docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -d williambnorton/darp ' &
+ssh ubuntu@$node '(sleep 30;~/wireguard/wgwatch.bash)&  docker rm -f $(docker ps -a -q|grep darp);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -d williambnorton/darp ' &
 
 done
