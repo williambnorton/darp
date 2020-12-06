@@ -529,6 +529,9 @@ app.get('/nodefactory', function(req, res) {
     }
 })();
 
+//
+//  darp.bash substitutes in proper CODE and CONFIG for new node
+//
 app.get('/darp.bash', function(req, res) {
     logger.info("sending '/darp.bash' to new cadet ");
     res.setHeader('Content-Type', 'text/javascript');
@@ -547,8 +550,7 @@ app.get('/darp.bash', function(req, res) {
         //option 1a - conditionally configure node connected to my GENESIS . Send darp.bash iff (condition goes here) 
 
         //option 2 - connect to the ndoe that responds first.
-
-        //option 3 - get code and config from 1st genesis node on genesislist
+        //          get code from any genesis node on genesislist, but we will use first
         var genesislist=process.env.GENESISNODELIST||"";
         var genesisNodes=genesislist.split(",");
 
@@ -557,9 +559,9 @@ app.get('/darp.bash', function(req, res) {
         str=str.replace(/MYGENESISIP/gi, "auto" );
         str=str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0] );
         str=str.replace(/GITTAG/gi, config.VERSION.split(":")[1] );
-        console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
+        //console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
 
-        console.log("str="+str);
+        //console.log("darp.bash="+str);
         res.send( str );
 //        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );
 
