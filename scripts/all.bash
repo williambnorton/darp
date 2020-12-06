@@ -1,6 +1,8 @@
 #!/bin/bash
 #	utility script to perform same command across genesis nodes
 #	(assumes all credentials have been set up to be able to ssh in)
+REBOOTSLEEPTIME=120
+
 CMD="ls -l|hostname"
 CMD="sudo reboot"	#reboot pulseGroup - could do this by changing version
 CMD="docker exec -it `docker ps | grep darp | awk '{ print $1}'` /bin/bash "
@@ -11,6 +13,13 @@ CMD="curl http://52.53.222.151:65013/darp.bash | bash "  #watch it run
 #echo curl http://52.53.222.151:65013/darp.bash
 
 
+for node in `cat ../genesis.config`
+do
+	echo `date` $node
+	ssh ubuntu@$node "sudo reboot" &
+done
+echo `date` Allowing  $REBOOTSLEEPTIME   seconds for  nodes to all reboot
+sleep $REBOOTSLEEPTIME 
 
 for node in `cat ../genesis.config`
 do
@@ -20,11 +29,5 @@ do
 #	ssh ubuntu@$node "$CMD"
 
 ssh ubuntu@$node '(sleep 30;~/wireguard/wgwatch.bash)& docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -d williambnorton/darp ' &
-
-
-
-#	ssh ubuntu@$node 'bash -s' << ___EOF
-		#curl http://52.53.222.151:65013/darp.bash|bash &
-#___EOF
 
 done

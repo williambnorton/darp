@@ -93,7 +93,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         clear #CLEA THE SCREEN
         echo `date` " for testing, start the instrumentation docker: connect at http://"`curl http://ifconfig.io`":80 "
         #docker kill `docker ps | grep srwan | awk '{ print $1 }'`      #kill docker running darp  <-- let's force a reload to start new instrumentation
-        docker run -p 80:80 -d williambnorton/srwan &     #docker for genesis level instrumentation (owners of the pulseGroup)  <-- this will fail if one already running
+        docker run -p 80:80 -d williambnorton/srwan 2>&1 >/dev/null &     #docker for genesis level instrumentation OK if it fails - alredy running
         
         #(sleep 2;open http://`curl http://ifconfig.io`:80 )&
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
