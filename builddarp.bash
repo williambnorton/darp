@@ -57,6 +57,6 @@ echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA s
 
 #Here we could press the reload button on the first genesisnode and deploy
 echo `date` auto launching into darp netwqork
-say Bill, starting new D A R P  code across the globe
+#say Bill, starting new D A R P  code across the globe
 curl http://52.53.222.151:65013/reload 2>&1 >/dev/null
 exit 0
