@@ -304,7 +304,13 @@ app.get('/publickey/:publickey', function (req, res) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         try {
             console.log("we found public key - option A) return the genesis node that has this public key ");
-            var returnedObject, _a = void 0, G = _a.publickey, publickey = _a.publickey, myPulseGroups = _a.genesisIP, _b = me.geo + ".1",  = _a[_b], mintTable = _a.mintTable,  = _a[1], ipaddr = _a.ipaddr, myPulseGroups = _a.genesisPort, _c = me.geo + ".1",  = _a[_c], mintTable = _a.mintTable,  = _a[1], port = _a.port, G = _a.destIP, ipaddr = _a.ipaddr, G = _a.destPort, port = _a.port;
+            var returnedObject = {
+                publickey: G.publickey,
+                genesisIP: myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr,
+                genesisPort: myPulseGroups[me.geo + ".1"].mintTable[1].port,
+                destIP: G.ipaddr,
+                destPort: G.port
+            };
             console.log("returnedObject=" + JSON.stringify(returnedObject, null, 2));
             res.end(JSON.stringify(returnedObject)); // IPADDR : PORT of my genesis node 
         }

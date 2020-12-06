@@ -299,8 +299,8 @@ app.get('/publickey/:publickey', function(req, res) {
         try {
 
             console.log(`we found public key - option A) return the genesis node that has this public key `);
-            var returnedObject { 
-                publickey:G.publickey
+            var returnedObject = { 
+                publickey:G.publickey,
                 genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr, 
                 genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port, 
                 destIP:G.ipaddr, 
