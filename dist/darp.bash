@@ -82,6 +82,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         docker kill `docker ps | grep darp | awk '{ print $1 }'`      #kill docker running darp
         echo `date` $0 After killing docker we have these running dockers
         docker ps
+        docker kill `docker ps | grep -v CONTAIN | awk '{ print $1 }'`      #kill all dockerdX
+
         #
         #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.
         # by default not specifying GENEIS NODE means auto - choose a random or placed

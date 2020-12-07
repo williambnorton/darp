@@ -21,8 +21,6 @@ do
 	echo `date` $node
 	#ssh ubuntu@$node "sudo reboot" &
 	ssh ubuntu@$node "$*" &
-	exit
-
 done
 exit
 echo `date` Allowing  $REBOOTSLEEPTIME   seconds for  nodes to all reboot
