@@ -809,8 +809,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 });
             }).on("error", function () {
-                console.log("checkSW(): fetching version failed - genesis node out of reach - exitting");
-                process.exit(36);
+                console.log("checkSW(): fetching version failed - genesis node out of reach - NOT EXITTING ");
+                //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
             });
             setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
         };
