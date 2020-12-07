@@ -164,6 +164,7 @@ var Config = /** @class */ (function () {
         this.PUBLICKEY = PUBLICKEY;
         this.WALLET = process.env.WALLET || "auto";
         this.MAXNODES = 25;
+        console.log("config constructor made: " + JSON.stringify(this, null, 2));
     }
     return Config;
 }());
@@ -809,7 +810,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 });
             }).on("error", function () {
-                console.log("checkSW(): fetching version failed - genesis node out of reach - NOT EXITTING ");
+                console.log("checkSW(): fetching version failed " + url + " genesis node out of reach - NOT EXITTING ");
                 //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
             });
             setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
