@@ -25,8 +25,11 @@ MAXCYCLES=1000 # of cycles before stopping
 
 #Let's force AZURE instances to be non-genesis nodes
 GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
-
+echo GENESISNODELIST=$GENESISNODELIST
 export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
+
+
+
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
@@ -100,8 +103,9 @@ do
     PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`
     echo `date` "PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
     ./updateSW.bash #$PRESCRIBED_DOCKERVERSION   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
-
     rc=$?
+    echo `date` return from updateSW is $rc
+
     cd /tmp
     cd /root/darp
     export DARPVERSION=`ls Build*`

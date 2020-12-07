@@ -5,6 +5,7 @@
 // standlone utility
 //	$1 is MYIP curl'd from public utility - what if not on public internet?
 //	$2 is optional port specified DEFAULT=65013
+// example: node testport `curl ifconfig.io` 65013
 
 //import { argv } from "process";
 
@@ -21,7 +22,9 @@ const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=3;
 var first={};
-//console.log("testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+console.log("testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+
+
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
