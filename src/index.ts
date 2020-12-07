@@ -360,9 +360,7 @@ app.get('/nodefactory', function(req, res) {
     var version = String(req.query.version);   ///why do we look at client version param
 
     version=MYVERSION(); 
-    console.log(`index.ts incoming version is ${version}`);
     version=config.VERSION;
-    console.log(`index.ts setting version to  ${version}`);
 
 
 

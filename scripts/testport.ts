@@ -24,8 +24,6 @@ var numberPings=3;
 var first={};
 console.log("testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
 
-
-
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
 var done=false;

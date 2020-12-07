@@ -45,7 +45,7 @@ else
 
     cat porttest.txt
     echo "BEST CHOICES IN ORDER OF LATENCY"
-    echo "FIRST LINE:" `cat porttest.txt|head -1`
+    echo "FIRST LINE:" `cat porttest.txt | head -1`
     export SWVERSION=`cat porttest.txt | grep GenesisNode | head -1 | awk -F, '{ print $3}'`
     export GENESIS=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $4}'`
     export GENESISIP=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $4}'`

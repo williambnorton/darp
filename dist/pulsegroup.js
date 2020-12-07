@@ -1134,7 +1134,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 if (_this.isGenesisNode() && _this.nodeCount < _this.config.MAXNODES) {
                     //HERE put the nodeCount and the # better paths
                     //PONG MESSAGE
-                    var message = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.config.IP + "," + _this.config.PORT + "," + _this.config.GEO + "," + _this.config.BOOTTIMESTAMP + "," + _this.config.PUBLICKEY + ",,,,,,,,,,,,"; //specify GENESIS Node directly
+                    var message = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.config.IP + "," + _this.config.PORT + "," + _this.config.GEO + "," + _this.config.BOOTTIMESTAMP + "," + _this.config.PUBLICKEY + "," + process.env.GENESISNODELIST; //specify GENESIS Node directly
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
                     //console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
