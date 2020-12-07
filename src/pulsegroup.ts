@@ -1362,7 +1362,7 @@ export class AugmentedPulseGroup {
         };
         //  Mgmt layer
         if (incomingPulse.msgType=="11") {
-            console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
+            //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
 
             /*
             //console.log(`process.env=${JSON.stringify(process.env)}`);
