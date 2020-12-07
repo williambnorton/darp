@@ -16,6 +16,7 @@
 #
 # WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
 #
+echo `date` STARTING bootdarp.bash `ls Docker.* Build.*`
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 #This is a starting list of Bill's public genesis nodes located across clouds 
