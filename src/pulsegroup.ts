@@ -984,12 +984,12 @@ export class AugmentedPulseGroup {
                 console.log(`no GENESISNODELIST environmental variable - not doing software check from this genesis node `);                
                 return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
             }
-            console.log(ts()+`GENESIS NODE: CHecking first Genesis node for `);
+            //console.log(ts()+`GENESIS NODE: CHecking first Genesis node for `);
             firstGenesisNode=firstGenesisNode.split(",")[0];
             url = encodeURI("http://" + firstGenesisNode + ":" + 65013 + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
         }
-        console.log(ts()+`checkSWversion url=${url}`);
+        //console.log(ts()+`checkSWversion url=${url}`);
 
         //console.log(`checkSWversion()`);
         http.get(url, (res) => {

@@ -758,12 +758,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     console.log("no GENESISNODELIST environmental variable - not doing software check from this genesis node ");
                     return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
                 }
-                console.log(lib_1.ts() + "GENESIS NODE: CHecking first Genesis node for ");
+                //console.log(ts()+`GENESIS NODE: CHecking first Genesis node for `);
                 firstGenesisNode = firstGenesisNode.split(",")[0];
                 url = encodeURI("http://" + firstGenesisNode + ":" + 65013 + "/version?ts=" + lib_1.now() +
                     "&x=" + (lib_1.now() % 2000)); //add garbage to avoid caches
             }
-            console.log(lib_1.ts() + ("checkSWversion url=" + url));
+            //console.log(ts()+`checkSWversion url=${url}`);
             //console.log(`checkSWversion()`);
             http.get(url, function (res) {
                 res.setEncoding("utf8");
