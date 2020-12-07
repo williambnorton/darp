@@ -25,7 +25,7 @@ MAXCYCLES=1000 # of cycles before stopping
 #GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 
 #Let's force AZURE instances to be non-genesis nodes
-export GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
+export GENESISNODELIST=`cat awsgenesis.config operators.config|grep 65013`   #   IP:PORT:NAME
 #export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
 #Format:      IP:PORT:NAME IP:PORT:NAME
 echo GENESISNODELIST=$GENESISNODELIST
