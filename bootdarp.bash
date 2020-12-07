@@ -24,11 +24,10 @@ MAXCYCLES=1000 # of cycles before stopping
 #GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
 
 #Let's force AZURE instances to be non-genesis nodes
-GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
+export GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
 #export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
 #Format:      IP:PORT:NAME IP:PORT:NAME
 echo GENESISNODELIST=$GENESISNODELIST
-export GENESISNODELIST
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
@@ -38,6 +37,7 @@ if [ $? -eq 0 ]; then
     echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
 else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+    echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
     node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
