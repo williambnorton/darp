@@ -93,9 +93,9 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # Here we should use the Docker tag the genesis node says he is using.  Maybe the code that sends darp.bash would affix its DockerBuild# :Docker.201202.0518
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
         #clear #CLEA THE SCREEN
-        echo `date` " for testing, starting the instrumentation docker: connect at http://"`curl http://ifconfig.io`":80 "
+        #echo `date` " for testing, starting the instrumentation docker: connect at http://"`curl http://ifconfig.io`":80 "
         #docker kill `docker ps | grep srwan | awk '{ print $1 }'`      #kill docker running darp  <-- let's force a reload to start new instrumentation
-        docker run -p 80:80 -d williambnorton/srwan 2>&1 >/dev/null &     #docker for genesis level instrumentation OK if it fails - alredy running
+        #docker run -p 80:80 -d williambnorton/srwan 2>&1 >/dev/null &     #docker for genesis level instrumentation OK if it fails - alredy running
         
         #(sleep 2;open http://`curl http://ifconfig.io`:80 )&
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
