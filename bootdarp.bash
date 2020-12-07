@@ -25,15 +25,14 @@ MAXCYCLES=1000 # of cycles before stopping
 
 #Let's force AZURE instances to be non-genesis nodes
 GENESISNODELIST=`cat awsgenesis.config operators.config`   #let force Azure nodes to be member nodes, not genesis nodes
+#export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
+#Format:      IP:PORT:NAME IP:PORT:NAME
 echo GENESISNODELIST=$GENESISNODELIST
-export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
-
-
-
+export GENESISNODELIST
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
-grep $MYIP awsgenesis.config operators.config
+grep $MYIP awsgenesis.config operators.config     #GENESIS NODES for now in these files
 if [ $? -eq 0 ]; then
     export GENESIS=$MYIP
     echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
@@ -41,7 +40,7 @@ else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
-    node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config operators.config` >porttest.txt
+    node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
     echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
     cat porttest.txt
