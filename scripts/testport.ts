@@ -66,7 +66,6 @@ function finish() {
 
 function DARPping() {
     var timeNow=new Date();
-    var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,11,couldSendHost,could,send,MYIP,MYPORT,MYPUBLICKEY,,,"
     if (--numberPings==0) {
        finish()
     }
@@ -75,8 +74,11 @@ function DARPping() {
     }
     startTimestamp=timeNow.getTime();
     for (var i=2;i<myArgs.length; i=i+1) {
-        let IP=myArgs[i];
-        let Port=65013;
+        let IP=myArgs[i].split(",")[0]
+        let Port=myArgs[i].split(",")[1]
+        let Name=myArgs[i].split(",")[2]
+        var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,"+IP+","+Port+","+Name+",,"; //
+
         if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
