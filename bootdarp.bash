@@ -47,12 +47,12 @@ else
     cat porttest.txt
     echo "BEST CHOICES IN ORDER OF LATENCY"
     echo "FIRST LINE:" `cat porttest.txt | head -1`
-    export SWVERSION=`cat porttest.txt | grep GenesisNode | head -1 | awk -F, '{ print $3}'`
-    export GENESIS=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $4}'`
-    export GENESISIP=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $4}'`
-    export GENESISPORT=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $5}'`
-    export GEBNESISGEO=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $6}'`
-    export GEBNESISGROUP=`cat porttest.txt | grep GenesisNode: | head -1 | awk -F, '{ print $7}'`
+    export SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
+    export GENESIS=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+    export GENESISIP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+    export GENESISPORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
+    export GEBNESISGEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
+    export GEBNESISGROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
     echo `date` "SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 fi
 
