@@ -78,7 +78,7 @@ function DARPping() {
         let Port=myArgs[i].split(",")[1]
         let Name=myArgs[i].split(",")[2]
         var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,"+IP+","+Port+","+Name+",,"; //
-        console.log(`IP=${IP} Port=${Port} Name=${Name} Message=${Message}`);
+        console.log(`IP=${IP} Port=${Port} Name=${Name} message=${message}`);
         if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
