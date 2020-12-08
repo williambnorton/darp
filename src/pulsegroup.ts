@@ -975,19 +975,23 @@ export class AugmentedPulseGroup {
         setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
     }
 
-    checkSWversion = () => {
+    checkSWversion = () => {        //we check SW version with lead genesis node
         var url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
-                              "&x=" + (now() % 2000)); //add garbage to avoid caches
+                              "&x=" + (now() % 2000)); // Assume GENESIS node    x=add garbage to avoid caches
 
         if (this.groupOwner == this.config.GEO) {        //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
-            var firstGenesisNode=process.env.GENESISNODELIST;
+            var firstGenesisNode=process.env.GENESISNODELIST;  //GENESISNODELIST is    IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
             if (typeof firstGenesisNode == "undefined" ) {
                 console.log(`no GENESISNODELIST environmental variable - not doing software check from this genesis node `);                
                 return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
             }
             //console.log(ts()+`GENESIS NODE: CHecking first Genesis node for `);
-            firstGenesisNode=firstGenesisNode.split(",")[0];
-            url = encodeURI("http://" + firstGenesisNode + ":" + 65013 + "/version?ts=" + now() +
+            firstGenesisNode=firstGenesisNode.split(" ")[0];  //GENESISNODELIST is    IP,PORT,NAME  <<--- we want first IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
+            var ip=firstGenesisNode.split(",")[0];
+            var port=firstGenesisNode.split(",")[1];
+            var name=firstGenesisNode.split(",")[2];
+            
+            url = encodeURI("http://" + ip + ":" + port + "/version?ts=" + now() +
                               "&x=" + (now() % 2000)); //add garbage to avoid caches
         }
         //console.log(ts()+`checkSWversion url=${url}`);
