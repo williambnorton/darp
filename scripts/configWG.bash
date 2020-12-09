@@ -50,7 +50,7 @@ echo PRIVATEKEY=$PRIVATEKEY PUBLICKEY=$PUBLICKEY
 #
 #	The wgbase model will be used to re-build the conf file
 # Note: for security reasons we don't NEED to store privatekey in VM
-touch $WGDIR/wgbase.conf $WGDIR/darp0.conf $WGDIR/STATE
+touch $WGDIR/wgbase.conf $WGDIR/darp0.conf $WGDIR/STATE   #make sure STATE file sxists
 chmod 600 $WGDIR/darp0.conf $WGDIR/wgbase.conf
 
 echo '#'>$WGDIR/wgbase.conf

@@ -804,6 +804,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             process.exit(0);
                         }
                         // Software reload
+                        fs.writeFileSync('/etc/wireguard/STATE', dockerVersion + ":" + darpVersion); //store the desired software versions so updateSW starts this version
                         logger_1.logger.error("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
