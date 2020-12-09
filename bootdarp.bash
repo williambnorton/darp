@@ -17,7 +17,14 @@
 #
 # WARNING - CHANGING THIS FILE REQUIRES -> NEW DOCKER BUILD
 #
-echo `date` STARTING bootdarp.bash `ls Docker.* Build.*`
+CURRENT_DOCKERVERSION=`ls Docker.*`
+CURRENT_DARPVERSION=`ls Build.*`
+PRESCRIBED_VERSION=`cat /etc/wireguard/STATE`
+if [ "$PRESCRIBED_VERSION" == "" ]; then
+    PRESCRIBED_VERSION="auto"
+fi
+echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENTDOCKERVERSION:$CURRENTDARPVERSION  PRESCRIBED: $PRESCRIBED_VERSION"
+
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 #This is a starting list of Bill's public genesis nodes located across clouds 
@@ -33,10 +40,11 @@ echo GENESISNODELIST=$GENESISNODELIST
 
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
-grep $MYIP awsgenesis.config operators.config     #GENESIS NODES for now in these files
+
+GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
 if [ $? -eq 0 ]; then
     export GENESIS=$MYIP
-    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
+    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0     G E N E S I S   NODE          0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
 else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
     echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
