@@ -1,20 +1,21 @@
 #!/bin/bash
-#		    bootdarp.bash - fetch updated darp software and launch forever script
-#                       This is run by the docker as entrypoint
-#   This is the primary entry point for the container
+#		    bootdarp.bash - entry point for docker
+#   1) fetch updated darp software and launch forever script
+# 
+#   
 #       We expect environmental variables on startup:
 #           HOSTNAME - can be derived by `hostname` and put in the command line
 #           
 #       Optional parms:
 #           WALLET - a wallet to SINGLESTEP credits and debits for use
-#           GENESIS - a STOPPING point for connection into the mesh
+#           GENESIS - a point for connection into the mesh
 # 
 #       We create
 #           GENESIS - if it isn't passed in , we find one from DrPeering
 #           DARPDIR - the root of all darp info
 #           WGDIR - the root for DARP wireguard info and log info
 #
-# WARNING - CHANGING THIS FILE REQUIRES A RELOAD -> NEW DOCKER BUILD
+# WARNING - CHANGING THIS FILE REQUIRES -> NEW DOCKER BUILD
 #
 echo `date` STARTING bootdarp.bash `ls Docker.* Build.*`
 SLEEPTIME=5 #time in seconds between software runs in forever loop
@@ -53,7 +54,7 @@ else
     export GENESISPORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
     export GEBNESISGEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
     export GEBNESISGROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
-    echo `date` "SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
+    echo `date` "bootdarp.bash: SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 fi
 
 if [ "$GENESIS" == "" ]; then
