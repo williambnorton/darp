@@ -4,11 +4,11 @@
 #   This is run one-time each cycle to clone into /tmp/ and see if things changed.
 #   TRhere is probably a better way to do this, so this remains a separate script
 #
-if [ $# -gt 0 ]; then
-    BRANCH=$1
-else   
+#if [ $# -gt 0 ]; then
+#    BRANCH=$1
+#else   
     BRANCH=testnet
-fi
+#fi
 
     echo `date` $0 BRANCH=$BRANCH
     DARPDIR=~/darp
@@ -44,6 +44,7 @@ fi
 
    if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
 	    echo `date` No Change       
+        exit 0
     else
         echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
         echo 'CLONED INTO /tmp/darp directory.'
@@ -57,15 +58,13 @@ fi
         cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
         mv darp $HOME
         cd $DARPDIR
-        #
-        #   
-        #
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
+        ls -l
+        sleep 5
+        ./bootdarp.bash 
         #rm Build* 
         #echo $NEWDARPVERSION > $NEWDARPVERSION
         #ls -l $NEWDARPVERSION
     fi
 
-    echo `date` "Completed git clone into ~/darp - OLD=$CURRENTDARP NEW=$NEW"
-        echo `date` "$0 Software changed. Was $CURRENTDARP Now NEWDARPVERSION=$NEWDARPVERSION"
-
-    ls
+exit 1

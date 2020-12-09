@@ -148,6 +148,9 @@ app.get('/version', function(req, res) {
     } else {
         //TODO
     }
+    //
+    //  might be possible here to reload by running updateSW and not lose state
+    //
     process.exit(36);
  });
 

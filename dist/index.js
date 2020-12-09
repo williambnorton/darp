@@ -169,6 +169,9 @@ app.get('/reload', function (req, res) {
     else {
         //TODO
     }
+    //
+    //  might be possible here to reload by running updateSW and not lose state
+    //
     process.exit(36);
 });
 app.get('/asset-manifest.json', function (req, res) {

@@ -97,21 +97,28 @@ echo `date` >$DARPDIR/forever
 while :
 do
     cd $DARPDIR
-    echo `date` TOP OF LOOP
+    echo `date` TOP OF LOOP 
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
     PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`
-    echo `date` "PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
+    echo `date` "*************************** PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
     ./updateSW.bash #$PRESCRIBED_DOCKERVERSION   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
     rc=$?
-    echo `date` return from updateSW is $rc
+    echo `date` return from updateSW is $rc     
+    if [ $rc -ne 0 ]; then  
+        echo `date` done running $PRESCRIBED_DOCKERVERSION
+        exit 1 
+    fi
+    # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
 
     cd /tmp
     cd /root/darp
     export DARPVERSION=`ls Build*`
     export DOCKERVERSION=`ls Docker.*`
     export VERSION="${DOCKERVERSION}:${DARPVERSION}"    # DOCKERVERSION comes in as environmental variable
+    echo PRESCRIBED_DOCKERVERSION=$PRESCRIBED_DOCKERVERSION      RUNNING version $VERSION
+
     echo `date` "+ + + +RUNNING DARP $VERSION rc=$rc from updateSW.bash"    #VERSION should eventually be a HASH over the docker itself, mapped to docker tag
     env
 

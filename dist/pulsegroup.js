@@ -792,6 +792,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                     if (genesisVersion != mySWversion) {
                         var dockerVersion = genesisVersion.split(":")[0];
+                        var darpVersion = genesisVersion.split(":")[1];
                         var myDockerVersion = mySWversion.split(":")[0];
                         if (dockerVersion != myDockerVersion) {
                             // Docker reload
@@ -799,7 +800,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
                             console.log("checkSWversion(): writing " + dockerVersion + " to /etc/wireguard/STATE");
                             lib_1.Log("checkSWversion(): NEW DOCKER AVAILABLE - GroupOwner said " + dockerVersion + " we are running " + myDockerVersion + ". Process exitting 0");
-                            fs.writeFileSync('/etc/wireguard/STATE', dockerVersion);
+                            fs.writeFileSync('/etc/wireguard/STATE', dockerVersion + ":" + darpVersion); //store the desired software versions 
                             process.exit(0);
                         }
                         // Software reload
