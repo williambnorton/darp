@@ -57,15 +57,15 @@ else
     echo "BEST CHOICES IN ORDER OF LATENCY"
     echo "FIRST LINE:" `cat porttest.txt | head -1`
     export SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
-    export GENESIS=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+    #export GENESIS=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`   I think we want the GENESIS passed in
     export GENESISIP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
     export GENESISPORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
-    export GEBNESISGEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
-    export GEBNESISGROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+    export GENESISGEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
+    export GENESISGROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
     echo `date` "bootdarp.bash: SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 fi
 
-if [ "$GENESIS" == "" ]; then
+if [ "$GENESISIP" == "" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
     echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
     echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
