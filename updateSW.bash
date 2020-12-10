@@ -53,11 +53,9 @@ fi
         cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
         mv darp $HOME
         cd $DARPDIR
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
+        ls -l Docker.* Build.* 
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION 
+        echo HERE WE WOULD START
         ls -l
         sleep 5
         #./bootdarp.bash 
