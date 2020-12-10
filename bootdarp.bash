@@ -20,53 +20,47 @@
 
 CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`
-
-echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE   #we are running the prescribed docker to be here
-echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
-#This is a starting list of Bill's public genesis nodes located across clouds 
-#export GENESISNODELIST=`cat genesis.config | awk '{ print $1"," }'`
-
-#GENESISNODELIST=`cat awsgenesis.config genesis.config operators.config`   #ipublic NOIA DARP nodes From darpazure create scripts
-
-#Let's force AZURE instances to be non-genesis nodes
 export GENESISNODELIST=`cat awsgenesis.config operators.config|grep 65013`   #   IP:PORT:NAME
 FIRST_GENESIS=`cat awsgenesis.config operators.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `
-#export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
-#Format:      IP:PORT:NAME IP:PORT:NAME
-echo GENESISNODELIST=$GENESISNODELIST
-
-#MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
+
+echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE   #we are running the prescribed docker to be here
+echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION   SLEEP between pulseGroups=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+echo `date` "------------------------------------------------- bootdarp.bash MYIP=$MYIP GENESISNODELIST=$GENESISNODELIST"
 
 
 MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
 if [ $? -eq 0 ]; then
-    export GENESIS=$MYIP
-    echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0     G E N E S I S   NODE          0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
+    export GENESIS_IP=$MYIP
+    echo `date` "I AM GENESIS NODE $IP My Genesis Entry=$MY_GENESIS_ENTRY "
+
 else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
     echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
+    export GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+    export GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`
+    export GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`
+    export GENESIS_GEO =`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`
+    export GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
-    #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt
+    #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
     node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
     echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
     cat porttest.txt
     echo "BEST CHOICES IN ORDER OF LATENCY"
     echo "FIRST LINE:" `cat porttest.txt | head -1`
-    export SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
-    #export GENESIS=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`   I think we want the GENESIS passed in
-    export GENESISIP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
-    export GENESISPORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
-    export GENESISGEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
-    export GENESISGROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
-    echo `date` "bootdarp.bash: SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
+    export GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
+    export GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+    export GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
+    export GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
+    export GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 fi
+echo `date` "bootdarp.bash CONFIGURATION: GENESIS_SWVERSION=$GENESIS_SWVERSION GENESIS_IP=$GENESIS_IP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 
-if [ "$GENESISIP" == "" -a "$FIRST_GENESIS" != "$MYIP" ]; then
+if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MYIP" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
     echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
     echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
@@ -110,7 +104,7 @@ do
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
-    PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`
+    PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
     echo `date` "*************************** PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
     ./updateSW.bash #$PRESCRIBED_DOCKERVERSION   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
     rc=$?
