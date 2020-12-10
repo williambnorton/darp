@@ -34,6 +34,7 @@ fi
 
     echo "New DARP Code in /tmp/darp directory:"
     ls -l /tmp/darp
+    cd /tmp/darp
     NEWDARPVERSION=`ls Build.*`
 
     if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
