@@ -37,10 +37,13 @@ if [ $? -eq 0 ]; then
     echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
 
      GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-     GENESIS_IP   = `echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $1 }'`
-     GENESIS_PORT = `echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $2 }'`
-     GENESIS_GEO  = `echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $3 }'`
-     GENESIS_GROUP= "${GENESIS_GEO}.1"
+     echo `date` My GENESIS_SWVERSION=$GENESIS_SWVERSION
+     GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $1 }'`  #
+     echo `date` 
+
+     GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $2 }'`  #
+     GENESIS_GEO=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $3 }'`  #
+     GENESIS_GROUP="${GENESIS_GEO}.1"
 
 else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
