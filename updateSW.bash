@@ -33,10 +33,6 @@ fi
     fi
 
     echo "New DARP Code in /tmp/darp directory:"
-    ls -lR /tmp/darp
-
-    cd /tmp
-    echo /tmp/darp directory:
     ls -l /tmp/darp
     NEWDARPVERSION=`ls Build.*`
 
