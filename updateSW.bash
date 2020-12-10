@@ -15,7 +15,7 @@ fi
     cd $DARPDIR
     ls -l
     CURRENTDOCKER=`ls Docker.*`
-    CURRENTDARP=`ls Build*`
+    CURRENTDARP=`ls Build.*`
     CURRENTVERSION="$CURRENTDOCKER:$CURRENTDARP"
     echo `date` $0 "CURRENTDOCKER=$CURRENTDOCKER CURRENTDARP=$CURRENTDARP CURRENTVERSION=$CURRENTVERSION"
 
@@ -38,16 +38,14 @@ fi
     cd /tmp
     echo /tmp/darp directory:
     ls -l /tmp/darp
-    NEWDARPVERSION=`ls Build*`
+    NEWDARPVERSION=`ls Build.*`
 
-   echo `date` Starting darp.bash "$CURRENTDARP" "$NEWDARPVERSION" 
-
-   if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
-	    echo `date` No Change       
+    if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
+	    echo `date`" $0 No Change"       
         exit 0
     else
         echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
-        echo 'CLONED INTO /tmp/darp directory.'
+        echo `date` $0 "$NEWDARPVERSION INTO /tmp/darp directory."
         #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
         cd /tmp
         echo `date` "moving CURRENTDARP code into root directory"
@@ -58,11 +56,11 @@ fi
         cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
         mv darp $HOME
         cd $DARPDIR
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION
         ls -l
         sleep 5
         #./bootdarp.bash 
