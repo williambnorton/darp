@@ -17,13 +17,12 @@
 #
 # WARNING - CHANGING THIS FILE REQUIRES -> NEW DOCKER BUILD
 #
+
 CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`
-PRESCRIBED_VERSION=`cat /etc/wireguard/STATE`
-if [ "$PRESCRIBED_VERSION" == "" ]; then
-    PRESCRIBED_VERSION="auto"
-fi
-echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENTDOCKERVERSION:$CURRENTDARPVERSION  PRESCRIBED: $PRESCRIBED_VERSION"
+
+echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE   #we are running the prescribed docker to be here
+echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
 
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
@@ -42,7 +41,8 @@ echo GENESISNODELIST=$GENESISNODELIST
 #MAY NOT NEED TO DO THIS ANYMORE - done in code
 export MYIP=`curl ifconfig.io`
 
-GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
+
+MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
 if [ $? -eq 0 ]; then
     export GENESIS=$MYIP
     echo `date` "0000000000000000000000 0 0 0 0 0 0 0 0 0 0 0     G E N E S I S   NODE          0 0 0 0 0 0 0 0 0 0  bootdarp.bash says we are GENESIS NODE $IP"
