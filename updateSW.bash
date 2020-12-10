@@ -4,11 +4,11 @@
 #   This is run one-time each cycle to clone into /tmp/ and see if things changed.
 #   TRhere is probably a better way to do this, so this remains a separate script
 #
-#if [ $# -gt 0 ]; then
-#    BRANCH=$1
-#else   
+if [ $# -gt 0 ]; then
+    BRANCH=$1
+else   
     BRANCH=testnet
-#fi
+fi
 
     echo `date` $0 BRANCH=$BRANCH
     DARPDIR=~/darp
