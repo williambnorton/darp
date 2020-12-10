@@ -22,8 +22,8 @@ CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
-export GENESISNODELIST=`cat awsgenesis.config operators.config|grep 65013`   #   IP:PORT:NAME
-FIRST_GENESIS=`cat awsgenesis.config operators.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `
+export GENESISNODELIST=`grep 65013 awsgenesis.config`   #   IP:PORT:NAME
+FIRST_GENESIS=`grep 65013 awsgenesis.config | head -1 | awk -F, '{ print $1 }' `
 export MYIP=`curl ifconfig.io`
 
 echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE   #we are running the prescribed docker to be here
@@ -34,7 +34,11 @@ echo `date` "------------------------------------------------- bootdarp.bash MYI
 MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
 if [ $? -eq 0 ]; then
     export GENESIS_IP=$MYIP
-    echo `date` "I AM GENESIS NODE $IP My Genesis Entry=$MY_GENESIS_ENTRY "
+    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
     export GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
     export GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`
     export GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`
