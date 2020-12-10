@@ -35,15 +35,12 @@ MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NO
 if [ $? -eq 0 ]; then
     export GENESIS_IP=$MYIP
     echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
-    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
-    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
-    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
-    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+
     export GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-    export GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`
-    export GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`
-    export GENESIS_GEO =`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`
-    export GENESIS_GROUP=`echo "${GENESIS_GEO}.1" `
+    export GENESIS_IP   =`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $1 }'`
+    export GENESIS_PORT =`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $2 }'`
+    export GENESIS_GEO  =`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $3 }'`
+    export GENESIS_GROUP="${GENESIS_GEO}.1"
 
 else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
