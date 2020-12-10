@@ -67,7 +67,7 @@ else
      GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
      GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 fi
-echo `date` "bootdarp.bash We are going to join : GENESIS_SWVERSION=$GENESIS_SWVERSION GENESIS_IP=$GENESIS_IP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
+echo `date` "bootdarp.bash We are going to join : GENESIS_SWVERSION=$GENESIS_SWVERSION GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP "
 
 if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MYIP" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
