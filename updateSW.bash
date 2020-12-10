@@ -59,9 +59,13 @@ fi
         mv darp $HOME
         cd $DARPDIR
         echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
+        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP DARPVERSION=$NEWDARPVERSION
         ls -l
         sleep 5
-        ./bootdarp.bash 
+        #./bootdarp.bash 
         #rm Build* 
         #echo $NEWDARPVERSION > $NEWDARPVERSION
         #ls -l $NEWDARPVERSION
