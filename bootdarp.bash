@@ -34,6 +34,7 @@ MAXCYCLES=1000 # of cycles before stopping
 
 #Let's force AZURE instances to be non-genesis nodes
 export GENESISNODELIST=`cat awsgenesis.config operators.config|grep 65013`   #   IP:PORT:NAME
+FIRST_GENESIS=`cat awsgenesis.config operators.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `
 #export GENESISNODELIST=`echo $GENESISNODELIST|sed '1,$s/ /,/g'`        #use comma separators 
 #Format:      IP:PORT:NAME IP:PORT:NAME
 echo GENESISNODELIST=$GENESISNODELIST
@@ -65,7 +66,7 @@ else
     echo `date` "bootdarp.bash: SWVERSION=$SWVERSION GENESIS=$GENESIS GENESISIP=$GENESISIP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 fi
 
-if [ "$GENESISIP" == "" ]; then
+if [ "$GENESISIP" == "" -a "$FIRST_GENESIS" != "$MYIP" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
     echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
     echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
