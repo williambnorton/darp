@@ -36,11 +36,11 @@ if [ $? -eq 0 ]; then
     export GENESIS_IP=$MYIP
     echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
 
-    export GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-    export GENESIS_IP   =`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $1 }'`
-    export GENESIS_PORT =`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $2 }'`
-    export GENESIS_GEO  =`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $3 }'`
-    export GENESIS_GROUP="${GENESIS_GEO}.1"
+     GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+     GENESIS_IP   = `echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $1 }'`
+     GENESIS_PORT = `echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $2 }'`
+     GENESIS_GEO  = `echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' | awk -F, '{ print $3 }'`
+     GENESIS_GROUP= "${GENESIS_GEO}.1"
 
 else
     echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
@@ -58,11 +58,11 @@ else
     cat porttest.txt
     echo "BEST CHOICES IN ORDER OF LATENCY"
     echo "FIRST LINE:" `cat porttest.txt | head -1`
-    export GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
-    export GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
-    export GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
-    export GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
-    export GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+     GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
+     GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+     GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
+     GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
+     GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 fi
 echo `date` "bootdarp.bash We are going to join : GENESIS_SWVERSION=$GENESIS_SWVERSION GENESIS_IP=$GENESIS_IP GENESISPORT=$GENESISPORT GENESISGEO=$GENESISGEO GENESISGROUPGROUP=$GENESISGROUP "
 
