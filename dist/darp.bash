@@ -43,6 +43,9 @@ if [ $? -ne 0 ]; then
     echo `date` $0 docker should be installed now...
 fi
 
+if [ -f ~/wireguard/STATE ]; then
+    echo "testnet" > ~/wireguard/STATE  #we use this file to communicate from docker to docker as we change SW versions
+fi
 # forever loop to run darp and auto update docker images
 
 #
