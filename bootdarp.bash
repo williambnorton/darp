@@ -48,6 +48,11 @@ else
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
     node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
     echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
     cat porttest.txt
     echo "BEST CHOICES IN ORDER OF LATENCY"
