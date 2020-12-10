@@ -35,15 +35,15 @@ MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NO
 if [ $? -eq 0 ]; then
     export GENESIS_IP=$MYIP
     echo `date` "I AM GENESIS NODE $IP My Genesis Entry=$MY_GENESIS_ENTRY "
-
-else
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-    echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
     export GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
     export GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`
     export GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`
     export GENESIS_GEO =`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`
     export GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+
+else
+    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+    echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
     node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
