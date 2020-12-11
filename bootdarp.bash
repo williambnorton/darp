@@ -119,7 +119,7 @@ do
     rc=$?
     echo `date` "return from updateSW is $rc    " 
     if [ $rc -ne 0 ]; then  
-        echo `date` "done running $PRESCRIBED_DOCKERVERSION"
+        echo `date` "done running ./$PRESCRIBED_DOCKERVERSION"
         exit 1 
     fi
     # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
