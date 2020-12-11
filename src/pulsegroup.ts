@@ -102,6 +102,10 @@ export class Config {
 //            logger.error(`No GENESIS environmental variable specified - EXITTING`);
 //            process.exit(86);
 //        }
+        this.GENESIS=process.env.GENESIS||"";
+        console.log(`GENESIS=${process.env.GENESIS}`);
+
+        /*
         this.GENESIS = process.env.GENESIS||"";
         console.log(`starting with GENESIS=${this.GENESIS}`);
         if (this.GENESIS=="" || this.GENESIS=="auto") {
@@ -134,6 +138,7 @@ export class Config {
             }
         }
         console.log(`pulseGroup constructor GENESIS=${this.GENESIS}`); /// WBNWBNWBN
+*/
 
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
 

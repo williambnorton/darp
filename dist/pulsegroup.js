@@ -114,35 +114,41 @@ var Config = /** @class */ (function () {
         //            process.exit(86);
         //        }
         this.GENESIS = process.env.GENESIS || "";
-        console.log("starting with GENESIS=" + this.GENESIS);
-        if (this.GENESIS == "" || this.GENESIS == "auto") {
-            console.log("===================                       Finding a GENESIS node to connect to                 =================");
-            var genesisNodeList = process.env.GENESISNODELIST;
-            console.log("I am " + this.IP + " genesisNodeList=" + genesisNodeList);
+        console.log("GENESIS=" + process.env.GENESIS);
+        /*
+        this.GENESIS = process.env.GENESIS||"";
+        console.log(`starting with GENESIS=${this.GENESIS}`);
+        if (this.GENESIS=="" || this.GENESIS=="auto") {
+            console.log(`===================                       Finding a GENESIS node to connect to                 =================`);
+            let genesisNodeList=process.env.GENESISNODELIST;
+            console.log(`I am ${this.IP} genesisNodeList=${genesisNodeList}`);
+
             if (genesisNodeList) {
-                var genesisNodes = genesisNodeList.split(",");
-                var isGenesisNode = false;
+                let genesisNodes=genesisNodeList.split(",");
+                var isGenesisNode=false;
+                
                 //First rule - if this is a genesis node it starts as
                 for (var g in genesisNodes) {
                     //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
-                    if (genesisNodes[g] == this.IP) {
-                        isGenesisNode = true;
+                    if (genesisNodes[g]==this.IP) {
+                        isGenesisNode=true;
                         //console.log(`GOT IT`);
-                        this.GENESIS = this.IP;
+                        this.GENESIS=this.IP
                     }
                 }
+
                 if (!isGenesisNode) {
-                    this.GENESIS = "auto";
-                    console.log("I am not a GENESIS NODE  GENESIS=" + this.GENESIS + "  -- no one to connect to so I EXIT"); /// WBNWBNWBN
-                    process.exit(36); //reload software maybe get a better 
+                    this.GENESIS="auto"
+                    console.log(`I am not a GENESIS NODE  GENESIS=${this.GENESIS}  -- no one to connect to so I EXIT`);  /// WBNWBNWBN
+                    process.exit(36);  //reload software maybe get a better
                 }
-            }
-            else {
-                console.log("================ pulseGroup(): We have no GENESISNODELIST... EXITTING ");
+            } else {
+                console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
                 process.exit(86);
             }
         }
-        console.log("pulseGroup constructor GENESIS=" + this.GENESIS); /// WBNWBNWBN
+        console.log(`pulseGroup constructor GENESIS=${this.GENESIS}`); /// WBNWBNWBN
+*/
         //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
         //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
         //fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
