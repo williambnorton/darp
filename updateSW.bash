@@ -54,12 +54,11 @@ fi
         mv darp $HOME
         cd $DARPDIR
         ls -l Docker.* Build.* 
-        echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION 
-        echo HERE WE WOULD START
-        ls -l
-        exit 0   #we did not restart bootdarp
+        echo `date` "updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION "
+        echo "HERE WE WOULD START NEW bootdarp.bash"
+        ls -l bootdarp.bash
         sleep 5
-        #./bootdarp.bash 
+        ./bootdarp.bash 
         #rm Build* 
         #echo $NEWDARPVERSION > $NEWDARPVERSION
         #ls -l $NEWDARPVERSION
