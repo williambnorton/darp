@@ -57,6 +57,7 @@ fi
         echo `date` updateSW.bash - starting newe bootdarp.bash old CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION 
         echo HERE WE WOULD START
         ls -l
+        exit 0   #we did not restart bootdarp
         sleep 5
         #./bootdarp.bash 
         #rm Build* 
