@@ -30,44 +30,73 @@ echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE   #we are running the prescri
 echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION   SLEEP between pulseGroups=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
 echo `date` "------------------------------------------------- bootdarp.bash MYIP=$MYIP GENESISNODELIST=$GENESISNODELIST"
 
-
-MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
-if [ $? -eq 0 ]; then
-    export GENESIS_IP=$MYIP
-    echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
-     MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
-     GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-     echo `date` My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY 
-     GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
-     echo `date` 
-
-     GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
-     GENESIS_GEO=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`  #
-     GENESIS_GROUP="${GENESIS_GEO}.1"
+#
+#   user-specified over rides "auto" connection to Geneis node list participants
+#
+if [ "$GENESIS" != "" ]; then
+    GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
+    GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
+    if [ "$GENESIS_PORT" == "" ]; then
+        $GENESIS_PORT=65013
+    fi
+    GENESIS_GEO="$HOSTNAME"  #
+    GENESIS_GROUP="${GENESIS_GEO}.1"
+    GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
 
 else
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-    echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
+    echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
 
-    #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-    node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+#
+#   "auto" mode - if I a public Genesis node,  
+#
+    MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
+    if [ $? -eq 0 ]; then
+        export GENESIS_IP=$MYIP
+        echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+        MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
+        GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+        GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
+        GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
+        GENESIS_GEO=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`  #
+        GENESIS_GROUP="${GENESIS_GEO}.1"
+        echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
+        echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
+        echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
+        echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
+        echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
+     else
+        echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+        echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
-    cat porttest.txt
-    echo "BEST CHOICES IN ORDER OF LATENCY"
-    echo "FIRST LINE:" `cat porttest.txt | head -1`
-     GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
-     GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
-     GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
-     GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
-     GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+        #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
+        node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
+        echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+
+        cat porttest.txt
+        echo "BEST CHOICES IN ORDER OF LATENCY"
+        echo "FIRST LINE:" `cat porttest.txt | head -1`
+        GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
+        GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+        GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
+        GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
+        GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+
+        echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION"
+
+    fi
 fi
-echo `date` "bootdarp.bash We are going to join : GENESIS_SWVERSION=$GENESIS_SWVERSION GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP "
+export GENESIS="$GENESIS_IP:$GENESIS_PORT"
+
+echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
+echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
+echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
+echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
+echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
 
 if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MYIP" ]; then
     echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
