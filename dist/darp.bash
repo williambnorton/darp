@@ -6,7 +6,7 @@
 #
 #       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
-echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 12 7:22
+echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 12 8:22
 SUDO=sudo
 
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
@@ -14,15 +14,15 @@ docker_rc=$?
 #${SUDO} wg 2>&1 >/dev/null   #this will prevent running if wireguard not installed
 wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
-    echo `date` $0 DARP Starting `ls Docker.*`:`ls Build.*`
+    #echo `date` $0 DARP Starting `ls Docker.*`:`ls Build.*`
     STATE=`cat ~/wireguard/STATE`
     echo `date` STATE=$STATE
     while [ "$STATE" != "STOP" ]
     do
-        echo "==================== darp.bash STATE is $STATE"
+        echo "==================== darp.bash We will run software version: $STATE"
 
         # spin off liaison gateway script that ties together host network and docker 
-        # wgwatch.bash (docker will create it in shared ~/wireguard directory)
+        # wgwatch.bash (docker will create it in shared volume: ~/wireguard directory)
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
         (sleep 30;~/wireguard/wgwatch.bash) &
 
@@ -41,6 +41,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #   WALLET=wallet to use to refill escrow of tokens, auto provides a limited # of tokens for demonstrating relaying traffic (for simulation)
         #   PORT=65013
         PORT=65013
+        echo 'docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG '
         docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:testnet
         
