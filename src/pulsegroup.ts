@@ -1100,7 +1100,7 @@ export class AugmentedPulseGroup {
         
        if ( ! fs.existsSync(dir)) {
            fs.mkdirSync(dir);
-           console.log(`pulsegroup.ts created ${dir} history directrory`);
+           //console.log(`pulsegroup.ts created ${dir} history directrory`);
        }  
        var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
        fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
@@ -1299,7 +1299,7 @@ export class AugmentedPulseGroup {
         
             if ( ! fs.existsSync(dir)) {
                 fs.mkdirSync(dir);
-                console.log(`pulsegroup.ts created ${dir} history directrory`);
+                //console.log(`pulsegroup.ts created ${dir} history directrory`);
             }       
             var filename = dir+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
             //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);

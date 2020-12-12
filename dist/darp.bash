@@ -6,7 +6,7 @@
 #
 #       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
-echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 11 9:30
+echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 12 7:22
 SUDO=sudo
 
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
@@ -40,7 +40,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #   HOSTNAME=textForDisplay, helpful for simulation       
         #   WALLET=wallet to use to refill escrow of tokens, auto provides a limited # of tokens for demonstrating relaying traffic (for simulation)
         #   PORT=65013
-        docker run --rm -d -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=65013 -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
+        PORT=65013
+        docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:testnet
         
         rc=$?

@@ -855,7 +855,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var dir = "/root/darp/history/";
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir);
-                console.log("pulsegroup.ts created " + dir + " history directrory");
+                //console.log(`pulsegroup.ts created ${dir} history directrory`);
             }
             var filename = "/root/darp/history/" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
             fs.appendFile(filename, incomingPulse.lastMsg + "\n", function (err) {
@@ -1038,7 +1038,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var dir_1 = "/root/darp/history/";
                 if (!fs.existsSync(dir_1)) {
                     fs.mkdirSync(dir_1);
-                    console.log("pulsegroup.ts created " + dir_1 + " history directrory");
+                    //console.log(`pulsegroup.ts created ${dir} history directrory`);
                 }
                 var filename = dir_1 + incomingPulse.geo + "-" + _this.mintTable[0].geo + ".medianHistory.json"; //once a minute peel off the median history and store for later grapher calls
                 //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
