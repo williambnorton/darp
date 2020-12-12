@@ -41,7 +41,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         #   WALLET=wallet to use to refill escrow of tokens, auto provides a limited # of tokens for demonstrating relaying traffic (for simulation)
         #   PORT=65013
         PORT=65013
-        echo 'docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG '
+        echo "docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS=auto -e HOSTNAME=`hostname` -e WALLET=auto   williambnorton/darp:DOCKERTAG "
         docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:testnet
         
