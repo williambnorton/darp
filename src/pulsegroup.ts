@@ -1614,7 +1614,7 @@ export class AugmentedPulseGroup {
  * @param {Config} config contains constants and environmental variables, such as ip and port
  */
 export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
-    const configurl = "http://" + config.GENESIS + ":" + config.GENESISPORT +
+    const configurl = "http://" + config.GENESIS +
         "/nodefactory?geo=" + config.GEO +
         "&port=" + config.PORT +
         "&publickey=" + config.PUBLICKEY +

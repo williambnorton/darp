@@ -1405,7 +1405,7 @@ exports.AugmentedPulseGroup = AugmentedPulseGroup;
 exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, void 0, function () {
     var configurl, pulseGroupObjectURL;
     return __generator(this, function (_a) {
-        configurl = "http://" + config.GENESIS + ":" + config.GENESISPORT +
+        configurl = "http://" + config.GENESIS +
             "/nodefactory?geo=" + config.GEO +
             "&port=" + config.PORT +
             "&publickey=" + config.PUBLICKEY +
