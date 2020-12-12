@@ -44,7 +44,7 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ -f ~/wireguard/STATE ]; then
-    echo "testnet" > ~/wireguard/STATE  #we use this file to communicate from docker to docker as we change SW versions
+    echo "testnet" > ~/wireguard/STATE  #used to transition between docker versions
 fi
 # forever loop to run darp and auto update docker images
 
@@ -84,30 +84,16 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "$0   HOST KILLING docker instead of deleting image"
         docker kill `docker ps | grep darp | awk '{ print $1 }'`      #kill docker running darp
         echo `date` $0 After killing docker we have these running dockers
-        docker ps
-        docker kill `docker ps | grep -v CONTAIN | awk '{ print $1 }'`      #kill all dockerdX
-
-        #
-        #   MYGENESISIP  <-- when delivered (index.ts ) this is replaced with this node's GENESIS node.
-        # by default not specifying GENEIS NODE means auto - choose a random or placed
-        #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`  -e GENESIS=MYGENESISIP -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
-        # we explicitly say GENESIS="auto" to force all through ordered process - my list of GENESIS NODES are only ones to be GENESSIS NODES
-
-        # Here we should use the Docker tag the genesis node says he is using.  Maybe the code that sends darp.bash would affix its DockerBuild# :Docker.201202.0518
-        #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:latest #< /dev/null
-        #clear #CLEA THE SCREEN
-        #echo `date` " for testing, starting the instrumentation docker: connect at http://"`curl http://ifconfig.io`":80 "
-        #docker kill `docker ps | grep srwan | awk '{ print $1 }'`      #kill docker running darp  <-- let's force a reload to start new instrumentation
-        #docker run -p 80:80 -d williambnorton/srwan 2>&1 >/dev/null &     #docker for genesis level instrumentation OK if it fails - alredy running
-        
-        #(sleep 2;open http://`curl http://ifconfig.io`:80 )&
+        #docker ps
+        #docker kill `docker ps | grep -v CONTAIN | awk '{ print $1 }'`      #kill all dockerdX
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
-        #start docker with this node's SWVERSION copied in by 
-        #
-        #   variations - try -d  and try  not specifying GENESIS - should defult to auto anyway
-        #
-#        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
-        docker run --rm -d -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
+ 
+        #There are three things that can be changed:  
+        #   GENESIS=a node to connect to, or auto, probably what you want (default)     
+        #   HOSTNAME=textForDisplay, helpful for simulation       
+        #   WALLET=wallet to use to refill escrow of tokens, auto provides a limited # of tokens for demonstrating relaying traffic (for simulation)
+        #   PORT=65013
+        docker run --rm -d -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=65013 -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
         #docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:testnet
         
         rc=$?

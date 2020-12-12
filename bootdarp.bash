@@ -1,34 +1,69 @@
 #!/bin/bash
-#		    bootdarp.bash - entry point for docker
-#   1) fetch updated darp software and launch forever script
-# 
-#   
-#       We expect environmental variables on startup:
-#           HOSTNAME - can be derived by `hostname` and put in the command line
 #           
-#       Optional parms:
-#           WALLET - a wallet to SINGLESTEP credits and debits for use
-#           GENESIS - a point for connection into the mesh
+#		    bootdarp.bash - entry point for docker
 # 
-#       We create
-#           GENESIS - if it isn't passed in , we find one from DrPeering
-#           DARPDIR - the root of all darp info
-#           WGDIR - the root for DARP wireguard info and log info
+#       We set up the operating environmental variables on startup:
+#           HOSTNAME = passed in
+#           PORT = my open UDP/TCP port
+#           GENESIS = a specific Genesis node to connect to (IP:Port or PUBLICKEY)
+#           WALLET - a wallet with micro credits and debits for use in auto mode
+#       We create the rest:
+#           DARPDIR - the root directory of all darp ( /root/darp ) 
+#           WGDIR - the root for DARP wireguard info and log info ( ~/wireguard/ )
+# Information about myself
+#	    MY_IP - 
+#	    MY_PORT - 
+#	    MY_GEO - HOSTNAME for now
+#	    MY_SWVERSION - 
+#	    MACHINE - OS Type of machine - Linux, MacOs, Windows
+# Information about the GENESIS node we are or will connect to
+#           GENESISNODELIST - IP,PORT,NAME ...  IP,PORT,NAME 
+#           FIRSTGENESIS - IP,PORT,NAME   <--- use this for software version check
+#           GENESIS - a point for connection into the mesh <IP>:<PORT>
+#           GENESIS_IP - IP addreess of targetted genesis node to join
+#           GENESIS_PORT - 
+#           GENESIS_GEO -
+#           GENESIS_SWVERSION -
+# 
 #
-# WARNING - CHANGING THIS FILE REQUIRES -> NEW DOCKER BUILD
+# 	bootdarp.bash variables 
 #
-
-CURRENT_DOCKERVERSION=`ls Docker.*`
-CURRENT_DARPVERSION=`ls Build.*`
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac;;
+    CYGWIN*)    MACHINE=Cygwin;;
+    MINGW*)     MACHINE=MinGw;;
+    *)          MACHINE="UNKNOWN:${unameOut}"
+esac
+export MACHINE
+export DARPDIR=$HOME/darp
+CURRENT_DOCKERVERSION=`ls Docker.*`
+CURRENT_DARPVERSION=`ls Build.*`
+
+echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
+
+#
+#	setting my variables for opertion
+#
+export MY_IP=`curl ifconfig.io`	#	get my public IP
+if [ "$PORT" != "" ]; then 
+    export MY_PORT=$PORT; 
+else
+    export MY_PORT=65013		#over ridden
+fi
+export MY_GEO=$HOSTNAME		#
+export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
+echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+
+#	
+# 	setting up my GENESIS variables for operation          
+#           
 export GENESISNODELIST=`grep 65013 awsgenesis.config`   #   IP:PORT:NAME
 FIRST_GENESIS=`grep 65013 awsgenesis.config | head -1 | awk -F, '{ print $1 }' `
-export MYIP=`curl ifconfig.io`
-
-echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE   #we are running the prescribed docker to be here
-echo `date` "------------------------------------------------- bootdarp.bash STARTING bootdarp.bash $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION   SLEEP between pulseGroups=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
-echo `date` "------------------------------------------------- bootdarp.bash MYIP=$MYIP GENESISNODELIST=$GENESISNODELIST"
+echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST"
 
 #
 #   user-specified over rides "auto" connection to Geneis node list participants
@@ -54,10 +89,10 @@ else
 #
 #   "auto" mode - if I a public Genesis node,  
 #
-    MY_GENESIS_ENTRY=`grep $MYIP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
+    MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config operators.config`     #GENESIS NODES for now in these files
     if [ $? -eq 0 ]; then
-        export GENESIS_IP=$MYIP
-        echo `date` "I AM GENESIS NODE $MYIP My Genesis Entry=$MY_GENESIS_ENTRY "
+        export GENESIS_IP=$MY_IP
+        echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY "
         MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
         GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
@@ -71,10 +106,10 @@ else
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
      else
         echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-        echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
+        #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
-        #node scripts/testport.ts $MYIP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-        node scripts/testport.ts $MYIP 65013 $GENESISNODELIST >porttest.txt
+        #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
+        node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST >porttest.txt
         echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
         cat porttest.txt
@@ -86,53 +121,37 @@ else
         GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
         GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
+	if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
+    		echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
+    		echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
+    		echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    		echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    		echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+    		echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
+    		echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
+    		exit 36; 
+	fi
         echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION"
 
     fi
 fi
+export GENESIS_IP
+#export FIRST_GENESIS_IP=$GENESIS_IPdd
+export GENESIS_PORT
+#export FIRST_GENESIS_PORT=$GENESIS_PORT
+export GENESIS_GEO
+export GENESIS_SWVERSION
 export GENESIS="$GENESIS_IP:$GENESIS_PORT"
 
 echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
-echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
-echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
-echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
-echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
-
-if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MYIP" ]; then
-    echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
-    echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
-    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
-    echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
-
-    exit 36; 
-fi
 
 
-unameOut="$(uname -s)"
-case "${unameOut}" in
-    Linux*)     MACHINE=Linux;;
-    Darwin*)    MACHINE=Mac;;
-    CYGWIN*)    MACHINE=Cygwin;;
-    MINGW*)     MACHINE=MinGw;;
-    *)          MACHINE="UNKNOWN:${unameOut}"
-esac
-export MACHINE
-#echo `date` "Machine type: ${MACHINE} - we need to know this for some wg host cmds."
-
-
-export DARPDIR=$HOME/darp
-if [ "$PORT" == "" ]; then 
-    PORT=65013; 
-fi
 #export WGDIR=/etc/wireguard
 #export WGDIR=$DARPDIR/wireguard
 export WGDIR=/etc/wireguard
 export PORT
 
-echo `date` "$0 STARTING DARP DARP DARP MYIP=$MYIP GENESIS=$GENESIS" 
+echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
 CYCLES=0;
 echo `date` >$DARPDIR/forever
 while :
@@ -155,8 +174,8 @@ do
 
     cd /tmp
     cd /root/darp
-    export DARPVERSION=`ls Build*`
-    export DOCKERVERSION=`ls Docker.*`
+    DARPVERSION=`ls Build*`
+    DOCKERVERSION=`ls Docker.*`
     export VERSION="${DOCKERVERSION}:${DARPVERSION}"    # DOCKERVERSION comes in as environmental variable
     echo PRESCRIBED_DOCKERVERSION=$PRESCRIBED_DOCKERVERSION      RUNNING version $VERSION
 
@@ -167,7 +186,7 @@ do
     sleep 2
   
     cd $DARPDIR
-    echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MYIP = = = = = = = = = = = = "  
+    echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MY_IP = = = = = = = = = = = = "  
 
     #Now we are running in the new code /root/darp directory of docker
     echo `date` "bootdarp Now Configuring Wireguard"
@@ -183,18 +202,11 @@ do
         kill `cat $DARPDIR/index.pid`
     fi
     
-    #echo "Here we could / should? send a pulse to a genesis node that verify ports are bidirectionally open.... For this, genesis should respond with a NO_SUCH message Verifying the ports have been opened in both directions"
-    #echo PORTCHECK
-    #BSMSG="1603288999696,1603288999611,0,Build.201021.0619,UNRECOGNIZEDGEO,UNRECOGNIZEDGROUP,3,1603288998189,99999,1"
-
-
     echo `date` " * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     cd 
     cd /root/darp/subagents/rtt/; ls -l ; 
     ./launchrtt.bash & 
     echo $$ >$DARPDIR/launchrtt.pid
-
-    #ps
 
     echo $DOCKERVERSION > $WGDIR/STATE 
     echo `date` wireguard STATE file says we should be running DOCKER: `cat /etc/wireguard/STATE`
