@@ -97,14 +97,11 @@ var Config = /** @class */ (function () {
         }
         this.VERSION = process.env.VERSION || "NoVersion";
         console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=" + this.VERSION + " MYVERSION()=" + lib_1.MYVERSION());
-        if (!process.env.MYIP) {
-            logger_1.logger.warning("No MYIP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
-            process.env.MYIP = process.env.GENESIS; // MYIP();
+        if (!process.env.MY_IP) {
+            console.log("No MY_IP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
+            process.exit(1);
         }
-        else {
-            process.env.MYIP = process.env.MYIP.replace(/['"]+/g, ""); //\trim string
-        }
-        this.IP = process.env.MYIP || "";
+        this.IP = process.env.MY_IP.replace(/['"]+/g, ""); //trim quotes
         console.log("pulseGroup constructor this.IP=" + this.IP);
         var GEO = HOSTNAME; //passed into docker
         GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0]; //remove problem characters
