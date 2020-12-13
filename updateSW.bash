@@ -63,11 +63,12 @@ fi
     mv darp $HOME
     cd $DARPDIR
     ls -l Docker.* Build.* 
-    echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
-    echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
-    echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
-    echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
+    echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
+
     ls -l bootdarp.bash
+    exit 0
     sleep 5
+    
+
     ./bootdarp.bash 
 exit $?     #whatever their rc is our rc - 36 is reload SW, 86 is STOP, etc.
