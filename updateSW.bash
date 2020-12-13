@@ -66,7 +66,7 @@ fi
     echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
 
     ls -l bootdarp.bash
-    exit 0
+    #exit 0
     sleep 5
     
 
