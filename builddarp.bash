@@ -46,7 +46,7 @@ echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA s
 #
 #	run code on genesis node after build, effectively deploying globally
 #
-if [ $# -ne 0 ]; then
+if [ $# -eq 0 ]; then
 	say "Bill, build DARP reloading network"
 	curl http://52.53.222.151:65013/reload 2>&1 >/dev/null
 fi
