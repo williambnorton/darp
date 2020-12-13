@@ -67,6 +67,7 @@ fi
 
     ls -l bootdarp.bash
     #exit 0
+    exit 0
     sleep 5
     
 
