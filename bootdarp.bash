@@ -160,6 +160,7 @@ while :
 do
     cd $DARPDIR
     echo `date` TOP OF LOOP 
+    find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
     rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
     #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
@@ -269,7 +270,7 @@ do
     #kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
 
-    find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
+    #find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
     if [ -f  $DARPDIR/index.pid ]; then
         kill `cat $DARPDIR/index.pid`
