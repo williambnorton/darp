@@ -54,7 +54,7 @@ echo 'About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  doc
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
 echo "About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '$CMD '"
 
-ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD \' 
+ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD \' &
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
 say "[[volm 0.05]]  I am currently relaunching the primary genesis node"
 
