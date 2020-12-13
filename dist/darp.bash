@@ -6,7 +6,7 @@
 #
 #       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
-echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 12 8:22
+echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 12 16:35
 SUDO=sudo
 
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
