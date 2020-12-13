@@ -72,7 +72,7 @@ if [ "$GENESIS" != "" ]; then
     GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
     GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
     if [ "$GENESIS_PORT" == "" ]; then
-        $GENESIS_PORT=65013
+        GENESIS_PORT=65013
     fi
     GENESIS_GEO="$HOSTNAME"  #
     GENESIS_GROUP="${GENESIS_GEO}.1"

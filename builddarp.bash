@@ -40,25 +40,16 @@ git push origin $BUILD_TAG
 git push origin testnet
 echo `date` Completed compiles + git push for `ls Build*`
 
-#
-#	run code on genesis node after build, effectively deploying globally
-#
-if [ $# -gt 0 ]; then
-	echo `date` Using run optio to launch the code on genesis node also 
-	docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q)
-	#(sleep 30;echo `date` Starting ~/wireguard wgwatch; cd ~/wireguard; ~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
-	docker run --rm -p 65013:65013 -p 65013:65013/udp -p 80:80/tcp -p 80:80/udp -v ~/wireguard:/etc/wireguard  -e "GENESIS=71.202.2.184"  -e "GENESISPORT=65013" -e "HOSTNAME="`hostname`  -e "WALLET=auto" -it williambnorton/darp:latest 
-fi
-
 END=`date +%s`
 DELTA=`expr $END - $START`
 DELTA_MIN=`expr $DELTA / 60`
 echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA seconds
 
-#Here we could press the reload button on the first genesisnode and deploy
-#echo `date` auto launching into darp netwqork
-if [ $# -gt 0 ]; then
-	say "[[VOL .2]] Bill, restarting network"
+#
+#	run code on genesis node after build, effectively deploying globally
+#
+if [ $# -ne 0 ]; then
+	say "Bill, build DARP reloading network"
 	curl http://52.53.222.151:65013/reload 2>&1 >/dev/null
 fi
 exit 0
