@@ -23,7 +23,7 @@ docker tag williambnorton/darp:$DOCKERVERSION
 
 #docker tag williambnorton/darp:latest
 
-docker build --no-cache -t williambnorton/darp:testnet . && docker push williambnorton/darp
+docker build --no-cache -t williambnorton/darp:testnet . && docker push williambnorton/darp:$DOCKERVERSION
 #docker build --no-cache -t williambnorton/darp:$DOCKERVERSION -t williambnorton/darp:testnet -t williambnorton/darp:latest . && docker push williambnorton/darp
 #docker build --no-cache -t williambnorton/darp:$DOCKERVERSION . && docker push williambnorton/darp:$DOCKERVERSION
 END=`date +%s`
