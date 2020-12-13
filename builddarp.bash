@@ -27,7 +27,7 @@ rm -f subagents/rtt/ip*
 #
 #	The same flow should work on boot darp - simple extensible loop
 #
-#tsc - updates were not getting through
+# build then copy compiled code into dist directory
 cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 git add *.bash
@@ -57,6 +57,8 @@ echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA s
 
 #Here we could press the reload button on the first genesisnode and deploy
 #echo `date` auto launching into darp netwqork
-#say Bill, restarting network
-#curl http://52.53.222.151:65013/reload 2>&1 >/dev/null
+if [ $# -gt 0 ]; then
+	say "[[VOL .2]] Bill, restarting network"
+	curl http://52.53.222.151:65013/reload 2>&1 >/dev/null
+fi
 exit 0
