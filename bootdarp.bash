@@ -28,6 +28,8 @@
 #
 # 	bootdarp.bash variables 
 #
+echo `date` Starting bootdarp.bash in docker
+env
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
 unameOut="$(uname -s)"

@@ -19,7 +19,7 @@ echo `date` Building the docker container
 #
 #	this will push the tagged image : Docker.YYMMDD.HHMM
 #
-docker tag williambnorton/darp:$DOCKERVERSION
+#docker tag williambnorton/darp:$DOCKERVERSION
 
 #docker tag williambnorton/darp:latest
 
