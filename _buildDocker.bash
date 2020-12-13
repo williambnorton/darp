@@ -25,8 +25,8 @@ docker tag williambnorton/darp:$DOCKERVERSION
 
 
 
-#docker build --no-cache -t williambnorton/darp:$DOCKERVERSION . && docker push williambnorton/darp:$DOCKERVERSION
-#docker push williambnorton/darp:latest
+docker build --no-cache -t williambnorton/darp:$DOCKERVERSION . && docker push williambnorton/darp:$DOCKERVERSION
+docker push williambnorton/darp:latest
 
 
 
@@ -40,7 +40,7 @@ echo `date` New docker $DOCKERVERSION running DARP `ls Docker.*`
 echo `date` Finished $0 build docker took $DELTA_MIN minutes to make this $DOCKERVERSION docker
 
 #./builddarp.bash              ####This deals with a timing issue - nodes keep reloading trying to get same SW as genesis, but it is not possible
-say "[[volm 0.05]] Bill, the docker build is complete. it took $DELTA_MIN minutes to complete."
+say "[[volm 0.05]] Bill, the docker build is complete. it took $DELTA_MIN minutes."
 
 
 
@@ -53,9 +53,10 @@ CMD='(sleep 30;~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 6501
 echo 'About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
 echo "About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '$CMD '"
+
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD \' 
-ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
-say "[[volm 0.2]]  I am currently relaunching the primary genesis node"
+#ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
+say "[[volm 0.05]]  I am currently relaunching the primary genesis node"
 
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 'curl http://52.53.222.151:65013/darp.bash | bash '
