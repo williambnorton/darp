@@ -155,18 +155,16 @@ export PORT
 
 echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
 CYCLES=0;
-echo `date` >$DARPDIR/forever
 while :
 do
     cd $DARPDIR
     echo `date` TOP OF LOOP 
     find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
-    rm $DARPDIR/forever 2>/dev/null #comment this to re-run forever
-    #rm $DARPDIR/GENESIS.* 2>/dev/null # remove old GENESIS files 
     PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
     echo `date` "*************************** PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
-    ./updateSW.bash #$PRESCRIBED_DOCKERVERSION   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
+    DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`
+    ./updateSW.bash $DARP_SWVERSION     #$PRESCRIBED_DOCKERVERSION   #  UPDATE SOFTWARE >/dev/null - we want to start with the newest software
     rc=$?
     echo `date` "return from updateSW is $rc    " 
     if [ $rc -ne 0 ]; then  
@@ -251,7 +249,9 @@ do
             echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #| tee -a NOIA.log 
             exit 0
         else    
-            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS
+            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and =dop another loop
+            #./updateSW.bash
+            #exit 1
         fi
     fi
     #
@@ -276,7 +276,7 @@ do
         kill `cat $DARPDIR/index.pid`
     fi
 
-    ps aux
+    #ps aux
 
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 

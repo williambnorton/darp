@@ -5,12 +5,13 @@
 #   TRhere is probably a better way to do this, so this remains a separate script
 #
 if [ $# -gt 0 ]; then
-    BRANCH=$1
-else   
-    BRANCH=testnet
+    NEWDARP=$1
+else
+    echo Usage: $0 VERSION
+    exit 1
 fi
 
-    echo `date` $0 BRANCH=$BRANCH
+    echo `date` " *****************  $0 BRANCH=$BRANCH"
     DARPDIR=~/darp
     cd $DARPDIR
     ls -l
@@ -19,28 +20,30 @@ fi
     CURRENTVERSION="$CURRENTDOCKER:$CURRENTDARP"
     echo `date` $0 "CURRENTDOCKER=$CURRENTDOCKER CURRENTDARP=$CURRENTDARP CURRENTVERSION=$CURRENTVERSION"
 
+    if [ "$CURRENTDARP" == "$NEWDARP" ]; then
+        echo `date` "$0 no update needed "
+        exit 0;
+    fi
+
     cd /tmp
     rm -rf /tmp/darp
     #mv $DARPDIR /tmp/darp
-    echo `date` "updateSW.bash: Cloning $BRANCH darp code from github"
+    echo `date` "updateSW.bash: Cloning $NEWDARP darp code from github"
 
-    if [ "$BRANCH" == "testnet" ]; then
-        echo `date` STARTING testnet
-        ( git clone --depth 1 https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
-    else
-        echo `date` STARTING $BRANCH
-        ( git clone --depth 1 --branch $BRANCH https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
-    fi
+    #if [ "$BRANCH" == "testnet" ]; then
+    #    echo `date` STARTING testnet
+    #    ( git clone --depth 1 https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+    #else
+        echo `date` STARTING $NEWDARP
+        ( git clone --depth 1 --branch $NEWDARP https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+    #fi
 
     echo "New DARP Code in /tmp/darp directory:"
     ls -l /tmp/darp
     cd /tmp/darp
     NEWDARPVERSION=`ls Build.*`
 
-    if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
-	    echo `date`" $0 No Change"       
-        exit 0
-    else
+
         echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
         echo `date` $0 "$NEWDARPVERSION INTO /tmp/darp directory."
         #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
@@ -58,13 +61,12 @@ fi
         echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
         echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
         echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
-        echo `date` "updateSW.bash - LAUNCHING NEW BOOTDARP ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
         ls -l bootdarp.bash
         sleep 5
         ./bootdarp.bash 
         #rm Build* 
         #echo $NEWDARPVERSION > $NEWDARPVERSION
         #ls -l $NEWDARPVERSION
-    fi
+
 
 exit 1
