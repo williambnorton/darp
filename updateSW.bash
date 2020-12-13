@@ -70,9 +70,4 @@ fi
     ls -l bootdarp.bash
     sleep 5
     ./bootdarp.bash 
-    #rm Build* 
-    #echo $NEWDARPVERSION > $NEWDARPVERSION
-    #ls -l $NEWDARPVERSION
-
-
-exit 1
+exit $?     #whatever their rc is our rc - 36 is reload SW, 86 is STOP, etc.
