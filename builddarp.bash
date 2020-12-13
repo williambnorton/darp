@@ -33,11 +33,9 @@ cd src;tsc *.ts;mv *.js ../dist/; cd ..
 git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
 git tag $BUILD_TAG
-git tag testnet
 #git add . && git commit -m "$MESSAGE + " && git pull && git push 
 git add . && git commit -m "$MESSAGE + " && git pull && git push 
 git push origin $BUILD_TAG
-git push origin testnet
 echo `date` Completed compiles + git push for `ls Build*`
 
 END=`date +%s`
