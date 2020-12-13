@@ -47,7 +47,7 @@ CMD='(sleep 30;~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 6501
 echo 'About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
 echo "About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '$CMD'"
-ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD\' &
+ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD &\' 
 say "[[volm 0.2]]  I am currently relaunching the primary genesis node"
 
 
