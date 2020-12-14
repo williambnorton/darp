@@ -38,7 +38,7 @@ git tag $BUILD_TAG
 git add . && git commit -m "$MESSAGE + " && git pull && git push --tags
 
 git push origin $BUILD_TAG
-echo `date` Completed compiles + git push for `ls Build*`
+echo `date`" Completed compiles + git push for $BUILD_TAG "
 
 END=`date +%s`
 DELTA=`expr $END - $START`
