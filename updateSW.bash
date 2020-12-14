@@ -43,7 +43,7 @@ fi
     #else
     echo `date` STARTING $NEWDARP
         #( 
-    git clone --depth 1 --branch $NEWDARP https://github.com/williambnorton/darp.git /tmp/darp #2>&1 ) #>/dev/null 
+    git clone https://github.com/williambnorton/darp.git /tmp/darp #2>&1 ) #>/dev/null 
 
     #fi
 
