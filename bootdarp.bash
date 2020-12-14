@@ -161,14 +161,14 @@ do
     echo `date` TOP OF LOOP 
     find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
-    PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
+    #PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
     echo `date` "*************************** PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
     DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`
     ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
     rc=$?
     echo `date` "return from updateSW is $rc    " 
     if [ $rc -ne 0 ]; then  
-        echo `date` "bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+        echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
         exit $rc   #pass through any subsequent bootdarp invocations
     fi
     # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
@@ -272,9 +272,7 @@ do
 
     #find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
-    if [ -f  $DARPDIR/index.pid ]; then
-        kill `cat $DARPDIR/index.pid`
-    fi
+
 
     #ps aux
 
