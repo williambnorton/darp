@@ -14,7 +14,7 @@ fi
 #
 #   Case 1 - currently running latest DARP SW VERSION
 #
-echo `date` " *****************  $0 BRANCH=$BRANCH"
+echo `date` " *****************  $0 NEWDARP=$NEWDARP"
 DARPDIR=~/darp
 cd $DARPDIR
 ls -l
@@ -29,7 +29,7 @@ if [ "$CURRENTDARP" == "$NEWDARP" ]; then
 fi
 
 #
-#   Case 2 - neeed to upgrade the running SW - clone into tmp and copy it over, 
+#   Case 2 - neeed to upgrade the running SW - clone into /tmp and copy it over, 
 #
 
     cd /tmp
@@ -37,7 +37,7 @@ fi
     #mv $DARPDIR /tmp/darp
     echo `date` "updateSW.bash: Cloning $NEWDARP darp code from github"
 
-    #if [ "$BRANCH" == "testnet" ]; then
+    #if [ "$NEWDARP" == "testnet" ]; then
     #    echo `date` STARTING testnet
     #    ( git clone --depth 1 https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
     #else
@@ -84,8 +84,12 @@ fi
     echo after kills 
     ps aux
     sleep 5
-    echo `date` STARTING new BOOT DARP in directory: ls -l =
+    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
+    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
+    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
+    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
+    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
     ls -l
 
-    ./bootdarp.bash 
+    ./bootdarp.bash #start a new instance of boot darp
 exit $?     #whatever their rc is our rc - 36 is reload SW, 86 is STOP, etc.
