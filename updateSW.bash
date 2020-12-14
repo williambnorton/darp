@@ -44,7 +44,8 @@ fi
     echo `date` STARTING $NEWDARP
         #( 
     git clone https://github.com/williambnorton/darp.git /tmp/darp #2>&1 ) #>/dev/null 
-
+    cd /tmp/darp
+    git checkout tags/$NEWDARP    #fetch the version spoecified
     #fi
 
     echo "New DARP Code in /tmp/darp directory:"
