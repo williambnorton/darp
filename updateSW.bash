@@ -72,6 +72,12 @@ fi
     ls -l bootdarp.bash
     #exit 0
     exit 0
+
+    #kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
+    #kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
+    kill -9 `ps aux |grep -v grep | grep ping | awk '{ print $1}'`  #can delete this
+    #kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
+    kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
     sleep 5
     
 
