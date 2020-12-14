@@ -41,8 +41,10 @@ fi
     #    echo `date` STARTING testnet
     #    ( git clone --depth 1 https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
     #else
-        echo `date` STARTING $NEWDARP
-        ( git clone --depth 1 --branch $NEWDARP https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
+    echo `date` STARTING $NEWDARP
+        #( 
+    git clone --depth 1 --branch $NEWDARP https://github.com/williambnorton/darp.git /tmp/darp #2>&1 ) #>/dev/null 
+
     #fi
 
     echo "New DARP Code in /tmp/darp directory:"
