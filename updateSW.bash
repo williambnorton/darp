@@ -28,6 +28,7 @@ if [ "$CURRENTDARP" == "$NEWDARP" ]; then
     exit 0;
 fi
 
+    echo `date` $0 UPGRADING TO $NEWDARP
 #
 #   Case 2 - neeed to upgrade the running SW - clone into /tmp and copy it over, 
 #
@@ -41,7 +42,6 @@ fi
     #    echo `date` STARTING testnet
     #    ( git clone --depth 1 https://github.com/williambnorton/darp.git /tmp/darp 2>&1 ) #>/dev/null 
     #else
-    echo `date` STARTING $NEWDARP
         #( 
     git clone https://github.com/williambnorton/darp.git /tmp/darp #2>&1 ) #>/dev/null 
     cd /tmp/darp
@@ -72,8 +72,8 @@ fi
     echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP SOFTWARE ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
     echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP SOFTWARE ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
 
-    ls -l bootdarp.bash
-    #exit 0
+    #ls -l bootdarp.bash
+    exit 0
     #exit 0
 
     #kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
@@ -92,5 +92,5 @@ fi
     echo `date` "STARTING new BOOT DARP in directory: ls -l ="
     ls -l
 
-    ./bootdarp.bash #start a new instance of boot darp
-exit $?     #whatever their rc is our rc - 36 is reload SW, 86 is STOP, etc.
+    #./bootdarp.bash #start a new instance of boot darp
+    #exit $?     #whatever their rc is our rc - 36 is reload SW, 86 is STOP, etc.
