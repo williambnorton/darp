@@ -43,11 +43,6 @@ echo `date` Finished $0 build docker took $DELTA_MIN minutes to make this $DOCKE
 say "[[volm 0.05]] Bill, the docker build is complete. it took $DELTA_MIN minutes."
 
 
-
-
-
-
-
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '(sleep 30;~/wireguard/wgwatch.bash)& docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -d williambnorton/darp:$DOCKERVERSION ' &
 echo 'About to kill previous dockers and remove the images'
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
@@ -57,7 +52,7 @@ ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps 
 #echo "About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '$CMD '"
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD \' &
 
-echo `date` About to launch SR-WAN docker    #this is for the first node in the genesis list - static for now
+echo `date` About to launch SR-WAN docker $DOCKERVERSION   #this is for the first node in the genesis list - static for now
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c '(sleep 30;~/wireguard/wgwatch.bash)& nohup docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e HOSTNAME=AWS-US-WEST-1A -e WALLET=auto -d williambnorton/darp:$DOCKERVERSION' " &
 
 echo `date` About to launch SR-WAN Instrumentation docker
