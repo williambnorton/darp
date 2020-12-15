@@ -41,7 +41,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         
         rc=$?
         if [ $? -eq 86 ]; then
-            echo `date` "======================================================= docker EXITTED with rc==86"
+            echo `date` "==================== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
             exit 86
         fi
         echo `date` "$0 Docker exitted with rc=$rc- sleeping 15 seconds and fetching new docker and restarting"
