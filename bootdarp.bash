@@ -79,6 +79,7 @@ if [ "$GENESIS" != "" ]; then
     GENESIS_GEO="$HOSTNAME"  #
     GENESIS_GROUP="${GENESIS_GEO}.1"
     GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+
     echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
     echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
     echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
@@ -167,14 +168,22 @@ do
 
     DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
 
-    echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
-    ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
-    rc=$?
-    echo `date` "return from updateSW is $rc    " 
-    if [ $rc -ne 0 ]; then  
-        echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-        exit $rc   #pass through any subsequent bootdarp invocations
+    if [ "$GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
+        echo `date` "We are genesis node so we should start wth the latest SW"
+        ./updateSW.bash
+    else
+        echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
+        ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
+        rc=$?
+        echo `date` "return from updateSW is $rc    " 
+        if [ $rc -ne 0 ]; then  
+            echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            exit $rc   #pass through any subsequent bootdarp invocations
+        fi
+
     fi
+
+
     # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
 
 
