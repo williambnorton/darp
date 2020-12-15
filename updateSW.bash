@@ -54,7 +54,10 @@ fi
     ls -l /tmp/darp
     cd /tmp/darp
     NEWDARPVERSION=`ls Build.*`
-
+    if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
+        echo `date` "$0 no update needed "
+        exit 0;
+    fi
     echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
     echo `date` $0 "$NEWDARPVERSION INTO /tmp/darp directory."
     #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
