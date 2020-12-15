@@ -74,23 +74,3 @@ fi
 
     #ls -l bootdarp.bash
     exit 0
-    #exit 0
-
-    #kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
-    #kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
-    kill -9 `ps aux |grep -v grep | grep ping | awk '{ print $1}'`  #can delete this
-    #kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
-    kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
-    kill -9 `ps aux |grep -v grep | grep index | grep node | awk '{ print $1}'`   #kill old nodeJS code
-    echo after kills 
-    ps aux
-    sleep 5
-    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
-    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
-    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
-    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
-    echo `date` "STARTING new BOOT DARP in directory: ls -l ="
-    ls -l
-
-    #./bootdarp.bash #start a new instance of boot darp
-    #exit $?     #whatever their rc is our rc - 36 is reload SW, 86 is STOP, etc.
