@@ -21,11 +21,10 @@ echo `date` Building the docker container
 #
 #docker tag williambnorton/darp:$DOCKERVERSION
 
-docker tag williambnorton/darp:latest
 
 
 
-docker build --no-cache -t williambnorton/darp:$DOCKERVERSION . && docker push williambnorton/darp:$DOCKERVERSION
+docker build --no-cache -t williambnorton/darp:latest -t williambnorton/darp:$DOCKERVERSION . && docker push williambnorton/darp:$DOCKERVERSION
 docker push williambnorton/darp:latest
 
 
