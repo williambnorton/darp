@@ -162,8 +162,12 @@ do
     find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
     #PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
-    echo `date` "*************************** PRESCRIBED_DOCKERVERSION = $PRESCRIBED_DOCKERVERSION "
-    DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`
+
+
+
+    DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
+
+    echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
     ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
     rc=$?
     echo `date` "return from updateSW is $rc    " 
@@ -172,6 +176,10 @@ do
         exit $rc   #pass through any subsequent bootdarp invocations
     fi
     # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
+
+
+
+
 
     cd /tmp
     cd /root/darp

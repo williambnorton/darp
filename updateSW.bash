@@ -7,8 +7,9 @@
 if [ $# -gt 0 ]; then
     NEWDARP=$1
 else
-    echo Usage: $0 VERSION
-    exit 1
+    NEWDARP="latest"
+#    echo Usage: $0 VERSION
+#    exit 1
 fi
 
 #
