@@ -21,7 +21,7 @@ echo `date` Building the docker container
 #
 #docker tag williambnorton/darp:$DOCKERVERSION
 
-#docker tag williambnorton/darp:latest
+docker tag williambnorton/darp:latest
 
 
 

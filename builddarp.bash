@@ -49,7 +49,7 @@ echo `date` Building New `ls Build*` DARP for Docker `ls Docker.*` took $DELTA s
 #	run code on genesis node after build, effectively deploying globally
 #
 if [ $# -eq 0 ]; then
-	say "[[ volm .10 ]] Bill, build DARP reloading network"
+	say "[[ volm 0.10 ]] Bill, build DARP reloading network"
 	curl http://52.53.222.151:65013/reload 2>&1 >/dev/null
 fi
 exit 0
