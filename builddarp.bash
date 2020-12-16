@@ -31,7 +31,7 @@ rm -f subagents/rtt/ip*
 # build then copy compiled code into dist directory
 cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
-git add *.bash
+#git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
 git tag $BUILD_TAG
 #git add . && git commit -m "$MESSAGE + " && git pull && git push 
