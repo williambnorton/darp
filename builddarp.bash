@@ -33,12 +33,12 @@ cd src;tsc *.ts;mv *.js ../dist/; cd ..
 
 #git add *.bash
 #git add . && git commit -m "$MESSAGE + " && git pull && git push
-git tag $BUILD_TAG
 #git add . && git commit -m "$MESSAGE + " && git pull && git push 
-git add . && git commit -m "$MESSAGE + " && git pull && git push 
+git add . && git commit -m "$MESSAGE" && git pull && git push 
 
 echo RUNNING git push origin --tags
 #git push origin $BUILD_TAG
+git tag $BUILD_TAG
 git push origin --tags
 echo `date`" Completed compiles + git push for $BUILD_TAG "
 
