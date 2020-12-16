@@ -175,7 +175,7 @@ do
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
         ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
         rc=$?
-        echo `date` "return from updateSW is $rc    " 
+        echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
         if [ $rc -ne 0 ]; then  
             echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
             exit $rc   #pass through any subsequent bootdarp invocations

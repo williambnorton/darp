@@ -43,7 +43,7 @@ fi
     git clone https://github.com/williambnorton/darp.git /tmp/darp #2>&1 ) #>/dev/null 
     cd /tmp/darp
     #git checkout tags/latest   #fetch the latest version
-    git checkout tags/$NEWDARP   #fetch the latest version
+    git checkout tags/$NEWDARP   #fetch the specified version
 
     echo "New DARP Code in /tmp/darp directory:"
     ls -l /tmp/darp
