@@ -209,7 +209,7 @@ do
     #Now we are running in the new code /root/darp directory of docker
     echo `date` "bootdarp Now Configuring Wireguard"
     cd $DARPDIR/scripts/ 
-    ./configWG.bash #>/dev/null
+    ./configWG.bash # create directory for host-container communications / reset STATE
  
     export PUBLICKEY=`cat $WGDIR/publickey`
     echo PUBLICKEY=$PUBLICKEY
