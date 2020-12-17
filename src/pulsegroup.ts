@@ -1158,7 +1158,7 @@ export class AugmentedPulseGroup {
                             this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
                         
                         
-                        delete this.pulses[pulse];  //@wbn try deleting this entry
+                        //delete this.pulses[pulse];  //@wbn try deleting this entry
                         //return;   //why return?  @wbn
 
 

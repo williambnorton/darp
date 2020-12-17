@@ -905,7 +905,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
                             if (_this.mintTable[myPulseEntry.mint])
                                 _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
-                            delete _this.pulses[pulse]; //@wbn try deleting this entry
+                            //delete this.pulses[pulse];  //@wbn try deleting this entry
                             //return;   //why return?  @wbn
                         }
                     }
