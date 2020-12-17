@@ -906,7 +906,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             if (_this.mintTable[myPulseEntry.mint])
                                 _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
                             delete _this.pulses[pulse];
-                            //return;
+                            //return;   //why return?
                         }
                     }
                 }

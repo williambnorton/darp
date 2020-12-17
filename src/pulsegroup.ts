@@ -1155,8 +1155,12 @@ export class AugmentedPulseGroup {
                         console.log(`Owner no longer announces  MINT ENTRY ${myPulseEntry.mint} in owls (${myPulseEntry.owls}) - DELETING mintTable entry, pulseTable entry, and groupOwner owl`);
                         if (this.mintTable[myPulseEntry.mint])
                             this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
+                        
+                        
                         delete this.pulses[pulse];
-                        //return;
+                        //return;   //why return?
+
+
                     }
                 }
             }
