@@ -28,7 +28,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
         #this is not nice - killing all dockers on system - fix this to grep
         docker kill `docker ps | grep darp | awk '{ print $1 }'`  2>&1 >/dev/null    #kill docker running darp
-         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
+        echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         #There are three things that can be changed:  
         #   GENESIS=a node to connect to, or auto, probably what you want (default)     
         #   HOSTNAME=textForDisplay, helpful for simulation       
@@ -40,7 +40,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         
         echo `date` "darp.bash:  NEW TEST - directly running this DOCKER DOCKERTAG by tag"
         echo 'docker run --rm -d -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
-        docker run --rm -d -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
+        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         rc=$?
         if [ $? -eq 86 ]; then
             echo `date` "==================== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
