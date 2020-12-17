@@ -519,7 +519,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 }
                 else {
-                    /* Skipping over self (Mint0) and empty mint entries BUT lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere @wbnwbnwbn */
+                    /* Skipping over self (Mint0) and empty mint entries BUT lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere  */
                     if (m != "0" && _this.mintTable[m] && _this.mintTable[m].lastPulseTimestamp == 0 && typeof (_this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]) == "undefined") {
                         console.log("HERE We delete abandoned mintEntry - there is no longer a pulse entry for it");
                         lib_1.Log("timeout(): deleting abandoned " + _this.mintTable[m].geo + " (" + _this.mintTable[m].ipaddr + ":" + _this.mintTable[m].port + ") mintEntry - there is no longer a pulse entry for it");
@@ -621,7 +621,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }  /**/
         };
         //
-        //  @wbnwbnwbnwbn
+        //  
         //
         this.getOWLfrom = function (srcMint, owls) {
             var ary = owls.split(",");
@@ -710,7 +710,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             //
-            //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
+            //  remove extraordinarty path entries with old lastUpdated fields 
             //
             var d = new Date();
             var timeNow = d.getTime();
@@ -830,8 +830,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulse.geo) { //Is this a groupOwner PULSE?
-                _this.mintTable[1].lastPulseTimestamp = lib_1.now(); //@wbnwbnwbn mark genesis node as alive
-                _this.mintTable[1].state = "UP"; //@wbnwbnwbn mark genesis node as alive
+                _this.mintTable[1].lastPulseTimestamp = lib_1.now(); //mark genesis node as alive
+                _this.mintTable[1].state = "UP"; // mark genesis node as alive
                 if ((incomingPulse.bootTimestamp != _this.mintTable[1].bootTimestamp) || //GROUP OWNER PULSE w/new bootTimestamp?
                     (incomingPulse.version != _this.mintTable[1].version)) { //GROUP OWNER running same SW as us?
                     console.log(lib_1.ts() + "processIncomingPulse(): new bootTimestamp or new software reuirement from genesis node - it rebooted so so shall we");
@@ -857,11 +857,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 fs.mkdirSync(dir);
                 //console.log(`pulsegroup.ts created ${dir} history directrory`);
             }
-            var filename = "/root/darp/history/" + incomingPulse.geo + ".pulses." + lib_1.YYMMDD() + ".txt";
-            fs.appendFile(filename, incomingPulse.lastMsg + "\n", function (err) {
-                if (err)
-                    throw err;
-            });
+            // debugging - log every pulse - 
+            //       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+            //       fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
+            //               if (err) throw err;
+            //       });
             // pulseGroup owner controls population - GROUP OWNER PULSE HANDLER
             if (_this.groupOwner === incomingPulse.geo) { //Is this a groupOwner PULSE?
                 //if ( incomingPulseEntry.bootTimestamp != this.mintTable[1].bootTimestamp ) {
@@ -905,8 +905,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             console.log("Owner no longer announces  MINT ENTRY " + myPulseEntry.mint + " in owls (" + myPulseEntry.owls + ") - DELETING mintTable entry, pulseTable entry, and groupOwner owl");
                             if (_this.mintTable[myPulseEntry.mint])
                                 _this.deleteNode(_this.mintTable[myPulseEntry.mint].ipaddr, _this.mintTable[myPulseEntry.mint].port);
-                            delete _this.pulses[pulse];
-                            //return;   //why return?
+                            delete _this.pulses[pulse]; //@wbn try deleting this entry
+                            //return;   //why return?  @wbn
                         }
                     }
                 }
@@ -1136,7 +1136,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
     //           var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
     */
                 // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
-                //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
+                //  
                 // 
                 //
                 //
@@ -1340,7 +1340,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.csvMatrix = pulseGroup.csvMatrix; //should go away
         this.adminControl = "";
         this.config = config;
-        this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
+        this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         /*
         this.receiver = fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);

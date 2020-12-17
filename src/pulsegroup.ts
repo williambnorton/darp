@@ -303,7 +303,7 @@ export class AugmentedPulseGroup {
     // additional attributes
     adminControl: string;
     config: Config;
-    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };   //@wbnwbnwbn
+    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
     incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     
     // child processes for sending and receiving the pulse messages
@@ -325,7 +325,7 @@ export class AugmentedPulseGroup {
         
         this.adminControl = "";
         this.config = config;
-        this.extraordinaryPaths = {}; //object array of better paths through intermediaries @wbnwbnwbn
+        this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         /*
         this.receiver = fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
@@ -724,7 +724,7 @@ export class AugmentedPulseGroup {
                     // TODO: Nodes can be upgraded to "BUSY" if someone else has a measurement to it
                 }
             } else { 
-                /* Skipping over self (Mint0) and empty mint entries BUT lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere @wbnwbnwbn */ 
+                /* Skipping over self (Mint0) and empty mint entries BUT lastPulseTimestamp=0 .... Genesis Node or Me - we timeout Genesis node elsewhere  */ 
                 if (m!="0" && this.mintTable[m] && this.mintTable[m].lastPulseTimestamp==0 &&  typeof(this.pulses[this.mintTable[m].geo+":"+this.groupName])=="undefined") {
                     console.log(`HERE We delete abandoned mintEntry - there is no longer a pulse entry for it`);
                     Log(`timeout(): deleting abandoned ${this.mintTable[m].geo} (${this.mintTable[m].ipaddr}:${this.mintTable[m].port}) mintEntry - there is no longer a pulse entry for it`);
@@ -847,7 +847,7 @@ export class AugmentedPulseGroup {
 
 
     //
-    //  @wbnwbnwbnwbn
+    //  
     //
     getOWLfrom = (srcMint:number,owls:string) : number => {
             var ary = owls.split(",");
@@ -937,7 +937,7 @@ export class AugmentedPulseGroup {
             }
         }
         //
-        //  remove extraordinarty path entries with old lastUpdated fields @wbnwbnwbnwbn
+        //  remove extraordinarty path entries with old lastUpdated fields 
         //
         const d=new Date();const timeNow=d.getTime();
         for (var e in this.extraordinaryPaths) {
@@ -1068,8 +1068,8 @@ export class AugmentedPulseGroup {
 
        // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
        if (this.groupOwner === incomingPulse.geo ) {  //Is this a groupOwner PULSE?
-           this.mintTable[1].lastPulseTimestamp = now();  //@wbnwbnwbn mark genesis node as alive
-           this.mintTable[1].state = "UP";  //@wbnwbnwbn mark genesis node as alive
+           this.mintTable[1].lastPulseTimestamp = now();  //mark genesis node as alive
+           this.mintTable[1].state = "UP";  // mark genesis node as alive
 
            if (( incomingPulse.bootTimestamp != this.mintTable[1].bootTimestamp ) ||  //GROUP OWNER PULSE w/new bootTimestamp?
                ( incomingPulse.version != this.mintTable[1].version )) {  //GROUP OWNER running same SW as us?
@@ -1102,10 +1102,11 @@ export class AugmentedPulseGroup {
            fs.mkdirSync(dir);
            //console.log(`pulsegroup.ts created ${dir} history directrory`);
        }  
-       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
-       fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
-               if (err) throw err;
-       });
+       // debugging - log every pulse - 
+//       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
+//       fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
+//               if (err) throw err;
+//       });
 
 
 
@@ -1157,8 +1158,8 @@ export class AugmentedPulseGroup {
                             this.deleteNode(this.mintTable[myPulseEntry.mint].ipaddr, this.mintTable[myPulseEntry.mint].port);
                         
                         
-                        delete this.pulses[pulse];
-                        //return;   //why return?
+                        delete this.pulses[pulse];  //@wbn try deleting this entry
+                        //return;   //why return?  @wbn
 
 
                     }
@@ -1315,7 +1316,7 @@ export class AugmentedPulseGroup {
             
             //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
             var str=JSON.stringify(dataPoints);
-            fs.writeFile(filename, str, (err) => {  //appended asynchronously
+            fs.writeFile(filename, str, (err) => {  //appended asynchronously ".medianHistory.json"
                 if (err) throw err;
             });
             
@@ -1414,7 +1415,7 @@ export class AugmentedPulseGroup {
 
 
             // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
-            //  @wbnwbnwbnwbnwbnwbnWBNWBNWBN
+            //  
             // 
             //
             //
