@@ -28,7 +28,7 @@
 #
 # 	bootdarp.bash variables 
 #
-echo `date` Starting bootdarp.bash in docker
+echo `date` Starting bootdarp.bash in docker env =
 env
 SLEEPTIME=5 #time in seconds between software runs in forever loop
 MAXCYCLES=1000 # of cycles before stopping
@@ -216,7 +216,7 @@ export PORT
     echo PRESCRIBED_DOCKERVERSION=$PRESCRIBED_DOCKERVERSION      RUNNING version $VERSION
 
     echo `date` "+ + + +RUNNING DARP $VERSION rc=$rc from updateSW.bash"    #VERSION should eventually be a HASH over the docker itself, mapped to docker tag
-    env
+    #env
 
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
     sleep 2
