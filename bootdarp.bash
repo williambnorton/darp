@@ -67,6 +67,16 @@ export GENESISNODELIST=`grep 65013 awsgenesis.config`   #   IP:PORT:NAME
 FIRST_GENESIS=`grep 65013 awsgenesis.config | head -1 | awk -F, '{ print $1 }' `
 echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST"
 
+
+
+
+echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
+CYCLES=0;
+while :
+do
+
+
+
 #
 #   user-specified over rides "auto" connection to Geneis node list participants
 #
@@ -124,16 +134,16 @@ else
         GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
         GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
-	if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
-    		echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
-    		echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
-    		echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    		echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    		echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-    		echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
-    		echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
-    		exit 36; 
-	fi
+        if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
+                echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
+                echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
+                echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+                echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+                echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+                echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
+                echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
+                exit 36; 
+        fi
         echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION"
 
     fi
@@ -154,10 +164,18 @@ echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_G
 export WGDIR=/etc/wireguard
 export PORT
 
-echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
-CYCLES=0;
-while :
-do
+
+
+
+#echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
+#CYCLES=0;
+#while :
+#do
+
+
+
+
+
     cd $DARPDIR
     echo `date` TOP OF LOOP 
     find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
