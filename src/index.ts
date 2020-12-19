@@ -382,6 +382,7 @@ app.get('/nodefactory', function(req, res) {
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
+        
         return;
     }
 
@@ -478,8 +479,11 @@ app.get('/nodefactory', function(req, res) {
 
 
 
+
+
+
     //
-    //Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
+    //  Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
     //
 
     // Here clear the clone's history and median history for each pulse @wbnwbnwbn
@@ -496,6 +500,12 @@ app.get('/nodefactory', function(req, res) {
     }
 
     Log(`NEW NODEFACTORY Created Member NODE   ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${newNodePulseGroup.mintTable[0].ipaddr}:${newNodePulseGroup.mintTable[0].port}`);
+
+
+
+
+
+
 
 
     logger.info("* Genesis node created newNodePulseGroup="+dump(newNodePulseGroup));

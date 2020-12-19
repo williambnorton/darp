@@ -437,6 +437,7 @@ export class AugmentedPulseGroup {
         logger.debug(`flashWireguard(): myStanza=${myStanza} peerStanza=${peerStanza}`); // create first dummy wireguard confiig file (only me)
         //console.log(`flashWireguard(): myStanza=${myStanza} peerStanza=${peerStanza}`); // create first dummy wireguard confiig file (only me)
         setWireguard(myStanza + "\n" + peerStanza);
+        
     };
 
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?

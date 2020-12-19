@@ -444,7 +444,7 @@ app.get('/nodefactory', function (req, res) {
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
     //
-    //Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
+    //  Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
     //
     // Here clear the clone's history and median history for each pulse @wbnwbnwbn
     //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
