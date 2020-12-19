@@ -963,6 +963,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.mintTable[0].state = "UP";
                     _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                     lib_1.Log("Not groupOwner pulse - migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
+                    _this.flashWireguard(); //
                     //
                     //   Start everything
                     //

@@ -1216,7 +1216,7 @@ export class AugmentedPulseGroup {
                this.mintTable[0].state = "UP";
                this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
                Log(`Not groupOwner pulse - migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP`);                   
-
+               this.flashWireguard();  //
                //
                //   Start everything
                //
