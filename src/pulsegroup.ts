@@ -1207,7 +1207,7 @@ export class AugmentedPulseGroup {
             }
 
             //
-            //  TAKE NODE OUT OF QUARANTINE
+            //  TAKE OURSELVES NODE OUT OF QUARANTINE
             //
            // non-Genesis node pulse - we must be out of Quarantine
            if (this.mintTable[0].state == "QUARANTINE") {
@@ -1216,7 +1216,7 @@ export class AugmentedPulseGroup {
                this.mintTable[0].state = "UP";
                this.mintTable[this.mintTable[0].mint].state = "UP";   // mark self as UP since we got a pulse from genesis node
                Log(`Not groupOwner pulse - migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP`);                   
-               this.flashWireguard();  //
+               this.flashWireguard();  //only after we ensure a clear path between node through a port do we involve the others in the group with this new node
                //
                //   Start everything
                //

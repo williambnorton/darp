@@ -954,7 +954,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //console.log(`I am not group owner`);
                 }
                 //
-                //  TAKE NODE OUT OF QUARANTINE
+                //  TAKE OURSELVES NODE OUT OF QUARANTINE
                 //
                 // non-Genesis node pulse - we must be out of Quarantine
                 if (_this.mintTable[0].state == "QUARANTINE") {
@@ -963,7 +963,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.mintTable[0].state = "UP";
                     _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                     lib_1.Log("Not groupOwner pulse - migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
-                    _this.flashWireguard(); //
+                    _this.flashWireguard(); //only after we ensure a clear path between node through a port do we involve the others in the group with this new node
                     //
                     //   Start everything
                     //
