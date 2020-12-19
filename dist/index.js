@@ -323,6 +323,9 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
         return;
     }
 });
+// nodeFactory - the engine of the system - Genesis node we clone ourselves and set self to the new guy
+// this way the new guy starts wth our collective (genesis) understanding of counters)
+// we also sync counters this with genesis certain times as a hack or defensive measure
 // Configuration for node - allocate a mint
 app.get('/nodefactory', function (req, res) {
     // additional nodes adding to pulseGroup

@@ -53,7 +53,7 @@ var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var SECURE_PORT = 65020;
-var CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
+var CHECK_SW_VERSION_CYCLE_TIME = 30; // CHECK for new SW updates every 60 seconds
 var NO_MEASURE = 99999; //value to indis=cate no measurement exists
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
@@ -270,6 +270,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             wireguard_1.setWireguard(myStanza + "\n" + peerStanza);
         };
         //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
+        //  this is NEVER CALLED!!! Our current hack is to fetch new mint table when a new node is pulsed
         this.addNode = function (geo, group, ipaddr, port, publickey, version, wallet, bootTimestamp) {
             _this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
             var newMint = _this.nextMint++; // get a new mint for new node
@@ -469,6 +470,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         // All pulseTimes are assumed accurate to my local clock
         this.timeout = function () {
             //console.log(ts()+`timeout() `);
+            var mustFlash = false; //if node add/delete
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
             //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
             if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > (GENESIS_NODE_TIMEOUT * 1000)) {
@@ -501,6 +503,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 lib_1.Log("timeout(): DELETE GENESIS NODE geo=" + _this.mintTable[m].geo + " mint=" + _this.mintTable[m].mint + " NODE with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(_this.mintTable[m].ipaddr, _this.mintTable[m].port);
                                 delete _this.pulses[_this.mintTable[m].geo + ":" + _this.groupName]; //delete the pulse Entry also
+                                mustFlash = true; //we changed the population, we must flash WG for ourselves
                             }
                         }
                         else {
@@ -524,6 +527,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         console.log("HERE We delete abandoned mintEntry - there is no longer a pulse entry for it");
                         lib_1.Log("timeout(): deleting abandoned " + _this.mintTable[m].geo + " (" + _this.mintTable[m].ipaddr + ":" + _this.mintTable[m].port + ") mintEntry - there is no longer a pulse entry for it");
                         delete _this.mintTable[m]; //Remove abandoned mintTable entry - ToDo: investigate why a mint is abandoned - not deleted when the pulse timedout
+                        mustFlash = true; //we changed the population, we must flash WG for ourselves
                     }
                 }
             }
@@ -546,6 +550,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 lib_1.Log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
                                 _this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                                 delete _this.pulses[pulseEntry.geo + ":" + _this.groupName]; //delete the pulse Entry also
+                                mustFlash = true; //we changed the population, we must flash WG for ourselves
                                 /*
                                 if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];
                                         logger.warning(`DELETEING pulse ${p}`);  //log when timing out to debug
@@ -564,14 +569,16 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     lib_1.Log("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " NeverHeadFromHim");
                     _this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                     delete _this.pulses[pulseEntry.geo + ":" + _this.groupName]; //delete the pulse Entry also
+                    mustFlash = true; //we changed the population, we must flash WG for ourselves
                 }
             }
             //
             // if timeout changed the population, flashWireguard files
             //
-            if (startingPulseEntryCount != Object.keys(_this.pulses).length) {
-                logger_1.logger.info("timeout(): nodeCount Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + Object.keys(_this.pulses).length);
-                console.log("timeout(): nodeCount Changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + Object.keys(_this.pulses).length);
+            //if (startingPulseEntryCount != Object.keys(this.pulses).length) {
+            if (mustFlash == true) {
+                logger_1.logger.info("timeout(): mustFlash==true population changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + Object.keys(_this.pulses).length);
+                console.log("timeout(): mustFlash==true population changed from " + startingPulseEntryCount + " setting newPulseGroup.nodeCount=" + Object.keys(_this.pulses).length);
                 _this.flashWireguard(); //node list changed recreate wireguard file
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
@@ -589,7 +596,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             delete copy.receiver;
             delete copy.config;
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-            var filename = "../" + _this.config.IP + "." + _this.config.PORT + '.json';
+            var filename = "../" + _this.config.IP + "." + _this.config.PORT + '.json'; // gets polled often ~every second
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
@@ -757,13 +764,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
                 "&x=" + (lib_1.now() % 2000)); // Assume GENESIS node    x=add garbage to avoid caches
             if (_this.groupOwner == _this.config.GEO) { //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
-                var firstGenesisNode = process.env.GENESISNODELIST; //GENESISNODELIST is    IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
-                if (typeof firstGenesisNode == "undefined") {
+                var genesisNodeList = process.env.GENESISNODELIST; //GENESISNODELIST is    IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
+                if (typeof genesisNodeList == "undefined") {
                     console.log("no GENESISNODELIST environmental variable - not doing software check from this genesis node ");
                     return logger_1.logger.info("Point your browser to Genesis Node for instrumentation: http://" + _this.mintTable[0].ipaddr + ":" + _this.mintTable[0].port);
                 }
                 //console.log(ts()+`GENESIS NODE: CHecking first Genesis node for `);
-                firstGenesisNode = firstGenesisNode.split(" ")[0]; //GENESISNODELIST is    IP,PORT,NAME  <<--- we want first IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
+                var firstGenesisNode = genesisNodeList.split(" ")[0]; //GENESISNODELIST is    IP,PORT,NAME  <<--- we want first IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
                 var ip = firstGenesisNode.split(",")[0];
                 var port = firstGenesisNode.split(",")[1];
                 var name = firstGenesisNode.split(",")[2];
@@ -821,7 +828,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 console.log("checkSW(): fetching version failed " + url + " genesis node out of reach - NOT EXITTING ");
                 //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
             });
-            setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
+            if (_this.isGenesisNode()) //non-genesis nodes will use pulses every second to check software version
+                setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Genesis nodes check SW with 1st genesis node in GENESISNODELIST
         };
         this.processIncomingPulse = function (incomingPulse) {
             // look up the pulse claimed mint

@@ -20,7 +20,7 @@ const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 
 const SECURE_PORT=65020;    
 
-const CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
+const CHECK_SW_VERSION_CYCLE_TIME = 30; // CHECK for new SW updates every 60 seconds
 const NO_MEASURE = 99999;       //value to indis=cate no measurement exists
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
@@ -440,6 +440,7 @@ export class AugmentedPulseGroup {
     };
 
     //TODO: is this the only place that nodes are added?  I do it manually somewhere...?
+    //  this is NEVER CALLED!!! Our current hack is to fetch new mint table when a new node is pulsed
     addNode = (geo: string, group: string, ipaddr: string, port: number, publickey: string, version: string, wallet: string, bootTimestamp: number): MintEntry => {
         this.deleteNode(ipaddr, port); // remove any preexisting entries with this ipaddr:port
         var newMint = this.nextMint++; // get a new mint for new node
@@ -669,6 +670,7 @@ export class AugmentedPulseGroup {
     // All pulseTimes are assumed accurate to my local clock
     timeout = () => {
         //console.log(ts()+`timeout() `);
+        var mustFlash=false;  //if node add/delete
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
         //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
@@ -707,6 +709,7 @@ export class AugmentedPulseGroup {
                             Log(`timeout(): DELETE GENESIS NODE geo=${this.mintTable[m].geo} mint=${this.mintTable[m].mint} NODE with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(this.mintTable[m].ipaddr, this.mintTable[m].port);
                             delete this.pulses[this.mintTable[m].geo+":"+this.groupName];  //delete the pulse Entry also
+                            mustFlash=true;  //we changed the population, we must flash WG for ourselves
                         }
                     } else {
                         // not genesis - we can only time out genesis
@@ -729,6 +732,7 @@ export class AugmentedPulseGroup {
                     console.log(`HERE We delete abandoned mintEntry - there is no longer a pulse entry for it`);
                     Log(`timeout(): deleting abandoned ${this.mintTable[m].geo} (${this.mintTable[m].ipaddr}:${this.mintTable[m].port}) mintEntry - there is no longer a pulse entry for it`);
                     delete this.mintTable[m];     //Remove abandoned mintTable entry - ToDo: investigate why a mint is abandoned - not deleted when the pulse timedout
+                    mustFlash=true;  //we changed the population, we must flash WG for ourselves
                 }
             }
         }
@@ -755,6 +759,7 @@ export class AugmentedPulseGroup {
                             Log(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
                             this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                             delete this.pulses[pulseEntry.geo+":"+this.groupName];  //delete the pulse Entry also
+                            mustFlash=true;  //we changed the population, we must flash WG for ourselves
 
                             /*
                             if (newPulseGroup.mintTable[pulseEntry.mint]==null) { //delete this.pulses[p];
@@ -777,6 +782,7 @@ export class AugmentedPulseGroup {
                 Log(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} NeverHeadFromHim`);
                 this.deleteNode(pulseEntry.ipaddr, pulseEntry.port);
                 delete this.pulses[pulseEntry.geo+":"+this.groupName];  //delete the pulse Entry also
+                mustFlash=true;  //we changed the population, we must flash WG for ourselves
 
             }
 
@@ -787,9 +793,10 @@ export class AugmentedPulseGroup {
         //
         // if timeout changed the population, flashWireguard files
         //
-        if (startingPulseEntryCount != Object.keys(this.pulses).length) {
-            logger.info(`timeout(): nodeCount Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${Object.keys(this.pulses).length}`);
-            console.log(`timeout(): nodeCount Changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${Object.keys(this.pulses).length}`);
+        //if (startingPulseEntryCount != Object.keys(this.pulses).length) {
+        if (mustFlash==true) {
+            logger.info(`timeout(): mustFlash==true population changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${Object.keys(this.pulses).length}`);
+            console.log(`timeout(): mustFlash==true population changed from ${startingPulseEntryCount} setting newPulseGroup.nodeCount=${Object.keys(this.pulses).length}`);
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
@@ -810,7 +817,7 @@ export class AugmentedPulseGroup {
             delete copy.config;                         
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
-            let filename="../"+this.config.IP+"."+this.config.PORT+'.json';
+            let filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
@@ -984,13 +991,13 @@ export class AugmentedPulseGroup {
                               "&x=" + (now() % 2000)); // Assume GENESIS node    x=add garbage to avoid caches
 
         if (this.groupOwner == this.config.GEO) {        //GENESIS NODE - CHECK 1st GENESIS NODE SW VERSION
-            var firstGenesisNode=process.env.GENESISNODELIST;  //GENESISNODELIST is    IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
-            if (typeof firstGenesisNode == "undefined" ) {
+            var genesisNodeList=process.env.GENESISNODELIST;  //GENESISNODELIST is    IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
+            if (typeof genesisNodeList == "undefined" ) {
                 console.log(`no GENESISNODELIST environmental variable - not doing software check from this genesis node `);                
                 return logger.info(`Point your browser to Genesis Node for instrumentation: http://${this.mintTable[0].ipaddr}:${this.mintTable[0].port}`);
             }
             //console.log(ts()+`GENESIS NODE: CHecking first Genesis node for `);
-            firstGenesisNode=firstGenesisNode.split(" ")[0];  //GENESISNODELIST is    IP,PORT,NAME  <<--- we want first IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
+            var firstGenesisNode=genesisNodeList.split(" ")[0];  //GENESISNODELIST is    IP,PORT,NAME  <<--- we want first IP,PORT,NAME  IP,PORT,NAME  IP,PORT,NAME 
             var ip=firstGenesisNode.split(",")[0];
             var port=firstGenesisNode.split(",")[1];
             var name=firstGenesisNode.split(",")[2];
@@ -1057,7 +1064,8 @@ export class AugmentedPulseGroup {
             console.log(`checkSW(): fetching version failed ${url} genesis node out of reach - NOT EXITTING `);
             //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
         });
-        setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Every 60 seconds check we have the best software
+        if (this.isGenesisNode()) //non-genesis nodes will use pulses every second to check software version
+            setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Genesis nodes check SW with 1st genesis node in GENESISNODELIST
     };
     
     processIncomingPulse = (incomingPulse: IncomingPulse) => {
