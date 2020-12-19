@@ -38,14 +38,17 @@ do
 			/usr/bin/wg-quick down $WGDIR/darp0.conf
 			mv -f $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
 			sudo /usr/bin/wg-quick up $WGDIR/darp0.conf
+		else
+			echo `date` $0 `hostname` "No $WGDIR/darp0.pending.conf "
 		fi
-		sleep 15
+		sleep 5
+		#sleep 15
 	else
 		echo `date` "wireguard directory not writable or not ready. Changing ownership"
 		sudo chown `whoami` $WGDIR
-		sleep 6   #Wait until wireguard dir exists
+		sleep 5   #Wait until wireguard dir exists
 	fi
-	sleep 6   #Wait until wireguard dir exists
+	sleep 10   #Wait until wireguard dir exists
 
 done
 
