@@ -59,6 +59,6 @@ function setWireguard(stanzas) {
         if (err)
             throw err;
     });
-    console.log("setWireguard() wrote file");
+    console.log("setWireguard() wrote file " + (WGDIR + "/darp0.pending.conf"));
 }
 exports.setWireguard = setWireguard;
