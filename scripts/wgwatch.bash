@@ -38,8 +38,8 @@ do
 			/usr/bin/wg-quick down $WGDIR/darp0.conf
 			mv -f $WGDIR/darp0.pending.conf $WGDIR/darp0.conf
 			sudo /usr/bin/wg-quick up $WGDIR/darp0.conf
-		else
-			echo `date` $0 `hostname` "No $WGDIR/darp0.pending.conf "
+		#else
+		#	echo `date` $0 `hostname` "No $WGDIR/darp0.pending.conf "
 		fi
 		sleep 5
 		#sleep 15
