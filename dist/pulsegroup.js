@@ -946,13 +946,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                             //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`); 
                             lib_1.Log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
-                            console.log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP and flashing new wireguard config");
+                            console.log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP and FLASH new wireguard config");
                             _this.flashWireguard();
                             _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
                         }
                     }
                     else {
                         //We are just a member of this pulseGroup - not up to us to adjust population
+                        //a new node causes mintTable rplication so we overwrite and sync all member stats to genesis when new node joins
                     }
                 }
                 else {
