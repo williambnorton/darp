@@ -507,7 +507,6 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-
     logger.info("* Genesis node created newNodePulseGroup="+dump(newNodePulseGroup));
     //console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
 
@@ -517,8 +516,9 @@ app.get('/nodefactory', function(req, res) {
 });
 
 
-// Initiate the protocol
-
+// Initiate the protocol  
+//  this is where it all begins - here we create multiple groups
+//
 (async () => {
     try {
         myPulseGroup = await getPulseGroup(config);

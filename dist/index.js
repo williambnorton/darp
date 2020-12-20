@@ -465,7 +465,9 @@ app.get('/nodefactory', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(newNodePulseGroup)); // send mint:0 mint:1 *mint:N groupEntry *entryN
 });
-// Initiate the protocol
+// Initiate the protocol  
+//  this is where it all begins - here we create multiple groups
+//
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var augmentedPulseGroup, error_1;
     return __generator(this, function (_a) {
