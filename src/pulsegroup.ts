@@ -1192,8 +1192,8 @@ export class AugmentedPulseGroup {
            //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
            if (this.mintTable[0].mint==1) {    //Not a group owner pulse Am I group owner?
                 if (this.mintTable[incomingPulseEntry.mint]!=null) {    //I am group owner, do I know this guy? 
-                    console.log(` We are Group Owner ${this.mintTable[0].geo} receiving member pulse from node ${incomingPulse.geo} in state=${this.mintTable[incomingPulseEntry.mint].state}`);
                     if (this.mintTable[incomingPulseEntry.mint].state=="QUARANTINE") {   //Can we help it out of Quarantine?
+                        console.log(` We are Group Owner ${this.mintTable[0].geo} receiving member pulse from node ${incomingPulse.geo} in state=${this.mintTable[incomingPulseEntry.mint].state}`);
                         //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
                         //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
                         //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
