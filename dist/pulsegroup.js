@@ -918,6 +918,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         }
                     }
                 }
+                else {
+                    //console.log(`@wbn We are group owner receiving our own pulse`);
+                }
                 //
                 //      PUT NODE INTO UP STATE - Maybe we need a finitte state machine to emit state transition events?
                 // UP Means Authoratitive Genesis Node sent us a pulse with our own mint shpwing up
@@ -934,7 +937,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`====================================================    NON-Group Owner Pulse logic ....`);
                 if (_this.mintTable[0].mint == 1) { //Not a group owner pulse Am I group owner?
                     if (_this.mintTable[incomingPulseEntry.mint] != null) { //I am group owner, do I know this guy? 
-                        if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarwtine?
+                        console.log(" We are Group Owner receiving member pulse from node in state=" + _this.mintTable[incomingPulseEntry.mint].state);
+                        if (_this.mintTable[incomingPulseEntry.mint].state == "QUARANTINE") { //Can we help it out of Quarantine?
                             //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
                             //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                    
                             //console.log(`Received a pulse from a node we labeled as QUARANTINED ... flash`);                                  
@@ -965,6 +969,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.mintTable[_this.mintTable[0].mint].state = "UP"; // mark self as UP since we got a pulse from genesis node
                     lib_1.Log("Not groupOwner pulse - migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
                     _this.flashWireguard(); //only after we ensure a clear path between node through a port do we involve the others in the group with this new node
+                    console.log("QUARANTINE mode migration - flashing wireguard with new config");
                     //
                     //   Start everything
                     //
