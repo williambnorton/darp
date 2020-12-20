@@ -945,8 +945,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                             //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                             //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                             //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`); 
-                            lib_1.Log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP");
-                            console.log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP and FLASH new wireguard config");
+                            lib_1.Log("migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP and flashing new config");
+                            console.log("processIncomingPulse():  migrating " + incomingPulse.geo + ":" + incomingPulse.group + " from QUARANTINE to UP and FLASH new wireguard config");
                             _this.flashWireguard();
                             _this.mintTable[incomingPulseEntry.mint].state = "UP"; //Genesis is READY TO ACCEPT nodes
                         }
