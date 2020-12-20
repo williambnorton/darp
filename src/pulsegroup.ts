@@ -1197,6 +1197,7 @@ export class AugmentedPulseGroup {
                         //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`);                    
                         //console.log(`FLASHING WG group ower receiving pulse from non-genesis node ${dump(incomingPulse)}`); 
                         Log(`migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP`);                   
+                        console.log(`migrating ${incomingPulse.geo}:${incomingPulse.group} from QUARANTINE to UP and flashing new wireguard config`);                   
                         this.flashWireguard();
                         this.mintTable[incomingPulseEntry.mint].state="UP" //Genesis is READY TO ACCEPT nodes
                     }
