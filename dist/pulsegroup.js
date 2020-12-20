@@ -253,7 +253,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     callback(mint, _this.mintTable[mint]);
         };
         this.flashWireguard = function () {
-            logger_1.logger.info("flashWireguard()");
+            console.log("flashWireguard()");
             var myStanza = "";
             var peerStanza = "";
             for (var m in _this.mintTable) {

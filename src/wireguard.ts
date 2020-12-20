@@ -62,4 +62,5 @@ export function setWireguard(stanzas: string) {
             if (err) throw err;
         }
     );
+    console.log(`setWireguard() wrote file`);
 }

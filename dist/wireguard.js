@@ -59,5 +59,6 @@ function setWireguard(stanzas) {
         if (err)
             throw err;
     });
+    console.log("setWireguard() wrote file");
 }
 exports.setWireguard = setWireguard;

@@ -410,7 +410,7 @@ export class AugmentedPulseGroup {
     };
 
     flashWireguard = () => {
-        logger.info(`flashWireguard()`);
+        console.log(`flashWireguard()`);
         var myStanza = "";
         var peerStanza = "";
         for (var m in this.mintTable) {
