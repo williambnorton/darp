@@ -113,14 +113,14 @@ do
     GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
     GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
-    if [ "$GENESIS_LATENCY" == "" ];   # We are the only ones so far
+    if [ "$GENESIS_LATENCY" == "" ]; then  # We are the only ones so far
         GENESIS_LATENCY=0
         GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         GENESIS_IP=$MY_IP
         GENESIS_PORT=$MY_PORT
         GENESIS_GEO=$MY_GEO
         GENESIS_GROUP="${GENESIS_GEO}.1"
-        echo `date` CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall
+        echo `date` "CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
     fi
 
     echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
@@ -146,7 +146,7 @@ do
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
-     else
+    else
         if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
                 echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
                 echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
