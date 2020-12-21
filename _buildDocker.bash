@@ -49,10 +49,10 @@ say "[[ volm 0.05 ]] Bill, the docker build is complete. it took $DELTA_MIN minu
 echo `date` About to launch SR-WAN docker $DOCKERVERSION   #this is for the first node in the genesis list - static for now
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c '(sleep 30;~/wireguard/wgwatch.bash)& nohup docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e HOSTNAME=AWS-US-WEST-1A -e WALLET=auto -d williambnorton/darp:$DOCKERVERSION' " &
 
-echo `date` About to launch SR-WAN Instrumentation docker
+#echo `date` About to launch SR-WAN Instrumentation docker
 #say "[[ volm 0.05 ]] re-launching the primary genesis node"
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c 'nohup docker run -p 80:80 -d williambnorton/srwan' " &
-
+echo `date` $0 COMPLETE
 
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 

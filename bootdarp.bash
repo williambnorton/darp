@@ -194,7 +194,7 @@ export PORT
 
     if [ "$GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
         echo `date` "!!! We are genesis node so we are already running the latest SW"
-        ./updateSW.bash
+        #./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
             ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
