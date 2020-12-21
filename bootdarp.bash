@@ -195,11 +195,10 @@ export PORT
     DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
 
     if [ "$GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
-        echo `date` "We are genesis node so we should start wth the latest SW"
-        ./updateSW.bash
+        echo `date` "We are genesis node so we are already running the latest SW"
+        #./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
-        if [ "$USER_OVERIDE" != "YES" ]; then    #user current SW in user docker - we run all others follow
             ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
             rc=$?
             echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
@@ -210,7 +209,6 @@ export PORT
                 echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
                 #exit $rc   #pass through any subsequent bootdarp invocations
             fi
-        fi
 
     fi
 
