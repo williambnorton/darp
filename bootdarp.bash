@@ -199,13 +199,16 @@ export PORT
         ./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
-        if [ "$USEROVERIDE" != "YES" ]; then    #user current SW in user docker - we run all others follow
+        if [ "$USER_OVERIDE" != "YES" ]; then    #user current SW in user docker - we run all others follow
             ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
             rc=$?
             echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
             if [ $rc -ne 0 ]; then  
-                echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-                exit $rc   #pass through any subsequent bootdarp invocations
+                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+                #exit $rc   #pass through any subsequent bootdarp invocations
             fi
         fi
 
