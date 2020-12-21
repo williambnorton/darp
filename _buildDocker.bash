@@ -53,7 +53,7 @@ ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c '(sleep 30;~/wireg
 #say "[[ volm 0.05 ]] re-launching the primary genesis node"
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c 'nohup docker run -p 80:80 -d williambnorton/srwan' " &
 echo `date` $0 COMPLETE
-
+say "[[ volm 0.05 ]] Complete"
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
 
