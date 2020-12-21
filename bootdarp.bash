@@ -63,9 +63,9 @@ echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`grep 65013 *.config`   #   IP:PORT:NAME
-FIRST_GENESIS=`grep 65013 *.config | head -1 | awk -F, '{ print $1 }' `
-echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST"
+export GENESISNODELIST=`grep 65013 *.config| awk -F: '{ print $2}' `   #   IP:PORT:NAME
+FIRST_GENESIS=`grep 65013 *.config | head -1 | awk -F: '{ print $2}' ` | awk -F, '{ print $1 }' `
+echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST FIRST_GENESIS=$FIRST_GENESIS"
 
 
 
