@@ -95,7 +95,7 @@ if [ "$GENESIS" != "" ]; then
     echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
     echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
     echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-
+    USER_OVERIDE="YES"
 else
     echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
 
@@ -199,12 +199,14 @@ export PORT
         ./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
-        ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
-        rc=$?
-        echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
-        if [ $rc -ne 0 ]; then  
-            echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-            exit $rc   #pass through any subsequent bootdarp invocations
+        if [ "$USEROVERIDE" != "YES" ]; then    #user current SW in user docker - we run all others follow
+            ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
+            rc=$?
+            echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
+            if [ $rc -ne 0 ]; then  
+                echo `date` "bad rc from updateSW BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+                exit $rc   #pass through any subsequent bootdarp invocations
+            fi
         fi
 
     fi
