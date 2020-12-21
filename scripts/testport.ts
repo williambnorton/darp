@@ -30,7 +30,7 @@ var done=false;
 
 client.on('listening', function () {
     var address = client.address();
-    console.log('testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    //console.log('testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 
 var startTimestamp=0;
@@ -79,7 +79,7 @@ function DARPping() {
         let Name=myArgs[i].split(",")[2]
         var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
 
-        console.log(`testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
+        //console.log(`testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
         if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
