@@ -71,54 +71,53 @@ echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS"
 CYCLES=0;
 while :
 do
+    #
+    #   user-specified over rides "auto" connection to Geneis node list participants
+    #
+    if [ "$GENESIS" != "" ]; then
+        GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
+        GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
+        if [ "$GENESIS_PORT" == "" ]; then
+            GENESIS_PORT=65013
+        fi
+        GENESIS_GEO="$HOSTNAME"  #
+        GENESIS_GROUP="${GENESIS_GEO}.1"
+        GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
 
-#
-#   user-specified over rides "auto" connection to Geneis node list participants
-#
-if [ "$GENESIS" != "" ]; then
-    GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
-    GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
-    if [ "$GENESIS_PORT" == "" ]; then
-        GENESIS_PORT=65013
+        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+        USER_OVERIDE="YES"
     fi
-    GENESIS_GEO="$HOSTNAME"  #
-    GENESIS_GROUP="${GENESIS_GEO}.1"
-    GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-
-    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-    echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-    USER_OVERIDE="YES"
-else
     echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
 
-#
-#   #1 - check where I am topologically
-#
-         echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
-        #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
+    #
+    #   #1 - check where I am topologically
+    #
+    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+    #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
-        #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-        node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST >porttest.txt
-        echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
+    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST >porttest.txt
+    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
-        cat porttest.txt
-        echo "BEST CHOICE BY LATENCY"
-        echo "FIRST LINE:" `cat porttest.txt | head -1`
-        GENESIS_LATENCY=`cat porttest.txt | grep Docker | head -1 | awk -F: '{ print $1}'`
-        GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
-        GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
-        GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
-        GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
-        GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+    cat porttest.txt
+    echo "BEST CHOICE BY LATENCY"
+    echo "FIRST LINE:" `cat porttest.txt | head -1`
+    GENESIS_LATENCY=`cat porttest.txt | grep Docker | head -1 | awk -F: '{ print $1}'`
+    GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
+    GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
+    GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
+    GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
+    GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
 
-        echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
-#
-#   #2 - if we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
-#
+    echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
+    #
+    #   #2 - if we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
+    #
 
     MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     #GENESIS NODES for now in these files
     if [ $? -eq 0 ]; then
@@ -150,7 +149,6 @@ else
                 exit 36; 
         fi
     fi
-fi
 export GENESIS_IP
 #export FIRST_GENESIS_IP=$GENESIS_IPdd
 export GENESIS_PORT
