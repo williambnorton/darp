@@ -195,8 +195,8 @@ export PORT
     DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
 
     if [ "$GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
-        echo `date` "!!! OK - We are genesis node so we are already running the latest SW !!"
-        #./updateSW.bash
+        echo `date` "!!! We are genesis node so we are already running the latest SW"
+        ./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
             ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
