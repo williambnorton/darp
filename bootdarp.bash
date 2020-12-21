@@ -123,10 +123,10 @@ else
     MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     #GENESIS NODES for now in these files
     if [ $? -eq 0 ]; then
         export GENESIS_IP=$MY_IP
+        MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
         echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
         echo `date` HERE I could will instead use myself as Genesis node, but should prefer an active one within 25 ms
         if [ "$GENESIS_LATENCY" -gt 20 ]; then
-            MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
             GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
             GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
             GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
