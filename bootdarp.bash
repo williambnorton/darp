@@ -113,18 +113,27 @@ do
     GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
     GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
+    if [ "$GENESIS_LATENCY" == "" ];   # We are the only ones so far
+        GENESIS_LATENCY=0
+        GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+        GENESIS_IP=$MY_IP
+        GENESIS_PORT=$MY_PORT
+        GENESIS_GEO=$MY_GEO
+        GENESIS_GROUP="${GENESIS_GEO}.1"
+        echo `date` CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall
+    fi
 
     echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
     #
     #   #2 - if we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
     #
 
-    MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     #GENESIS NODES for now in these files
+    MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     # Am I a Genesis Node?
     if [ $? -eq 0 ]; then
         export GENESIS_IP=$MY_IP
         MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
         echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
-        echo `date` HERE I could will instead use myself as Genesis node, but should prefer an active one within 25 ms
+        echo `date` HERE I use myself as Genesis node, but should prefer an active one within 25 ms
         if [ "$GENESIS_LATENCY" -gt 20 ]; then
             GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
             GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
