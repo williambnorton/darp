@@ -135,7 +135,7 @@ do
         echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
         echo `date` HERE I use myself as Genesis node, but should prefer an active one within 25 ms
         echo `date` "GENESIS_LATENCY=$GENESIS_LATENCY ms away"
-        if [ $GENESIS_LATENCY -gt 20 ]; then
+        if [ $GENESIS_LATENCY -gt 100 ]; then
             GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
             GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
             GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
