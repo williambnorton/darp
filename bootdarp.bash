@@ -67,15 +67,10 @@ export GENESISNODELIST=`grep 65013 *.config| awk -F: '{ print $2}' `   #   IP:PO
 FIRST_GENESIS=`grep 65013 *.config | awk -F: '{ print $2}' | head -1 | awk -F, '{ print $1 }' `
 echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST FIRST_GENESIS=$FIRST_GENESIS"
 
-
-
-
 echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
 CYCLES=0;
 while :
 do
-
-
 
 #
 #   user-specified over rides "auto" connection to Geneis node list participants
