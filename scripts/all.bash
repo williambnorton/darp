@@ -40,7 +40,7 @@ sleep $REBOOTSLEEPTIME
 fi
 
 #for node in `cat ../genesis.config`
-for node in `cat ../*genesis.config`
+for node in `cat ../*.config`
 do
 	IP=`echo $node | awk -F, '{ print $1 }'`
 	PORT=`echo $node | awk -F, '{ print $2 }'`
@@ -57,5 +57,5 @@ do
 	fi
 ssh $CMDPREFIX ubuntu@$node '(sleep 30;~/wireguard/wgwatch.bash)&  docker rm -f $(docker ps -a -q|grep darp);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -d williambnorton/darp ' &
 
-exit
+#exit
 done

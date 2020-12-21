@@ -26,20 +26,11 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
         (sleep 30;~/wireguard/wgwatch.bash) &
 
-        #this is not nice - killing all dockers on system - fix this to grep
-        docker kill `docker ps | grep darp | awk '{ print $1 }'`  2>&1 >/dev/null    #kill docker running darp
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
-        #There are three things that can be changed:  
-        #   GENESIS=a node to connect to, or auto, probably what you want (default)     
-        #   HOSTNAME=textForDisplay, helpful for simulation       
-        #   WALLET=wallet to use to refill escrow of tokens, auto provides a limited # of tokens for demonstrating relaying traffic (for simulation)
-        #   PORT=65013
         PORT=65013
-        #echo "docker run --rm -d -p ${PORT}:${PORT} -p ${PORT}:${PORT}/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS=auto -e HOSTNAME=`hostname` -e WALLET=auto   williambnorton/darp:DOCKERTAG "
-        #docker run --rm -d -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e PORT=$PORT -e GENESIS="auto" -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG 
-        
+         
         echo `date` "darp.bash:  NEW TEST - directly running this DOCKER DOCKERTAG by tag"
-        echo 'docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
+        echo 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         rc=$?
         if [ $? -eq 86 ]; then

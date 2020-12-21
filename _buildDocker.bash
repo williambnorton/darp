@@ -43,13 +43,8 @@ say "[[ volm 0.05 ]] Bill, the docker build is complete. it took $DELTA_MIN minu
 
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '(sleep 30;~/wireguard/wgwatch.bash)& docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -d williambnorton/darp:$DOCKERVERSION ' &
-echo 'About to kill previous dockers and remove the images'
-ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
-
-#CMD='(sleep 30;~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e HOSTNAME=`hostname` -e WALLET=auto -d williambnorton/darp:'$DOCKERVERSION" & "
-#CMD='(sleep 30;~/wireguard/wgwatch.bash)& docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e HOSTNAME=`hostname` -e WALLET=auto -d williambnorton/darp:latest'" & "
-#echo "About to run:    ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 '$CMD '"
-#ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 \'$CMD \' &
+#echo 'About to kill previous dockers and remove the images'
+#ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151  'docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q);'
 
 echo `date` About to launch SR-WAN docker $DOCKERVERSION   #this is for the first node in the genesis list - static for now
 ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c '(sleep 30;~/wireguard/wgwatch.bash)& nohup docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e HOSTNAME=AWS-US-WEST-1A -e WALLET=auto -d williambnorton/darp:$DOCKERVERSION' " &

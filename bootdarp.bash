@@ -190,8 +190,6 @@ export PORT
 
     #PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
 
-
-
     DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
 
     if [ "$GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
@@ -212,12 +210,7 @@ export PORT
 
     fi
 
-
     # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
-
-
-
-
 
     cd /tmp
     cd /root/darp
@@ -245,9 +238,9 @@ export PORT
 
     cd $DARPDIR
     cd $DARPDIR/dist
-    if [ -f  $DARPDIR/index.pid ]; then
-        kill `cat $DARPDIR/index.pid`
-    fi
+ #   if [ -f  $DARPDIR/index.pid ]; then
+ #       kill `cat $DARPDIR/index.pid`
+ #   fi
     
     echo `date` " * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     cd 
@@ -309,7 +302,7 @@ export PORT
     #kill -9 `ps aux |grep -v grep | grep node | awk '{ print $1}'`
     
     
-    echo `date` "killing lingering processes"
+    echo `date` "killing lingering subagent processes"
     #kill -9 `ps aux |grep -v grep | grep updateSW.bash | awk '{ print $1}'`
     #kill -9 `ps aux |grep -v grep | grep sender | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep ping | awk '{ print $1}'`  #can delete this
@@ -327,7 +320,7 @@ export PORT
     CYCLES=`expr $CYCLES + 1`
     echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME #| tee -a NOIA.log 
     if [ $CYCLES -gt $MAXCYCLES ]; then    
-        echo `date` "RAN 100 CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
+        echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         exit 86;
     fi
 
