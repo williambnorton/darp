@@ -63,8 +63,8 @@ echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`grep 65013 awsgenesis.config`   #   IP:PORT:NAME
-FIRST_GENESIS=`grep 65013 awsgenesis.config | head -1 | awk -F, '{ print $1 }' `
+export GENESISNODELIST=`grep 65013 *.config`   #   IP:PORT:NAME
+FIRST_GENESIS=`grep 65013 *.config | head -1 | awk -F, '{ print $1 }' `
 echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST"
 
 
@@ -110,7 +110,7 @@ else
         echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
         cat porttest.txt
-        echo "BEST CHOICES IN ORDER OF LATENCY"
+        echo "BEST CHOICE BY LATENCY"
         echo "FIRST LINE:" `cat porttest.txt | head -1`
         GENESIS_LATENCY=`cat porttest.txt | grep Docker | head -1 | awk -F: '{ print $1}'`
         GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
@@ -120,7 +120,7 @@ else
         GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
 
 
-        echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT is ${GENESIS_LATENCY} ms away GENESIS_SWVERSION=$GENESIS_SWVERSION"
+        echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
 #
 #   #2 - if we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
 #
@@ -129,13 +129,15 @@ else
     if [ $? -eq 0 ]; then
         export GENESIS_IP=$MY_IP
         echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
-        echo `date` HERE I could use myself as Genesis node, but should prefer an active one within 25 ms
-        #MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
-        #GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-        #GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
-        #GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
-        #GENESIS_GEO=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`  #
-        #GENESIS_GROUP="${GENESIS_GEO}.1"
+        echo `date` HERE I could will instead use myself as Genesis node, but should prefer an active one within 25 ms
+        if [ "$GENESIS_LATENCY" -gt 20 ]; then
+            MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
+            GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+            GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
+            GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
+            GENESIS_GEO=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`  #
+            GENESIS_GROUP="${GENESIS_GEO}.1"
+        fi
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
