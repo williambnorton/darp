@@ -107,16 +107,14 @@ do
     echo "BEST CHOICE BY LATENCY"
     FIRST_LINE=`cat porttest.txt | head -1`
     echo "FIRST_LINE=$FIRST_LINE"
-    #FIRST LINE: testport.ts 16:1608653511642,12,Docker.201221.1554:Build.201221.1554,104.209.36.75,65013,MAZ-WESTUS-00,1608652708593,uvX4NJYdA27WENpNrKHp3qg79Gts17ZloPpg142Yen4=,52.53.222.151,65013,AWS-US-WEST-1
+    #FIRST LINE: 16,1608653511642,12,Docker.201221.1554:Build.201221.1554,104.209.36.75,65013,MAZ-WESTUS-00,1608652708593,uvX4NJYdA27WENpNrKHp3qg79Gts17ZloPpg142Yen4=,52.53.222.151,65013,AWS-US-WEST-1
     #
     GENESIS_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-    GENESIS_ENTRY=`echo $FIRST_LINE | awk -F, '{ print $2}'`
-
-    GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
-    GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`
-    GENESIS_PORT=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $5}'`
-    GENESIS_GEO=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $6}'`
-    GENESIS_GROUP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $7}'`
+    GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $4}'`
+    GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $5}'`
+    GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $6}'`
+    GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $7}'`
+    GENESIS_GROUP="${GENESIS_GEO}.1"
 
     echo "GENESIS_LATENCY=$GENESIS_LATENCY"
     if [ "$GENESIS_LATENCY" == "" ]; then  # We are the only ones so far
