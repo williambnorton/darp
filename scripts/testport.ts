@@ -13,12 +13,19 @@
 //  })
 //
 console.log(`testport process.argv=${process.argv}`);
-var myArgs=process.argv.slice(2);
 
-if (myArgs.length<3) {
-	console.log("usage(): "+"testport.ts"+" MYIP MYPORT GENESISIP [ ... GENESISIP ] ");
-	console.log("Example: "+"testport.ts"+" `curl ifconfig.io` 65013 52.52.1.32 52.53.1.45 ");
-	process.exit(1);
+
+if (process.argv) {
+    var myArgs=process.argv.slice(2);
+
+    if (myArgs.length<3) {
+        console.log("usage(): "+"testport.ts"+" MYIP MYPORT GENESISIP [ ... GENESISIP ] ");
+        console.log("Example: "+"testport.ts"+" `curl ifconfig.io` 65013 52.52.1.32 52.53.1.45 ");
+        process.exit(1);
+    }
+} else {
+    console.log(`process.argv DOES NOT EXIST - ERROR process=${JSON.stringify(process,null,2) }`);
+    process.exit(0);
 }
 const MYIP=myArgs[0];
 const MYPORT=myArgs[1];
