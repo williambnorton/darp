@@ -12,6 +12,7 @@
 //    console.log(`${index}: ${val}`)
 //  })
 //
+console.log(`testport process.argv=${process.argv}`);
 var myArgs=process.argv.slice(2);
 
 if (myArgs.length<3) {
