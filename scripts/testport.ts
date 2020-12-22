@@ -8,9 +8,12 @@
 // example: node testport `curl ifconfig.io` 65013
 
 //import { argv } from "process";
-
+process.argv.forEach((val, index) => {
+    console.log(`${index}: ${val}`)
+  })
 //
 var myArgs=process.argv.slice(2);
+
 if (myArgs.length<3) {
 	console.log("usage(): "+"testport.ts"+" MYIP MYPORT GENESISIP [ ... GENESISIP ] ");
 	console.log("Example: "+"testport.ts"+" `curl ifconfig.io` 65013 52.52.1.32 52.53.1.45 ");
