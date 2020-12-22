@@ -105,7 +105,7 @@ do
 
     cat porttest.txt
     echo "BEST CHOICE BY LATENCY"
-    echo "FIRST LINE:" `cat porttest.txt | head -1`
+    echo "FIRST LINE:" `cat porttest.txt | grep Docker. | head -1 `
     GENESIS_LATENCY=`cat porttest.txt | grep Docker | head -1 | awk -F: '{ print $1}'`
     GENESIS_SWVERSION=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $3}'`
     GENESIS_IP=`cat porttest.txt | grep Docker | head -1 | awk -F, '{ print $4}'`

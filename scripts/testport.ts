@@ -8,9 +8,9 @@
 // example: node testport `curl ifconfig.io` 65013
 
 //import { argv } from "process";
-process.argv.forEach((val, index) => {
-    console.log(`${index}: ${val}`)
-  })
+//process.argv.forEach((val, index) => {
+//    console.log(`${index}: ${val}`)
+//  })
 //
 var myArgs=process.argv.slice(2);
 
