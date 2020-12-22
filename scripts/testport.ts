@@ -52,10 +52,18 @@ client.on('message', function (message, remote) {
     done=true;
 });
 
+//
+//
+//
 function finish() {
-    //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
     for (var g in responses) {
+        //
+        //
+        //
         console.log(`${responses[g].latency},${responses[g].url},GenesisNode,${responses[g].srcIP},`);
+        //
+        //
+        //
     }
     if (responses.length==0) {
         console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISPORT} ${JSON.stringify(argv)}`);
