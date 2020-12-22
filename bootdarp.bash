@@ -105,7 +105,7 @@ do
 
     cat porttest.txt
     echo "BEST CHOICE BY LATENCY"
-    FIRST_LINE=`cat porttest.txt | head -1 | awk '{ print $2 }' `
+    FIRST_LINE=`cat porttest.txt | head -1`
     echo "FIRST_LINE=$FIRST_LINE"
     #FIRST LINE: testport.ts 16:1608653511642,12,Docker.201221.1554:Build.201221.1554,104.209.36.75,65013,MAZ-WESTUS-00,1608652708593,uvX4NJYdA27WENpNrKHp3qg79Gts17ZloPpg142Yen4=,52.53.222.151,65013,AWS-US-WEST-1
     #
