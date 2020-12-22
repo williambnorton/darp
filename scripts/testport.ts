@@ -25,7 +25,7 @@ const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=3;
 var first={};
-console.log("testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+//console.log("testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -55,7 +55,7 @@ client.on('message', function (message, remote) {
 function finish() {
     //console.log(`FirstURL=${JSON.stringify(first,null,2)}`);
     for (var g in responses) {
-        console.log(`testport.ts  ${responses[g].latency}:${responses[g].url}:GenesisNode:${responses[g].srcIP}:`);
+        console.log(`${responses[g].latency},${responses[g].url},GenesisNode,${responses[g].srcIP},`);
     }
     if (responses.length==0) {
         console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISPORT} ${JSON.stringify(argv)}`);
