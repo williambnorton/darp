@@ -52,7 +52,7 @@ say "[[ volm 0.05 ]] Bill, the docker build is complete. it took $DELTA_MIN minu
 #echo `date` About to launch SR-WAN Instrumentation docker
 #say "[[ volm 0.05 ]] re-launching the primary genesis node"
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c 'nohup docker run -p 80:80 -d williambnorton/srwan' " &
-echo `date` $0 COMPLETE
+echo `date` $0 $DOCKERVERSION COMPLETE
 say "[[ volm 0.05 ]] Complete"
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 

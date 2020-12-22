@@ -96,12 +96,12 @@ do
     #
     #   #1 - check where I am topologically
     #
-    echo `date` "********************************************************* GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+    echo `date` "************************************** GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
     #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
     node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST >porttest.txt
-    echo "***************************************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+    echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
     cat porttest.txt
     echo "BEST CHOICE BY LATENCY"
