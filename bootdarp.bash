@@ -75,19 +75,18 @@ do
     #   user-specified over rides "auto" connection to Geneis node list participants
     #
     if [ "$GENESIS" != "" ]; then
-        GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
-        GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
-        if [ "$GENESIS_PORT" == "" ]; then
-            GENESIS_PORT=65013
+        MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
+        M_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
+        if [ "$MY_GENESIS_PORT" == "" ]; then
+            MY_GENESIS_PORT=65013
         fi
-        GENESIS_GEO="$HOSTNAME"  #
-        GENESIS_GROUP="${GENESIS_GEO}.1"
-        GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-
-        echo `date` "0  User-overide: user wants to connect to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-
+        MY_GENESIS_GEO="$HOSTNAME"  #
+        MY_GENESIS_GROUP="${GENESIS_GEO}.1"
+        MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+        echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
         USER_OVERIDE="YES"
     fi
+    
     echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
 
     #
@@ -97,7 +96,7 @@ do
     #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST | grep ",Docker." >porttest.txt
+    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  >porttest.txt
     echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
 
     cat porttest.txt
@@ -118,6 +117,7 @@ do
     #
     echo "GENESIS_LATENCY=$GENESIS_LATENCY"
     if [ "$GENESIS_LATENCY" == "" ]; then  # We are the only ones so far
+        echo `date` "bootdarp: no other genesis nodes are responding so I will be a solo genesis node for now."
         GENESIS_LATENCY=0
         GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         GENESIS_IP=$MY_IP
@@ -138,14 +138,15 @@ do
         MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
         echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
         echo `date` HERE I use myself as Genesis node, but should prefer an active one within 100ms rtt
-        echo `date` "GENESIS_LATENCY=$GENESIS_LATENCY ms away"
+        echo `date` "alternative GENESIS_LATENCY=$GENESIS_LATENCY ms away"
         if [ $GENESIS_LATENCY -gt 100 ]; then
+
             GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
             GENESIS_IP=$MY_IP  #
             GENESIS_PORT=$MY_PORT  #
             GENESIS_GEO=$MY_GEO
             GENESIS_GROUP="${MY_GEO}.1"
-            echo `date` "I AM more than 100ms away from closest GENESIS NODE: I and using  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
+            echo `date` "I AM more than 100ms away from closest GENESIS NODE so I and using my own GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
         fi
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
     else
