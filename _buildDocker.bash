@@ -7,7 +7,7 @@ ls -l Docker.*
 DOCKERVERSION=`ls Docker.*`
 START=`date +%s`
 
-echo `date` $0 Building darp docker $DOCKERVERSION
+echo `date` $0 Building darp docker $DOCKERVERSION START=$START
 ./builddarp.bash --noRelaunch
 if [ $? -ne 0 ]; then
 	echo `date` builddarp failed
@@ -35,7 +35,7 @@ docker push williambnorton/darp:latest
 END=`date +%s`
 DELTA=`expr $END - $START`
 DELTA_MIN=`expr $DELTA / 60`
-echo `date` New docker $DOCKERVERSION running DARP `ls Docker.*`
+echo `date` New docker $DOCKERVERSION running DARP `ls Docker.*` START=$START END=$END DELTA=$DELTA
 echo `date` Finished $0 build docker took $DELTA_MIN minutes to make this $DOCKERVERSION docker
 
 #./builddarp.bash              ####This deals with a timing issue - nodes keep reloading trying to get same SW as genesis, but it is not possible

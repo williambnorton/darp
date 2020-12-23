@@ -84,11 +84,8 @@ do
         GENESIS_GROUP="${GENESIS_GEO}.1"
         GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
 
-        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
-        echo `date` "0  User-overide: connecting to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+        echo `date` "0  User-overide: user wants to connect to Genesis $GENESIS_GEO $GENESIS_IP:$GENESIS_PORT"
+
         USER_OVERIDE="YES"
     fi
     echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
@@ -100,9 +97,8 @@ do
     #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST | grep ",Docker." >porttest.txt
+    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST >porttest.txt
     echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-
     cat porttest.txt
     echo "BEST CHOICE BY LATENCY"
     FIRST_LINE=`cat porttest.txt | head -1`
