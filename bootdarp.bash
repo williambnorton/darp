@@ -97,8 +97,9 @@ do
     #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST >porttest.txt
+    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST | grep ",Docker." >porttest.txt
     echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
+
     cat porttest.txt
     echo "BEST CHOICE BY LATENCY"
     FIRST_LINE=`cat porttest.txt | head -1`
