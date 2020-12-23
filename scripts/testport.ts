@@ -24,7 +24,7 @@ if (process.argv) {
         process.exit(1);
     }
 } else {
-    console.log(`process.argv DOES NOT EXIST - ERROR process=${JSON.stringify(process,null,2) }`);
+    //console.log(`process.argv DOES NOT EXIST - ERROR process=${JSON.stringify(process,null,2) }`);
     process.exit(0);
 }
 const MYIP=myArgs[0];
