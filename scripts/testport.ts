@@ -74,7 +74,7 @@ function finish() {
         //
     }
     if (responses.length==0) {
-        console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISPORT} ${JSON.stringify(argv)}`);
+        console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISIP}:${GENESISPORT}`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
