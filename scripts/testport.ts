@@ -12,7 +12,7 @@
 //    console.log(`${index}: ${val}`)
 //  })
 //
-console.log(`testport process.argv=${process.argv}`);
+//console.log(`testport process.argv=${process.argv}`);
 
 
 if (process.argv) {
