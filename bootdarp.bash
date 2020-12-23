@@ -107,8 +107,8 @@ do
     echo "BEST CHOICE BY LATENCY"
     FIRST_LINE=`cat porttest.txt | head -1`
     echo "FIRST_LINE=$FIRST_LINE"
-    #FIRST LINE: 16,1608653511642,12,Docker.201221.1554:Build.201221.1554,104.209.36.75,65013,MAZ-WESTUS-00,1608652708593,uvX4NJYdA27WENpNrKHp3qg79Gts17ZloPpg142Yen4=,52.53.222.151,65013,AWS-US-WEST-1
-    #
+    #FIRST_LINE=11,1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,52.53.222.151,65013,AWS-US-WEST-1
+
     GENESIS_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
     GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $4}'`
     GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $5}'`
@@ -116,6 +116,9 @@ do
     GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $7}'`
     GENESIS_GROUP="${GENESIS_GEO}.1"
 
+    #
+    #   Handle where No genesis nodes responded
+    #
     echo "GENESIS_LATENCY=$GENESIS_LATENCY"
     if [ "$GENESIS_LATENCY" == "" ]; then  # We are the only ones so far
         GENESIS_LATENCY=0
@@ -124,12 +127,12 @@ do
         GENESIS_PORT=$MY_PORT
         GENESIS_GEO=$MY_GEO
         GENESIS_GROUP="${GENESIS_GEO}.1"
-        echo `date` "CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
+        echo `date` "I AM GENESIS - CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
     fi
 
     echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
     #
-    #   #2 - if we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
+    #   #2 - we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
     #
 
     MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     # Am I a Genesis Node?
@@ -137,15 +140,15 @@ do
         export GENESIS_IP=$MY_IP
         MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
         echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
-        echo `date` HERE I use myself as Genesis node, but should prefer an active one within 25 ms
+        echo `date` HERE I use myself as Genesis node, but should prefer an active one within 100ms rtt
         echo `date` "GENESIS_LATENCY=$GENESIS_LATENCY ms away"
         if [ $GENESIS_LATENCY -gt 100 ]; then
             GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-            GENESIS_IP=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $1 }'`  #
-            GENESIS_PORT=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $2 }'`  #
-            GENESIS_GEO=`echo $MY_GENESIS_ENTRY | awk -F, '{ print $3 }'`  #
-            GENESIS_GROUP="${GENESIS_GEO}.1"
-            echo `date` "I AM FAR AWAY FROM CLOSEST GENESIS NODE: I AM GENESIS NODE  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
+            GENESIS_IP=$MY_IP  #
+            GENESIS_PORT=$MY_PORT  #
+            GENESIS_GEO=$MY_GEO
+            GENESIS_GROUP="${MY_GEO}.1"
+            echo `date` "I AM within 100ms of GENESIS NODE: I and using  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
         fi
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
     else
