@@ -31,7 +31,7 @@
 echo `date` Starting bootdarp.bash in docker env =
 env
 SLEEPTIME=5 #time in seconds between software runs in forever loop
-MAXCYCLES=1000 # of cycles before stopping
+MAXCYCLES=10 # of cycles before reloading docker
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -148,7 +148,7 @@ do
             GENESIS_PORT=$MY_PORT  #
             GENESIS_GEO=$MY_GEO
             GENESIS_GROUP="${MY_GEO}.1"
-            echo `date` "I AM within 100ms of GENESIS NODE: I and using  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
+            echo `date` "I AM more than 100ms away from closest GENESIS NODE: I and using  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
         fi
         echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
     else
