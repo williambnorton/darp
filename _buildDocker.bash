@@ -56,6 +56,7 @@ echo `date` $0 $DOCKERVERSION COMPLETE
 V=`echo $DOCKERVERSION|awk -F. '{ print $3/100 $3%100 }'`
 say "[[ volm 0.05 ]] $DOCKERVERSION Complete"
 
+
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
 
 
