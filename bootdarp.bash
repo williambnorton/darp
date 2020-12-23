@@ -113,6 +113,7 @@ do
     GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
     GENESIS_GROUP="${GENESIS_GEO}.1"
     GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $7}'`
+    echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
 
     #
     #   Handle where No genesis nodes responded
