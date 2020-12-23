@@ -97,20 +97,22 @@ do
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
     node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  >porttest.txt
+    #                Format:    latency  ,  IP:Port  ,   URL
     echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-
     cat porttest.txt
+
     echo "BEST CHOICE BY LATENCY"
     FIRST_LINE=`cat porttest.txt | head -1`
     echo "FIRST_LINE=$FIRST_LINE"
-    #FIRST_LINE=11,1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,52.53.222.151,65013,AWS-US-WEST-1
+    #FIRST_LINE=11, 52.53.222.151,65013,AWS-US-WEST-1,   1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,
+
 
     GENESIS_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-    GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $4}'`
-    GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $5}'`
-    GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $6}'`
-    GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $7}'`
+    GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
+    GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
+    GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
     GENESIS_GROUP="${GENESIS_GEO}.1"
+    GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $7}'`
 
     #
     #   Handle where No genesis nodes responded

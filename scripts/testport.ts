@@ -51,7 +51,7 @@ client.on('message', function (message, remote) {
     var inmsg=message.toString();
     
     //console.log(remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
-    var response={ srcIP:remote.address, latency:(timeNow.getTime()-startTimestamp), url:inmsg };
+    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
     if (first=={}) 
         first=response;
     responses.push(response);
@@ -68,13 +68,13 @@ function finish() {
         //
         //
         //
-        console.log(`${responses[g].latency},${responses[g].url},GenesisNode,${responses[g].srcIP},`);
-        //
+        console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
+        //                34                    52.53.222.151:65013        
         //
         //
     }
     if (responses.length==0) {
-        console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISIP}:${GENESISPORT}`);
+        //console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISIP}:${GENESISPORT}`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
