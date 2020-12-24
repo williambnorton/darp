@@ -10,7 +10,7 @@
 //          eventually this module could test the port to self to verify port forwarding works
 //
 console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST} VERSION=${process.env.VERSION} GEO=${process.env.GEO}`);
-var numberPings=3;
+var numberPings=2;
 const GENESISNODELIST=process.env.GENESISNODELIST||""
 if (GENESISNODELIST=="") {
     console.log(`testport.ts something really wrong - no GENESINODE LIST - EXITTING`);
@@ -91,26 +91,28 @@ client.on('message', function (message, remote) {
 //      finish on timeout
 //
 function finish() {
-    console.log(`#  finish responses=${responses}`);
-    for (var g in responses) {
+
+    console.log(`#  testport complete finish`);
+  //  for (var g in responses) {
         //
         //
         //
-        console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
+    //    console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         //                34                    52.53.222.151       
         //
         //
-    }
-    if (responses.length==0) {
-        console.log(`# testport.bash  No Responses`);
-    }
+   //}
+    //if (responses.length==0) {
+      //  console.log(`# testport.bash  No Responses`);
+   // }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
     //console.log(`${JSON.stringify(selectURL,null,2)}`);  //pick one in the middle
     //console.log(`auto=${JSON.stringify(responses[ Math.floor(responses.length/2) ].url,null,2)}`);  //pick one in the middle
-    process.exit(responses.length);
+    process.exit(0);
 }
 
 //console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
+setTimeout(finish,numberPings*1000)
 darpPing();
 
