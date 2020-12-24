@@ -1,6 +1,19 @@
 //
 // testport.ts - 
 //          use:      node porttest MYIP MYPORT GENESIS ... GENESIS
+//
+//  testport - test my and port connectivity to all gneesis nodes
+//  should be:
+//  in: GENESISNODELIST as environmental variable
+//  out: 
+//          stdout  latency for responding genesis nodes excluding self
+//          eventually this module could test the port to self to verify port forwarding works
+//
+console.log(`#testport GENESISNODELIST=${process.env.GENESISNODELIST}`);
+
+for (var genesisNode in ${process.env.GENESISNODELIST} ) {
+    console.log(`# will send DARP Ping to $genesisNode`);
+}
 
 if (process.argv) {
     var myArgs=process.argv.slice(2);
