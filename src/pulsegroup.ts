@@ -1440,10 +1440,11 @@ export class AugmentedPulseGroup {
                 //HERE put the nodeCount and the # better paths
                 //PONG MESSAGE
                 var message=`${now()},12,${this.config.VERSION},${this.config.IP},${this.config.PORT},${this.config.GEO},${this.config.BOOTTIMESTAMP},${this.config.PUBLICKEY},${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
+
                 //else
                 //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
-                //console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
+                console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
                 this.udp.send(message, 65013, ipaddr);
             } else {
                 console.log(`pulseGroup full - not answering request to join... `);

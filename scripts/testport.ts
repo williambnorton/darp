@@ -38,7 +38,7 @@ var numberPings=3;
 setTimeout(finish,numberPings*1000);
 
 var first={};
-console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT +" myArgs="+myArgs);
+console.log("# testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT +" myArgs="+myArgs);
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -82,7 +82,7 @@ function finish() {
         //
     }
     if (responses.length==0) {
-        console.log(`#  ERROR: NO CLEAR PATHS TO UDP ${GENESISIP}:${GENESISPORT}`);
+        console.log(`# testport.bash  No Responses ${GENESISIP}:${GENESISPORT}`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
