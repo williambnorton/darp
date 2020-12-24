@@ -33,7 +33,7 @@ const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=3;
 var first={};
-console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT ${myArgs});
+console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT +" myArgs="+myArgs);
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
