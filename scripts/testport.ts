@@ -52,9 +52,28 @@ var responses=[];
 client.on('message', function (message, remote) {
     var timeNow=new Date(); 
     var inmsg=message.toString();
-    
+    const pongFields=inmsg.split[","]
+    var src=remote.address
+    var sendTime=pongFields[0];
+    var msgType=pongFields[1];
+    var swversion=pongFields[2];
+    var genesisip=pongFields[3];
+    var genesisport=pongFields[4];
+    var genesisgeo=pongFields[5];
+    var genesisboottimestamp=pongFields[6];
+    var genesispublickey=pongFields[7];
+    console.log(`# ping message src=${src} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
+
     console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTimestamp) +" ms with : "+ inmsg);
     var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
+
+    if ( remote.address==MYIP && msgType==11 ) {  //respond to my own ping
+        var msg=`${timeNow.toTimeString()},12,${process.env.VERSION},${MYIP},${MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY}`; //specify GENESIS Node directly
+        console.log(`Sending PONG (12) to ${remote.address}:65013 message=${msg}`);
+        client.send(msg, 65013, remote.address);
+        return;
+    }
+
     //if (remote.address != MYIP) { //if we ignore self, the first is always the closest first responder. Later could use test port to test our own port
         if (first=={}) 
             first=response;
