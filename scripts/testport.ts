@@ -19,7 +19,7 @@ const MYPORT=myArgs[1];
 const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=5;
-setTimeout(finish,numberPings*1000);
+//setTimeout(finish,numberPings*1000);
 
 var first={};
 console.log("# testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT +" myArgs="+myArgs);
@@ -95,14 +95,14 @@ function DARPping() {
 
         //var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,destinationIs,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
 
-        console.log(`# testport: DARP Ping IP=${IP} Port=${Port} Name=${Name}`);
+        //console.log(`# testport: DARP Ping IP=${IP} Port=${Port} Name=${Name}`);
         if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF so we can use the first to respond
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
-                console.log('# UDP message sent to ' + IP +':'+ Port);
+                //console.log('# UDP message sent to ' + IP +':'+ Port);
             });
         } else {
-            console.log(`# not pinging self ${IP}`);
+            //console.log(`# not pinging self ${IP}`);
         }
     }
    setTimeout(DARPping,1000);
