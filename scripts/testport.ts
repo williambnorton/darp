@@ -34,7 +34,7 @@ const MYIP=myArgs[0];
 const MYPORT=myArgs[1];
 const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
-var numberPings=3;
+var numberPings=5;
 setTimeout(finish,numberPings*1000);
 
 var first={};
@@ -93,7 +93,7 @@ function finish() {
 
 function DARPping() {
     var timeNow=new Date();
-    if (--numberPings==0) {
+    if (--numberPings<=0) {
        finish()
     }
     if (done) {
@@ -114,8 +114,10 @@ function DARPping() {
         if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF so we can use the first to respond
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
-            //console.log('UDP message sent to ' + IP +':'+ Port);
+                console.log('UDP message sent to ' + IP +':'+ Port);
             });
+        } else {
+            console.log(`not pinging self ${IP}`);
         }
     }
    setTimeout(DARPping,1000);
