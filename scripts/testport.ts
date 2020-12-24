@@ -13,6 +13,9 @@
 //  })
 //
 //console.log(`testport process.argv=${process.argv}`);
+//
+//  would be cool to emit the genesis nodelist past in with latency prepended
+//
 
 
 if (process.argv) {
@@ -32,6 +35,8 @@ const MYPORT=myArgs[1];
 const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=3;
+setTimeout(finish,numberPings*1000);
+
 var first={};
 console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT +" myArgs="+myArgs);
 
