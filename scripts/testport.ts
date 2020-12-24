@@ -71,11 +71,11 @@ client.on('message', function (message, remote) {
 //
 //
 function finish() {
+    console.log(`#  finish responses=${responses}`);
     for (var g in responses) {
         //
         //
         //
-        //console.log(`#  ${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         //                34                    52.53.222.151       
         //
@@ -110,14 +110,14 @@ function DARPping() {
 
         //var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,destinationIs,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
 
-        //console.log(`testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
+        console.log(`# testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
         if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF so we can use the first to respond
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
-                console.log('UDP message sent to ' + IP +':'+ Port);
+                console.log('# UDP message sent to ' + IP +':'+ Port);
             });
         } else {
-            console.log(`not pinging self ${IP}`);
+            console.log(`# not pinging self ${IP}`);
         }
     }
    setTimeout(DARPping,1000);
