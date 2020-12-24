@@ -58,7 +58,7 @@ client.on('message', function (message, remote) {
         responses.push(response);
         //this proves the port works both directions
         //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
-        //done=true;
+        //done=true;  //we will go for a couple seconds
     }
 });
 
