@@ -50,12 +50,12 @@ say "[[ volm 0.05 ]] Bill, the docker build is complete. it took $DELTA_MIN minu
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "bash -c '(sleep 30;~/wireguard/wgwatch.bash)& nohup docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e HOSTNAME=AWS-US-WEST-1A -e WALLET=auto -d williambnorton/darp:$DOCKERVERSION' " &
 
 #echo `date` About to launch SR-WAN Instrumentation docker
-echo `date` $0 $DOCKERVERSION COMPLETE
+echo `date` $0 $DOCKERVERSION V=$V COMPLETE
 V=`echo $DOCKERVERSION|awk -F. '{ print $3 }'| sed 's/.\{1\}/& /g'`
-say "[[ volm 0.05 ]] $V Complete"
+say "[[ volm 0.05 ]] Docker $V Complete"
 
 
-#ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
+ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 "$CMD " 
 
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 'curl http://52.53.222.151:65013/darp.bash | bash '

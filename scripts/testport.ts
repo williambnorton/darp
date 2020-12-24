@@ -99,15 +99,19 @@ function DARPping() {
         let IP=myArgs[i].split(",")[0]
         let Port=myArgs[i].split(",")[1]
         let Name=myArgs[i].split(",")[2]
-        var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,destinationIs,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
+
+        //this should develop along side the PONG code in pulseGroup.ts
+        var message=`${timeNow.getTime()},11,${process.env.VERSION},${MYIP},${MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY},${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
+
+        //var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,destinationIs,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
 
         //console.log(`testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
-        //if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
+        if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF so we can use the first to respond
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
             //console.log('UDP message sent to ' + IP +':'+ Port);
             });
-        //}
+        }
     }
    setTimeout(DARPping,1000);
 }
