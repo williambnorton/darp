@@ -10,9 +10,10 @@
 //          eventually this module could test the port to self to verify port forwarding works
 //
 console.log(`#testport GENESISNODELIST=${process.env.GENESISNODELIST}`);
+const GENESISNODELIST=process.env.GENESISNODELIST||""
 
-for (var genesisNode in ${process.env.GENESISNODELIST} ) {
-    console.log(`# will send DARP Ping to $genesisNode`);
+for (var genesisNode in GENESISNODELIST.split(",") ) {
+    console.log(`# will send DARP Ping to ${genesisNode}`);
 }
 
 if (process.argv) {
