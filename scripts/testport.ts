@@ -11,9 +11,9 @@
 //
 console.log(`#testport GENESISNODELIST=${process.env.GENESISNODELIST}`);
 const GENESISNODELIST=process.env.GENESISNODELIST||""
-
-for (var genesisNode in GENESISNODELIST.split(",") ) {
-    console.log(`# will send DARP Ping to ${genesisNode}`);
+const G=GENESISNODELIST.split(",")
+for (var genesisNode in G ) {
+    console.log(`# would send DARP Ping to ${G[genesisNode]}`);
 }
 
 if (process.argv) {
