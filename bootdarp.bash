@@ -130,7 +130,7 @@ do
         MY_GENESIS_GEO=$MY_GEO
         MY_GENESIS_GROUP="${GENESIS_GEO}.1"
         echo `date` "I AM GENESIS - CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
-        FIRST_RESPONDER_LATENCY=0  //we we are the first responder
+        FIRST_RESPONDER_LATENCY=0  #//we we are the first responder
     fi
 
     #
