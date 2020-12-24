@@ -46,18 +46,18 @@ fi
     git checkout tags/$NEWDARP   #fetch the specified version
 
     echo "New DARP Code in /tmp/darp directory:"
-    ls -l /tmp/darp
+    #ls -l /tmp/darp
     cd /tmp/darp
     NEWDARPVERSION=`ls Build.*`
     if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
         echo `date` "$0 no update needed "
         exit 0;
     fi
-    echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
-    echo `date` $0 "$NEWDARPVERSION INTO /tmp/darp directory."
+#    echo `date` "$0 Software changed. Was $CURRENTDARP Now is $NEWDARPVERSION"
+#    echo `date` $0 "$NEWDARPVERSION INTO /tmp/darp directory."
     #echo Killing handlepulse to force reload: `ls $DARPDIR/*.pid`
     cd /tmp
-    echo `date` "moving CURRENTDARP code into root directory"
+#    echo `date` "moving CURRENTDARP code into root directory"
     SUFFIX=`date +%y%m%d.%H%M`
     mv $DARPDIR /tmp/darp.$SUFFIX
 
@@ -65,7 +65,7 @@ fi
     cp -R /tmp/darp.$SUFFIX/node_modules /root/darp/node_modules  ### updateSW.bash BROKEN
     mv darp $HOME
     cd $DARPDIR
-    ls -l Docker.* Build.* 
+    #ls -l Docker.* Build.* 
     echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP SOFTWARE ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
     echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP SOFTWARE ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
     echo `date` "updateSW.bash - INSTALLED NEW BOOTDARP SOFTWARE ( CURRENTDARP=$CURRENTDARP NEWDARPVERSION=$NEWDARPVERSION )"
