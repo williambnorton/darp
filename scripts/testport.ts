@@ -50,7 +50,7 @@ client.on('message', function (message, remote) {
     var timeNow=new Date(); 
     var inmsg=message.toString();
     
-    console.log('# '+remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
+    console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTimestamp) +" ms with : "+ inmsg);
     var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
     if (first=={}) 
         first=response;

@@ -107,7 +107,7 @@ do
     cat porttest.txt
 
     echo "BEST CHOICE BY LATENCY"
-    FIRST_LINE=`cat porttest.txt | grep -v 'ZZ#' | head -1`
+    FIRST_LINE=`cat porttest.txt | grep -v '#' | head -1`
     echo "FIRST_LINE=$FIRST_LINE"
     #FIRST_LINE=11, 52.53.222.151,   1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,
 
