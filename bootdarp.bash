@@ -156,14 +156,14 @@ do
         echo `date` "1  My MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY MY_GENESIS_IP=$MY_GENESIS_IP  MY_GENESIS_PORT=$MY_GENESIS_PORT"
     else
         if [ "$MY_GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
-                echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
-                echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
-                echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-                echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-                echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-                echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
-                echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
-                exit 36; 
+            echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
+            echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
+            echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+            echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+            echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
+            echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
+            echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
+            exit 36; 
         fi
     fi
 export GENESIS_IP
@@ -174,7 +174,7 @@ export GENESIS_GEO
 export GENESIS_SWVERSION
 export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"
 
-echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
+echo `date` "******* bootdarp.bash We are going to join : MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_GROUP=$GMY_ENESIS_GROUP  MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION "
 
 
 #export WGDIR=/etc/wireguard
