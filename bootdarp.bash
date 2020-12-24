@@ -111,20 +111,18 @@ do
     echo "FIRST_LINE=$FIRST_LINE"
     #FIRST_LINE=11, 52.53.222.151,   1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,
 
-
-    FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-    FIRST_RESPONDER_IP=`echo $FIRST_LINE | awk -F, '{ print $6}'`
-    FIRST_RESPONDER_PORT=`echo $FIRST_LINE | awk -F, '{ print $7}'`
-    FIRST_RESPONDER_GEO=`echo $FIRST_LINE | awk -F, '{ print $8}'`
-    FIRST_RESPONDER_GROUP="${GENESIS_GEO}.1"
-    FIRST_RESPONDER_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
-    echo `date` "2  CLOSEST  FIRST_RESPONDER_GEO=$FIRST_RESPONDER_GEO is ${FIRST_RESPONDER_LATENCY} ms away FIRST_RESPONDER_IP=$FIRST_RESPONDER_IP  FIRST_RESPONDER_PORT=$FIRST_RESPONDER_PORT  FIRST_RESPONDER_SWVERSION=$FIRST_RESPONDER_SWVERSION"
-
+    if [ "$FIRST_LINE" != "" ]; then
+        FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+        FIRST_RESPONDER_IP=`echo $FIRST_LINE | awk -F, '{ print $6}'`
+        FIRST_RESPONDER_PORT=`echo $FIRST_LINE | awk -F, '{ print $7}'`
+        FIRST_RESPONDER_GEO=`echo $FIRST_LINE | awk -F, '{ print $8}'`
+        FIRST_RESPONDER_GROUP="${GENESIS_GEO}.1"
+        FIRST_RESPONDER_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
+        echo `date` "2  CLOSEST  FIRST_RESPONDER_GEO=$FIRST_RESPONDER_GEO is ${FIRST_RESPONDER_LATENCY} ms away FIRST_RESPONDER_IP=$FIRST_RESPONDER_IP  FIRST_RESPONDER_PORT=$FIRST_RESPONDER_PORT  FIRST_RESPONDER_SWVERSION=$FIRST_RESPONDER_SWVERSION"
+    else
     #
     #   Handle where No genesis nodes responded
     #
-    echo "FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY"
-    if [ "$FIRST_RESPONDER_LATENCY" == "" -a "$USER_OVERIDE" != "YES" ]; then  # We are the only ones so far && user didn't overide GENESIS
         echo `date` "bootdarp: no other genesis nodes are responding so I will be a solo genesis node for now."
         MY_GENESIS_LATENCY=0
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
@@ -133,17 +131,18 @@ do
         MY_GENESIS_GEO=$MY_GEO
         MY_GENESIS_GROUP="${GENESIS_GEO}.1"
         echo `date` "I AM GENESIS - CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
+        FIRST_RESPONDER_LATENCY=0  //we we are the first responder
     fi
 
     #
-    #   #2 - we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
+    #   #2 - If we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 100ms, we should be a genesis node
     #
 
     MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     # Am I a Genesis Node?
     if [ $? -eq 0 ]; then
-        export GENESIS_IP=$MY_IP
+        #export GENESIS_IP=$MY_IP
         MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
-        echo `date` "I AM GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
+        echo `date` "I AM A IDENTIFIED GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
         echo `date` HERE I use myself as Genesis node, but should prefer an active one within 100ms rtt
         echo `date` "alternative FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY ms away"
         if [ $FIRST_RESPONDER_LATENCY -gt 100 ]; then
@@ -152,29 +151,29 @@ do
             MY_GENESIS_PORT=$MY_PORT  #
             MY_GENESIS_GEO=$MY_GEO
             MY_GENESIS_GROUP="${MY_GEO}.1"
+            console.log(`BLESSING MYSELF AS A NEW GENESIS NODE > 100ms away from others`);
         fi
         echo `date` "1  My MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY MY_GENESIS_IP=$MY_GENESIS_IP  MY_GENESIS_PORT=$MY_GENESIS_PORT"
     else
-        if [ "$MY_GENESIS_IP" == "" -a "$FIRST_RESPONDER_IP" != "$MY_IP" ]; then
-            echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
-            echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
-            echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-            echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-            echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
-            echo "***************************************************     TRAY AGAIN LATER>....     **************************************" 
-            echo "***************************************************     try connecting directly to lead genesis node: ___:___ ?    **************************************" 
-            exit 36; 
+        echo `date` "I am not in the genesis config list "
+        if [ "$FIRST_LINE" == "" ]; then
+            echo `date` "I am not in the genesis config and no genesis node responded -- defaulting to being my own geensis node"
+        else
+            echo `date` "I am not in the genesis config and using closest Genesis node"
         fi
     fi
-export GENESIS_IP
-#export FIRST_GENESIS_IP=$GENESIS_IPdd
-export GENESIS_PORT
-#export FIRST_GENESIS_PORT=$GENESIS_PORT
-export GENESIS_GEO
-export GENESIS_SWVERSION
-export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"
+#export GENESIS_IP
+#export GENESIS_PORT
+#export GENESIS_GEO
+#export GENESIS_SWVERSION
+export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
 
-echo `date` "******* bootdarp.bash We are going to join : MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_GROUP=$MY_GENESIS_GROUP  MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION "
+#echo `date` "******* bootdarp.bash We are going to join : MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_GROUP=$MY_GENESIS_GROUP  MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION "
+echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
 
 
 #export WGDIR=/etc/wireguard

@@ -33,7 +33,7 @@ const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=3;
 var first={};
-console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT ${myArgs});
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -52,14 +52,14 @@ client.on('message', function (message, remote) {
     
     console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTimestamp) +" ms with : "+ inmsg);
     var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
-    if (remote.address != MYIP) {
+    //if (remote.address != MYIP) { //if we ignore self, the first is always the closest first responder. Later could use test port to test our own port
         if (first=={}) 
             first=response;
         responses.push(response);
         //this proves the port works both directions
         //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
         //done=true;  //we will go for a couple seconds
-    }
+    //}
 });
 
 //
@@ -99,7 +99,7 @@ function DARPping() {
         let IP=myArgs[i].split(",")[0]
         let Port=myArgs[i].split(",")[1]
         let Name=myArgs[i].split(",")[2]
-        var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
+        var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,destinationIs,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
 
         //console.log(`testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
         //if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
