@@ -230,7 +230,7 @@ export PORT
     echo `date` "+ + + +RUNNING DARP $VERSION rc=$rc from updateSW.bash"    #VERSION should eventually be a HASH over the docker itself, mapped to docker tag
     #env
 
-    echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE        - - - - - - - - - - - - - - "
+    echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE GENESIS=$GENESIS       - - - - - - - - - - - - - - "
     sleep 2
   
     cd $DARPDIR

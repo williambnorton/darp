@@ -1,22 +1,6 @@
 //
 // testport.ts - 
 //          use:      node porttest MYIP MYPORT GENESIS ... GENESIS
-//
-// standlone utility
-//	$1 is MYIP curl'd from public utility - what if not on public internet?
-//	$2 is optional port specified DEFAULT=65013
-// example: node testport `curl ifconfig.io` 65013
-
-//import { argv } from "process";
-//process.argv.forEach((val, index) => {
-//    console.log(`${index}: ${val}`)
-//  })
-//
-//console.log(`testport process.argv=${process.argv}`);
-//
-//  would be cool to emit the genesis nodelist past in with latency prepended
-//
-
 
 if (process.argv) {
     var myArgs=process.argv.slice(2);
