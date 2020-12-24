@@ -9,7 +9,7 @@
 //          stdout  latency for responding genesis nodes excluding self
 //          eventually this module could test the port to self to verify port forwarding works
 //
-console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST}`);
+console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST} VERSION=${process.env.VERSION} GEO=${process.env.GEO}`);
 var numberPings=3;
 const GENESISNODELIST=process.env.GENESISNODELIST||""
 if (GENESISNODELIST=="") {
@@ -27,6 +27,7 @@ client.on('listening', function () {
     var address = client.address();
     console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
+client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 
 
 function darpPing() {
@@ -52,6 +53,10 @@ function darpPing() {
 //
 //var responses=[];
 client.on('message', function (message, remote) {
+    console.log(`GOT A MESSAGE : ${message}`);
+    console.log(`GOT A MESSAGE : ${message}`);
+    console.log(`GOT A MESSAGE : ${message}`);
+    console.log(`GOT A MESSAGE : ${message}`);
     console.log(`GOT A MESSAGE : ${message}`);
     var timeNow=new Date(); 
     var inmsg=message.toString();
@@ -107,6 +112,5 @@ function finish() {
 }
 
 //console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
-client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 darpPing();
 
