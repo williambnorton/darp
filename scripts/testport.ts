@@ -99,12 +99,12 @@ function DARPping() {
         var message=timeNow.getTime()+",11,?,PUBLICKEY,11,11,11,11,11,"+IP+","+Port+","+Name+",could include DOCKER and DARP SW VERSION HERE,"; //
 
         //console.log(`testport: DARP Ping IP=${IP} Port=${Port} Name=${Name} message=${message}`);
-        if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
+        //if (IP!=MYIP) {  //DO NOT DARP PING YOURSELF - IT CAN DO NO GOOD
             client.send(message, 0, message.length, Port, IP, function(err, bytes) {
                 if (err) throw err;
             //console.log('UDP message sent to ' + IP +':'+ Port);
             });
-        }
+        //}
     }
    setTimeout(DARPping,1000);
 }
