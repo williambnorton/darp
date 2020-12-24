@@ -92,12 +92,12 @@ do
     #
     #   #1 - check where I am topologically
     #
-    echo `date` "************************************** GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING GENESIS=$GENESIS"
+    echo `date` "************************************** GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING MY_GENESIS_IP=$MY_GENESIS_IP"
     #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
 
-    echo "node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST "
+    echo "EXECUTING node scripts/testport.ts $MY_IP 65013 "
 
     node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  >porttest.txt
 
@@ -107,7 +107,7 @@ do
     cat porttest.txt
 
     echo "BEST CHOICE BY LATENCY"
-    FIRST_LINE=`cat porttest.txt | head -1`
+    FIRST_LINE=`cat porttest.txt | grep -v 'ZZ#' | head -1`
     echo "FIRST_LINE=$FIRST_LINE"
     #FIRST_LINE=11, 52.53.222.151,   1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,
 
@@ -155,7 +155,7 @@ do
         fi
         echo `date` "1  My MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY MY_GENESIS_IP=$MY_GENESIS_IP  MY_GENESIS_PORT=$MY_GENESIS_PORT"
     else
-        if [ "$MY_GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
+        if [ "$MY_GENESIS_IP" == "" -a "$FIRST_RESPONDER_IP" != "$MY_IP" ]; then
             echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
             echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
             echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 

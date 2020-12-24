@@ -33,7 +33,7 @@ const GENESISIP=myArgs[2];
 const GENESISPORT=65013;
 var numberPings=3;
 var first={};
-//console.log("testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
+console.log("#   testport.ts GENESISIP="+GENESISIP+" GENESISPORT="+GENESISPORT+" MYIP="+MYIP+" MYPORT="+MYPORT );
 
 var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
@@ -41,7 +41,7 @@ var done=false;
 
 client.on('listening', function () {
     var address = client.address();
-    //console.log('testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 
 var startTimestamp=0;
@@ -50,7 +50,7 @@ client.on('message', function (message, remote) {
     var timeNow=new Date(); 
     var inmsg=message.toString();
     
-    //console.log(remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
+    console.log('# '+remote.address + ' ' + (timeNow.getTime()-startTimestamp) +" ms "+ inmsg);
     var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
     if (first=={}) 
         first=response;
@@ -74,7 +74,7 @@ function finish() {
         //
     }
     if (responses.length==0) {
-        //console.log(`ERROR: NO CLEAR PATHS TO UDP ${GENESISIP}:${GENESISPORT}`);
+        console.log(`#  ERROR: NO CLEAR PATHS TO UDP ${GENESISIP}:${GENESISPORT}`);
     }
     //var selectURL=responses.pop();
     //console.log(`${selectURL.url}`);  //pick one in the middle
