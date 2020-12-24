@@ -12,7 +12,12 @@
 console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST}`);
 var numberPings=3;
 const GENESISNODELIST=process.env.GENESISNODELIST||""
+if (GENESISNODELIST=="") {
+    console.log(`testport.ts something really wrong - no GENESINODE LIST - EXITTING`);
+    process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
+}
 const G=GENESISNODELIST.split(" ")
+
 var startTimestamp=0;
 
 var dgram = require('dgram');
@@ -22,6 +27,9 @@ client.on('listening', function () {
     var address = client.address();
     console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
+
+//console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
+client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 
 function darpPing() {
     for (var genesisNode in G ) {
@@ -48,7 +56,7 @@ function darpPing() {
 client.on('message', function (message, remote) {
     var timeNow=new Date(); 
     var inmsg=message.toString();
-    
+
     const pongFields=inmsg.split[","]
     var src=remote.address
     var sendTime=pongFields[0];
@@ -76,7 +84,7 @@ client.on('message', function (message, remote) {
 });
 
 //
-//
+//      finish on timeout
 //
 function finish() {
     console.log(`#  finish responses=${responses}`);
@@ -99,7 +107,7 @@ function finish() {
     process.exit(responses.length);
 }
 
-//console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
-client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 
+
+darpPing();
 
