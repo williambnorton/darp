@@ -98,6 +98,7 @@ do
 
     echo "EXECUTING node scripts/testport.ts $MY_IP 65013 "
 
+    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  #>porttest.txt
     node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  >porttest.txt
 
 
