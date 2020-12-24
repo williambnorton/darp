@@ -70,7 +70,7 @@ function finish() {
         //
         //
         //
-        console.log(`#  ${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
+        //console.log(`#  ${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         //                34                    52.53.222.151       
         //
