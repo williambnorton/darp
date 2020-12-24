@@ -112,30 +112,29 @@ do
     #FIRST_LINE=11, 52.53.222.151,   1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,
 
 
-    GENESIS_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-    GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $6}'`
-    GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $7}'`
-    GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $8}'`
-    GENESIS_GROUP="${GENESIS_GEO}.1"
-    GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
-    echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
+    FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+    FIRST_RESPONDER_IP=`echo $FIRST_LINE | awk -F, '{ print $6}'`
+    FIRST_RESPONDER_PORT=`echo $FIRST_LINE | awk -F, '{ print $7}'`
+    FIRST_RESPONDER_GEO=`echo $FIRST_LINE | awk -F, '{ print $8}'`
+    FIRST_RESPONDER_GROUP="${GENESIS_GEO}.1"
+    FIRST_RESPONDER_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
+    echo `date` "2  CLOSEST  FIRST_RESPONDER_GEO=$FIRST_RESPONDER_GEO is ${FIRST_RESPONDER_LATENCY} ms away FIRST_RESPONDER_IP=$FIRST_RESPONDER_IP  FIRST_RESPONDER_PORT=$FIRST_RESPONDER_PORT  FIRST_RESPONDER_SWVERSION=$FIRST_RESPONDER_SWVERSION"
 
     #
     #   Handle where No genesis nodes responded
     #
-    echo "GENESIS_LATENCY=$GENESIS_LATENCY"
-    if [ "$GENESIS_LATENCY" == "" ]; then  # We are the only ones so far
+    echo "FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY"
+    if [ "$FIRST_RESPONDER_LATENCY" == "" -a "$USER_OVERIDE" != "YES" ]; then  # We are the only ones so far && user didn't overide GENESIS
         echo `date` "bootdarp: no other genesis nodes are responding so I will be a solo genesis node for now."
-        GENESIS_LATENCY=0
-        GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-        GENESIS_IP=$MY_IP
-        GENESIS_PORT=$MY_PORT
-        GENESIS_GEO=$MY_GEO
-        GENESIS_GROUP="${GENESIS_GEO}.1"
+        MY_GENESIS_LATENCY=0
+        MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+        MY_GENESIS_IP=$MY_IP
+        MY_GENESIS_PORT=$MY_PORT
+        MY_GENESIS_GEO=$MY_GEO
+        MY_GENESIS_GROUP="${GENESIS_GEO}.1"
         echo `date` "I AM GENESIS - CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
     fi
 
-    echo `date` "2  CLOSEST  GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
     #
     #   #2 - we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 25ms, you are a genesis node
     #
@@ -148,17 +147,15 @@ do
         echo `date` HERE I use myself as Genesis node, but should prefer an active one within 100ms rtt
         echo `date` "alternative GENESIS_LATENCY=$GENESIS_LATENCY ms away"
         if [ $GENESIS_LATENCY -gt 100 ]; then
-
-            GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-            GENESIS_IP=$MY_IP  #
-            GENESIS_PORT=$MY_PORT  #
-            GENESIS_GEO=$MY_GEO
-            GENESIS_GROUP="${MY_GEO}.1"
-            echo `date` "I AM more than 100ms away from closest GENESIS NODE so I and using my own GENESIS_GEO=$GENESIS_GEO is ${GENESIS_LATENCY} ms away GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT  GENESIS_SWVERSION=$GENESIS_SWVERSION"
+            MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+            MY_GENESIS_IP=$MY_IP  #
+            MY_GENESIS_PORT=$MY_PORT  #
+            MY_GENESIS_GEO=$MY_GEO
+            MY_GENESIS_GROUP="${MY_GEO}.1"
         fi
-        echo `date` "1  My GENESIS_SWVERSION=$GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY GENESIS_IP=$GENESIS_IP  GENESIS_PORT=$GENESIS_PORT"
+        echo `date` "1  My MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY MY_GENESIS_IP=$MY_GENESIS_IP  MY_GENESIS_PORT=$MY_GENESIS_PORT"
     else
-        if [ "$GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
+        if [ "$MY_GENESIS_IP" == "" -a "$FIRST_GENESIS" != "$MY_IP" ]; then
                 echo `date` "$0 No genesis nodes answered request to connect... check that your UDP/TCP/ICMP ports open on your firewall ...EXITTING..."
                 echo `date` "$0 Configure ports 65013/TCP open and 65013-65200/UDP open and enable ICMP for diagnostics on your computer and any firewalls/routers in the network path"
                 echo "***************************************************     COULD NOT CONNECT TO ANY PUBLIC GENESIS NODES - EXITTING     **************************************" 
@@ -175,7 +172,7 @@ export GENESIS_PORT
 #export FIRST_GENESIS_PORT=$GENESIS_PORT
 export GENESIS_GEO
 export GENESIS_SWVERSION
-export GENESIS="$GENESIS_IP:$GENESIS_PORT"
+export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"
 
 echo `date` "******* bootdarp.bash We are going to join : GENESIS_GEO=$GENESIS_GEO GENESIS_GROUP=$GENESIS_GROUP  GENESIS_IP=$GENESIS_IP GENESIS_PORT=$GENESIS_PORT GENESIS_SWVERSION=$GENESIS_SWVERSION "
 
