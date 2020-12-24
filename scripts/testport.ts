@@ -28,8 +28,6 @@ client.on('listening', function () {
     console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 
-//console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
-client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 
 function darpPing() {
     for (var genesisNode in G ) {
@@ -54,9 +52,10 @@ function darpPing() {
 //
 //var responses=[];
 client.on('message', function (message, remote) {
+    console.log(`GOT A MESSAGE : ${message}`);
     var timeNow=new Date(); 
     var inmsg=message.toString();
-
+    
     const pongFields=inmsg.split[","]
     var src=remote.address
     var sendTime=pongFields[0];
@@ -70,17 +69,17 @@ client.on('message', function (message, remote) {
     console.log(`# ping message src=${src} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
     console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTimestamp) +" ms with : "+ inmsg);
     console.log(`${(timeNow.getTime()-startTimestamp)},${remote.address}`);
-//    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
-
+    //    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
+    
     if ( remote.address==process.env.MYIP && msgType==11 ) {  //respond to my own ping
         var msg=`${timeNow.toTimeString()},12,${process.env.VERSION},${process.env.MYIP},${process.env.MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY}`; //specify GENESIS Node directly
         console.log(`# Sending PONG (12) to ${remote.address}:${process.env.MYPORT} message=${msg}`);
         client.send(msg, 65013, remote.address);
         return;
     }
-
-///    responses.push(response);  //store the 
-
+    
+    ///    responses.push(response);  //store the 
+    
 });
 
 //
@@ -107,7 +106,7 @@ function finish() {
     process.exit(responses.length);
 }
 
-
-
+//console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
+client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 darpPing();
 
