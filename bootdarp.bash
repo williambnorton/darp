@@ -84,7 +84,6 @@ do
         MY_GENESIS_GROUP="${GENESIS_GEO}.1"
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
-        USER_OVERIDE="YES"
     fi
     
     echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
@@ -151,7 +150,7 @@ do
             MY_GENESIS_PORT=$MY_PORT  #
             MY_GENESIS_GEO=$MY_GEO
             MY_GENESIS_GROUP="${MY_GEO}.1"
-            console.log(`BLESSING MYSELF AS A NEW GENESIS NODE > 100ms away from others`);
+           echo `date` "BLESSING MYSELF AS A NEW GENESIS NODE 100ms away from others"
         fi
         echo `date` "1  My MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY MY_GENESIS_IP=$MY_GENESIS_IP  MY_GENESIS_PORT=$MY_GENESIS_PORT"
     else

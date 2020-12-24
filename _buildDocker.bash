@@ -51,7 +51,7 @@ say "[[ volm 0.05 ]] Bill, the docker build is complete. it took $DELTA_MIN minu
 
 #echo `date` About to launch SR-WAN Instrumentation docker
 echo `date` $0 $DOCKERVERSION COMPLETE
-V=`echo $DOCKERVERSION|awk -F. '{ print $3/100 $3%100 }'`
+V=`echo $DOCKERVERSION|awk -F. '{ print $3 }'| sed 's/.\{1\}/& /g'`
 say "[[ volm 0.05 ]] $V Complete"
 
 
