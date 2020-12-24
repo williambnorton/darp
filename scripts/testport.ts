@@ -52,12 +52,14 @@ client.on('message', function (message, remote) {
     
     console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTimestamp) +" ms with : "+ inmsg);
     var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
-    if (first=={}) 
-        first=response;
-    responses.push(response);
-    //this proves the port works both directions
-    //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
-    done=true;
+    if (remote.address != MYIP) {
+        if (first=={}) 
+            first=response;
+        responses.push(response);
+        //this proves the port works both directions
+        //here we might callback or somehow use the retrieved GENESISPUBLICKEY to prove it works
+        //done=true;
+    }
 });
 
 //
@@ -68,6 +70,7 @@ function finish() {
         //
         //
         //
+        console.log(`#  ${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
         //                34                    52.53.222.151       
         //
