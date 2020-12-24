@@ -96,7 +96,12 @@ do
     #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
 
     #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
+
+    echo "node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST "
+
     node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  >porttest.txt
+
+
     #                Format:    latency  ,  IP:Port  ,   URL
     echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
     cat porttest.txt
