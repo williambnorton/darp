@@ -39,6 +39,7 @@ git add . && git commit -m "$MESSAGE" && git pull && git push
 echo RUNNING git push origin --tags
 #git push origin $BUILD_TAG
 git tag $BUILD_TAG
+git push --delete origin latest
 git tag latest
 git push origin --tags
 echo `date`" Completed compiles + git push for $BUILD_TAG "
