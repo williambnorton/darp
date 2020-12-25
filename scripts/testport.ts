@@ -9,7 +9,7 @@
 //          stdout  latency for responding genesis nodes excluding self
 //          eventually this module could test the port to self to verify port forwarding works
 //
-console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST} VERSION=${process.env.VERSION} GEO=${process.env.GEO}`);
+console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST} MY_SWVERSION=${process.env.MY_SWVERSION} GEO=${process.env.GEO}`);
 var numberPings=2;
 const GENESISNODELIST=process.env.GENESISNODELIST||""
 if (GENESISNODELIST=="") {
@@ -30,6 +30,7 @@ client.on('listening', function () {
 client.bind(process.env.MYPORT);  //server listening 0.0.0.0:65013
 
 
+
 function darpPing() {
     for (var genesisNode in G ) {
         const genesisNodeEntry=G[genesisNode];
@@ -38,7 +39,7 @@ function darpPing() {
         let Port=genesisNodeEntry.split(",")[1]
         let Name=genesisNodeEntry.split(",")[2]
         var timeNow=new Date();
-        var message=`${timeNow.getTime()},11,${process.env.VERSION},${process.env.MYIP},${process.env.MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY}`; //specify GENESIS Node directly
+        var message=`${timeNow.getTime()},11,${process.env.MY_SWVERSION},${process.env.MYIP},${process.env.MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY}`; //specify GENESIS Node directly
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             if (err) throw err;
             console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
@@ -53,11 +54,8 @@ function darpPing() {
 //
 //var responses=[];
 client.on('message', function (message, remote) {
-    console.log(`GOT A MESSAGE : ${message}`);
-    console.log(`GOT A MESSAGE : ${message}`);
-    console.log(`GOT A MESSAGE : ${message}`);
-    console.log(`GOT A MESSAGE : ${message}`);
-    console.log(`GOT A MESSAGE : ${message}`);
+    console.log(`# GOT A DARP PING REPLY : ${message}`);
+
     var timeNow=new Date(); 
     var inmsg=message.toString();
     
@@ -77,7 +75,7 @@ client.on('message', function (message, remote) {
     //    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
     
     if ( remote.address==process.env.MYIP && msgType==11 ) {  //respond to my own ping
-        var msg=`${timeNow.toTimeString()},12,${process.env.VERSION},${process.env.MYIP},${process.env.MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY}`; //specify GENESIS Node directly
+        var msg=`${timeNow.toTimeString()},12,${process.env.MY_SWVERSION},${process.env.MYIP},${process.env.MYPORT},${process.env.GEO},${timeNow.getTime()},${process.env.PUBLICKEY}`; //specify GENESIS Node directly
         console.log(`# Sending PONG (12) to ${remote.address}:${process.env.MYPORT} message=${msg}`);
         client.send(msg, 65013, remote.address);
         return;
