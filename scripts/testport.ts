@@ -112,5 +112,6 @@ function finish() {
 
 //console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MYPORT}...`);
 setTimeout(finish,numberPings*1000)
+env
 darpPing();
 
