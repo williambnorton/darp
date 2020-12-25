@@ -9,7 +9,7 @@
 //          stdout  latency for responding genesis nodes excluding self
 //          eventually this module could test the port to self to verify port forwarding works
 //
-console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST} MY_SWVERSION=${process.env.MY_SWVERSION} GEO=${process.env.GEO}`);
+console.log(`# testport MYIP=${process.env.MYIP} MYPORT=${process.env.MYPORT} GENESISNODELIST=${process.env.GENESISNODELIST} VERSION=${process.env.VERSION} GEO=${process.env.GEO}`);
 var numberPings=2;
 const GENESISNODELIST=process.env.GENESISNODELIST||""
 if (GENESISNODELIST=="") {

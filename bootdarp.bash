@@ -58,7 +58,7 @@ else
 fi
 export MY_GEO=$HOSTNAME		#
 export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
-echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO VERSION=$VERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
 
 #	
 # 	setting up my GENESIS variables for operation          
@@ -76,7 +76,7 @@ do
     #
     if [ "$GENESIS" != "" ]; then
         MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
-        M_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
+        MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
         if [ "$MY_GENESIS_PORT" == "" ]; then
             MY_GENESIS_PORT=65013
         fi
@@ -98,8 +98,9 @@ do
 
     echo "EXECUTING node scripts/testport.ts $MY_IP 65013 "
 
-    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  #>porttest.txt
-    node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  >porttest.txt
+    #node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  #>porttest.txt
+    #testpoty needs IP PORT GNL
+    node scripts/testport.ts $MY_IP 65013 >porttest.txt
 
 
     #                Format:    latency  ,  IP:Port  ,   URL
