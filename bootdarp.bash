@@ -79,9 +79,9 @@ do
         echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
         echo "EXECUTING node scripts/testport.ts"
-        FIRST=`scripts/portcheck.bash | grep -v '#'`
-        #FIRST_LINE=`cat porttest.txt | grep -v '#' | head -1`
-        #echo "FIRST_LINE=$FIRST_LINE"
+        scripts/portcheck.bash | grep -v '#' >portcheck.txt
+        FIRST_LINE=`cat portcheck.txt | head -1`
+        echo "First to respond ... FIRST_LINE=$FIRST_LINE"
 
         FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`||"0"
         MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`||$MY_IP
