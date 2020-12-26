@@ -80,6 +80,7 @@ do
     else
         echo "EXECUTING node scripts/testport.ts"
         scripts/portcheck.bash | grep -v '#' >portcheck.txt
+        cat portcheck.txt
         FIRST_LINE=`cat portcheck.txt | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
 
