@@ -3,6 +3,8 @@
 #            output:        latency,ip,port,name
 #
 #     
+cd $DARPDIR/scripts
+
 if [ "$GENESISNODELIST" == "" ]; then
     export GENESISNODELIST="55.53.222.151,65013,AWS=US-WEST-1"
     export MY_IP=`curl ifconfig.io`

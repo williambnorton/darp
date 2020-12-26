@@ -82,7 +82,7 @@ do
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
-        echo "EXECUTING node scripts/testport.ts>porttest.txt "
+        echo "EXECUTING node scripts/testport.ts"
         FIRST=`scripts/portcheck.bash | grep -v '#'`
         #FIRST_LINE=`cat porttest.txt | grep -v '#' | head -1`
         #echo "FIRST_LINE=$FIRST_LINE"
