@@ -10,7 +10,7 @@
 #       We create the rest:
 #           DARPDIR - the root directory of all darp ( /root/darp ) 
 #           WGDIR - the root for DARP wireguard info and log info ( ~/wireguard/ )
-# Information about myself
+# Environmental variables we assemble
 #	    MY_IP - 
 #	    MY_PORT - 
 #	    MY_GEO - HOSTNAME for now
@@ -42,39 +42,36 @@ case "${unameOut}" in
 esac
 export MACHINE
 export DARPDIR=$HOME/darp
+export WGDIR=/etc/wireguard
+export MY_GEO=$HOSTNAME		#
 CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`
-
+export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
 echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
 
-#
-#	setting my variables for opertion
-#
 export MY_IP=`curl ifconfig.io`	#	get my public IP
 if [ "$PORT" != "" ]; then 
     export MY_PORT=$PORT; 
 else
     export MY_PORT=65013		#over ridden
 fi
-export MY_GEO=$HOSTNAME		#
-export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
-echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO VERSION=$VERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+
+echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
 
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`grep 65013 *.config| awk -F: '{ print $2}' `   #   IP:PORT:NAME
-FIRST_GENESIS=`grep 65013 *.config | awk -F: '{ print $2}' | head -1 | awk -F, '{ print $1 }' `
+export GENESISNODELIST=`grep 65013 *.config | awk -F: '{ print $2}' `   #   IP:PORT:NAME
+FIRST_GENESIS=`grep 65013 *.config | awk -F: '{ print $2}' | head -1 | awk -F, '{ print $1 }' `   #First one is where genesis nodes check SW version
 echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST FIRST_GENESIS=$FIRST_GENESIS"
 
 echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
 CYCLES=0;
 while :
 do
-    #
-    #   user-specified over rides "auto" connection to Geneis node list participants
-    #
-    if [ "$GENESIS" != "" ]; then
+    #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
+    if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
+        FIRST_RESPONDER_LATENCY=0   
         MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
         MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
         if [ "$MY_GENESIS_PORT" == "" ]; then
@@ -84,114 +81,32 @@ do
         MY_GENESIS_GROUP="${GENESIS_GEO}.1"
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
-    fi
-    
-    echo `date` "FINDING PUBLIC NODE TO CONNECT TO"
-
-    #
-    #   #1 - check where I am topologically
-    #
-    echo `date` "************************************** GENESIS=auto: Starting PORT TEST TO FIND CLOSEST  - Before STARTING MY_GENESIS_IP=$MY_GENESIS_IP"
-    #echo `date` "***** GENESISNODESLIST=$GENESISNODELIST"
-
-    #node scripts/testport.ts $MY_IP 65013 `cat awsgenesis.config genesis.config operators.config` >porttest.txt  #inclucde all
-
-    echo "EXECUTING node scripts/testport.ts $MY_IP 65013 "
-
-    #node scripts/testport.ts $MY_IP 65013 $GENESISNODELIST  #>porttest.txt
-    #testpoty needs IP PORT GNL
-    node scripts/testport.ts $MY_IP 65013 >porttest.txt
-
-
-    #                Format:    latency  ,  IP:Port  ,   URL
-    echo "*********************************     PORTS AVAILABLE TO CONNECT TO     **************************************" 
-    cat porttest.txt
-
-    echo "BEST CHOICE BY LATENCY"
-    FIRST_LINE=`cat porttest.txt | grep -v '#' | head -1`
-    echo "FIRST_LINE=$FIRST_LINE"
-    #FIRST_LINE=11, 52.53.222.151,   1608684916380,12,Docker.201222.1610:Build.201222.1610,52.53.222.151,65013,AWS-US-WEST-1A,1608683260531,lBVJQZ8Kv1Gu6pXDvtAUfxDXPTUZBw0KTGCuYcBmkjU=,
-
-    if [ "$FIRST_LINE" != "" ]; then
-        FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-        FIRST_RESPONDER_IP=`echo $FIRST_LINE | awk -F, '{ print $6}'`
-        FIRST_RESPONDER_PORT=`echo $FIRST_LINE | awk -F, '{ print $7}'`
-        FIRST_RESPONDER_GEO=`echo $FIRST_LINE | awk -F, '{ print $8}'`
-        FIRST_RESPONDER_GROUP="${GENESIS_GEO}.1"
-        FIRST_RESPONDER_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
-        echo `date` "2  CLOSEST  FIRST_RESPONDER_GEO=$FIRST_RESPONDER_GEO is ${FIRST_RESPONDER_LATENCY} ms away FIRST_RESPONDER_IP=$FIRST_RESPONDER_IP  FIRST_RESPONDER_PORT=$FIRST_RESPONDER_PORT  FIRST_RESPONDER_SWVERSION=$FIRST_RESPONDER_SWVERSION"
     else
-    #
-    #   Handle where No genesis nodes responded
-    #
-        echo `date` "bootdarp: no other genesis nodes are responding so I will be a solo genesis node for now."
-        MY_GENESIS_LATENCY=0
-        MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-        MY_GENESIS_IP=$MY_IP
-        MY_GENESIS_PORT=$MY_PORT
-        MY_GENESIS_GEO=$MY_GEO
-        MY_GENESIS_GROUP="${GENESIS_GEO}.1"
-        echo `date` "I AM GENESIS - CLOSEST IS ME because no public genesis node responded or there is no open port in the firewall"
-        FIRST_RESPONDER_LATENCY=0  #//we we are the first responder
+        echo "EXECUTING node scripts/testport.ts>porttest.txt "
+        FIRST=`portcheck.bash | grep -v '#'`
+        #FIRST_LINE=`cat porttest.txt | grep -v '#' | head -1`
+        #echo "FIRST_LINE=$FIRST_LINE"
+
+        FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`||"0"
+        MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`||$MY_IP
+        MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`||$MY_PORT
+        MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`||$MY_GEO
+        MY_GENESIS_GROUP="${MY_GENESIS_GROUP}.1"||$MY_GEO.1
+        MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`||$MY_GENESIS_SWVERSION
+        echo `date` "0  Connecting to closest Genesis $MY_GENESIS_IP:$MY_GENESIS_PORT $FIRST"
     fi
-
     #
-    #   #2 - If we are a NOIA sponsored genesis node and no other NOIA = sponsored Genesis node replied within 100ms, we should be a genesis node
-    #
+    export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
 
-    MY_GENESIS_ENTRY=`grep $MY_IP awsgenesis.config genesis.config operators.config`     # Am I a Genesis Node?
-    if [ $? -eq 0 ]; then
-        #export GENESIS_IP=$MY_IP
-        MY_GENESIS_ENTRY=`echo $MY_GENESIS_ENTRY | awk -F: '{ print $2 }' `
-        echo `date` "I AM A IDENTIFIED GENESIS NODE $MY_IP My Genesis Entry=$MY_GENESIS_ENTRY"
-        echo `date` HERE I use myself as Genesis node, but should prefer an active one within 100ms rtt
-        echo `date` "alternative FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY ms away"
-        if [ $FIRST_RESPONDER_LATENCY -gt 100 ]; then
-            MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-            MY_GENESIS_IP=$MY_IP  #
-            MY_GENESIS_PORT=$MY_PORT  #
-            MY_GENESIS_GEO=$MY_GEO
-            MY_GENESIS_GROUP="${MY_GEO}.1"
-           echo `date` "BLESSING MYSELF AS A NEW GENESIS NODE 100ms away from others"
-        fi
-        echo `date` "1  My MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION MY_GENESIS_ENTRY=$MY_GENESIS_ENTRY MY_GENESIS_IP=$MY_GENESIS_IP  MY_GENESIS_PORT=$MY_GENESIS_PORT"
-    else
-        echo `date` "I am not in the genesis config list "
-        if [ "$FIRST_LINE" == "" ]; then
-            echo `date` "I am not in the genesis config and no genesis node responded -- defaulting to being my own geensis node"
-        else
-            echo `date` "I am not in the genesis config and using closest Genesis node"
-        fi
-    fi
-#export GENESIS_IP
-#export GENESIS_PORT
-#export GENESIS_GEO
-#export GENESIS_SWVERSION
-export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
-
-#echo `date` "******* bootdarp.bash We are going to join : MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_GROUP=$MY_GENESIS_GROUP  MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION "
-echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-
-
-#export WGDIR=/etc/wireguard
-#export WGDIR=$DARPDIR/wireguard
-export WGDIR=/etc/wireguard
-export PORT
-
-
-
-
-#echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
-#CYCLES=0;
-#while :
-#do
-
-
-
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
 
 
     cd $DARPDIR
@@ -207,16 +122,16 @@ export PORT
         #./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
-            ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
-            rc=$?
-            echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
-            if [ $rc -ne 0 ]; then  
-                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-                echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-                #exit $rc   #pass through any subsequent bootdarp invocations
-            fi
+        ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
+        rc=$?
+        echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
+        if [ $rc -ne 0 ]; then  
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            #exit $rc   #pass through any subsequent bootdarp invocations
+        fi
 
     fi
 
