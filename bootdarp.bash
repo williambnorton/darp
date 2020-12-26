@@ -59,7 +59,7 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #           
 export GENESISNODELIST=`grep 65013 *.config | awk -F: '{ print $2}' `   #   IP:PORT:NAME
 FIRST_GENESIS=`grep 65013 *.config | awk -F: '{ print $2}' | head -1 | awk -F, '{ print $1 }' `   #First one is where genesis nodes check SW version
-echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP GENESISNODELIST=$GENESISNODELIST FIRST_GENESIS=$FIRST_GENESIS"
+echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
 
 echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
 CYCLES=0;
@@ -89,7 +89,7 @@ do
         MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`||$MY_GEO
         MY_GENESIS_GROUP="${MY_GENESIS_GROUP}.1"||$MY_GEO.1
         MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`||$MY_GENESIS_SWVERSION
-        echo `date` "0  Connecting to closest Genesis $MY_GENESIS_IP:$MY_GENESIS_PORT $FIRST"
+        echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_IP:$MY_GENESIS_PORT "
     fi
     #
     export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
