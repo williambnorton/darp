@@ -83,7 +83,7 @@ do
         echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
         echo "EXECUTING node scripts/testport.ts>porttest.txt "
-        FIRST=`portcheck.bash | grep -v '#'`
+        FIRST=`scripts/portcheck.bash | grep -v '#'`
         #FIRST_LINE=`cat porttest.txt | grep -v '#' | head -1`
         #echo "FIRST_LINE=$FIRST_LINE"
 
@@ -98,15 +98,11 @@ do
     #
     export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
 
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS $MY_IP $MY_PORT $MY_GENESIS_GEO $MY_GENESIS_IP $MY_GENESIS_PORT $MY_GENESIS_SWVERSION"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS $MY_IP $MY_PORT $MY_GENESIS_GEO $MY_GENESIS_IP $MY_GENESIS_PORT $MY_GENESIS_SWVERSION"
+    echo `date` "******* bootdarp.bash We are going to join : $GENESIS $MY_IP $MY_PORT $MY_GENESIS_GEO $MY_GENESIS_IP $MY_GENESIS_PORT $MY_GENESIS_SWVERSION"
+
+exit 1
 
 
     cd $DARPDIR
