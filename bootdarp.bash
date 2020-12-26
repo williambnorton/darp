@@ -43,20 +43,16 @@ esac
 export MACHINE
 export DARPDIR=$HOME/darp
 export WGDIR=/etc/wireguard
+
 export MY_GEO=$HOSTNAME		#
+export MY_PORT=$MY_PORT||65013
+export MY_IP=`curl ifconfig.io`	#	get my public IP
 CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`
 export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
 echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
 
-export MY_IP=`curl ifconfig.io`	#	get my public IP
-if [ "$PORT" != "" ]; then 
-    export MY_PORT=$PORT; 
-else
-    export MY_PORT=65013		#over ridden
-fi
-
-echo `date` "----------------- bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
 
 #	
 # 	setting up my GENESIS variables for operation          
@@ -98,12 +94,7 @@ do
     #
     export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
 
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS $MY_IP $MY_PORT $MY_GENESIS_GEO $MY_GENESIS_IP $MY_GENESIS_PORT $MY_GENESIS_SWVERSION"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS $MY_IP $MY_PORT $MY_GENESIS_GEO $MY_GENESIS_IP $MY_GENESIS_PORT $MY_GENESIS_SWVERSION"
-    echo `date` "******* bootdarp.bash We are going to join : $GENESIS $MY_IP $MY_PORT $MY_GENESIS_GEO $MY_GENESIS_IP $MY_GENESIS_PORT $MY_GENESIS_SWVERSION"
-
-exit 1
-
+    echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
 
     cd $DARPDIR
     echo `date` TOP OF LOOP 
