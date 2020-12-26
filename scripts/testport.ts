@@ -14,7 +14,7 @@
 //
 console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} GENESISNODELIST=${process.env.GENESISNODELIST} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
 if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == ""|| process.env.MY_GEO == "") {
-    console.log(`missing environmental variable. try  echo $MY_GEO $MY_IP $MY_PORT $MY_SWVERSION $PUBLICKEY $GENESISNODELIST`);
+    console.log(`missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO`);
     process.exit(86);
 }
 var numberPings=1;

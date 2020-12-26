@@ -45,7 +45,10 @@ export DARPDIR=$HOME/darp
 export WGDIR=/etc/wireguard
 
 export MY_GEO=$HOSTNAME		#
-export MY_PORT=$MY_PORT||65013
+if [ "$MY_PORT" == "" ]; then
+    MY_PORT=65013    
+fi
+export MYPORT
 export MY_IP=`curl ifconfig.io`	#	get my public IP
 CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`
