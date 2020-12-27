@@ -12,7 +12,7 @@
 //          stdout  latency for responding genesis nodes excluding self
 //          eventually this module could test the port to self to verify port forwarding works
 //
-console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} GENESISNODELIST=${process.env.GENESISNODELIST} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
+console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
 if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == ""|| process.env.MY_GEO == "") {
     console.log(`missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO`);
     process.exit(86);
@@ -45,7 +45,7 @@ function darpPing() {
         let IP=genesisNodeEntry.split(",")[0]
         let Port=genesisNodeEntry.split(",")[1]
         let Name=genesisNodeEntry.split(",")[2]
-        var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
+        var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         console.log(`# Here we send DARP Ping to ${Name} ${IP}:${Port}`);
 
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
@@ -90,9 +90,9 @@ client.on('message', function (message, remote) {
         console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         
         if (remote.address==process.env.MY_IP) {
-            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},SELF`);
+            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message},,,,SELF`);
         } else {
-            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
+            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message}`);
         }
     }
     //    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };

@@ -3,7 +3,7 @@
 #		    bootdarp.bash - entry point for docker
 # 
 #       We set up the operating environmental variables on startup:
-#           HOSTNAME = passed in
+#           HOSTNAME = passed in --> used as 'geo' for now - turns out helpful to have a human readbale name
 #           PORT = my open UDP/TCP port
 #           GENESIS = a specific Genesis node to connect to (IP:Port or PUBLICKEY)
 #           WALLET - a wallet with micro credits and debits for use in auto mode
@@ -76,8 +76,8 @@ do
         if [ "$MY_GENESIS_PORT" == "" ]; then
             MY_GENESIS_PORT=65013
         fi
-        MY_GENESIS_GEO="$HOSTNAME"  #
-        MY_GENESIS_GROUP="${GENESIS_GEO}.1"
+        MY_GENESIS_GEO=$MY_GEO  #
+        MY_GENESIS_GROUP="${MY_GEO}.1"
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
@@ -99,7 +99,7 @@ exit 1
             MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
             MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
             MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
-            MY_GENESIS_GROUP="${MY_GENESIS_GROUP}.1"
+            MY_GENESIS_GROUP="${MY_GENESIS_GEO}.1"
             MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
             echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_SWVERSION "
         else    #default to self as a standalone genesis node 
@@ -107,7 +107,7 @@ exit 1
             MY_GENESIS_IP=$MY_IP
             MY_GENESIS_PORT=$MY_PORT
             MY_GENESIS_GEO=$MY_GEO
-            MY_GENESIS_GROUP=$MY_GEO.1
+            MY_GENESIS_GROUP=${MY_GEO}.1
             MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION
             echo `date` "Connecting to SELF: $MY_GENESIS_SWVERSION "
         fi
