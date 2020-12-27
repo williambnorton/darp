@@ -60,8 +60,8 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`grep 65013 *.config | awk -F: '{ print $2}' `   #   IP:PORT:NAME
-FIRST_GENESIS=`grep 65013 *.config | awk -F: '{ print $2}' | head -1 | awk -F, '{ print $1 }' `   #First one is where genesis nodes check SW version
+export GENESISNODELIST=`cat *.config`   #   IP:PORT:NAME
+FIRST_GENESIS=`cat *.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
 echo `date` "------------------------------------------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
 
 echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
