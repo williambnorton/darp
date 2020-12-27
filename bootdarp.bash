@@ -83,7 +83,7 @@ do
     else
         echo "EXECUTING node scripts/portcheck.bash to stdout"
         cd scripts
-        portcheck.bash 
+        ./testport.bash 
         echo now fOr real
         cd  $DARPDIR
         
