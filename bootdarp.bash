@@ -71,8 +71,12 @@ echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS"
 CYCLES=0;
 while :
 do
+    if [ "$MY_IP" == "$FIRST_GENESIS" ]; then 
+        GENESIS=$MY_IP:$MY_PORT
+    fi
+
     #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
-    if [ "$GENESIS" != "" -o "$MY_IP" == "$FIRST_GENESIS" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
+    if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
         FIRST_RESPONDER_LATENCY=0   
         MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
         MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
