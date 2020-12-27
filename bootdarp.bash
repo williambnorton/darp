@@ -81,7 +81,9 @@ do
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
-        echo "EXECUTING node scripts/portcheck.bash"
+        echo "EXECUTING node scripts/portcheck.bash to stdout"
+        scripts/portcheck.bash 
+        echo now fOr real
         scripts/portcheck.bash | grep -v '#' >portcheck.txt
         echo `date` portcheck.txt follows
         cat portcheck.txt
