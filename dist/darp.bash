@@ -27,7 +27,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         (sleep 30;~/wireguard/wgwatch.bash) &
 
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
-        PORT=65013
+        export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)
          
         echo `date` "darp.bash:  NEW TEST - directly running this DOCKER DOCKERTAG by tag"
         echo 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '

@@ -79,34 +79,34 @@ do
         MY_GENESIS_GEO="$HOSTNAME"  #
         MY_GENESIS_GROUP="${GENESIS_GEO}.1"
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-        echo `date` "0  User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
+        echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
         echo "EXECUTING node scripts/portcheck.bash to stdout"
-        cd scripts
-        ./testport.bash 
-        echo now fOr real
-        cd  $DARPDIR
-        
-        exit 1
-
-
-        scripts/portcheck.bash | grep -v '#' >portcheck.txt
+        scripts/testport.bash | grep -v '#' >portcheck.txt
         echo `date` portcheck.txt follows
         cat portcheck.txt
         FIRST_LINE=`cat portcheck.txt | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
-
-        FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`||"0"
-        MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`||$MY_IP
-        MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`||$MY_PORT
-        MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`||$MY_GEO
-        MY_GENESIS_GROUP="${MY_GENESIS_GROUP}.1"||$MY_GEO.1
-        MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`||$MY_GENESIS_SWVERSION
-        echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_IP:$MY_GENESIS_PORT "
+        if [ "$FIRST_LINE" != "" ]; then
+            FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+            MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
+            MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
+            MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
+            MY_GENESIS_GROUP="${MY_GENESIS_GROUP}.1"
+            MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
+            echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_SWVERSION "
+        else    #default to self as a standalone genesis node 
+            FIRST_RESPONDER_LATENCY="0"
+            MY_GENESIS_IP=$MY_IP
+            MY_GENESIS_PORT=$MY_PORT
+            MY_GENESIS_GEO=$MY_GEO
+            MY_GENESIS_GROUP=$MY_GEO.1
+            MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION
+            echo `date` "Connecting to SELF: $MY_GENESIS_SWVERSION "
+        fi
     fi
     #
     export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
-
     echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
 
     cd $DARPDIR
