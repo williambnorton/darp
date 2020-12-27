@@ -25,7 +25,6 @@ if (GENESISNODELIST=="") {
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
 }
 GENESISNODELIST=GENESISNODELIST.replace(/\n/g," ")
-console.log(`testport.ts :  Genesis nodes G=${G}`);
 var startTime=new Date();
 
 var dgram = require('dgram');
