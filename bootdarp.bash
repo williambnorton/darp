@@ -61,6 +61,7 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 # 	setting up my GENESIS variables for operation          
 #           
 export GENESISNODELIST=`cat *.config`   #   IP:PORT:NAME
+echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`cat *.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
 echo `date` "---------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
 echo `date` "---------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
@@ -71,7 +72,7 @@ CYCLES=0;
 while :
 do
     #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
-    if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
+    if [ "$GENESIS" != "" || "$MY_IP" == "$FIRST_GENESIS" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
         FIRST_RESPONDER_LATENCY=0   
         MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
         MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
