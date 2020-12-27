@@ -40,11 +40,10 @@ client.bind(process.env.MY_PORT);  //server listening 0.0.0.0:65013
 
 function darpPing() {
     startTime=new Date();  //reset start timestamp
-    for (var genesisNode in G ) {
-        const genesisNodeEntry=G[genesisNode];
-        let IP=genesisNodeEntry.split(",")[0]
-        let Port=genesisNodeEntry.split(",")[1]
-        let Name=genesisNodeEntry.split(",")[2]
+    for (var genesisNode in process.env.GENESISNODELIST?.split(" ") ) {
+        let IP=genesisNode.split(",")[0]
+        let Port=genesisNode.split(",")[1]
+        let Name=genesisNode.split(",")[2]
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         if ( IP == process.env.MY_IP ) message=message+",SELF"
         console.log(`# Here we send DARP Ping to ${Name} ${IP}:${Port}`);
