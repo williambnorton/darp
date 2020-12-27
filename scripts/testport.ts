@@ -40,7 +40,8 @@ client.bind(process.env.MY_PORT);  //server listening 0.0.0.0:65013
 
 function darpPing() {
     startTime=new Date();  //reset start timestamp
-    for (var genesisNode in process.env.GENESISNODELIST?.split(" ") ) {
+    var myList=process.env.GENESISNODELIST||""
+    for (var genesisNode in myList.split(" ") ) {
         let IP=genesisNode.split(",")[0]
         let Port=genesisNode.split(",")[1]
         let Name=genesisNode.split(",")[2]
