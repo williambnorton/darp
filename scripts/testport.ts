@@ -19,13 +19,13 @@ if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESIS
 }
 var numberPings=1;
 //const GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
-const GENESISNODELIST=process.env.GENESISNODELIST || ""
+var GENESISNODELIST=process.env.GENESISNODELIST
 if (GENESISNODELIST=="") {
     console.log(`testport.ts something really wrong - no GENESISNODE LIST - EXITTING`);
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
 }
-const G=GENESISNODELIST.replace(/\n/g," ")
-console.log(`testport.ts :  Genesis nodes G=${JSON.stringify(G,null,2)}`);
+GENESISNODELIST=GENESISNODELIST.replace(/\n/g," ")
+console.log(`testport.ts :  Genesis nodes G=${G}`);
 var startTime=new Date();
 
 var dgram = require('dgram');
@@ -40,11 +40,10 @@ client.bind(process.env.MY_PORT);  //server listening 0.0.0.0:65013
 
 function darpPing() {
     startTime=new Date();  //reset start timestamp
-    var myList=process.env.GENESISNODELIST||"SHOULDNOTHAPPEN"
-    console.log(`myList=${myList}`);
-    console.log(`====myList.trim()=${myList.trim()}`);
-    var ary=myList.trim().split(" ")
-    console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
+    //console.log(`myList=${myList}`);
+    //console.log(`====myList.trim()=${myList.trim()}`);
+    var ary=GENESISNODELIST   //myList.trim().split(" ")
+    //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
     for (var genesisNode in ary) {
         console.log(`===ary[genesisNode]=${ary[genesisNode]}`);
         let IP=ary[genesisNode].split(",")[0]
