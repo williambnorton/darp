@@ -42,7 +42,7 @@ function darpPing() {
     startTime=new Date();  //reset start timestamp
     var myList=process.env.GENESISNODELIST||""
     var ary=myList.trim().split(" ")
-    console.log(`ary=${ary}`); 
+    console.log(`ary=${JSON.stringify(ary,null,2)}`); 
     for (var genesisNode in ary) {
         console.log(`ary[genesisNode]=${ary[genesisNode]}`);
         let IP=ary[genesisNode].split(",")[0]
