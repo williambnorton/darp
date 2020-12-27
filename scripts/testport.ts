@@ -44,7 +44,7 @@ function darpPing() {
     var ary=GENESISNODELIST   //myList.trim().split(" ")
     //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
     for (var genesisNode in ary) {
-        console.log(`===ary[genesisNode]=${ary[genesisNode]}`);
+        console.log(`genesisNode=${genesisNode} ===ary[genesisNode]=${ary[genesisNode]}`);
         let IP=ary[genesisNode].split(",")[0]
         let Port=ary[genesisNode].split(",")[1]
         let Name=ary[genesisNode].split(",")[2]
