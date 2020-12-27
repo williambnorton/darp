@@ -85,7 +85,7 @@ do
         cd scripts
         portcheck.bash 
         echo now fOr real
-        
+        cd  $DARPDIR
         
         exit 1
 
