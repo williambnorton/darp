@@ -24,7 +24,7 @@ if (GENESISNODELIST=="") {
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
 }
 const G=GENESISNODELIST.split(" ")
-
+console.log(`G=${JSON.stringify(G,null,2)}`);
 var startTime=new Date();
 
 var dgram = require('dgram');
