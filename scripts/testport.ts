@@ -24,7 +24,7 @@ if (GENESISNODELIST=="") {
     console.log(`testport.ts something really wrong - no GENESISNODE LIST - EXITTING`);
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
 }
-const G=GENESISNODELIST.replace(/\n/g,/ /)
+const G=GENESISNODELIST.replace(/\n/g," ")
 console.log(`testport.ts :  Genesis nodes G=${JSON.stringify(G,null,2)}`);
 var startTime=new Date();
 
