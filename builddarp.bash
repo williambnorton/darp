@@ -43,12 +43,12 @@ echo deleting latest
 git push --delete origin latest
 git push origin :latest
 echo `date` deleted latest tag in github repo so now tagging latest and pushing
+sleep 1
 #git push origin $BUILD_TAG
 git tag $BUILD_TAG
 git tag latest
 git push origin --tags
 echo `date`" Completed compiles + git push for $BUILD_TAG "
-
 END=`date +%s`
 DELTA=`expr $END - $START`
 DELTA_MIN=`expr $DELTA / 60`
