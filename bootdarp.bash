@@ -72,7 +72,7 @@ CYCLES=0;
 while :
 do
     #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
-    if [ "$GENESIS" != "" || "$MY_IP" == "$FIRST_GENESIS" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
+    if [ "$GENESIS" != "" -o "$MY_IP" == "$FIRST_GENESIS" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
         FIRST_RESPONDER_LATENCY=0   
         MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
         MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
@@ -84,9 +84,12 @@ do
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
-        echo "Testing ports on genesis nodes"
-        rm testport.txt
+        echo "Testing ports on genesis nodes: $GENESISNODELIST"
+        #rm testport.txt
         scripts/testport.bash #| grep -v '#' >testport.txt
+
+
+
 exit 1
         echo `date` testport.txt follows
         cat testport.txt
