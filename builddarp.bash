@@ -41,8 +41,8 @@ echo RUNNING git push origin --tags
 
 echo deleting latest
 git push --delete origin latest
-#git push origin :latest
-
+git push origin :latest
+echo `date` deleted latest tag in github repo so now tagging latest and pushing
 #git push origin $BUILD_TAG
 git tag $BUILD_TAG
 git tag latest
