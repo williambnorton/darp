@@ -42,14 +42,15 @@ function darpPing() {
     startTime=new Date();  //reset start timestamp
     for (var genesisNode in G ) {
         const genesisNodeEntry=G[genesisNode];
-        console.log(`# Here we send DARP Ping to ${genesisNodeEntry}`);
         let IP=genesisNodeEntry.split(",")[0]
         let Port=genesisNodeEntry.split(",")[1]
         let Name=genesisNodeEntry.split(",")[2]
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
+        console.log(`# Here we send DARP Ping to ${Name} ${IP}:${Port}`);
+
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             if (err) throw err;
-            console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
+            //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
         });
     }
     setTimeout(darpPing,1000);
