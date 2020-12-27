@@ -111,7 +111,7 @@ var Config = /** @class */ (function () {
         //            process.exit(86);
         //        }
         this.GENESIS = process.env.GENESIS || "";
-        console.log("GENESIS=" + process.env.GENESIS);
+        //console.log(`GENESIS=${process.env.GENESIS}`);
         /*
         this.GENESIS = process.env.GENESIS||"";
         console.log(`starting with GENESIS=${this.GENESIS}`);

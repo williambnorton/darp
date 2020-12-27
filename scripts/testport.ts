@@ -89,7 +89,7 @@ client.on('message', function (message, remote) {
         console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         
         if (remote.address==process.env.MY_IP) {
-            console.log(`#SELF ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
+            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},SELF`);
         } else {
             console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         }
