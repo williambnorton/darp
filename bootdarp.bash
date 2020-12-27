@@ -48,7 +48,7 @@ export MY_GEO=$HOSTNAME		#
 if [ "$MY_PORT" == "" ]; then
     MY_PORT=65013    
 fi
-export MYPORT
+export MY_PORT
 export MY_IP=`curl ifconfig.io`	#	get my public IP
 CURRENT_DOCKERVERSION=`ls Docker.*`
 CURRENT_DARPVERSION=`ls Build.*`

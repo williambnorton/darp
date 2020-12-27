@@ -55,8 +55,8 @@ export class Config {
         this.BOOTTIMESTAMP = now();
 
         var PORT = 65013;
-        if (process.env.PORT) {
-            PORT = parseInt(process.env.PORT);
+        if (process.env.MY_PORT) {
+            PORT = parseInt(process.env.MY_PORT);
         }
         logger.info(`Starting with PORT=${PORT}`);
         this.PORT = PORT;

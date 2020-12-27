@@ -71,8 +71,8 @@ var Config = /** @class */ (function () {
         this.DARPDIR = process.env.DARPDIR;
         this.BOOTTIMESTAMP = lib_1.now();
         var PORT = 65013;
-        if (process.env.PORT) {
-            PORT = parseInt(process.env.PORT);
+        if (process.env.MY_PORT) {
+            PORT = parseInt(process.env.MY_PORT);
         }
         logger_1.logger.info("Starting with PORT=" + PORT);
         this.PORT = PORT;
