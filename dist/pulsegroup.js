@@ -1122,44 +1122,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             if (incomingPulse.msgType == "11") {
                 //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
                 console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType + "    incomingPulse=" + JSON.stringify(incomingPulse, null, 2));
-                /*
-                //console.log(`process.env=${JSON.stringify(process.env)}`);
-                var pong = {
-                    outgoingTimestamp: now(),
-                    msgType: "12",              //match into mgmt processing layer here
-                    version:this.config.VERSION,
-                    geo:this.config.GEO,
-                    group:this.config.GEO+'.1',
-                    seq: 0,
-                    bootTimestamp:this.config.BOOTTIMESTAMP,
-                    mint:0,
-                    owls:"",  //hee we should store the rtts that we measure from this interogatory for later decision on whether to accept
-                    owl:"",    //mYBE CALACULATED RTT FROM INCLUDING TIMESTAMP IN REQUEST
-                    lastMsg: ""   //we should use this lastMsg as an indication of value - shows highlighted better or wierd paths, # of nodes and OWLs from him - densley valueable data
-                    //genesisgebnesisport
-                    //genesis public key?
-                    //betterPathCount=10
-                    //relays min and max vaky=ues show the singws at the moment
-                }
-                console.log(`${JSON.stringify(this.pulses)}`);
-    
-                //JOIN MY GENESIS NODE DARP RESPONSE (12)
-                var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[1].ipaddr},${this.mintTable[1].port},${this.mintTable[1].publickey},${this.mintTable[1].geo},${this.mintTable[1].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[1].geo+":"+this.mintTable[1].geo+".1"].owls},Join,my,Genesis,Group`
-                
-                //JOIN MY GROUP RESPONSE
-    //            var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
-    
-    
-               //JOIN Random Genesis Node = "auto"   -- here pick a random genesis node and port
-    //           var pongMsgEncoded=`${now()},12,${this.config.VERSION},${this.mintTable[0].ipaddr},${this.mintTable[0].port},${this.mintTable[0].publickey},${this.mintTable[0].geo},${this.mintTable[0].geo+".1"},${this.nodeCount},${this.pulses[this.mintTable[0].geo+":"+this.mintTable[0].geo+".1"].owls},Join,My,Group`
-    */
-                // could send back things to make me attracive - the best path count as proxy for gold rush, node count 
-                //  
-                // 
                 //
-                //
-                //
-                if (_this.isGenesisNode() && _this.nodeCount < _this.config.MAXNODES) {
+                //if (this.isGenesisNode() && this.nodeCount<this.config.MAXNODES) {
+                if (_this.nodeCount < _this.config.MAXNODES) {
                     //HERE put the nodeCount and the # better paths
                     //PONG MESSAGE
                     var message = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.config.IP + "," + _this.config.PORT + "," + _this.config.GEO + "," + _this.config.BOOTTIMESTAMP + "," + _this.config.PUBLICKEY; //,${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
