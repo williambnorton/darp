@@ -62,11 +62,7 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 export GENESISNODELIST=`cat *.config | sed ':a;N;$!ba;s/\n/ /g' `   #   IP:PORT:NAME
 #echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`cat *.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
-echo `date` "---------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
-echo `date` "---------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
-echo `date` "---------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
-
-echo `date` "$0 STARTING DARP DARP DARP MY_IP=$MY_IP GENESIS=$GENESIS" 
+echo `date` "$0 STARTING DARP MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
 CYCLES=0;
 while :
 do
@@ -97,9 +93,10 @@ do
         #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
         FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
-
-        if [ "$FIRST_LINE" != "" ]; then
-            FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+        FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+        echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
+        if [ "$FIRST_LINE" != "" -a $FIRST_RESPONDER_LATENCY -lt 25 ]; then
+            #FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
             MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
             MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
             MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
@@ -165,7 +162,7 @@ do
     echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MY_IP = = = = = = = = = = = = "  
 
     #Now we are running in the new code /root/darp directory of docker
-    echo `date` "bootdarp Now Configuring Wireguard"
+    #echo `date` "bootdarp Now Configuring Wireguard"
     cd $DARPDIR/scripts/ 
     ./configWG.bash # create directory for host-container communications / reset STATE
  
@@ -180,7 +177,7 @@ do
     
     echo `date` " * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     cd 
-    cd /root/darp/subagents/rtt/; ls -l ; 
+    cd /root/darp/subagents/rtt/; 
     ./launchrtt.bash & 
     echo $$ >$DARPDIR/launchrtt.pid
 

@@ -73,9 +73,9 @@ cd
 cd darp/scripts
 cp wgwatch.bash $WGDIR/.  #wireguard watch script - watch for wg pending files
 cp udplistener.bash $WGDIR/udplistener.bash  #half of port checking script
-cp portcheck.bash $WGDIR/portcheck.bash  #other half of port checking script
+#cp portcheck.bash $WGDIR/portcheck.bash  #other half of port checking script
 
-chmod 755 $WGDIR/wgwatch.bash $WGDIR/udplistener.bash $WGDIR/portcheck.bash
+chmod 755 $WGDIR/wgwatch.bash $WGDIR/udplistener.bash #$WGDIR/portcheck.bash
 #ls -ld $WGDIR
 #ls -l $WGDIR
 echo `date` $0 COMPLETED
