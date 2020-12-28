@@ -89,17 +89,13 @@ do
     else
         echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
         #rm testport.txt
-        scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
+        #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
         scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
 
         echo `date` testport.txt follows
         cat testport.txt
-        FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1`
+        FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
-        
-
-
-
 
         if [ "$FIRST_LINE" != "" ]; then
             FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
@@ -108,7 +104,7 @@ do
             MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
             MY_GENESIS_GROUP="${MY_GENESIS_GEO}.1"
             MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
-            echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_SWVERSION "
+            echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
         else    #default to self as a standalone genesis node 
             FIRST_RESPONDER_LATENCY="0"
             MY_GENESIS_IP=$MY_IP
