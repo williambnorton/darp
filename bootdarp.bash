@@ -60,7 +60,7 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`cat *.config | sed '1,$s/\n/ /g'`   #   IP:PORT:NAME
+export GENESISNODELIST=`cat *.config | sed ':a;N;$!ba;s/\n/ /g' `   #   IP:PORT:NAME
 echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`cat *.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
 echo `date` "---------------- bootdarp.bash MY_IP=$MY_IP FIRST_GENESIS=$FIRST_GENESIS"
@@ -88,7 +88,7 @@ do
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
-        echo "bootdarp.bash Testing ports on genesis nodes: $GENESISNODELIST"
+        echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
         #rm testport.txt
         scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
 
