@@ -1118,10 +1118,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 lastMsg: incomingMessage
             };
             //  Mgmt layer
-            console.log("incomingPulse=" + incomingPulse + " incomingPulse.msgType=" + incomingPulse.msgType);
+            //console.log(`incomingPulse=${incomingPulse} incomingPulse.msgType=${incomingPulse.msgType}`);
             if (incomingPulse.msgType == "11") {
                 //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
-                console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType);
+                console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType + "    incomingPulse=" + JSON.stringify(incomingPulse, null, 2));
                 /*
                 //console.log(`process.env=${JSON.stringify(process.env)}`);
                 var pong = {
