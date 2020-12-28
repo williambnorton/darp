@@ -90,11 +90,11 @@ do
     else
         echo "bootdarp.bash Testing ports on genesis nodes: $GENESISNODELIST"
         #rm testport.txt
-        scripts/testport.bash | grep -v '#' >testport.txt
+        scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
 
         echo `date` testport.txt follows
         cat testport.txt
-        FIRST_LINE=`cat testport.txt | grep '#' | head -1`
+        FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
         
 
