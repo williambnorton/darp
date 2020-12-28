@@ -42,11 +42,12 @@ function darpPing() {
     //console.log(`myList=${myList}`);
     //console.log(`====myList.trim()=${myList.trim()}`);
     //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
-    for (var genesisNode in GENESISNODELIST.split(" ")) {
-        console.log(`genesisNode=${genesisNode}`);
-        let IP=genesisNode.split(",")[0]
-        let Port=genesisNode.split(",")[1]
-        let Name=genesisNode.split(",")[2]
+    var ary=GENESISNODELIST.split(" ")
+    for (var genesisNode in ary) {
+        console.log(`genesisNode=${ary[genesisNode]}`);
+        let IP=ary[genesisNode].split(",")[0]
+        let Port=ary[genesisNode].split(",")[1]
+        let Name=ary[genesisNode].split(",")[2]
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         if ( IP == process.env.MY_IP ) message=message+",SELF"
         console.log(`# Here we send DARP Ping to ${Name} ${IP}:${Port} message=${message}`);
