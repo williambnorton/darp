@@ -49,6 +49,7 @@ git tag $BUILD_TAG
 git tag latest
 git push origin --tags
 echo `date`" Completed compiles + git push for $BUILD_TAG "
+git push origin latest
 END=`date +%s`
 DELTA=`expr $END - $START`
 DELTA_MIN=`expr $DELTA / 60`
