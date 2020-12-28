@@ -34,7 +34,7 @@ do
 			#	echo $PUBLICKEY | grep ^$startsWith
 			#	if [ $? -eq 0 ]; then
                         		DONE=1
-					echo "FOUND PUBLIC KEY: $PUBLICKEY"
+#					echo "FOUND PUBLIC KEY: $PUBLICKEY"
                         		#PRIVATEKEY=`echo $PRIVATEKEY|sed '1,$s/=//g'`
                         		#PUBLICKEY=`echo $PUBLICKEY|sed '1,$s/=//g'`
 			#	fi
@@ -68,7 +68,7 @@ cp $WGDIR/wgbase.conf $WGDIR/darp0.conf
 #echo `date` "$0 wgbase.conf below - the rest will be added by running code"
 #cat $WGDIR/wgbase.conf
 
-echo `date` "WGDIR=$WGDIR"
+#echo `date` "WGDIR=$WGDIR"
 cd
 cd darp/scripts
 cp wgwatch.bash $WGDIR/.  #wireguard watch script - watch for wg pending files
@@ -76,6 +76,6 @@ cp udplistener.bash $WGDIR/udplistener.bash  #half of port checking script
 cp portcheck.bash $WGDIR/portcheck.bash  #other half of port checking script
 
 chmod 755 $WGDIR/wgwatch.bash $WGDIR/udplistener.bash $WGDIR/portcheck.bash
-ls -ld $WGDIR
-ls -l $WGDIR
+#ls -ld $WGDIR
+#ls -l $WGDIR
 echo `date` $0 COMPLETED

@@ -1373,7 +1373,7 @@ export class AugmentedPulseGroup {
     recvPulses = (incomingMessage: string, ipaddr: string, port: string) => {
         // try {
             // const incomingPulse = await parsePulseMessage(incomingMessage)
-            var ary = incomingMessage.split(",");
+        var ary = incomingMessage.split(",");
         const pulseTimestamp = parseInt(ary[0]);
         const senderTimestamp = parseInt(ary[1]);
         const OWL = pulseTimestamp - senderTimestamp;
