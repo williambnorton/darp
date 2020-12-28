@@ -1394,6 +1394,7 @@ export class AugmentedPulseGroup {
             lastMsg: incomingMessage,
         };
         //  Mgmt layer
+        console.log(`incomingPulse=${incomingPulse} incomingPulse.msgType=${incomingPulse.msgType}`);
         if (incomingPulse.msgType=="11") {
             //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
 
@@ -1436,7 +1437,7 @@ export class AugmentedPulseGroup {
             //
             //
             //
-            if (this.isGenesisNode()&&this.nodeCount<this.config.MAXNODES) {
+            if (this.isGenesisNode() && this.nodeCount<this.config.MAXNODES) {
                 //HERE put the nodeCount and the # better paths
                 //PONG MESSAGE
                 var message=`${now()},12,${this.config.VERSION},${this.config.IP},${this.config.PORT},${this.config.GEO},${this.config.BOOTTIMESTAMP},${this.config.PUBLICKEY},${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
