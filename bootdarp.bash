@@ -88,16 +88,13 @@ do
         MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
     else
-        echo "Testing ports on genesis nodes: $GENESISNODELIST"
+        echo "bootdarp.bash Testing ports on genesis nodes: $GENESISNODELIST"
         #rm testport.txt
-        scripts/testport.bash #| grep -v '#' >testport.txt
+        scripts/testport.bash | grep -v '#' >testport.txt
 
-
-
-exit 1
         echo `date` testport.txt follows
         cat testport.txt
-        FIRST_LINE=`cat testport.txt | head -1`
+        FIRST_LINE=`cat testport.txt | grep '#' | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
         
 
