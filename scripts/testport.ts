@@ -44,6 +44,21 @@ function darpPing() {
     //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
     var ary=GENESISNODELIST.split(" ")
     for (var genesisNode in ary) {
+ 
+        //pulseTimestamp: pulseTimestamp,
+        //outgoingTimestamp: senderTimestamp,
+        //msgType: ary[2],
+        //version: ary[3],
+        //geo: ary[4],
+        //group: ary[5],
+        ///seq: parseInt(ary[6]),
+        //bootTimestamp: parseInt(ary[7]), //if genesis node reboots --> all node reload SW too
+        //mint: parseInt(ary[8]),
+       // owls: pulseOwls,
+        //owl: OWL,
+        //lastMsg: incomingMessage,
+
+ 
         //console.log(`genesisNode=${ary[genesisNode]}`);
         let IP=ary[genesisNode].split(",")[0]
         let Port=ary[genesisNode].split(",")[1]
