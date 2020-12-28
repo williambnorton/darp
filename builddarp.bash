@@ -36,8 +36,9 @@ git add . && git commit -m "$MESSAGE" && git pull && git push
 
 git push origin :latest
 
-git push origin latest
-git push origin $BUILD_TAG
+git tag -f latest
+git tag $BUILD_TAG
+git push origin --tags
 
 echo `date`" Completed git push for latest and $BUILD_TAG "
 
