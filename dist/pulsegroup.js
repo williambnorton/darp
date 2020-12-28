@@ -1121,6 +1121,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             console.log("incomingPulse=" + incomingPulse + " incomingPulse.msgType=" + incomingPulse.msgType);
             if (incomingPulse.msgType == "11") {
                 //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
+                console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType);
                 /*
                 //console.log(`process.env=${JSON.stringify(process.env)}`);
                 var pong = {
