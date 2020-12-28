@@ -95,7 +95,7 @@ do
         echo `date` testport.txt follows
         cat testport.txt
         #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
-        FIRST_LINE=`cat testport.txt | grep -v '#' | head -1 | grep -v SELF`
+        FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
 
         if [ "$FIRST_LINE" != "" ]; then
