@@ -115,7 +115,7 @@ do
             MY_GENESIS_PORT=$MY_PORT
             MY_GENESIS_GEO=$MY_GEO
             MY_GENESIS_GROUP=${MY_GEO}.1
-            MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION
+            MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
             echo `date` "Connecting to SELF: $MY_GENESIS_SWVERSION "
         fi
     fi
@@ -129,14 +129,14 @@ do
 
     #PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
 
-    DARP_SWVERSION=`echo $GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
+    DARP_SWVERSION=`echo $MY_GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
 
-    if [ "$GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
+    if [ "$MY_GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
         echo `date` "!!! We are genesis node so we are already running the latest SW"
         #./updateSW.bash
     else
         echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
-        ./updateSW.bash $DARP_SWVERSION     #we want to start with the newest software
+        ./updateSW.bash $MY_GENESIS_SWVERSION #$DARP_SWVERSION     #we want to start with the newest software
         rc=$?
         echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
         if [ $rc -ne 0 ]; then  

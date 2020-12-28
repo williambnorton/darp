@@ -8,6 +8,7 @@ if [ $# -gt 0 ]; then
     NEWDARP=$1
 else
     NEWDARP="latest"
+    echo "$0 NO VERSION SPECIFIED - using latest"
 #    echo Usage: $0 VERSION
 #    exit 1
 fi
