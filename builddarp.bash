@@ -37,16 +37,14 @@ cd src;tsc *.ts;mv *.js ../dist/; cd ..
 #git add . && git commit -m "$MESSAGE + " && git pull && git push 
 git add . && git commit -m "$MESSAGE" && git pull && git push 
 
-echo RUNNING git push origin --tags
-
 echo deleting latest
-git push --delete origin latest
-#git push origin :latest
+#:git push --delete origin latest
+git push origin :latest
 echo `date` deleted latest tag in github repo so now tagging latest and pushing
 sleep 1
 #git push origin $BUILD_TAG
-git tag $BUILD_TAG
-#git tag latest
+#git tag $BUILD_TAG
+git tag latest
 git push origin $BUILD_TAG
 echo `date`" Completed git push for $BUILD_TAG "
 git push origin latest
