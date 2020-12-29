@@ -797,9 +797,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 res.on("end", function () {
                     var genesisVersion = JSON.parse(body);
                     //console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    checkSWversion(): genesis SWversion==${dump(genesisVersion)} this.config=${JSON.stringify(this.config,null,2)}  this.config.VERSION=${this.config.VERSION} MYVERSION()=${MYVERSION()}`);
-                    var mySWversion = _this.config.VERSION = lib_1.MYVERSION(); // find the Build.*
+                    var mySWversion = lib_1.MYVERSION(); // find the Build.*
+                    //var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
                     //console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
-                    //console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
+                    console.log("checkSWversion(): genesis SWversion==" + genesisVersion + " MY SW Version=" + mySWversion + " me.version=" + _this.config.VERSION);
                     if (genesisVersion != mySWversion) {
                         var dockerVersion = genesisVersion.split(":")[0];
                         var darpVersion = genesisVersion.split(":")[1];
@@ -821,7 +822,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         process.exit(36);
                     }
                     else {
-                        //console.log(ts()+`Software running ${mySWversion} is up-to-date with ${url}`);
+                        _this.config.VERSION = mySWversion; //console.log(ts()+`Software running ${mySWversion} is up-to-date with ${url}`);
                     }
                 });
             }).on("error", function () {
