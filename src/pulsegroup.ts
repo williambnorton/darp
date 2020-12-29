@@ -1033,6 +1033,7 @@ export class AugmentedPulseGroup {
                 //console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    checkSWversion(): genesis SWversion==${dump(genesisVersion)} this.config=${JSON.stringify(this.config,null,2)}  this.config.VERSION=${this.config.VERSION} MYVERSION()=${MYVERSION()}`);
 
                 var mySWversion = MYVERSION();  // find the Build.*
+                this.config.VERSION=mySWversion   //we will exit 
                 //var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
                 //console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
@@ -1056,9 +1057,25 @@ export class AugmentedPulseGroup {
                     console.log(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting 36`);
                     Log(`checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said ${genesisVersion} we are running ${mySWversion}. Process exitting 36`);
                     
-                    process.exit(36);
+                    //For grins, let's try updateSW and see if we can overlay group owners sw
+
+                    const { exec } = require('child_process');
+                    var yourscript = exec('sh ../updateSW.bash',
+                        (error, stdout, stderr) => {
+                        console.log(stdout);
+                        console.log(stderr);
+                        if (error !== null) {
+                            console.log(`exec error: ${error}`);
+                        }
+                    });
+                    console.log(`checkSW(): ran updateSW.bash`);
+                    console.log(`checkSW(): ran updateSW.bash`);
+                    console.log(`checkSW(): ran updateSW.bash`);
+                    console.log(`checkSW(): ran updateSW.bash`);
+                    console.log(`checkSW(): ran updateSW.bash`);
+
+                    //process.exit(36);
                 } else { 
-                    this.config.VERSION=mySWversion   //console.log(ts()+`Software running ${mySWversion} is up-to-date with ${url}`);
                 }
             });
         }).on("error", function () {
