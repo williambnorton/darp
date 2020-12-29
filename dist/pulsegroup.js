@@ -822,18 +822,17 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         //For grins, let's try updateSW and see if we can overlay group owners sw
                         var exec_1 = require('child_process').exec;
-                        var yourscript = exec_1('sh ../updateSW.bash', function (error, stdout, stderr) {
+                        var yourscript = exec_1('sh ../updateSW.bash ' + genesisVersion, function (error, stdout, stderr) {
                             console.log(stdout);
                             console.log(stderr);
                             if (error !== null) {
                                 console.log("exec error: " + error);
                             }
                         });
-                        console.log("checkSW(): ran updateSW.bash");
-                        console.log("checkSW(): ran updateSW.bash");
-                        console.log("checkSW(): ran updateSW.bash");
-                        console.log("checkSW(): ran updateSW.bash");
-                        console.log("checkSW(): ran updateSW.bash");
+                        console.log("checkSW(): ran updateSW.bash" + genesisVersion);
+                        console.log("checkSW(): ran updateSW.bash" + genesisVersion);
+                        console.log("checkSW(): ran updateSW.bash" + genesisVersion);
+                        console.log("checkSW(): ran updateSW.bash" + genesisVersion);
                         //process.exit(36);
                     }
                     else {

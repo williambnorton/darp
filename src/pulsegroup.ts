@@ -1060,7 +1060,7 @@ export class AugmentedPulseGroup {
                     //For grins, let's try updateSW and see if we can overlay group owners sw
 
                     const { exec } = require('child_process');
-                    var yourscript = exec('sh ../updateSW.bash',
+                    var yourscript = exec('sh ../updateSW.bash '+genesisVersion,
                         (error, stdout, stderr) => {
                         console.log(stdout);
                         console.log(stderr);
@@ -1068,11 +1068,11 @@ export class AugmentedPulseGroup {
                             console.log(`exec error: ${error}`);
                         }
                     });
-                    console.log(`checkSW(): ran updateSW.bash`);
-                    console.log(`checkSW(): ran updateSW.bash`);
-                    console.log(`checkSW(): ran updateSW.bash`);
-                    console.log(`checkSW(): ran updateSW.bash`);
-                    console.log(`checkSW(): ran updateSW.bash`);
+                    console.log(`checkSW(): ran updateSW.bash`+genesisVersion);
+                    console.log(`checkSW(): ran updateSW.bash`+genesisVersion);
+                    console.log(`checkSW(): ran updateSW.bash`+genesisVersion);
+                    console.log(`checkSW(): ran updateSW.bash`+genesisVersion);
+            
 
                     //process.exit(36);
                 } else { 
