@@ -12,7 +12,7 @@ else
 #    echo Usage: $0 VERSION
 #    exit 1
 fi
-
+echo `date` "$0 UpdateSW $NEWDARP"
 #
 #   Case 1 - currently running latest DARP SW VERSION
 #
@@ -47,7 +47,7 @@ fi
     git checkout tags/$NEWDARP   #fetch the specified version
 
     echo "New DARP Code in /tmp/darp directory:"
-    #ls -l /tmp/darp
+    ls -l /tmp/darp
     cd /tmp/darp
     NEWDARPVERSION=`ls Build.*`
     if [ "$CURRENTDARP" == "$NEWDARPVERSION" ]; then
