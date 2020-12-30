@@ -369,6 +369,7 @@ app.get('/nodefactory', function (req, res) {
         logger_1.logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup));
+        //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
         myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
         return;
@@ -386,56 +387,27 @@ app.get('/nodefactory', function (req, res) {
     // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
     /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner != me.geo) {
-        //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+        var redirectedURL = 'http://' + genesis.ipaddr + ":" + genesis.port + req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now");
-        console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now");
-        console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now");
-        console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now");
-        console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now");
         lib_1.Log("nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... IGNORING request with NULL nodeFactory response");
-        // Duplicate above code connecting to self @WBN
-        // Construct my own pulseGroup for others to connect to
-        //const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-        //const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
-        var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-        myPulseGroups[config.GEO + ".1"] = myPulseGroup;
-        console.log("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
-        //if (incomingIP == me.ipaddr && (port==config.GENESISPORT)) {  // Genesis node instantiating itself - don't need to add anything
-        console.log("CREATING NEW PULSE GROUP - I AM GENESIS NODE      incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
-        logger_1.logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(myPulseGroup));
-        lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
-        myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
+        res.end(JSON.stringify(null));
         return;
-        //}
-        /*
-        
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify(null));
-                return;
-                const http = require('http');
-        
-                http.get(redirectedURL,(res2) => {
-                let body2 = "";
-        
-                res2.on("data", (chunk2) => {
-                    body2 += chunk2;
-                });
-        
-                res2.on("end", () => {
-                    console.log(`PROXIED: for caller from redirectedURL`);
-                    res.end(body2);     //SEND the proxied genesis node config
-                });
-        
-                }).on("error", (error) => {
-                    console.error(error.message);
-                });
-                return;
-        
-                */
+        var http = require('http');
+        http.get(redirectedURL, function (res2) {
+            var body2 = "";
+            res2.on("data", function (chunk2) {
+                body2 += chunk2;
+            });
+            res2.on("end", function () {
+                console.log("PROXIED: for caller from redirectedURL");
+                res.end(body2); //SEND the proxied genesis node config
+            });
+        }).on("error", function (error) {
+            console.error(error.message);
+        });
+        return;
     }
     else {
         console.log("I am Group Owner - answering query myself");
