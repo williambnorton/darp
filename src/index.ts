@@ -400,8 +400,12 @@ app.get('/nodefactory', function(req, res) {
 // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
 /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner!=me.geo) {
-        var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+        //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
+        console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
+        console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
+        console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
+        console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
         console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
         Log(`nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... IGNORING request with NULL nodeFactory response`);
 
