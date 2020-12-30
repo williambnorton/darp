@@ -369,7 +369,6 @@ app.get('/nodefactory', function (req, res) {
         logger_1.logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup));
-        //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
         myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
         return;
@@ -385,33 +384,53 @@ app.get('/nodefactory', function (req, res) {
         return;
     }
     // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
-    /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
-    if (myPulseGroup.groupOwner != me.geo) {
-        var redirectedURL = 'http://' + genesis.ipaddr + ":" + genesis.port + req.originalUrl;
-        //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-        console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now");
-        lib_1.Log("nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... IGNORING request with NULL nodeFactory response");
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(null));
-        return;
-        var http = require('http');
-        http.get(redirectedURL, function (res2) {
-            var body2 = "";
-            res2.on("data", function (chunk2) {
+    /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP.
+        if (myPulseGroup.groupOwner!=me.geo) {
+            var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+            //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
+            console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
+            Log(`nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... IGNORING request with NULL nodeFactory response`);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify(null));
+            return;
+            const http = require('http');
+    
+            http.get(redirectedURL,(res2) => {
+            let body2 = "";
+    
+            res2.on("data", (chunk2) => {
                 body2 += chunk2;
             });
-            res2.on("end", function () {
-                console.log("PROXIED: for caller from redirectedURL");
-                res.end(body2); //SEND the proxied genesis node config
+    
+            res2.on("end", () => {
+                console.log(`PROXIED: for caller from redirectedURL`);
+                res.end(body2);     //SEND the proxied genesis node config
             });
-        }).on("error", function (error) {
-            console.error(error.message);
-        });
-        return;
-    }
-    else {
-        console.log("I am Group Owner - answering query myself");
-    }
+    
+            }).on("error", (error) => {
+                console.error(error.message);
+            });
+            return;
+    
+        } else {
+            console.log(`I am Group Owner - answering query myself`);
+        }
+    
     /*    */
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.

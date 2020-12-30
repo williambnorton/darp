@@ -376,21 +376,14 @@ app.get('/nodefactory', function(req, res) {
         logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
-
-
-
-        //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
-        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
-        
+        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;       
         return;
     }
 
     //  Or - Handle pulseGroup member case
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log(ts()+"........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-
-
 
 
 
@@ -405,12 +398,26 @@ app.get('/nodefactory', function(req, res) {
 
 
 // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
-/* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
+/* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. 
     if (myPulseGroup.groupOwner!=me.geo) {
         var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
         Log(`nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... IGNORING request with NULL nodeFactory response`);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(null)); 
