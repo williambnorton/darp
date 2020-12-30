@@ -420,9 +420,9 @@ app.get('/nodefactory', function(req, res) {
 //LOCAL OVERIDE TO CREATE A NEW PULSEGROUP
 
 
-        var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var myPulseGroup = new PulseGroup(me, genesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-        myPulseGroups[ config.GEO + ":" + config.GEO+".1"] = myPulseGroup;
+        var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
+        var newPulseGroup = new PulseGroup(me, genesis, newPulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
+        myPulseGroups[ config.GEO + ":" + config.GEO+".1" ] = newPulseGroup;
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
         console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
                 

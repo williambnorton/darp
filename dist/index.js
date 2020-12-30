@@ -395,9 +395,9 @@ app.get('/nodefactory', function (req, res) {
         //const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
         //const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
         //LOCAL OVERIDE TO CREATE A NEW PULSEGROUP
-        var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-        myPulseGroups[config.GEO + ":" + config.GEO + ".1"] = myPulseGroup;
+        var newPulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
+        var newPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, newPulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
+        myPulseGroups[config.GEO + ":" + config.GEO + ".1"] = newPulseGroup;
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
         console.log("*** Starting with my own myPulseGroups=" + lib_1.dump(myPulseGroups));
     }
