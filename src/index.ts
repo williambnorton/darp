@@ -426,7 +426,7 @@ app.get('/nodefactory', function(req, res) {
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
         console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
                 
-
+    }
 /*
         process.exit(4);
 
