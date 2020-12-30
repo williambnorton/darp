@@ -130,7 +130,7 @@ do
         echo `date` "!!! We are genesis node so we are already running the latest SW"
         #./updateSW.bash
     else
-        echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION "
+        echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION MY_GENESIS_VERSION=$MY_GENESIS_SWVERSION"
         ./updateSW.bash $MY_GENESIS_SWVERSION #$DARP_SWVERSION     #we want to start with the newest software
         rc=$?
         echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
