@@ -410,12 +410,8 @@ app.get('/nodefactory', function(req, res) {
         var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... EXITTING for now`);
-        Log(`nodefactory(): NON-GENESIS But requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers... IGNORING request with NULL nodeFactory response`);
 
-
-
-
-        console.log(`NON-GENESIS NODE RECEIVING NODE REQUEST`);
+        console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
 
 // Construct my own pulseGroup for others to connect to
 //const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
@@ -424,7 +420,7 @@ var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.POR
 var myPulseGroup = new PulseGroup(me, genesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
 myPulseGroups[ config.GEO + ":" + config.GEO+".1"] = myPulseGroup;
 //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
-console.log(`Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
+console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
 
 
 process.exit(4);
