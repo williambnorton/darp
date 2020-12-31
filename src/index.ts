@@ -227,6 +227,11 @@ const fs = require('fs');
 app.get(['/pulsegroups','/state'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
+
+    console.log(`sending JSON stringify of pulseGroups object`);
+    res.end(JSON.stringify(myPulseGroups)); //CRASH - catch 
+    return;
+
     let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
     try {
@@ -235,7 +240,7 @@ app.get(['/pulsegroups','/state'], function(req, res) {
     } catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
-        res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch 
+        res.end("INTERNAL ERROR - can't find pulseGroup object me=${me}"); //CRASH - catch 
     }
 
     return;

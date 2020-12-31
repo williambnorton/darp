@@ -112,46 +112,6 @@ var Config = /** @class */ (function () {
         //        }
         this.GENESIS = process.env.GENESIS || "";
         //console.log(`GENESIS=${process.env.GENESIS}`);
-        /*
-        this.GENESIS = process.env.GENESIS||"";
-        console.log(`starting with GENESIS=${this.GENESIS}`);
-        if (this.GENESIS=="" || this.GENESIS=="auto") {
-            console.log(`===================                       Finding a GENESIS node to connect to                 =================`);
-            let genesisNodeList=process.env.GENESISNODELIST;
-            console.log(`I am ${this.IP} genesisNodeList=${genesisNodeList}`);
-
-            if (genesisNodeList) {
-                let genesisNodes=genesisNodeList.split(",");
-                var isGenesisNode=false;
-                
-                //First rule - if this is a genesis node it starts as
-                for (var g in genesisNodes) {
-                    //console.log(`checking ${genesisNodes[g]} against ${this.GENESIS}`);
-                    if (genesisNodes[g]==this.IP) {
-                        isGenesisNode=true;
-                        //console.log(`GOT IT`);
-                        this.GENESIS=this.IP
-                    }
-                }
-
-                if (!isGenesisNode) {
-                    this.GENESIS="auto"
-                    console.log(`I am not a GENESIS NODE  GENESIS=${this.GENESIS}  -- no one to connect to so I EXIT`);  /// WBNWBNWBN
-                    process.exit(36);  //reload software maybe get a better
-                }
-            } else {
-                console.log(`================ pulseGroup(): We have no GENESISNODELIST... EXITTING `);
-                process.exit(86);
-            }
-        }
-        console.log(`pulseGroup constructor GENESIS=${this.GENESIS}`); /// WBNWBNWBN
-*/
-        //GENESIS either specified as ENV variable (FORCED) or    GENESIS=GENBESIS NODE REGISTERED     or      auto - connect to closest
-        //var filename = "../GENESIS."+this.GENESIS+":"+this.GENESISPORT;
-        //fs.appendFile(filename, this.GENESIS+":"+this.GENESISPORT, (err) => {  
-        //        if (err) throw err;
-        //});
-        //At this point GENESIS is auto, an IP of a node to use as GENESIS NODE
         var PUBLICKEY = process.env.PUBLICKEY || "noPublicKey";
         if (!PUBLICKEY) {
             try {
@@ -597,6 +557,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
             delete copy.config;
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
             var filename = "../" + _this.config.IP + "." + _this.config.PORT + '.json'; // gets polled often ~every second
+            fs.writeFile(filename, strCopy, function (err) {
+                if (err)
+                    throw err;
+                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+            });
+            var pg = JSON.parse(JSON.stringify(WBNWBNWBN));
+            var filename = "../pulseGroups.json"; // gets polled often ~every second
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
@@ -1339,40 +1306,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
-        /*
-        this.receiver = fork(config.DARPDIR + '/dist/receiver.js', [config.PORT.toString()]);
-        this.receiver.on('exit', (code) => {
-            logger.warning(`Receiver process exited with code ${code}`);
-        });
-        this.receiver.on('message', (incomingMessage: string) => {
-            logger.debug(`AugmentedPulseGroup has received message from receiver: ${incomingMessage}`);
-            this.recvPulses(incomingMessage);
-        });
-        this.receiver.on('close', (incomingMessage: string) => {
-            console.log(ts()+`pulseGroup(): receiver closed - exitting`);
-            process.exit(36);  //reload software
-        });
-        this.receiver.on('error', (incomingMessage: string) => {
-            console.log(ts()+`pulseGroup(): receiver died - exitting`);
-            process.exit(36);  //reload software
-        });
-        
-        this.sender = fork(config.DARPDIR + '/dist/sender.js', [(PULSEFREQ * 1000).toString()]);
-        this.sender.on('exit', (code) => {
-            logger.warning(`Sender process exited with code ${code}`);
-        });
-        this.sender.on('message', (message) => {
-            logger.debug(`AugmentedPulseGroup has received message from sender: ${message}`);
-        });
-        this.sender.on('close', (incomingMessage: string) => {
-            console.log(ts()+`pulseGroup(): sender closed - exitting`);
-            process.exit(36);  //reload software
-        });
-        this.sender.on('error', (incomingMessage: string) => {
-            console.log(ts()+`pulseGroup(): sender died - exitting`);
-            process.exit(36);  //reload software
-        });
-*/
         // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
         var dgram = require("dgram");
         var receiver = dgram.createSocket("udp4");
