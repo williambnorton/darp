@@ -562,13 +562,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
-            var pg = JSON.parse(JSON.stringify(WBNWBNWBN));
-            var filename = "../pulseGroups.json"; // gets polled often ~every second
-            fs.writeFile(filename, strCopy, function (err) {
-                if (err)
-                    throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
+            /*
+                        var pg=JSON.parse(JSON.stringify(myPulseGroups));
+                        var filename="../pulseGroups.json";  // gets polled often ~every second
+                        fs.writeFile(filename, strCopy, (err:string) => {
+                            if (err) throw err;
+                            //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+                        });
+            */
             //}
             /*
                 var genesislist=process.env.GENESISNODELIST||"";
