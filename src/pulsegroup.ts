@@ -83,7 +83,7 @@ export class Config {
             logger.warning(`No VERSION environmental variable specified - setting to ${process.env.VERSION}`);
         }
         this.VERSION = process.env.VERSION || "NoVersion";
-        console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=${this.VERSION} MYVERSION()=${MYVERSION()}`);
+        console.log(`&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=${this.VERSION} MYVERSION()=${MYVERSION()}`);
 
         if (!process.env.MY_IP) {
             console.log("No MY_IP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
