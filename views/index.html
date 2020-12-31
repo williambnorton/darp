@@ -592,7 +592,8 @@
             <% for (var a in pulseGroup.mintTable) { %>
                 <% var srcMintEntry = pulseGroup.mintTable[a]; %>
                 
-                <% if (srcMintEntry != null && ! (( a == 0 )  && (srcMintEntry.geo == pulseGroup.groupOwner )) ) { %>                
+            <!---    <% if (srcMintEntry != null && ! (( a == 0 )  && (srcMintEntry.geo == pulseGroup.groupOwner )) ) { %>       -->           
+                <% if ( srcMintEntry != null ) { %>                
                     <% var mintClass = ""; %>
                     
                     <% if (srcMintEntry.mint == 0) { %>

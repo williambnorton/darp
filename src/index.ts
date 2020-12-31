@@ -425,13 +425,14 @@ app.get('/nodefactory', function(req, res) {
 //var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 
 //maybe clone the original object ?
-
+//@WBNWBNWBNWBNWBN
+        //var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP, port, config.VERSION, incomingTimestamp);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
         var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP, port, config.VERSION, incomingTimestamp);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
         var newPulseGroup = new PulseGroup(me, me, newPulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-        myPulseGroups[ config.GEO + ":" + config.GEO+".1" ] = newPulseGroup;
+        myPulseGroups[ config.GEO + ":" + config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
         console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
-                return    
+        return    
     }
 /*
         process.exit(4);
