@@ -31,7 +31,7 @@
 echo `date` "Starting bootdarp.bash in docker "
 SLEEPTIME=25 #time in seconds between software runs in forever loop
 MAXCYCLES=10 # of cycles before reloading docker
-GRANULARITY=100 #  milliseconds before we say we should join the closer genesis node
+GRANULARITY=50 #  milliseconds before we say we should join the closer genesis node
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -89,7 +89,11 @@ do
         #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
         scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
 
-        echo `date` testport.txt follows
+        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
         cat testport.txt
         #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
         FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
