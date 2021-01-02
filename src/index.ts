@@ -418,26 +418,18 @@ app.get('/nodefactory', function(req, res) {
         console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
 
 // Construct my own pulseGroup for others to connect to
-//const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-//const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
-
-
-//var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-
-//maybe clone the original object ?
-//@WBNWBNWBNWBNWBN
-        //var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP, port, config.VERSION, incomingTimestamp);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP.toString(), port, config.VERSION, incomingTimestamp);    //make self pulse Entry
-        var newPulseGroup = new PulseGroup(me, me, newPulse);  //my new pulseGroup 
-        myPulseGroups[ config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
-    
+        if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {
+            var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, now());    //make self pulse Entry
+            var newPulseGroup = new PulseGroup(me, me, newPulse);  //my new pulseGroup 
+            myPulseGroups[ config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
+        
         // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
         //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
        // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
 
         //from here on work on my pulseGroup]
-        myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
-
+            myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
+        }
 
 //  add mint 2 for new node in mintTable
 //   add self pulse in pulses
@@ -445,7 +437,7 @@ app.get('/nodefactory', function(req, res) {
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
         //console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
         //return    
-    }
+
 /*
         process.exit(4);
 

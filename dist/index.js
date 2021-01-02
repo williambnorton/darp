@@ -395,109 +395,105 @@ app.get('/nodefactory', function (req, res) {
         console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...");
         console.log("********* NON-GENESIS NODE RECEIVING NODE REQUEST");
         // Construct my own pulseGroup for others to connect to
-        //const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-        //const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
-        //var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        //maybe clone the original object ?
-        //@WBNWBNWBNWBNWBN
-        //var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP, port, config.VERSION, incomingTimestamp);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var newPulse = new pulsegroup_1.PulseEntry(1, geo, config.GEO + ".1", incomingIP.toString(), port, config.VERSION, incomingTimestamp); //make self pulse Entry
-        var newPulseGroup = new pulsegroup_1.PulseGroup(me, me, newPulse); //my new pulseGroup 
-        myPulseGroups[config.GEO + ".1"] = newPulseGroup; //@WBNWBNWBN
-        // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-        //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
-        // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-        //from here on work on my pulseGroup]
-        myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
+        if (typeof myPulseGroups[config.GEO + ".1"] == "undefined") {
+            var newPulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, lib_1.now()); //make self pulse Entry
+            var newPulseGroup = new pulsegroup_1.PulseGroup(me, me, newPulse); //my new pulseGroup 
+            myPulseGroups[config.GEO + ".1"] = newPulseGroup; //@WBNWBNWBN
+            // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
+            //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
+            // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+            //from here on work on my pulseGroup]
+            myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
+        }
         //  add mint 2 for new node in mintTable
         //   add self pulse in pulses
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
         //console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
         //return    
-    }
-    /*
-            process.exit(4);
-    
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(null));
-            return;
-            const http = require('http');
-    
-            http.get(redirectedURL,(res2) => {
-            let body2 = "";
-    
-            res2.on("data", (chunk2) => {
-                body2 += chunk2;
-            });
-    
-            res2.on("end", () => {
-                console.log(`PROXIED: for caller from redirectedURL`);
-                res.end(body2);     //SEND the proxied genesis node config
-            });
-    
-            }).on("error", (error) => {
-                console.error(error.message);
-            });
-            
-            return;
-    
-        } else {
-            console.log(`I am Group Owner - answering query myself`);
-        }
-    
-    /*    */
-    // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
-    // TODO - this next block should probably use the deleteNode code instead.
-    for (var mint in myPulseGroup.mintTable) {
-        if (mint == "0" || mint == "1") {
-            // ignore mintTable[0] and minttable[1] - never delete these
-            //logger.debug(`looking at mint=${dump(myPulseGroup.mintTable[mint])}`);
-        }
-        else {
-            if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
-                // make sure not do delete me or genesis node
-                logger_1.logger.info("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
-                myPulseGroup.mintTable.splice(parseInt(mint));
-                //Do we want to set this mint Table entry to null to void its reuse or shifting of mint entries??
+        /*
+                process.exit(4);
+        
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(null));
+                return;
+                const http = require('http');
+        
+                http.get(redirectedURL,(res2) => {
+                let body2 = "";
+        
+                res2.on("data", (chunk2) => {
+                    body2 += chunk2;
+                });
+        
+                res2.on("end", () => {
+                    console.log(`PROXIED: for caller from redirectedURL`);
+                    res.end(body2);     //SEND the proxied genesis node config
+                });
+        
+                }).on("error", (error) => {
+                    console.error(error.message);
+                });
+                
+                return;
+        
+            } else {
+                console.log(`I am Group Owner - answering query myself`);
+            }
+        
+        /*    */
+        // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
+        // TODO - this next block should probably use the deleteNode code instead.
+        for (var mint in myPulseGroup.mintTable) {
+            if (mint == "0" || mint == "1") {
+                // ignore mintTable[0] and minttable[1] - never delete these
+                //logger.debug(`looking at mint=${dump(myPulseGroup.mintTable[mint])}`);
+            }
+            else {
+                if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
+                    // make sure not do delete me or genesis node
+                    logger_1.logger.info("deleting previous mint for this node: " + incomingIP + ":" + port + " mint #" + mint + " geo=" + myPulseGroup.mintTable[mint].geo);
+                    myPulseGroup.mintTable.splice(parseInt(mint));
+                    //Do we want to set this mint Table entry to null to void its reuse or shifting of mint entries??
+                }
             }
         }
+        // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup CLONE CLONE CLONE
+        var newMint = myPulseGroup.nextMint++;
+        logger_1.logger.info(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
+        myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
+        logger_1.logger.debug("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
+        console.log("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
+        // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
+        var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
+        myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+        logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
+        logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
+        myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
+        // make a copy of the pulseGroup for the new node and set its passed-in startup variables
+        var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
+        newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
+        //
+        //  Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
+        //
+        // Here clear the clone's history and median history for each pulse @wbnwbnwbn
+        //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
+        //Also clear the mintTable lastOWL and PulseTimestamps
+        for (var m in newNodePulseGroup.pulses) {
+            newNodePulseGroup.pulses[m].history = newNodePulseGroup.pulses[m].medianHistory = [];
+            newNodePulseGroup.pulses[m].owl = 99999; //no measures
+            newNodePulseGroup.pulses[m].inPulses = newNodePulseGroup.pulses[m].outPulses = newNodePulseGroup.pulses[m].relayCount = newNodePulseGroup.pulses[m].pktDrops = 0;
+            newNodePulseGroup.pulses[m].pulseTimestamp = 0;
+            newNodePulseGroup.pulses[m].lastMsg = "";
+            newNodePulseGroup.pulses[m].state = "QUARANTINE"; //   ???   mark UP when we receive a pulse from this node?
+            newNodePulseGroup.pulses[m].owls = "1"; //   ???   mark UP when we receive a pulse?
+        }
+        lib_1.Log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
+        logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
+        //console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
+        // send response to pulse group member node
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(newNodePulseGroup)); // send mint:0 mint:1 *mint:N groupEntry *entryN
     }
-    // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup CLONE CLONE CLONE
-    var newMint = myPulseGroup.nextMint++;
-    logger_1.logger.info(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
-    myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
-    logger_1.logger.debug("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
-    console.log("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
-    // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
-    myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-    logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
-    logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
-    myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
-    // make a copy of the pulseGroup for the new node and set its passed-in startup variables
-    var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
-    newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
-    //
-    //  Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE
-    //
-    // Here clear the clone's history and median history for each pulse @wbnwbnwbn
-    //              clear the pulseTimestamps to 0 as they are in the genesis node's clock anyway 
-    //Also clear the mintTable lastOWL and PulseTimestamps
-    for (var m in newNodePulseGroup.pulses) {
-        newNodePulseGroup.pulses[m].history = newNodePulseGroup.pulses[m].medianHistory = [];
-        newNodePulseGroup.pulses[m].owl = 99999; //no measures
-        newNodePulseGroup.pulses[m].inPulses = newNodePulseGroup.pulses[m].outPulses = newNodePulseGroup.pulses[m].relayCount = newNodePulseGroup.pulses[m].pktDrops = 0;
-        newNodePulseGroup.pulses[m].pulseTimestamp = 0;
-        newNodePulseGroup.pulses[m].lastMsg = "";
-        newNodePulseGroup.pulses[m].state = "QUARANTINE"; //   ???   mark UP when we receive a pulse from this node?
-        newNodePulseGroup.pulses[m].owls = "1"; //   ???   mark UP when we receive a pulse?
-    }
-    lib_1.Log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
-    logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
-    //console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
-    // send response to pulse group member node
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(newNodePulseGroup)); // send mint:0 mint:1 *mint:N groupEntry *entryN
 });
 // Initiate the protocol  
 //  this is where it all begins - here we create multiple groups
