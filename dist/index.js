@@ -398,9 +398,9 @@ app.get('/nodefactory', function (req, res) {
             var newPulse = new pulsegroup_1.PulseEntry(0, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, lib_1.now()); //make self pulse Entry
             var newPulseGroup = new pulsegroup_1.PulseGroup(me, me, newPulse); //my new pulseGroup 
             // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-            var newNode = new pulsegroup_1.MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp); //accept new node in
-            newPulseGroup.mintTable[2] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-            newPulseGroup.pulses[geo + ":" + config.GEO + ".1"] = new pulsegroup_1.PulseEntry(2, geo, myPulseGroups[config.GEO + ".1"].groupName, String(incomingIP), port, config.VERSION, lib_1.now());
+            //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);  //accept new node in
+            //newPulseGroup.mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+            //newPulseGroup.pulses[geo + ":" +  config.GEO+".1" ] = new PulseEntry(2, geo, myPulseGroups[ config.GEO+".1" ].groupName, String(incomingIP), port, config.VERSION, now());
             myPulseGroups[config.GEO + ".1"] = newPulseGroup; //@WBNWBNWBN
             // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
             //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
