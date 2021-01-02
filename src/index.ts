@@ -416,15 +416,15 @@ app.get('/nodefactory', function(req, res) {
 
 // Construct my own pulseGroup for others to connect to
         if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {
-            var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, now());    //make self pulse Entry
+            var newPulse = new PulseEntry(0, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, now());    //make self pulse Entry
             var newPulseGroup = new PulseGroup(me, me, newPulse);  //my new pulseGroup 
-            myPulseGroups[ config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
 
             // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
             var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);  //accept new node in
-            myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+            newPulseGroup.mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+            newPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(2, geo, myPulseGroups[ config.GEO+".1" ].groupName, String(incomingIP), port, config.VERSION, now());
 
-            myPulseGroups[ config.GEO+".1" ].pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(2, geo, myPulseGroups[ config.GEO+".1" ].groupName, String(incomingIP), port, config.VERSION, now());
+            myPulseGroups[ config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
             
         // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
         //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
