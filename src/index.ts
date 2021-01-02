@@ -27,7 +27,7 @@ logger.info(`Starting with my own pulseGroup=${dump(myPulseGroup)}`);
 
 // Start instrumentaton web server
 
-const REFRESH = 120;  //Every 2 minutes force refresh
+const REFRESH = 120;  //Every 2 minutes force web page instrumentation refresh
 const OWLS_DISPLAYED = 30;
 
 var app = express();
@@ -208,15 +208,12 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
                 let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));  // clone my pulseGroup obecjt 
                 clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
 
-
-
                 res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
                 return;  // we sent the more specific
             }
         }
         res.end(JSON.stringify(null));
-    }
-    else    {
+    } else {
         logger.warning("No pulseGroup specified");
         res.end(JSON.stringify(myPulseGroups, null, 2));
         return;
@@ -229,9 +226,9 @@ app.get(['/pulsegroups','/state'], function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     //console.log(`sending JSON stringify of pulseGroups object`);
-    res.end(JSON.stringify(myPulseGroups)); //CRASH - catch 
+    res.end(JSON.stringify(myPulseGroups)); 
     return;
-
+    // cache 
     let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
     try {
@@ -409,8 +406,8 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-// WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
-/* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
+
+
     if (myPulseGroup.groupOwner!=me.geo) {
         //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
@@ -422,7 +419,13 @@ app.get('/nodefactory', function(req, res) {
             var newPulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, now());    //make self pulse Entry
             var newPulseGroup = new PulseGroup(me, me, newPulse);  //my new pulseGroup 
             myPulseGroups[ config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
-        
+
+            // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
+            var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);  //accept new node in
+            myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+
+            myPulseGroups[ config.GEO+".1" ].pulses[geo + ":" + myPulseGroup.groupName] = new PulseEntry(2, geo, myPulseGroups[ config.GEO+".1" ].groupName, String(incomingIP), port, config.VERSION, now());
+            
         // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
         //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
        // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
@@ -430,7 +433,9 @@ app.get('/nodefactory', function(req, res) {
         //from here on work on my pulseGroup]
             myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
             console.log(`myPulseGroup=${JSON.stringify(myPulseGroup,null,2)}`);
-            return;
+            //return;
+        } else {
+            myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
         }
         console.log(`continuing on to nodeFactory`);
     }

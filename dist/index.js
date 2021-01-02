@@ -56,7 +56,7 @@ var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //my pulseGr
 var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
 // Start instrumentaton web server
-var REFRESH = 120; //Every 2 minutes force refresh
+var REFRESH = 120; //Every 2 minutes force web page instrumentation refresh
 var OWLS_DISPLAYED = 30;
 var app = express();
 app.set('views', config.DARPDIR + '/views');
@@ -237,8 +237,9 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //console.log(`sending JSON stringify of pulseGroups object`);
-    res.end(JSON.stringify(myPulseGroups)); //CRASH - catch 
+    res.end(JSON.stringify(myPulseGroups));
     return;
+    // cache 
     var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
     //console.log(`sending contents of ${filename}`);
     try {
@@ -387,8 +388,6 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(null));
         return;
     }
-    // WE are getting nodes coming in to nodeFactory of a sub. Could accept also?  FOR NOW, 
-    /* untested feture to redirectr rrequeat to group owner so a node can communicate with another only knowing their IP. */
     if (myPulseGroup.groupOwner != me.geo) {
         //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
@@ -400,12 +399,19 @@ app.get('/nodefactory', function (req, res) {
             var newPulseGroup = new pulsegroup_1.PulseGroup(me, me, newPulse); //my new pulseGroup 
             myPulseGroups[config.GEO + ".1"] = newPulseGroup; //@WBNWBNWBN
             // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
+            var newNode = new pulsegroup_1.MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp); //accept new node in
+            myPulseGroups[config.GEO + ".1"].mintTable[2] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+            myPulseGroups[config.GEO + ".1"].pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(2, geo, myPulseGroups[config.GEO + ".1"].groupName, String(incomingIP), port, config.VERSION, lib_1.now());
+            // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
             //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
             // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
             //from here on work on my pulseGroup]
             myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
             console.log("myPulseGroup=" + JSON.stringify(myPulseGroup, null, 2));
-            return;
+            //return;
+        }
+        else {
+            myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
         }
         console.log("continuing on to nodeFactory");
     }
