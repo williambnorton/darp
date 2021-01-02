@@ -429,6 +429,8 @@ app.get('/nodefactory', function(req, res) {
 
         //from here on work on my pulseGroup]
             myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
+            console.log(`myPulseGroup=${JSON.stringify(myPulseGroup,null,2)}`);
+            return;
         }
 
 //  add mint 2 for new node in mintTable

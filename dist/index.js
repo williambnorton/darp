@@ -404,6 +404,8 @@ app.get('/nodefactory', function (req, res) {
             // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
             //from here on work on my pulseGroup]
             myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
+            console.log("myPulseGroup=" + JSON.stringify(myPulseGroup, null, 2));
+            return;
         }
         //  add mint 2 for new node in mintTable
         //   add self pulse in pulses
