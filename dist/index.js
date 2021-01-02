@@ -236,7 +236,7 @@ var fs = require('fs');
 app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log("sending JSON stringify of pulseGroups object");
+    //console.log(`sending JSON stringify of pulseGroups object`);
     res.end(JSON.stringify(myPulseGroups)); //CRASH - catch 
     return;
     var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
