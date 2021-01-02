@@ -432,6 +432,8 @@ app.get('/nodefactory', function(req, res) {
             console.log(`myPulseGroup=${JSON.stringify(myPulseGroup,null,2)}`);
             return;
         }
+        console.log(`continuing on to nodeFactory`);
+    }
 
 //  add mint 2 for new node in mintTable
 //   add self pulse in pulses
