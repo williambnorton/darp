@@ -400,7 +400,7 @@ app.get('/nodefactory', function (req, res) {
             // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
             var newNode = new pulsegroup_1.MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp); //accept new node in
             newPulseGroup.mintTable[2] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-            newPulseGroup.pulses[geo + ":" + config.GEO] = new pulsegroup_1.PulseEntry(2, geo, myPulseGroups[config.GEO + ".1"].groupName, String(incomingIP), port, config.VERSION, lib_1.now());
+            newPulseGroup.pulses[geo + ":" + config.GEO + ".1"] = new pulsegroup_1.PulseEntry(2, geo, myPulseGroups[config.GEO + ".1"].groupName, String(incomingIP), port, config.VERSION, lib_1.now());
             myPulseGroups[config.GEO + ".1"] = newPulseGroup; //@WBNWBNWBN
             // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
             //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
