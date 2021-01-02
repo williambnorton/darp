@@ -427,12 +427,24 @@ app.get('/nodefactory', function(req, res) {
 //maybe clone the original object ?
 //@WBNWBNWBNWBNWBN
         //var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP, port, config.VERSION, incomingTimestamp);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP.toString(), port, config.VERSION, incomingTimestamp);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-        var newPulseGroup = new PulseGroup(me, me, newPulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-        myPulseGroups[ config.GEO + ":" + config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
+        var newPulse = new PulseEntry(1, geo, config.GEO+".1", incomingIP.toString(), port, config.VERSION, incomingTimestamp);    //make self pulse Entry
+        var newPulseGroup = new PulseGroup(me, me, newPulse);  //my new pulseGroup 
+        myPulseGroups[ config.GEO+".1" ] = newPulseGroup;  //@WBNWBNWBN
+    
+        // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
+        //var newNode = new MintEntry(2, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
+       // myPulseGroups[ config.GEO+".1" ].mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+
+        //from here on work on my pulseGroup]
+        myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
+
+
+//  add mint 2 for new node in mintTable
+//   add self pulse in pulses
+
         //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
-        console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
-        return    
+        //console.log(`*** Starting with my own myPulseGroups=${dump(myPulseGroups)}`);
+        //return    
     }
 /*
         process.exit(4);
@@ -472,12 +484,24 @@ app.get('/nodefactory', function(req, res) {
     for (var mint in myPulseGroup.mintTable) {
         if (mint=="0" || mint=="1") { 
             // ignore mintTable[0] and minttable[1] - never delete these
-            logger.debug(`looking at mint=${dump(myPulseGroup.mintTable[mint])}`);
+            //logger.debug(`looking at mint=${dump(myPulseGroup.mintTable[mint])}`);
         } else {
             if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
                 // make sure not do delete me or genesis node
                 logger.info(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
+
+
+
+
+
+
                 myPulseGroup.mintTable.splice(parseInt(mint));
+                                                        //Do we want to set this mint Table entry to null to void its reuse or shifting of mint entries??
+
+
+
+
+
             }
         }
     }
