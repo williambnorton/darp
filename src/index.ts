@@ -427,7 +427,6 @@ app.get('/nodefactory', function(req, res) {
             myPulseGroup.mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
             myPulseGroup.pulses[geo + ":" + config.GEO+".1"] = new PulseEntry(2, geo, config.GEO+".1", String(incomingIP), port, config.VERSION, incomingBootTimestamp);
 
-
             myPulseGroups[ config.GEO+".1" ] = mePulseGroup;  //@WBNWBNWBN
 
             myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
