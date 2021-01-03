@@ -237,7 +237,7 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //console.log(`sending JSON stringify of pulseGroups object`);
-    res.end(JSON.stringify(myPulseGroups));
+    res.end(JSON.stringify(myPulseGroups, null, 2));
     return;
     // cache 
     var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
@@ -256,18 +256,21 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
 app.get('/me', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
-    console.log("/me sending contents of " + filename);
-    try {
-        var fileContents = fs.readFileSync(filename);
-        //console.log(`filecontents=${fileContents}`);
-        res.end(JSON.stringify(JSON.parse(fileContents), null, 2)); //CRASH - catch 
-    }
-    catch (err) {
-        // Here you get the error when the file was not found,
-        // but you also get any other error
-        res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch 
-    }
+    res.end(JSON.stringify(myPulseGroups[me.geo + ".1"], null, 2));
+    /*
+        let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
+        console.log(`/me sending contents of ${filename}`);
+        try {
+            var fileContents = fs.readFileSync(filename);
+            //console.log(`filecontents=${fileContents}`);
+    
+            res.end(JSON.stringify(JSON.parse(fileContents),null,2)); //CRASH - catch
+        } catch (err) {
+            // Here you get the error when the file was not found,
+            // but you also get any other error
+            res.end("INTERNAL ERROR - can't find pulseGroup object"); //CRASH - catch
+        }
+    */
     return;
 });
 app.get('/mintTable', function (req, res) {
@@ -388,7 +391,7 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(null));
         return;
     }
-    if (myPulseGroup.groupOwner != me.geo) {
+    if (myPulseGroup.groupOwner != me.geo) { //
         //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...");
@@ -429,7 +432,7 @@ app.get('/nodefactory', function (req, res) {
     }
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup CLONE CLONE CLONE
     var newMint = myPulseGroup.nextMint++;
-    logger_1.logger.info(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
+    console.log(geo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
     myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, geo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
     logger_1.logger.debug("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
     console.log("Added pulse: " + geo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[geo + ":" + myPulseGroup.groupName]));
