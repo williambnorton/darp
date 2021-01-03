@@ -537,6 +537,8 @@ app.get('/nodefactory', function(req, res) {
         var augmentedPulseGroup = new AugmentedPulseGroup(config, anchorPulseGroup);   //augmented with pulseGroup methods
 
         myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
+
+        console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
         
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
         augmentedPulseGroup.pulse();
