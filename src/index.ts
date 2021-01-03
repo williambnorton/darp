@@ -415,19 +415,19 @@ app.get('/nodefactory', function(req, res) {
         console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
 
 // HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
-        if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {
-            // Construct my own pulseGroup for others to connect to
-            const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
+        if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {  // Construct my own pulseGroup for others to connect to
+            const me = new MintEntry(0, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
             const megenesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
             var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
             var mePulseGroup = new PulseGroup(me, megenesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
             myPulseGroups[ config.GEO+".1" ] = mePulseGroup;  //@WBNWBNWBN
+
             console.log(`mePulseGroup=${JSON.stringify(mePulseGroup,null,2)}`);
             //return;
         } else {
         }
         myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
-        console.log(`continuing on to nodeFactory`);
+        console.log(`continuing on to nodeFactory myPulseGroup=`);
     }
 
 //  add mint 2 for new node in mintTable
