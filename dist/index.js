@@ -345,7 +345,7 @@ app.get('/nodefactory', function (req, res) {
         logger_1.logger.warning("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
-            "rc": "-1 nodeFactory called with no timestamp."
+            "rc": "-1 /nodeFactory called with no timestamp."
         }));
         return;
     }
@@ -364,7 +364,7 @@ app.get('/nodefactory', function (req, res) {
     if (typeof incomingIP == "undefined")
         return logger_1.logger.error("incomingIP unavailable from geo=" + geo + " incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP);
     logger_1.logger.info("incomingIP=" + incomingIP + " clientIncomingIP=" + clientIncomingIP + " req.myip=" + req.query.myip);
-    var version = String(req.query.version); ///why do we look at client version param
+    var version = String(req.query.version); ///why do we look at client version param?
     version = lib_1.MYVERSION();
     version = config.VERSION;
     // handle Genesis node case - first to start up
@@ -407,8 +407,6 @@ app.get('/nodefactory', function (req, res) {
             myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
             console.log("mePulseGroup=" + JSON.stringify(mePulseGroup, null, 2));
             //return;
-        }
-        else {
         }
         myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
         console.log("continuing on to nodeFactory myPulseGroup=" + myPulseGroup);
@@ -467,21 +465,21 @@ app.get('/nodefactory', function (req, res) {
     res.end(JSON.stringify(newNodePulseGroup)); // send mint:0 mint:1 *mint:N groupEntry *entryN
 });
 // Initiate the protocol  
-//  this is where it all begins - here we create multiple groups
+//  this is where it all begins - here we start up our own group
 //
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var augmentedPulseGroup, error_1;
+    var anchorPulseGroup, augmentedPulseGroup, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
-                myPulseGroup = _a.sent();
-                logger_1.logger.info("DARP NODE STARTED: pulseGroup=" + lib_1.dump(myPulseGroup));
-                console.log("DARP NODE STARTED: GENESIS=" + myPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(myPulseGroup));
-                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
-                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;
+                anchorPulseGroup = _a.sent();
+                logger_1.logger.info("DARP NODE STARTED: pulseGroup=" + lib_1.dump(anchorPulseGroup));
+                console.log("DARP NODE STARTED: anchor GENESIS=" + anchorPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(anchorPulseGroup));
+                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, anchorPulseGroup);
+                myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup; //wire it in
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.pulse();
                 augmentedPulseGroup.workerThread(); //start workerthread to asynchronously processes pulse messages

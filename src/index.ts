@@ -10,7 +10,6 @@ import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, Puls
 
 logger.setLevel(LogLevel.WARNING);
 //const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
-
 // Load config
 
 const config = new Config();
@@ -342,7 +341,7 @@ app.get('/nodefactory', function(req, res) {
         logger.warning("/nodeFactory called with no timestamp");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({
-            "rc": "-1 nodeFactory called with no timestamp."
+            "rc": "-1 /nodeFactory called with no timestamp."
         }));
         return;
     }
@@ -364,7 +363,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    var version = String(req.query.version);   ///why do we look at client version param
+    var version = String(req.query.version);   ///why do we look at client version param?
 
     version=MYVERSION(); 
     version=config.VERSION;
@@ -378,9 +377,6 @@ app.get('/nodefactory', function(req, res) {
         logger.info("...........................GENESIS NODE CONFIGURED FINISHED configured...........");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
-
-
-
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
@@ -414,7 +410,7 @@ app.get('/nodefactory', function(req, res) {
         console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...`);
         console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
 
-// HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
+        // HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
         if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {  // Construct my own pulseGroup for others to connect to
 
             const me = new MintEntry(0, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
@@ -433,8 +429,8 @@ app.get('/nodefactory', function(req, res) {
 
             console.log(`mePulseGroup=${JSON.stringify(mePulseGroup,null,2)}`);
             //return;
-        } else {
-        }
+        } 
+
         myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
         console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
     }
@@ -529,15 +525,19 @@ app.get('/nodefactory', function(req, res) {
 
 
 // Initiate the protocol  
-//  this is where it all begins - here we create multiple groups
+//  this is where it all begins - here we start up our own group
 //
 (async () => {
     try {
-        myPulseGroup = await getPulseGroup(config);
-        logger.info(`DARP NODE STARTED: pulseGroup=${dump(myPulseGroup)}`);
-        console.log(`DARP NODE STARTED: GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
-        var augmentedPulseGroup = new AugmentedPulseGroup(config, myPulseGroup);
-        myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;
+        //myPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
+        var anchorPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
+
+        logger.info(`DARP NODE STARTED: pulseGroup=${dump(anchorPulseGroup)}`);
+        console.log(`DARP NODE STARTED: anchor GENESIS=${anchorPulseGroup.groupOwner} pulseGroup=${dump(anchorPulseGroup)}`);
+        var augmentedPulseGroup = new AugmentedPulseGroup(config, anchorPulseGroup);   //augmented with pulseGroup methods
+
+        myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
+        
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
         augmentedPulseGroup.pulse();
         augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
