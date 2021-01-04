@@ -19,8 +19,8 @@ const config = new Config();
 const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
 const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
 var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-var myPulseGroup = new PulseGroup(me, genesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
+const myPulseGroup = new PulseGroup(me, genesis, pulse);  //this is where I allow others to connect to me
+const myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 logger.info(`Starting with my own pulseGroup=${dump(myPulseGroup)}`);
 
 
@@ -407,7 +407,7 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    if (myPulseGroup.groupOwner!=me.geo) {       //
+    if ( myPulseGroup.groupOwner != me.geo ) {       //  REQUEST TO JOIN MY GROUP????
         //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...`);
@@ -428,20 +428,20 @@ app.get('/nodefactory', function(req, res) {
 
             myPulseGroups[ config.GEO+".1" ] = mePulseGroup;  //@WBNWBNWBN
 
-            myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
+            //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
 
             console.log(`mePulseGroup=${JSON.stringify(mePulseGroup,null,2)}`);
             //return;
         } 
 
-        myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
-        console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
+        //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on our newly formed group
         
     } else {
-        //   @WBNWBNWBN 
-        myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
+        //   @WBNWBNWBN - use the geo of incoming pulse
+        //myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
     }
 
+    console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
 
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
@@ -567,34 +567,36 @@ app.get('/darp.bash', function(req, res) {
     logger.info("sending '/darp.bash' to new cadet ");
     res.setHeader('Content-Type', 'text/javascript');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    fs.readFile('darp.bash', function(err, data){
-        //console.log(`sending data ${data}`);
-        console.log(`retrieving darp.bash config.GENESIS=${config.GENESIS}`);
-        //console.log(`data=${data}`);
-        var str=data.toString();
+    fs.readFile('darp.bash', function(err:string, data:string){
+        if (err) console.log(`darp.bash file unavailable`);//console.log(`sending data ${data}`);
+        else {
+            console.log(`retrieving darp.bash config.GENESIS=${config.GENESIS}`);
+            //console.log(`data=${data}`);
+            var str=data.toString();
 
-        //here we can take options for initial set up - ?mode=auto
+            //here we can take options for initial set up - ?mode=auto
 
-        //option 1 -  use my GENESIS node so private wireguard can be used right away.
-        //str=str.replace(/MYGENESISIP/gi, config.GENESIS );
+            //option 1 -  use my GENESIS node so private wireguard can be used right away.
+            //str=str.replace(/MYGENESISIP/gi, config.GENESIS );
 
-        //option 1a - conditionally configure node connected to my GENESIS . Send darp.bash iff (condition goes here) 
+            //option 1a - conditionally configure node connected to my GENESIS . Send darp.bash iff (condition goes here) 
 
-        //option 2 - connect to the ndoe that responds first.
-        //          get code from any genesis node on genesislist, but we will use first
-        var genesislist=process.env.GENESISNODELIST||"";
-        var genesisNodes=genesislist.split(",");
+            //option 2 - connect to the ndoe that responds first.
+            //          get code from any genesis node on genesislist, but we will use first
+            var genesislist=process.env.GENESISNODELIST||"";
+            var genesisNodes=genesislist.split(",");
 
-        
-        //str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
-        str=str.replace(/MYGENESISIP/gi, "auto" );
-        str=str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0] );
-        str=str.replace(/GITTAG/gi, config.VERSION.split(":")[1] );
-        //console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
+            
+            //str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
+            str=str.replace(/MYGENESISIP/gi, "auto" );
+            str=str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0] );
+            str=str.replace(/GITTAG/gi, config.VERSION.split(":")[1] );
+            //console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
 
-        //console.log("darp.bash="+str);
-        res.send( str );
-//        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );
+            //console.log("darp.bash="+str);
+            res.send( str );
+            //        res.send(data.toString().replace(/__MYGENESISIP__/, config.GENESIS) );
+        }
 
     });
 });
