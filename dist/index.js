@@ -414,6 +414,10 @@ app.get('/nodefactory', function (req, res) {
         myPulseGroup = myPulseGroups[config.GEO + ".1"]; //we work on this newly formed pulseGorup of ours
         console.log("continuing on to nodeFactory myPulseGroup=" + myPulseGroup);
     }
+    else {
+        //   @WBNWBNWBN 
+        myPulseGroup = myPulseGroups[geo + ".1"]; //we work on this newly formed pulseGorup of ours
+    }
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
@@ -440,7 +444,7 @@ app.get('/nodefactory', function (req, res) {
     var newNode = new pulsegroup_1.MintEntry(newMint, geo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
     myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
-    logger_1.logger.info("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
+    console.log("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
     myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
@@ -461,6 +465,7 @@ app.get('/nodefactory', function (req, res) {
         newNodePulseGroup.pulses[m].owls = "1"; //   ???   mark UP when we receive a pulse?
     }
     lib_1.Log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
+    console.log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
     //console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
     // send response to pulse group member node

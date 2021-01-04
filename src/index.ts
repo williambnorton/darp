@@ -436,8 +436,11 @@ app.get('/nodefactory', function(req, res) {
 
         myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
         console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
+        
+    } else {
+        //   @WBNWBNWBN 
+        myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
     }
-
 
 
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
@@ -479,7 +482,7 @@ app.get('/nodefactory', function(req, res) {
     myPulseGroup.mintTable[newMint] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     logger.info(`Added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
-    logger.info(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
+    console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
      
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
@@ -510,7 +513,10 @@ app.get('/nodefactory', function(req, res) {
         newNodePulseGroup.pulses[m].owls="1";  //   ???   mark UP when we receive a pulse?
     }
 
+
+
     Log(`NEW NODEFACTORY Created Member NODE   ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${newNodePulseGroup.mintTable[0].ipaddr}:${newNodePulseGroup.mintTable[0].port}`);
+    console.log(`NEW NODEFACTORY Created Member NODE   ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${newNodePulseGroup.mintTable[0].ipaddr}:${newNodePulseGroup.mintTable[0].port}`);
 
 
 
