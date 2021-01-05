@@ -483,10 +483,10 @@ app.get('/nodefactory', function(req, res) {
     console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
 
-     
+    console.log(`*******************************************************************************************   myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`); 
     
 
-
+    //--------------------------------------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));  // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0]=newNode;  // assign him his mint and config
@@ -508,17 +508,8 @@ app.get('/nodefactory', function(req, res) {
         newNodePulseGroup.pulses[m].owls="1";  //   ???   mark UP when we receive a pulse?
     }
 
-
-
     Log(`NEW NODEFACTORY Created Member NODE   ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${newNodePulseGroup.mintTable[0].ipaddr}:${newNodePulseGroup.mintTable[0].port}`);
     console.log(`NEW NODEFACTORY Created Member NODE   ${newNodePulseGroup.mintTable[0].geo} : ${newNodePulseGroup.groupName} ${newNodePulseGroup.mintTable[0].ipaddr}:${newNodePulseGroup.mintTable[0].port}`);
-
-
-
-
-
-
-
     logger.info("* Genesis node created newNodePulseGroup="+dump(newNodePulseGroup));
     //console.log("* Genesis node /nodefactory created newNodePulseGroup="+dump(newNodePulseGroup));
 
