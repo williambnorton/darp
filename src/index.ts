@@ -410,7 +410,10 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-    if ( incomingGeo != config.GEO ) {       //  incoming geo NOT OURS? 
+
+/*
+
+    if ( incomingGeo != config.GEO ) {       //  incoming geo NOT US? 
         //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
         //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
         console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...`);
@@ -445,6 +448,8 @@ app.get('/nodefactory', function(req, res) {
     }
 
     console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
+*/
+
 
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
@@ -457,18 +462,8 @@ app.get('/nodefactory', function(req, res) {
                 // make sure not do delete me or genesis node
               console.log(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
 
-
-
-
-
-
                 myPulseGroup.mintTable.splice(parseInt(mint));
                                                         //Do we want to set this mint Table entry to null to void its reuse or shifting of mint entries??
-
-
-
-
-
             }
         }
     }
@@ -487,17 +482,14 @@ app.get('/nodefactory', function(req, res) {
     logger.info(`Added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
     console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
+
      
+    
+
+
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));  // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0]=newNode;  // assign him his mint and config
-
-
-
-
-
-
-
 
     //
     //  Trim from the clone of the genesis Node  @bn=wbnwbnwbnwbnwbnwbnwbn  NEW CODE

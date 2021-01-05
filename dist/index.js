@@ -393,33 +393,44 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(null));
         return;
     }
-    if (incomingGeo != config.GEO) { //  incoming geo NOT OURS? 
-        //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
-        //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-        console.log("nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...");
-        console.log("********* NON-GENESIS NODE RECEIVING NODE REQUEST");
-        // HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
-        if (typeof myPulseGroups[config.GEO + ".1"] == "undefined") { // Construct my own pulseGroup for others to connect to
-            var me_1 = new pulsegroup_1.MintEntry(0, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes can count on 'me' always being present
-            var megenesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
-            var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-            var mePulseGroup = new pulsegroup_1.PulseGroup(me_1, megenesis, pulse); //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-            //  
-            var newNode = new pulsegroup_1.MintEntry(2, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
-            myPulseGroup.mintTable[2] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-            myPulseGroup.pulses[incomingGeo + ":" + config.GEO + ".1"] = new pulsegroup_1.PulseEntry(2, incomingGeo, config.GEO + ".1", String(incomingIP), port, config.VERSION, incomingBootTimestamp);
-            myPulseGroups[config.GEO + ".1"] = mePulseGroup; //@WBNWBNWBN
-            //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
-            console.log("mePulseGroup=" + JSON.stringify(mePulseGroup, null, 2));
-            //return;
+    /*
+    
+        if ( incomingGeo != config.GEO ) {       //  incoming geo NOT US?
+            //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
+            //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
+            console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...`);
+            console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
+    
+            // HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
+            if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {  // Construct my own pulseGroup for others to connect to
+    
+                const me = new MintEntry(0, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
+                const megenesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
+                var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version)
+                var mePulseGroup = new PulseGroup(me, megenesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
+    
+                //
+                var newNode = new MintEntry(2, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
+                myPulseGroup.mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
+                myPulseGroup.pulses[incomingGeo + ":" + config.GEO+".1"] = new PulseEntry(2, incomingGeo, config.GEO+".1", String(incomingIP), port, config.VERSION, incomingBootTimestamp);
+    
+                myPulseGroups[ config.GEO+".1" ] = mePulseGroup;  //@WBNWBNWBN
+    
+                //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
+    
+                console.log(`mePulseGroup=${JSON.stringify(mePulseGroup,null,2)}`);
+                //return;
+            }
+    
+            //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on our newly formed group
+            
+        } else {
+            //   @WBNWBNWBN - use the geo of incoming pulse
+            //myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
         }
-        //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on our newly formed group
-    }
-    else {
-        //   @WBNWBNWBN - use the geo of incoming pulse
-        //myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
-    }
-    console.log("continuing on to nodeFactory myPulseGroup=" + myPulseGroup);
+    
+        console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
+    */
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
