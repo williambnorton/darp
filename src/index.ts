@@ -392,7 +392,7 @@ app.get('/nodefactory', function(req, res) {
 
     //  Or - Handle pulseGroup member case
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log(ts()+"........................ SETTING UP NON-GENESIS PULSE NODE for ${geo} to connect to my ${} ...................");
+    console.log(ts()+`........................ SETTING UP NON-GENESIS PULSE NODE for ${incomingGeo} to connect to my ${config.GEO}.1 pulseGroup ...................`);
 
 
 

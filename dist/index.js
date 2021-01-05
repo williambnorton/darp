@@ -385,7 +385,7 @@ app.get('/nodefactory', function (req, res) {
     }
     //  Or - Handle pulseGroup member case
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
-    console.log(lib_1.ts() + "........................ SETTING UP NON-GENESIS PULSE NODE for ${geo} to connect to my ${} ...................");
+    console.log(lib_1.ts() + ("........................ SETTING UP NON-GENESIS PULSE NODE for " + incomingGeo + " to connect to my " + config.GEO + ".1 pulseGroup ..................."));
     if (Object.keys(myPulseGroup.pulses).length >= config.MAXNODES) {
         console.log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + config.MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + incomingGeo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
         lib_1.Log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + config.MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + incomingGeo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
