@@ -384,7 +384,7 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
         myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
-        logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + ':' + config.GEO + '.1' ],null,2)}");
+        logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
         
