@@ -382,7 +382,8 @@ app.get('/nodefactory', function(req, res) {
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
         console.log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
-        myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
+        //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
+        myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
         logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + ':' + config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
