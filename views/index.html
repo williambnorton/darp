@@ -34,10 +34,10 @@
             $.getJSON(url, function(pulseGroups) {
                 $(document.body).css( "background", "white" );
 
-                console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
+                //console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
 
                 for (var p in pulseGroups ) {
-                    console.log("---------------------------- - - - - - - -> p= "+p);
+                    //console.log("---------------------------- - - - - - - -> p= "+p);
                     var pulseGroup=pulseGroups[p];
 
                     //var pulseGroup = config[n];
@@ -45,7 +45,7 @@
                     // Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
                     for (var src in pulseGroup.pulses) {
                         var pulseEntry=pulseGroup.pulses[src];
-                        console.log("=================== pulseEntry="+JSON.stringify(pulseEntry,null,2));
+                        //console.log("=================== pulseEntry="+JSON.stringify(pulseEntry,null,2));
 
                         if (pulseEntry==null) {
                             console.log("ERROR: pulseEntry==null");
