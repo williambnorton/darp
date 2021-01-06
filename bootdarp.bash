@@ -29,7 +29,7 @@
 # 	bootdarp.bash variables 
 #
 echo `date` "Starting bootdarp.bash in docker "
-SLEEPTIME=25 #time in seconds between software runs in forever loop
+SLEEPTIME=10 #time in seconds between software runs in forever loop
 MAXCYCLES=10 # of cycles before reloading docker
 GRANULARITY=50 #  milliseconds before we say we should join the closer genesis node
 unameOut="$(uname -s)"
