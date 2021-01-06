@@ -35,8 +35,10 @@
                 $(document.body).css( "background", "white" );
 
                 console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
-                for (var pulseGroup in pulseGroups ) {
-                    console.log("---------------------------- - - - - - - -> pulseGroup     ");
+
+                for (var p in pulseGroups ) {
+                    console.log("---------------------------- - - - - - - -> p= "+p);
+                    var pulseGroup=pulseGroups[p];
 
                     //var pulseGroup = config[n];
                    
