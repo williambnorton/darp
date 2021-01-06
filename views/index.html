@@ -285,7 +285,7 @@
 </head>
 <body>    
     <!--<h1><%= me.geo %> PulseGroup Encrypted Mesh WAN http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %> ALPHA Test 2.0</h1> -->
-    <h1><%= me.group %> <%= me.geo %> http://<%= me.ipaddr %>:<%= me.port %> ALPHA <%= config.VERSION %> </h1>
+    <h1><%= me.geo %> http://<%= me.ipaddr %>:<%= me.port %> ALPHA <%= config.VERSION %> </h1>
 
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
@@ -301,11 +301,13 @@
 
 
     
+    <% console.log("========================================================      myPulseGroups="+JSON.stringify(myPulseGroups,null,2)); %>
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
     
     <% for (var p in myPulseGroups) { %>
         <% var pulseGroup=myPulseGroups[p]; %>
-        <h2> <%= pulseGroup.groupName %>  POLLFREQ <%= pulseGroup.cycleTime %> seconds</h2>
+
+        <h1> Pulse Group: <%= pulseGroup.groupName %>  POLLFREQ <%= pulseGroup.cycleTime %> seconds</h1>
 
         <!-- show OWL Matrix table -->
             <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
