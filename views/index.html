@@ -302,9 +302,10 @@
 
     
     <!-- INSTRUMENTATION externalize pulseGroup matrix -->
+    <% console.log("pulseGroups="+pulseGroups); %>
     
     <% for (var p in myPulseGroups) { %>
-        <% var pulseGroup=myPulseGroups[p]; console.log("pulseGroup="+pulseGroup); %>
+        <% var pulseGroup=myPulseGroups[p];   %>
 
         <h1> Pulse Group: <%= pulseGroup.groupName %>  POLLFREQ <%= pulseGroup.cycleTime %> seconds</h1>
 
