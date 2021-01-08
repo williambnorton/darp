@@ -470,6 +470,7 @@ export class AugmentedPulseGroup {
         //  First make OWL list for the pulse message
         //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
+        console.log(`pulse(): pulseGroup=${JSON.stringify(this,null,2) }`);
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
@@ -529,7 +530,7 @@ export class AugmentedPulseGroup {
                 myMint + "," + 
                 owls;
                 //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                console.log(`pulseGroup.pulse(): nodeList=${nodeList} pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
 

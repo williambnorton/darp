@@ -325,6 +325,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //  First make OWL list for the pulse message
             //      to pulse and highlight segments that should be looked aty with a FLAG '@'
             //
+            console.log("pulse(): pulseGroup=" + JSON.stringify(_this, null, 2));
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
                 nodeList.push(new types_1.NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
@@ -379,7 +380,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     myMint + "," +
                     owls;
                 //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                console.log("pulseGroup.pulse(): nodeList=" + nodeList + " pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
+                console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST - Chasing down measurement difference running by hand and in code
