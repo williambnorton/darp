@@ -378,8 +378,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.mintTable[0].bootTimestamp + "," +
                     myMint + "," +
                     owls;
-                logger_1.logger.debug("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
-                //console.log(`pulseGroup.pulse(): nodeList=${nodeList} pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                console.log("pulseGroup.pulse(): nodeList=" + nodeList + " pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST - Chasing down measurement difference running by hand and in code

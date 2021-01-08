@@ -501,7 +501,6 @@ app.get('/nodefactory', function (req, res) {
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
                 anchorPulseGroup = _a.sent();
-                logger_1.logger.info("DARP NODE STARTED: pulseGroup=" + lib_1.dump(anchorPulseGroup));
                 console.log("DARP NODE STARTED: anchor GENESIS=" + anchorPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(anchorPulseGroup));
                 augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, anchorPulseGroup);
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
@@ -512,7 +511,7 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup; //wire it in
-                console.log("index.ts:    launching ------>       myPulseGroups=" + JSON.stringify(myPulseGroups, null, 2));
+                console.log("index.ts:    launching------>       myPulseGroups=" + JSON.stringify(myPulseGroups, null, 2));
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();

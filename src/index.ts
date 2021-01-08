@@ -530,7 +530,6 @@ app.get('/nodefactory', function(req, res) {
         //myPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
         var anchorPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
 
-        logger.info(`DARP NODE STARTED: pulseGroup=${dump(anchorPulseGroup)}`);
         console.log(`DARP NODE STARTED: anchor GENESIS=${anchorPulseGroup.groupOwner} pulseGroup=${dump(anchorPulseGroup)}`);
         var augmentedPulseGroup = new AugmentedPulseGroup(config, anchorPulseGroup);   //augmented with pulseGroup methods
 
@@ -544,7 +543,7 @@ app.get('/nodefactory', function(req, res) {
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
 
         myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
-        console.log(`index.ts:    launching ------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
+        console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
     } catch (error) {
         logger.error(error);
     }
