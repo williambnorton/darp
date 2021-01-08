@@ -14,7 +14,7 @@ import e = require("express");
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
-const PULSEFREQ=1;  // (in seconds) how often to send pulses
+const PULSEFREQ=10;  // (in seconds) how often to send pulses
 const MEASURE_RTT=true;   //ping across wireguard interface
 const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 
@@ -470,7 +470,7 @@ export class AugmentedPulseGroup {
         //  First make OWL list for the pulse message
         //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
-        console.log(`pulse(): pulseGroup=${JSON.stringify(this,null,2) }`);
+        console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));

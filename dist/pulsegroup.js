@@ -49,7 +49,7 @@ var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
-var PULSEFREQ = 1; // (in seconds) how often to send pulses
+var PULSEFREQ = 10; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var SECURE_PORT = 65020;
@@ -325,7 +325,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //  First make OWL list for the pulse message
             //      to pulse and highlight segments that should be looked aty with a FLAG '@'
             //
-            console.log("pulse(): pulseGroup=" + JSON.stringify(_this, null, 2));
+            console.log("pulse(): working on pulseGroup=" + JSON.stringify(_this, null, 2));
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
                 nodeList.push(new types_1.NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
