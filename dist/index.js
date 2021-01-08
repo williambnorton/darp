@@ -458,7 +458,7 @@ app.get('/nodefactory', function (req, res) {
     var newNode = new pulsegroup_1.MintEntry(newMint, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
     myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
-    console.log("After adding node, pulseGroup=" + lib_1.dump(myPulseGroup));
+    //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
     myPulseGroups[myPulseGroup.groupName] = myPulseGroup;
     console.log("********* = = = = = = = = =     myPulseGroups = " + JSON.stringify(myPulseGroups, null, 2));
