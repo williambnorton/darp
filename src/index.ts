@@ -534,9 +534,6 @@ app.get('/nodefactory', function(req, res) {
         console.log(`DARP NODE STARTED: anchor GENESIS=${anchorPulseGroup.groupOwner} pulseGroup=${dump(anchorPulseGroup)}`);
         var augmentedPulseGroup = new AugmentedPulseGroup(config, anchorPulseGroup);   //augmented with pulseGroup methods
 
-        myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
-
-        console.log(`myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
         //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
         
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
@@ -545,6 +542,9 @@ app.get('/nodefactory', function(req, res) {
         setTimeout(augmentedPulseGroup.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
         setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
+
+        myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
+        console.log(`index.ts:    launching ------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
     } catch (error) {
         logger.error(error);
     }
