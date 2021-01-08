@@ -530,7 +530,7 @@ app.get('/nodefactory', function(req, res) {
         //myPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
         var anchorPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
 
-        console.log(`DARP NODE STARTED: anchor GENESIS=${anchorPulseGroup.groupOwner} pulseGroup=${dump(anchorPulseGroup)}`);
+        console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${anchorPulseGroup.groupOwner} pulseGroup=${dump(anchorPulseGroup)}`);
         var augmentedPulseGroup = new AugmentedPulseGroup(config, anchorPulseGroup);   //augmented with pulseGroup methods
 
         //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
