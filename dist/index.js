@@ -491,7 +491,7 @@ app.get('/nodefactory', function (req, res) {
 });
 // Initiate the protocol  
 //  this is where it all begins - here we start up our own group
-//
+// do this also for a group created for children
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var augmentedPulseGroup, error_1;
     return __generator(this, function (_a) {
@@ -512,6 +512,10 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
+                if (myPulseGroup.groupOwner != me.geo) {
+                    console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
+                }
+                //could clone this new pulseGroup as my own for accepting new connections
                 console.log("index.ts:    launching------>       myPulseGroups=" + JSON.stringify(myPulseGroups, null, 2));
                 return [3 /*break*/, 3];
             case 2:
