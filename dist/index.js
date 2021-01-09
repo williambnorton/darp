@@ -52,8 +52,7 @@ var config = new pulsegroup_1.Config();
 var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes can count on 'me' always being present
 var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-var genesisPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse);
-var myPulseGroup = new pulsegroup_1.PulseGroup(me, me, pulse); //this is where I allow others to connect to me
+var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //this is where I allow others to connect to me
 var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
 // Start instrumentaton web server
@@ -501,10 +500,10 @@ app.get('/nodefactory', function (req, res) {
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
-                genesisPulseGroup = _a.sent(); //replaces starting myPulseGroup
+                myPulseGroup = _a.sent(); //replaces starting myPulseGroup
                 //var anchorPulseGroup = await getPulseGroup(config);   //t
-                console.log("asynch() DARP NODE STARTED: anchor GENESIS=" + genesisPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(genesisPulseGroup));
-                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, genesisPulseGroup);
+                console.log("asynch() DARP NODE STARTED: anchor GENESIS=" + myPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(myPulseGroup));
+                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.pulse();
@@ -512,9 +511,8 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
-                myPulseGroups[genesisPulseGroup.groupName] = augmentedPulseGroup; //wire it in
+                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
                 if (myPulseGroup.groupOwner != me.geo) {
-                    myPulseGroups[me.geo + ".1"] = augmentedPulseGroup; //wire it in
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
