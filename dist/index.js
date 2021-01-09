@@ -514,6 +514,7 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
                 myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(config, myOriginalPulseGroup);
+                console.log("");
                 if (myPulseGroup.groupOwner != me.geo) {
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
