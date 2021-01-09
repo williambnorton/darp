@@ -544,6 +544,24 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in
         if (myPulseGroup.groupOwner  != me.geo ) {
             console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
+            console.log(`Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP`);
         }
 
         //could clone this new pulseGroup as my own for accepting new connections
