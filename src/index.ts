@@ -526,6 +526,7 @@ app.get('/nodefactory', function(req, res) {
 // do this also for a group created for children
 (async () => {
     try {
+        var myOriginalPulseGroup=myPulseGroup
         myPulseGroup = await getPulseGroup(config);   //replaces starting myPulseGroup
         //var anchorPulseGroup = await getPulseGroup(config);   //t
 
@@ -542,7 +543,8 @@ app.get('/nodefactory', function(req, res) {
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
 
         myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in
-        myPulseGroups[ me.geo+".1" ] = augmentedPulseGroup;     //wire it in
+        myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(config, myOriginalPulseGroup);
+        
         if (myPulseGroup.groupOwner  != me.geo ) {
            
 

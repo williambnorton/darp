@@ -493,11 +493,12 @@ app.get('/nodefactory', function (req, res) {
 //  this is where it all begins - here we start up our own group
 // do this also for a group created for children
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var augmentedPulseGroup, error_1;
+    var myOriginalPulseGroup, augmentedPulseGroup, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
+                myOriginalPulseGroup = myPulseGroup;
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
                 myPulseGroup = _a.sent(); //replaces starting myPulseGroup
@@ -512,7 +513,7 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
-                myPulseGroups[me.geo + ".1"] = augmentedPulseGroup; //wire it in
+                myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(config, myOriginalPulseGroup);
                 if (myPulseGroup.groupOwner != me.geo) {
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
                     console.log("Hindex.ts: ERE WE WOULD LAUNCH OUR OWN PULSE GROUP");
