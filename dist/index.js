@@ -493,16 +493,17 @@ app.get('/nodefactory', function (req, res) {
 //  this is where it all begins - here we start up our own group
 //
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var anchorPulseGroup, augmentedPulseGroup, error_1;
+    var augmentedPulseGroup, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
-                anchorPulseGroup = _a.sent();
-                console.log("asynch() DARP NODE STARTED: anchor GENESIS=" + anchorPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(anchorPulseGroup));
-                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, anchorPulseGroup);
+                myPulseGroup = _a.sent(); //replaces starting myPulseGroup
+                //var anchorPulseGroup = await getPulseGroup(config);   //t
+                console.log("asynch() DARP NODE STARTED: anchor GENESIS=" + myPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(myPulseGroup));
+                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.pulse();
@@ -510,7 +511,7 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
-                myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup; //wire it in
+                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
                 console.log("index.ts:    launching------>       myPulseGroups=" + JSON.stringify(myPulseGroups, null, 2));
                 return [3 /*break*/, 3];
             case 2:

@@ -461,9 +461,8 @@ app.get('/nodefactory', function(req, res) {
         } else {
             if ((myPulseGroup.mintTable[mint] != null) && myPulseGroup.mintTable[mint].ipaddr == incomingIP && myPulseGroup.mintTable[mint].port == port) {
                 // make sure not do delete me or genesis node
-              console.log(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
-
-                myPulseGroup.mintTable.splice(parseInt(mint));
+               console.log(`deleting previous mint for this node: ${incomingIP}:${port} mint #${mint} geo=${myPulseGroup.mintTable[mint].geo}`);
+               myPulseGroup.mintTable.splice(parseInt(mint));
                                                         //Do we want to set this mint Table entry to null to void its reuse or shifting of mint entries??
             }
         }
@@ -527,11 +526,11 @@ app.get('/nodefactory', function(req, res) {
 //
 (async () => {
     try {
-        //myPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
-        var anchorPulseGroup = await getPulseGroup(config);   //this is over riding my original myPulseGroup 
+        myPulseGroup = await getPulseGroup(config);   //replaces starting myPulseGroup
+        //var anchorPulseGroup = await getPulseGroup(config);   //t
 
-        console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${anchorPulseGroup.groupOwner} pulseGroup=${dump(anchorPulseGroup)}`);
-        var augmentedPulseGroup = new AugmentedPulseGroup(config, anchorPulseGroup);   //augmented with pulseGroup methods
+        console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
+        var augmentedPulseGroup = new AugmentedPulseGroup(config, myPulseGroup);   //augmented with pulseGroup methods
 
         //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
         
@@ -542,7 +541,7 @@ app.get('/nodefactory', function(req, res) {
         setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
 
-        myPulseGroups[anchorPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
+        myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup;     //wire it in
         console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
     } catch (error) {
         logger.error(error);
