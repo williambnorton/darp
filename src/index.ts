@@ -545,7 +545,7 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in
         myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(config, myOriginalPulseGroup);
 
-console.log(``);
+        console.log(``);
 
         if (myPulseGroup.groupOwner  != me.geo ) {
            
