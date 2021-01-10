@@ -377,6 +377,7 @@ app.get('/nodefactory', function (req, res) {
         lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
         console.log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
         myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
+        myPulseGroup.rc = "SELF";
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
         myPulseGroups[config.GEO + ".1"] = myPulseGroup;
         logger_1.logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
@@ -481,6 +482,7 @@ app.get('/nodefactory', function (req, res) {
         newNodePulseGroup.pulses[m].state = "QUARANTINE"; //   ???   mark UP when we receive a pulse from this node?
         newNodePulseGroup.pulses[m].owls = "1"; //   ???   mark UP when we receive a pulse?
     }
+    newNodePulseGroup.rc = "child of " + me.geo + "(" + me.ipaddr + ":" + me.port + ")";
     lib_1.Log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
     console.log("NEW NODEFACTORY Created Member NODE   " + newNodePulseGroup.mintTable[0].geo + " : " + newNodePulseGroup.groupName + " " + newNodePulseGroup.mintTable[0].ipaddr + ":" + newNodePulseGroup.mintTable[0].port);
     logger_1.logger.info("* Genesis node created newNodePulseGroup=" + lib_1.dump(newNodePulseGroup));
