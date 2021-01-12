@@ -90,12 +90,12 @@ do
         #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
         scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
 
-        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Nodes (from testport.txt) ********************************************"
-        cat testport.txt
+        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+       cat testport.txt
         #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
         FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
