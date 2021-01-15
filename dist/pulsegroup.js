@@ -205,6 +205,8 @@ var PulseGroup = /** @class */ (function () {
 exports.PulseGroup = PulseGroup;
 /** PulseGroup object with all necessary functions for sending and receiving pulses */
 var AugmentedPulseGroup = /** @class */ (function () {
+    // child processes for sending and receiving the pulse messages
+    //receiver: ChildProcess;
     //sender: ChildProcess;
     function AugmentedPulseGroup(config, pulseGroup) {
         var _this = this;

@@ -24,12 +24,14 @@ var IncomingPulse = /** @class */ (function () {
     return IncomingPulse;
 }());
 exports.IncomingPulse = IncomingPulse;
+/*
+Each pulseGroup will send on their own
 // Example OutgoingMessage: "0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339"
-var SenderPayloadType;
-(function (SenderPayloadType) {
-    SenderPayloadType[SenderPayloadType["NodeList"] = 0] = "NodeList";
-    SenderPayloadType[SenderPayloadType["OutgoingMessage"] = 1] = "OutgoingMessage";
-})(SenderPayloadType = exports.SenderPayloadType || (exports.SenderPayloadType = {}));
+export enum SenderPayloadType {
+    NodeList,
+    OutgoingMessage
+}
+*/
 var NodeAddress = /** @class */ (function () {
     function NodeAddress(ipaddr, port) {
         this.ipaddr = ipaddr;
@@ -38,14 +40,3 @@ var NodeAddress = /** @class */ (function () {
     return NodeAddress;
 }());
 exports.NodeAddress = NodeAddress;
-/*
-export class SenderMessage {
-    // message sent by parent process to "sender" child_process
-    type: SenderPayloadType;
-    payload: NodeAddress[] | string;
-    constructor (type: SenderPayloadType, payload: NodeAddress[] | string) {
-        this.type = type;
-        this.payload = payload;
-    }
-}
-*/ 

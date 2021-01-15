@@ -7,7 +7,7 @@ import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
 import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD, Log  } from "./lib";
 import { logger, LogLevel } from "./logger";
-import { NodeAddress, IncomingPulse, SenderPayloadType } from "./types";
+import { NodeAddress, IncomingPulse } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 import e = require("express");
@@ -269,7 +269,7 @@ export class AugmentedPulseGroup {
     incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     
     // child processes for sending and receiving the pulse messages
-    receiver: ChildProcess;
+    //receiver: ChildProcess;
     //sender: ChildProcess;
 
     constructor(config: Config, pulseGroup: PulseGroup) {
