@@ -184,6 +184,7 @@ var PulseEntry = /** @class */ (function () {
 exports.PulseEntry = PulseEntry;
 /** Main object containing all details about a group of nodes */
 var PulseGroup = /** @class */ (function () {
+    //csvMatrix: number[];
     function PulseGroup(me, genesis, pulse) {
         var _a;
         this.groupName = me.geo + ".1";
@@ -198,7 +199,7 @@ var PulseGroup = /** @class */ (function () {
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
         this.matrix = [];
-        this.csvMatrix = [];
+        //this.csvMatrix = [];
     }
     return PulseGroup;
 }());
@@ -1314,7 +1315,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
         this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
-        this.csvMatrix = pulseGroup.csvMatrix; //should go away
+        //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         this.adminControl = "";
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 

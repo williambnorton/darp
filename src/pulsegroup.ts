@@ -229,7 +229,7 @@ export class PulseGroup {
     nextMint: number;
     cycleTime: number;
     matrix: number[][];
-    csvMatrix: number[];
+    //csvMatrix: number[];
     constructor(me: MintEntry, genesis: MintEntry, pulse: PulseEntry) {
         this.groupName = me.geo + ".1";
         this.groupOwner = me.geo;
@@ -243,7 +243,7 @@ export class PulseGroup {
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
         this.matrix = [];
-        this.csvMatrix = [];
+        //this.csvMatrix = [];
     }
 }
 
@@ -260,7 +260,7 @@ export class AugmentedPulseGroup {
     nextMint: number;
     cycleTime: number;
     matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
-    csvMatrix: number[];    //goes away
+    //csvMatrix: number[];    //goes away
 
     // additional attributes
     adminControl: string;
@@ -283,7 +283,7 @@ export class AugmentedPulseGroup {
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
         this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
-        this.csvMatrix = pulseGroup.csvMatrix; //should go away
+        //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         
         this.adminControl = "";
         this.config = config;
