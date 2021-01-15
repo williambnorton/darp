@@ -202,6 +202,7 @@ var PulseGroup = /** @class */ (function () {
 exports.PulseGroup = PulseGroup;
 /** PulseGroup object with all necessary functions for sending and receiving pulses */
 var AugmentedPulseGroup = /** @class */ (function () {
+    //sender: ChildProcess;
     function AugmentedPulseGroup(config, pulseGroup) {
         var _this = this;
         this.forEachNode = function (callback) {
@@ -394,7 +395,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                     client.send(pulseBuffer_1, 0, pulseBuffer_1.length, node.port, node.ipaddr, function (error) {
                         if (error) {
-                            logger_1.logger.error("Sender error: " + error.message);
+                            console.log("Sender error: " + error);
                         }
                     });
                 });
@@ -1062,17 +1063,21 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //maybe also add empty pulse records for each that don't have a pulse record
             }
         };
+        /*
         //called every 10ms to see if there are pkts to process
-        this.workerThread = function () {
-            return; //removing complexixity
+        workerThread = () => {
+            return;  //removing complexixity
             //setTimeout(this.workerThread, 50);  // queue up incoming packets and come back again to batch process every 50 milliseconds
-            if (_this.incomingPulseQueue.length == 0) {
+            
+            if (this.incomingPulseQueue.length==0) {
                 return;
             }
-            for (var pulse = _this.incomingPulseQueue.pop(); pulse != null; pulse = _this.incomingPulseQueue.pop()) {
-                _this.processIncomingPulse(pulse);
+            
+            for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
+                this.processIncomingPulse(pulse);
             }
-        };
+        }
+        */
         //
         //  recvPulses
         //
@@ -1310,10 +1315,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
+        //
+        //  receiver will be for all pulseGroups, demux here to proper pulseGroup by group
+        //
         var dgram = require("dgram");
         var receiver = dgram.createSocket("udp4");
         receiver.on("error", function (err) {
-            logger_1.logger.error("Receiver error:\n" + err.stack);
+            logger_1.logger.error("Receiver error:\n" + err);
             receiver.close();
         });
         receiver.on("listening", function () {
@@ -1328,6 +1336,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
         });
         receiver.bind(this.config.PORT);
+        //
+        //  
+        //
     }
     return AugmentedPulseGroup;
 }());

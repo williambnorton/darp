@@ -7,7 +7,7 @@ import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
 import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD, Log  } from "./lib";
 import { logger, LogLevel } from "./logger";
-import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
+import { NodeAddress, IncomingPulse, SenderPayloadType } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 import e = require("express");
@@ -263,7 +263,7 @@ export class AugmentedPulseGroup {
     
     // child processes for sending and receiving the pulse messages
     receiver: ChildProcess;
-    sender: ChildProcess;
+    //sender: ChildProcess;
 
     constructor(config: Config, pulseGroup: PulseGroup) {
         this.groupName = pulseGroup.groupName;
@@ -284,13 +284,17 @@ export class AugmentedPulseGroup {
         this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
     // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
-
+    
+    
+        //
+        //  receiver will be for all pulseGroups, demux here to proper pulseGroup by group
+        //
     var dgram = require("dgram");
 
     const receiver = dgram.createSocket("udp4");
 
-    receiver.on("error", (err) => {
-        logger.error(`Receiver error:\n${err.stack}`);
+    receiver.on("error", (err:string) => {
+        logger.error(`Receiver error:\n${err}`);
         receiver.close();
     });
 
@@ -299,7 +303,7 @@ export class AugmentedPulseGroup {
         logger.info(`Receiver listening ${address.address}:${address.port}`);
     });
 
-    receiver.on("message", (pulseBuffer, rinfo) => {
+    receiver.on("message", (pulseBuffer:string, rinfo:) => {
         const incomingTimestamp = now().toString();
         logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
@@ -308,7 +312,9 @@ export class AugmentedPulseGroup {
     });
 
     receiver.bind(this.config.PORT);
-
+//
+//  
+//
 
 
 
@@ -544,9 +550,9 @@ export class AugmentedPulseGroup {
 
             nodeList.forEach(function (node: NodeAddress) {
                 //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
-                client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
+                client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error:string) => {
                     if (error) {
-                        logger.error(`Sender error: ${error.message}`);
+                        console.log(`Sender error: ${error}`);
                     }
                 });
             });
@@ -988,7 +994,7 @@ export class AugmentedPulseGroup {
 
                     const { exec } = require('child_process');
                     var yourscript = exec('sh ../updateSW.bash '+genesisVersion,
-                        (error, stdout, stderr) => {
+                        (error:string, stdout:string, stderr:string) => {
                         console.log(stdout);
                         console.log(stderr);
                         if (error !== null) {
@@ -1295,6 +1301,7 @@ export class AugmentedPulseGroup {
             //maybe also add empty pulse records for each that don't have a pulse record
         }
     }
+    /*
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
         return;  //removing complexixity
@@ -1308,6 +1315,7 @@ export class AugmentedPulseGroup {
             this.processIncomingPulse(pulse);
         }
     }
+    */
     //
     //  recvPulses
     //

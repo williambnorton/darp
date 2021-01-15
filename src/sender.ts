@@ -1,5 +1,6 @@
 /** @module sender emits pulse message to a group of nodes */
 
+/*
 import dgram = require("dgram");
 import { now } from "./lib";
 import { logger, LogLevel } from "./logger";
@@ -15,7 +16,6 @@ process.on('message', (senderMessage: SenderMessage) => {
     pulseGroupMap.set(senderMessage.type, senderMessage.payload);
 });
 
-/*
 // Send same message to all nodes in nodelist
 setInterval(() => {
     const nodeList: NodeAddress[] = pulseGroupMap.get(SenderPayloadType.NodeList)
