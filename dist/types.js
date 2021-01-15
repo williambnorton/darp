@@ -38,11 +38,14 @@ var NodeAddress = /** @class */ (function () {
     return NodeAddress;
 }());
 exports.NodeAddress = NodeAddress;
-var SenderMessage = /** @class */ (function () {
-    function SenderMessage(type, payload) {
+/*
+export class SenderMessage {
+    // message sent by parent process to "sender" child_process
+    type: SenderPayloadType;
+    payload: NodeAddress[] | string;
+    constructor (type: SenderPayloadType, payload: NodeAddress[] | string) {
         this.type = type;
         this.payload = payload;
     }
-    return SenderMessage;
-}());
-exports.SenderMessage = SenderMessage;
+}
+*/ 

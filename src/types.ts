@@ -61,6 +61,7 @@ export class NodeAddress {
     }
 }
 
+/*
 export class SenderMessage {
     // message sent by parent process to "sender" child_process
     type: SenderPayloadType;
@@ -70,3 +71,4 @@ export class SenderMessage {
         this.payload = payload;
     }
 }
+*/
