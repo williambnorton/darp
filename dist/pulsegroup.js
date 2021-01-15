@@ -49,7 +49,7 @@ var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
-var PULSEFREQ = 10; // (in seconds) how often to send pulses
+var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var SECURE_PORT = 65020;
@@ -62,6 +62,9 @@ var STAT_HOURS_TO_STORE = 2; //hpow many hours of data to collect and store
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // Define data structures used in the protocol
 /** App configuration settings obtained from ENV variables */
+//
+//  Config - this should be eventually for all pulseGroups
+//
 var Config = /** @class */ (function () {
     function Config() {
         if (!process.env.DARPDIR) {
