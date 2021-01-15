@@ -46,27 +46,4 @@ export class IncomingPulse {
     }
 }
 
-// Example OutgoingMessage: "0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339"
-export enum SenderPayloadType {
-    NodeList,
-    OutgoingMessage
-}
 
-export class NodeAddress {
-    ipaddr: string;
-    port: number;
-    constructor (ipaddr: string, port: number) {
-        this.ipaddr = ipaddr;
-        this.port = port;
-    }
-}
-
-export class SenderMessage {
-    // message sent by parent process to "sender" child_process
-    type: SenderPayloadType;
-    payload: NodeAddress[] | string;
-    constructor (type: SenderPayloadType, payload: NodeAddress[] | string) {
-        this.type = type;
-        this.payload = payload;
-    }
-}
