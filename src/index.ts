@@ -538,7 +538,7 @@ app.get('/nodefactory', function(req, res) {
         
         augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
         augmentedPulseGroup.pulse();
-        augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
+        //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
         setTimeout(augmentedPulseGroup.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
         setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
