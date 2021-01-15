@@ -303,7 +303,7 @@ export class AugmentedPulseGroup {
         logger.info(`Receiver listening ${address.address}:${address.port}`);
     });
 
-    receiver.on("message", (pulseBuffer:string, rinfo:) => {
+    receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
         logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
