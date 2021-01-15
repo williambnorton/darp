@@ -166,7 +166,7 @@ do
     #env
 
     echo `date` " - - - - - - - - - -     STARTING BOOTDARP CURRENT DRP $VERSION SOFTWARE GENESIS=$GENESIS       - - - - - - - - - - - - - - "
-    sleep 2
+    #sleep 2
   
     cd $DARPDIR
     echo `date` "* * = = = = = = = = = = = = = = = = = = = STARTING DARP $VERSION  * * * * * * $MY_IP = = = = = = = = = = = = "  
