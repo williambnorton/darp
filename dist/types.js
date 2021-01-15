@@ -24,3 +24,25 @@ var IncomingPulse = /** @class */ (function () {
     return IncomingPulse;
 }());
 exports.IncomingPulse = IncomingPulse;
+// Example OutgoingMessage: "0,Build.200619.1110,DEVOPS,DEVOPS.1,194,1592591506442,1592590923743,1,2,1, from 71.202.2.184:64339"
+var SenderPayloadType;
+(function (SenderPayloadType) {
+    SenderPayloadType[SenderPayloadType["NodeList"] = 0] = "NodeList";
+    SenderPayloadType[SenderPayloadType["OutgoingMessage"] = 1] = "OutgoingMessage";
+})(SenderPayloadType = exports.SenderPayloadType || (exports.SenderPayloadType = {}));
+var NodeAddress = /** @class */ (function () {
+    function NodeAddress(ipaddr, port) {
+        this.ipaddr = ipaddr;
+        this.port = port;
+    }
+    return NodeAddress;
+}());
+exports.NodeAddress = NodeAddress;
+var SenderMessage = /** @class */ (function () {
+    function SenderMessage(type, payload) {
+        this.type = type;
+        this.payload = payload;
+    }
+    return SenderMessage;
+}());
+exports.SenderMessage = SenderMessage;
