@@ -56,7 +56,7 @@ var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //this is wh
 var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
 // Start instrumentaton web server
-var REFRESH = 120; //Every 2 minutes force web page instrumentation refresh
+var REFRESH = 60; //Every 2 minutes force web page instrumentation refresh
 var OWLS_DISPLAYED = 30;
 var app = express();
 app.set('views', config.DARPDIR + '/views');
@@ -187,22 +187,6 @@ app.get('/graph/:src/:dst', function (req, res) {
     var src = req.params.src;
     var txt = '';
     txt += grapher_1.grapher(src, dest); //get the HTML to display and show graph
-    // txt+='<meta http-equiv="refresh" content="'+60+'">';
-    // txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
-    // var myYYMMDD=YYMMDD();
-    // var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
-    // try {
-    //     if (fs.existsSync(path)) {
-    //         txt+=fs.readFileSync(path);
-    //         console.log(`found graph data file ${path}:${txt}`);
-    //     }
-    //     else console.log("could not find live pulseGroup graph data from "+path);
-    // } catch(err) {
-    //     return console.error(err)
-    // }
-    // txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
-    // txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
-    // console.log(`graph txt=${txt}`);
     res.end(txt);
     return;
 });
@@ -258,6 +242,7 @@ app.get('/me', function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(myPulseGroups[me.geo + ".1"], null, 2));
     /*
+        //      DO NOT DELETE     CACHING HELPS HERE
         let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
         console.log(`/me sending contents of ${filename}`);
         try {
@@ -395,44 +380,6 @@ app.get('/nodefactory', function (req, res) {
         res.end(JSON.stringify(null));
         return;
     }
-    /*
-    
-        if ( incomingGeo != config.GEO ) {       //  incoming geo NOT US?
-            //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
-            //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-            console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...`);
-            console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
-    
-            // HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
-            if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {  // Construct my own pulseGroup for others to connect to
-    
-                const me = new MintEntry(0, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-                const megenesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
-                var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version)
-                var mePulseGroup = new PulseGroup(me, megenesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-    
-                //
-                var newNode = new MintEntry(2, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
-                myPulseGroup.mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-                myPulseGroup.pulses[incomingGeo + ":" + config.GEO+".1"] = new PulseEntry(2, incomingGeo, config.GEO+".1", String(incomingIP), port, config.VERSION, incomingBootTimestamp);
-    
-                myPulseGroups[ config.GEO+".1" ] = mePulseGroup;  //@WBNWBNWBN
-    
-                //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
-    
-                console.log(`mePulseGroup=${JSON.stringify(mePulseGroup,null,2)}`);
-                //return;
-            }
-    
-            //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on our newly formed group
-            
-        } else {
-            //   @WBNWBNWBN - use the geo of incoming pulse
-            //myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
-        }
-    
-        console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
-    */
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
     for (var mint in myPulseGroup.mintTable) {
