@@ -206,11 +206,15 @@ var PulseGroup = /** @class */ (function () {
 exports.PulseGroup = PulseGroup;
 /** PulseGroup object with all necessary functions for sending and receiving pulses */
 var AugmentedPulseGroup = /** @class */ (function () {
+    //incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     // child processes for sending and receiving the pulse messages
     //receiver: ChildProcess;
     //sender: ChildProcess;
     function AugmentedPulseGroup(config, pulseGroup) {
         var _this = this;
+        //
+        //  
+        //
         this.forEachNode = function (callback) {
             for (var node in _this.pulses)
                 callback(node, _this.pulses[node]);
@@ -798,8 +802,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         console.log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         lib_1.Log("checkSWversion(): NEW SOFTWARE AVAILABLE - GroupOwner said " + genesisVersion + " we are running " + mySWversion + ". Process exitting 36");
                         //For grins, let's try updateSW and see if we can overlay group owners sw
-                        var exec_1 = require('child_process').exec;
-                        var yourscript = exec_1('sh ../updateSW.bash ' + genesisVersion, function (error, stdout, stderr) {
+                        var exec = require('child_process').exec;
+                        var yourscript = exec('sh ../updateSW.bash ' + genesisVersion, function (error, stdout, stderr) {
                             console.log(stdout);
                             console.log(stderr);
                             if (error !== null) {
@@ -1319,10 +1323,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.adminControl = "";
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
-        this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
+        //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
         //
-        //  receiver will be for all pulseGroups, demux here to proper pulseGroup by group
+        //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
         //
         var dgram = require("dgram");
         var receiver = dgram.createSocket("udp4");
@@ -1342,9 +1346,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
         });
         receiver.bind(this.config.PORT);
-        //
-        //  
-        //
     }
     return AugmentedPulseGroup;
 }());

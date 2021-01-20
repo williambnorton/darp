@@ -3,9 +3,8 @@
 import fs = require("fs");
 import os = require("os");
 import http = require("http");
-import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
-import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD, Log  } from "./lib";
+import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, Log  } from "./lib";
 import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse } from "./types";
 import { grapherStoreOwls } from "./grapher";
@@ -266,7 +265,7 @@ export class AugmentedPulseGroup {
     adminControl: string;
     config: Config;
     extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
-    incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
+    //incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     
     // child processes for sending and receiving the pulse messages
     //receiver: ChildProcess;
@@ -288,14 +287,14 @@ export class AugmentedPulseGroup {
         this.adminControl = "";
         this.config = config;
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
-        this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
+        //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
     // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
     
     
-        //
-        //  receiver will be for all pulseGroups, demux here to proper pulseGroup by group
-        //
+    //
+    //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
+    //
     var dgram = require("dgram");
 
     const receiver = dgram.createSocket("udp4");
@@ -319,18 +318,12 @@ export class AugmentedPulseGroup {
     });
 
     receiver.bind(this.config.PORT);
-//
-//  
-//
-
-
-
-
-
-
 
     }
-
+    //
+    //  
+    //
+    
     forEachNode = (callback: CallableFunction) => {
         for (var node in this.pulses) callback(node, this.pulses[node]);
     };
