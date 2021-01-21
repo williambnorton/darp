@@ -10,6 +10,7 @@ import { NodeAddress, IncomingPulse } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 import e = require("express");
+import { addPulseGroup } from "./pulsegroups";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
@@ -1599,7 +1600,7 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
                     logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
                 }
                 Log(`JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
-
+                addPulseGroup(newPulseGroup);
                 return resolve(newPulseGroup);
             });
         });

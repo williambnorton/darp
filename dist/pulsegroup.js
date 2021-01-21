@@ -47,6 +47,7 @@ var logger_1 = require("./logger");
 var types_1 = require("./types");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
+var pulsegroups_1 = require("./pulsegroups");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
@@ -1394,6 +1395,7 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
                             logger_1.logger.info("getPulseGroup(): Configuring non-genesis node ...");
                         }
                         lib_1.Log("JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port);
+                        pulsegroups_1.addPulseGroup(newPulseGroup);
                         return resolve(newPulseGroup);
                     });
                 });
