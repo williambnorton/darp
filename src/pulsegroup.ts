@@ -9,7 +9,6 @@ import { logger, LogLevel } from "./logger";
 import { NodeAddress, IncomingPulse } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
-import e = require("express");
 import { addPulseGroup } from "./pulsegroups";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
@@ -312,7 +311,7 @@ export class AugmentedPulseGroup {
 
     receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
-        logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         this.recvPulses(incomingMessage,rinfo.address,rinfo.port);

@@ -1341,7 +1341,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         });
         receiver.on("message", function (pulseBuffer, rinfo) {
             var incomingTimestamp = lib_1.now().toString();
-            logger_1.logger.info("Received " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
+            console.log("Received " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
             // prepend our timeStamp
             var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
             _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
