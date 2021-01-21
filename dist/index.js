@@ -44,6 +44,7 @@ var logger_1 = require("./logger");
 var lib_1 = require("./lib");
 var grapher_1 = require("./grapher");
 var pulsegroup_1 = require("./pulsegroup");
+var pulsegroups_1 = require("./pulsegroups");
 logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 //const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 // Load config
@@ -53,7 +54,8 @@ var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, confi
 var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //this is where I allow others to connect to me
-var myPulseGroups = {}; // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
+//var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
+var myPulseGroups = pulsegroups_1.getMyPulseGroups();
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
 // Start instrumentaton web server
 var REFRESH = 60; //Every 2 minutes force web page instrumentation refresh
