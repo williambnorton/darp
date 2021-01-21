@@ -30,7 +30,7 @@
         function fetchState() {
             console.log();
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
-            console.log("fetchState(): url="+url);
+            //console.log("index.html: fetchState(): url="+url);
             $.getJSON(url, function(pulseGroups) {
                 $(document.body).css( "background", "white" );
 
