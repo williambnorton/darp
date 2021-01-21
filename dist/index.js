@@ -55,7 +55,7 @@ var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, 
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, genesis, pulse); //this is where I allow others to connect to me
 //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
-var myPulseGroups = pulsegroups_1.getMyPulseGroups();
+//var myPulseGroups = getMyPulseGroups();
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
 // Start instrumentaton web server
 var REFRESH = 60; //Every 2 minutes force web page instrumentation refresh
@@ -85,7 +85,7 @@ app.get('/', function (req, res) {
         now: lib_1.now,
         me: me,
         config: config,
-        myPulseGroups: myPulseGroups,
+        myPulseGroups: pulsegroups_1.myPulseGroups,
         REFRESH: REFRESH,
         OWLS_DISPLAYED: OWLS_DISPLAYED
     }, function (err, data) {
@@ -199,12 +199,12 @@ app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     // pulseGroup 
     if (typeof req.params.pulsegroup != "undefined") {
-        for (var pulseGroup in myPulseGroups) {
-            if (myPulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
+        for (var pulseGroup in pulsegroups_1.myPulseGroups) {
+            if (pulsegroups_1.myPulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
                 var mint = 0;
                 if (typeof req.params.mint != "undefined") // use our mint 0
                     mint = parseInt(req.params.mint); // or send mint0 of caller
-                var clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup])); // clone my pulseGroup obecjt 
+                var clonedPulseGroup = JSON.parse(JSON.stringify(pulsegroups_1.myPulseGroups[pulseGroup])); // clone my pulseGroup obecjt 
                 clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; // assign him his mint and config
                 res.end(JSON.stringify(clonedPulseGroup, null, 2)); // send the cloned group with his mint as mint0
                 return; // we sent the more specific
@@ -214,7 +214,7 @@ app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
     }
     else {
         logger_1.logger.warning("No pulseGroup specified");
-        res.end(JSON.stringify(myPulseGroups, null, 2));
+        res.end(JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
         return;
     }
 });
@@ -223,7 +223,7 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     //console.log(`sending JSON stringify of pulseGroups object`);
-    res.end(JSON.stringify(myPulseGroups, null, 2));
+    res.end(JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
     return;
     // cache 
     var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
@@ -242,7 +242,7 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
 app.get('/me', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify(myPulseGroups[me.geo + ".1"], null, 2));
+    res.end(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"], null, 2));
     /*
         //      DO NOT DELETE     CACHING HELPS HERE
         let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
@@ -265,14 +265,14 @@ app.get('/mintTable', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     try {
-        res.end(JSON.stringify(myPulseGroups[me.geo + ".1"].mintTable, null, 2));
+        res.end(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
     }
     catch (e) { }
     ;
     return;
 });
 function findPublicKey(incomingKey) {
-    var myMintTable = myPulseGroups[me.geo + ".1"].mintTable;
+    var myMintTable = pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable;
     for (var m in myMintTable) {
         if (myMintTable[m] != null && myMintTable[m].publickey == incomingKey)
             return myMintTable[m];
@@ -288,7 +288,7 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
         console.log("NULL key searched - sending all mintTable");
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.send(JSON.stringify(myPulseGroups[me.geo + ".1"].mintTable, null, 2));
+        res.send(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
     }
     else {
         console.log("looking up public key " + req.params.publickey + " in this nmintTable");
@@ -304,8 +304,8 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
             console.log("we found public key - option A) return the genesis node that has this public key ");
             var returnedObject = {
                 publickey: G.publickey,
-                genesisIP: myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr,
-                genesisPort: myPulseGroups[me.geo + ".1"].mintTable[1].port,
+                genesisIP: pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr,
+                genesisPort: pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable[1].port,
                 destIP: G.ipaddr,
                 destPort: G.port
             };
@@ -412,9 +412,9 @@ app.get('/nodefactory', function (req, res) {
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
     //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
-    myPulseGroups[myPulseGroup.groupName] = myPulseGroup; //
+    pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = myPulseGroup; //
     pulsegroups_1.addPulseGroup(myPulseGroup); //@wbnwbnwbn
-    console.log("********* = = = = = = = = =     myPulseGroups = " + JSON.stringify(myPulseGroups, null, 2));
+    console.log("********* = = = = = = = = =     myPulseGroups = " + JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
     //--------------------------------------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
@@ -466,13 +466,13 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
-                myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
+                pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
                 if (myPulseGroup.groupOwner != me.geo) {
-                    myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(config, myOriginalPulseGroup);
-                    console.log("index.ts:  WE LAUNCHED OUR OWN PULSE GROUP " + JSON.stringify(myPulseGroups[me.geo + ".1"], null, 2));
+                    pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(config, myOriginalPulseGroup);
+                    console.log("index.ts:  WE LAUNCHED OUR OWN PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"], null, 2));
                 }
                 //could clone this new pulseGroup as my own for accepting new connections
-                console.log("index.ts:    launching------>       myPulseGroups=" + JSON.stringify(myPulseGroups, null, 2));
+                console.log("index.ts:    launching------>       myPulseGroups=" + JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();

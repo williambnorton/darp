@@ -3,9 +3,9 @@
 import { PulseGroup } from './pulsegroup';
 
 export type PulseGroups = { [x: string]: PulseGroup };
-var myPulseGroups:PulseGroups;
+export var myPulseGroups:PulseGroups;
 
-export function getMyPulseGroups() { return myPulseGroups;}
+//export function getMyPulseGroups() { return myPulseGroups;}
 
 export function forEachPulseGroup(callback: CallableFunction) {
     for (var pulseGroup in myPulseGroups) 

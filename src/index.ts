@@ -6,7 +6,7 @@ import { logger, LogLevel } from './logger';
 import { dump, Log, now, ts, MYVERSION } from './lib';
 import { grapher } from './grapher';
 import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
-import { getMyPulseGroups, addPulseGroup } from './pulsegroups';
+import { myPulseGroups, addPulseGroup } from './pulsegroups';
 
 
 logger.setLevel(LogLevel.WARNING);
@@ -22,7 +22,7 @@ const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBL
 var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new PulseGroup(me, genesis, pulse);  //this is where I allow others to connect to me
 //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
-var myPulseGroups = getMyPulseGroups();
+//var myPulseGroups = getMyPulseGroups();
 logger.info(`Starting with my own pulseGroup=${dump(myPulseGroup)}`);
 
 
