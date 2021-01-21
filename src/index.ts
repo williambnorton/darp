@@ -6,7 +6,7 @@ import { logger, LogLevel } from './logger';
 import { dump, Log, now, ts, MYVERSION } from './lib';
 import { grapher } from './grapher';
 import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
-import { getMyPulseGroups } from './pulsegroups';
+import { getMyPulseGroups, addPulseGroup } from './pulsegroups';
 
 
 logger.setLevel(LogLevel.WARNING);
@@ -369,7 +369,15 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
         myPulseGroup.rc="SELF"
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
-        myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
+
+
+
+        //myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
+        //@wbnwbnwbn - replace with this
+        addPulseGroup(myPulseGroup);    
+
+
+
         logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
@@ -425,6 +433,7 @@ app.get('/nodefactory', function(req, res) {
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
 
     myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
+    addPulseGroup(myPulseGroup);   //@wbnwbnwbn
 
     console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     
