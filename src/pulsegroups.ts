@@ -3,7 +3,7 @@
 import { PulseGroup } from './pulsegroup';
 
 export type PulseGroups = { [x: string]: PulseGroup };
-export var myPulseGroups:PulseGroups;
+export var myPulseGroups:PulseGroups={};
 
 //export function getMyPulseGroups() { return myPulseGroups;}
 
@@ -13,6 +13,7 @@ export function forEachPulseGroup(callback: CallableFunction) {
 };
 
 export function addPulseGroup(pulseGroup:PulseGroup) {
+    console.log(`Adding new pulseGroup object ${pulseGroup.groupName}`);
     myPulseGroups[pulseGroup.groupName]=pulseGroup;
     return myPulseGroups[pulseGroup.groupName];
 };
