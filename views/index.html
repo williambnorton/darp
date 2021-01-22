@@ -15,6 +15,7 @@
             $('#extraordinary').DataTable({'iDisplayLength': 100});
             $('#pulses').DataTable({'iDisplayLength': 25});
             $('#mintTable').DataTable({'iDisplayLength': 25});
+            console.log(`index.html - launched`);
         });
         
         $(window).on( "load", function() {
@@ -28,13 +29,14 @@
         const me = JSON.parse(me_str);
 
         function fetchState() {
-            console.log();
+            console.log(`fetcState() called`);
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
             //console.log("index.html: fetchState(): url="+url);
             $.getJSON(url, function(pulseGroups) {
                 $(document.body).css( "background", "white" );
 
                 //console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
+                console.log(`fetcState() about to work through each pulseGroups`);
 
                 for (var p in pulseGroups ) {
                     //console.log("---------------------------- - - - - - - -> p= "+p);
