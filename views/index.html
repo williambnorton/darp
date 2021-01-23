@@ -654,6 +654,7 @@
 
                         <% let stopButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/stop"; %>
                         <% let rebootButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/reboot"; %>
+                        <% let pauseButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/pause"; %>
                         <% let reloadButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/reload"; %>
                         <% let SINGLESTEPButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/SINGLESTEP"; %>
                         <% let pulseMsgButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/pulseMsg"; %>
@@ -662,6 +663,7 @@
                                 <INPUT Type="BUTTON" Value="PULSE1" Onclick='window.location.href="<%= pulseMsgButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="RELOAD" Onclick='window.location.href="<%= reloadButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="SINGLESTEP" Onclick='window.location.href="<%= SINGLESTEPButtonURL %>"'>
+                                <INPUT Type="BUTTON" Value="PAUSE" Onclick='window.location.href="<%= pauseButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="STOP" Onclick='window.location.href="<%= stopButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="REBOOT" Onclick='window.location.href="<%= rebootButtonURL %>"'>
                             </FORM>
