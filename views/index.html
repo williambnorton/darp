@@ -243,12 +243,11 @@
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
                     $(".total_earn").text("measurementCosts @8.5cents/GB: $"+measurementCosts);
                 }
-
+*/
             }).fail(function() {
                 console.log("JSON Fetch error");
                 $(document.body).css( "background", "pink" );
             })
-*/
             var d = new Date();
             sleepTime = 1000 - (d.getTime() + 1000) % 1000;  //start on second boundaries.
             setTimeout(fetchState, sleepTime);
