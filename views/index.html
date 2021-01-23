@@ -29,19 +29,19 @@
         const me = JSON.parse(me_str);
 
         function fetchState() {
-            console.log(`fetcState() called`);
+            //console.log(`fetcState() called`);
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
             //console.log("index.html: fetchState(): url="+url);
             $.getJSON(url, function(pulseGroups) {
                 $(document.body).css( "background", "white" );
-
                 //console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
-                console.log(`fetcState() about to work through each pulseGroups`);
-/*
+                //console.log(`fetcState() about to work through each pulseGroups`);
+                
                 for (var p in pulseGroups ) {
                     //console.log("---------------------------- - - - - - - -> p= "+p);
                     var pulseGroup=pulseGroups[p];
-
+                    
+                    console.log(`pulseGroup ${pulseGroup.groupName} has ${pulseGroup.nodeCount} member nodes`)    
                     //var pulseGroup = config[n];
                     //console.log("index.html: pulseGroups="+JSON.stringify(pulseGroups,null,2) );
                     // Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
@@ -243,7 +243,7 @@
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
                     $(".total_earn").text("measurementCosts @8.5cents/GB: $"+measurementCosts);
                 }
-*/
+
             }).fail(function() {
                 console.log("JSON Fetch error");
                 $(document.body).css( "background", "pink" );
