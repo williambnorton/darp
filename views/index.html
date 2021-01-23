@@ -15,7 +15,7 @@
             $('#extraordinary').DataTable({'iDisplayLength': 100});
             $('#pulses').DataTable({'iDisplayLength': 25});
             $('#mintTable').DataTable({'iDisplayLength': 25});
-            console.log(`index.html - launched`);
+            //console.log(`index.html - launched`);
         });
         
         $(window).on( "load", function() {
@@ -37,7 +37,7 @@
 
                 //console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
                 console.log(`fetcState() about to work through each pulseGroups`);
-
+/*
                 for (var p in pulseGroups ) {
                     //console.log("---------------------------- - - - - - - -> p= "+p);
                     var pulseGroup=pulseGroups[p];
@@ -248,7 +248,7 @@
                 console.log("JSON Fetch error");
                 $(document.body).css( "background", "pink" );
             })
-
+*/
             var d = new Date();
             sleepTime = 1000 - (d.getTime() + 1000) % 1000;  //start on second boundaries.
             setTimeout(fetchState, sleepTime);
