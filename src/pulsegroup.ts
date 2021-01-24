@@ -1317,6 +1317,8 @@ export class AugmentedPulseGroup {
         }
     }
     */
+
+    /*****
     //
     //  recvPulses
     //
@@ -1384,6 +1386,7 @@ export class AugmentedPulseGroup {
         }
         //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
     };
+    ***/
 
     // Store one-way latencies to file or graphing & history
     //

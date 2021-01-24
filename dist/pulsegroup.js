@@ -1089,21 +1089,23 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
         }
         */
+        /*****
         //
         //  recvPulses
         //
-        this.dgram = require("dgram");
-        this.udp = this.dgram.createSocket("udp4");
-        this.recvPulses = function (incomingMessage, ipaddr, port) {
+         dgram = require("dgram");
+    
+         udp = this.dgram.createSocket("udp4");
+        recvPulses = (incomingMessage: string, ipaddr: string, port: string) => {
             // try {
-            // const incomingPulse = await parsePulseMessage(incomingMessage)
+                // const incomingPulse = await parsePulseMessage(incomingMessage)
             var ary = incomingMessage.split(",");
-            var pulseTimestamp = parseInt(ary[0]);
-            var senderTimestamp = parseInt(ary[1]);
-            var OWL = pulseTimestamp - senderTimestamp;
-            var owlsStart = lib_1.nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
+            const pulseTimestamp = parseInt(ary[0]);
+            const senderTimestamp = parseInt(ary[1]);
+            const OWL = pulseTimestamp - senderTimestamp;
+            var owlsStart = nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
             var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-            var incomingPulse = {
+            var incomingPulse: IncomingPulse = {
                 pulseTimestamp: pulseTimestamp,
                 outgoingTimestamp: senderTimestamp,
                 msgType: ary[2],
@@ -1111,30 +1113,31 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 geo: ary[4],
                 group: ary[5],
                 seq: parseInt(ary[6]),
-                bootTimestamp: parseInt(ary[7]),
+                bootTimestamp: parseInt(ary[7]), //if genesis node reboots --> all node reload SW too
                 mint: parseInt(ary[8]),
                 owls: pulseOwls,
                 owl: OWL,
-                lastMsg: incomingMessage
+                lastMsg: incomingMessage,
             };
             //  Mgmt layer
             //console.log(`incomingPulse=${incomingPulse} incomingPulse.msgType=${incomingPulse.msgType}`);
-            if (incomingPulse.msgType == "11") {
+            if (incomingPulse.msgType=="11") {
                 //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
-                console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType + "    incomingPulse=" + JSON.stringify(incomingPulse, null, 2));
+                console.log(`PING MESSAGE incomingPulse.msgType=${incomingPulse.msgType}    incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
                 //
                 //if (this.isGenesisNode() && this.nodeCount<this.config.MAXNODES) {
-                if (_this.nodeCount < _this.config.MAXNODES) {
-                    //HERE put the nodeCount and the # better paths
+                if ( this.nodeCount<this.config.MAXNODES) {
+                        //HERE put the nodeCount and the # better paths
                     //PONG MESSAGE
-                    var message = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.config.IP + "," + _this.config.PORT + "," + _this.config.GEO + "," + _this.config.BOOTTIMESTAMP + "," + _this.config.PUBLICKEY; //,${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
+                    var message=`${now()},12,${this.config.VERSION},${this.config.IP},${this.config.PORT},${this.config.GEO},${this.config.BOOTTIMESTAMP},${this.config.PUBLICKEY}`   //,${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
+    
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
-                    console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
-                    _this.udp.send(message, 65013, ipaddr);
-                }
-                else {
-                    console.log("pulseGroup full - not answering request to join... ");
+    
+                    console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
+                    this.udp.send(message, 65013, ipaddr);
+                } else {
+                    console.log(`pulseGroup full - not answering request to join... `);
                 }
                 //
                 //
@@ -1142,20 +1145,19 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //  PONG should include enough to advocate the desired outcome - connect to me, to my genesis node, to this obne closer to you.
                 //
                 //
-            }
-            else {
+            } else {
                 //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
-                if (parseInt(incomingPulse.msgType) == 12) { //PONG response
+                if (parseInt(incomingPulse.msgType)==12) {    //PONG response
                     //console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
                     //console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
-                }
-                else { //default pass up the stack
+                } else {  //default pass up the stack
                     //console.log(`INCOMING PULSE incomingPulse.msgType=${incomingPulse.msgType}`);
-                    _this.processIncomingPulse(incomingPulse);
+                    this.processIncomingPulse(incomingPulse);
                 }
             }
             //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         };
+        ***/
         // Store one-way latencies to file or graphing & history
         //
         //  TOSO: This is called for EACH Measure - do not do a lot here! store and move on
