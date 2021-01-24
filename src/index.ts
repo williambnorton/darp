@@ -100,7 +100,17 @@ app.get('/version', function(req, res) {
  app.get('/invite/:groupname/:destip/:destport', function(req, res) {
 
     console.log(`INVITE -- This would be only valid over an encrypted path ${dump(req.params)}`);
-    console.log(`would execute nodeFactory on ${req.params.destip}:${req.params.destport} to join group ${req.params.groupname}`);
+    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
+    "/nodefactory?geo=" + req.params.groupname +
+    "&port=" + config.PORT +
+    "&publickey=" + config.PUBLICKEY +
+    "&genesisport=" + config.GENESISPORT +
+    "&version=" + config.VERSION +
+    "&wallet=" + config.WALLET +
+    "&myip=" + config.IP +
+    "&ts=" + now();
+    
+    console.log(`would execute nodeFactory on ${req.params.destip}:${req.params.destport} to join group ${req.params.groupname} ${configurl}`);
 
     return;
  });
