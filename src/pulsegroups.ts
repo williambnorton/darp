@@ -1,7 +1,7 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
 import { PulseGroup,AugmentedPulseGroup, Config } from './pulsegroup';
-import { now, nth_occurrence  } from "./lib";
+import { now, nth_occurrence, dump  } from "./lib";
 import { IncomingPulse } from "./types";
 
 export type PulseGroups = { [x: string]: AugmentedPulseGroup };
@@ -68,6 +68,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
 
         if (typeof myPulseGroups[incomingPulse.geo+":"+incomingPulse.group]=="undefined") {
             console.log(`unknown group pulse: ${incomingPulse.geo}:${incomingPulse.group}`);
+            console.log(`${dump(myPulseGroups)}`);
         } else {
             console.log(`pulseGroup received ${incomingPulse.geo+":"+incomingPulse.group}`);
             myPulseGroups[incomingPulse.geo+":"+incomingPulse.group].recvPulses(incomingMessage,rinfo.address,rinfo.port);

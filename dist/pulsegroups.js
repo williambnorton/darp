@@ -59,6 +59,7 @@ receiver.on("message", function (pulseBuffer, rinfo) {
     };
     if (typeof exports.myPulseGroups[incomingPulse.geo + ":" + incomingPulse.group] == "undefined") {
         console.log("unknown group pulse: " + incomingPulse.geo + ":" + incomingPulse.group);
+        console.log("" + lib_1.dump(exports.myPulseGroups));
     }
     else {
         console.log("pulseGroup received " + (incomingPulse.geo + ":" + incomingPulse.group));
