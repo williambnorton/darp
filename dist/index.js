@@ -121,8 +121,8 @@ app.get('/pause', function (req, res) {
     console.log("PAUSING -- here we would set adminControl on the pulse group to SINGLESTEP");
     return;
 });
-app.get('/invite/:dst', function (req, res) {
-    console.log("INVITE -- This would be only valid over an encrypted path");
+app.get('/invite/:pulsegroup/:dest/:port', function (req, res) {
+    console.log("INVITE -- This would be only valid over an encrypted path " + lib_1.dump(req.params));
     return;
 });
 app.get('/stop', function (req, res) {

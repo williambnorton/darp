@@ -97,8 +97,9 @@ app.get('/version', function(req, res) {
     return;
  });
  
- app.get('/invite/:dst', function(req, res) {
-    console.log(`INVITE -- This would be only valid over an encrypted path`);
+ app.get('/invite/:pulsegroup/:dest/:port', function(req, res) {
+
+    console.log(`INVITE -- This would be only valid over an encrypted path ${dump(req.params)}`);
     return;
  });
 
