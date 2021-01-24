@@ -97,9 +97,11 @@ app.get('/version', function(req, res) {
     return;
  });
  
- app.get('/invite/:pulsegroup/:dest/:port', function(req, res) {
+ app.get('/invite/:groupname/:destip/:destport', function(req, res) {
 
     console.log(`INVITE -- This would be only valid over an encrypted path ${dump(req.params)}`);
+    console.log(`would execute nodeFactory on ${req.params.destip}:${req.params.destport} to join group ${req.params.groupname}`);
+
     return;
  });
 
