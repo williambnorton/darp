@@ -94,13 +94,13 @@ receiver.on("message", function (pulseBuffer, rinfo) {
                 //console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
             }
             else { //default pass up the stack
-                console.log("INCOMING DARP PING RESPONSE incomingPulse.msgType=" + incomingPulse.msgType);
+                console.log("INCOMING DARP MESSAGE for pulse Group " + incomingPulse.group + " incomingPulse.msgType=" + incomingPulse.msgType);
+                console.log("pulseGroup received " + (incomingPulse.geo + ":" + incomingPulse.group) + " message");
+                exports.myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse);
                 incomingPulseGroup.processIncomingPulse(incomingPulse);
             }
             return; //DARP Ping processed
         }
-        console.log("pulseGroup received " + (incomingPulse.geo + ":" + incomingPulse.group) + " message");
-        exports.myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse);
     }
 });
 receiver.bind(65013);

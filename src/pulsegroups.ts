@@ -105,7 +105,9 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
                         //console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
                         //console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
                 } else {  //default pass up the stack
-                    console.log(`INCOMING DARP PING RESPONSE incomingPulse.msgType=${incomingPulse.msgType}`);
+                    console.log(`INCOMING DARP MESSAGE for pulse Group ${incomingPulse.group} incomingPulse.msgType=${incomingPulse.msgType}`);
+                    console.log(`pulseGroup received ${incomingPulse.geo+":"+incomingPulse.group} message`);
+                    myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse);
                     incomingPulseGroup.processIncomingPulse(incomingPulse);
                 }
 
@@ -113,8 +115,6 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
             }
 
                                 
-            console.log(`pulseGroup received ${incomingPulse.geo+":"+incomingPulse.group} message`);
-            myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse);
         }
 
 
