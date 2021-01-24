@@ -57,13 +57,13 @@ receiver.on("message", function (pulseBuffer, rinfo) {
         owl: OWL,
         lastMsg: incomingMessage
     };
-    if (typeof exports.myPulseGroups[incomingPulse.geo + ":" + incomingPulse.group] == "undefined") {
-        console.log("unknown group pulse: " + incomingPulse.geo + ":" + incomingPulse.group);
+    if (typeof exports.myPulseGroups[incomingPulse.group] == "undefined") {
+        console.log("unknown group pulse: " + incomingPulse.group);
         console.log("" + lib_1.dump(exports.myPulseGroups));
     }
     else {
-        console.log("pulseGroup received " + (incomingPulse.geo + ":" + incomingPulse.group));
-        exports.myPulseGroups[incomingPulse.geo + ":" + incomingPulse.group].recvPulses(incomingMessage, rinfo.address, rinfo.port);
+        console.log("pulseGroup received " + (incomingPulse.geo + ":" + incomingPulse.group) + " message");
+        exports.myPulseGroups[incomingPulse.group].recvPulses(incomingMessage, rinfo.address, rinfo.port);
     }
 });
 receiver.bind(65013);

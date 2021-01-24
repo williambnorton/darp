@@ -65,12 +65,12 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
             lastMsg: incomingMessage,
         };
 
-        if (typeof myPulseGroups[incomingPulse.geo+":"+incomingPulse.group]=="undefined") {
-            console.log(`unknown group pulse: ${incomingPulse.geo}:${incomingPulse.group}`);
+        if (typeof myPulseGroups[incomingPulse.group]=="undefined") {
+            console.log(`unknown group pulse: ${incomingPulse.group}`);
             console.log(`${dump(myPulseGroups)}`);
         } else {
-            console.log(`pulseGroup received ${incomingPulse.geo+":"+incomingPulse.group}`);
-            myPulseGroups[incomingPulse.geo+":"+incomingPulse.group].recvPulses(incomingMessage,rinfo.address,rinfo.port);
+            console.log(`pulseGroup received ${incomingPulse.geo+":"+incomingPulse.group} message`);
+            myPulseGroups[incomingPulse.group].recvPulses(incomingMessage,rinfo.address,rinfo.port);
         }
     });
 
