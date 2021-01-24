@@ -16,8 +16,7 @@ export function forEachPulseGroup(callback: CallableFunction) {
 
 export function addPulseGroup(pulseGroup:PulseGroup) {
     console.log(`Adding new pulseGroup object ${pulseGroup.groupName}`);
-    myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(new Config(), pulseGroup)
-    ;
+    myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(new Config(), pulseGroup);
     return myPulseGroups[pulseGroup.groupName];
 };
 

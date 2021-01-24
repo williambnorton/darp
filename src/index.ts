@@ -442,8 +442,8 @@ app.get('/nodefactory', function(req, res) {
     //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
 
-    myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
-    addPulseGroup(myPulseGroup);   //@wbnwbnwbn
+    //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
+    addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as Augmented Pulse Group Object
 
     console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     

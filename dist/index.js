@@ -420,8 +420,8 @@ app.get('/nodefactory', function (req, res) {
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
     //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
-    pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = myPulseGroup; //
-    pulsegroups_1.addPulseGroup(myPulseGroup); //@wbnwbnwbn
+    //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
+    pulsegroups_1.addPulseGroup(myPulseGroup); //@wbnwbnwbn Add new pulseGroup as Augmented Pulse Group Object
     console.log("********* = = = = = = = = =     myPulseGroups = " + JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
     //--------------------------------------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
