@@ -291,7 +291,7 @@ export class AugmentedPulseGroup {
         
     // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
     
-    
+    /**
     //
     //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
     //
@@ -318,8 +318,9 @@ export class AugmentedPulseGroup {
     });
 
     receiver.bind(this.config.PORT);
-
+  ****/
     }
+  
     //
     //  
     //
