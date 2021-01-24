@@ -271,7 +271,7 @@ export class AugmentedPulseGroup {
     //receiver: ChildProcess;
     //sender: ChildProcess;
 
-    constructor(config: Config, pulseGroup: PulseGroup) {
+    constructor(pulseGroup: PulseGroup) {
         this.groupName = pulseGroup.groupName;
         this.groupOwner = pulseGroup.groupOwner;
         this.mintTable = pulseGroup.mintTable; // Simplification: me should always be mintTable[0], genesis node should always be mintTable[1]
@@ -285,7 +285,7 @@ export class AugmentedPulseGroup {
         //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         
         this.adminControl = "";
-        this.config = config;
+        this.config = new Config();  //pulse Object needs to know some things about the node config
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         

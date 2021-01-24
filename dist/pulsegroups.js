@@ -13,7 +13,7 @@ exports.forEachPulseGroup = forEachPulseGroup;
 ;
 function addPulseGroup(pulseGroup) {
     console.log("Adding new pulseGroup object " + pulseGroup.groupName);
-    exports.myPulseGroups[pulseGroup.groupName] = new pulsegroup_1.AugmentedPulseGroup(new pulsegroup_1.Config(), pulseGroup);
+    exports.myPulseGroups[pulseGroup.groupName] = new pulsegroup_1.AugmentedPulseGroup(pulseGroup);
     return exports.myPulseGroups[pulseGroup.groupName];
 }
 exports.addPulseGroup = addPulseGroup;

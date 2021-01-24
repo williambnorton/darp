@@ -476,7 +476,7 @@ app.get('/nodefactory', function (req, res) {
                 myPulseGroup = _a.sent(); //replaces starting myPulseGroup
                 //var anchorPulseGroup = await getPulseGroup(config);   //t
                 console.log("asynch() DARP NODE STARTED: anchor GENESIS=" + myPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(myPulseGroup));
-                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(config, myPulseGroup);
+                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(myPulseGroup);
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
                 augmentedPulseGroup.pulse();
@@ -486,7 +486,7 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
                 if (myPulseGroup.groupOwner != me.geo) {
-                    pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(config, myOriginalPulseGroup);
+                    pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myOriginalPulseGroup);
                     console.log("index.ts:  WE LAUNCHED OUR OWN PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"], null, 2));
                 }
                 //could clone this new pulseGroup as my own for accepting new connections

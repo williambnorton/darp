@@ -211,7 +211,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
     // child processes for sending and receiving the pulse messages
     //receiver: ChildProcess;
     //sender: ChildProcess;
-    function AugmentedPulseGroup(config, pulseGroup) {
+    function AugmentedPulseGroup(pulseGroup) {
         var _this = this;
         //
         //  
@@ -1322,7 +1322,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
         //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         this.adminControl = "";
-        this.config = config;
+        this.config = new Config(); //pulse Object needs to know some things about the node config
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         // Thia constructur binds default=65013 UDP PORT to my pulseGroup object

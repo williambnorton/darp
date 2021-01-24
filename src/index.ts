@@ -504,7 +504,7 @@ app.get('/nodefactory', function(req, res) {
         //var anchorPulseGroup = await getPulseGroup(config);   //t
 
         console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
-        var augmentedPulseGroup = new AugmentedPulseGroup(config, myPulseGroup);   //augmented with pulseGroup methods
+        var augmentedPulseGroup = new AugmentedPulseGroup(myPulseGroup);   //augmented with pulseGroup methods
 
         //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
         
@@ -519,7 +519,7 @@ app.get('/nodefactory', function(req, res) {
 
 
         if (myPulseGroup.groupOwner  != me.geo ) {
-            myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(config, myOriginalPulseGroup);           
+            myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup);           
             console.log(`index.ts:  WE LAUNCHED OUR OWN PULSE GROUP ${JSON.stringify(myPulseGroups[ me.geo+".1" ],null,2) }`);
         }
 
