@@ -96,6 +96,11 @@ app.get('/version', function(req, res) {
     console.log(`PAUSING -- here we would set adminControl on the pulse group to SINGLESTEP`);
     return;
  });
+ 
+ app.get('/invite/:dst', function(req, res) {
+    console.log(`INVITE -- This would be only valid over an encrypted path`);
+    return;
+ });
 
  app.get('/stop', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
