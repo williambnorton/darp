@@ -42,7 +42,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
 
     receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
-        console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         //demux here to send to proper pulseGroup
