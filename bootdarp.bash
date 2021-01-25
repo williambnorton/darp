@@ -36,7 +36,7 @@ SLEEPTIME=3 #time in seconds between software runs in forever loop
 
 MAXCYCLES=10 # of cycles before reloading docker
 GRANULARITY=100 #  milliseconds before we say we should join the closer genesis node
-GRANULARITY=300 #  alwayts connect to nearest node regardless of latency
+#GRANULARITY=100 #  alwayts connect to nearest node regardless of latency
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -105,7 +105,7 @@ do
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
         FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
         echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
-        if [ "$FIRST_LINE" != "" -a "$FIRST_RESPONDER_LATENCY" != "" ]; then
+        if [ "$FIRST_LINE" != "" -a "$FIRST_RESPONDER_LATENCY" != "" -a $FIRST_RESPONDER_LATENCY -lt $GRANULARITY ]; then
             #FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
             MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
             MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
