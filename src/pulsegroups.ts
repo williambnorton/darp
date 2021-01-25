@@ -112,8 +112,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
                     
                 } else {
                     var incomingPulseGroup=myPulseGroups[incomingPulse.group];
-                    console.log(`INCOMING DARP MESSAGE for pulse Group ${incomingPulse.group} incomingPulse.msgType=${incomingPulse.msgType}`);
-                    console.log(`pulseGroup received ${incomingPulse.geo+":"+incomingPulse.group} message`);
+                    console.log(`INCOMING DARP MESSAGE for pulse Group ${incomingPulse.group} incomingPulse.msgType=${incomingPulse.msgType} ${incomingPulse.geo+":"+incomingPulse.group} message`);
                     myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse);
                     incomingPulseGroup.processIncomingPulse(incomingPulse);
                 }
