@@ -171,7 +171,7 @@
                         if (nodeCountLastTime!=0) {
                             //if ( nodeCountLastTime != pulseGroup.nodeCount ) {  //immediately show changes so screen reflects reality
                             //    if (( nodeCountLastTime > pulseGroup.nodeCount+1) || (nodeCountLastTime < pulseGroup.nodeCount-1 )) {
-                            if (( nodeCountLastTime > pulseGroup.nodeCount+1) || ( Math.abs(nodeCountLastTime - pulseGroup.nodeCount )>1 ) ) {
+                            if ( Math.abs(nodeCountLastTime - pulseGroup.nodeCount ) >2 ) {
                                     console.log("index.html: RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                                     location.reload();
                             }
