@@ -523,7 +523,7 @@ export class AugmentedPulseGroup {
         logger.debug(`pulse(): looking for my entry to pulse: ${this.config.GEO}:${this.groupName}`);
         
         if (myEntry == null) {
-            logger.warning(`Cannot find ${this.config.GEO}:${this.groupName}`);
+            logger.warning(`pulse(): Cannot find pulse Entry for ${this.config.GEO}:${this.groupName}`);
         } else {
             myEntry.seq++;
             const myMint = this.mintTable[0].mint;

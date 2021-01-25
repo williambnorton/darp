@@ -379,7 +379,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             var myEntry = _this.pulses[_this.config.GEO + ":" + _this.groupName];
             logger_1.logger.debug("pulse(): looking for my entry to pulse: " + _this.config.GEO + ":" + _this.groupName);
             if (myEntry == null) {
-                logger_1.logger.warning("Cannot find " + _this.config.GEO + ":" + _this.groupName);
+                logger_1.logger.warning("pulse(): Cannot find pulse Entry for " + _this.config.GEO + ":" + _this.groupName);
             }
             else {
                 myEntry.seq++;
