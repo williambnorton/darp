@@ -105,7 +105,7 @@ do
         echo "First to respond ... FIRST_LINE=$FIRST_LINE"
         FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
         echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
-        if [ "$FIRST_LINE" != "" -a $FIRST_RESPONDER_LATENCY -lt $GRANULARITY ]; then
+        if [ "$FIRST_LINE" != "" -a "$FIRST_RESPONDER_LATENCY" != "" ]; then
             #FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
             MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
             MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
