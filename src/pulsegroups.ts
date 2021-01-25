@@ -7,7 +7,7 @@ import { ts } from "./lib"
 
 export type PulseGroups = { [x: string]: AugmentedPulseGroup };
 export var myPulseGroups:PulseGroups={};
-
+const me=new Config();
 //export function getMyPulseGroups() { return myPulseGroups;}
 
 export function forEachPulseGroup(callback: CallableFunction) {
@@ -70,16 +70,16 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
         };
 
         if (incomingPulse.msgType=="11") {
-                //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
+            //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
             console.log(`PING MESSAGE incomingPulse.msgType=${incomingPulse.msgType}    incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
-                //
+            //
 
             //PONG MESSAGE
             
             //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
             var incomingPulseGroup=null;
             for (var p in myPulseGroups)
-                if (myPulseGroups[p].groupOwner==me.geo) incomingPulseGroup=myPulseGroups[p];  //pick last created
+                if (myPulseGroups[p].groupOwner==me.GEO) incomingPulseGroup=myPulseGroups[p];  //pick last created
             if (incomingPulseGroup!=null) {
                 var message=`${now()},12,VERSION_GOES_HERE,${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
 

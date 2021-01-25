@@ -5,6 +5,7 @@ var pulsegroup_1 = require("./pulsegroup");
 var lib_1 = require("./lib");
 var lib_2 = require("./lib");
 exports.myPulseGroups = {};
+var me = new pulsegroup_1.Config();
 //export function getMyPulseGroups() { return myPulseGroups;}
 function forEachPulseGroup(callback) {
     for (var pulseGroup in exports.myPulseGroups)
@@ -67,7 +68,7 @@ receiver.on("message", function (pulseBuffer, rinfo) {
         //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
         var incomingPulseGroup = null;
         for (var p in exports.myPulseGroups)
-            if (exports.myPulseGroups[p].groupOwner == me.geo)
+            if (exports.myPulseGroups[p].groupOwner == me.GEO)
                 incomingPulseGroup = exports.myPulseGroups[p]; //pick last created
         if (incomingPulseGroup != null) {
             var message = lib_1.now() + ",12,VERSION_GOES_HERE," + incomingPulseGroup.mintTable[0].ipaddr + "," + incomingPulseGroup.mintTable[0].port + "," + incomingPulseGroup.mintTable[0].geo + "," + incomingPulseGroup.mintTable[0].bootTimestamp + "," + incomingPulseGroup.mintTable[0].publickey;
