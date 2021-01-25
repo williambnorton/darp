@@ -130,7 +130,7 @@ export class Config {
         console.log(`config constructor made: ${JSON.stringify(this,null,2)}`);
     }
 }
-export const me=new Config();   //use this gloablly to fill in my PUBLIC KEY/IP/etc.
+export const CONFIG=new Config();   //use this gloablly to fill in my PUBLIC KEY/IP/etc.
 
 /** Node configuraton details */
 export class MintEntry {

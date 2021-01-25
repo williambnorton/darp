@@ -48,7 +48,7 @@ var pulsegroups_1 = require("./pulsegroups");
 logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 //const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 // Load config
-var config = new pulsegroup_1.Config();
+var config = pulsegroup_1.CONFIG; //map to global constants from inital pulseGroup CONFIG creation
 // Construct my own pulseGroup for others to connect to
 var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes can count on 'me' always being present
 var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others

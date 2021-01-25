@@ -65,7 +65,7 @@ receiver.on("message", function (pulseBuffer, rinfo) {
         //
         //PONG MESSAGE
         //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
-        var message = lib_1.now() + ",12," + pulsegroup_1.me.VERSION + "," + pulsegroup_1.me.IP + "," + pulsegroup_1.me.PORT + "," + pulsegroup_1.me.GEO + "," + pulsegroup_1.me.BOOTTIMESTAMP + "," + pulsegroup_1.me.PUBLICKEY + "," + rinfo.address + "," + rinfo.port;
+        var message = lib_1.now() + ",12," + pulsegroup_1.CONFIG.VERSION + "," + pulsegroup_1.CONFIG.IP + "," + pulsegroup_1.CONFIG.PORT + "," + pulsegroup_1.CONFIG.GEO + "," + pulsegroup_1.CONFIG.BOOTTIMESTAMP + "," + pulsegroup_1.CONFIG.PUBLICKEY + ",From," + rinfo.address + "," + rinfo.port;
         //else
         //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
         console.log("Sending PONG (12) to " + rinfo.address + ":65013 message=" + message);

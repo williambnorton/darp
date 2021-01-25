@@ -5,7 +5,7 @@ import ejs = require('ejs');
 import { logger, LogLevel } from './logger';
 import { dump, Log, now, ts, MYVERSION } from './lib';
 import { grapher } from './grapher';
-import { getPulseGroup, getPulseGroupURL, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
+import { getPulseGroup, getPulseGroupURL, CONFIG, AugmentedPulseGroup, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
 import { myPulseGroups, addPulseGroup } from './pulsegroups';
 
 
@@ -13,8 +13,7 @@ logger.setLevel(LogLevel.WARNING);
 //const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 // Load config
 
-const config = new Config();
-
+const config=CONFIG;  //map to global constants from inital pulseGroup CONFIG creation
 
 // Construct my own pulseGroup for others to connect to
 const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present

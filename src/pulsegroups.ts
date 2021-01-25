@@ -1,6 +1,6 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
-import { PulseGroup,AugmentedPulseGroup, me } from './pulsegroup';
+import { PulseGroup,AugmentedPulseGroup, CONFIG } from './pulsegroup';
 import { now, nth_occurrence, dump  } from "./lib";
 import { IncomingPulse } from "./types";
 import { ts } from "./lib"
@@ -77,7 +77,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
             
             //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
 
-                var message=`${now()},12,${me.VERSION},${me.IP},${me.PORT},${me.GEO},${me.BOOTTIMESTAMP},${me.PUBLICKEY},${rinfo.address},${rinfo.port}` 
+                var message=`${now()},12,${CONFIG.VERSION},${CONFIG.IP},${CONFIG.PORT},${CONFIG.GEO},${CONFIG.BOOTTIMESTAMP},${CONFIG.PUBLICKEY},From,${rinfo.address},${rinfo.port}` 
 
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
