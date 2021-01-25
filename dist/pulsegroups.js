@@ -66,20 +66,11 @@ receiver.on("message", function (pulseBuffer, rinfo) {
         //
         //PONG MESSAGE
         //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
-        var incomingPulseGroup = null;
-        for (var p in exports.myPulseGroups)
-            if (exports.myPulseGroups[p].groupOwner == me.GEO)
-                incomingPulseGroup = exports.myPulseGroups[p]; //pick last created
-        if (incomingPulseGroup != null) {
-            var message = lib_1.now() + ",12,VERSION_GOES_HERE," + incomingPulseGroup.mintTable[0].ipaddr + "," + incomingPulseGroup.mintTable[0].port + "," + incomingPulseGroup.mintTable[0].geo + "," + incomingPulseGroup.mintTable[0].bootTimestamp + "," + incomingPulseGroup.mintTable[0].publickey;
-            //else
-            //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
-            console.log("Sending PONG (12) to " + rinfo.address + ":65013 message=" + message);
-            udp.send(message, 65013, rinfo.address);
-        }
-        else {
-            console.log("pulseGroups: could not find a pulse group for responding with credentials");
-        }
+        var message = lib_1.now() + ",12," + me.VERSION + "," + me.IP + "," + me.PORT + "," + me.GEO + "," + me.BOOTTIMESTAMP + "," + me.PUBLICKEY + "," + rinfo.address + "," + rinfo.port;
+        //else
+        //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
+        console.log("Sending PONG (12) to " + rinfo.address + ":65013 message=" + message);
+        udp.send(message, 65013, rinfo.address);
     }
     else {
         //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
