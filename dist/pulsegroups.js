@@ -102,8 +102,8 @@ receiver.on("message", function (pulseBuffer, rinfo) {
             else {
                 var incomingPulseGroup = exports.myPulseGroups[incomingPulse.group];
                 console.log("INCOMING DARP MESSAGE for pulse Group " + incomingPulse.group + " incomingPulse.msgType=" + incomingPulse.msgType + " " + (incomingPulse.geo + ":" + incomingPulse.group) + " message");
-                exports.myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse);
-                incomingPulseGroup.processIncomingPulse(incomingPulse);
+                exports.myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse); //pass to pulse group
+                //incomingPulseGroup.processIncomingPulse(incomingPulse);
             }
         }
     }
