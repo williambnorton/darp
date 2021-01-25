@@ -5,7 +5,7 @@ import ejs = require('ejs');
 import { logger, LogLevel } from './logger';
 import { dump, Log, now, ts, MYVERSION } from './lib';
 import { grapher } from './grapher';
-import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
+import { getPulseGroup, getPulseGroupURL, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
 import { myPulseGroups, addPulseGroup } from './pulsegroups';
 
 
@@ -111,7 +111,7 @@ app.get('/version', function(req, res) {
     "&ts=" + now();
     
     console.log(`would execute nodeFactory on ${req.params.destip}:${req.params.destport} to join group ${req.params.groupname} ${configurl}`);
-
+    getPulseGroupURL(configurl)
     return;
  });
 
@@ -456,7 +456,7 @@ app.get('/nodefactory', function(req, res) {
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
 
     //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
-    addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as Augmented Pulse Group Object
+    addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as an Augmented Pulse Group Object
 
     console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     

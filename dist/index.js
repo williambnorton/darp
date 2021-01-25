@@ -133,6 +133,7 @@ app.get('/invite/:groupname/:destip/:destport', function (req, res) {
         "&myip=" + config.IP +
         "&ts=" + lib_1.now();
     console.log("would execute nodeFactory on " + req.params.destip + ":" + req.params.destport + " to join group " + req.params.groupname + " " + configurl);
+    pulsegroup_1.getPulseGroupURL(configurl);
     return;
 });
 app.get('/stop', function (req, res) {
@@ -431,7 +432,7 @@ app.get('/nodefactory', function (req, res) {
     //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
     //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
-    pulsegroups_1.addPulseGroup(myPulseGroup); //@wbnwbnwbn Add new pulseGroup as Augmented Pulse Group Object
+    pulsegroups_1.addPulseGroup(myPulseGroup); //@wbnwbnwbn Add new pulseGroup as an Augmented Pulse Group Object
     console.log("********* = = = = = = = = =     myPulseGroups = " + JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
     //--------------------------------------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables

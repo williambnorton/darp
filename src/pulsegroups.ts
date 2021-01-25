@@ -75,7 +75,14 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
                 //if (this.isGenesisNode() && this.nodeCount<this.config.MAXNODES) {
 //                    if ( this.nodeCount<this.config.MAXNODES) {
                         //HERE put the nodeCount and the # better paths
-                    //PONG MESSAGE
+            if (typeof myPulseGroups[incomingPulse.group]=="undefined") {
+                console.log(`pulseGroups: IGNORING unknown group pulse: ${incomingPulse.group}`);
+                console.log(`${dump(myPulseGroups)}`);
+                return;
+            } 
+
+            //PONG MESSAGE
+            var incomingPulseGroup=myPulseGroups[incomingPulse.group];
             var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
 
                     //else

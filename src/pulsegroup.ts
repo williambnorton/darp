@@ -1565,6 +1565,10 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
         "&ts=" + now();
+        return(getPulseGroupURL(configurl))
+}
+export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
+
     var pulseGroupObjectURL = encodeURI(configurl);
 
     logger.info(
@@ -1597,11 +1601,11 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
                     console.log(`ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
                     process.exit(36);  //reload software and take another pass
                 }
-                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
-                    logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
-                } else {
-                    logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
-                }
+//                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
+  //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
+    //            } else {
+      //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
+        //        }
                 Log(`JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
                 addPulseGroup(newPulseGroup);
                 return resolve(newPulseGroup);

@@ -1365,7 +1365,7 @@ exports.AugmentedPulseGroup = AugmentedPulseGroup;
  * @param {Config} config contains constants and environmental variables, such as ip and port
  */
 exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, void 0, function () {
-    var configurl, pulseGroupObjectURL;
+    var configurl;
     return __generator(this, function (_a) {
         configurl = "http://" + config.GENESIS +
             "/nodefactory?geo=" + config.GEO +
@@ -1376,6 +1376,12 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
             "&wallet=" + config.WALLET +
             "&myip=" + config.IP +
             "&ts=" + lib_1.now();
+        return [2 /*return*/, (exports.getPulseGroupURL(configurl))];
+    });
+}); };
+exports.getPulseGroupURL = function (configurl) { return __awaiter(void 0, void 0, void 0, function () {
+    var pulseGroupObjectURL;
+    return __generator(this, function (_a) {
         pulseGroupObjectURL = encodeURI(configurl);
         logger_1.logger.info("getPulseGroup(): getting pulseGroup from url=" + pulseGroupObjectURL);
         return [2 /*return*/, new Promise(function (resolve, reject) {
@@ -1397,12 +1403,11 @@ exports.getPulseGroup = function (config) { return __awaiter(void 0, void 0, voi
                             console.log("ERROR: Genesis node refused connection request @" + pulseGroupObjectURL + " exitting...");
                             process.exit(36); //reload software and take another pass
                         }
-                        if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
-                            logger_1.logger.info("getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.");
-                        }
-                        else {
-                            logger_1.logger.info("getPulseGroup(): Configuring non-genesis node ...");
-                        }
+                        //                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
+                        //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
+                        //            } else {
+                        //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
+                        //        }
                         lib_1.Log("JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port);
                         pulsegroups_1.addPulseGroup(newPulseGroup);
                         return resolve(newPulseGroup);
