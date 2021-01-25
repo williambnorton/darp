@@ -137,6 +137,7 @@ var Config = /** @class */ (function () {
     return Config;
 }());
 exports.Config = Config;
+exports.me = new Config(); //use this gloablly to fill in my PUBLIC KEY/IP/etc.
 /** Node configuraton details */
 var MintEntry = /** @class */ (function () {
     function MintEntry(mint, geo, port, incomingIP, publickey, version, wallet, bootTimestamp) {

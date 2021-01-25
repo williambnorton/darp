@@ -1,13 +1,12 @@
 /** @module pulsegroup Create Configuration for joining our pulseGroup object */
 
-import { PulseGroup,AugmentedPulseGroup, Config } from './pulsegroup';
+import { PulseGroup,AugmentedPulseGroup, me } from './pulsegroup';
 import { now, nth_occurrence, dump  } from "./lib";
 import { IncomingPulse } from "./types";
 import { ts } from "./lib"
 
 export type PulseGroups = { [x: string]: AugmentedPulseGroup };
 export var myPulseGroups:PulseGroups={};
-const me=new Config();
 //export function getMyPulseGroups() { return myPulseGroups;}
 
 export function forEachPulseGroup(callback: CallableFunction) {
@@ -97,7 +96,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
                     console.log(`${dump(myPulseGroups)}`);
                     
                 } else {
-                    var incomingPulseGroup=myPulseGroups[incomingPulse.group];
+                    //var incomingPulseGroup=myPulseGroups[incomingPulse.group];
                     console.log(`INCOMING DARP MESSAGE for pulse Group ${incomingPulse.group} incomingPulse.msgType=${incomingPulse.msgType} ${incomingPulse.geo+":"+incomingPulse.group} message`);
                     myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse); //pass to pulse group
                     //incomingPulseGroup.processIncomingPulse(incomingPulse);

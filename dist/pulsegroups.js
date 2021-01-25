@@ -5,7 +5,6 @@ var pulsegroup_1 = require("./pulsegroup");
 var lib_1 = require("./lib");
 var lib_2 = require("./lib");
 exports.myPulseGroups = {};
-var me = new pulsegroup_1.Config();
 //export function getMyPulseGroups() { return myPulseGroups;}
 function forEachPulseGroup(callback) {
     for (var pulseGroup in exports.myPulseGroups)
@@ -66,7 +65,7 @@ receiver.on("message", function (pulseBuffer, rinfo) {
         //
         //PONG MESSAGE
         //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
-        var message = lib_1.now() + ",12," + me.VERSION + "," + me.IP + "," + me.PORT + "," + me.GEO + "," + me.BOOTTIMESTAMP + "," + me.PUBLICKEY + "," + rinfo.address + "," + rinfo.port;
+        var message = lib_1.now() + ",12," + pulsegroup_1.me.VERSION + "," + pulsegroup_1.me.IP + "," + pulsegroup_1.me.PORT + "," + pulsegroup_1.me.GEO + "," + pulsegroup_1.me.BOOTTIMESTAMP + "," + pulsegroup_1.me.PUBLICKEY + "," + rinfo.address + "," + rinfo.port;
         //else
         //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
         console.log("Sending PONG (12) to " + rinfo.address + ":65013 message=" + message);
@@ -84,7 +83,7 @@ receiver.on("message", function (pulseBuffer, rinfo) {
                 console.log("" + lib_1.dump(exports.myPulseGroups));
             }
             else {
-                var incomingPulseGroup = exports.myPulseGroups[incomingPulse.group];
+                //var incomingPulseGroup=myPulseGroups[incomingPulse.group];
                 console.log("INCOMING DARP MESSAGE for pulse Group " + incomingPulse.group + " incomingPulse.msgType=" + incomingPulse.msgType + " " + (incomingPulse.geo + ":" + incomingPulse.group) + " message");
                 exports.myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse); //pass to pulse group
                 //incomingPulseGroup.processIncomingPulse(incomingPulse);
