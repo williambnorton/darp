@@ -477,7 +477,7 @@ export class AugmentedPulseGroup {
         //  First make OWL list for the pulse message
         //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
-        console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
+        //console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
