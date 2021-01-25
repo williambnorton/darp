@@ -3,6 +3,7 @@
 exports.__esModule = true;
 var pulsegroup_1 = require("./pulsegroup");
 var lib_1 = require("./lib");
+var lib_2 = require("./lib");
 exports.myPulseGroups = {};
 //export function getMyPulseGroups() { return myPulseGroups;}
 function forEachPulseGroup(callback) {
@@ -34,7 +35,7 @@ receiver.on("listening", function () {
 });
 receiver.on("message", function (pulseBuffer, rinfo) {
     var incomingTimestamp = lib_1.now().toString();
-    console.log("PulseGroups : Received pulse " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
+    console.log(lib_2.ts() + ("PulseGroups : Received pulse " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port));
     // prepend our timeStamp
     var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
     //demux here to send to proper pulseGroup

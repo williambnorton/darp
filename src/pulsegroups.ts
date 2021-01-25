@@ -3,6 +3,7 @@
 import { PulseGroup,AugmentedPulseGroup, Config } from './pulsegroup';
 import { now, nth_occurrence, dump  } from "./lib";
 import { IncomingPulse } from "./types";
+import { ts } from "./lib"
 
 export type PulseGroups = { [x: string]: AugmentedPulseGroup };
 export var myPulseGroups:PulseGroups={};
@@ -42,7 +43,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
 
     receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
-        console.log(`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         //demux here to send to proper pulseGroup
