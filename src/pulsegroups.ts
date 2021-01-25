@@ -73,33 +73,24 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
                 //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
             console.log(`PING MESSAGE incomingPulse.msgType=${incomingPulse.msgType}    incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
                 //
-                //if (this.isGenesisNode() && this.nodeCount<this.config.MAXNODES) {
-//                    if ( this.nodeCount<this.config.MAXNODES) {
-                        //HERE put the nodeCount and the # better paths
-            if (typeof myPulseGroups[incomingPulse.group]=="undefined") {
-                console.log(`pulseGroups: IGNORING unknown group pulse: ${incomingPulse.group}`);
-                console.log(`${dump(myPulseGroups)}`);
-                return;
-            } 
 
             //PONG MESSAGE
-            var incomingPulseGroup=myPulseGroups[incomingPulse.group];
-            var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
+            
+            //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
+            var incomingPulseGroup=null;
+            for (var p in myPulseGroups)
+                if (myPulseGroups[p].groupOwner==me.geo) incomingPulseGroup=myPulseGroups[p];  //pick last created
+            if (incomingPulseGroup!=null) {
+                var message=`${now()},12,VERSION_GOES_HERE,${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
 
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
-            console.log(`Sending PONG (12) to ${rinfo.address}:65013 message=${message}`);
-            udp.send(message, 65013, rinfo.address);
-//                    } else {
-//                        console.log(`pulseGroup full - not answering request to join... `);
-//                    }
-                //
-                //
-                // STILL DEVELOPING THIS AREA -- PING should include stuff to allow receiver to decide if it is a better connection for it
-                //  PONG should include enough to advocate the desired outcome - connect to me, to my genesis node, to this obne closer to you.
-                //
-                //
+                console.log(`Sending PONG (12) to ${rinfo.address}:65013 message=${message}`);
+                udp.send(message, 65013, rinfo.address);
+            } else {
+                console.log(`pulseGroups: could not find a pulse group for responding with credentials`);
+            }
         } else {
                 //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
             if (parseInt(incomingPulse.msgType)==12) {    //PONG response
