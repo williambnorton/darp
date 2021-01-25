@@ -397,7 +397,7 @@ app.get('/nodefactory', function(req, res) {
 
         //myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
         //@wbnwbnwbn - replace with this
-        addPulseGroup(myPulseGroup);    
+        //addPulseGroup(myPulseGroup);    
 
 
 

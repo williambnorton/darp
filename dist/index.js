@@ -387,7 +387,7 @@ app.get('/nodefactory', function (req, res) {
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
         //myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
         //@wbnwbnwbn - replace with this
-        pulsegroups_1.addPulseGroup(myPulseGroup);
+        //addPulseGroup(myPulseGroup);    
         logger_1.logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup));
