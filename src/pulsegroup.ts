@@ -538,7 +538,7 @@ export class AugmentedPulseGroup {
                 myMint + "," + 
                 owls;
                 //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
 
