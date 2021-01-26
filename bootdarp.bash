@@ -36,7 +36,7 @@ SLEEPTIME=3 #time in seconds between software runs in forever loop
 
 MAXCYCLES=10 # of cycles before reloading docker
 GRANULARITY=100 #  milliseconds before we say we should join the closer genesis node
-GRANULARITY=500 #  alwayts connect to nearest node regardless of latency
+GRANULARITY=200 #  alwayts connect to nearest node regardless of latency
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
