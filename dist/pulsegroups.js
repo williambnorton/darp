@@ -83,7 +83,7 @@ receiver.on("message", function (pulseBuffer, rinfo) {
             }
             else {
                 //var incomingPulseGroup=myPulseGroups[incomingPulse.group];
-                console.log("INCOMING DARP MESSAGE from " + (incomingPulse.geo + ":" + incomingPulse.group) + " ");
+                //console.log(`INCOMING DARP MESSAGE from ${incomingPulse.geo+":"+incomingPulse.group} `);
                 exports.myPulseGroups[incomingPulse.group].processIncomingPulse(incomingPulse); //pass to pulse group
                 //incomingPulseGroup.processIncomingPulse(incomingPulse);
             }
