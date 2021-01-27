@@ -15,17 +15,21 @@ export function forEachPulseGroup(callback: CallableFunction) {
 };
 
 export function addPulseGroup(pulseGroup:PulseGroup) {
-    console.log(`Adding new pulseGroup object ${pulseGroup.groupName}`);
+    console.log(`addPulseGroup(): Adding new pulseGroup object ${pulseGroup.groupName}`);
 
     myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
+
     console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
     console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
     console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
     console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
     console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
+
     if (Object.keys(myPulseGroups).length!=1) {
         myPulseGroups[pulseGroup.groupName].launch();
     }
+    console.log(`addPulseGroup() # pulseGroups= ${JSON.stringify(myPulseGroups,null,2)}`);
+
     return myPulseGroups[pulseGroup.groupName];
 };
 
