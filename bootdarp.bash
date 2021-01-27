@@ -77,8 +77,8 @@ do
         GENESIS=$MY_IP:$MY_PORT
     fi
 
-    if [ $IS_GENESIS -eq 0 ]; then
-        echo `date` bootdarp We are setting up GENESIS NODE connected to our first started node
+    if [ $IS_GENESIS -eq 0 -a  "$GENESIS" != "" ]; then
+        echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
         GENESIS=$FIRST_GENESIS:65013   #THIS BASICALLY MEANS 
     fi
 
