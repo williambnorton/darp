@@ -166,17 +166,19 @@
                     //    $("#extraordinary").append("<tr><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
 
 
+                    /*
                     // console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                     if ( pulseGroup.nodeCount >= 1 ) {
                         if (nodeCountLastTime!=0) {
                             //if ( nodeCountLastTime != pulseGroup.nodeCount ) {  //immediately show changes so screen reflects reality
                             //    if (( nodeCountLastTime > pulseGroup.nodeCount+1) || (nodeCountLastTime < pulseGroup.nodeCount-1 )) {
-                            if ( Math.abs(nodeCountLastTime - pulseGroup.nodeCount ) >4 ) {
+                                if ( Math.abs(nodeCountLastTime - pulseGroup.nodeCount ) >20 ) {
                                     console.log("index.html: RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                                     location.reload();
                             }
                         } else nodeCountLastTime=pulseGroup.nodeCount;
                     }
+                    */
                     nodeCountLastTime=pulseGroup.nodeCount ;
 
                     // update the dateTime so people know the updates re coming in
