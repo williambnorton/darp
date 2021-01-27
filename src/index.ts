@@ -517,8 +517,10 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in
 
 
-        if (myPulseGroup.groupOwner  != me.geo ) {
-            myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup);           
+        if (myPulseGroup.groupOwner  != me.geo ) {  //we instantiated someone else's pulse group
+            myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup); 
+            addPulseGroup(myPulseGroups[ me.geo+".1" ]);  //start up my own oulse group
+        } else {         
             console.log(`index.ts:  WE LAUNCHED OUR OWN PULSE GROUP ${JSON.stringify(myPulseGroups[ me.geo+".1" ],null,2) }`);
         }
 

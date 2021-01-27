@@ -486,8 +486,11 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
                 pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
-                if (myPulseGroup.groupOwner != me.geo) {
+                if (myPulseGroup.groupOwner != me.geo) { //we instantiated someone else's pulse group
                     pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myOriginalPulseGroup);
+                    pulsegroups_1.addPulseGroup(pulsegroups_1.myPulseGroups[me.geo + ".1"]); //start up my own oulse group
+                }
+                else {
                     console.log("index.ts:  WE LAUNCHED OUR OWN PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"], null, 2));
                 }
                 //could clone this new pulseGroup as my own for accepting new connections
