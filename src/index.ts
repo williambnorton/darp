@@ -492,7 +492,7 @@ app.get('/nodefactory', function(req, res) {
     res.end(JSON.stringify(newNodePulseGroup));  // send mint:0 mint:1 *mint:N groupEntry *entryN
 });
 
-
+/*
 // Initiate the protocol  
 //  this is where it all begins - here we start up our own group
 // do this also for a group created for children
@@ -529,6 +529,7 @@ app.get('/nodefactory', function(req, res) {
         logger.error(error);
     }
 })();
+*/
 
 //
 //  darp.bash substitutes in proper CODE and CONFIG for new node

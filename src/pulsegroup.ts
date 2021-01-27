@@ -1473,6 +1473,39 @@ export class AugmentedPulseGroup {
         });
     };
 
+
+
+    launch = () => {
+        try {
+                
+            this.flashWireguard();  // create our wireguard files based on our mint Table
+            this.pulse();               //start pulsing
+            //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
+            setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
+            setTimeout(this.checkSWversion, 10 * 1000);  // check that we have the best software
+            setTimeout(this.measurertt, 2 * 1000); // ping across wireguard every other second  
+        
+            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
+            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
+            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
+            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
+            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
+        } catch (error) {
+            logger.error(error);
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
     //
     //  measurertt() - subagents/rtt doing measurements based on pulling pulseGroup once a minute
     //              it creates a file ip.<ipaddr> if it responds to ping, deletes if it does not respond

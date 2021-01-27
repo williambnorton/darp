@@ -14,6 +14,8 @@ exports.forEachPulseGroup = forEachPulseGroup;
 function addPulseGroup(pulseGroup) {
     console.log("Adding new pulseGroup object " + pulseGroup.groupName);
     exports.myPulseGroups[pulseGroup.groupName] = new pulsegroup_1.AugmentedPulseGroup(pulseGroup);
+    console.log("addPulseGroup() calling launch()");
+    exports.myPulseGroups[pulseGroup.groupName].launch();
     return exports.myPulseGroups[pulseGroup.groupName];
 }
 exports.addPulseGroup = addPulseGroup;
@@ -60,14 +62,14 @@ receiver.on("message", function (pulseBuffer, rinfo) {
     };
     if (incomingPulse.msgType == "11") {
         //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
-        console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType + "    incomingPulse=" + JSON.stringify(incomingPulse, null, 2));
+        //console.log(`PING MESSAGE received incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
         //
         //PONG MESSAGE
         //var message=`${now()},12,${incomingPulseGroup.mintTable[0].version},${incomingPulseGroup.mintTable[0].ipaddr},${incomingPulseGroup.mintTable[0].port},${incomingPulseGroup.mintTable[0].geo},${incomingPulseGroup.mintTable[0].bootTimestamp},${incomingPulseGroup.mintTable[0].publickey}` 
         var message = lib_1.now() + ",12," + pulsegroup_1.CONFIG.VERSION + "," + pulsegroup_1.CONFIG.IP + "," + pulsegroup_1.CONFIG.PORT + "," + pulsegroup_1.CONFIG.GEO + "," + pulsegroup_1.CONFIG.BOOTTIMESTAMP + "," + pulsegroup_1.CONFIG.PUBLICKEY + ",From," + rinfo.address + "," + rinfo.port;
         //else
         //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
-        console.log("Sending PONG (12) to " + rinfo.address + ":65013 message=" + message);
+        //    console.log(`Sending PONG (12) to ${rinfo.address}:65013 message=${message}`);
         udp.send(message, 65013, rinfo.address);
     }
     else {

@@ -18,6 +18,8 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
     console.log(`Adding new pulseGroup object ${pulseGroup.groupName}`);
 
     myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
+    console.log(`addPulseGroup() calling launch()`);
+    myPulseGroups[pulseGroup.groupName].launch();
     return myPulseGroups[pulseGroup.groupName];
 };
 
@@ -70,7 +72,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
 
         if (incomingPulse.msgType=="11") {
             //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
-            console.log(`PING MESSAGE incomingPulse.msgType=${incomingPulse.msgType}    incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
+            //console.log(`PING MESSAGE received incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
             //
 
             //PONG MESSAGE
@@ -82,7 +84,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
-                console.log(`Sending PONG (12) to ${rinfo.address}:65013 message=${message}`);
+            //    console.log(`Sending PONG (12) to ${rinfo.address}:65013 message=${message}`);
                 udp.send(message, 65013, rinfo.address);
 
         } else {
