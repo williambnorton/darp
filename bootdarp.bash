@@ -36,7 +36,6 @@ SLEEPTIME=3 #time in seconds between software runs in forever loop
 
 MAXCYCLES=10 # of cycles before reloading docker
 GRANULARITY=100 #  milliseconds before we say we should join the closer genesis node
-GRANULARITY=200 #  alwayts connect to nearest node regardless of latency
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -68,12 +67,19 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 export GENESISNODELIST=`cat *.config | sed ':a;N;$!ba;s/\n/ /g' `   #   IP:PORT:NAME
 #echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`cat *.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
+cat *.config | grep 65013 | grep $MY_IP
+IS_GENESIS=$?     #
 echo `date` "$0 STARTING DARP MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
 CYCLES=0;
 while :
 do
     if [ "$MY_IP" == "$FIRST_GENESIS" ]; then 
         GENESIS=$MY_IP:$MY_PORT
+    fi
+
+    if [ $IS_GENESIS -eq 0 ]; then
+        echo `date` bootdarp We are setting up GENESIS NODE connected to our first started node
+        GENESIS=$FIRST_GENESIS:65013   #THIS BASICALLY MEANS 
     fi
 
     #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
