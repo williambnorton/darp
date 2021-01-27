@@ -87,7 +87,7 @@ function timeout() {
 //var timerID=timeout();
 var refreshIntervalId = setInterval(timeout, 1000);
 
-var deleted:string[]=[];  // a list of nodes already deleted, so we don't hammer the disk
+var deleted=[];  // a list of nodes already deleted, so we don't hammer the disk
 
 http.get("http://127.0.0.1:65013/state",(res2) => {
     let  json = "";
