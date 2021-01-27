@@ -80,7 +80,7 @@ do
         echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
         GENESIS=$FIRST_GENESIS:65013   #THIS BASICALLY MEANS 
     fi
-
+    echo `date` IS_GENESIS=$IS_GENESIS GENESIS=$GENESIS
     #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
     if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
         FIRST_RESPONDER_LATENCY=0   
