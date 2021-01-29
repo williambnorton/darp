@@ -52,6 +52,9 @@ var server = app.listen(config.PORT, '0.0.0.0', function() {
     console.log(`UDP server listening on ${config.PORT}`);
 }) //.on('error', console.log);
 
+//
+//  / is for instrumentation for ALL pulseGroups
+//
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -71,7 +74,7 @@ app.get('/', function(req, res) {
     });
 });
 
-
+//
 //  http://191.237.254.39:65013/extra?a=MAZ-SOUTHEASTASIA-00&i=AWS-AP-SOUTHEAST-1B&z=MAZ-CENTRALUS-00
 //
 app.get('/extra/:src/:intermediary/:dst', function(req, res) {
@@ -86,6 +89,9 @@ app.get('/extra/:src/:intermediary/:dst', function(req, res) {
     return;
 });
 
+//
+//  /version - is showing the config software version for all groups
+//
 app.get('/version', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -93,12 +99,18 @@ app.get('/version', function(req, res) {
     res.end(JSON.stringify(config.VERSION));
     return;
  });
- 
+
+ //
+ // /pause - not used yet - should be per group
+ //
  app.get('/pause', function(req, res) {
     console.log(`PAUSING -- here we would set adminControl on the pulse group to SINGLESTEP`);
     return;
  });
  
+ //
+ //     /invite - this message is sent by Genesis node invinting to be potential relay
+ //
  app.get('/invite/:groupname/:destip/:destport', function(req, res) {
 
     console.log(`INVITE -- This would be only valid over an encrypted path ${dump(req.params)}`);
