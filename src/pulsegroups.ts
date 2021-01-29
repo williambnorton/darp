@@ -19,13 +19,13 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
 
     myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
 
-    console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
-    console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
-    console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
-    console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
-    console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
-
+    
     if (Object.keys(myPulseGroups).length!=1) {
+        console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
+        console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
+        console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
+        console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
+        console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
         myPulseGroups[pulseGroup.groupName].launch();
     }
     console.log(`addPulseGroup() # pulseGroups= ${JSON.stringify(myPulseGroups,null,2)}`);

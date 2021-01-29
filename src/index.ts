@@ -403,7 +403,8 @@ app.get('/nodefactory', function(req, res) {
         logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
-        
+        addPulseGroup(myPulseGroup);   //this should add it into pulseGroups array-GOAL: myPulseGroup is where I add new nodes
+
         return;
     }
 
