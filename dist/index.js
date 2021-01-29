@@ -54,6 +54,8 @@ var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, confi
 var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, me, pulse); //this is where I allow others to connect to me
+pulsegroups_1.myPulseGroups[config.GEO + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myPulseGroup);
+//    myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
 //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //var myPulseGroups = getMyPulseGroups();
 logger_1.logger.info("Starting with my own pulseGroup=" + lib_1.dump(myPulseGroup));
