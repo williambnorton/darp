@@ -98,10 +98,10 @@ http.get("http://127.0.0.1:65013/state",(res2) => {
 
     res2.on("end", () => {
         const pulseGroups=JSON.parse(json);
-        console.log(`pulseGroups=${JSON.stringify(pulseGroups,null,2)}`);
+        //console.log(`pulseGroups=${JSON.stringify(pulseGroups,null,2)}`);
 	    for ( var p in pulseGroups ) {
             var pulseGroup=pulseGroups[p]
-            console.log(`pulseGroup=${JSON.stringify(pulseGroup,null,2)}`);
+            //console.log(`pulseGroup=${JSON.stringify(pulseGroup,null,2)}`);
 
             for (const node in pulseGroup.pulses) {
                 //console.log(`json=${JSON.stringify(pulseGroup.pulses[node],null,2)}`);
