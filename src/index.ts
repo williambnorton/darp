@@ -404,7 +404,7 @@ app.get('/nodefactory', function(req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
         addPulseGroup(myPulseGroup);   //this should add it into pulseGroups array-GOAL: myPulseGroup is where I add new nodes
-
+        
         return;
     }
 
@@ -412,7 +412,7 @@ app.get('/nodefactory', function(req, res) {
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log(ts()+`........................ SETTING UP NON-GENESIS PULSE NODE for ${incomingGeo} to connect to my ${config.GEO}.1 pulseGroup ...................`);
 
-
+    var myPulseGroup=myPulseGroups[ me.geo + ":" + me.geo + ".1"];  //this is the pulseGroup to add to
 
 
 
