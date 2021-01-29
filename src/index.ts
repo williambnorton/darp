@@ -423,7 +423,7 @@ app.get('/nodefactory', function(req, res) {
     version=config.VERSION;
 
     var myPulseGroup=myPulseGroups[ me.geo + ".1"];  //this is the pulseGroup to add to
-    console.log(`index.ts: myPulseGroup that I can add to is:${dump(myPulseGroup)}`);
+    //console.log(`index.ts: myPulseGroup that I can add to is:${dump(myPulseGroup)}`);
 
 
     // handle Genesis node case - first to start up
@@ -502,7 +502,7 @@ app.get('/nodefactory', function(req, res) {
     //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
     //addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as an Augmented Pulse Group Object
 
-    console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
+    //console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     
 
     //--------------------------------------------------------------------------
@@ -547,7 +547,7 @@ app.get('/nodefactory', function(req, res) {
         myPulseGroup = await getPulseGroup(config);   //replaces starting myPulseGroup
         //var anchorPulseGroup = await getPulseGroup(config);   //t
 
-        console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
+        //console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
         var augmentedPulseGroup = new AugmentedPulseGroup(myPulseGroup);   //augmented with pulseGroup methods
 
         //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
@@ -571,7 +571,7 @@ app.get('/nodefactory', function(req, res) {
         
         //could clone this new pulseGroup as my own for accepting new connections
 
-        console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
+        //console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
     } catch (error) {
         logger.error(error);
     }

@@ -425,7 +425,7 @@ app.get('/nodefactory', function (req, res) {
     version = lib_1.MYVERSION();
     version = config.VERSION;
     var myPulseGroup = pulsegroups_1.myPulseGroups[me.geo + ".1"]; //this is the pulseGroup to add to
-    console.log("index.ts: myPulseGroup that I can add to is:" + lib_1.dump(myPulseGroup));
+    //console.log(`index.ts: myPulseGroup that I can add to is:${dump(myPulseGroup)}`);
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port == config.GENESISPORT)) { // Genesis node instantiating itself - don't need to add anything
         console.log("I AM GENESIS NODE incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
@@ -484,7 +484,7 @@ app.get('/nodefactory', function (req, res) {
     myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
     //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
     //addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as an Augmented Pulse Group Object
-    console.log("********* = = = = = = = = =     myPulseGroups = " + JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
+    //console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     //--------------------------------------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
@@ -526,8 +526,6 @@ app.get('/nodefactory', function (req, res) {
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
                 myPulseGroup = _a.sent(); //replaces starting myPulseGroup
-                //var anchorPulseGroup = await getPulseGroup(config);   //t
-                console.log("asynch() DARP NODE STARTED: anchor GENESIS=" + myPulseGroup.groupOwner + " pulseGroup=" + lib_1.dump(myPulseGroup));
                 augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(myPulseGroup);
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
@@ -544,8 +542,6 @@ app.get('/nodefactory', function (req, res) {
                 else {
                     console.log("index.ts:  WE LAUNCHED OUR OWN PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"], null, 2));
                 }
-                //could clone this new pulseGroup as my own for accepting new connections
-                console.log("index.ts:    launching------>       myPulseGroups=" + JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
