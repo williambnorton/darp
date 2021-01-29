@@ -250,7 +250,7 @@ app.get('/graph/:src/:dst', function (req, res) {
 app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log("index.ts: /pulsegroup ");
+    console.log("index.ts: fetching /pulsegroup " + req.params.pulsegroup + " " + req.params.mint);
     // pulseGroup 
     if (typeof req.params.pulsegroup != "undefined") {
         for (var pulseGroup in pulsegroups_1.myPulseGroups) {
