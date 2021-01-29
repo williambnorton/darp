@@ -378,7 +378,8 @@ app.get('/nodefactory', function(req, res) {
     version=MYVERSION(); 
     version=config.VERSION;
 
-
+    var myPulseGroup=myPulseGroups[ me.geo + ":" + me.geo + ".1"];  //this is the pulseGroup to add to
+    console.log(`index.ts: myPulseGroup=${dump(myPulseGroup)}`);
 
 
     // handle Genesis node case - first to start up
@@ -412,7 +413,6 @@ app.get('/nodefactory', function(req, res) {
     logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log(ts()+`........................ SETTING UP NON-GENESIS PULSE NODE for ${incomingGeo} to connect to my ${config.GEO}.1 pulseGroup ...................`);
 
-    var myPulseGroup=myPulseGroups[ me.geo + ":" + me.geo + ".1"];  //this is the pulseGroup to add to
 
 
 

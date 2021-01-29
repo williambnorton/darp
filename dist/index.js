@@ -376,6 +376,8 @@ app.get('/nodefactory', function (req, res) {
     var version = String(req.query.version); ///why do we look at client version param?
     version = lib_1.MYVERSION();
     version = config.VERSION;
+    var myPulseGroup = pulsegroups_1.myPulseGroups[me.geo + ":" + me.geo + ".1"]; //this is the pulseGroup to add to
+    console.log("index.ts: myPulseGroup=" + lib_1.dump(myPulseGroup));
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port == config.GENESISPORT)) { // Genesis node instantiating itself - don't need to add anything
         console.log("I AM GENESIS NODE incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
@@ -397,7 +399,6 @@ app.get('/nodefactory', function (req, res) {
     //  Or - Handle pulseGroup member case
     logger_1.logger.info("........................ SETTING UP NON-GENESIS PULSE NODE ...................");
     console.log(lib_1.ts() + ("........................ SETTING UP NON-GENESIS PULSE NODE for " + incomingGeo + " to connect to my " + config.GEO + ".1 pulseGroup ..................."));
-    var myPulseGroup = pulsegroups_1.myPulseGroups[me.geo + ":" + me.geo + ".1"]; //this is the pulseGroup to add to
     if (Object.keys(myPulseGroup.pulses).length >= config.MAXNODES) {
         console.log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + config.MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + incomingGeo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
         lib_1.Log(lib_1.ts() + ("EXCEEDED MAX NODES (" + myPulseGroup.nodeCount + ">" + config.MAXNODES + ")IN PULSE GROUP - IGNORING REQUEST from " + incomingGeo + " " + incomingIP + " " + clientIncomingIP + " " + req.query.myip));
