@@ -1191,7 +1191,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.flashWireguard(); // change my wg config
                 return; // genesis node dies not fetch its own configuration
             }
-            var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/mintTable/" + _this.groupName + "/" + _this.mintTable[0].mint); //ask for mintTable with my mint in as mint 0
+            //var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName + "/" + this.mintTable[0].mint);  //ask for mintTable with my mint in as mint 0
+            var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/mintTable/" + _this.groupName); //ask for mintTable with my mint in as mint 0
             logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
             var self = _this;
             // Fetch mintTable and pulses from genesis node
