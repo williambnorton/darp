@@ -1423,7 +1423,7 @@ export class AugmentedPulseGroup {
             this.flashWireguard(); // change my wg config
             return; // genesis node dies not fetch its own configuration
         }
-        var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + this.mintTable[0].mint);
+        var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName + "/" + this.mintTable[0].mint);  //ask for mintTable with my mint in as mint 0
         logger.info(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
 
