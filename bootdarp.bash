@@ -78,55 +78,57 @@ do
 
     if [ $IS_GENESIS -eq 0 -a  "$GENESIS" == "" ]; then
         echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
-        GENESIS=$FIRST_GENESIS:65013   #THIS BASICALLY MEANS 
-    fi
-    echo `date` IS_GENESIS=$IS_GENESIS GENESIS=$GENESIS
-
-    #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
-    if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
-        FIRST_RESPONDER_LATENCY=0   
-        MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
-        MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
-        if [ "$MY_GENESIS_PORT" == "" ]; then
-            MY_GENESIS_PORT=65013
-        fi
-        MY_GENESIS_GEO=$MY_GEO  #
-        MY_GENESIS_GROUP="${MY_GEO}.1"
-        MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-        echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
+        MY_GENESIS_IP=$FIRST_GENESIS   #THIS BASICALLY MEANS 
+        MY_GENESIS_PORT=65013
     else
-        echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
-        #rm testport.txt
-        #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
-        scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
+        echo `date` IS_GENESIS=$IS_GENESIS GENESIS=$GENESIS
 
-        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-        echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-       cat testport.txt
-        #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
-        FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
-        echo "First to respond ... FIRST_LINE=$FIRST_LINE"
-        FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-        echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
-        if [ "$FIRST_LINE" != "" -a "$FIRST_RESPONDER_LATENCY" != "" -a $FIRST_RESPONDER_LATENCY -lt $GRANULARITY ]; then
-            #FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-            MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
-            MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
-            MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
-            MY_GENESIS_GROUP="${MY_GENESIS_GEO}.1"
-            MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
-            echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
-        else    #default to self as a standalone genesis node 
-            FIRST_RESPONDER_LATENCY="0"
-            MY_GENESIS_IP=$MY_IP
-            MY_GENESIS_PORT=$MY_PORT
-            MY_GENESIS_GEO=$MY_GEO
-            MY_GENESIS_GROUP=${MY_GEO}.1
+        #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
+        if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
+            FIRST_RESPONDER_LATENCY=0   
+            MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
+            MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
+            if [ "$MY_GENESIS_PORT" == "" ]; then
+                MY_GENESIS_PORT=65013
+            fi
+            MY_GENESIS_GEO=$MY_GEO  #
+            MY_GENESIS_GROUP="${MY_GEO}.1"
             MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-            echo `date` "Connecting to SELF: $MY_GENESIS_SWVERSION "
+            echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
+        else
+            echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
+            #rm testport.txt
+            #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
+            scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
+
+            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
+        cat testport.txt
+            #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
+            FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
+            echo "First to respond ... FIRST_LINE=$FIRST_LINE"
+            FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+            echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
+            if [ "$FIRST_LINE" != "" -a "$FIRST_RESPONDER_LATENCY" != "" -a $FIRST_RESPONDER_LATENCY -lt $GRANULARITY ]; then
+                #FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
+                MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
+                MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
+                MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
+                MY_GENESIS_GROUP="${MY_GENESIS_GEO}.1"
+                MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
+                echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
+            else    #default to self as a standalone genesis node 
+                FIRST_RESPONDER_LATENCY="0"
+                MY_GENESIS_IP=$MY_IP
+                MY_GENESIS_PORT=$MY_PORT
+                MY_GENESIS_GEO=$MY_GEO
+                MY_GENESIS_GROUP=${MY_GEO}.1
+                MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+                echo `date` "Connecting to SELF: $MY_GENESIS_SWVERSION "
+            fi
         fi
     fi
     #
