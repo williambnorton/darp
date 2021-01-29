@@ -135,6 +135,7 @@ app.get('/pause', function (req, res) {
 });
 //
 //     /invite - this message is sent by Genesis node invinting to be potential relay
+//             simpler - Genesis node sends as new PG payload (the pulseGroup object)
 //
 app.get('/invite/:groupname/:destip/:destport', function (req, res) {
     console.log("INVITE -- This would be only valid over an encrypted path " + lib_1.dump(req.params));
@@ -151,6 +152,9 @@ app.get('/invite/:groupname/:destip/:destport', function (req, res) {
     pulsegroup_1.getPulseGroupURL(configurl);
     return;
 });
+//
+// /stop - stops ALL pulse Groups by exiting 86 - this means kill docker
+//
 app.get('/stop', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger_1.logger.info("EXITTING and Stopping the node request from " + ip);
@@ -170,6 +174,9 @@ app.get('/stop', function (req, res) {
     }
     process.exit(86);
 });
+//
+//  /reboot - reboot - stops ALL pulse Groups by exitting -1 - this means reboot/refetch/reload docker
+//
 app.get('/reboot', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger_1.logger.info("/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from " + ip);
@@ -189,6 +196,9 @@ app.get('/reboot', function (req, res) {
     }
     process.exit(-1);
 });
+//
+//  /reload - refetch/reload the DARP protocol software by exitting 36
+//
 app.get('/reload', function (req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger_1.logger.info("EXITTING to reload the system request from: " + ip);
@@ -210,12 +220,18 @@ app.get('/reload', function (req, res) {
     //
     process.exit(36);
 });
+//
+// /asset-manifest - stops the complaining
+//
 app.get('/asset-manifest.json', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify({}, null, 2));
     return;
 });
+//
+//  /graph - this should be per pulseGroup
+//
 app.get('/graph/:src/:dst', function (req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -226,11 +242,15 @@ app.get('/graph/:src/:dst', function (req, res) {
     res.end(txt);
     return;
 });
+//
+//  /pulseGroup
+//
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
 app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
+    console.log("index.ts: /pulsegroup ");
     // pulseGroup 
     if (typeof req.params.pulsegroup != "undefined") {
         for (var pulseGroup in pulsegroups_1.myPulseGroups) {
@@ -252,6 +272,9 @@ app.get('/pulsegroup/:pulsegroup/:mint', function (req, res) {
         return;
     }
 });
+//
+//  /pulseGroups /state    <-- this is actually the workhorse
+//
 var fs = require('fs');
 app.get(['/pulsegroups', '/state'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -273,6 +296,9 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
     }
     return;
 });
+//
+//  /me - shorthand for my pulseGroup
+//
 app.get('/me', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -294,6 +320,9 @@ app.get('/me', function (req, res) {
     */
     return;
 });
+//
+//  /mintTable - should return my pulseGroups[ me.geo + ".1" ]
+//
 app.get('/mintTable', function (req, res) {
     logger_1.logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
@@ -314,7 +343,7 @@ function findPublicKey(incomingKey) {
     return null;
 }
 //
-//  only return if you have it
+//  /publickey  -  only return if you have it
 //
 app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
     console.log("fetching '/publickey' searching for " + req.params.publickey);
@@ -351,7 +380,9 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
         return;
     }
 });
+//
 // nodeFactory - the engine of the system - Genesis node we clone ourselves and set self to the new guy
+//
 // this way the new guy starts wth our collective (genesis) understanding of counters)
 // we also sync counters this with genesis certain times as a hack or defensive measure
 // Configuration for node - allocate a mint
