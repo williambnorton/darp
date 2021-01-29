@@ -226,14 +226,14 @@ app.get('/graph/:src/:dst', function(req, res) {
 });
 
 //
-//  /pulseGroup
+//  /mintTable
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
-app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
+app.get('/mintTable/:pulsegroup/:mint', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log(`index.ts: fetching /pulsegroup ${req.params.pulsegroup} ${req.params.mint}`);
+    console.log(`index.ts: fetching /mintTable ${req.params.pulsegroup} ${req.params.mint}`);
     // pulseGroup 
     if (typeof req.params.pulsegroup != "undefined") { 
         for (var pulseGroup in myPulseGroups) {
@@ -243,16 +243,17 @@ app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
                     mint=parseInt(req.params.mint)          // or send mint0 of caller
                 
                 let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));  // clone my pulseGroup obecjt 
-                clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
-
+                if (typeof clonedPulseGroup.mintTable[mint] != "undefined"  && clonedPulseGroup.mintTable[mint] != null ) 
+                    clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
+                    
                 res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
                 return;  // we sent the more specific
             }
         }
         res.end(JSON.stringify(null));
     } else {
-        logger.warning("No pulseGroup specified");
-        res.end(JSON.stringify(myPulseGroups, null, 2));
+        logger.warning("/mintTable No pulseGroup specified");
+        res.end(null);
         return;
     }
 });
@@ -312,7 +313,7 @@ app.get('/me', function(req, res) {
 //
 //  /mintTable - should return my pulseGroups[ me.geo + ".1" ]
 //
-app.get('/mintTable', function(req, res) {
+app.get('/oldmintTable', function(req, res) {
     logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
