@@ -376,8 +376,8 @@ app.get('/nodefactory', function (req, res) {
     var version = String(req.query.version); ///why do we look at client version param?
     version = lib_1.MYVERSION();
     version = config.VERSION;
-    var myPulseGroup = pulsegroups_1.myPulseGroups[me.geo + ":" + me.geo + ".1"]; //this is the pulseGroup to add to
-    console.log("index.ts: myPulseGroup=" + lib_1.dump(myPulseGroup));
+    var myPulseGroup = pulsegroups_1.myPulseGroups[me.geo + ".1"]; //this is the pulseGroup to add to
+    console.log("index.ts: myPulseGroup that I can add to is:" + lib_1.dump(myPulseGroup));
     // handle Genesis node case - first to start up
     if (incomingIP == me.ipaddr && (port == config.GENESISPORT)) { // Genesis node instantiating itself - don't need to add anything
         console.log("I AM GENESIS NODE incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
@@ -488,7 +488,7 @@ app.get('/nodefactory', function (req, res) {
                 setTimeout(augmentedPulseGroup.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
-                pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in
+                pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in started up from self or genesis node
                 if (myPulseGroup.groupOwner != me.geo) { //we instantiated someone else's pulse group
                     pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myOriginalPulseGroup);
                     pulsegroups_1.addPulseGroup(pulsegroups_1.myPulseGroups[me.geo + ".1"]); //start up my own oulse group

@@ -378,8 +378,8 @@ app.get('/nodefactory', function(req, res) {
     version=MYVERSION(); 
     version=config.VERSION;
 
-    var myPulseGroup=myPulseGroups[ me.geo + ":" + me.geo + ".1"];  //this is the pulseGroup to add to
-    console.log(`index.ts: myPulseGroup=${dump(myPulseGroup)}`);
+    var myPulseGroup=myPulseGroups[ me.geo + ".1"];  //this is the pulseGroup to add to
+    console.log(`index.ts: myPulseGroup that I can add to is:${dump(myPulseGroup)}`);
 
 
     // handle Genesis node case - first to start up
@@ -515,7 +515,7 @@ app.get('/nodefactory', function(req, res) {
         setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
         setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
 
-        myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in
+        myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in started up from self or genesis node
 
 
         if (myPulseGroup.groupOwner  != me.geo ) {  //we instantiated someone else's pulse group
@@ -524,7 +524,7 @@ app.get('/nodefactory', function(req, res) {
         } else {         
             console.log(`index.ts:  WE LAUNCHED OUR OWN PULSE GROUP ${JSON.stringify(myPulseGroups[ me.geo+".1" ],null,2) }`);
         }
-
+        
         //could clone this new pulseGroup as my own for accepting new connections
 
         console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
