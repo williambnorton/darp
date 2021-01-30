@@ -886,7 +886,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
                         if (srcMintEntry == null) {
                             console.log("We do not have this mint and group Owner announced it: " + mint);
-                            //we do not have this mint in our mintTale
+                            //we do not have this mint in our mintTable
                             logger_1.logger.info("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                             console.log("Owner announced a  MINT " + mint + " we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config");
                             _this.syncGenesisPulseGroup(); // HACK: any membership change we need resync
@@ -1193,7 +1193,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             //var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName + "/" + this.mintTable[0].mint);  //ask for mintTable with my mint in as mint 0
             var url = encodeURI('http://' + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/mintTable/" + _this.groupName); //ask for mintTable with my mint in as mint 0
-            logger_1.logger.info("syncGenesisPulseGroup(): url=" + url);
+            console.log("syncGenesisPulseGroup(): url=" + url);
             var self = _this;
             // Fetch mintTable and pulses from genesis node
             http.get(url, function (res) {

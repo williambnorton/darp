@@ -1092,7 +1092,7 @@ export class AugmentedPulseGroup {
                     //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
                     if (srcMintEntry == null) {
                         console.log(`We do not have this mint and group Owner announced it: ${mint}`);
-                        //we do not have this mint in our mintTale
+                        //we do not have this mint in our mintTable
                         logger.info(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
                         console.log(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
                         this.syncGenesisPulseGroup();  // HACK: any membership change we need resync
@@ -1425,7 +1425,7 @@ export class AugmentedPulseGroup {
         }
         //var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName + "/" + this.mintTable[0].mint);  //ask for mintTable with my mint in as mint 0
         var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName);  //ask for mintTable with my mint in as mint 0
-        logger.info(`syncGenesisPulseGroup(): url=${url}`);
+        console.log(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
 
         // Fetch mintTable and pulses from genesis node
