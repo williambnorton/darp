@@ -971,7 +971,7 @@ export class AugmentedPulseGroup {
                 this.config.VERSION=mySWversion   //we will exit 
                 //var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
                 //console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
-                console.log(ts()+`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
+                //console.log(ts()+`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 if (genesisVersion != mySWversion) {
                     const dockerVersion=genesisVersion.split(":")[0];
                     const darpVersion=genesisVersion.split(":")[1];
