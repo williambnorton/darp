@@ -248,31 +248,28 @@ app.get('/graph/:src/:dst', function (req, res) {
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
-app.get('/mintTable/:pulsegroup/:mint', function (req, res) {
+app.get(['/mintTable', '/mintTable/:pulsegroup/:mint'], function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     console.log("index.ts: fetching /mintTable " + req.params.pulsegroup + " " + req.params.mint);
     // pulseGroup 
+    var pulseGroupName = me.geo + ".1"; //assume 
     if (typeof req.params.pulsegroup != "undefined") {
-        for (var pulseGroup in pulsegroups_1.myPulseGroups) {
-            if (pulsegroups_1.myPulseGroups[pulseGroup].groupName == req.params.pulsegroup) {
-                var mint = 0;
-                if (typeof req.params.mint != "undefined") // use our mint 0
-                    mint = parseInt(req.params.mint); // or send mint0 of caller
-                var clonedPulseGroup = JSON.parse(JSON.stringify(pulsegroups_1.myPulseGroups[pulseGroup])); // clone my pulseGroup obecjt 
-                if (typeof clonedPulseGroup.mintTable[mint] != "undefined" && clonedPulseGroup.mintTable[mint] != null)
-                    clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; // assign him his mint and config
-                res.end(JSON.stringify(clonedPulseGroup, null, 2)); // send the cloned group with his mint as mint0
-                return; // we sent the more specific
-            }
+        pulseGroupName = req.params.pulsegroup;
+    }
+    for (var pulseGroup in pulsegroups_1.myPulseGroups) {
+        if (pulsegroups_1.myPulseGroups[pulseGroup].groupName == pulseGroupName) {
+            var mint = 0;
+            if (typeof req.params.mint != "undefined") // use our mint 0
+                mint = parseInt(req.params.mint); // or send mint0 of caller
+            var clonedPulseGroup = JSON.parse(JSON.stringify(pulsegroups_1.myPulseGroups[pulseGroup])); // clone my pulseGroup obecjt 
+            if (typeof clonedPulseGroup.mintTable[mint] != "undefined" && clonedPulseGroup.mintTable[mint] != null)
+                clonedPulseGroup.mintTable[0] = clonedPulseGroup.mintTable[mint]; // assign him his mint and config
+            res.end(JSON.stringify(clonedPulseGroup, null, 2)); // send the cloned group with his mint as mint0
+            return; // we sent the more specific
         }
-        res.end(JSON.stringify(null));
     }
-    else {
-        logger_1.logger.warning("/mintTable No pulseGroup specified");
-        res.end(null);
-        return;
-    }
+    res.end(JSON.stringify(null));
 });
 //
 //  /pulseGroups /state    <-- this is actually the workhorse
