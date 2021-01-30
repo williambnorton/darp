@@ -26,7 +26,7 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
         console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
         console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
         console.log(`addPulseGroup() calling launch() # pulseGroups= ${Object.keys(myPulseGroups).length}`);
-        myPulseGroups[pulseGroup.groupName].launch();
+        //myPulseGroups[pulseGroup.groupName].launch();
     }
     console.log(`addPulseGroup() # pulseGroups= ${JSON.stringify(myPulseGroups,null,2)}`);
 

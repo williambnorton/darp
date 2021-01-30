@@ -20,7 +20,7 @@ function addPulseGroup(pulseGroup) {
         console.log("addPulseGroup() calling launch() # pulseGroups= " + Object.keys(exports.myPulseGroups).length);
         console.log("addPulseGroup() calling launch() # pulseGroups= " + Object.keys(exports.myPulseGroups).length);
         console.log("addPulseGroup() calling launch() # pulseGroups= " + Object.keys(exports.myPulseGroups).length);
-        exports.myPulseGroups[pulseGroup.groupName].launch();
+        //myPulseGroups[pulseGroup.groupName].launch();
     }
     console.log("addPulseGroup() # pulseGroups= " + JSON.stringify(exports.myPulseGroups, null, 2));
     return exports.myPulseGroups[pulseGroup.groupName];
