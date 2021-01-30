@@ -249,7 +249,6 @@ app.get(['/mintTable','/mintTable/:pulsegroup/:mint'], function(req, res) {
             let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));  // clone my pulseGroup obecjt 
             if (typeof clonedPulseGroup.mintTable[mint] != "undefined"  && clonedPulseGroup.mintTable[mint] != null ) 
                 clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
-                
             res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
             return;  // we sent the more specific
         }
