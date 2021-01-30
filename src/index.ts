@@ -231,7 +231,7 @@ app.get('/graph/:src/:dst', function(req, res) {
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
-app.get(['/mintTable','/mintTable/:pulsegroup/:mint'], function(req, res) {
+app.get(['/mintTable','/mintTable/:pulsegroup/:mint','/mintTable/:pulsegroup'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     console.log(`index.ts: fetching /mintTable ${req.params.pulsegroup} ${req.params.mint}`);
