@@ -381,12 +381,17 @@ app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
     } else {
         console.log(`looking up search string ${req.params.searchString} in this nmintTable`);
         const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
-        const searchString=req.params.searchString
+        var searchString=req.params.searchString
+
+        if (searchString.indexOf(":")<0)
+            searchString=searchString+":65013"  //add reasonable default
+
         for (var m in myMintTable) {
             if (myMintTable[m]!=null && 
                 ((myMintTable[m].publickey==searchString) || 
-                 (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
-                 (myMintTable[m].geo==searchString))) {
+                (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
+                (myMintTable[m].geo==searchString) ||
+                (myMintTable[m].geo.match(new RegExp(searchString))) )) {
 
                 res.setHeader('Content-Type', 'application/json');
                 res.setHeader("Access-Control-Allow-Origin", "*");
