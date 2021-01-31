@@ -319,20 +319,20 @@ app.get('/me', function (req, res) {
     */
     return;
 });
+/*
 //
 //  /mintTable - should return my pulseGroups[ me.geo + ".1" ]
 //
-app.get('/oldmintTable', function (req, res) {
-    logger_1.logger.info("fetching '/mintTable' ");
+app.get('/oldmintTable', function(req, res) {
+    logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     try {
-        res.end(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
-    }
-    catch (e) { }
-    ;
+        res.end(JSON.stringify(myPulseGroups[me.geo+".1"].mintTable, null, 2));
+    } catch(e) {};
     return;
 });
+*/
 function findPublicKey(incomingKey) {
     var myMintTable = pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable;
     for (var m in myMintTable) {
@@ -345,6 +345,44 @@ function findPublicKey(incomingKey) {
 //  /publickey  -  only return if you have it
 //
 app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
+    console.log("fetching '/publickey' searching for " + req.params.publickey);
+    if (typeof req.params.publickey == "undefined" || req.params.publickey == "" || req.params.publickey == null) {
+        console.log("NULL key searched - sending all mintTable");
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
+    }
+    else {
+        console.log("looking up public key " + req.params.publickey + " in this nmintTable");
+        var G = findPublicKey(req.params.publickey);
+        if (G == null) {
+            console.log("/publickey - could not find publickey " + req.params.publickey);
+            return; //do nothing -- silently fail
+        }
+        //All is well - send the key object they can use to connect directly or to its genesis node.
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        try {
+            console.log("we found public key - option A) return the genesis node that has this public key ");
+            var returnedObject = {
+                publickey: G.publickey,
+                genesisIP: pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr,
+                genesisPort: pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable[1].port,
+                destIP: G.ipaddr,
+                destPort: G.port
+            };
+            console.log("returnedObject=" + JSON.stringify(returnedObject, null, 2));
+            res.end(JSON.stringify(returnedObject)); // IPADDR : PORT of my genesis node 
+        }
+        catch (e) { }
+        ;
+        return;
+    }
+});
+//
+//  /publickey  -  only return if you have it
+//
+app.get(['/lookup/:publickey'], function (req, res) {
     console.log("fetching '/publickey' searching for " + req.params.publickey);
     if (typeof req.params.publickey == "undefined" || req.params.publickey == "" || req.params.publickey == null) {
         console.log("NULL key searched - sending all mintTable");
