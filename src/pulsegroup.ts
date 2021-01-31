@@ -551,7 +551,7 @@ export class AugmentedPulseGroup {
             const pulseBuffer = Buffer.from(pulseMessage);
 
             nodeList.forEach(function (node: NodeAddress) {
-                console.log(ts()+`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                //console.log(ts()+`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
                 client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error:string) => {
                     if (error) {
                         console.log(`Sender error: ${error}`);
