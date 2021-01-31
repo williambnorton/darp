@@ -63,7 +63,8 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`cat *.config | sed ':a;N;$!ba;s/\n/ /g' `   #   IP:PORT:NAME
+#export GENESISNODELIST=`cat *.config | sed ':a;N;$!ba;s/\n/ /g' `   #   this gives all Genesis nodes
+export GENESISNODELIST=`cat *.config | grep AWS- | sed ':a;N;$!ba;s/\n/ /g' `   #   this makes AWS nodes the Genesis nodes
 #echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`cat *.config | grep 65013 | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
 cat *.config | grep 65013 | grep $MY_IP
@@ -72,7 +73,7 @@ echo `date` "$0 STARTING DARP MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST
 CYCLES=0;
 while :
 do
-    if [ "$MY_IP" == "$FIRST_GENESIS" ]; then 
+    if [ "$MY_IP" == "$FIRST_GENESIS" ]; then #AUTO START FIRST IN THR GENESIS NODE LLIST
         GENESIS=$MY_IP:$MY_PORT
     fi
 
