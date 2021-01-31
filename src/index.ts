@@ -371,7 +371,7 @@ app.get(['/publickey','/publickey/:publickey'], function(req, res) {
 //
 //  /lookup  -  only return if you have it
 //
-app.get(['/lookup/:searchString'], function(req, res) {
+app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
     console.log("fetching '/lookup' searching for "+ req.params.serchString );
     if (typeof req.params.searchString == "undefined" || req.params.searchString=="" || req.params.searchString == null) {
         console.log(`NULL key searched - sending all mintTable`);
@@ -406,6 +406,9 @@ app.get(['/lookup/:searchString'], function(req, res) {
             }
         }
     }
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify({})); // don't have it - might be easier to just ignore the request - this is better UDP
 });
 
 //
