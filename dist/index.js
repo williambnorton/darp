@@ -380,41 +380,42 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
     }
 });
 //
-//  /publickey  -  only return if you have it
+//  /lookup  -  only return if you have it
 //
-app.get(['/lookup/:publickey'], function (req, res) {
-    console.log("fetching '/publickey' searching for " + req.params.publickey);
-    if (typeof req.params.publickey == "undefined" || req.params.publickey == "" || req.params.publickey == null) {
+app.get(['/lookup/:searchString'], function (req, res) {
+    console.log("fetching '/lookup' searching for " + req.params.serchString);
+    if (typeof req.params.searchString == "undefined" || req.params.searchString == "" || req.params.searchString == null) {
         console.log("NULL key searched - sending all mintTable");
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.send(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
     }
     else {
-        console.log("looking up public key " + req.params.publickey + " in this nmintTable");
-        var G = findPublicKey(req.params.publickey);
-        if (G == null) {
-            console.log("/publickey - could not find publickey " + req.params.publickey);
-            return; //do nothing -- silently fail
+        console.log("looking up search string " + req.params.searchString + " in this nmintTable");
+        var myMintTable = pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable;
+        var searchString = req.params.searchString;
+        for (var m in myMintTable) {
+            if (myMintTable[m] != null &&
+                ((myMintTable[m].publickey == searchString) ||
+                    (myMintTable[m].ipaddr + ":" + myMintTable[m].port == searchString) ||
+                    (myMintTable[m].geo == searchString))) {
+                res.setHeader('Content-Type', 'application/json');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                console.log("we found search string in our mintTable ");
+                /*
+                var returnedObject = {  //do we want to add
+                    publickey:G.publickey,
+                    genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr,
+                    genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port,
+                    destIP:G.ipaddr,
+                    destPort:G.port
+                }
+                */
+                //console.log(`returnedObject=${JSON.stringify(returnedObject,null,2)}`);
+                res.end(JSON.stringify(myMintTable[m])); // IPADDR : PORT of my genesis node 
+                return;
+            }
         }
-        //All is well - send the key object they can use to connect directly or to its genesis node.
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        try {
-            console.log("we found public key - option A) return the genesis node that has this public key ");
-            var returnedObject = {
-                publickey: G.publickey,
-                genesisIP: pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable[1].ipaddr,
-                genesisPort: pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable[1].port,
-                destIP: G.ipaddr,
-                destPort: G.port
-            };
-            console.log("returnedObject=" + JSON.stringify(returnedObject, null, 2));
-            res.end(JSON.stringify(returnedObject)); // IPADDR : PORT of my genesis node 
-        }
-        catch (e) { }
-        ;
-        return;
     }
 });
 //
