@@ -383,7 +383,7 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
 //  /lookup  -  only return if you have it
 //
 app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
-    console.log("fetching '/lookup' searching for " + req.params.serchString);
+    console.log("fetching '/lookup' searching for " + req.params.searchString);
     if (typeof req.params.searchString == "undefined" || req.params.searchString == "" || req.params.searchString == null) {
         console.log("NULL key searched - sending all mintTable");
         res.setHeader('Content-Type', 'application/json');
@@ -391,7 +391,7 @@ app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
         res.send(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
     }
     else {
-        console.log("looking up search string " + req.params.searchString + " in this nmintTable");
+        console.log("looking up search string " + req.params.searchString + " in this mintTable");
         var myMintTable = pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable;
         var searchString = req.params.searchString;
         if (searchString.indexOf(":") < 0)
