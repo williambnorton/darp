@@ -401,7 +401,7 @@ app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
             if (myMintTable[m] != null &&
                 ((myMintTable[m].publickey == searchString) ||
                     (myMintTable[m].ipaddr + ":" + myMintTable[m].port == searchString) ||
-                    (myMintTable[m].geo == searchString) ||
+                    (myMintTable[m].geo == searchString.trim()) ||
                     (re.test(myMintTable[m].geo)))) {
                 res.setHeader('Content-Type', 'application/json');
                 res.setHeader("Access-Control-Allow-Origin", "*");
