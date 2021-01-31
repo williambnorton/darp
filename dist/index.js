@@ -396,12 +396,13 @@ app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
         var searchString = req.params.searchString;
         if (searchString.indexOf(":") < 0)
             searchString = searchString + ":65013"; //add reasonable default
+        var re = new RegExp(searchString, "g");
         for (var m in myMintTable) {
             if (myMintTable[m] != null &&
                 ((myMintTable[m].publickey == searchString) ||
                     (myMintTable[m].ipaddr + ":" + myMintTable[m].port == searchString) ||
                     (myMintTable[m].geo == searchString) ||
-                    (myMintTable[m].geo.match(new RegExp(searchString))))) {
+                    (myMintTable[m].geo.match(re)))) {
                 res.setHeader('Content-Type', 'application/json');
                 res.setHeader("Access-Control-Allow-Origin", "*");
                 console.log("we found search string in our mintTable ");
