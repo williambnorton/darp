@@ -9,7 +9,7 @@
     <script>
         const NO_OWL=99999;         //99.999seconds is our NO_MEASURETODO: This needs to change as the NO_OWL constant changes in pulseGroups.
         $(document).ready(function() {
-            console.log("document loaded");
+            console.log("document loaded - BUG HERE: we assume only one table ");
             fetchState();
             $('#matrix').DataTable({'iDisplayLength': 25});
             $('#extraordinary').DataTable({'iDisplayLength': 100});
