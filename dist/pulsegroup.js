@@ -1426,8 +1426,9 @@ exports.getPulseGroupURL = function (configurl) { return __awaiter(void 0, void 
                         //            } else {
                         //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
                         //        }
-                        lib_1.Log("JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port);
-                        pulsegroups_1.addPulseGroup(newPulseGroup);
+                        lib_1.Log("JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port + " and Launching...");
+                        if (newPulseGroup.groupOwner != exports.CONFIG.GEO)
+                            pulsegroups_1.addPulseGroup(newPulseGroup); //don't start self as Genesis - already started
                         return resolve(newPulseGroup);
                     });
                 });

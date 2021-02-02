@@ -591,7 +591,8 @@ app.get('/nodefactory', function(req, res) {
 (async () => {
     try {
         var myOriginalPulseGroup=myPulseGroup
-        myPulseGroup = await getPulseGroup(config);   //get config from Geneis node
+        myPulseGroup = await getPulseGroup(config);   //get config from Geneis node and start it
+        
         //var anchorPulseGroup = await getPulseGroup(config);   //t
 
         //console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
@@ -608,7 +609,7 @@ app.get('/nodefactory', function(req, res) {
 
         //myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in started up from self or genesis node
 
-        addPulseGroup(myPulseGroup);    //create and start this first connetion into the ecosystem
+        //addPulseGroup(myPulseGroup);    //create and start this first connetion into the ecosystem
 
         if (myPulseGroup.groupOwner  != me.geo ) {  //if we instantiated someone else's pulse group, also spin up our own
             //myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup); 
