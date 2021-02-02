@@ -562,7 +562,7 @@ app.get('/nodefactory', function (req, res) {
 //  this is where it all begins - here we start up our own group
 // do this also for a group created for children
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var myOriginalPulseGroup, augmentedPulseGroup, error_1;
+    var myOriginalPulseGroup, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -571,19 +571,22 @@ app.get('/nodefactory', function (req, res) {
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
                 myPulseGroup = _a.sent(); //get config from Geneis node
-                augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(myPulseGroup);
+                //var anchorPulseGroup = await getPulseGroup(config);   //t
+                //console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
+                //var augmentedPulseGroup = new AugmentedPulseGroup(myPulseGroup);   //augmented with pulseGroup methods
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
-                augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
-                augmentedPulseGroup.pulse();
+                //augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
+                //augmentedPulseGroup.pulse();
                 //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
-                setTimeout(augmentedPulseGroup.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
-                setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000); // check that we have the best software
-                setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
-                pulsegroups_1.myPulseGroups[myPulseGroup.groupName] = augmentedPulseGroup; //wire it in started up from self or genesis node
-                if (myPulseGroup.groupOwner != me.geo) { //we instantiated someone else's pulse group
-                    pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myOriginalPulseGroup);
-                    pulsegroups_1.addPulseGroup(pulsegroups_1.myPulseGroups[me.geo + ".1"]); //start up my own pulse group
-                    myPulseGroup = pulsegroups_1.myPulseGroups[me.geo + ".1"];
+                //setTimeout(augmentedPulseGroup.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
+                //setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
+                //setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
+                //myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in started up from self or genesis node
+                pulsegroups_1.addPulseGroup(myPulseGroup); //create and start this first connetion into the ecosystem
+                if (myPulseGroup.groupOwner != me.geo) { //if we instantiated someone else's pulse group, also spin up our own
+                    //myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup); 
+                    pulsegroups_1.addPulseGroup(myOriginalPulseGroup); //start up my own pulse group
+                    //myPulseGroup=myPulseGroups[ me.geo+".1" ];
                     console.log("Also instantiated myPulseGroup Object: You should see two groups if not GENESIS node");
                     //myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
                 }
