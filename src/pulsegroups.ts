@@ -14,14 +14,14 @@ export function forEachPulseGroup(callback: CallableFunction) {
         callback(myPulseGroups, myPulseGroups[pulseGroup]);
 };
 
+//
+//  addPulseGroup() - this adds water to a pulseGroup object and starts it up
+//
 export function addPulseGroup(pulseGroup:PulseGroup) {
-    console.log(`addPulseGroup(): Adding new pulseGroup object ${pulseGroup.groupName}`);
-
+    //console.log(`addPulseGroup(): Adding new pulseGroup object ${pulseGroup.groupName}`);
     myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
     myPulseGroups[pulseGroup.groupName].launch()
-   
     console.log(`addPulseGroup() launched ${JSON.stringify(pulseGroup,null,2)}`);
-
     return myPulseGroups[pulseGroup.groupName];
 };
 
