@@ -477,8 +477,8 @@ app.get('/nodefactory', function(req, res) {
         console.log(`I AM GENESIS NODE incomingIP=${incomingIP} port=${port} GENESIS=${config.GENESIS} GENESISPORT=${config.GENESISPORT} me=`+dump(me));
         
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
-        Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
-        console.log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
+        Log(`NEW NODEFACTORY Created GENESIS NODE   ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
+        console.log(`NEW NODEFACTORY Created GENESIS NODE    ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
         myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
         myPulseGroup.rc="SELF"
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup

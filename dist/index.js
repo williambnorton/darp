@@ -473,8 +473,8 @@ app.get('/nodefactory', function (req, res) {
     if (incomingIP == me.ipaddr && (port == config.GENESISPORT)) { // Genesis node instantiating itself - don't need to add anything
         console.log("I AM GENESIS NODE incomingIP=" + incomingIP + " port=" + port + " GENESIS=" + config.GENESIS + " GENESISPORT=" + config.GENESISPORT + " me=" + lib_1.dump(me));
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
-        lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
-        console.log("NEW NODEFACTORY Created GENESIS NODE   " + myPulseGroup.mintTable[0].geo + " : " + myPulseGroup.groupName + " " + myPulseGroup.mintTable[0].ipaddr + ":" + myPulseGroup.mintTable[0].port);
+        lib_1.Log("NEW NODEFACTORY Created GENESIS NODE   " + pulsegroup_1.CONFIG.GEO + " : " + (pulsegroup_1.CONFIG.GEO + ".1") + " " + pulsegroup_1.CONFIG.IP + ":" + pulsegroup_1.CONFIG.PORT);
+        console.log("NEW NODEFACTORY Created GENESIS NODE    " + pulsegroup_1.CONFIG.GEO + " : " + (pulsegroup_1.CONFIG.GEO + ".1") + " " + pulsegroup_1.CONFIG.IP + ":" + pulsegroup_1.CONFIG.PORT);
         myPulseGroup.nodeCount = Object.keys(myPulseGroup.pulses).length;
         myPulseGroup.rc = "SELF";
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
