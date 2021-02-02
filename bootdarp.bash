@@ -119,8 +119,10 @@ do
                 MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
                 MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
                 MY_GENESIS_GROUP="${MY_GENESIS_GEO}.1"
-                MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $5 }'`
-                echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
+                MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $7 }'`
+#                MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
+
+                echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT running $MY_GENESIS_SWVERSION"
             else    #default to self as a standalone genesis node 
                 FIRST_RESPONDER_LATENCY="0"
                 MY_GENESIS_IP=$MY_IP

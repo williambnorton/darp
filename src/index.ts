@@ -227,14 +227,14 @@ app.get('/graph/:src/:dst', function(req, res) {
 });
 
 //
-//  /mintTable
+//  /mintTable - BUG this returns pulseGroup - should return only mintTable, but caller uses the fuull pulseGroup pulses and all
 //
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
 app.get(['/mintTable','/mintTable/:pulsegroup/:mint','/mintTable/:pulsegroup'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log(`index.ts: fetching /mintTable ${req.params.pulsegroup} ${req.params.mint}`);
+    console.log(`index.ts: fetching /mintTable pulseGroup requested: ${req.params.pulsegroup} mint req uested: ${req.params.mint}`);
     // pulseGroup 
     var pulseGroupName=me.geo+".1";  //assume 
     if (typeof req.params.pulsegroup != "undefined") {
