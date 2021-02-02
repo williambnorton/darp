@@ -1244,10 +1244,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 setTimeout(_this.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(_this.measurertt, 2 * 1000); // ping across wireguard every other second  
                 console.log("index.ts:    launching-->  pulseGroup=" + JSON.stringify(_this, null, 2));
-                console.log("index.ts:    launching-->  pulseGroup=" + JSON.stringify(_this, null, 2));
-                console.log("index.ts:    launching-->  pulseGroup=" + JSON.stringify(_this, null, 2));
-                console.log("index.ts:    launching-->  pulseGroup=" + JSON.stringify(_this, null, 2));
-                console.log("index.ts:    launching-->  pulseGroup=" + JSON.stringify(_this, null, 2));
             }
             catch (error) {
                 logger_1.logger.error(error);

@@ -1487,10 +1487,7 @@ export class AugmentedPulseGroup {
             setTimeout(this.measurertt, 2 * 1000); // ping across wireguard every other second  
         
             console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
-            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
-            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
-            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
-            console.log(`index.ts:    launching-->  pulseGroup=${JSON.stringify(this,null,2)}`);
+
         } catch (error) {
             logger.error(error);
         }
