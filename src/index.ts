@@ -20,7 +20,7 @@ const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY
 const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
 var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new PulseGroup(me, me, pulse);  //this is where I allow others to connect to me
-myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
+//myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
 //    myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
 
 //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
@@ -590,7 +590,7 @@ app.get('/nodefactory', function(req, res) {
 (async () => {
     try {
         var myOriginalPulseGroup=myPulseGroup
-        myPulseGroup = await getPulseGroup(config);   //replaces starting myPulseGroup
+        myPulseGroup = await getPulseGroup(config);   //get config from Geneis node
         //var anchorPulseGroup = await getPulseGroup(config);   //t
 
         //console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
@@ -607,10 +607,11 @@ app.get('/nodefactory', function(req, res) {
 
         myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in started up from self or genesis node
 
-
         if (myPulseGroup.groupOwner  != me.geo ) {  //we instantiated someone else's pulse group
             myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup); 
             addPulseGroup(myPulseGroups[ me.geo+".1" ]);  //start up my own oulse group
+            //myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
+
         } else {         
             console.log(`index.ts:  WE LAUNCHED OUR OWN PULSE GROUP ${JSON.stringify(myPulseGroups[ me.geo+".1" ],null,2) }`);
         }

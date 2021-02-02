@@ -77,7 +77,7 @@ do
         GENESIS=$MY_IP:$MY_PORT
     fi
 
-    if [ $IS_GENESIS -eq 0 -a  "$GENESIS" == "" ]; then
+    if [ $IS_GENESIS -eq 0 -a  "$GENESIS" == "" ]; then  #All genesis nodes will start as part of the root, the first node to start in the Genesis Group
         echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
         MY_GENESIS_IP=$FIRST_GENESIS   #THIS BASICALLY MEANS 
         MY_GENESIS_PORT=65013
@@ -107,7 +107,7 @@ do
             echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
             echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
             echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-        cat testport.txt
+            cat testport.txt
             #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
             FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
             echo "First to respond ... FIRST_LINE=$FIRST_LINE"

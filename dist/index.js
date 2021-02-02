@@ -54,7 +54,7 @@ var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, confi
 var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, me, pulse); //this is where I allow others to connect to me
-pulsegroups_1.myPulseGroups[config.GEO + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myPulseGroup);
+//myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
 //    myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
 //var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
 //var myPulseGroups = getMyPulseGroups();
@@ -568,7 +568,7 @@ app.get('/nodefactory', function (req, res) {
                 myOriginalPulseGroup = myPulseGroup;
                 return [4 /*yield*/, pulsegroup_1.getPulseGroup(config)];
             case 1:
-                myPulseGroup = _a.sent(); //replaces starting myPulseGroup
+                myPulseGroup = _a.sent(); //get config from Geneis node
                 augmentedPulseGroup = new pulsegroup_1.AugmentedPulseGroup(myPulseGroup);
                 //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
                 augmentedPulseGroup.flashWireguard(); // create our wireguard files based on our mint Table
@@ -581,6 +581,7 @@ app.get('/nodefactory', function (req, res) {
                 if (myPulseGroup.groupOwner != me.geo) { //we instantiated someone else's pulse group
                     pulsegroups_1.myPulseGroups[me.geo + ".1"] = new pulsegroup_1.AugmentedPulseGroup(myOriginalPulseGroup);
                     pulsegroups_1.addPulseGroup(pulsegroups_1.myPulseGroups[me.geo + ".1"]); //start up my own oulse group
+                    //myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
                 }
                 else {
                     console.log("index.ts:  WE LAUNCHED OUR OWN PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"], null, 2));
