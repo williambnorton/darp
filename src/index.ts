@@ -468,7 +468,7 @@ app.get('/nodefactory', function(req, res) {
     version=MYVERSION(); 
     version=config.VERSION;
 
-    var myPulseGroup=myPulseGroups[ me.geo + ".1"];  //this is the pulseGroup to add to
+    //var myPulseGroup=myPulseGroups[ me.geo + ".1"];  //this is the pulseGroup to add to
     //console.log(`index.ts: myPulseGroup that I can add to is:${dump(myPulseGroup)}`);
 
 
@@ -479,22 +479,23 @@ app.get('/nodefactory', function(req, res) {
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
         console.log(`NEW NODEFACTORY Created GENESIS NODE    ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
-        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
-        myPulseGroup.rc="SELF"
+        console.log(`At this point, we need ourselves as a GENESIS NODE`);
+
+        //myPulseGroups[ me.geo + ".1"]=new AugmentedPulseGroup(myPulseGroup);
+
+//        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
+
+        //myPulseGroup.rc="SELF"
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
-
-
 
         //myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
         //@wbnwbnwbn - replace with this
         //addPulseGroup(myPulseGroup);    
-
-
+        addPulseGroup(myPulseGroup);   //this should add it into pulseGroups array-GOAL: myPulseGroup is where I add new nodes
 
         logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
-        //addPulseGroup(myPulseGroup);   //this should add it into pulseGroups array-GOAL: myPulseGroup is where I add new nodes
         
         return;
     }

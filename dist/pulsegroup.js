@@ -1380,7 +1380,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
     return AugmentedPulseGroup;
 }());
 exports.AugmentedPulseGroup = AugmentedPulseGroup;
-/**
+/** the reason to do this is to exercie the forwarding path to check that ports to ourselves work
  * Initiates construction of the pulsegroup object by sneding the request to the genesis node
  * @param {Config} config contains constants and environmental variables, such as ip and port
  */
