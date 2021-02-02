@@ -1586,6 +1586,8 @@ export class AugmentedPulseGroup {
 /** the reason to do this is to exercie the forwarding path to check that ports to ourselves work
  * Initiates construction of the pulsegroup object by sneding the request to the genesis node
  * @param {Config} config contains constants and environmental variables, such as ip and port
+ * *
+ * * This adds and starts a pulseGroup
  */
 export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
 

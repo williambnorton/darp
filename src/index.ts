@@ -479,7 +479,7 @@ app.get('/nodefactory', function(req, res) {
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
         Log(`NEW NODEFACTORY Created GENESIS NODE   ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
         console.log(`NEW NODEFACTORY Created GENESIS NODE    ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
-        console.log(`At this point, we need ourselves as a GENESIS NODE`);
+        console.log(`At this point, we ourselves are GENESIS NODE`);
 
         //myPulseGroups[ me.geo + ".1"]=new AugmentedPulseGroup(myPulseGroup);
 
@@ -491,7 +491,7 @@ app.get('/nodefactory', function(req, res) {
         //myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
         //@wbnwbnwbn - replace with this
         //addPulseGroup(myPulseGroup);    
-        addPulseGroup(myPulseGroup);   //this should add it into pulseGroups array-GOAL: myPulseGroup is where I add new nodes
+        //addPulseGroup(myPulseGroup);   //add a new pulseGroup <-- already started or wouldn't not be able to call this API
 
         logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
