@@ -1243,7 +1243,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 setTimeout(_this.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(_this.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(_this.measurertt, 2 * 1000); // ping across wireguard every other second  
-                console.log("index.ts:    launching-->  pulseGroup=" + JSON.stringify(_this, null, 2));
+                console.log("index.ts:    pulseGroup.launch() -> " + _this.groupName + " pulseGroup=" + JSON.stringify(_this, null, 2));
             }
             catch (error) {
                 logger_1.logger.error(error);
