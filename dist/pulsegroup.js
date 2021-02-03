@@ -1237,13 +1237,14 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.launch = function () {
             try {
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " pulseGroup=" + JSON.stringify(_this, null, 2));
                 _this.flashWireguard(); // create our wireguard files based on our mint Table
                 _this.pulse(); //start pulsing
                 //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
                 setTimeout(_this.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
                 setTimeout(_this.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(_this.measurertt, 2 * 1000); // ping across wireguard every other second  
-                console.log("index.ts:    pulseGroup.launch() -> " + _this.groupName + " pulseGroup=" + JSON.stringify(_this, null, 2));
+                console.log("index.ts: pulseGroup.launched() -> " + _this.groupName + " ");
             }
             catch (error) {
                 logger_1.logger.error(error);
@@ -1426,7 +1427,7 @@ exports.getPulseGroupURL = function (configurl) { return __awaiter(void 0, void 
                         //            } else {
                         //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
                         //        }
-                        lib_1.Log("JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port + " and Launching...");
+                        lib_1.Log("pulseGroup JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port + " and Launching...");
                         pulsegroups_1.addPulseGroup(newPulseGroup); //don't start self as Genesis - already started
                         return resolve(newPulseGroup);
                     });

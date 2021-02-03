@@ -552,7 +552,7 @@ app.get('/nodefactory', function(req, res) {
     //console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     
 
-    //--------------------------------------------------------------------------
+    //------------------------------  CLONE SELF   --------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));  // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0]=newNode;  // assign him his mint and config
@@ -620,7 +620,7 @@ app.get('/nodefactory', function(req, res) {
         } else {         
             console.log(`index.ts:  WE LAUNCHED ${myPulseGroup.groupName} OUR OWN ${CONFIG.GEO} PULSE GROUP ${JSON.stringify(myPulseGroups[ CONFIG.GEO+".1" ],null,2) }`);
         }
-        
+        myPulseGroup=myOriginalPulseGroup
         //could clone this new pulseGroup as my own for accepting new connections
 
         //console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);

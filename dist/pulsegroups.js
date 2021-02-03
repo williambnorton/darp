@@ -15,7 +15,7 @@ exports.forEachPulseGroup = forEachPulseGroup;
 //  addPulseGroup() - this adds water to a pulseGroup object and starts it up
 //
 function addPulseGroup(pulseGroup) {
-    //console.log(`addPulseGroup(): Adding new pulseGroup object ${pulseGroup.groupName}`);
+    console.log("addPulseGroup(): Adding new pulseGroup object " + pulseGroup.groupName);
     exports.myPulseGroups[pulseGroup.groupName] = new pulsegroup_1.AugmentedPulseGroup(pulseGroup);
     exports.myPulseGroups[pulseGroup.groupName].launch();
     console.log("addPulseGroup() launched " + JSON.stringify(pulseGroup, null, 2));

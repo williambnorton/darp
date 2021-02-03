@@ -530,7 +530,7 @@ app.get('/nodefactory', function (req, res) {
     //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
     //addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as an Augmented Pulse Group Object
     //console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
-    //--------------------------------------------------------------------------
+    //------------------------------  CLONE SELF   --------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     var newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup)); // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0] = newNode; // assign him his mint and config
@@ -593,6 +593,7 @@ app.get('/nodefactory', function (req, res) {
                 else {
                     console.log("index.ts:  WE LAUNCHED " + myPulseGroup.groupName + " OUR OWN " + pulsegroup_1.CONFIG.GEO + " PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[pulsegroup_1.CONFIG.GEO + ".1"], null, 2));
                 }
+                myPulseGroup = myOriginalPulseGroup;
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
