@@ -1478,7 +1478,7 @@ export class AugmentedPulseGroup {
 
     launch = () => {
         try {
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} pulseGroup=${JSON.stringify(this,null,2)}`);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
                 
             this.flashWireguard();  // create our wireguard files based on our mint Table
             this.pulse();               //start pulsing
@@ -1486,6 +1486,7 @@ export class AugmentedPulseGroup {
             setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
             setTimeout(this.checkSWversion, 10 * 1000);  // check that we have the best software
             setTimeout(this.measurertt, 2 * 1000); // ping across wireguard every other second  
+
             console.log(`index.ts: pulseGroup.launched() -> ${this.groupName} `);
 
         } catch (error) {

@@ -593,7 +593,7 @@ app.get('/nodefactory', function (req, res) {
                 else {
                     console.log("index.ts:  WE LAUNCHED " + myPulseGroup.groupName + " OUR OWN " + pulsegroup_1.CONFIG.GEO + " PULSE GROUP " + JSON.stringify(pulsegroups_1.myPulseGroups[pulsegroup_1.CONFIG.GEO + ".1"], null, 2));
                 }
-                myPulseGroup = myOriginalPulseGroup;
+                myPulseGroup = pulsegroups_1.myPulseGroups[pulsegroup_1.CONFIG.GEO + ".1"];
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();

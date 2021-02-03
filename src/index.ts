@@ -620,7 +620,7 @@ app.get('/nodefactory', function(req, res) {
         } else {         
             console.log(`index.ts:  WE LAUNCHED ${myPulseGroup.groupName} OUR OWN ${CONFIG.GEO} PULSE GROUP ${JSON.stringify(myPulseGroups[ CONFIG.GEO+".1" ],null,2) }`);
         }
-        myPulseGroup=myOriginalPulseGroup
+        myPulseGroup=myPulseGroups[CONFIG.GEO+".1"]
         //could clone this new pulseGroup as my own for accepting new connections
 
         //console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
