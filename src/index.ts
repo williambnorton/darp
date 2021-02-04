@@ -391,7 +391,7 @@ app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
                 if ((myMintTable[m].publickey==searchString) || 
                 (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
                 (myMintTable[m].geo==searchString) ||
-                (myMintTable[m].ipaddr+":65013"==searchString) /* ||  //cover missing port
+                (myMintTable[m].ipaddr==searchString && myMintTable[m].port==65013) /* ||  //DEFAULT PORT DEFAULT
                 (re.test(myMintTable[m].geo)) */ ) {
 
                     res.setHeader('Content-Type', 'application/json');
