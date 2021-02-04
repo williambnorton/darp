@@ -382,49 +382,61 @@ app.get(['/publickey', '/publickey/:publickey'], function (req, res) {
 //
 //  /lookup  -  only return if you have it
 //
-app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
+app.get(['/lookup/:searchString', '/lookup/', '/lookup/:searchString/:sourceGeo'], function (req, res) {
     console.log("fetching '/lookup' searching for " + req.params.searchString);
     if (typeof req.params.searchString == "undefined" || req.params.searchString == "" || req.params.searchString == null) {
         console.log("NULL key searched - sending all mintTable");
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.send(JSON.stringify(pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable, null, 2));
+        return;
     }
-    else {
-        console.log("looking up search string " + req.params.searchString + " in this mintTable");
-        var myMintTable = pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable;
-        var searchString = req.params.searchString;
-        //var re=new RegExp(searchString,"g")
-        for (var m in myMintTable) {
-            if (myMintTable[m] != null) {
-                console.log(" " + searchString + " : " + myMintTable[m].geo + " ");
-                if ((myMintTable[m].publickey == searchString) ||
-                    (myMintTable[m].ipaddr + ":" + myMintTable[m].port == searchString) ||
-                    (myMintTable[m].geo == searchString) ||
-                    (myMintTable[m].ipaddr == searchString && myMintTable[m].port == 65013) /* ||  //DEFAULT PORT DEFAULT
-                (re.test(myMintTable[m].geo)) */) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.setHeader("Access-Control-Allow-Origin", "*");
-                    console.log("FOUND " + searchString + " ");
-                    /*
-                    var returnedObject = {  //do we want to add
-                        publickey:G.publickey,
-                        genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr,
-                        genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port,
-                        destIP:G.ipaddr,
-                        destPort:G.port
-                    }
-                    */
-                    //console.log(`returnedObject=${JSON.stringify(returnedObject,null,2)}`);
-                    res.end(JSON.stringify(myMintTable[m])); // IPADDR : PORT of my genesis node 
-                    return;
+    console.log("looking up search string " + req.params.searchString + " in this mintTable");
+    var sourceGeo = "";
+    if (typeof req.params.sourceGeo != "undefined") {
+        sourceGeo = req.params.sourceGeo;
+    }
+    var myMintTable = pulsegroups_1.myPulseGroups[me.geo + ".1"].mintTable;
+    var searchString = req.params.searchString;
+    //var re=new RegExp(searchString,"g")
+    for (var m in myMintTable) {
+        if (myMintTable[m] != null) {
+            console.log("/lookup looking for " + searchString + " from mintEntry " + myMintTable[m].geo + " ");
+            if ((myMintTable[m].publickey == searchString) ||
+                (myMintTable[m].ipaddr + ":" + myMintTable[m].port == searchString) ||
+                (myMintTable[m].geo == searchString) ||
+                (myMintTable[m].ipaddr == searchString && myMintTable[m].port == 65013) /* ||  //DEFAULT PORT DEFAULT
+            (re.test(myMintTable[m].geo)) */) {
+                res.setHeader('Content-Type', 'application/json');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                console.log("/lookup FOUND " + searchString + " ");
+                /*
+                var returnedObject = {  //do we want to add
+                    publickey:G.publickey,
+                    genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr,
+                    genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port,
+                    destIP:G.ipaddr,
+                    destPort:G.port
                 }
+                */
+                //console.log(`returnedObject=${JSON.stringify(returnedObject,null,2)}`);
+                res.end(JSON.stringify(JSON.stringify(myMintTable[m]), null, 2)); // IPADDR : PORT of my genesis node 
+                return;
             }
         }
     }
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify({})); // don't have it - might be easier to just ignore the request - this is better UDP
+    // We do not have this deztination in our own groups
+    // ONLY One Genesis Node should do the GeneisNodeList-wide search
+    if (sourceGeo != "" && typeof pulsegroups_1.myPulseGroups[pulsegroup_1.CONFIG.GEO + ".1"].pulses[sourceGeo + ":" + pulsegroup_1.CONFIG.GEO + ".1"] != "undefined") {
+        //      ask every node in the GenesisLNodeList
+        console.log("/lookup - Here we would ask the GenesisNodeList if they have it in their own mintTable : GNL=" + process.env.GENESISNODELIST);
+    }
+    else {
+        // else return null, that we don't have this search entry
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify({})); // don't have it - might be easier to just ignore the request - this is better UDP
+    }
 });
 //
 // nodeFactory - the engine of the system - Genesis node we clone ourselves and set self to the new guy
@@ -432,6 +444,15 @@ app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
 // this way the new guy starts wth our collective (genesis) understanding of counters)
 // we also sync counters this with genesis certain times as a hack or defensive measure
 // Configuration for node - allocate a mint
+//
+//  if (destination specified)
+//      for each in GenesisNodeList
+//          if (node.lookup(destination) ) {
+//              return genesisNode.buildPulseGroup(srcPulseGroup,source,destination)
+//              
+// //buildPulseGroup(PG,source,destination)
+//          if (destination is me) blend(source,sourcePG,destination,destinationPG)
+// 
 app.get('/nodefactory', function (req, res) {
     // additional nodes adding to pulseGroup
     logger_1.logger.info("EXPRESS /nodefactory: config requested with params: " + lib_1.dump(req.query));
