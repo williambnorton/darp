@@ -387,11 +387,12 @@ app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
             searchString=searchString+":65013"  //add reasonable default
         var re=new RegExp(searchString,"g")
         for (var m in myMintTable) {
-            if (myMintTable[m]!=null && 
-                ((myMintTable[m].publickey==searchString) || 
+            if (myMintTable[m]!=null) {
+                console.log(` ${searchString} : ${myMintTable[m].geo} `);
+                if ((myMintTable[m].publickey==searchString) || 
                  (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
                  (myMintTable[m].geo==searchString) ||
-                 (re.test(myMintTable[m].geo)) )) {
+                 (re.test(myMintTable[m].geo)) ) {
 
                 res.setHeader('Content-Type', 'application/json');
                 res.setHeader("Access-Control-Allow-Origin", "*");
