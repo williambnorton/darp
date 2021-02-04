@@ -401,11 +401,11 @@ app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
                 if ((myMintTable[m].publickey == searchString) ||
                     (myMintTable[m].ipaddr + ":" + myMintTable[m].port == searchString) ||
                     (myMintTable[m].geo == searchString) ||
-                    (myMintTable[m].geo == searchString + ":65013") /* ||  //cover missing port
+                    (myMintTable[m].ipaddr + ":65013" == searchString) /* ||  //cover missing port
                 (re.test(myMintTable[m].geo)) */) {
                     res.setHeader('Content-Type', 'application/json');
                     res.setHeader("Access-Control-Allow-Origin", "*");
-                    console.log("we found search string in our mintTable ");
+                    console.log("FOUND " + searchString + " ");
                     /*
                     var returnedObject = {  //do we want to add
                         publickey:G.publickey,
