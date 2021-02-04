@@ -383,8 +383,7 @@ app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
         const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
         var searchString=req.params.searchString
 
-        if (searchString.indexOf(":")<0)
-            searchString=searchString+":65013"  //add reasonable default
+
         var re=new RegExp(searchString,"g")
         for (var m in myMintTable) {
             if (myMintTable[m]!=null) {
@@ -392,6 +391,7 @@ app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
                 if ((myMintTable[m].publickey==searchString) || 
                  (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
                  (myMintTable[m].geo==searchString) ||
+                 (myMintTable[m].geo==searchString+":65013") ||  //cover missing port
                  (re.test(myMintTable[m].geo)) ) {
 
                 res.setHeader('Content-Type', 'application/json');
