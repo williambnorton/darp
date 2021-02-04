@@ -421,10 +421,10 @@ app.get(['/lookup/:searchString', '/lookup/'], function (req, res) {
                 }
             }
         }
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.end(JSON.stringify({})); // don't have it - might be easier to just ignore the request - this is better UDP
     }
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify({})); // don't have it - might be easier to just ignore the request - this is better UDP
 });
 //
 // nodeFactory - the engine of the system - Genesis node we clone ourselves and set self to the new guy

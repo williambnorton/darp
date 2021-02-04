@@ -389,32 +389,33 @@ app.get(['/lookup/:searchString','/lookup/'], function(req, res) {
             if (myMintTable[m]!=null) {
                 console.log(` ${searchString} : ${myMintTable[m].geo} `);
                 if ((myMintTable[m].publickey==searchString) || 
-                 (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
-                 (myMintTable[m].geo==searchString) ||
-                 (myMintTable[m].ipaddr+":65013"==searchString) /* ||  //cover missing port
-                 (re.test(myMintTable[m].geo)) */ ) {
+                (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
+                (myMintTable[m].geo==searchString) ||
+                (myMintTable[m].ipaddr+":65013"==searchString) /* ||  //cover missing port
+                (re.test(myMintTable[m].geo)) */ ) {
 
-                res.setHeader('Content-Type', 'application/json');
-                res.setHeader("Access-Control-Allow-Origin", "*");
-                console.log(`FOUND ${searchString} `);
-                /*
-                var returnedObject = {  //do we want to add
-                    publickey:G.publickey,
-                    genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr, 
-                    genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port, 
-                    destIP:G.ipaddr, 
-                    destPort:G.port
+                    res.setHeader('Content-Type', 'application/json');
+                    res.setHeader("Access-Control-Allow-Origin", "*");
+                    console.log(`FOUND ${searchString} `);
+                    /*
+                    var returnedObject = {  //do we want to add
+                        publickey:G.publickey,
+                        genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr, 
+                        genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port, 
+                        destIP:G.ipaddr, 
+                        destPort:G.port
+                    }
+                    */
+                    //console.log(`returnedObject=${JSON.stringify(returnedObject,null,2)}`);
+                    res.end(JSON.stringify(myMintTable[m])); // IPADDR : PORT of my genesis node 
+                    return;
                 }
-                */
-                //console.log(`returnedObject=${JSON.stringify(returnedObject,null,2)}`);
-                res.end(JSON.stringify(myMintTable[m])); // IPADDR : PORT of my genesis node 
-                return;
             }
         }
     }
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify({})); // don't have it - might be easier to just ignore the request - this is better UDP
+    res.end(JSON.stringify({})) // don't have it - might be easier to just ignore the request - this is better UDP
 });
 
 //
