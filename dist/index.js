@@ -179,7 +179,7 @@ app.get('/stop', function (req, res) {
         //TODO
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.end(JSON.stringify("reloaded));));
+        res.end(JSON.stringify("stop"));
     }
     process.exit(86);
 });
@@ -204,7 +204,7 @@ app.get('/reboot', function (req, res) {
         //TODO
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.end(JSON.stringify("reloaded));));
+        res.end(JSON.stringify("reboot"));
     }
     process.exit(-1);
 });
@@ -228,7 +228,7 @@ app.get('/reload', function (req, res) {
         //TODO
         res.setHeader('Content-Type', 'application/json');
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.end(JSON.stringify("reloaded));));
+        res.end(JSON.stringify("reloaded"));
     }
     //
     //  might be possible here to reload by running updateSW and not lose state
