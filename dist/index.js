@@ -134,13 +134,13 @@ app.get('/pause', function (req, res) {
     return;
 });
 //
-//     /invite - this message is sent by Genesis node invinting to be potential relay
+//     /join - this message is sent by Genesis node invinting to be potential relay
 //             simpler - Genesis node sends as new PG payload (the pulseGroup object)
 //
-app.get('/invite/:pulsegroupaddress', function (req, res) {
+app.get('/join/:pulsegroupaddress', function (req, res) {
     var pulsegroupaddress = req.params.pulsegroupaddress;
     //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
-    console.log("INVITE -- This would be only valid over an encrypted path " + lib_1.dump(req.params));
+    console.log("join -- This would be only valid over an encrypted path coming from " + pulsegroup_1.CONFIG.GENESIS);
     //    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
     if (pulsegroupaddress.indexOf(':') == -1)
         pulsegroupaddress = pulsegroupaddress + ":65013"; //default port
@@ -153,11 +153,11 @@ app.get('/invite/:pulsegroupaddress', function (req, res) {
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
         "&ts=" + lib_1.now();
-    console.log("/invite will execute nodeFactory on " + pulsegroupaddress + " to join " + configurl);
+    console.log("/join will execute nodeFactory on " + pulsegroupaddress + " to join " + configurl);
     pulsegroup_1.getPulseGroupURL(configurl);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify("Invited to " + configurl));
+    res.end(JSON.stringify(lib_1.ts() + "/join pulseGroup with " + configurl));
     return;
 });
 //
