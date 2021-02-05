@@ -141,7 +141,9 @@ app.get('/invite/:groupowner/:destip/:destport', function (req, res) {
     //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
     console.log("INVITE -- This would be only valid over an encrypted path " + lib_1.dump(req.params));
     var configurl = "http://" + req.params.destip + ":" + req.params.destport +
-        "/nodefactory?geo=" + req.params.groupowner +
+        "/nodefactory?geo=" + pulsegroup_1.CONFIG.GEO +
+        "&groupowner=" + req.params.groupowner +
+        //    "/nodefactory?geo=" + req.params.groupowner +
         "&port=" + config.PORT +
         "&publickey=" + config.PUBLICKEY +
         "&genesisport=" + config.GENESISPORT +
@@ -149,7 +151,7 @@ app.get('/invite/:groupowner/:destip/:destport', function (req, res) {
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
         "&ts=" + lib_1.now();
-    console.log("would execute nodeFactory on " + req.params.destip + ":" + req.params.destport + " to join group " + req.params.groupname + " " + configurl);
+    console.log("/invite will execute nodeFactory on " + req.params.destip + ":" + req.params.destport + " to join group " + req.params.groupname + " " + configurl);
     pulsegroup_1.getPulseGroupURL(configurl);
     return;
 });
