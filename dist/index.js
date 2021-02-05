@@ -142,6 +142,8 @@ app.get('/invite/:pulsegroupaddress', function (req, res) {
     //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
     console.log("INVITE -- This would be only valid over an encrypted path " + lib_1.dump(req.params));
     //    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
+    if (pulsegroupaddress.indexOf(':') == -1)
+        pulsegroupaddress = pulsegroupaddress + ":65013"; //default port
     var configurl = "http://" + pulsegroupaddress +
         "/nodefactory?geo=" + pulsegroup_1.CONFIG.GEO +
         "&port=" + config.PORT +

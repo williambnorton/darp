@@ -113,19 +113,22 @@ app.get('/version', function(req, res) {
  //             simpler - Genesis node sends as new PG payload (the pulseGroup object)
  //
  app.get('/invite/:pulsegroupaddress', function(req, res) {
-    const pulsegroupaddress=req.params.pulsegroupaddress
+    var pulsegroupaddress=req.params.pulsegroupaddress
     //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
     console.log(`INVITE -- This would be only valid over an encrypted path ${dump(req.params)}`);
 //    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
+    if (pulsegroupaddress.indexOf(':')==-1) 
+        pulsegroupaddress=pulsegroupaddress+":65013";  //default port
+
     const configurl = "http://" + pulsegroupaddress + 
-    "/nodefactory?geo=" + CONFIG.GEO +    
-    "&port=" + config.PORT +
-    "&publickey=" + config.PUBLICKEY +
-    "&genesisport=" + config.GENESISPORT +
-    "&version=" + config.VERSION +
-    "&wallet=" + config.WALLET +
-    "&myip=" + config.IP +
-    "&ts=" + now();
+        "/nodefactory?geo=" + CONFIG.GEO +    
+        "&port=" + config.PORT +
+        "&publickey=" + config.PUBLICKEY +
+        "&genesisport=" + config.GENESISPORT +
+        "&version=" + config.VERSION +
+        "&wallet=" + config.WALLET +
+        "&myip=" + config.IP +
+        "&ts=" + now();
     
     console.log(`/invite will execute nodeFactory on ${pulsegroupaddress} to join ${configurl}`);
     getPulseGroupURL(configurl)
