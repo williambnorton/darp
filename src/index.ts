@@ -130,6 +130,9 @@ app.get('/version', function(req, res) {
     
     console.log(`/invite will execute nodeFactory on ${req.params.destip}:${req.params.destport} to join group ${req.params.groupname} ${configurl}`);
     getPulseGroupURL(configurl)
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end("Invited to "+JSON.stringify(configurl));
     return;
  });
 
