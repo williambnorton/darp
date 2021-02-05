@@ -131,7 +131,7 @@ app.get('/version', function(req, res) {
     getPulseGroupURL(configurl)
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end(JSON.stringify("Invited to "+configurl));
+    res.end(JSON.stringify("Invited to " + configurl));
     return;
  });
 
@@ -153,6 +153,9 @@ app.get('/version', function(req, res) {
         res.redirect(referer);
     } else {
         //TODO
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify("reloaded));
     }
     process.exit(86);
 });
@@ -176,6 +179,9 @@ app.get('/version', function(req, res) {
         res.redirect(referer);
     } else {
         //TODO
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify("reloaded));
     }
     process.exit(-1) 
  });
@@ -199,6 +205,9 @@ app.get('/version', function(req, res) {
         res.redirect(referer);
     } else {
         //TODO
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify("reloaded));
     }
     //
     //  might be possible here to reload by running updateSW and not lose state
@@ -238,7 +247,7 @@ app.get('/graph/:src/:dst', function(req, res) {
 app.get(['/mintTable','/mintTable/:pulsegroup/:mint','/mintTable/:pulsegroup'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log(`index.ts: fetching /mintTable pulseGroup requested: ${req.params.pulsegroup} mint req uested: ${req.params.mint}`);
+    console.log(`index.ts: fetching /mintTable pulseGroup requested: ${req.params.pulsegroup} mint requested: ${req.params.mint}`);
     // pulseGroup 
     var pulseGroupName=me.geo+".1";  //assume 
     if (typeof req.params.pulsegroup != "undefined") {
