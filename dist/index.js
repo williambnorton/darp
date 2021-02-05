@@ -151,7 +151,7 @@ app.get('/invite/:pulsegroupaddress', function (req, res) {
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
         "&ts=" + lib_1.now();
-    console.log("/invite will execute nodeFactory on " + req.params.destip + ":" + req.params.destport + " to join group " + req.params.groupname + " " + configurl);
+    console.log("/invite will execute nodeFactory on " + pulsegroupaddress + " to join " + configurl);
     pulsegroup_1.getPulseGroupURL(configurl);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");

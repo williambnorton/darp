@@ -127,7 +127,7 @@ app.get('/version', function(req, res) {
     "&myip=" + config.IP +
     "&ts=" + now();
     
-    console.log(`/invite will execute nodeFactory on ${req.params.destip}:${req.params.destport} to join group ${req.params.groupname} ${configurl}`);
+    console.log(`/invite will execute nodeFactory on ${pulsegroupaddress} to join ${configurl}`);
     getPulseGroupURL(configurl)
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
