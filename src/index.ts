@@ -112,14 +112,13 @@ app.get('/version', function(req, res) {
  //     /invite - this message is sent by Genesis node invinting to be potential relay
  //             simpler - Genesis node sends as new PG payload (the pulseGroup object)
  //
- app.get('/invite/:groupowner/:destip/:destport', function(req, res) {
-
+ app.get('/invite/:pulsegroupaddress', function(req, res) {
+    const pulsegroupaddress=req.params.pulsegroupaddress
     //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
     console.log(`INVITE -- This would be only valid over an encrypted path ${dump(req.params)}`);
-    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
-    "/nodefactory?geo=" + CONFIG.GEO +
-    "&groupowner=" + req.params.groupowner +
-//    "/nodefactory?geo=" + req.params.groupowner +
+//    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
+    const configurl = "http://" + pulsegroupaddress + 
+    "/nodefactory?geo=" + CONFIG.GEO +    
     "&port=" + config.PORT +
     "&publickey=" + config.PUBLICKEY +
     "&genesisport=" + config.GENESISPORT +
@@ -132,7 +131,7 @@ app.get('/version', function(req, res) {
     getPulseGroupURL(configurl)
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.end("Invited to "+JSON.stringify(configurl));
+    res.end(JSON.stringify("Invited to "+configurl));
     return;
  });
 
