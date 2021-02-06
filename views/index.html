@@ -343,7 +343,7 @@
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
 
 
-                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString()+'/join/'+pulseGroup.mintTable[0].ipaddr+":"+pulseGroup.mintTable[0].port; %>
+                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
                     
 
                     <% var leadingDigitMint="0"+srcMintEntry.mint; %>
@@ -630,7 +630,7 @@
                     <tr class="<%= classNameGeoMintClass %>">
                         <td><%= srcMintEntry.mint %></td>
 
-                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/"; %>
+                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + '/join/'+pulseGroup.mintTable[0].ipaddr+":"+pulseGroup.mintTable[0].port; %>
                         <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
                         
                         <td><%= srcMintEntry.port %></td>
