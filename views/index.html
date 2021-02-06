@@ -635,8 +635,7 @@
                         <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() +'/'; %>
                         <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
 
-                        <td><input type="text" class="dropName" name="dropName" onchange   = "res.redirect('http://'+me.ipaddr+':'+me.port);
-                            alert(' REQUEST '+this.value+'join/'+me.ipaddr+':'+me.port);" onkeypress = "this.onchange();" onpaste = "this.onchange();" oninput = "this.onchange();" /></td>
+                        <td><input type="text" class="dropName" name="dropName" onchange   = "window.location.href='http://'+me.ipaddr+':'+me.port;alert(' REQUEST '+this.value+'join/'+me.ipaddr+':'+me.port);" onkeypress = "this.onchange();" onpaste = "this.onchange();" oninput = "this.onchange();" /></td>
                         
                         <td><%= srcMintEntry.port %></td>
 
