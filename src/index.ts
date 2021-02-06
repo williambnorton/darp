@@ -130,7 +130,7 @@ app.get('/version', function(req, res) {
         "&myip=" + config.IP +
         "&ts=" + now();
     
-    console.log(`/join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);
+    console.log(`${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);
     getPulseGroupURL(configurl);
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
