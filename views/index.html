@@ -632,10 +632,10 @@
                         <td><%= srcMintEntry.mint %></td>
 
                         
-                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + '/join/'+pulseGroup.mintTable[0].ipaddr+":"+pulseGroup.mintTable[0].port; %>
+                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() +'/'; %>
                         <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
 
-                        <td><input type="text" class="dropName" name="dropName" onchange   = "alert(' REQUEST '+this.value+'/join'+me.ipaddr+':'+me.port);" onkeypress = "this.onchange();" onpaste = "this.onchange();" oninput = "this.onchange();" /></td>
+                        <td><input type="text" class="dropName" name="dropName" onchange   = "alert(' REQUEST '+this.value+'/join/'+me.ipaddr+':'+me.port);" onkeypress = "this.onchange();" onpaste = "this.onchange();" oninput = "this.onchange();" /></td>
                         
                         <td><%= srcMintEntry.port %></td>
 
