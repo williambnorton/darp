@@ -343,7 +343,7 @@
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
 
 
-                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString()+'/join/'+pulseGroup.mintTable[0].ipaddr; %>
+                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString()+'/join/'+pulseGroup.mintTable[0].ipaddr+":"+pulseGroup.mintTable[0].port; %>
                     
 
                     <% var leadingDigitMint="0"+srcMintEntry.mint; %>
