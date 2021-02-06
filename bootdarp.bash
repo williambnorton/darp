@@ -100,6 +100,7 @@ do
             echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
             #rm testport.txt
             #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
+            scripts/testport.bash 
             scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
 
             echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
