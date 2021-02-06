@@ -631,10 +631,11 @@
                     <tr class="<%= classNameGeoMintClass %>">
                         <td><%= srcMintEntry.mint %></td>
 
-                        <td><input type="text" name="drophere" /></td>
-
+                        
                         <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + '/join/'+pulseGroup.mintTable[0].ipaddr+":"+pulseGroup.mintTable[0].port; %>
-                        <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
+                        <td class="<%= srcMintEntry.geo srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
+
+                        <td><input type="text" name="dropName" /></td>
                         
                         <td><%= srcMintEntry.port %></td>
 
