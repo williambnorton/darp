@@ -592,6 +592,7 @@
             <tr>
                 <th>mint</th>
                 <th>geo</th>
+                <th>dropHere2join</th>
                 <th>port</th>
                 <th>ipaddr</th>
                 <th>publickey</th>
@@ -619,7 +620,7 @@
                     <% } else if (srcMintEntry.mint == 1) { %>
                         <% mintClass += "GENESIS "; %>
                     <% } %>
-    
+                        
                     <% if (srcMintEntry.state == "UP") { %>
                         <% mintClass += "UP "; %>
                     <% } else if (srcMintEntry.state == "NR") { %>
@@ -629,6 +630,8 @@
                     <% let classNameGeoMintClass = mintClass + srcMintEntry.geo; %>
                     <tr class="<%= classNameGeoMintClass %>">
                         <td><%= srcMintEntry.mint %></td>
+
+                        <td><input type="text" name="drophere" /></td>
 
                         <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + '/join/'+pulseGroup.mintTable[0].ipaddr+":"+pulseGroup.mintTable[0].port; %>
                         <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
