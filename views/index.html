@@ -341,7 +341,12 @@
             <% if (srcMintEntry != null) { %>
                 <% if (srcMintEntry.state == "UP") { %>
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
-                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
+
+
+                    <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString()+'/join/'+pulseGroup.mintTable[0].ipaddr; %>
+<!--                   <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>   --> 
+                    
+
                     <% var leadingDigitMint="0"+srcMintEntry.mint; %>
                     <%  leadingDigitMint=leadingDigitMint.slice(-2); %>
                     <tr class="<%= classNameUp %>">
