@@ -155,6 +155,8 @@ app.get('/join/:pulsegroupaddress', function (req, res) {
         "&ts=" + lib_1.now();
     console.log(pulsegroup_1.CONFIG.GEO + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl);
     pulsegroup_1.getPulseGroupURL(configurl);
+    res.redirect('http://' + pulsegroupaddress);
+    return;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(lib_1.ts() + "/join pulseGroup with " + configurl));
