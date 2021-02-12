@@ -84,14 +84,14 @@
                                     //console.log(timeNow+`fetchState(): found entry flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' ms');
                                     if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
-                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow");//.css("border-width", "3px");
                                     }
                                 } else {
                                     //console.log(`fetchState(): unflagged `+srcOwlMintEntry.mint+"-"+pulseEntry.mint);
 
                                     if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");
-                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "3px");
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black");//.css("border-width", "3px");
                                     }
                                 }
                             }
