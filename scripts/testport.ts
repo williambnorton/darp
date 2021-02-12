@@ -18,8 +18,10 @@ if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESIS
     process.exit(86);
 }
 var numberPings=1;
-//const GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
-var GENESISNODELIST=process.env.GENESISNODELIST
+
+//var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
+
+var GENESISNODELIST=process.env.GENESISNODELIST||"";
 if (GENESISNODELIST=="") {
     console.log(`testport.ts something really wrong - no GENESISNODE LIST - EXITTING`);
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT

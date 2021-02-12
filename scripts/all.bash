@@ -16,7 +16,7 @@ CMD="curl http://52.53.222.151:65013/darp.bash | bash "  #watch it run
 #	reboot to ensure old docker killed and we start fresh
 #
 if [ $# -ne 0 ]; then
-for node in `cat ../*genesis.config`
+for node in `cat ../genesisnodes.config`
 do
 	IP=`echo $node | awk -F, '{ print $1 }'`
 	PORT=`echo $node | awk -F, '{ print $2 }'`
@@ -39,8 +39,8 @@ echo `date` Allowing  $REBOOTSLEEPTIME   seconds for  nodes to all reboot
 sleep $REBOOTSLEEPTIME 
 fi
 
-#for node in `cat ../genesis.config`
-for node in `cat ../*.config`
+#for node in `cat ../genesisnodes.config`
+for node in `cat ../genesisnodes.config`
 do
 	IP=`echo $node | awk -F, '{ print $1 }'`
 	PORT=`echo $node | awk -F, '{ print $2 }'`
