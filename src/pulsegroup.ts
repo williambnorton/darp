@@ -126,7 +126,7 @@ export class Config {
 
 
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 25;
+        this.MAXNODES = 50;
         console.log(`config constructor made: ${JSON.stringify(this,null,2)}`);
     }
 }
