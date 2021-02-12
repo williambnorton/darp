@@ -65,7 +65,7 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 # 	setting up my GENESIS variables for operation          
 #           
 #export GENESISNODELIST=`cat *.config | sed ':a;N;$!ba;s/\n/ /g' `   #   this gives all Genesis nodes
-export GENESISNODELIST=`cat genesis.config sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
+export GENESISNODELIST=`cat genesis.config | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
 #echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`cat genesis.config | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config
 cat genesis.config | grep $MY_IP
