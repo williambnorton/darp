@@ -67,8 +67,13 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 export GENESISNODELIST=`cat genesisnodes.config | grep -v '#' | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
 #echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
-echo $GENESISNODELIST | grep -v '#' | grep $MY_IP
-IS_GENESIS=$?     #
+echo $GENESISNODELIST | grep -v '#' | grep $MY_IP >/dev/null
+if [ $? -eq 0 ]; then
+    export IS_GENESIS=1;
+else
+    export IS_GENESIS=0;
+fi
+
 echo `date` "$0 STARTING DARP MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
 CYCLES=0;
 while :
@@ -77,7 +82,7 @@ do
         GENESIS=$MY_IP:$MY_PORT
     fi
 
-    if [ $IS_GENESIS -eq 0 -a  "$GENESIS" == "" ]; then  #All genesis nodes will start as part of the root, the first node to start in the Genesis Group
+    if [ $IS_GENESIS -eq 1 -a  "$GENESIS" == "" ]; then  #Genesis nodes point to FIRST_GENESIS unless overridden by GENESIS= override
         echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
         MY_GENESIS_IP=$FIRST_GENESIS   #THIS BASICALLY MEANS 
         MY_GENESIS_PORT=65013
