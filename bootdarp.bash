@@ -98,19 +98,19 @@ do
             echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
         else
             echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
-            #rm testport.txt
-            #scripts/testport.bash #| grep Docker. | grep -v '#' >testport.txt
+            #rm GNL.txt
+            #scripts/testport.bash #| grep Docker. | grep -v '#' >GNL.txt
             #scripts/testport.bash 
-            scripts/testport.bash | grep Docker. | grep -v '#' >testport.txt
+            scripts/testport.bash | grep Docker. | grep -v '#' >GNL.txt   #GNL.txt holds the latency distance to each GNL at the time
 
-            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat testport.txt | grep -v SELF | head -1`" (from testport.txt) ********************************************"
-            cat testport.txt
-            #FIRST_LINE=`cat testport.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
-            FIRST_LINE=`cat testport.txt | grep -v SELF | head -1`
+            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
+            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
+            cat GNL.txt
+            #FIRST_LINE=`cat GNL.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
+            FIRST_LINE=`cat GNL.txt | grep -v SELF | head -1`
             echo "First to respond ... FIRST_LINE=$FIRST_LINE"
             FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
             echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
