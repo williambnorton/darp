@@ -33,7 +33,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "$0 delayed launch of wireguiard script, instrumentation docker, and syntropy stack agent"
         (sleep 20;~/wireguard/wgwatch.bash) &
         (sleep 30; docker run --network="host" --rm --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
-        (sleep 40; docker run -p 80:80 -d williambnorton/srwan ) &
+        (sleep 40; docker run -p 80:80 --rm -d williambnorton/srwan ) &
 
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)
