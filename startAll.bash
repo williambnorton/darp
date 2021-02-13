@@ -15,7 +15,7 @@ do
 
 		if [ $? -eq 0 ]; then
 			echo  ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 
-			#~/scripts/USR1 ubuntu@$ip $name $ip $port undefined &
+			~/scripts/USR1 ubuntu@$ip $name $ip $port undefined &
 		else 
 			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port undefined
 			#~/scripts/USR2 ubuntu@$ip $name $ip $port undefined &
