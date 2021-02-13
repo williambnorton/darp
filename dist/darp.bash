@@ -27,12 +27,13 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # spin off liaison gateway script that ties together host network and docker 
         # wgwatch.bash (docker will create it in shared volume: ~/wireguard directory)
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
-        (sleep 20;~/wireguard/wgwatch.bash) &
-        (sleep 30; docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
-        (sleep 40; docker run -p 80:80 -d williambnorton/srwan ) &
-        echo `date` removing all dockers
+        echo `date` "$0 removing all dockers and images"
         docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q)
 
+        echo `date` "$0 delayed launch of wireguiard script, instrumentation docker, and syntropy stack agent"
+        (sleep 20;~/wireguard/wgwatch.bash) &
+        (sleep 30; docker run --network="host" --rm --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
+        (sleep 40; docker run -p 80:80 -d williambnorton/srwan ) &
 
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)

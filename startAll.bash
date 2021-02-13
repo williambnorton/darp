@@ -14,9 +14,9 @@ do
 		echo $0 | grep start >/dev/null
 
 		if [ $? -eq 0 ]; then
-			echo  /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 
-			~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 
-			#(~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 2>&1 ) >>/tmp/$$  &
+			echo  `date` "LAUNCHING  /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined & "
+			~/scripts/USR1 ubuntu@$ip $name $ip $port undefined  &
+			#(~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 2>&1 ) >>/tmp/x  &
 		else 
 			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port undefined
 			~/scripts/USR2 ubuntu@$ip $name $ip $port undefined &
