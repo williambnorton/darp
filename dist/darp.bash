@@ -30,7 +30,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         (sleep 20;~/wireguard/wgwatch.bash) &
         (sleep 30; docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
         (sleep 40; docker run -p 80:80 -d williambnorton/srwan ) &
-        echo `dte` removing all dockers
+        echo `date` removing all dockers
         docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q)
 
 
