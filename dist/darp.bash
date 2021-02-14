@@ -28,7 +28,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # wgwatch.bash (docker will create it in shared volume: ~/wireguard directory)
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
         echo `date` "$0 removing all dockers and images"
-        docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q)
+
+        ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
 
         echo `date` "$0 delayed launch of wireguiard script, instrumentation docker, and syntropy stack agent"
         (sleep 20;~/wireguard/wgwatch.bash) &
