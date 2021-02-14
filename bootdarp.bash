@@ -64,10 +64,11 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #	
 # 	setting up my GENESIS variables for operation          
 #           
-export GENESISNODELIST=`cat genesisnodes.config | grep -v '#' | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
+#
+export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
 #echo bash says GENESISNODELIST=$GENESISNODELIST
 FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
-echo $GENESISNODELIST | grep -v '#' | grep $MY_IP >/dev/null
+echo $GENESISNODELIST | grep $MY_IP | grep ,GENESIS >/dev/null
 if [ $? -eq 0 ]; then
     export IS_GENESIS=1;
 else

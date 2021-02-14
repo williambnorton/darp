@@ -6,7 +6,7 @@
 #
 #       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
-echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA 12 1911
+echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA DOCKERTAG
 SUDO=sudo
 
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
@@ -39,8 +39,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)
          
-        echo `date` "darp.bash:  NEW TEST - directly running this DOCKER DOCKERTAG by tag"
-        echo 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
+        echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         rc=$?
         if [ $? -eq 86 ]; then
@@ -51,7 +50,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         
         sleep 15
         STATE=`cat ~/wireguard/STATE`
-        echo `date` "$0 STATE=$STATE"
+        #echo `date` "$0 STATE=$STATE"
     done
 else
     echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
