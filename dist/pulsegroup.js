@@ -822,7 +822,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 });
             }).on("error", function () {
-                console.log("checkSW(): fetching version failed " + url + " genesis node out of reach - NOT EXITTING ");
+                console.log("checkSW(): " + exports.CONFIG.GEO + " fetching version failed " + url + " genesis node out of reach - NOT EXITTING ");
                 //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
             });
             if (_this.isGenesisNode()) //non-genesis nodes will use pulses every second to check software version

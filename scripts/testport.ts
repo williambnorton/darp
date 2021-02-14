@@ -65,9 +65,10 @@ function darpPing() {
         let IP=ary[genesisNode].split(",")[0]
         let Port=ary[genesisNode].split(",")[1]
         let Name=ary[genesisNode].split(",")[2]
+        let role=ary[genesisNode].split(",")[3]
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         if ( IP == process.env.MY_IP ) message=message+",SELF"
-        //console.log(`# Here we send DARP Ping to ${Name} ${IP}:${Port} message=${message}`);
+        console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
 
         client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             if (err) throw err;
