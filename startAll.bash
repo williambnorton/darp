@@ -21,13 +21,13 @@ do
 		echo $0 | grep start >/dev/null
 
 		if [ $? -eq 0 ]; then
-			echo  `date` "LAUNCHING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined & "
-			#~/scripts/USR1 ubuntu@$ip $name $ip $port undefined  &
-			(~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 2>&1 ) >>/tmp/x  &
+			echo  `date` "LAUNCHING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
+			#~/scripts/USR1 ubuntu@$ip $name $ip $port  &
+			(~/scripts/USR1 ubuntu@$ip $name $ip $port 2>&1 ) >>/tmp/x  &
 		else 
-			echo  `date` "REBOOTING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined & "
-			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port undefined
-			~/scripts/USR2 ubuntu@$ip $name $ip $port undefined &
+			echo  `date` "REBOOTING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
+			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port 
+			~/scripts/USR2 ubuntu@$ip $name $ip $port &
 		fi
 	fi
 
@@ -47,13 +47,13 @@ do
 		echo $0 | grep start >/dev/null
 
 		if [ $? -eq 0 ]; then
-			echo  `date` "LAUNCHING non-genesis node /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined & "
-			#~/scripts/USR1 ubuntu@$ip $name $ip $port undefined  &
-			(~/scripts/USR1 ubuntu@$ip $name $ip $port undefined 2>&1 ) >>/tmp/x  &
+			echo  `date` "LAUNCHING non-genesis node /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
+			#~/scripts/USR1 ubuntu@$ip $name $ip $port &
+			(~/scripts/USR1 ubuntu@$ip $name $ip $port 2>&1 ) >>/tmp/x  &
 		else 
-			echo  `date` "REBOOTING non-genesis node /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port undefined & "
-			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port undefined
-			~/scripts/USR2 ubuntu@$ip $name $ip $port undefined &
+			echo  `date` "REBOOTING non-genesis node /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
+			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port 
+			~/scripts/USR2 ubuntu@$ip $name $ip $port &
 		fi
 	fi
 
