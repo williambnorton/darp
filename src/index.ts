@@ -130,8 +130,9 @@ app.get('/version', function(req, res) {
         "&myip=" + config.IP +
         "&ts=" + now();
     
-    console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
-    return;
+    //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
+    //return;
+    console.log(`/JOIN ${CONFIG.GEO} ${CONFIG.IP} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
     getPulseGroupURL(configurl);
     res.redirect('http://'+pulsegroupaddress);
     return;

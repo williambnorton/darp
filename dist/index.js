@@ -153,8 +153,9 @@ app.get('/join/:pulsegroupaddress', function (req, res) {
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
         "&ts=" + lib_1.now();
-    console.log("DISABLED /JOIN " + pulsegroup_1.CONFIG.GEO + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl); //return
-    return;
+    //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
+    //return;
+    console.log("/JOIN " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl); //return
     pulsegroup_1.getPulseGroupURL(configurl);
     res.redirect('http://' + pulsegroupaddress);
     return;

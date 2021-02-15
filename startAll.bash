@@ -18,8 +18,7 @@ do
 	name=`echo $node|awk -F, '{print $3}'`
 
 	if [ "$ip" != "" -a "$port" != "" -a "$name" != "" ]; then
-		echo $0 | grep start >/dev/null
-
+		echo $0 | grep start >/dev/null   #Is this a startAll.bash or stopAll.bash ?
 		if [ $? -eq 0 ]; then
 			echo  `date` "LAUNCHING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
 			#~/scripts/USR1 ubuntu@$ip $name $ip $port  &
