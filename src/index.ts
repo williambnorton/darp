@@ -688,7 +688,7 @@ app.get('/darp.bash', function(req, res) {
     fs.readFile('darp.bash', function(err:string, data:string){
         if (err) console.log(`darp.bash file unavailable`);//console.log(`sending data ${data}`);
         else {
-            console.log(`retrieving darp.bash config.GENESIS=${config.GENESIS}`);
+            console.log(`retrieving darp.bash for ${req.connection.remoteAddress} config.GENESIS=${config.GENESIS}`);
             //console.log(`data=${data}`);
             var str=data.toString();
 

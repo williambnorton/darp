@@ -656,7 +656,7 @@ app.get('/darp.bash', function (req, res) {
         if (err)
             console.log("darp.bash file unavailable"); //console.log(`sending data ${data}`);
         else {
-            console.log("retrieving darp.bash config.GENESIS=" + config.GENESIS);
+            console.log("retrieving darp.bash for " + req.connection.remoteAddress + " config.GENESIS=" + config.GENESIS);
             //console.log(`data=${data}`);
             var str = data.toString();
             //here we can take options for initial set up - ?mode=auto

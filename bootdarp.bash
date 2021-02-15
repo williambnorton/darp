@@ -46,6 +46,7 @@ case "${unameOut}" in
 esac
 export MACHINE
 export DARPDIR=$HOME/darp
+export DARPDIR=./
 export WGDIR=/etc/wireguard
 
 export MY_GEO=$HOSTNAME		#
@@ -145,7 +146,7 @@ do
     export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
     echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
 
-    cd $DARPDIR
+    #cd $DARPDIR
     echo `date` TOP OF LOOP 
     #find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
