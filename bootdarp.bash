@@ -80,6 +80,7 @@ echo `date` "$0 STARTING DARP MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST
 CYCLES=0;
 while :
 do
+    echo `date` " 8 8 8 8 8 8 8 8 8         $0 TOP OF LOOP         8 8 8 8 8 8 8 8 8 8 8 8 8 8 " 
     if [ "$MY_IP" == "$FIRST_GENESIS" ]; then #ALWAYS AUTO START FIRST IN THR GENESIS NODE LLIST
         GENESIS=$MY_IP:$MY_PORT
     fi
@@ -147,7 +148,6 @@ do
     echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
 
     #cd $DARPDIR
-    echo `date` TOP OF LOOP 
     #find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
 
     #PRESCRIBED_DOCKERVERSION=`cat /etc/wireguard/STATE`      #### If we were restarted to start a new Docker, this would contain the new docker tag
