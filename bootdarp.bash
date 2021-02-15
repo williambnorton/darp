@@ -46,7 +46,7 @@ case "${unameOut}" in
 esac
 export MACHINE
 export DARPDIR=$HOME/darp
-export DARPDIR=./
+export DARPDIR=`pwd`
 export WGDIR=/etc/wireguard
 
 export MY_GEO=$HOSTNAME		#
@@ -175,7 +175,8 @@ do
     # we could exit if rc= non-zero. updateSW could replicate the code from git, move it into place and run it instead of the rest of this script
 
     cd /tmp
-    cd /root/darp
+    #cd /root/darp
+    cd $DARPDIR
     DARPVERSION=`ls Build*`
     DOCKERVERSION=`ls Docker.*`
     export VERSION="${DOCKERVERSION}:${DARPVERSION}"    # DOCKERVERSION comes in as environmental variable
@@ -206,7 +207,8 @@ do
     
     echo `date` " * * * * * * * * * * * * * * * * *  $0 STARTING DARP SUBAGENTS   * * * * * * * * * * * * * * * * * " 
     cd 
-    cd /root/darp/subagents/rtt/; 
+    #cd /root/darp/subagents/rtt/; 
+    cd $DARPDIR/subagents/rtt
     ./launchrtt.bash & 
     echo $$ >$DARPDIR/launchrtt.pid
 
@@ -230,13 +232,6 @@ do
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
 
-#    cd $DARPDIR
-#    if [ $? -ne 0 ]; then
-#        echo `date` "System Corrupt: Can't find DARP SW root- ERROR - Exitting"
-#        exit 86;
-#    fi
-    
-#    sleep 1
 
     if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; echo "STOP">$WGDIR/STATE;  exit 86; fi     #STOP COMMAND
 
@@ -270,12 +265,6 @@ do
     kill -9 `ps aux |grep -v grep | grep ping | awk '{ print $1}'`  #can delete this
     #kill -9 `ps aux |grep -v grep | grep receiver | awk '{ print $1}'`  #can delete this
     kill -9 `ps aux |grep -v grep | grep launchrtt | awk '{ print $1}'`
-
-    #find /root/darp/history -type f -mmin +7 -print       #Remove old history files so we don't fill up disk This could be done out of cron every minute
-
-
-
-    #ps aux
 
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
