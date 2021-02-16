@@ -290,13 +290,12 @@ app.get(['/pulsegroups','/state'], function(req, res) {
     //console.log(`sending JSON stringify of pulseGroups object`);
     var clonedPulseGroups=JSON.parse(JSON.stringify(myPulseGroups,null,2));
     for (var i in clonedPulseGroups) {
-        for (var pg in clonedPulseGroups[i]) {
-            var pulseGroup=clonedPulseGroups[i][pg];
+        console.log(` cloned pulsegroups ${i}`);
+            var pulseGroup=clonedPulseGroups[i];
             for (var p in pulseGroup.pulses) {
                 console.log(` history was ${pulseGroup.pulses[p].history}`);
                 pulseGroup.pulses[p].history={}
             }
-        }
     }
     var myShortPulseGroups=JSON.stringify(clonedPulseGroups,null,2)
     console.log(`sending myShortPulseGroup=${myShortPulseGroups}`);
