@@ -303,29 +303,13 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
     //console.log(`sending JSON stringify of pulseGroups object`);
     var clonedPulseGroups = JSON.parse(JSON.stringify(pulsegroups_1.myPulseGroups, null, 2));
     for (var i in clonedPulseGroups) {
-        console.log(" cloned pulsegroups " + i);
         var pulseGroup = clonedPulseGroups[i];
         for (var p in pulseGroup.pulses) {
-            console.log(" history was " + pulseGroup.pulses[p].history);
             pulseGroup.pulses[p].history = {};
         }
     }
     var myShortPulseGroups = JSON.stringify(clonedPulseGroups, null, 2);
-    console.log("sending myShortPulseGroup=" + myShortPulseGroups);
     res.end(myShortPulseGroups);
-    return;
-    // cache 
-    var filename = "../" + me.ipaddr + "." + me.port + '.json'; //deliver cached JSON file instead of stringifying many times
-    //console.log(`sending contents of ${filename}`);
-    try {
-        var fileContents = fs.readFileSync(filename);
-        res.end(fileContents); //CRASH - catch 
-    }
-    catch (err) {
-        // Here you get the error when the file was not found,
-        // but you also get any other error
-        res.end("INTERNAL ERROR - can't find pulseGroup object me=${me}"); //CRASH - catch 
-    }
     return;
 });
 //
