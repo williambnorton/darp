@@ -8,6 +8,7 @@
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
 echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA DOCKERTAG
 SUDO=sudo
+DOCKER_SLEEPTIME=15
 
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
 docker_rc=$?
@@ -44,18 +45,20 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         rc=$?
         if [ $? -eq 86 ]; then
             echo `date` "==================== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            exit 86
+            STATE="STOP"
         fi
-        echo `date` "$0 Docker exitted with rc=$rc - sleeping 15 seconds and fetching new docker and restarting"
 
-
-        echo `date` $0 KILLING background tasks
+        echo `date` "$0 KILLING any background tasks and other dockers"
         kill $(jobs -p)
         ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
-        echo `date` $0 KILLING background tasks complete
+        echo `date` "$0 KILLING background tasks complete"
 
-
-        sleep 15
+        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
+        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
+        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
+        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
+        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
+        sleep $DOCKER_SLEEPTIME
         STATE=`cat ~/wireguard/STATE`
         #echo `date` "$0 STATE=$STATE"
     done
@@ -63,3 +66,4 @@ else
     echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
 fi
 echo `date` $0 DARP EXITTED.
+exit 86
