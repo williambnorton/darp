@@ -108,18 +108,22 @@ app.get('/version', function(req, res) {
     return;
 });
 
+//
+//  findNode
+//
 function findNode(ipport:String) {
    const ip=ipport.split(":")[0]; 
    const port=parseInt(ipport.split(":")[1]); 
-   for (var pg in myPulseGroups) {
-       var pulseGroup=myPulseGroups[pg];
+   //for (var pg in myPulseGroups) {
+   //    var pulseGroup=myPulseGroups[pg];
+   var pulseGroup=myPulseGroups[CONFIG.GEO+".1"];
        for (var m in pulseGroup.mintTable) {
            var mintTableEntry=pulseGroup.mintTable[m];
            if (mintTableEntry!=null && mintTableEntry.ipaddr==ip && mintTableEntry.port==port) {
                return mintTableEntry;
            }
        }
-   }
+   //}
    return null;
 }
  //
@@ -150,11 +154,12 @@ function findNode(ipport:String) {
     if ( pulsegroupaddress != config.IP+":"+config.PORT ) { //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
 
-        if ( findNode(pulsegroupaddress) == null ) { //if we don't already see him
+        //if ( findNode(pulsegroupaddress) == null ) { //if we don't already see him
+        if ( findNode(pulsegroupaddress) == null ) { //if our group doesn't already see him
             getPulseGroupURL(configurl);        //join this guys group
             console.log(`index.ts: /JOINING ${CONFIG.GEO} ${CONFIG.IP} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
         } else {
-            console.log(`index.ts: NOT /JOINING ${CONFIG.GEO} ${CONFIG.IP} /join already includes a connection to ${pulsegroupaddress} to join ${configurl}`);    //return
+            console.log(`index.ts: NOT /JOINING ${CONFIG.GEO} ${CONFIG.IP} `);    //return
         }
     }
     else console.log(`not connecting to myself via /join`);

@@ -133,18 +133,22 @@ app.get('/pause', function (req, res) {
     console.log("PAUSING -- here we would set adminControl on the pulse group to SINGLESTEP");
     return;
 });
+//
+//  findNode
+//
 function findNode(ipport) {
     var ip = ipport.split(":")[0];
     var port = parseInt(ipport.split(":")[1]);
-    for (var pg in pulsegroups_1.myPulseGroups) {
-        var pulseGroup = pulsegroups_1.myPulseGroups[pg];
-        for (var m in pulseGroup.mintTable) {
-            var mintTableEntry = pulseGroup.mintTable[m];
-            if (mintTableEntry != null && mintTableEntry.ipaddr == ip && mintTableEntry.port == port) {
-                return mintTableEntry;
-            }
+    //for (var pg in myPulseGroups) {
+    //    var pulseGroup=myPulseGroups[pg];
+    var pulseGroup = pulsegroups_1.myPulseGroups[pulsegroup_1.CONFIG.GEO + ".1"];
+    for (var m in pulseGroup.mintTable) {
+        var mintTableEntry = pulseGroup.mintTable[m];
+        if (mintTableEntry != null && mintTableEntry.ipaddr == ip && mintTableEntry.port == port) {
+            return mintTableEntry;
         }
     }
+    //}
     return null;
 }
 //
@@ -171,12 +175,13 @@ app.get('/join/:pulsegroupaddress', function (req, res) {
     //return;
     if (pulsegroupaddress != config.IP + ":" + config.PORT) { //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
-        if (findNode(pulsegroupaddress) == null) { //if we don't already see him
+        //if ( findNode(pulsegroupaddress) == null ) { //if we don't already see him
+        if (findNode(pulsegroupaddress) == null) { //if our group doesn't already see him
             pulsegroup_1.getPulseGroupURL(configurl); //join this guys group
             console.log("index.ts: /JOINING " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl); //return
         }
         else {
-            console.log("index.ts: NOT /JOINING " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join already includes a connection to " + pulsegroupaddress + " to join " + configurl); //return
+            console.log("index.ts: NOT /JOINING " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " "); //return
         }
     }
     else
