@@ -156,10 +156,17 @@ app.get('/join/:pulsegroupaddress', function (req, res) {
     //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
     //return;
     console.log("index.ts: /JOIN " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl); //return
-    if (pulsegroupaddress != config.IP + ":" + config.PORT) //not me
+    if (pulsegroupaddress != config.IP + ":" + config.PORT) { //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
+        //        if (typeof myPulseGroups[CONFIG.GEO+":"+'.1'].pulses[];
         pulsegroup_1.getPulseGroupURL(configurl); //join this guys group
-    //res.redirect( 'http://' + pulsegroupaddress );
+        console.log(lib_1.ts() + (" Executing /join to " + configurl));
+        return;
+    }
+    else {
+        console.log("not connecting to myself via /join");
+        res.redirect('http://' + pulsegroupaddress);
+    }
     return;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");

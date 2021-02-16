@@ -117,6 +117,7 @@ app.get('/version', function(req, res) {
     //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
     console.log(`join -- This would be only valid over an encrypted path coming from ${CONFIG.GENESIS}`);
 //    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
+
     if (pulsegroupaddress.indexOf(':')==-1) 
         pulsegroupaddress=pulsegroupaddress+":65013";  //default port
 
@@ -133,11 +134,17 @@ app.get('/version', function(req, res) {
     //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
     //return;
     console.log(`index.ts: /JOIN ${CONFIG.GEO} ${CONFIG.IP} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
-    if ( pulsegroupaddress != config.IP+":"+config.PORT )  //not me
+    if ( pulsegroupaddress != config.IP+":"+config.PORT ) { //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
-            getPulseGroupURL(configurl);        //join this guys group
-    //res.redirect( 'http://' + pulsegroupaddress );
 
+//        if (typeof myPulseGroups[CONFIG.GEO+":"+'.1'].pulses[];
+        getPulseGroupURL(configurl);        //join this guys group
+        console.log(ts()+` Executing /join to ${configurl}`);
+        return;
+    } else {
+        console.log(`not connecting to myself via /join`);
+        res.redirect( 'http://' + pulsegroupaddress );
+    }
     return;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
