@@ -1402,37 +1402,42 @@ exports.getPulseGroupURL = function (configurl) { return __awaiter(void 0, void 
     var pulseGroupObjectURL;
     return __generator(this, function (_a) {
         pulseGroupObjectURL = encodeURI(configurl);
-        logger_1.logger.info("getPulseGroup(): getting pulseGroup from url=" + pulseGroupObjectURL);
+        logger_1.logger.info("getPulseGroupURL(): getting pulseGroup from url=" + pulseGroupObjectURL);
         return [2 /*return*/, new Promise(function (resolve, reject) {
-                var req = http.get(pulseGroupObjectURL, function (res) {
-                    if (res.statusCode != 200) {
-                        return reject(new Error("getPulseGroup(): received status code " + res.statusCode));
-                    }
-                    var data = "";
-                    res.on("data", function (stream) {
-                        data += stream;
-                    });
-                    res.on("error", function () {
-                        return reject(new Error("getPulseGroup(): received error from " + pulseGroupObjectURL));
-                    });
-                    res.on("end", function () {
-                        var newPulseGroup = JSON.parse(data);
-                        logger_1.logger.info("getPulseGroup(): from node factory: " + lib_1.dump(newPulseGroup));
-                        if (newPulseGroup == null) {
-                            console.log("ERROR: Genesis node refused connection request @" + pulseGroupObjectURL + " exitting...");
-                            process.exit(36); //reload software and take another pass
+                try {
+                    var req = http.get(pulseGroupObjectURL, function (res) {
+                        if (res.statusCode != 200) {
+                            return reject(new Error("getPulseGroupURL(): received status code " + res.statusCode));
                         }
-                        //                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
-                        //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
-                        //            } else {
-                        //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
-                        //        }
-                        lib_1.Log("pulseGroup JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port + " and Launching...");
-                        pulsegroups_1.addPulseGroup(newPulseGroup); //don't start self as Genesis - already started
-                        return resolve(newPulseGroup);
+                        var data = "";
+                        res.on("data", function (stream) {
+                            data += stream;
+                        });
+                        res.on("error", function () {
+                            return reject(new Error("getPulseGroupURL(): received error from " + pulseGroupObjectURL));
+                        });
+                        res.on("end", function () {
+                            var newPulseGroup = JSON.parse(data);
+                            logger_1.logger.info("getPulseGroupURL(): from node factory: " + lib_1.dump(newPulseGroup));
+                            if (newPulseGroup == null) {
+                                console.log("ERROR: Genesis node refused connection request @" + pulseGroupObjectURL + " exitting...");
+                                process.exit(36); //reload software and take another pass
+                            }
+                            //                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
+                            //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
+                            //            } else {
+                            //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
+                            //        }
+                            lib_1.Log("getPulseGroupURL JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port + " and Launching...");
+                            pulsegroups_1.addPulseGroup(newPulseGroup); //don't start self as Genesis - already started
+                            return resolve(newPulseGroup);
+                        });
                     });
-                });
-                req.end();
+                    req.end();
+                }
+                catch (e) {
+                    console.log("getPulseGroupURL: get " + pulseGroupObjectURL + " Failed");
+                }
             })];
     });
 }); };

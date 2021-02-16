@@ -1608,14 +1608,15 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
     var pulseGroupObjectURL = encodeURI(configurl);
 
     logger.info(
-        `getPulseGroup(): getting pulseGroup from url=${pulseGroupObjectURL}`
+        `getPulseGroupURL(): getting pulseGroup from url=${pulseGroupObjectURL}`
     );
 
     return new Promise((resolve, reject) => {
+        try {
         const req = http.get(pulseGroupObjectURL, (res) => {
             if (res.statusCode != 200) {
                 return reject(
-                    new Error(`getPulseGroup(): received status code ${res.statusCode}`)
+                    new Error(`getPulseGroupURL(): received status code ${res.statusCode}`)
                 );
             }
 
@@ -1626,13 +1627,13 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
 
             res.on("error", () => {
                 return reject(
-                    new Error(`getPulseGroup(): received error from ${pulseGroupObjectURL}`)
+                    new Error(`getPulseGroupURL(): received error from ${pulseGroupObjectURL}`)
                 );
             });
 
             res.on("end", () => {
                 var newPulseGroup: PulseGroup = JSON.parse(data);
-                logger.info(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
+                logger.info(`getPulseGroupURL(): from node factory: ${dump(newPulseGroup)}`);
                 if (newPulseGroup==null) {
                     console.log(`ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
                     process.exit(36);  //reload software and take another pass
@@ -1642,12 +1643,15 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
     //            } else {
       //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
         //        }
-                Log(`pulseGroup JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port} and Launching...`);
+                Log(`getPulseGroupURL JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port} and Launching...`);
                 addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
                 return resolve(newPulseGroup);
             });
         });
         req.end();
+    } catch(e) {
+        console.log(`getPulseGroupURL: get ${pulseGroupObjectURL} Failed`);
+    }
     });
 };
 
