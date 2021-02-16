@@ -133,6 +133,20 @@ app.get('/pause', function (req, res) {
     console.log("PAUSING -- here we would set adminControl on the pulse group to SINGLESTEP");
     return;
 });
+function findNode(ipport) {
+    var ip = ipport.split(":")[0];
+    var port = parseInt(ipport.split(":")[1]);
+    for (var pg in pulsegroups_1.myPulseGroups) {
+        var pulseGroup = pulsegroups_1.myPulseGroups[pg];
+        for (var m in pulseGroup.mintTable) {
+            var mintTableEntry = pulseGroup.mintTable[m];
+            if (mintTableEntry != null && mintTableEntry.ipaddr == ip && mintTableEntry.port == port) {
+                return mintTableEntry;
+            }
+        }
+    }
+    return null;
+}
 //
 //     /join - this message is sent by Genesis node invinting to be potential relay
 //             simpler - Genesis node sends as new PG payload (the pulseGroup object)
@@ -155,18 +169,19 @@ app.get('/join/:pulsegroupaddress', function (req, res) {
         "&ts=" + lib_1.now();
     //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
     //return;
-    console.log("index.ts: /JOIN " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl); //return
     if (pulsegroupaddress != config.IP + ":" + config.PORT) { //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
-        //        if (typeof myPulseGroups[CONFIG.GEO+":"+'.1'].pulses[];
-        pulsegroup_1.getPulseGroupURL(configurl); //join this guys group
-        console.log(lib_1.ts() + (" Executing /join to " + configurl));
-        return;
+        if (findNode(pulsegroupaddress) == null) { //if we don't already see him
+            pulsegroup_1.getPulseGroupURL(configurl); //join this guys group
+            console.log("index.ts: /JOINING " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join will execute /nodeFactory on " + pulsegroupaddress + " to join " + configurl); //return
+        }
+        else {
+            console.log("index.ts: NOT /JOINING " + pulsegroup_1.CONFIG.GEO + " " + pulsegroup_1.CONFIG.IP + " /join already includes a connection to " + pulsegroupaddress + " to join " + configurl); //return
+        }
     }
-    else {
+    else
         console.log("not connecting to myself via /join");
-        res.redirect('http://' + pulsegroupaddress);
-    }
+    //res.redirect( 'http://' + pulsegroupaddress );
     return;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
