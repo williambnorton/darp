@@ -132,7 +132,7 @@ app.get('/version', function(req, res) {
     
     //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
     //return;
-    console.log(`/JOIN ${CONFIG.GEO} ${CONFIG.IP} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
+    console.log(`index.ts: /JOIN ${CONFIG.GEO} ${CONFIG.IP} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
     if ( pulsegroupaddress != config.IP+":"+config.PORT )  //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
             getPulseGroupURL(configurl);        //join this guys group
