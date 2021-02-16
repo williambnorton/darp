@@ -306,6 +306,7 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
         for (var pg in clonedPulseGroups[i]) {
             var pulseGroup = clonedPulseGroups[i][pg];
             for (var p in pulseGroup.pulses) {
+                console.log(" history was " + pulseGroup.pulses[p].history);
                 pulseGroup.pulses[p].history = {};
             }
         }
