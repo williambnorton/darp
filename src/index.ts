@@ -136,7 +136,7 @@ app.get('/version', function(req, res) {
     if ( pulsegroupaddress != config.IP+":"+config.PORT )  //not me
         //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
             getPulseGroupURL(configurl);        //join this guys group
-    res.redirect( 'http://' + pulsegroupaddress );
+    //res.redirect( 'http://' + pulsegroupaddress );
 
     return;
     res.setHeader('Content-Type', 'application/json');
@@ -287,7 +287,10 @@ app.get(['/pulsegroups','/state'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    //console.log(`sending JSON stringify of pulseGroups object`);
+    // remove history
+
+
+
     var clonedPulseGroups=JSON.parse(JSON.stringify(myPulseGroups,null,2));
     for (var i in clonedPulseGroups) {
             var pulseGroup=clonedPulseGroups[i];
