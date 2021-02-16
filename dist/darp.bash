@@ -47,7 +47,14 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
             exit 86
         fi
         echo `date` "$0 Docker exitted with rc=$rc - sleeping 15 seconds and fetching new docker and restarting"
-        
+
+
+        echo `date` $0 KILLING background tasks
+        kill $(jobs -p)
+        ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
+        echo `date` $0 KILLING background tasks complete
+
+
         sleep 15
         STATE=`cat ~/wireguard/STATE`
         #echo `date` "$0 STATE=$STATE"
