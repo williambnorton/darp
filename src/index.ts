@@ -288,7 +288,12 @@ app.get(['/pulsegroups','/state'], function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     //console.log(`sending JSON stringify of pulseGroups object`);
-    res.end(JSON.stringify(myPulseGroups,null,2)); 
+    var clonedPulseGroup=JSON.parse(JSON.stringify(myPulseGroups,null,2));
+    for (var i in clonedPulseGroup.pulses)
+        clonedPulseGroup.pulses[i].history={}
+    var myShortPulseGroup=JSON.stringify(clonedPulseGroup,null,2)
+    console.log(`sending myShortPulseGroup=${myShortPulseGroup}`);
+    res.end(myShortPulseGroup); 
     return;
     // cache 
     let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
