@@ -35,7 +35,8 @@ SLEEPTIME=15 #time in seconds between software runs in forever loop
 GRANULARITY=400 #  milliseconds before we say we should join the closer genesis node
                 #400 allows my home docker to not be an island
 
-MAXCYCLES=10 # of cycles before reloading docker
+MAXCYCLES=1 # of cycles before reloading docker
+
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     MACHINE=Linux;;
@@ -270,7 +271,7 @@ do
 
     CYCLES=`expr $CYCLES + 1`
     echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME #| tee -a NOIA.log 
-    if [ $CYCLES -gt $MAXCYCLES ]; then    
+    if [ $CYCLES -ge $MAXCYCLES ]; then    
         echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         exit 86;
     fi
