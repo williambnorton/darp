@@ -114,16 +114,17 @@ app.get('/version', function(req, res) {
 function findNode(ipport:String) {
    const ip=ipport.split(":")[0]; 
    const port=parseInt(ipport.split(":")[1]); 
-   //for (var pg in myPulseGroups) {
-   //    var pulseGroup=myPulseGroups[pg];
-   var pulseGroup=myPulseGroups[CONFIG.GEO+".1"];
+   for (var pg in myPulseGroups) {
+       var pulseGroup=myPulseGroups[pg];
+   //var pulseGroup=myPulseGroups[CONFIG.GEO+".1"];
        for (var m in pulseGroup.mintTable) {
            var mintTableEntry=pulseGroup.mintTable[m];
            if (mintTableEntry!=null && mintTableEntry.ipaddr==ip && mintTableEntry.port==port) {
-               return mintTableEntry;
+              console.log(`findNode(): FOUND ${mintTableEntry.geo}`);
+              return mintTableEntry;
            }
        }
-   //}
+   }
    return null;
 }
  //

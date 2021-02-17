@@ -139,16 +139,17 @@ app.get('/pause', function (req, res) {
 function findNode(ipport) {
     var ip = ipport.split(":")[0];
     var port = parseInt(ipport.split(":")[1]);
-    //for (var pg in myPulseGroups) {
-    //    var pulseGroup=myPulseGroups[pg];
-    var pulseGroup = pulsegroups_1.myPulseGroups[pulsegroup_1.CONFIG.GEO + ".1"];
-    for (var m in pulseGroup.mintTable) {
-        var mintTableEntry = pulseGroup.mintTable[m];
-        if (mintTableEntry != null && mintTableEntry.ipaddr == ip && mintTableEntry.port == port) {
-            return mintTableEntry;
+    for (var pg in pulsegroups_1.myPulseGroups) {
+        var pulseGroup = pulsegroups_1.myPulseGroups[pg];
+        //var pulseGroup=myPulseGroups[CONFIG.GEO+".1"];
+        for (var m in pulseGroup.mintTable) {
+            var mintTableEntry = pulseGroup.mintTable[m];
+            if (mintTableEntry != null && mintTableEntry.ipaddr == ip && mintTableEntry.port == port) {
+                console.log("findNode(): FOUND " + mintTableEntry.geo);
+                return mintTableEntry;
+            }
         }
     }
-    //}
     return null;
 }
 //
