@@ -691,12 +691,13 @@ app.get('/darp.bash', function (req, res) {
             //option 1a - conditionally configure node connected to my GENESIS . Send darp.bash iff (condition goes here) 
             //option 2 - connect to the ndoe that responds first.
             //          get code from any genesis node on genesislist, but we will use first
-            var genesislist = process.env.GENESISNODELIST || "";
-            var genesisNodes = genesislist.split(",");
+            //var genesislist=process.env.GENESISNODELIST||"";
+            //var genesisNodes=genesislist.split(",");
             //str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
             str = str.replace(/MYGENESISIP/gi, "auto");
             str = str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0]);
             str = str.replace(/GITTAG/gi, config.VERSION.split(":")[1]);
+            str = str.replace(/GENESIS_NODE_LIST/gi, process.env.GENESISNODELIST || ""); //inherit GNL
             //console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
             //console.log("darp.bash="+str);
             res.send(str);

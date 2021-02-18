@@ -34,12 +34,14 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
         echo `date` "$0 delayed launch of wireguiard script, instrumentation docker, and syntropy stack agent"
         (sleep 20;~/wireguard/wgwatch.bash) &
+        # Run syntropy stack and GUI for the system
         (sleep 30; docker run --network="host" --rm --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
         (sleep 40; docker run -p 80:80 --rm -d williambnorton/srwan ) &
 
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)
-         
+        export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
+        console.log(`GENESISNODELIST=${GENESISNODELIST}`); 
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         rc=$?
@@ -48,7 +50,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
             STATE="STOP"
         fi
 
-        echo `date` "$0 KILLING any background tasks and other dockers"
+        echo `date` "$0 DOCKER IS FINISHED - KILLING any background tasks and other dockers"
         kill $(jobs -p)
         ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
         echo `date` "$0 KILLING background tasks complete"
