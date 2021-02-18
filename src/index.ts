@@ -164,9 +164,9 @@ function findNode(ipport:String) {
         }
     }
     else console.log(`not connecting to myself via /join`);
-    //res.redirect( 'http://' + pulsegroupaddress );
-
+    res.redirect( 'http://' + CONFIG.IP+":"+CONFIG.PORT+"/" );
     return;
+
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.end(JSON.stringify(ts()+"/join pulseGroup with " + configurl));
