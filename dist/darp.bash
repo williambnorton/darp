@@ -41,7 +41,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)
         export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
-        echo "GENESISNODELIST="$GENESISNODELIST 
+        echo "GENESISNODELIST="$GENESISNODELIST #
 
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
