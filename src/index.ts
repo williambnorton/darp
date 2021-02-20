@@ -164,7 +164,9 @@ function findNode(ipport:String) {
         }
     }
     else console.log(`not connecting to myself via /join`);
-    res.redirect( 'http://' + CONFIG.IP+":"+CONFIG.PORT+"/" );
+
+    //    res.redirect( 'http://' + CONFIG.IP+":"+CONFIG.PORT+"/" );
+        res.redirect( 'http://' + pulsegroupaddress+"/" );
     return;
 
     res.setHeader('Content-Type', 'application/json');

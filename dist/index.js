@@ -187,7 +187,8 @@ app.get('/join/:pulsegroupaddress', function (req, res) {
     }
     else
         console.log("not connecting to myself via /join");
-    res.redirect('http://' + pulsegroup_1.CONFIG.IP + ":" + pulsegroup_1.CONFIG.PORT + "/");
+    //    res.redirect( 'http://' + CONFIG.IP+":"+CONFIG.PORT+"/" );
+    res.redirect('http://' + pulsegroupaddress + "/");
     return;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");

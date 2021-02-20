@@ -583,7 +583,8 @@ export class AugmentedPulseGroup {
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
         //console.log(`timeNow%1000=${timeNow%1000} sleeping ${sleepTime} ms`);
         //console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
-        setTimeout(this.pulse, sleepTime); //pull back to on-second boundary
+        if (this.adminControl!="STOP")
+            setTimeout(this.pulse, sleepTime); //pull back to on-second boundary
     };
 
     isGenesisNode = (): Boolean => {
@@ -605,8 +606,9 @@ export class AugmentedPulseGroup {
         if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp> (GENESIS_NODE_TIMEOUT*1000) ) {
             console.log(`timeout(): GENESIS NODE MIA for ${GENESIS_NODE_TIMEOUT} seconds -- EXITTING...`);
             Log(`timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...`);
-
-            process.exit(36);
+            
+            this.adminControl="STOP"; //@wbnwbn
+            //process.exit(36);
         }
 
         for (var m in this.mintTable) {
@@ -645,7 +647,8 @@ export class AugmentedPulseGroup {
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             console.log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
-                            process.exit(36);
+                            this.adminControl="STOP"; //@wbnwbn
+                            //process.exit(36);
                         }
 
                         // we may timeout the group owner and kill the pulsegroup
@@ -919,7 +922,8 @@ export class AugmentedPulseGroup {
         this.mintTable[0].lastPulseTimestamp = timeNow;
         var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
         //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
-        setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
+        if (this.adminControl!="STOP")
+            setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
     }
 
     checkSWversion = () => {        //we check SW version with lead genesis node
@@ -1017,7 +1021,7 @@ export class AugmentedPulseGroup {
             console.log(`checkSW(): ${CONFIG.GEO} fetching version failed ${url} genesis node out of reach - NOT EXITTING `);
             //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
         });
-        if (this.isGenesisNode()) //non-genesis nodes will use pulses every second to check software version
+        if (this.isGenesisNode() && (this.adminControl!="STOP") ) //non-genesis nodes will use pulses every second to check software version
             setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Genesis nodes check SW with 1st genesis node in GENESISNODELIST
     };
     
@@ -1487,6 +1491,16 @@ export class AugmentedPulseGroup {
             setTimeout(this.checkSWversion, 10 * 1000);  // check that we have the best software
             setTimeout(this.measurertt, 2 * 1000); // ping across wireguard every other second  
 
+            //
+            //  Here is where you add your customer scripts to run on all pof your instances of this docker
+            //
+
+            console.log(ts()+`pulseGroup(): Launched sub agent: here is where you launch your customer code...`);
+
+            //
+            //  
+            //
+
             console.log(`index.ts: pulseGroup.launched() -> ${this.groupName} `);
 
         } catch (error) {
@@ -1553,7 +1567,8 @@ export class AugmentedPulseGroup {
             });
 
         }
-        setTimeout(this.measurertt, 1 * 1000 );  // check ping every node every 
+        if (this.adminControl!="STOP")
+            setTimeout(this.measurertt, 1 * 1000 );  // check ping every node every 
     }
 
     //
@@ -1635,8 +1650,13 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
                 var newPulseGroup: PulseGroup = JSON.parse(data);
                 logger.info(`getPulseGroupURL(): from node factory: ${dump(newPulseGroup)}`);
                 if (newPulseGroup==null) {
-                    console.log(`ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
-                    process.exit(36);  //reload software and take another pass
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                   return;                    
+                    //process.exit(36);  //reload software and take another pass
                 }
 //                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
   //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
