@@ -25,6 +25,20 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
     return myPulseGroups[pulseGroup.groupName];
 };
 
+//
+//   skulker() - delete puylseGroups marked as "STOP" adminControl
+//  @wbnwbn
+function skulker() {
+    for (var p in myPulseGroups)
+        if ( myPulseGroups[p].adminControl=="STOP") {
+            delete myPulseGroups[p];
+            console.log(`skulker(): deleted expired pulseGroup object`);
+        }
+    setTimeout(skulker,15);
+}
+setTimeout(skulker,15);
+
+
     //
     //  @WBNWBNWBN ... this receiver wil demux for all pulseGroups,
     //
