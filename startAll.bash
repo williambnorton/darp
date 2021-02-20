@@ -7,7 +7,7 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 
-rm /tmp/x
+rm -f /tmp/x
 #
 #	start all Genesis nodes that match
 #
