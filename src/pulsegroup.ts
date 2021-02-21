@@ -479,7 +479,7 @@ export class AugmentedPulseGroup {
         //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
         //console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
-        console.log(ts()+`pulse(): ${this.groupName}`);
+        //console.log(ts()+`pulse(): ${this.groupName}`);
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));

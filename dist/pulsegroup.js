@@ -340,7 +340,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //      to pulse and highlight segments that should be looked aty with a FLAG '@'
             //
             //console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
-            console.log(lib_1.ts() + ("pulse(): " + _this.groupName));
+            //console.log(ts()+`pulse(): ${this.groupName}`);
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
                 nodeList.push(new types_1.NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
