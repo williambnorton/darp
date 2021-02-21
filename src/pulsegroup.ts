@@ -479,7 +479,7 @@ export class AugmentedPulseGroup {
         //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
         //console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
-        console.log(ts()+`pulse(): `);
+        console.log(ts()+`pulse(): ${this.groupName}`);
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
@@ -1486,7 +1486,7 @@ export class AugmentedPulseGroup {
             console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
                 
             this.flashWireguard();  // create our wireguard files based on our mint Table
-            this.pulse();               //start pulsing
+            this.pulse();               //start pulsing -sets own timeout
             //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
             setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
             setTimeout(this.checkSWversion, 10 * 1000);  // check that we have the best software

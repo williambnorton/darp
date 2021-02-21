@@ -32,7 +32,7 @@ function skulker() {
     for (var p in myPulseGroups)
         if ( myPulseGroups[p].adminControl=="STOP") {
             delete myPulseGroups[p];
-            console.log(`skulker(): deleted expired pulseGroup object`);
+            console.log(ts()+`skulker(): deleted expired pulseGroup object`);
         }
     setTimeout(skulker,15);
 }

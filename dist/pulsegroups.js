@@ -3,6 +3,7 @@
 exports.__esModule = true;
 var pulsegroup_1 = require("./pulsegroup");
 var lib_1 = require("./lib");
+var lib_2 = require("./lib");
 exports.myPulseGroups = {};
 //export function getMyPulseGroups() { return myPulseGroups;}
 function forEachPulseGroup(callback) {
@@ -30,7 +31,7 @@ function skulker() {
     for (var p in exports.myPulseGroups)
         if (exports.myPulseGroups[p].adminControl == "STOP") {
             delete exports.myPulseGroups[p];
-            console.log("skulker(): deleted expired pulseGroup object");
+            console.log(lib_2.ts() + "skulker(): deleted expired pulseGroup object");
         }
     setTimeout(skulker, 15);
 }
