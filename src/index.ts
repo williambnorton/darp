@@ -344,7 +344,7 @@ app.get('/genesisnodelist', function(req, res) {
     console.log(`/genesisnodelist sending contents of ${filename}`);
     try {
         var fileContents = fs.readFileSync(filename);
-        //console.log(`filecontents=${fileContents}`);
+        console.log(`filecontents=${fileContents}`);
 
         res.end(JSON.stringify(JSON.parse(fileContents),null,2)); //CRASH - catch 
     } catch (err) {
