@@ -17,7 +17,7 @@ const config=CONFIG;  //map to global constants from inital pulseGroup CONFIG cr
 
 // Construct my own pulseGroup for others to connect to
 const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
+//const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
 var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new PulseGroup(me, me, pulse);  //this is where I allow others to connect to me
 //myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
@@ -334,7 +334,7 @@ app.get(['/pulsegroups','/state'], function(req, res) {
 });
 
 //
-//  /me - shorthand for my pulseGroup
+//  /genesisnodelist - for discovery - should be JSON
 //
 app.get('/genesisnodelist', function(req, res) {
     res.setHeader('Content-Type', 'application/json');

@@ -51,7 +51,7 @@ logger_1.logger.setLevel(logger_1.LogLevel.WARNING);
 var config = pulsegroup_1.CONFIG; //map to global constants from inital pulseGroup CONFIG creation
 // Construct my own pulseGroup for others to connect to
 var me = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes can count on 'me' always being present
-var genesis = new pulsegroup_1.MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP); //All nodes also start out ready to be a genesis node for others
+//const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
 var pulse = new pulsegroup_1.PulseEntry(1, config.GEO, config.GEO + ".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP); //makePulseEntry(mint, geo, group, ipaddr, port, version) 
 var myPulseGroup = new pulsegroup_1.PulseGroup(me, me, pulse); //this is where I allow others to connect to me
 //myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
@@ -342,7 +342,7 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
     return;
 });
 //
-//  /me - shorthand for my pulseGroup
+//  /genesisnodelist - for discovery - should be JSON
 //
 app.get('/genesisnodelist', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
