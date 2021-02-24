@@ -352,12 +352,12 @@ app.get('/genesisnodelist', function (req, res) {
     try {
         var fileContents = fs.readFileSync(filename);
         console.log("filecontents=" + fileContents);
-        res.end(JSON.stringify(JSON.parse(fileContents), null, 2)); //CRASH - catch 
+        res.end(fileContents); //
     }
     catch (err) {
         // Here you get the error when the file was not found,
         // but you also get any other error
-        res.end("INTERNAL ERROR - can't find genesisnodelist.config "); //CRASH - catch 
+        res.end("INTERNAL ERROR - can't find genesisnodelist.config ");
     }
     return;
 });
