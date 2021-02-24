@@ -5,7 +5,6 @@
 //  testport - test my and port connectivity to all gneesis nodes
 //  should be:
 //  in: 
-//          GENESIS - overrides closest Genesis Node discovery logic
 //          GENESISNODELIST as environmental variable
 //
 //  out: 

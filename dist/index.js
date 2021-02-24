@@ -344,6 +344,26 @@ app.get(['/pulsegroups', '/state'], function (req, res) {
 //
 //  /me - shorthand for my pulseGroup
 //
+app.get('/genesisnodelist', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    var filename = "../" + "genesisnodelist.config"; //deliver cached JSON file instead of stringifying many times
+    console.log("/genesisnodelist sending contents of " + filename);
+    try {
+        var fileContents = fs.readFileSync(filename);
+        //console.log(`filecontents=${fileContents}`);
+        res.end(JSON.stringify(JSON.parse(fileContents), null, 2)); //CRASH - catch 
+    }
+    catch (err) {
+        // Here you get the error when the file was not found,
+        // but you also get any other error
+        res.end("INTERNAL ERROR - can't find genesisnodelist.config "); //CRASH - catch 
+    }
+    return;
+});
+//
+//  /me - shorthand for my pulseGroup
+//
 app.get('/me', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
