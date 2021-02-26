@@ -19,6 +19,8 @@ export function wgdump() {
     console.log("wgconfig=" + wgconfig);
 }
 
+//operational EXPERIENCE RUNNING DARPNET
+
 //
 //  addMyWGStanza() - the interface stanza for the node itself
 //
