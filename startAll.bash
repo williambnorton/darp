@@ -19,19 +19,19 @@ do
 
 	if [ -f /tmp/x ]; then
 
-
-	if [ "$ip" != "" -a "$port" != "" -a "$name" != "" ]; then
-		echo $0 | grep start >/dev/null   #Is this a startAll.bash or stopAll.bash ?
-		if [ $? -eq 0 ]; then
-			echo  `date` "LAUNCHING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
-			#~/scripts/USR1 ubuntu@$ip $name $ip $port  &
-			(~/scripts/USR1 ubuntu@$ip $name $ip $port 2>&1 ) >>/tmp/x  &
-		else 
-			echo  `date` "REBOOTING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
-			echo ~/scripts/USR2 ubuntu@$ip $name $ip $port 
-			~/scripts/USR2 ubuntu@$ip $name $ip $port >>/tmp/x & 
+		echo `date` $0 working on $name
+		if [ "$ip" != "" -a "$port" != "" -a "$name" != "" ]; then
+			echo $0 | grep start >/dev/null   #Is this a startAll.bash or stopAll.bash ?
+			if [ $? -eq 0 ]; then
+				echo  `date` "LAUNCHING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
+				#~/scripts/USR1 ubuntu@$ip $name $ip $port  &
+				(~/scripts/USR1 ubuntu@$ip $name $ip $port 2>&1 ) >>/tmp/x  &
+			else 
+				echo  `date` "REBOOTING GENESIS NODE /tmp/$$ ~/scripts/USR1 ubuntu@$ip $name $ip $port & "
+				echo ~/scripts/USR2 ubuntu@$ip $name $ip $port 
+				~/scripts/USR2 ubuntu@$ip $name $ip $port >>/tmp/x & 
+			fi
 		fi
-	fi
 	else 
 		echo FIRST GENESIS NODE 
 		echo FIRST GENESIS NODE >/tmp/x
