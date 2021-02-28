@@ -41,6 +41,13 @@
                     //console.log("---------------------------- - - - - - - -> p= "+p);
                     var pulseGroup=pulseGroups[p];
                     
+
+                    //
+                    //
+                    //
+                    if (pulseGroup.owner==me.geo) {
+
+
                     //console.log(`pulseGroup ${pulseGroup.groupName} has ${pulseGroup.nodeCount} member nodes`)    
                     //var pulseGroup = config[n];
                     //console.log("index.html: pulseGroups="+JSON.stringify(pulseGroups,null,2) );
@@ -244,6 +251,17 @@
 
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
                     $(".total_earn").text("measurementCosts @8.5cents/GB: $"+measurementCosts);
+
+//
+//
+//
+              }
+
+
+
+
+
+
                 }
 
             }).fail(function() {
