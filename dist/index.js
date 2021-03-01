@@ -127,6 +127,26 @@ app.get('/version', function (req, res) {
     return;
 });
 //
+//  /genesisnodelist - for discovery - should be JSON
+//
+app.get('/darpdocker', function (req, res) {
+    res.setHeader('Content-Type', 'application/binary');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    var filename = process.env.WGDIR + "/" + "darpdocker.tar.gz"; //deliver cached JSON file instead of stringifying many times
+    console.log("/darpdocker sending contents of " + filename);
+    var options = {
+        //root: path.join(__dirname, 'files'),
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true
+        }
+    };
+    res.sendFile(filename, options);
+    console.log("/darpdocker sent contents of " + filename);
+    return;
+});
+//
 // /pause - not used yet - should be per group
 //
 app.get('/pause', function (req, res) {
