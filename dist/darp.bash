@@ -37,7 +37,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # Run syntropy stack and GUI for the system
         (sleep 13; docker run --network="host" --rm --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
         (sleep 15; docker run -p 80:80 --rm -d williambnorton/srwan ) &
-        ( sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version"; ln -s ~/wireguard/darpdocker.tgz `curl localhost:65013/version|awk -F. '{ print "Docker."$2"."$3".tgz" }'| awk -F: '{ print $1}'` ) & #cache docker
+        (sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version"; ln -s ~/wireguard/darpdocker.tgz `curl localhost:65013/version|awk -F. '{ print "Docker."$2"."$3".tgz" }'| awk -F: '{ print $1}'` ) & #cache docker
 
         echo `date` "Your sub-agent script or docker to run on all your nodes could go here..."
 
@@ -46,7 +46,10 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
         echo "GENESISNODELIST="$GENESISNODELIST #
 
+        echo `date` "loading DARPDOCKER from http://MY_IP:MY_PORT/darpdocker "
+        curl -o - http://MY_IP:MY_PORT/darpdocker | docker load
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
+        
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         rc=$?
         if [ $? -eq 86 ]; then
