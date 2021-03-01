@@ -219,7 +219,7 @@ do
     cd $DARPDIR/dist
     echo `date` "============================================================ Starting DARP $VERSION : node index ..."
 
-    ( sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version" )
+    ( sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version" ) &
 	node index #> $DARPDIR/darp.log
     #
     #       darp exitted 
