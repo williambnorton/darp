@@ -37,7 +37,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         # Run syntropy stack and GUI for the system
         (sleep 13; docker run --network="host" --rm --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) &
         (sleep 15; docker run -p 80:80 --rm -d williambnorton/srwan ) &
-        ( sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version" ) & #cache docker
+        ( sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version"; ln -s ~/wireguard/darpdocker.tgz `curl localhost:65013/version|awk -F. '{ print "Docker."$2"."$3 }'| awk -F: '{ print $1}'` ) & #cache docker
 
         echo `date` "Your sub-agent script or docker to run on all your nodes could go here..."
 
