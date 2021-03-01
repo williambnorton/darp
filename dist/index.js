@@ -132,7 +132,7 @@ app.get('/version', function (req, res) {
 app.get('/darpdocker', function (req, res) {
     res.setHeader('Content-Type', 'application/binary');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    var filename = process.env.WGDIR + "/" + "darpdocker.tar.gz"; //deliver cached JSON file instead of stringifying many times
+    var filename = "../wireguard/darpdocker.tar.gz"; //deliver cached JSON file instead of stringifying many times
     console.log("/darpdocker sending contents of " + filename);
     var options = {
         //root: path.join(__dirname, 'files'),
