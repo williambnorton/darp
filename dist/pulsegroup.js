@@ -131,7 +131,7 @@ var Config = /** @class */ (function () {
         }
         this.PUBLICKEY = PUBLICKEY;
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 50;
+        this.MAXNODES = 25;
         console.log("config constructor made: " + JSON.stringify(this, null, 2));
     }
     return Config;
