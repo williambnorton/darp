@@ -276,5 +276,10 @@ do
         exit 86;
     fi
 
+    echo GENESIS Node is $GENESIS $FIRST_RESPONDER_LATENCY ms away
+    if [ "$FIRST_RESPONDER_LATENCY" == "0" ]; then   ###connecting to self did not work - port forward issue
+        echo PORT FORWARDING NOT SET UP PROPERLY
+        exit 86
+    fi
     sleep $SLEEPTIME
 done
