@@ -12,6 +12,7 @@
 //          eventually this module could test the port to self to verify port forwarding works
 //
 console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
+
 if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == ""|| process.env.MY_GEO == "") {
     console.log(`missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO`);
     process.exit(86);
@@ -35,6 +36,8 @@ client.on('listening', function () {
     var address = client.address();
     console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
+
+
 client.bind(process.env.MY_PORT);  //server listening 0.0.0.0:65013
 
 
@@ -45,21 +48,6 @@ function darpPing() {
     //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
     var ary=GENESISNODELIST.split(" ")
     for (var genesisNode in ary) {
- 
-        //pulseTimestamp: pulseTimestamp,
-        //outgoingTimestamp: senderTimestamp,
-        //msgType: ary[2],
-        //version: ary[3],
-        //geo: ary[4],
-        //group: ary[5],
-        ///seq: parseInt(ary[6]),
-        //bootTimestamp: parseInt(ary[7]), //if genesis node reboots --> all node reload SW too
-        //mint: parseInt(ary[8]),
-       // owls: pulseOwls,
-        //owl: OWL,
-        //lastMsg: incomingMessage,
-
- 
         //console.log(`genesisNode=${ary[genesisNode]}`);
         let IP=ary[genesisNode].split(",")[0]
         let Port=ary[genesisNode].split(",")[1]
@@ -67,12 +55,15 @@ function darpPing() {
         let role=ary[genesisNode].split(",")[3]
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         if ( IP == process.env.MY_IP ) message=message+",SELF"
-        console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
 
-        client.send(message, 0, message.length, Port, IP, function(err, bytes) {
-            if (err) throw err;
-            //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
-        });
+	if ( typeof Name != "undefined" ) {
+        	console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
+
+        	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
+            		if (err) throw err;
+            		//console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
+        	});
+	}
     }
     setTimeout(darpPing,1000);
 }

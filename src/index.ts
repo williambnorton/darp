@@ -108,7 +108,7 @@ app.get('/darpdocker', function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     let filename="/etc/wireguard/darpdocker.tgz";  //deliver cached JSON file instead of stringifying many times
-    console.log(`/darpdocker sending contents of ${filename}`);
+   //console.log(`/darpdocker sending contents of ${filename} to ${req.connection.remoteAddress}`);
     const options = {
         //root: path.join(__dirname, 'files'),
         dotfiles: 'deny',
@@ -118,7 +118,7 @@ app.get('/darpdocker', function(req, res) {
         }
       }
       res.sendFile(filename, options);
-      console.log(`/darpdocker sent contents of ${filename}`);
+      console.log(`/darpdocker sent contents of ${filename} to ${req.connection.remoteAddress}`);
 
     return;
 });
