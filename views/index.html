@@ -660,7 +660,7 @@
                         <% let encodedUrl = encodeURI("http://127.0.0.1:8081/ssh?ip=ubuntu@"+srcMintEntry.ipaddr); %>
                         <td><a target="_blank" href="<%= encodedUrl %>"><%= srcMintEntry.ipaddr %></a></td>
 
-                        <td><%= srcMintEntry.publickey.substring(0, 3) %>...<%= srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) %></td>
+                        <td><%= srcMintEntry.publickey %></td>
 
                         <% let classNameGeoState = srcMintEntry.geo + " " + srcMintEntry.geo + "_state" + " " + srcMintEntry.state; %>  <!-- WEIRD CLASS NAME-->
                         <% let dddwbnwbnwbnddddpulseEntryMintTableUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/mintTable"; %>
