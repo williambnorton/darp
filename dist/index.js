@@ -739,8 +739,8 @@ app.get('/darp.bash', function (req, res) {
             str = str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0]);
             str = str.replace(/GITTAG/gi, config.VERSION.split(":")[1]);
             str = str.replace(/GENESIS_NODE_LIST/gi, process.env.GENESISNODELIST || ""); //inherit GNL
-            str = str.replace(/MY_IP/gi, config.IP || ""); //inherit GNL
-            str = str.replace(/MY_PORT/gi, config.PORT.toString()); //inherit GNL
+            str = str.replace(/_MY_IP/gi, config.IP || ""); //inherit GNL
+            str = str.replace(/_MY_PORT/gi, config.PORT.toString()); //inherit GNL
             //console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
             //console.log("darp.bash="+str);
             res.send(str);

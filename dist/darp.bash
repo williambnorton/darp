@@ -42,12 +42,12 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "Your sub-agent script or docker to run on all your nodes could go here..."
 
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
-        export MY_PORT=65013  #your port dedicated to DARP be configured (65013 is default)
+        export MY_PORT=_MY_PORT  #your port dedicated to DARP be configured (65013 is default)
         export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
         echo "GENESISNODELIST="$GENESISNODELIST #
 
-        echo `date` "loading DARPDOCKER from http://MY_IP:MY_PORT/darpdocker "
-        curl -o - http://MY_IP:MY_PORT/darpdocker | docker load   #fetch the docker from the running docker I connected to (instead of from docker hub)
+        echo `date` "loading DARPDOCKER from http://_MY_IP:_MY_PORT/darpdocker "
+        curl -o - http://_MY_IP:_MY_PORT/darpdocker | docker load   #fetch the docker from the running docker I connected to (instead of from docker hub)
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
