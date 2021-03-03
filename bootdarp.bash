@@ -112,12 +112,8 @@ do
             #scripts/testport.bash 
             scripts/testport.bash | grep Docker. | grep -v '#' >GNL.txt   #GNL.txt holds the latency distance to each GNL at the time
 
-            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-            echo `date` "*************************************** Closest GENESIS Node"`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-            cat GNL.txt
+            echo `date` "*************************************** Closest GENESIS Node "`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
+              cat GNL.txt
             #FIRST_LINE=`cat GNL.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
             FIRST_LINE=`cat GNL.txt | grep -v SELF | head -1`
             echo "First to respond ... FIRST_LINE=$FIRST_LINE"
