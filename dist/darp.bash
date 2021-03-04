@@ -33,10 +33,10 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
 
         echo `date` "$0 delayed launch of wireguiard script, instrumentation docker, and syntropy stack agent"
-        (sleep 10;~/wireguard/wgwatch.bash) >/dev/null &
+        (sleep 10;~/wireguard/wgwatch.bash 2>&1) >/dev/null &
         # Run syntropy stack and GUI for the system
-        (sleep 13; docker run --network="host" --rm --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable ) >/dev/null &
-        (sleep 35; docker run -p 80:80 --rm -d williambnorton/srwan ) >/dev/null &    #all nodes run nice GUI frontend on port 80
+        (sleep 13; docker run --network="host" --rm --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API='docker' -e SYNTROPY_API_KEY=$SYNTROPY_API_KEY -d syntropynet/agent:stable 2>&1) >/dev/null &
+        (sleep 35; docker run -p 80:80 --rm -d williambnorton/srwan 2>&1) >/dev/null &    #all nodes run nice GUI frontend on port 80
         # After a minute, cache the downloaded docker for distribution
         (sleep 60;  docker save williambnorton/darp:latest | gzip -c > ~/wireguard/darpdocker.tgz; echo `date`" DOCKER Cached-could be named with version"; ln -s ~/wireguard/darpdocker.tgz `curl localhost:65013/version|awk -F. '{ print "Docker."$2"."$3".tgz" }'| awk -F: '{ print $1}'` ) & #cache docker
 
