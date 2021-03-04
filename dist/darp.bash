@@ -55,7 +55,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         ENDTIME=`date +%s`
         ELAPSEDTIME=`expr $ENDTIME - $STARTTIME`
         ELAPSEDSECONDS=`expr $ELAPSEDTIME / 1000`
-        echo `date` Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDTIME seconds
+        echo `date` DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDTIME seconds
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
