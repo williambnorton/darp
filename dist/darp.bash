@@ -46,9 +46,9 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
         echo "GENESISNODELIST="$GENESISNODELIST #
 
-        //
-        //  Distribute Docker out of this Genesis Node instead of DockerHub - BW charges could be big, seems slower
-        //
+        #//
+        #//  Distribute Docker out of this Genesis Node instead of DockerHub - BW charges could be big, seems slower
+        #//
         echo `date` "loading DARPDOCKER from http://_MY_IP:_MY_PORT/darpdocker "
         STARTTIME=`date +%s`
         curl -o - http://_MY_IP:_MY_PORT/darpdocker | docker load   #fetch the docker from the running docker I connected to (instead of from docker hub)
