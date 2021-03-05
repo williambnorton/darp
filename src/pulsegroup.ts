@@ -22,7 +22,7 @@ const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 
 const SECURE_PORT=65020;    
 
-const CHECK_SW_VERSION_CYCLE_TIME = 30; // CHECK for new SW updates every 60 seconds
+const CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
 const NO_MEASURE = 99999;       //value to indis=cate no measurement exists
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
@@ -1019,10 +1019,10 @@ export class AugmentedPulseGroup {
                 }
             });
         }).on("error", function () {
-            console.log(`checkSW(): ${CONFIG.GEO} fetching version failed ${url} genesis node out of reach - NOT EXITTING `);
+            console.log(ts()+`checkSW(): ${CONFIG.GEO} fetching version failed ${url} genesis node out of reach - NOT EXITTING `);
             //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
         });
-        if (this.isGenesisNode() && (this.adminControl!="STOP") ) //non-genesis nodes will use pulses every second to check software version
+        if (this.isGenesisNode() && (this.adminControl!="STOP") ) //non-genesis nodes will use pulses every few seconds to check software version
             setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Genesis nodes check SW with 1st genesis node in GENESISNODELIST
     };
     

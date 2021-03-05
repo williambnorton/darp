@@ -54,7 +54,7 @@ var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var SECURE_PORT = 65020;
-var CHECK_SW_VERSION_CYCLE_TIME = 30; // CHECK for new SW updates every 60 seconds
+var CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
 var NO_MEASURE = 99999; //value to indis=cate no measurement exists
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
@@ -827,10 +827,10 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     }
                 });
             }).on("error", function () {
-                console.log("checkSW(): " + exports.CONFIG.GEO + " fetching version failed " + url + " genesis node out of reach - NOT EXITTING ");
+                console.log(lib_1.ts() + ("checkSW(): " + exports.CONFIG.GEO + " fetching version failed " + url + " genesis node out of reach - NOT EXITTING "));
                 //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
             });
-            if (_this.isGenesisNode() && (_this.adminControl != "STOP")) //non-genesis nodes will use pulses every second to check software version
+            if (_this.isGenesisNode() && (_this.adminControl != "STOP")) //non-genesis nodes will use pulses every few seconds to check software version
                 setTimeout(_this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Genesis nodes check SW with 1st genesis node in GENESISNODELIST
         };
         this.processIncomingPulse = function (incomingPulse) {
