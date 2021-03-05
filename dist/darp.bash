@@ -48,15 +48,18 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo "GENESISNODELIST="$GENESISNODELIST #
 
         #//
-        #//  Distribute Docker out of this Genesis Node instead of DockerHub - BW charges could be big, seems slower
-        #//
+        #//  Distribute Docker out of this Genesis Node instead of DockerHub - BW charges could be big, and slower than Doc ker hub  $0.005 per download
+        #// but we get a thruput measure test
         echo `date` "loading DARPDOCKER from http://_MY_IP:_MY_PORT/darpdocker "
         STARTTIME=`date +%s`
         curl -o - http://_MY_IP:_MY_PORT/darpdocker | docker load   #fetch the docker from the running docker I connected to (instead of from docker hub)
         ENDTIME=`date +%s`
         ELAPSEDTIME=`expr $ENDTIME - $STARTTIME`
         ELAPSEDSECONDS=`expr $ELAPSEDTIME / 1000`
-        echo `date` DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDTIME seconds
+        echo `date` DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDSECONDS seconds or $ELAPSEDTIME milliseconds $STARTTIME $ENDTIME
+        #
+        #   Note that if the lead Genesis node is not up, we will simply fetch from docker hub
+        #
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
