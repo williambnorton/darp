@@ -127,6 +127,16 @@ app.get('/version', function (req, res) {
     return;
 });
 //
+//  /genesis - is showing the config software version for all groups
+//
+app.get('/genesis', function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    //console.log(`/version returning ${config.VERSION}`);
+    res.end(JSON.stringify(config.GENESIS));
+    return;
+});
+//
 //  /genesisnodelist - for discovery - should be JSON
 //
 app.get('/darpdocker', function (req, res) {
