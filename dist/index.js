@@ -153,7 +153,7 @@ app.get('/darpdocker', function (req, res) {
         }
     };
     res.sendFile(filename, options);
-    console.log("/darpdocker sent contents of " + filename + " to " + req.connection.remoteAddress);
+    console.log(lib_1.ts() + ("/darpdocker sent contents of " + filename + " to " + req.connection.remoteAddress));
     return;
 });
 //
