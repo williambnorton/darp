@@ -56,7 +56,10 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         ENDTIME=`date +%s`
         ELAPSEDTIME=`expr $ENDTIME - $STARTTIME`
         ELAPSEDSECONDS=`expr $ELAPSEDTIME / 1000`
-        echo `date` DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDSECONDS seconds or $ELAPSEDTIME milliseconds $STARTTIME $ENDTIME
+        FILESIZE=86*1000*1000
+        THRUPUT=`expr $FILESIZE / $ELAPSEDTIME`
+        echo `date` "DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDTIME seconds ($STARTTIME-$ENDTIME) thruput=$THRUPUT"
+        
         #
         #   Note that if the lead Genesis node is not up, we will simply fetch from docker hub
         #
