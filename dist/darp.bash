@@ -47,21 +47,23 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
         echo "GENESISNODELIST="$GENESISNODELIST #
 
-        #//
-        #//  Distribute Docker out of this Genesis Node instead of DockerHub - BW charges could be big, and slower than Doc ker hub  $0.005 per download
-        #// but we get a thruput measure test
-        echo `date` "loading DARPDOCKER from http://_MY_IP:_MY_PORT/darpdocker "
-        STARTTIME=`date +%s`
-        curl -o - http://_MY_IP:_MY_PORT/darpdocker | docker load   #fetch the docker from the running docker I connected to (instead of from docker hub)
-        ENDTIME=`date +%s`
-        ELAPSEDTIME=`expr $ENDTIME - $STARTTIME`
-        ELAPSEDSECONDS=`expr $ELAPSEDTIME / 1000`
-        FILESIZE=86*1000*1000
-        THRUPUT=`expr $FILESIZE / $ELAPSEDTIME`
-        echo `date` "DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDTIME seconds ($STARTTIME-$ENDTIME) thruput=$THRUPUT"
-        
+        if [ "FALSE" == "TRUE" ]; then
+            #//  -- this is slower and more expensive - we pay cloud egree rates, cheaper from docker hub
+            #//  Distribute Docker out of this Genesis Node instead of DockerHub - BW charges could be big, and slower than Doc ker hub  $0.005 per download
+            #// but we get a thruput measure test
+            echo `date` "loading DARPDOCKER from http://_MY_IP:_MY_PORT/darpdocker "
+            STARTTIME=`date +%s`
+            curl -o - http://_MY_IP:_MY_PORT/darpdocker | docker load   #fetch the docker from the running docker I connected to (instead of from docker hub)
+            ENDTIME=`date +%s`
+            ELAPSEDTIME=`expr $ENDTIME - $STARTTIME`
+            ELAPSEDSECONDS=`expr $ELAPSEDTIME / 1000`
+            FILESIZE=86*1000*1000
+            THRUPUT=`expr $FILESIZE / $ELAPSEDTIME`
+            echo `date` "DARPDOCKER --Download from http://_MY_IP:_MY_PORT/darpdocker took $ELAPSEDTIME seconds ($STARTTIME-$ENDTIME) thruput=$THRUPUT"
+        fi
+
         #
-        #   Note that if the lead Genesis node is not up, we will simply fetch from docker hub
+        #   we can fetch from docker hub
         #
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      '
         
