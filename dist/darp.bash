@@ -17,14 +17,14 @@ wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
 
-    echo STARTING > ~/wireguard/STATE
+    #echo STARTING > ~/wireguard/STATE
     #echo `date` $0 DARP Starting `ls Docker.*`:`ls Build.*`
-    STATE=`cat ~/wireguard/STATE`
-    echo `date` STATE=$STATE
-    
+    #STATE=`cat ~/wireguard/STATE`
+    STATE="STARTING"
+
     while [ "$STATE" != "STOP" ]
     do
-        echo "==================== darp.bash We will run software version: $STATE"
+        echo `date`" Top of Loop STATE=$STATE ==================== $0 ================== "
 
         # spin off liaison gateway script that ties together host network and docker 
         # wgwatch.bash (docker will create it in shared volume: ~/wireguard directory)
