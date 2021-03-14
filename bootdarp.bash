@@ -160,10 +160,10 @@ do
         rc=$?
         echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
         if [ $rc -ne 0 ]; then  
-            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
-            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP EXITTING rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP  rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP  rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP  rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
+            echo `date` "bootdarp.bash - NOT EXITTING NOW bad rc from updateSW.bash.... BOOTDARP  rc=$rc"  #"bootdarp.bash UNRAVELING done running ./$PRESCRIBED_DOCKERVERSION"
             #exit $rc   #pass through any subsequent bootdarp invocations
         fi
 
