@@ -266,7 +266,6 @@ do
     cd $DARPDIR  #TESTING TO SEE IF $DARPDIR EXISTS
 
     CYCLES=`expr $CYCLES + 1`
-    echo `date` "...................BOTTOM OF LOOP #$CYCLES of $MAXCYCLES ............. SLEEPING "$SLEEPTIME #| tee -a NOIA.log 
     if [ $CYCLES -ge $MAXCYCLES ]; then    
         echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         exit 86;
@@ -274,8 +273,9 @@ do
 
     echo GENESIS Node is $GENESIS $FIRST_RESPONDER_LATENCY ms away
     if [ "$FIRST_RESPONDER_LATENCY" == "0" ]; then   ###connecting to self did not work - port forward issue
-        echo PORT FORWARDING NOT SET UP PROPERLY
-        exit 86
+        echo PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT 
+        #exit 86
     fi
+    echo `date` ".. $MY_GEO $MY_IP:$MY_PORT  .. running $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION ........BOTTOM OF LOOP #$CYCLES of $MAXCYCLES .....GENESIS was $GENESIS $GENESISIP:$GENESISPORT ........ SLEEPING "$SLEEPTIME #| tee -a NOIA.log 
     sleep $SLEEPTIME
 done
