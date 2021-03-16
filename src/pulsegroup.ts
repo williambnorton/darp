@@ -14,7 +14,7 @@ import { addPulseGroup } from "./pulsegroups";
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
 
-const PULSEFREQ=5;  // (in seconds) how often to send pulses
+const PULSEFREQ=0.5;  // (in seconds) how often to send pulses
 
 
 const MEASURE_RTT=true;   //ping across wireguard interface

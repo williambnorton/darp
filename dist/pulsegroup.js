@@ -50,7 +50,7 @@ var wireguard_1 = require("./wireguard");
 var pulsegroups_1 = require("./pulsegroups");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
-var PULSEFREQ = 5; // (in seconds) how often to send pulses
+var PULSEFREQ = 0.5; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
 var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
 var SECURE_PORT = 65020;
