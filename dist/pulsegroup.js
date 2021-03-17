@@ -130,6 +130,7 @@ var Config = /** @class */ (function () {
             }
         }
         this.PUBLICKEY = PUBLICKEY;
+        this.GENESISNODELIST = process.env.GENESISNODELIST || "SELF";
         this.WALLET = process.env.WALLET || "auto";
         this.MAXNODES = 25;
         console.log("config constructor made: " + JSON.stringify(this, null, 2));

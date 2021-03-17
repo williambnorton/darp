@@ -48,6 +48,7 @@ export class Config {
     PUBLICKEY: string;
     VERSION: string;
     WALLET: string;
+    GENESISNODELIST: string;
     BOOTTIMESTAMP: number;
     MAXNODES: number;
     constructor() {
@@ -124,7 +125,7 @@ export class Config {
         this.PUBLICKEY = PUBLICKEY;
 
 
-
+        this.GENESISNODELIST = process.env.GENESISNODELIST || "SELF";
         this.WALLET = process.env.WALLET || "auto";
         this.MAXNODES = 25;
         console.log(`config constructor made: ${JSON.stringify(this,null,2)}`);

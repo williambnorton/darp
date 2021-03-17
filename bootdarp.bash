@@ -10,13 +10,8 @@
 #       We create the rest:
 #           DARPDIR - the root directory of all darp ( /root/darp ) 
 #           WGDIR - the root for DARP wireguard info and log info ( ~/wireguard/ )
+#
 # Environmental variables we assemble
-#	    MY_IP - 
-#	    MY_PORT - 
-#	    MY_GEO - HOSTNAME for now
-#	    MY_SWVERSION - 
-#	    MACHINE - OS Type of machine - Linux, MacOs, Windows
-# Information about the GENESIS node we are or will connect to
 #           GENESISNODELIST - IP,PORT,NAME ...  IP,PORT,NAME 
 #           FIRSTGENESIS - IP,PORT,NAME   <--- use this for software version check
 #           IS_GENESIS - 1 is Yes, this machine is on the GENESIS list
