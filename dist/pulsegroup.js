@@ -47,6 +47,7 @@ var logger_1 = require("./logger");
 var types_1 = require("./types");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
+var pulsegroups_1 = require("./pulsegroups");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
@@ -520,7 +521,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         pulseEntry.owls = "1";
                         pulseEntry.pktDrops++;
                         lib_1.Log("timeout(): " + pulseEntry.geo + ":" + pulseEntry.group + " PKT DROP  pktDrops=" + pulseEntry.pktDrops);
-                        // only Genesis can delete inactive nodes within the group
+                        // only Genesis can delete inactive/unwanted nodes within the group
                         if (_this.isGenesisNode()) {
                             if (elapsedMSincePulse > 10 * _this.cycleTime * 1000) {
                                 logger_1.logger.warning("timeout() : Genesis DELETING Node " + _this.pulses[p].geo + " with " + elapsedMSincePulse + " ms old timestamp ");
@@ -1446,7 +1447,7 @@ exports.getPulseGroupURL = function (configurl) { return __awaiter(void 0, void 
                             //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
                             //        }
                             lib_1.Log("getPulseGroupURL JOINED NEW PULSEGROUP:   " + newPulseGroup.mintTable[0].geo + " : " + newPulseGroup.groupName + " " + newPulseGroup.mintTable[0].ipaddr + ":" + newPulseGroup.mintTable[0].port + " and Launching...");
-                            //addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
+                            pulsegroups_1.addPulseGroup(newPulseGroup); //don't start self as Genesis - already started
                             return resolve(newPulseGroup);
                         });
                     });

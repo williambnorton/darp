@@ -749,6 +749,7 @@ app.get('/nodefactory', function(req, res) {
 
         if (myPulseGroup.groupOwner != CONFIG.GEO ) {  //if we instantiated someone else's pulse group, also spin up our own
             //myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup); 
+            
             addPulseGroup(myOriginalPulseGroup);  //start up my own pulse group
             //myPulseGroup=myPulseGroups[ me.geo+".1" ];
             console.log(`******* Also instantiated myPulseGroup Object: You should see two groups - we are *not* GENESIS node`);

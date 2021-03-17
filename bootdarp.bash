@@ -19,11 +19,13 @@
 # Information about the GENESIS node we are or will connect to
 #           GENESISNODELIST - IP,PORT,NAME ...  IP,PORT,NAME 
 #           FIRSTGENESIS - IP,PORT,NAME   <--- use this for software version check
+#           IS_GENESIS - 1 is Yes, this machine is on the GENESIS list
 #           GENESIS - a point for connection into the mesh <IP>:<PORT>
 #           GENESIS_IP - IP addreess of targetted genesis node to join
 #           GENESIS_PORT - 
 #           GENESIS_GEO -
 #           GENESIS_SWVERSION -
+#
 # 
 #
 # 	bootdarp.bash variables 
@@ -62,14 +64,13 @@ export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
 echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
 
 echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
-
 #	
 # 	setting up my GENESIS variables for operation          
 #           
 #
 export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
 #echo bash says GENESISNODELIST=$GENESISNODELIST
-FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
+export FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
 echo $GENESISNODELIST | grep $MY_IP | grep ,GENESIS >/dev/null
 if [ $? -eq 0 ]; then
     export IS_GENESIS=1;
@@ -77,7 +78,7 @@ else
     export IS_GENESIS=0;
 fi
 
-echo `date` "$0 STARTING DARP MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
 CYCLES=0;
 while :
 do

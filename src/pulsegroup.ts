@@ -682,7 +682,7 @@ export class AugmentedPulseGroup {
                     pulseEntry.pktDrops++;
                     Log(`timeout(): ${pulseEntry.geo}:${pulseEntry.group} PKT DROP  pktDrops=${pulseEntry.pktDrops}`);
 
-                    // only Genesis can delete inactive nodes within the group
+                    // only Genesis can delete inactive/unwanted nodes within the group
                     if (this.isGenesisNode()) {
                         if (elapsedMSincePulse > 10 * this.cycleTime * 1000) {
                             logger.warning(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
@@ -1665,7 +1665,7 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
       //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
         //        }
                 Log(`getPulseGroupURL JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port} and Launching...`);
-                //addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
+                addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
                 return resolve(newPulseGroup);
             });
         });
