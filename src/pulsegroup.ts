@@ -1665,7 +1665,7 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
       //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
         //        }
                 Log(`getPulseGroupURL JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port} and Launching...`);
-                addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
+                //addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
                 return resolve(newPulseGroup);
             });
         });
