@@ -71,8 +71,12 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         rc=$?
         if [ $? -eq 86 ]; then
-            echo `date` "==================== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            STATE="STOP"
+            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
+            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
+            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
+            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
+            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
+            STATE="STOP"   #this will cause loop to stop after killing tasks
         fi
 
         echo `date` "$0 DOCKER IS FINISHED - KILLING any background tasks and other dockers"
@@ -86,7 +90,6 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
         echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
         sleep $DOCKER_SLEEPTIME
-        STATE=`cat ~/wireguard/STATE`
         #echo `date` "$0 STATE=$STATE"
     done
 else
