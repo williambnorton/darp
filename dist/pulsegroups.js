@@ -28,14 +28,24 @@ exports.addPulseGroup = addPulseGroup;
 //   skulker() - delete puylseGroups marked as "STOP" adminControl
 //  @wbnwbn
 function skulker() {
-    for (var p in exports.myPulseGroups)
+    var connected = (new Date()).getTime(); //Assume connected into the cloud
+    for (var p in exports.myPulseGroups) {
         if (exports.myPulseGroups[p].adminControl == "STOP") {
             delete exports.myPulseGroups[p];
             console.log(lib_2.ts() + "skulker(): deleted expired pulseGroup object");
         }
-    setTimeout(skulker, 15);
+        if (exports.myPulseGroups[p].groupOwner != exports.myPulseGroups[p].mintTable[0].geo) {
+            connected = (new Date()).getTime(); //connected into not-me
+        }
+    }
+    var lastUpdated = lib_1.now() - connected;
+    if (lastUpdated > 60 * 1000) {
+        console.log("Not connected to mesh for 60 seconds exitting");
+        process.exit();
+    }
+    setTimeout(skulker, 1000);
 }
-setTimeout(skulker, 15);
+setTimeout(skulker, 60000); //give the docker 60 seconds to connect
 //
 //  @WBNWBNWBN ... this receiver wil demux for all pulseGroups,
 //

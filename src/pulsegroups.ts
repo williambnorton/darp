@@ -4,6 +4,7 @@ import { PulseGroup,AugmentedPulseGroup, CONFIG } from './pulsegroup';
 import { now, nth_occurrence, dump  } from "./lib";
 import { IncomingPulse } from "./types";
 import { ts } from "./lib"
+import { METHODS } from 'http';
 
 export type PulseGroups = { [x: string]: AugmentedPulseGroup };
 export var myPulseGroups:PulseGroups={};
@@ -29,14 +30,24 @@ export function addPulseGroup(pulseGroup:PulseGroup) {
 //   skulker() - delete puylseGroups marked as "STOP" adminControl
 //  @wbnwbn
 function skulker() {
-    for (var p in myPulseGroups)
+    var connected=(new Date()).getTime();  //Assume connected into the cloud
+    for (var p in myPulseGroups) {
         if ( myPulseGroups[p].adminControl=="STOP") {
             delete myPulseGroups[p];
             console.log(ts()+`skulker(): deleted expired pulseGroup object`);
         }
-    setTimeout(skulker,15);
+        if (myPulseGroups[p].groupOwner!=myPulseGroups[p].mintTable[0].geo) {
+            connected=(new Date()).getTime(); //connected into not-me
+        }
+    }
+    var lastUpdated=now()-connected;
+    if (lastUpdated>60*1000) {
+        console.log(`Not connected to mesh for 60 seconds exitting`);
+        process.exit();
+    }
+    setTimeout(skulker,1000);
 }
-setTimeout(skulker,15);
+setTimeout(skulker,60000);  //give the docker 60 seconds to connect
 
 
     //
