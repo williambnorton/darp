@@ -45,7 +45,7 @@ function skulker() {
     }
     setTimeout(skulker, 1000);
 }
-setTimeout(skulker, 60000); //give the docker 60 seconds to connect
+setTimeout(skulker, 60 * 1000); //give the docker 60 seconds to connect
 //
 //  @WBNWBNWBN ... this receiver wil demux for all pulseGroups,
 //
