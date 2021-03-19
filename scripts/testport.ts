@@ -57,7 +57,7 @@ function darpPing() {
         if ( IP == process.env.MY_IP ) message=message+",SELF"
 
 	if ( typeof Name != "undefined" ) {
-        	console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
+        	//console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
 
         	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             		if (err) throw err;
