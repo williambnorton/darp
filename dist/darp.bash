@@ -16,7 +16,6 @@ docker_rc=$?
 wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
-
     #echo STARTING > ~/wireguard/STATE
     #echo `date` $0 DARP Starting `ls Docker.*`:`ls Build.*`
     #STATE=`cat ~/wireguard/STATE`
@@ -69,26 +68,27 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG'
         
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
-        rc=$?
-        if [ $? -eq 86 ]; then
-            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            echo `date` "=========== DOCKER EXITTED AND RETURNED rc=86 ==== EXIT DOCKER AND STOP ===================== docker EXITTED with rc==86"
-            STATE="STOP"   #this will cause loop to stop after killing tasks
-        fi
+        darp_docker_rc=$?
+        echo `date` DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
 
         echo `date` "$0 DOCKER IS FINISHED - KILLING any background tasks and other dockers"
         kill $(jobs -p)    #kill all jobs
         ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
         echo `date` "$0 KILLING background tasks complete"
 
-        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
-        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
-        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
-        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
-        echo `date` "$0 ===================================  SLEEPING for $DOCKER_SLEEPTIME before re-fetching NEW DOCKER"
+        case $darp_docker_rc in
+
+            36 )
+                echo `date` "=========== DOCKER EXITTED docker_rc=$darp_docker_rc ==== EXIT DOCKER AND RELOAD SOFTWARE =========== "
+                STATE="RELOADING";   #this will cause loop to stop after killing tasks
+                ;;
+            86 )
+            * )
+                echo `date` "=========== DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
+                exit 86;
+                ;;            
+        esac
+        echo `date` "$0 ===================================  RELOADING DARP Software in $DOCKER_SLEEPTIME seconds..."
         sleep $DOCKER_SLEEPTIME
         #echo `date` "$0 STATE=$STATE"
     done
