@@ -29,7 +29,7 @@ var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
 client.on('listening', function () {
     var address = client.address();
-    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    //    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 client.bind(process.env.MY_PORT); //server listening 0.0.0.0:65013
 function darpPing() {
@@ -41,7 +41,7 @@ function darpPing() {
     for (var genesisNode in ary) {
         //console.log(`genesisNode=${ary[genesisNode]}`);
         var IP = ary[genesisNode].split(",")[0];
-        var Port = ary[genesisNode].split(",")[1];
+        var Port = parseInt(ary[genesisNode].split(",")[1]);
         var Name = ary[genesisNode].split(",")[2];
         var role = ary[genesisNode].split(",")[3];
         var message = startTime.getTime() + ",11," + process.env.MY_SWVERSION + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO + "," + IP + "," + Port + "," + Name + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO; //specify GENESIS Node directly
@@ -64,7 +64,7 @@ function darpPing() {
 //
 //var responses=[];
 client.on('message', function (message, remote) {
-    console.log("# GOT A DARP PING REPLY : " + message);
+    //console.log(`# GOT A DARP PING REPLY : ${message}`);
     var timeNow = new Date();
     var inmsg = message.toString();
     var pongFields = inmsg.split(",");
@@ -81,14 +81,14 @@ client.on('message', function (message, remote) {
     var srcgeo = pongFields[8];
     if (remote.address == process.env.MY_IP && msgType == 11) { //respond to my own ping
         var msg = timeNow.getTime() + ",12," + process.env.MY_SWVERSION + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO; //specify GENESIS Node directly
-        console.log("# Sending PONG (12) response to my own ping to publicIP: " + remote.address + ":" + process.env.MY_PORT + " message=" + msg);
+        //console.log(`# Sending PONG (12) response to my own ping to publicIP: ${remote.address}:${process.env.MY_PORT} message=${msg}`);
         client.send(msg, genesisport, remote.address);
         return;
     }
     else {
-        console.log("# pong message received remote.address=" + remote.address + " msgType=" + msgType + " genesisgeo=" + genesisgeo + " genesisip=" + genesisip + " genesisport=" + genesisport + " swversion=" + swversion);
-        console.log('# ' + remote.address + ' responded ' + (timeNow.getTime() - startTime.getTime()) + " ms with : " + inmsg);
-        console.log("# " + (timeNow.getTime() - startTime.getTime()) + "," + genesisip + "," + genesisport + "," + genesisgeo);
+        //        console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
+        //        console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTime.getTime()) +" ms with : "+ inmsg);
+        //        console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         if (remote.address == process.env.MY_IP) {
             console.log((timeNow.getTime() - startTime.getTime()) + "," + genesisip + "," + genesisport + "," + genesisgeo + "," + message + ",,,,SELF");
         }
@@ -103,7 +103,7 @@ client.on('message', function (message, remote) {
 //      finish on timeout
 //
 function finish() {
-    console.log("#  testport complete finish");
+    //   console.log(`#  testport complete finish`);
     //  for (var g in responses) {
     //
     //
