@@ -79,12 +79,15 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         case $darp_docker_rc in
 
             36 )
-                echo `date` "=========== DOCKER EXITTED docker_rc=$darp_docker_rc ==== EXIT DOCKER AND RELOAD SOFTWARE =========== "
-                STATE="RELOADING";   #this will cause loop to stop after killing tasks
+                echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== "
+                echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== ">>~/wireguard/DARP.log
                 ;;
             86 )
+                echo `date` "* * * * * *       DOCKER STOP REQUESTED         * * * * * * *" 
             * )
-                echo `date` "=========== DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
+                echo `date` "=========== DOCKER EXITTED docker_rc=$darp_docker_rc ==== EXITTING DOCKER  =========== "
+                echo `date` "SOFTWARE RELOAD : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
+                echo `date` "SOFTWARE RELOAD : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== " >>~/wireguard/DARP.log
                 exit 86;
                 ;;            
         esac
