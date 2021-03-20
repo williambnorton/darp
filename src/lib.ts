@@ -93,7 +93,7 @@ export function Log(logMsg: string, filename?: string) {
     if (typeof filename == "undefined")
         filename = 'DARP';
     //let root = process.env.HOME+"/darp";  //created by bootdarp
-    let root = process.env.WGDIR;  //created by bootdarp
+    let root = process.env.WGDIR;  //created by bootdarp <---NEW
 
     filename = root+"/"+filename + '.log';
     //console.log(ts()+`Log(): Logging ${logMsg} into ${filename}`);

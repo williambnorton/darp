@@ -59,6 +59,10 @@ export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
 echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
 
 echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+
+./darpping.bash
+GNL=`./darpping.bash`
+echo `date` darpping returned $GNL
 #	
 # 	setting up my GENESIS variables for operation          
 #           
