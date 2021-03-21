@@ -12,16 +12,20 @@
 //          eventually this module could test the port to self to verify port forwarding works
 //
 //console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
-if (process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == "" || process.env.MY_GEO == "") {
+if (process.env.MY_IP == "" || process.env.MY_PORT == "" || typeof process.env.GENESISNODELIST == "undefined" || process.env.MY_SWVERSION == "" || process.env.MY_GEO == "") {
     console.log("missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO");
     process.exit(86);
 }
 var numberPings = 1;
 var numberResponses = 0;
 //var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
-var GENESISNODELIST = process.env.GENESISNODELIST || "";
+var GNL = "";
+for (var i = 2; i < process.argv.length; i++) {
+    GNL = GNL + process.argv[i];
+}
+var GENESISNODELIST = process.env.GENESISNODELIST || GNL;
 if (GENESISNODELIST == "") {
-    console.log("testport.ts something really wrong - no GENESISNODE LIST - EXITTING");
+    console.log("testport.ts something really wrong - no GENESISNODELIST - EXITTING");
     process.exit(86); //something really wrong - no GENESINODE LIST - EXIT
 }
 GENESISNODELIST = GENESISNODELIST.replace(/\n/g, " ");
@@ -30,10 +34,14 @@ var dgram = require('dgram');
 var client = dgram.createSocket('udp4');
 client.on('listening', function () {
     var address = client.address();
-    //    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 client.bind(process.env.MY_PORT); //server listening 0.0.0.0:65013
-var surplus = [];
+//
+//  GENESISNODELIST = IP,PORT,GEO,ROLE,LATENCY
+//  ROLE=GENESIS or MEMBER
+//
+var surplus = new Array();
 function darpPing() {
     startTime = new Date(); //reset start timestamp
     //console.log(`myList=${myList}`);
@@ -50,7 +58,7 @@ function darpPing() {
         if (IP == process.env.MY_IP)
             message = message + ",SELF";
         if (typeof Name != "undefined") {
-            //console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
+            console.log("# Here we send DARP Ping to " + role + " " + Name + " " + IP + ":" + Port + " message=" + message);
             client.send(message, 0, message.length, Port, IP, function (err, bytes) {
                 if (err)
                     throw err;
@@ -97,18 +105,20 @@ client.on('message', function (message, remote) {
         //} else {
         //console.log(`message=${message}`); 
         var pongMsg = message.toString().split(",");
-        var DarpPong = {};
-        DarpPong.ts = pongMsg[0];
-        DarpPong.msgType = pongMsg[1]; //12 is PONG
-        DarpPong.version = pongMsg[2];
-        DarpPong.IP = pongMsg[3];
-        DarpPong.port = pongMsg[4];
-        DarpPong.geo = pongMsg[5];
-        DarpPong.bootTimestamp = pongMsg[6];
-        DarpPong.publicKey = pongMsg[7];
-        DarpPong.From = pongMsg[8];
-        DarpPong.MYIP = pongMsg[9];
-        DarpPong.MYPORT = pongMsg[10];
+        var DarpPong = {
+            ts: pongMsg[0],
+            msgType: pongMsg[1],
+            version: pongMsg[2],
+            IP: pongMsg[3],
+            port: pongMsg[4],
+            geo: pongMsg[5],
+            bootTimestamp: pongMsg[6],
+            publicKey: pongMsg[7],
+            From: pongMsg[8],
+            MYIP: pongMsg[9],
+            MYPORT: pongMsg[10]
+        };
+        console.log("DARPPong=" + JSON.stringify(DarpPong, null, 2));
         //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
         console.log(genesisip + "," + genesisport + "," + genesisgeo + "," + (timeNow.getTime() - startTime.getTime()) + "," + DarpPong.MYIP);
         delete surplus[DarpPong.IP + "," + DarpPong.port + "," + DarpPong.geo + ",GENESIS"];
@@ -124,8 +134,8 @@ client.on('message', function (message, remote) {
 //
 function finish() {
     for (var s in surplus) {
-        console.log("" + s);
-        console.log(genesisip + "," + genesisport + "," + genesisgeo + "," + (timeNow.getTime() - startTime.getTime()) + "," + DarpPong.MYIP);
+        console.log("FINISHED WITH " + s);
+        //console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
     }
     process.exit(numberResponses);
 }

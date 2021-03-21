@@ -12,19 +12,35 @@
 //          eventually this module could test the port to self to verify port forwarding works
 //
 //console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
+import { dump, now, MYVERSION, ts, Log  } from "../src/lib";
 
-if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == ""|| process.env.MY_GEO == "") {
+
+if ( process.env.MY_IP == "" || process.env.MY_PORT == "" ||  process.env.MY_SWVERSION == ""|| process.env.MY_GEO == "") {
     console.log(`missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO`);
     process.exit(86);
 }
 var numberPings=1;
 var numberResponses=0;
 
-//var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
+//
+//  choose defaults for the DARP Ping msg
+//
+if (typeof process.env.MY_IP == "undefined") { process.env.MY_IP="1.1.1.1"; }  //would be better to have real #'s here
+if (typeof process.env.MY_PORT == "undefined") { process.env.MY_PORT="65013"; }
+if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION=MYVERSION(); //"Docker.unknown:Build.unknown"; }  //would be better to get from li
+if (typeof process.env.MY_GEO == "undefined") { process.env.MY_GEO="hostName"; }
 
-var GENESISNODELIST = process.env.GENESISNODELIST || "";
+//var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
+var GNL="";
+if (typeof process.env.GENESISNODELIST == "undefined") {
+    for (var i = 2; i < process.argv.length; i++){
+        GNL=GNL+process.argv[i];
+    }
+}
+
+var GENESISNODELIST = process.env.GENESISNODELIST || GNL;
 if (GENESISNODELIST=="") {
-    console.log(`testport.ts something really wrong - no GENESISNODE LIST - EXITTING`);
+    console.log(`testport.ts something really wrong - no GENESISNODELIST - EXITTING`);
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
 }
 GENESISNODELIST=GENESISNODELIST.replace(/\n/g," ")
@@ -35,7 +51,7 @@ var client = dgram.createSocket('udp4');
 
 client.on('listening', function () {
     var address = client.address();
-//    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 
 
@@ -45,7 +61,10 @@ client.bind(process.env.MY_PORT);  //server listening 0.0.0.0:65013
 //  GENESISNODELIST = IP,PORT,GEO,ROLE,LATENCY
 //  ROLE=GENESIS or MEMBER
 //
-var surplus=new Array();
+//var surplus=new Array();
+
+var surplus = new Array();
+
 function darpPing() {
     startTime=new Date();  //reset start timestamp
     //console.log(`myList=${myList}`);
@@ -55,20 +74,22 @@ function darpPing() {
     for (var genesisNode in ary) {
         //console.log(`genesisNode=${ary[genesisNode]}`);
         let IP=ary[genesisNode].split(",")[0];
-        let Port=parseInt(ary[genesisNode].split(",")[1]);
+        let port=ary[genesisNode].split(",")[1];
+        let Port=parseInt(port);
         let Name=ary[genesisNode].split(",")[2];
         let role=ary[genesisNode].split(",")[3];
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         if ( IP == process.env.MY_IP ) message=message+",SELF"
 
 	    if ( typeof Name != "undefined" ) {
-        	//console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
+        	console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
 
         	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             		if (err) throw err;
                     //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
             });
-            surplus[IP+","+Port+","+Name+","+role]="99999";
+            var index=""+IP+","+port+","+Name+","+role
+            surplus[index]=""+99999;
 	    }
     }
     setTimeout(darpPing,1000);
@@ -112,18 +133,20 @@ client.on('message', function (message, remote) {
         //} else {
             //console.log(`message=${message}`); 
             var pongMsg=message.toString().split(",");
-            var DarpPong={};
-            DarpPong.ts = pongMsg[0];
-            DarpPong.msgType = pongMsg[1];   //12 is PONG
-            DarpPong.version = pongMsg[2];
-            DarpPong.IP = pongMsg[3];
-            DarpPong.port = pongMsg[4];
-            DarpPong.geo = pongMsg[5];
-            DarpPong.bootTimestamp = pongMsg[6];
-            DarpPong.publicKey = pongMsg[7];
-            DarpPong.From = pongMsg[8];
-            DarpPong.MYIP = pongMsg[9];
-            DarpPong.MYPORT = pongMsg[10];
+            var DarpPong={
+                ts : pongMsg[0],
+                msgType : pongMsg[1],   //msgType 12 is PONG
+                version : pongMsg[2],
+                IP : pongMsg[3],
+                port : pongMsg[4],
+                geo : pongMsg[5],
+                bootTimestamp : pongMsg[6],
+                publicKey : pongMsg[7],
+                From : pongMsg[8],
+                MYIP : pongMsg[9],
+                MYPORT : pongMsg[10]
+            };
+            console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
             //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
             console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
 
@@ -144,7 +167,7 @@ client.on('message', function (message, remote) {
 //
 function finish() {
     for (var s in surplus) {
-        console.log(`FINISHED WITH ${s}`);
+        console.log(`# FINISHED WITH ${s}`);
         //console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
 
     }
