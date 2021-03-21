@@ -68,27 +68,30 @@ export FIRST_GENESIS_IP=`echo $GNL   | awk '{ print $1 }'`
 export FIRST_GENESIS_PORT=`echo $GNL | awk '{ print $2 }'`
 export FIRST_GENESIS_NAME=`echo $GNL | awk '{ print $3 }'`
 export FIRST_GENESIS_LATENCY=`echo $GNL | awk '{ print $4 }'`
+export FIRST_GENESIS_MY_IP=`echo $GNL | awk '{ print $5 }'`
 echo $GNL | grep $MY_IP  >/dev/null
 if [ $? -eq 0 ]; then
     export IS_GENESIS=1;
 else
     export IS_GENESIS=0;
+    export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
 fi
-echo `date` " NEWMODEL: STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  GENESIS=$GENESIS " 
+echo `date` " NEWMODEL: STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
+
 
 #	
 # 	setting up my GENESIS variables for operation          
 #           
 #
-export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
-echo genesisnodelist says GENESISNODELIST=$GENESISNODELIST
-export FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
-echo $GENESISNODELIST | grep $MY_IP | grep ,GENESIS >/dev/null
-if [ $? -eq 0 ]; then
-    export IS_GENESIS=1;
-else
-    export IS_GENESIS=0;
-fi
+#export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
+#echo genesisnodelist says GENESISNODELIST=$GENESISNODELIST
+#export FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
+#echo $GENESISNODELIST | grep $MY_IP | grep ,GENESIS >/dev/null
+#if [ $? -eq 0 ]; then
+#    export IS_GENESIS=1;
+#else
+#    export IS_GENESIS=0;
+#fi
 
 echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
 echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
