@@ -11,12 +11,13 @@
 //          stdout  latency for responding genesis nodes excluding self
 //          eventually this module could test the port to self to verify port forwarding works
 //
-console.log("# testport MY_IP=" + process.env.MY_IP + " MY_PORT=" + process.env.MY_PORT + " MY_SWVERSION=" + process.env.MY_SWVERSION + " MY_GEO=" + process.env.MY_GEO);
+//console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
 if (process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == "" || process.env.MY_GEO == "") {
     console.log("missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO");
     process.exit(86);
 }
 var numberPings = 1;
+var numberResponses = 0;
 //var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
 var GENESISNODELIST = process.env.GENESISNODELIST || "";
 if (GENESISNODELIST == "") {
@@ -32,6 +33,7 @@ client.on('listening', function () {
     //    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 client.bind(process.env.MY_PORT); //server listening 0.0.0.0:65013
+var surplus = [];
 function darpPing() {
     startTime = new Date(); //reset start timestamp
     //console.log(`myList=${myList}`);
@@ -54,6 +56,7 @@ function darpPing() {
                     throw err;
                 //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
             });
+            surplus[IP + "," + Port + "," + Name + "," + role] = "99999";
         }
     }
     setTimeout(darpPing, 1000);
@@ -89,12 +92,29 @@ client.on('message', function (message, remote) {
         //        console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
         //        console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTime.getTime()) +" ms with : "+ inmsg);
         //        console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
-        if (remote.address == process.env.MY_IP) {
-            console.log((timeNow.getTime() - startTime.getTime()) + "," + genesisip + "," + genesisport + "," + genesisgeo + "," + message + ",,,,SELF");
-        }
-        else {
-            console.log((timeNow.getTime() - startTime.getTime()) + "," + genesisip + "," + genesisport + "," + genesisgeo + "," + message);
-        }
+        //if (remote.address==process.env.MY_IP) {
+        //    console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message},,,,SELF`);
+        //} else {
+        //console.log(`message=${message}`); 
+        var pongMsg = message.toString().split(",");
+        var DarpPong = {};
+        DarpPong.ts = pongMsg[0];
+        DarpPong.msgType = pongMsg[1]; //12 is PONG
+        DarpPong.version = pongMsg[2];
+        DarpPong.IP = pongMsg[3];
+        DarpPong.port = pongMsg[4];
+        DarpPong.geo = pongMsg[5];
+        DarpPong.bootTimestamp = pongMsg[6];
+        DarpPong.publicKey = pongMsg[7];
+        DarpPong.From = pongMsg[8];
+        DarpPong.MYIP = pongMsg[9];
+        DarpPong.MYPORT = pongMsg[10];
+        //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
+        console.log(genesisip + "," + genesisport + "," + genesisgeo + "," + (timeNow.getTime() - startTime.getTime()) + "," + DarpPong.MYIP);
+        delete surplus[DarpPong.IP + "," + DarpPong.port + "," + DarpPong.geo + ",GENESIS"];
+        delete surplus[DarpPong.IP + "," + DarpPong.port + "," + DarpPong.geo + ",MEMBER"];
+        numberResponses++;
+        //}
     }
     //    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
     ///    responses.push(response);  //store the 
@@ -103,24 +123,11 @@ client.on('message', function (message, remote) {
 //      finish on timeout
 //
 function finish() {
-    //   console.log(`#  testport complete finish`);
-    //  for (var g in responses) {
-    //
-    //
-    //
-    //    console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
-    //                34                    52.53.222.151       
-    //
-    //
-    //}
-    //if (responses.length==0) {
-    //  console.log(`# testport.bash  No Responses`);
-    // }
-    //var selectURL=responses.pop();
-    //console.log(`${selectURL.url}`);  //pick one in the middle
-    //console.log(`${JSON.stringify(selectURL,null,2)}`);  //pick one in the middle
-    //console.log(`auto=${JSON.stringify(responses[ Math.floor(responses.length/2) ].url,null,2)}`);  //pick one in the middle
-    process.exit(0);
+    for (var s in surplus) {
+        console.log("" + s);
+        console.log(genesisip + "," + genesisport + "," + genesisgeo + "," + (timeNow.getTime() - startTime.getTime()) + "," + DarpPong.MYIP);
+    }
+    process.exit(numberResponses);
 }
 //console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MY_PORT}...`);
 setTimeout(finish, numberPings * 1000);

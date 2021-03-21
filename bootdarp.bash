@@ -68,18 +68,30 @@ export IS_MEMBER="$?"
 echo IS_MEMBER=$IS_MEMBER
 if [ "$IS_MEMBER" == "0" ]; then
     IS_GENESIS="1";
+    echo `date` "WE ARE GENESIS NODE"
+
+    FIRST_GENESIS=`grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS | awk '{ print $1 }'`
+    export FIRST_GENESIS_IP=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
+    GENESIS=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
 else
     IS_GENESIS="0";
+    GNL=`./darpping.bash`
+    echo `date` darpping returned $GNL
+    export FIRST_GENESIS=`echo $GNL   | awk '{ print $1 }'`
+    if [ "$FIRST_GENESIS" != "" ]; then
+        export FIRST_GENESIS_IP=`echo $FIRST_GENESIS   | awk -F, '{ print $1 }'`
+        export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
+        export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS | awk -F, '{ print $3 }'`
+        export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS|awk -F, '{ print $4 }'`
+        export FIRST_GENESIS_MY_IP=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'` #What the genesis node says our public IP is
+        export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
+    else
+        GENESIS=""
+        echo `date` "WE ARE NOT A GENESIS NODE AND NO GENESIS NODES RESPONDED"
+        exit 0
+    fi
 fi
 
-GNL=`./darpping.bash`
-echo `date` darpping returned $GNL
-export FIRST_GENESIS=`echo $GNL   | awk '{ print $1 }'`
-export FIRST_GENESIS_IP=`echo $FIRST_GENESIS   | awk -F, '{ print $1 }'`
-export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
-export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS | awk -F, '{ print $3 }'`
-export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS|awk -F, '{ print $4 }'`
-export FIRST_GENESIS_MY_IP=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'` #What the genesis node says our public IP is
 #echo $GNL | grep $MY_IP  >/dev/null
 #if [ $? -eq 0 ]; then
 #    export IS_MEMBER=1;
@@ -87,7 +99,7 @@ export FIRST_GENESIS_MY_IP=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'` #What 
 #    export IS_MEMBER=0;
 #    export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
 #fi
-echo `date` " NEWMODEL: STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
+echo `date` " NEWMODEL: STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  MY GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
 
 
 #	
@@ -115,18 +127,16 @@ CYCLES=0;
 while :
 do
     echo `date` " 8 8 8 8 8 8 8 8 8         $0 TOP OF LOOP         8 8 8 8 8 8 8 8 8 8 8 8 8 8 " 
-    if [ "$MY_IP" == "$FIRST_GENESIS" ]; then #ALWAYS AUTO START FIRST IN THR GENESIS NODE LLIST
+    if [ "$MY_IP" == "$FIRST_GENESIS_IP" ]; then #ALWAYS AUTO START FIRST IN THR GENESIS NODE LLIST
         GENESIS=$MY_IP:$MY_PORT
     fi
 
-    if [ $IS_MEMBER
- -eq 1 -a  "$GENESIS" == "" ]; then  #Genesis nodes point to FIRST_GENESIS unless overridden by GENESIS= override
+    if [ $IS_MEMBER -eq 1 -a  "$GENESIS" == "" ]; then  #Genesis nodes point to FIRST_GENESIS unless overridden by GENESIS= override
         echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
         MY_GENESIS_IP=$FIRST_GENESIS   #THIS BASICALLY MEANS 
         MY_GENESIS_PORT=65013
     else
-        echo `date` IS_MEMBER
-    =$IS_MEMBER
+        echo `date` IS_MEMBER=$IS_MEMBER
      GENESIS=$GENESIS
 
         #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
