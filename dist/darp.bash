@@ -8,7 +8,7 @@
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
 echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA DOCKERTAG
 SUDO=sudo
-DOCKER_SLEEPTIME=15
+DOCKER_SLEEPTIME=30   #time to wait before trying to connect again
 
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
 docker_rc=$?
@@ -63,15 +63,17 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         fi
 
         #
-        #   we can fetch from docker hub
+        #   START DOCKER RUNNING DARP
         #
         echo $0 'RUNNING: docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG'
         
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         darp_docker_rc=$?
         echo `date` DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
-
-        echo `date` "$0 DOCKER IS FINISHED - KILLING any background tasks and other dockers"
+        #
+        #   DARP DOCKER EXITTED
+        #
+        echo `date` "$0 DOCKER finished its cycle through the DARP software - CLEANING UP - KILLING background tasks and other dockers"
         kill $(jobs -p)    #kill all jobs
         ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
         echo `date` "$0 KILLING background tasks complete"
