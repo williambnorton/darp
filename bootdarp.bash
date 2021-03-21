@@ -60,7 +60,7 @@ echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSIO
 
 echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
 
-./darpping.bash
+#./darpping.bash
 GNL=`./darpping.bash`
 echo `date` darpping returned $GNL
 echo `date` FIRST_GENESIS= $FIRST_GENESIS
