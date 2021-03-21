@@ -63,12 +63,12 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #./darpping.bash
 GNL=`./darpping.bash`
 echo `date` darpping returned $GNL
-echo `date` FIRST_GENESIS= $FIRST_GENESIS
-export FIRST_GENESIS_IP=`echo $GNL   | awk '{ print $1 }'`
-export FIRST_GENESIS_PORT=`echo $GNL | awk '{ print $2 }'`
-export FIRST_GENESIS_NAME=`echo $GNL | awk '{ print $3 }'`
-export FIRST_GENESIS_LATENCY=`echo $GNL | awk '{ print $4 }'`
-export FIRST_GENESIS_MY_IP=`echo $GNL | awk '{ print $5 }'`
+export FIRST_GENESIS=`echo $GNL   | awk '{ print $1 }'`
+export FIRST_GENESIS_IP=`echo $FIRST_GENESIS   | awk -F, '{ print $1 }'`
+export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
+export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS | awk -F, '{ print $3 }'`
+export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS|awk -F, '{ print $4 }'`
+export FIRST_GENESIS_MY_IP=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'` #What the genesis node says our public IP is
 echo $GNL | grep $MY_IP  >/dev/null
 if [ $? -eq 0 ]; then
     export IS_GENESIS=1;
