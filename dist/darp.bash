@@ -79,17 +79,15 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         echo `date` "$0 KILLING background tasks complete"
 
         case $darp_docker_rc in
-
-            36 )
+            "36" )
                 echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== "
                 echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== ">>~/wireguard/DARP.log
                 ;;
-            86 )
+            "86" )
                 echo `date` "* * * * * *       DOCKER STOP REQUESTED         * * * * * * *" 
             * )
-                echo `date` "=========== DOCKER EXITTED docker_rc=$darp_docker_rc ==== EXITTING DOCKER  =========== "
-                echo `date` "STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
-                echo `date` "STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== " >>~/wireguard/DARP.log
+                echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
+                echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== " >>~/wireguard/DARP.log
                 exit 86;
                 ;;            
         esac
