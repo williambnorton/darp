@@ -61,6 +61,12 @@ echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSIO
 echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
 
 #./darpping.bash
+# Find closest public Genesis node (can be overriden to private genesis node.)
+export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
+grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS >/dev/null
+export IS_GENESIS="$?"
+echo IS_GENESIS=$IS_GENESIS
+
 GNL=`./darpping.bash`
 echo `date` darpping returned $GNL
 export FIRST_GENESIS=`echo $GNL   | awk '{ print $1 }'`
@@ -69,13 +75,13 @@ export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
 export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS | awk -F, '{ print $3 }'`
 export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS|awk -F, '{ print $4 }'`
 export FIRST_GENESIS_MY_IP=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'` #What the genesis node says our public IP is
-echo $GNL | grep $MY_IP  >/dev/null
-if [ $? -eq 0 ]; then
-    export IS_GENESIS=1;
-else
-    export IS_GENESIS=0;
-    export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
-fi
+#echo $GNL | grep $MY_IP  >/dev/null
+#if [ $? -eq 0 ]; then
+#    export IS_GENESIS=1;
+#else
+#    export IS_GENESIS=0;
+#    export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
+#fi
 echo `date` " NEWMODEL: STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
 
 
