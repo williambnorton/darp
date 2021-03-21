@@ -85,6 +85,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
                 ;;
             "86" )
                 echo `date` "* * * * * *       DOCKER STOP REQUESTED         * * * * * * *" 
+                exit 86;
+                ;;
             * )
                 echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
                 echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== " >>~/wireguard/DARP.log
