@@ -78,7 +78,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         ( docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q) 2>&1 )>/dev/null
         echo `date` "$0 KILLING background tasks complete"
 
-        case $darp_docker_rc in
+        case "$darp_docker_rc" in
             "36" )
                 echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== "
                 echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== ">>~/wireguard/DARP.log
