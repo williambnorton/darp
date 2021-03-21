@@ -68,7 +68,7 @@ echo `date` darpping returned $GNL
 #           
 #
 export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
-#echo bash says GENESISNODELIST=$GENESISNODELIST
+echo genesisnodelist says GENESISNODELIST=$GENESISNODELIST
 export FIRST_GENESIS=`echo $GENESISNODELIST  | grep -v '#' | head -1 | awk -F, '{ print $1 }' `   #First one is where we get code and config although any will serve it up
 echo $GENESISNODELIST | grep $MY_IP | grep ,GENESIS >/dev/null
 if [ $? -eq 0 ]; then
@@ -78,6 +78,12 @@ else
 fi
 
 echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` "$0 STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+
 CYCLES=0;
 while :
 do
