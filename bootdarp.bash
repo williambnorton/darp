@@ -63,15 +63,18 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 ./darpping.bash
 GNL=`./darpping.bash`
 echo `date` darpping returned $GNL
-export FIRST_GENESIS=`echo $GNL | awk '{ print $1 }'`
 echo `date` FIRST_GENESIS= $FIRST_GENESIS
+export FIRST_GENESIS_IP=`echo $GNL   | awk '{ print $1 }'`
+export FIRST_GENESIS_PORT=`echo $GNL | awk '{ print $2 }'`
+export FIRST_GENESIS_NAME=`echo $GNL | awk '{ print $3 }'`
+export FIRST_GENESIS_LATENCY=`echo $GNL | awk '{ print $4 }'`
 echo $GNL | grep $MY_IP  >/dev/null
 if [ $? -eq 0 ]; then
     export IS_GENESIS=1;
 else
     export IS_GENESIS=0;
 fi
-echo `date` " NEWMODEL: STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS" 
+echo `date` " NEWMODEL: STARTING DARP IS_GENESIS=$IS_GENESIS MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  GENESIS=$GENESIS " 
 
 #	
 # 	setting up my GENESIS variables for operation          
