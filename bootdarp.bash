@@ -63,23 +63,24 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 #./darpping.bash
 # Find closest public Genesis node (can be overriden to private genesis node.)
 export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
+echo `dte` GENESISNODELIST=$GENESISNODELIST
 grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS >/dev/null
 export IS_MEMBER="$?"
 echo IS_MEMBER=$IS_MEMBER
 if [ "$IS_MEMBER" == "0" ]; then
     IS_GENESIS="1";
-    echo `date` "WE ARE GENESIS NODE"
 
     FIRST_GENESIS=`grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS | awk '{ print $1 }'`
     export FIRST_GENESIS_IP=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
     GENESIS=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
+    echo `date` "WE ARE GENESIS NODE GENESIS=$GENESIS"
 
 else
-    echo `date` "WE ARE A MEMBER NODE"
     IS_GENESIS="0";
     GNL=`./darpping.bash`
-    echo `date` darpping returned $GNL
     export FIRST_GENESIS=`echo $GNL   | awk '{ print $1 }'`
+    echo `date` "WE ARE A MEMBER L NODE FIRST_GENESIS=$FIRST_GENESIS GNL=$GN"
+
     if [ "$FIRST_GENESIS" != "" ]; then
         export FIRST_GENESIS_IP=`echo $FIRST_GENESIS   | awk -F, '{ print $1 }'`
         export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
@@ -87,8 +88,14 @@ else
         export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS|awk -F, '{ print $4 }'`
         export FIRST_GENESIS_MY_IP=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'` #What the genesis node says our public IP is
         export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
+        echo `date` "WE ARE A MEMBER NODE connecting to FIRST_GENESIS=$FIRST_GENESIS"
+
     else
         GENESIS=""
+        echo `date` "WE ARE NOT A GENESIS NODE AND NO GENESIS NODES RESPONDED"
+        echo `date` "WE ARE NOT A GENESIS NODE AND NO GENESIS NODES RESPONDED"
+        echo `date` "WE ARE NOT A GENESIS NODE AND NO GENESIS NODES RESPONDED"
+        echo `date` "WE ARE NOT A GENESIS NODE AND NO GENESIS NODES RESPONDED"
         echo `date` "WE ARE NOT A GENESIS NODE AND NO GENESIS NODES RESPONDED"
         exit 0
     fi
