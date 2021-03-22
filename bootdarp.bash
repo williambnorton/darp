@@ -70,7 +70,7 @@ export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
 export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS | awk -F, '{ print $3 }'`
 export FIRST_GENESIS_ROLE=`echo $FIRST_GENESIS | awk -F, '{ print $4 }'`
 export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'`
-echo `date` "$0 FIRST_GENESIS=$FIRST_GENESIS FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME FIRST_GENESIS_ROLE=$FIRST_GENESIS_ROLE FIRST_GENESIS_LATENCY=$FIRST_GENESIS_LATENCY"
+echo `date` "$0 FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME FIRST_GENESIS_ROLE=$FIRST_GENESIS_ROLE FIRST_GENESIS_LATENCY=$FIRST_GENESIS_LATENCY"
 #
 #   Now that we have marshalled the variables and exported them as environmental variables
 #   Determine role of this node we are starting - GENESIS, FIRST_GENESIS, or MEMBER
@@ -98,13 +98,15 @@ else
     #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
     echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL"
     CLOSEST_GENESIS=`echo $GNL | awk '{ print $1 }'`
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+
     if [ "$CLOSEST_GENESIS" != "" ]; then
         export FIRST_GENESIS_IP=`echo $CLOSEST_GENESIS   | awk -F, '{ print $1 }'`
         export FIRST_GENESIS_PORT=`echo $CLOSEST_GENESIS | awk -F, '{ print $2 }'`
         export FIRST_GENESIS_NAME=`echo $CLOSEST_GENESIS | awk -F, '{ print $3 }'`
         export FIRST_GENESIS_LATENCY=`echo $CLOSEST_GENESIS|awk -F, '{ print $4 }'`
         export FIRST_GENESIS_MY_IP=`echo $CLOSEST_GENESIS | awk -F, '{ print $5 }'` #What the genesis node says our public IP is
-        echo "bootdarp.bash: $FIRST_GENESIS_MY_IP should equal $MY_IP"
+        echo "bootdarp.bash: $FIRST_GENESIS_MY_IP should equal $MY_IP if not blank"
         export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
         echo `date` "WE ARE A MEMBER NODE connecting to $GENESIS"
 
