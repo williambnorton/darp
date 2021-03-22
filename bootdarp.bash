@@ -73,7 +73,9 @@ if [ "$IS_MEMBER" == "0" ]; then
     FIRST_GENESIS=`grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS | awk '{ print $1 }'`
     export FIRST_GENESIS_IP=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
     GENESIS=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
+
 else
+    echo `date` "WE ARE A MEMBER NODE"
     IS_GENESIS="0";
     GNL=`./darpping.bash`
     echo `date` darpping returned $GNL
@@ -131,13 +133,14 @@ do
         GENESIS=$MY_IP:$MY_PORT
     fi
 
-    if [ $IS_MEMBER -eq 1 -a  "$GENESIS" == "" ]; then  #Genesis nodes point to FIRST_GENESIS unless overridden by GENESIS= override
+    if [ $IS_MEMBER -eq 1  ]; then  #Genesis nodes point to FIRST_GENESIS unless overridden by GENESIS= override
         echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
         MY_GENESIS_IP=$FIRST_GENESIS   #THIS BASICALLY MEANS 
         MY_GENESIS_PORT=65013
+        GENESIS=$MY_GENESIS_IP:$MY_GENESIS_PORT
     else
         echo `date` IS_MEMBER=$IS_MEMBER
-     GENESIS=$GENESIS
+        #GENESIS=$GENESIS
 
         #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
         if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
