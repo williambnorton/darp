@@ -12,30 +12,6 @@
 //          eventually this module could test the port to self to verify port forwarding works
 //
 //console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
-function MYVERSION(): string {
-    let darpdir = process.env.DARPDIR;
-    var darpBuild = null;  //we set this from Build. file contents
-    var dockerBuild = null;  //we set this from Docker. file contents
-    if (typeof darpdir == "undefined") {
-        console.log(`MYVERSION(): Environmental variable DARPDIR undefined... EXITTING...`);
-        process.exit(36); //reload SW - this should not happen
-    }
-    fs.readdirSync(darpdir).forEach((fn: string) => { 
-        const Build=fn.match(/Build\..*/);
-        if (Build !== null) {
-            darpBuild=Build[0];
-        }
-    });
-    fs.readdirSync(darpdir).forEach((fn: string) => { 
-        const Docker=fn.match(/Docker\.[0-9][0-9][0-9][0-9][0-9][0-9]\.[0-9][0-9][0-9][0-9]/);
-        if (Docker !== null) {
-            dockerBuild=Docker[0];
-        }
-    });
-    //console.log(`MYVERSION() returning ${dockerBuild}:${darpBuild}`);
-    return dockerBuild+":"+darpBuild;
-}
-const MY_VERSION=MYVERSION();
 
 var numberPings=1;
 var numberResponses=0;
@@ -45,18 +21,19 @@ var numberResponses=0;
 //
 if (typeof process.env.MY_IP == "undefined") { process.env.MY_IP="1.1.1.1"; }  //would be better to have real #'s here
 if (typeof process.env.MY_PORT == "undefined") { process.env.MY_PORT="65013"; }
-//if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION=MYVERSION(); //"Docker.unknown:Build.unknown"; }  //would be better to get from li
-if (typeof process.env.MY_GEO == "undefined") { process.env.MY_GEO="hostName"; }
+if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION="dockerversiongoeshere:darpVersionGoesHere"; //"Docker.unknown:Build.unknown"; }  //would be better to get from li
+
+if (typeof process.env.MY_GEO == "undefined") { process.env.MY_GEO="hostNameHere"; }
 
 //var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
-var GNL="";
-if (typeof process.env.GENESISNODELIST == "undefined") {
-    for (var i = 2; i < process.argv.length; i++){
-        GNL=GNL+process.argv[i];
-    }
-}
+//var GNL="";
+//if (typeof process.env.GENESISNODELIST == "undefined") {
+//    for (var i = 2; i < process.argv.length; i++){
+//        GNL=GNL+process.argv[i];
+//    }//
+//}
 
-var GENESISNODELIST = process.env.GENESISNODELIST || GNL;
+var GENESISNODELIST = process.env.GENESISNODELIST || ""; //|| GNL;
 if (GENESISNODELIST=="") {
     console.log(`testport.ts something really wrong - no GENESISNODELIST - EXITTING`);
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
