@@ -96,8 +96,8 @@ else
     #
     GNL=`./darpping.bash`   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
     #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
-    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL"
     CLOSEST_GENESIS=`echo $GNL | awk '{ print $1 }'`
+
     echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
 
     if [ "$CLOSEST_GENESIS" != "" ]; then

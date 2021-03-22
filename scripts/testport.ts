@@ -22,7 +22,6 @@ var numberResponses=0;
 if (typeof process.env.MY_IP == "undefined") { process.env.MY_IP="1.1.1.1"; }  //would be better to have real #'s here
 if (typeof process.env.MY_PORT == "undefined") { process.env.MY_PORT="65013"; }
 if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION="dockerversiongoeshere:darpVersionGoesHere"; //"Docker.unknown:Build.unknown"; }  //would be better to get from li
-
 if (typeof process.env.MY_GEO == "undefined") { process.env.MY_GEO="hostNameHere"; }
 
 //var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
@@ -173,4 +172,4 @@ function finish() {
 setTimeout(finish,numberPings*1000)
 //console.log(`# ${process.env}`);
 darpPing();
-
+};
