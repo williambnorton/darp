@@ -47,7 +47,7 @@ export DARPDIR=$HOME/darp
 export DARPDIR=`pwd`
 export WGDIR=/etc/wireguard
 
-export MY_GEO=$HOSTNAME		#
+export MY_GEO=$HOSTNAME	| awk '{ print $1 }' | awk -F. '{ print $1 }' | awk -F, '{ print $1 }' #
 if [ "$MY_PORT" == "" ]; then
     MY_PORT=65013    
 fi
@@ -64,13 +64,13 @@ echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_POR
 # Find closest public Genesis node (can be overriden to private genesis node.)
 export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
 echo `date` GENESISNODELIST=$GENESISNODELIST MY_GEO=$MY_GEO MY_IP=$MY_IP MY_PORT=$MY_PORT MY_SWVERSION=$MY_SWVERSION
-export FIRST_GENESIS=`grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS | awk '{ print $1 }'`
+export FIRST_GENESIS=`echo $GENESISNODELIST | awk '{ print $1 }'`
 export FIRST_GENESIS_IP=`echo $FIRST_GENESIS | awk -F, '{ print $1 }'`
 export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS | awk -F, '{ print $2 }'`
 export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS | awk -F, '{ print $3 }'`
 export FIRST_GENESIS_ROLE=`echo $FIRST_GENESIS | awk -F, '{ print $4 }'`
 export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS | awk -F, '{ print $5 }'`
-echo `date` "FIRST_GENESIS=$FIRST_GENESIS FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME FIRST_GENESIS_ROLE=$FIRST_GENESIS_ROLE FIRST_GENESIS_LATENCY=$FIRST_GENESIS_LATENCY"
+echo `date` "$0 FIRST_GENESIS=$FIRST_GENESIS FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME FIRST_GENESIS_ROLE=$FIRST_GENESIS_ROLE FIRST_GENESIS_LATENCY=$FIRST_GENESIS_LATENCY"
 #
 #   Now that we have marshalled the variables and exported them as environmental variables
 #   Determine role of this node we are starting - GENESIS, FIRST_GENESIS, or MEMBER
