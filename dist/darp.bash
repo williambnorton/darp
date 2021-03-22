@@ -44,7 +44,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
         echo `date` "HOST: darp.bash: after launch will be starting darp: DOCKERTAG running GITTAG"
         export MY_PORT=_MY_PORT  #your port dedicated to DARP be configured (65013 is default)
-        export GENESISNODELIST="GENESIS_NODE_LIST"  #your port dedicated to DARP be configured (65013 is default)
+        export GENESISNODELIST="GENESIS_NODE_LIST"  #this filled in by index.ts with custom G_N_L
         echo "GENESISNODELIST="$GENESISNODELIST #
 
         if [ "FALSE" == "TRUE" ]; then
@@ -91,6 +91,10 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
                 echo `date` "* * * * * *      docker_rc=$darp_docker_rc     NEW DOCKER AVAILABLE     * * * * * * *" 
                 #exit 86;
                 ;;
+            "125" )
+                echo `date` "* * * * * *      docker_rc=$darp_docker_rc     DOCKER ERROR     * * * * * * *" 
+                #exit 86;
+                ;;                
             * )
                 echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
                 echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== " >>~/wireguard/DARP.log
