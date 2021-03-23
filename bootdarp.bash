@@ -96,7 +96,7 @@ else
     #   MEMBER NODE startup - We use darpping(GENESISNODELIST) to find closest to connect to 
     #
 
-    GNL=`./darpping.bash| grep -v '#' | grep ,GENESIS`   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
+    GNL=`./darpping.bash` #| grep -v '#' | grep ,GENESIS`   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
     #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
     CLOSEST_GENESIS=`echo $GNL | grep -v '#' | grep GENESIS | awk '{ print $1 }'`
 

@@ -142,10 +142,9 @@ client.on('message', function (message, remote) {
         };
         //console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
         //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
-        console.log(`${genesisip},${genesisport},${genesisgeo},GENESIS,4${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
+        console.log(`${genesisip},${genesisport},${genesisgeo},GENESIS,${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
 
         delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",GENESIS"];
-        delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",MEMBER"];
 
         numberResponses++;
         //}
@@ -162,7 +161,7 @@ client.on('message', function (message, remote) {
 function finish() {
     for (var s in surplus) {
         //console.log(`# FINISHED WITH ${s}`);
-        console.log(`${s},${surplus[s]},${process.env.MY_IP}`);
+        console.log(`${s},GENESIS,${surplus[s]},${process.env.MY_IP}`);
     }
     process.exit(numberResponses);
 }
