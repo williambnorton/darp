@@ -21,7 +21,7 @@ var numberResponses=0;
 //
 if (typeof process.env.MY_IP == "undefined") { process.env.MY_IP="1.1.1.1"; }  //would be better to have real #'s here
 if (typeof process.env.MY_PORT == "undefined") { process.env.MY_PORT="65013"; }
-if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION="dockerversiongoeshere:darpVersionGoesHere"; //"Docker.unknown:Build.unknown"; }  //would be better to get from li
+if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION="dockerversiongoeshere:darpVersionGoesHere"; } //"Docker.unknown:Build.unknown"; }  //would be better to get from li
 if (typeof process.env.MY_GEO == "undefined") { process.env.MY_GEO="hostNameHere"; }
 
 //var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
@@ -45,7 +45,7 @@ var client = dgram.createSocket('udp4');
 
 client.on('listening', function () {
     var address = client.address();
-    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    //console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
 
 
@@ -76,7 +76,7 @@ function darpPing() {
         if ( IP == process.env.MY_IP ) message=message+",SELF"
 
 	    if ( typeof Name != "undefined" ) {
-        	console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
+        	//console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
 
         	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             	if (err) throw err;
@@ -118,7 +118,7 @@ client.on('message', function (message, remote) {
         client.send(msg, genesisport, remote.address);
         return;
     } else {
-        console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
+        //console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
 //        console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTime.getTime()) +" ms with : "+ inmsg);
 //        console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         
@@ -126,28 +126,28 @@ client.on('message', function (message, remote) {
         //    console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message},,,,SELF`);
         //} else {
             //console.log(`message=${message}`); 
-            var pongMsg=message.toString().split(",");
-            var DarpPong={
-                ts : pongMsg[0],
-                msgType : pongMsg[1],   //msgType 12 is PONG
-                version : pongMsg[2],
-                IP : pongMsg[3],
-                port : pongMsg[4],
-                geo : pongMsg[5],
-                bootTimestamp : pongMsg[6],
-                publicKey : pongMsg[7],
-                From : pongMsg[8],
-                MYIP : pongMsg[9],
-                MYPORT : pongMsg[10]
-            };
-            console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
-            //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
-            console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
+        var pongMsg=message.toString().split(",");
+        var DarpPong={
+            ts : pongMsg[0],
+            msgType : pongMsg[1],   //msgType 12 is PONG
+            version : pongMsg[2],
+            IP : pongMsg[3],
+            port : pongMsg[4],
+            geo : pongMsg[5],
+            bootTimestamp : pongMsg[6],
+            publicKey : pongMsg[7],
+            From : pongMsg[8],
+            MYIP : pongMsg[9],
+            MYPORT : pongMsg[10]
+        };
+        //console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
+        //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
+        console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
 
-            delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",GENESIS"];
-            delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",MEMBER"];
+        delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",GENESIS"];
+        delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",MEMBER"];
 
-            numberResponses++;
+        numberResponses++;
         //}
     }
     //    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
@@ -172,4 +172,3 @@ function finish() {
 setTimeout(finish,numberPings*1000)
 //console.log(`# ${process.env}`);
 darpPing();
-};
