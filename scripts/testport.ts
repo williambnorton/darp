@@ -161,7 +161,7 @@ client.on('message', function (message, remote) {
 function finish() {
     for (var s in surplus) {
         //console.log(`# FINISHED WITH ${s}`);
-        console.log(`${s},GENESIS,${surplus[s]},${process.env.MY_IP}`);
+        console.log(`${s}`);  //print enpty GENESIS node info
     }
     process.exit(numberResponses);
 }

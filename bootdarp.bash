@@ -96,7 +96,7 @@ else
     #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
     echo "DARP Ping gave us: GNL=$GNL"
     CLOSEST_GENESIS_ENTRY=`echo $GNL | grep -v '#' | grep GENESIS | awk '{ print $1 }'`
-    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS_ENTRY GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS_ENTRY"
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY GNL=$GNL CLOSEST_GENESIS_ENTRY=$CLOSEST_GENESIS_ENTRY"
 
     if [ "$CLOSEST_GENESIS_ENTRY" != "" ]; then
         export FIRST_GENESIS_IP=`echo $CLOSEST_GENESIS_ENTRY   | awk -F, '{ print $1 }'`
@@ -121,77 +121,13 @@ fi
 # 	GENESIS variables set for for operation          
 #           
 echo `date` " NEWMODEL: STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  MY GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
-echo `date` "$0 STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS=$FIRST_GENESIS_ENTRY" 
+echo `date` "$0 STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY" 
 
 
 CYCLES=0;
 while :
 do
     echo `date` " 8 8 8 8 8 8 8 8 8         $0 TOP OF LOOP         8 8 8 8 8 8 8 8 8 8 8 8 8 8 " 
-    if [ "$MY_IP" == "$FIRST_GENESIS_IP" ]; then #ALWAYS AUTO START FIRST IN THR GENESIS NODE LLIST
-        GENESIS=$MY_IP:$MY_PORT
-    fi
-
-    if [ $IS_MEMBER -eq 1  ]; then  #Genesis nodes point to FIRST_GENESIS unless overridden by GENESIS= override
-        echo `date` bootdarp We are OVER RIDING the GENESIS NODE connected to our first started node
-        MY_GENESIS_IP=$FIRST_GENESIS   #THIS BASICALLY MEANS 
-        MY_GENESIS_PORT=65013
-        GENESIS=$MY_GENESIS_IP:$MY_GENESIS_PORT
-    else
-        echo `date` IS_MEMBER=$IS_MEMBER
-        #GENESIS=$GENESIS
-
-        #GENESIS=""   #un comment this to connect to tclosest genesis each cycle - dynamic
-        if [ "$GENESIS" != "" ]; then       #   user-specified over rides "auto" connection to Genesis node list participants
-            FIRST_RESPONDER_LATENCY=0   
-            MY_GENESIS_IP=`echo $GENESIS|awk -F: '{ print $1 }'`
-            MY_GENESIS_PORT=`echo $GENESIS|awk -F: '{ print $2 }'`
-            if [ "$MY_GENESIS_PORT" == "" ]; then
-                MY_GENESIS_PORT=65013
-            fi
-            MY_GENESIS_GEO=$MY_GEO  #
-            MY_GENESIS_GROUP="${MY_GEO}.1"
-            MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-            echo `date` "User-overide: user wants to connecting to Genesis $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT"
-        else
-            echo "bootdarp.bash AUTO MODE - Testing ports to  genesis nodes: $GENESISNODELIST"
-            #rm GNL.txt
-            #scripts/testport.bash #| grep Docker. | grep -v '#' >GNL.txt
-            #scripts/testport.bash 
-            scripts/testport.bash | grep Docker. | grep -v '#' >GNL.txt   #GNL.txt holds the latency distance to each GNL at the time
-
-            echo `date` "*************************************** Closest GENESIS Node "`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-            cat GNL.txt
-            #FIRST_LINE=`cat GNL.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
-            FIRST_LINE=`cat GNL.txt | grep -v SELF | head -1`
-            echo "First to respond ... FIRST_LINE=$FIRST_LINE"
-            FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-            echo `date` FIRST_RESPONDER_LATENCY=$FIRST_RESPONDER_LATENCY
-            if [ "$FIRST_LINE" != "" -a "$FIRST_RESPONDER_LATENCY" != "" -a $FIRST_RESPONDER_LATENCY -lt $GRANULARITY ]; then
-                #FIRST_RESPONDER_LATENCY=`echo $FIRST_LINE | awk -F, '{ print $1}'`
-                MY_GENESIS_IP=`echo $FIRST_LINE | awk -F, '{ print $2}'`
-                MY_GENESIS_PORT=`echo $FIRST_LINE | awk -F, '{ print $3}'`
-                MY_GENESIS_GEO=`echo $FIRST_LINE | awk -F, '{ print $4}'`
-                MY_GENESIS_GROUP="${MY_GENESIS_GEO}.1"
-                MY_GENESIS_SWVERSION=`echo $FIRST_LINE | awk -F, '{ print $7 }'`
-#                MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-
-                echo `date` "Connecting to first Genesis to respond: $MY_GENESIS_GEO $MY_GENESIS_IP:$MY_GENESIS_PORT running $MY_GENESIS_SWVERSION"
-            else    #default to self as a standalone genesis node 
-                FIRST_RESPONDER_LATENCY="0"
-                MY_GENESIS_IP=$MY_IP
-                MY_GENESIS_PORT=$MY_PORT
-                MY_GENESIS_GEO=$MY_GEO
-                MY_GENESIS_GROUP=${MY_GEO}.1
-                MY_GENESIS_SWVERSION="$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
-                echo `date` "Connecting to SELF: $MY_GENESIS_SWVERSION "
-            fi
-        fi
-    fi
-    #
-    #   Now that we have set MY_GENESIS variable 
-    #
-    export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
     echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
 
     #cd $DARPDIR
