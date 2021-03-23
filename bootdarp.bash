@@ -47,7 +47,8 @@ export DARPDIR=$HOME/darp
 export DARPDIR=`pwd`
 export WGDIR=/etc/wireguard
 
-export MY_GEO=$HOSTNAME	| awk '{ print $1 }' | awk -F. '{ print $1 }' | awk -F, '{ print $1 }' #
+export MY_GEO=`echo $HOSTNAME	| awk '{ print $1 }' | awk -F. '{ print $1 }' | awk -F, '{ print $1 }' `
+
 if [ "$MY_PORT" == "" ]; then
     MY_PORT=65013    
 fi
