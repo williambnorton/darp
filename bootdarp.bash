@@ -98,6 +98,7 @@ else
 
     GNL=`./darpping.bash` #| grep -v '#' | grep ,GENESIS`   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
     #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
+    echo DARP Ping gave us: GNL=$GNL
     CLOSEST_GENESIS=`echo $GNL | grep -v '#' | grep GENESIS | awk '{ print $1 }'`
 
     echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
@@ -221,6 +222,8 @@ do
             fi
         fi
     fi
+    #
+    #   Now that we have set MY_GENESIS variable 
     #
     export GENESIS="$MY_GENESIS_IP:$MY_GENESIS_PORT"    # from here on forward we will continue to use this updated Genesis node and port
     echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
