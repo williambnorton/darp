@@ -80,7 +80,7 @@ function darpPing() {
 
         	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
             	if (err) throw err;
-                console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
+                //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
             });
             var index=""+IP+","+port+","+Name+","+role
             surplus[index]=""+99999;
@@ -142,7 +142,7 @@ client.on('message', function (message, remote) {
         };
         //console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
         //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
-        console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
+        console.log(`${genesisip},${genesisport},${genesisgeo},GENESIS,4${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
 
         delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",GENESIS"];
         delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",MEMBER"];
@@ -161,9 +161,8 @@ client.on('message', function (message, remote) {
 //
 function finish() {
     for (var s in surplus) {
-        console.log(`# FINISHED WITH ${s}`);
-        //console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
-
+        //console.log(`# FINISHED WITH ${s}`);
+        console.log(`${s},${surplus[s]},${process.env.MY_IP}`);
     }
     process.exit(numberResponses);
 }
