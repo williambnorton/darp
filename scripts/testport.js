@@ -62,14 +62,14 @@ function darpPing() {
     //console.log(`====myList.trim()=${myList.trim()}`);
     //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
     var ary = GENESISNODELIST.split(" ");
-    var _loop_1 = function () {
+    for (var genesisNode in ary) {
         //console.log(`genesisNode=${ary[genesisNode]}`);
         var IP = ary[genesisNode].split(",")[0];
         var port = ary[genesisNode].split(",")[1];
         var Port = parseInt(port);
         var Name = ary[genesisNode].split(",")[2];
         var role = ary[genesisNode].split(",")[3];
-        message = startTime.getTime() + ",11," + process.env.MY_SWVERSION + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO + "," + IP + "," + Port + "," + Name + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO; //specify GENESIS Node directly
+        var message = startTime.getTime() + ",11," + process.env.MY_SWVERSION + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO + "," + IP + "," + Port + "," + Name + "," + process.env.MY_IP + "," + process.env.MY_PORT + "," + process.env.MY_GEO; //specify GENESIS Node directly
         if (IP == process.env.MY_IP)
             message = message + ",SELF";
         if (typeof Name != "undefined") {
@@ -77,15 +77,11 @@ function darpPing() {
             client.send(message, 0, message.length, Port, IP, function (err, bytes) {
                 if (err)
                     throw err;
-                console.log('# sent ' + Name + " " + IP + ':' + Port + " " + message);
+                //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
             });
-            index = "" + IP + "," + port + "," + Name + "," + role;
+            var index = "" + IP + "," + port + "," + Name + "," + role;
             surplus[index] = "" + 99999;
         }
-    };
-    var message, index;
-    for (var genesisNode in ary) {
-        _loop_1();
     }
     setTimeout(darpPing, 1000);
 }
@@ -140,9 +136,8 @@ client.on('message', function (message, remote) {
         };
         //console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
         //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
-        console.log(genesisip + "," + genesisport + "," + genesisgeo + "," + (timeNow.getTime() - startTime.getTime()) + "," + DarpPong.MYIP);
+        console.log(genesisip + "," + genesisport + "," + genesisgeo + ",GENESIS," + (timeNow.getTime() - startTime.getTime()) + "," + DarpPong.MYIP);
         delete surplus[DarpPong.IP + "," + DarpPong.port + "," + DarpPong.geo + ",GENESIS"];
-        delete surplus[DarpPong.IP + "," + DarpPong.port + "," + DarpPong.geo + ",MEMBER"];
         numberResponses++;
         //}
     }
@@ -154,8 +149,8 @@ client.on('message', function (message, remote) {
 //
 function finish() {
     for (var s in surplus) {
-        console.log("# FINISHED WITH " + s);
-        //console.log(`${genesisip},${genesisport},${genesisgeo},${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
+        //console.log(`# FINISHED WITH ${s}`);
+        console.log(s + ",GENESIS," + surplus[s] + "," + process.env.MY_IP);
     }
     process.exit(numberResponses);
 }

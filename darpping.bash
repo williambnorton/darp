@@ -3,14 +3,11 @@
 #            output:        latency,ip,port,name
 #
 #     
-
+#ALL output is parsed so don't put debuigs here
+#
 #export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
 export GENESISNODELIST=`grep ,GENESIS genesisnodelist.config  |  grep -v '#' | sed ':a;N;$!ba;s/\n/ /g' `
-echo "# GENESISNODELIST=$GENESISNODELIST"
-#for i in $GENESISNODELIST
-#do  
-#    echo $i
-#done
+
 export MY_GEO=$HOSTNAME		#
 if [ "$MY_PORT" == "" ]; then
     MY_PORT=65013    
