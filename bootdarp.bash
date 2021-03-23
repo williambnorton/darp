@@ -54,80 +54,80 @@ if [ "$MY_PORT" == "" ]; then
 fi
 export MY_PORT
 export MY_IP=`curl ifconfig.io`	#	get my public IP
-CURRENT_DOCKERVERSION=`ls Docker.*`
-CURRENT_DARPVERSION=`ls Build.*`
-export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
-echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
-
-echo `date` "# bootdarp.bash STARTING bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
-
-#
-#   First, get the First Genesis Node and see if I am to start up as a GENESIS node
-#
-export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
-echo `date` GENESISNODELIST=$GENESISNODELIST MY_GEO=$MY_GEO MY_IP=$MY_IP MY_PORT=$MY_PORT MY_SWVERSION=$MY_SWVERSION
-export FIRST_GENESIS_ENTRY=`echo $GENESISNODELIST | awk '{ print $1 }'`
-export FIRST_GENESIS_IP=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $1 }'`
-export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $2 }'`
-export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $3 }'`
-export FIRST_GENESIS_ROLE=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $4 }'`
-export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $5 }'`
-echo `date` "$0 FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME FIRST_GENESIS_ROLE=$FIRST_GENESIS_ROLE FIRST_GENESIS_LATENCY=$FIRST_GENESIS_LATENCY"
-#
-#   Now that we have marshalled the variables and exported them as environmental variables
-#   Determine role of this node we are starting - GENESIS, FIRST_GENESIS, or MEMBER
-#
-grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS >/dev/null
-export IS_MEMBER="$?"
-#echo IS_MEMBER=$IS_MEMBER
-if [ "$IS_MEMBER" == "0" ]; then
-    export IS_GENESIS="1";
-    #
-    #   GENESIS NODE startup
-    #
-    export GENESIS=`echo $FIRST_GENESIS_IP":"$FIRST_GENESIS_PORT`    #All genesis nodes are in FIRST_GENESIS pulseGroup
-    echo `date` "WE ARE         GENESIS  NODE      ------------>mmGENESIS=$GENESIS MY_GEO=$MY_GEO  FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY FIRST_GENESIS_IP=$FIRST_GENESIS_IP"
-else
-    IS_GENESIS="0";
-    #
-    #   MEMBER NODE startup - We use darpping(GENESISNODELIST) to find closest to connect to 
-    #
-    GNL=`./darpping.bash | grep -v '#' `   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
-    #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
-    echo "DARP Ping gave us: GNL=$GNL"
-    CLOSEST_GENESIS_ENTRY=`echo $GNL | grep -v '#' | grep GENESIS | awk '{ print $1 }'`
-    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY GNL=$GNL CLOSEST_GENESIS_ENTRY=$CLOSEST_GENESIS_ENTRY"
-
-    if [ "$CLOSEST_GENESIS_ENTRY" != "" ]; then
-        export FIRST_GENESIS_IP=`echo $CLOSEST_GENESIS_ENTRY   | awk -F, '{ print $1 }'`
-        export FIRST_GENESIS_PORT=`echo $CLOSEST_GENESIS_ENTRY | awk -F, '{ print $2 }'`
-        export FIRST_GENESIS_NAME=`echo $CLOSEST_GENESIS_ENTRY | awk -F, '{ print $3 }'`
-        # GENESIS labels here
-        export FIRST_GENESIS_LATENCY=`echo $CLOSEST_GENESIS_ENTRY|awk -F, '{ print $5 }'`
-        export FIRST_GENESIS_MY_IP=`echo $CLOSEST_GENESIS_ENTRY | awk -F, '{ print $6 }'` #What the genesis node says our public IP is
-        echo "bootdarp.bash: $FIRST_GENESIS_MY_IP should equal $MY_IP if not blank"
-        export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
-        echo `date` "WE ARE A MEMBER NODE connecting to Closest Genesis Node: $GENESIS"
-
-    else
-        GENESIS=""
-        echo `date` "WE ARE MEMBER NODE AND NO GENESIS NODES RESPONDED"
-
-        exit 0
-    fi
-fi
-
-#	
-# 	GENESIS variables set for for operation          
-#           
-echo `date` " NEWMODEL: STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  MY GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
-echo `date` "$0 STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY" 
 
 
 CYCLES=0;
 while :
 do
-    echo `date` " 8 8 8 8 8 8 8 8 8         $0 TOP OF LOOP         8 8 8 8 8 8 8 8 8 8 8 8 8 8 " 
+    CURRENT_DOCKERVERSION=`ls Docker.*`
+    CURRENT_DARPVERSION=`ls Build.*`
+    export MY_SWVERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION
+    echo $CURRENT_DOCKERVERSION > /etc/wireguard/STATE  #store running Docker VERSION  
+
+    echo `date` "# bootdarp.bash TOP OF LOOP bootdarp.bash MY_IP=$MY_IP MY_PORT=$MY_PORT MY_GEO=$MY_GEO MY_SWVERSION=$MY_SWVERSION SLEEPTIME=$SLEEPTIME MAXCYCLES=$MAXCYCLES"
+
+    #
+    #   First, get the First Genesis Node and see if I am to start up as a GENESIS node
+    #
+    export GENESISNODELIST=`cat genesisnodelist.config | grep -v '#' | grep ,GENESIS | sed ':a;N;$!ba;s/\n/ /g' `   # Genesis nodes
+    echo `date` GENESISNODELIST=$GENESISNODELIST MY_GEO=$MY_GEO MY_IP=$MY_IP MY_PORT=$MY_PORT MY_SWVERSION=$MY_SWVERSION
+    export FIRST_GENESIS_ENTRY=`echo $GENESISNODELIST | awk '{ print $1 }'`
+    export FIRST_GENESIS_IP=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $1 }'`
+    export FIRST_GENESIS_PORT=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $2 }'`
+    export FIRST_GENESIS_NAME=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $3 }'`
+    export FIRST_GENESIS_ROLE=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $4 }'`
+    export FIRST_GENESIS_LATENCY=`echo $FIRST_GENESIS_ENTRY | awk -F, '{ print $5 }'`
+    echo `date` "$0 FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME FIRST_GENESIS_ROLE=$FIRST_GENESIS_ROLE FIRST_GENESIS_LATENCY=$FIRST_GENESIS_LATENCY"
+    #
+    #   Now that we have marshalled the variables and exported them as environmental variables
+    #   Determine role of this node we are starting - GENESIS, FIRST_GENESIS, or MEMBER
+    #
+    grep $MY_IP genesisnodelist.config | grep -v '#' | grep ,GENESIS >/dev/null
+    export IS_MEMBER="$?"
+    #echo IS_MEMBER=$IS_MEMBER
+    if [ "$IS_MEMBER" == "0" ]; then
+        export IS_GENESIS="1";
+        #
+        #   GENESIS NODE startup
+        #
+        export GENESIS=`echo $FIRST_GENESIS_IP":"$FIRST_GENESIS_PORT`    #All genesis nodes are in FIRST_GENESIS pulseGroup
+        echo `date` "WE ARE         GENESIS  NODE      ------------>mmGENESIS=$GENESIS MY_GEO=$MY_GEO  FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY FIRST_GENESIS_IP=$FIRST_GENESIS_IP"
+    else
+        IS_GENESIS="0";
+        #
+        #   MEMBER NODE startup - We use darpping(GENESISNODELIST) to find closest to connect to 
+        #
+        GNL=`./darpping.bash | grep -v '#' `   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
+        #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
+        echo "DARP Ping gave us: GNL=$GNL"
+        CLOSEST_GENESIS_ENTRY=`echo $GNL | grep -v '#' | grep GENESIS | awk '{ print $1 }'`
+        echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY GNL=$GNL CLOSEST_GENESIS_ENTRY=$CLOSEST_GENESIS_ENTRY"
+
+        if [ "$CLOSEST_GENESIS_ENTRY" != "" ]; then
+            export FIRST_GENESIS_IP=`echo $CLOSEST_GENESIS_ENTRY   | awk -F, '{ print $1 }'`
+            export FIRST_GENESIS_PORT=`echo $CLOSEST_GENESIS_ENTRY | awk -F, '{ print $2 }'`
+            export FIRST_GENESIS_NAME=`echo $CLOSEST_GENESIS_ENTRY | awk -F, '{ print $3 }'`
+            # GENESIS labels here
+            export FIRST_GENESIS_LATENCY=`echo $CLOSEST_GENESIS_ENTRY|awk -F, '{ print $5 }'`
+            export FIRST_GENESIS_MY_IP=`echo $CLOSEST_GENESIS_ENTRY | awk -F, '{ print $6 }'` #What the genesis node says our public IP is
+            echo "bootdarp.bash: $FIRST_GENESIS_MY_IP should equal $MY_IP if not blank"
+            export GENESIS="$FIRST_GENESIS_IP:$FIRST_GENESIS_PORT"
+            echo `date` "WE ARE A MEMBER NODE connecting to Closest Genesis Node: $GENESIS"
+
+        else
+            GENESIS=""
+            echo `date` "WE ARE MEMBER NODE AND NO GENESIS NODES RESPONDED"
+
+            exit 0
+        fi
+    fi
+
+    #	
+    # 	GENESIS environment variables set for for operation          
+    #           
+    echo `date` " NEWMODEL: STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP FIRST_GENESIS_IP=$FIRST_GENESIS_IP FIRST_GENESIS_PORT=$FIRST_GENESIS_PORT FIRST_GENESIS_NAME=$FIRST_GENESIS_NAME  MY GENESIS=$GENESIS who believes I am FIRST_GENESIS_MY_IP=$FIRST_GENESIS_MY_IP" 
+    echo `date` "$0 STARTING DARP IS_MEMBER=$IS_MEMBER MY_IP=$MY_IP GENESIS=$GENESIS FIRST_GENESIS_ENTRY=$FIRST_GENESIS_ENTRY" 
+
     echo `date` "******* bootdarp.bash We are going to join : GENESIS=$GENESIS MY_IP=$MY_IP MY_PORT=$MY_PORT  MY_GENESIS_GEO=$MY_GENESIS_GEO MY_GENESIS_IP=$MY_GENESIS_IP MY_GENESIS_PORT=$MY_GENESIS_PORT MY_GENESIS_SWVERSION=$MY_GENESIS_SWVERSION"
 
     #cd $DARPDIR
