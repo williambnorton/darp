@@ -79,8 +79,8 @@ function darpPing() {
         	console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
 
         	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
-            		if (err) throw err;
-                    //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
+            	if (err) throw err;
+                console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
             });
             var index=""+IP+","+port+","+Name+","+role
             surplus[index]=""+99999;
@@ -118,7 +118,7 @@ client.on('message', function (message, remote) {
         client.send(msg, genesisport, remote.address);
         return;
     } else {
-//        console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
+        console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
 //        console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTime.getTime()) +" ms with : "+ inmsg);
 //        console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         

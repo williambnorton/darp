@@ -96,9 +96,15 @@ else
     #
     GNL=`./darpping.bash`   #darping.bash spits out Genesisnodelist with latency appended to GENESIS nodes
     #export GENESIS=`echo $GNL   | awk '{ print $1 }'`
-    CLOSEST_GENESIS=`echo $GNL | awk '{ print $1 }'`
+    CLOSEST_GENESIS=`echo $GNL | grep -v '#' | grep GENESIS | awk '{ print $1 }'`
 
     echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+    echo `date` "WE ARE A MEMBER NODE SO WE CONNECT TO FIRST_GENESIS=$FIRST_GENESIS GNL=$GNL CLOSEST_GENESIS=$CLOSEST_GENESIS"
+
 
     if [ "$CLOSEST_GENESIS" != "" ]; then
         export FIRST_GENESIS_IP=`echo $CLOSEST_GENESIS   | awk -F, '{ print $1 }'`
@@ -186,7 +192,7 @@ do
             scripts/testport.bash | grep Docker. | grep -v '#' >GNL.txt   #GNL.txt holds the latency distance to each GNL at the time
 
             echo `date` "*************************************** Closest GENESIS Node "`cat GNL.txt | grep -v SELF | head -1`" (from GNL.txt) ********************************************"
-              cat GNL.txt
+            cat GNL.txt
             #FIRST_LINE=`cat GNL.txt | grep Docker. | grep '#' | head -1 | grep -v SELF`
             FIRST_LINE=`cat GNL.txt | grep -v SELF | head -1`
             echo "First to respond ... FIRST_LINE=$FIRST_LINE"
