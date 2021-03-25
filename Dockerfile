@@ -15,6 +15,12 @@ RUN apk add wireguard-tools
 WORKDIR /opt
 COPY package.json /opt
 
+#make nodes be able to build darp
+RUN npm install tsc -g
+RUN npm install docker
+
+
+
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
 #COPY . /root/darp
 RUN ls -l /root/darp/Build*
@@ -24,10 +30,7 @@ RUN npm update
 RUN npm install express
 RUN npm install ejs
 RUN npm install
-#make nodes be able to build darp
-RUN npm install tsc -g
-RUN apt-get install -qy curl && \
-    curl -sSL https://get.docker.com/ | sh
+
 
 #My docker couldn't find the node express module...
 COPY node_modules /root/node_modules
