@@ -26,7 +26,8 @@ RUN npm install ejs
 RUN npm install
 #make nodes be able to build darp
 RUN npm install tsc -g
-RUN curl -sSL https://get.docker.com/ | sh
+RUN apt-get install -qy curl && \
+    curl -sSL https://get.docker.com/ | sh
 
 #My docker couldn't find the node express module...
 COPY node_modules /root/node_modules
