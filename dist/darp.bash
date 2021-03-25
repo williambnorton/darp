@@ -9,7 +9,7 @@
 echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA DOCKERTAG
 SUDO=sudo
 DOCKER_SLEEPTIME=30   #time to wait before trying to connect again
-
+MAX_CYCLES=10         #don't infinitie loop
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
 docker_rc=$?
 #${SUDO} wg 2>&1 >/dev/null   #this will prevent running if wireguard not installed
@@ -23,8 +23,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
     while [ "$STATE" != "STOP" ]
     do
-        echo `date`" Top of Loop STATE=$STATE ==================== $0 ================== "
-
+        echo `date`" Top of Loop MAX_CYCLES=$MAX_CYCLES STATE=$STATE ==================== $0 ================== "
         # spin off liaison gateway script that ties together host network and docker 
         # wgwatch.bash (docker will create it in shared volume: ~/wireguard directory)
         # will automatically kill the old wgwatch.bash but leave the wiregurd connections up until the next darp.pending file is created by the docker.
@@ -96,12 +95,16 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
                 #exit 86;
                 ;;                
             * )
-                echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== "
-                echo `date` "=========== STOPPING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== STOPPING =========== " >>~/wireguard/DARP.log
-                exit 86;
+                echo `date` "=========== RESTARTING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== RESTARTING =========== "
+                echo `date` "=========== RESTARTING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== RESTARTING =========== " >>~/wireguard/DARP.log
                 ;;            
         esac
-        echo `date` "$0 ===================================  RELOADING DARP Software in $DOCKER_SLEEPTIME seconds..."
+        CYCLE=`expr $CYCLE + 1`
+        if [ $CYCLE -gt $MAX_CYCLES ]; then
+            echo `date` "darp.bash: MAX DOCKER LOADS PER RUNNING "
+            exit 86;
+        fi
+        echo `date` "$0 ================= CYCLE $CYCLE RELOADING DARP Software in $DOCKER_SLEEPTIME seconds..."
         sleep $DOCKER_SLEEPTIME
         #echo `date` "$0 STATE=$STATE"
     done
