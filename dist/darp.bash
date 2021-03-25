@@ -110,6 +110,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
     done
 else
     echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
+    sudo apt install -y docker.io;sudo systemctl start docker;sudo systemctl enable docker; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo "" | sudo add-apt-repository ppa:wireguard/wireguard; sudo apt-get update; sudo apt-get install -y wireguard; sudo groupadd docker;sudo usermod -aG docker ${USER};sudo docker system prune -af; echo `date` "in 0 seconds ssh in and launch docker"; sudo apt-get -y autoremove; sudo reboot
 fi
 echo `date` $0 DARP EXITTED.
 exit 86
