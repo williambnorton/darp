@@ -1,9 +1,9 @@
 #!/bin/bash
 #		builddarp.bash - faster than building a docker (5 min) this compiles and pushes
 #	so when first node started (called a 'Genesis' node) launches new SW
-#	all nodes in the pulsegroup hear about it and reloads to update
+#	all nodes in the pulsegroup hear about it in a pulse and reload to update
 #	This ensures all nodes in a pulse group are always running the latest SW so 
-#	fewer incompaitibilities to wirry about
+#	fewer incompaitibilities to worry about
 
 #if you are in a noia directory you can build and push the code to your own repo
 #otherwise, this script does not ap[ply to running nodes - maybe don't put it in docker?

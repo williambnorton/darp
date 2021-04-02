@@ -836,7 +836,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         this.processIncomingPulse = function (incomingPulse) {
             // look up the pulse claimed mint
-            console.log("pulseGroup.processIncomingPulse(): incomingPulse=" + lib_1.dump(incomingPulse));
+            //console.log(`pulseGroup.processIncomingPulse(): incomingPulse=${dump(incomingPulse)}`);
             var incomingPulseEntry = _this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
             var incomingPulseMintEntry = _this.mintTable[incomingPulse.mint];
             // pulseGroup owner controls population - FAST TRACK GROUP OWNER PULSE HANDLER
