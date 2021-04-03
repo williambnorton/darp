@@ -32,7 +32,7 @@ function skulker() {
     for (var p in exports.myPulseGroups) {
         if (exports.myPulseGroups[p].adminControl == "STOP") {
             delete exports.myPulseGroups[p];
-            console.log(lib_2.ts() + "skulker(): deleted expired pulseGroup object");
+            console.log(lib_2.ts() + ("skulker(): myPulseGroups[p].adminControl==\"STOP\" ...deleted expired pulseGroup object -> " + exports.myPulseGroups[p].groupName));
         }
         if (exports.myPulseGroups[p].groupOwner != exports.myPulseGroups[p].mintTable[0].geo) {
             connected = (new Date()).getTime(); //connected into not-me
@@ -40,7 +40,7 @@ function skulker() {
     }
     var lastUpdated = lib_1.now() - connected;
     if (lastUpdated > 60 * 1000) {
-        console.log("Not connected to mesh for 60 seconds exitting");
+        console.log("skulker(): Not connected to mesh for 60 seconds exitting");
         process.exit();
     }
     setTimeout(skulker, 1000);
