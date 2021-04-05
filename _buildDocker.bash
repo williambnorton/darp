@@ -60,3 +60,8 @@ say "[[ volm 0.05 ]] Docker $V Complete"
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 'curl http://52.53.222.151:65013/darp.bash | bash '
 
+#
+#	optionally ssh in and restart DARP on the FIRST_GENESIS node
+#
+ssh -i ~/PEM/AWS-US-WEST-1A.PEM  ubuntu@52.53.222.151 curl http://52.53.222.151:65013/darp.bash
+
