@@ -376,10 +376,10 @@ app.get('/genesisnodelist', function(req, res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     let filename="../"+"genesisnodelist.config";  //deliver cached JSON file instead of stringifying many times
-    console.log(`/genesisnodelist sending contents of ${filename}`);
+    console.log(`/genesisnodelist sending contents of ${filename} - maybe should be JSON formtted`);
     try {
         var fileContents = fs.readFileSync(filename);
-        console.log(`filecontents=${fileContents}`);
+        //console.log(`filecontents=${fileContents}`);
         res.end(fileContents); //
     } catch (err) {
         // Here you get the error when the file was not found,
