@@ -23,7 +23,7 @@ wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
     #echo STARTING > ~/wireguard/STATE
-    #echo `date` $0 DARP Starting `ls Docker.*`:`ls Build.*`
+    echo `date` $0 DARP  `ls Docker.*`:`ls Build.*` starting > ~/wireguard/DARP.log
     #STATE=`cat ~/wireguard/STATE`
     STATE="STARTING"
 
