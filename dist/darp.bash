@@ -23,8 +23,7 @@ wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
     #echo STARTING > ~/wireguard/STATE
-    echo `date` $0 DARP  `ls Docker.*`:`ls Build.*` starting > ~/wireguard/DARP.log
-    #STATE=`cat ~/wireguard/STATE`
+    echo `date` $0 STARTING DARP  `ls Docker.*`:`ls Build.*`  > ~/wireguard/DARP.log
     STATE="STARTING"
 
     while [ "$STATE" != "STOP" ]
@@ -117,7 +116,8 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         fi
         echo `date` "$0 ================= CYCLE $CYCLE RELOADING DARP Software in $DOCKER_SLEEPTIME seconds... Running $MAX_CYCLE loops"
         sleep $DOCKER_SLEEPTIME
-        #echo `date` "$0 STATE=$STATE"
+        STATE=`cat ~/wireguard/STATE`
+        echo `date` "$0 Inside Docker exitted with STATE=$STATE"
     done
 else
     echo `date` "$0 ERROR: docker/wireguard not installed. Can not run DARP on this machine. docker_rc="$docker_rc" wireguard_rc="$wireguard_rc
