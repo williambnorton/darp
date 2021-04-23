@@ -76,7 +76,8 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
             const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
             console.log(`incoming forwarding plane ifor port ${i} Message: ${incomingTimestamp}`);
         });
-        receiver.bind(65014+i)
+        console.log(`binding ${65014+i}`);
+        forwardingPlane[i].bind(65014+i);
     }
 
     receiver.on("error", (err:string) => {

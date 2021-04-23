@@ -70,7 +70,8 @@ for (var i = 0; i < 25; i++) {
         var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         console.log("incoming forwarding plane ifor port " + i + " Message: " + incomingTimestamp);
     });
-    receiver.bind(65014 + i);
+    console.log("binding " + (65014 + i));
+    forwardingPlane[i].bind(65014 + i);
 }
 receiver.on("error", function (err) {
     console.log("Receiver error:\n" + err);
