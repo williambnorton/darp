@@ -60,6 +60,7 @@ for (var i = 0; i < 25; i++) {
         forwardingPlane[i].close();
     });
     forwardingPlane[i].on("listening", function () {
+        console.log("listening " + i);
         var address = forwardingPlane[i].address();
         console.log("Receiver listening " + address.address + ":" + address.port);
     });
@@ -68,7 +69,7 @@ for (var i = 0; i < 25; i++) {
         //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-        console.log("incoming forwarding plane ifor port " + i + " Message: " + incomingTimestamp);
+        console.log("incoming forwarding plane ifor port " + i + " Message: " + incomingTimestamp + " " + incomingMessage);
     });
     console.log("binding " + (65014 + i));
     forwardingPlane[i].bind(65014 + i);
