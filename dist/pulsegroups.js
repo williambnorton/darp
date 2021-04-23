@@ -61,8 +61,8 @@ for (var i = 0; i < 25; i++) {
     });
     forwardingPlane[i].on("listening", function () {
         console.log("listening " + i);
-        var address = forwardingPlane[i].address();
-        console.log("Receiver listening " + address.address + ":" + address.port);
+        //const address = forwardingPlane[i].address();
+        //console.log(`Receiver listening ${address.address}:${address.port}`);
     });
     forwardingPlane[i].on("message", function (pulseBuffer, rinfo) {
         var incomingTimestamp = lib_1.now().toString();

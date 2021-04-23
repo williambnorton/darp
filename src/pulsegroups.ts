@@ -67,8 +67,8 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
         });
         forwardingPlane[i].on("listening", () => {
             console.log(`listening ${i}`);
-            const address = forwardingPlane[i].address();
-            console.log(`Receiver listening ${address.address}:${address.port}`);
+            //const address = forwardingPlane[i].address();
+            //console.log(`Receiver listening ${address.address}:${address.port}`);
         });
         forwardingPlane[i].on("message", (pulseBuffer:string, rinfo) => {
             const incomingTimestamp = now().toString();
