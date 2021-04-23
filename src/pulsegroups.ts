@@ -57,7 +57,27 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
 
     const receiver = dgram.createSocket("udp4");
     const udp = dgram.createSocket("udp4");    
+    var forwardingPlane=[dgram];  //
 
+   for (var i=0; i<25; i++) {
+        forwardingPlane[i] = dgram.createSocket("udp4");
+        forwardingPlane[i].on("error", (err:string) => {
+            console.log(`Receiver error:\n${err}`);
+            forwardingPlane[i].close();
+        });
+        forwardingPlane[i].on("listening", () => {
+            const address = forwardingPlane[i].address();
+            console.log(`Receiver listening ${address.address}:${address.port}`);
+        });
+        forwardingPlane[i].on("message", (pulseBuffer:string, rinfo) => {
+            const incomingTimestamp = now().toString();
+            //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+            // prepend our timeStamp
+            const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+            console.log(`incoming forwarding plane ifor port ${i} Message: ${incomingTimestamp}`);
+        });
+        receiver.bind(65014+i)
+    }
 
     receiver.on("error", (err:string) => {
         console.log(`Receiver error:\n${err}`);
@@ -138,7 +158,6 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
     });
 
     receiver.bind(65013);
-    receiver.bind(65014);
-    receiver.bind(65015);
+
 
 

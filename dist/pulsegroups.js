@@ -52,6 +52,26 @@ setTimeout(skulker, 60 * 1000); //give the docker 60 seconds to connect
 var dgram = require("dgram");
 var receiver = dgram.createSocket("udp4");
 var udp = dgram.createSocket("udp4");
+var forwardingPlane = [dgram]; //
+for (var i = 0; i < 25; i++) {
+    forwardingPlane[i] = dgram.createSocket("udp4");
+    forwardingPlane[i].on("error", function (err) {
+        console.log("Receiver error:\n" + err);
+        forwardingPlane[i].close();
+    });
+    forwardingPlane[i].on("listening", function () {
+        var address = forwardingPlane[i].address();
+        console.log("Receiver listening " + address.address + ":" + address.port);
+    });
+    forwardingPlane[i].on("message", function (pulseBuffer, rinfo) {
+        var incomingTimestamp = lib_1.now().toString();
+        //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        // prepend our timeStamp
+        var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+        console.log("incoming forwarding plane ifor port " + i + " Message: " + incomingTimestamp);
+    });
+    receiver.bind(65014 + i);
+}
 receiver.on("error", function (err) {
     console.log("Receiver error:\n" + err);
     receiver.close();
@@ -119,5 +139,3 @@ receiver.on("message", function (pulseBuffer, rinfo) {
     }
 });
 receiver.bind(65013);
-receiver.bind(65014);
-receiver.bind(65015);
