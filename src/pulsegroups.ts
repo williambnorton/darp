@@ -138,5 +138,7 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
     });
 
     receiver.bind(65013);
+    receiver.bind(65014);
+    receiver.bind(65015);
 
 

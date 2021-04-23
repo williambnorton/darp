@@ -119,3 +119,5 @@ receiver.on("message", function (pulseBuffer, rinfo) {
     }
 });
 receiver.bind(65013);
+receiver.bind(65014);
+receiver.bind(65015);
