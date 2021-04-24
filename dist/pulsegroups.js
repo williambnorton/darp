@@ -53,7 +53,7 @@ var dgram = require("dgram");
 var receiver = dgram.createSocket("udp4");
 var udp = dgram.createSocket("udp4");
 var forwardingPlane = [dgram]; //
-for (var i = 0; i < 25; i++) {
+var _loop_1 = function () {
     forwardingPlane[i] = dgram.createSocket("udp4");
     forwardingPlane[i].on("error", function (err) {
         console.log("Receiver error:\n" + err);
@@ -64,15 +64,19 @@ for (var i = 0; i < 25; i++) {
         //const address = forwardingPlane[i].address();
         //console.log(`Receiver listening ${address.address}:${address.port}`);
     });
+    var index = i;
     forwardingPlane[i].on("message", function (pulseBuffer, rinfo) {
         var incomingTimestamp = lib_1.now().toString();
         //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-        console.log("incoming forwarding plane ifor port " + i + " Message: " + incomingTimestamp + " " + incomingMessage);
+        console.log(lib_2.ts() + ("incoming FORWARDing plane for port " + index + " Message: " + incomingTimestamp + " " + incomingMessage));
     });
     console.log("binding " + (65014 + i));
     forwardingPlane[i].bind(65014 + i);
+};
+for (var i = 0; i < 25; i++) {
+    _loop_1();
 }
 receiver.on("error", function (err) {
     console.log("Receiver error:\n" + err);
