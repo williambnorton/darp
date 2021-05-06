@@ -9,7 +9,7 @@ fi
 
 rm -f /tmp/x
 #
-#	start all Genesis nodes that match
+#	start all Genesis nodes that match first
 #
 for node in `cat genesisnodelist.config | grep "$1" | grep -v '#'|grep ,GENESIS`   #don't allow name 'GENESIS' to be selected
 do
