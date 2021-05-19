@@ -49,6 +49,7 @@ fn main() {
     let mut iterations = DEFAULT_ITER;
     let mut use_ipv4 = false;
     let mut use_ipv6 = false;
+    //let filename = String.from("nodelist");
 
     let mut i = 1;
     let mut pos_args = 0;
@@ -73,6 +74,19 @@ fn main() {
                 delay_ms = args[i].parse::<u64>()
                     .expect(format!("{} is not a valid delay value in ms! rustping unhappy :( ", args[i]).as_str());
             },
+//            "--file" => {
+//                i += 1;
+//                filename = args[i].parse::<String>()
+//                    .expect(format!("{} is not a valid filename rustping unhappy :( ", args[i]).as_str());
+//                println!("{}",filename);
+
+//                let mut file = File::open("info.txt").expect("Can't open file!");
+//                let mut contents = String::new();
+//                file.read_to_string(&mut contents)
+//                    .expect("oops can not read file...");
+//            
+//                println!("File contents");
+//            },
             "--iter" => {
                 i += 1;
                 iterations = args[i].parse::<usize>()
