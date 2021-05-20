@@ -6,6 +6,7 @@
 #
 #       After starting DARP you can see network instrumentation on your http://127.0.0.1:65013/
 #       This model enables wireguard tunnels to fail open (still encrypting tunnel traffic) as routing system changes
+#
 echo `date` $0 Starting Distributed Autonomous Routing Protocol ALPHA DOCKERTAG
 SUDO=sudo
 
@@ -13,7 +14,7 @@ DOCKER_SLEEPTIME=60   #time to wait before trying to connect again
                     #Guidance here - when developing near code that could cause index.ts to fail, 
                     #make this 60-120 seconds so it only beats on docker hub / github that frequently in the worst case
 
-MAX_CYCLES=3;      #DARP loop - Guidance low numbers in development, high numbers in production. 
+MAX_CYCLES=10;      #DARP loop - Guidance low numbers in development, high numbers in production. 
 CYCLE=30;            #Guidance: this means the caller (not docker) decides if to continue, manually (attended mode) or by its own forever loop (IoT mode)
                     #
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
@@ -23,7 +24,7 @@ wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
     #echo STARTING > ~/wireguard/STATE
-    echo `date` $0 STARTING DARP  `ls Docker.*`:`ls Build.*`  > ~/wireguard/DARP.log
+    echo `date` $0 STARTING DARP  `ls Docker.*`:`ls Build.*`  >> ~/wireguard/DARP.log
     STATE="STARTING"
 
     while [ "$STATE" != "STOP" ]
