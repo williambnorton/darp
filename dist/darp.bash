@@ -79,7 +79,11 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 #specific        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp      | tee ~/wireguard/DARPdocker.log
         darp_docker_rc=$?
-        echo `date` DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
+        echo `date` * DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
+        echo `date` ** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
+        echo `date` *** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
+        echo `date` **** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
+        echo `date` ***** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
         #
         #   DARP DOCKER EXITTED
         #
