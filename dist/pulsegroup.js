@@ -463,8 +463,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     // ignore mintTable[0]
                     var elapsedMSincePulse = lib_1.now() - _this.mintTable[m].lastPulseTimestamp;
                     if (elapsedMSincePulse > 2.5 * _this.cycleTime * 1000) { //after __ cycles no mintTable updates - mark as pkt loss
-                        logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
-                        console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + " clearing OWL in mint entry which missed at least one cycle " + _this.mintTable[m].geo);
+                        logger_1.logger.debug("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + "  " + _this.mintTable[m].geo + " missed OWL");
+                        console.log("m=" + m + " elapsedMSincePulse=" + elapsedMSincePulse + "  " + _this.mintTable[m].geo + " missed OWL");
                         _this.mintTable[m].lastOWL = NO_MEASURE; // we don't have a valid OWL
                         if (_this.mintTable[m].state != "QUARANTINE") {
                             lib_1.Log("STATE CHANGE: " + _this.mintTable[m].geo + " " + _this.mintTable[m].state + " -> Not Reachable");

@@ -620,8 +620,8 @@ export class AugmentedPulseGroup {
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
                 if (elapsedMSincePulse > 2.5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - mark as pkt loss
-                    logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
-                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
+                    logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse}  ${this.mintTable[m].geo} missed OWL`);
+                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse}  ${this.mintTable[m].geo} missed OWL`);
 
                     this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE") {
