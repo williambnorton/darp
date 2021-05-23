@@ -322,7 +322,7 @@ app.get('/graph/:src/:dst', function(req, res) {
 app.get(['/mintTable','/mintTable/:pulsegroup/:mint','/mintTable/:pulsegroup'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-    console.log(`index.ts: ${req.connection.remoteAddress} fetching /mintTable pulseGroup requested: ${req.params.pulsegroup} mint requested: ${req.params.mint||"all"}`);
+    console.log(`index.ts: ${req.connection.remoteAddress} fetching pulseGroup ${req.params.pulsegroup} ${req.params.mint||"all"}`);
     // pulseGroup 
     var pulseGroupName=me.geo+".1";  //assume 
     if (typeof req.params.pulsegroup != "undefined") {
