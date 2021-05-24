@@ -40,8 +40,9 @@ do
 	fi
 	#sleep 5
 
+	echo `date` Waiting 60 seconds for Genesis nodes to start up...
+	sleep 60
 done
-
 #
 #	start all non-Genesis nodes that match
 #
