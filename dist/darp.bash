@@ -15,7 +15,7 @@ DOCKER_SLEEPTIME=60   #time to wait before trying to connect again
                     #make this 60-120 seconds so it only beats on docker hub / github that frequently in the worst case
 
 MAX_CYCLES=10;      #DARP loop - Guidance low numbers in development, high numbers in production. 
-CYCLE=30;            #Guidance: this means the caller (not docker) decides if to continue, manually (attended mode) or by its own forever loop (IoT mode)
+CYCLE=1;            #Guidance: this means the caller (not docker) decides if to continue, manually (attended mode) or by its own forever loop (IoT mode)
                     #
 docker ps 2>&1 >/dev/null    #make sure docker and wireguard are installed
 docker_rc=$?
@@ -116,7 +116,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         esac
         CYCLE=`expr $CYCLE + 1`
         if [ $CYCLE -gt $MAX_CYCLES ]; then
-            echo `date` "darp.bash: MAX DOCKER LOADS PER RUNNING "
+            echo `date` "darp.bash: CYCLE=$CYCLE MAX DOCKER $MAX_CYCLES MAX_CYCLES .... exitting "
             exit 86;
         fi
         echo `date` "$0 ================= CYCLE $CYCLE RELOADING DARP Software in $DOCKER_SLEEPTIME seconds... Running $MAX_CYCLE loops"
