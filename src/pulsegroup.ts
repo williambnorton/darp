@@ -127,7 +127,7 @@ export class Config {
 
         this.GENESISNODELIST = process.env.GENESISNODELIST || "SELF";
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 50;
+        this.MAXNODES = 75;
         console.log(`config constructor made: ${JSON.stringify(this,null,2)}`);
     }
 }
