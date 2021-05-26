@@ -59,7 +59,7 @@ var NO_MEASURE = 99999; //value to indis=cate no measurement exists
 var DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger_1.logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
 var GENESIS_NODE_TIMEOUT = 30; // go away when our GENESIS node is unreachable, our optimization group no longer helps its creator.
-var STAT_HOURS_TO_STORE = 2; //hpow many hours of data to collect and store
+var STAT_HOURS_TO_STORE = 1; //hpow many hours of data to collect and store
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 // Define data structures used in the protocol
 /** App configuration settings obtained from ENV variables */

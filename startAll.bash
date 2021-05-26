@@ -36,13 +36,14 @@ do
 		echo FIRST GENESIS NODE 
 		echo FIRST GENESIS NODE >/tmp/x
 		 echo "ssh -i ~/PEM/$name.pem ubuntu@$ip" '(sleep 30; docker run -p 80:80 -d williambnorton/srwan ) & (sleep 30; docker run --network="host" --restart=on-failure:10 --cap-add=NET_ADMIN --cap-add=SYS_MODULE -v /var/run/docker.sock:/var/run/docker.sock:ro --device /dev/net/tun:/dev/net/tun --name=syntropy-agent -e SYNTROPY_NETWORK_API=docker -e SYNTROPY_API_KEY=YUeDgQNAg4qbOSL0kA2gIUyiehoB1kLC -d syntropynet/agent:stable ) & (sleep 30;~/wireguard/wgwatch.bash) &  docker rm -f $(docker ps -a -q);docker rmi -f $(docker images -q); docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname`   -e "WALLET=auto"   -it williambnorton/darp &'
-
+		echo `date` allowing first Genesis to start for 90 seconds before other Genesis nodes are launched
+		sleep 90
 	fi
 	#sleep 5
 
+done
 	echo `date` Waiting 60 seconds for Genesis nodes to start up...
 	sleep 60
-done
 #
 #	start all non-Genesis nodes that match
 #
