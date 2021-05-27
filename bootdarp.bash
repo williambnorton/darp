@@ -9,7 +9,7 @@
 #           WALLET - a wallet with micro credits and debits for use in auto mode
 #       We create the rest:
 #           DARPDIR - the root directory of all darp ( /root/darp ) 
-#           WGDIR - the root for DARP wireguard info and log info ( ~/wireguard/ )
+#           WGDIR - the root for DARP wireguard info and log info ( /etc/wireguard/ which is ~/wireguard on host )
 #
 # Environmental variables we assemble
 #           GENESISNODELIST - IP,PORT,NAME ...  IP,PORT,NAME 
@@ -25,7 +25,7 @@
 #
 # 	bootdarp.bash variables 
 #
-echo `date` "Starting bootdarp.bash in docker " > ~/wireguard/DARP.log   #TRUNCATING LOG FILE
+echo `date` "Starting bootdarp.bash in docker " > /etc/wireguard/DARP.log   #TRUNCATING LOG FILE
 
 SLEEPTIME=30 #time in seconds between software runs in forever loop
 
@@ -201,7 +201,7 @@ do
     cd $DARPDIR/dist
     echo `date` "============================================================ Starting DARP $VERSION : node index ..."
 
-	node index #> $DARPDIR/darp.log
+	node index #> $DARPDIR/darp.log  #running code
     #
     #       darp exitted 
     #
@@ -210,7 +210,7 @@ do
     echo `date` `hostname`"FINISHED DARP Protocol index.js done rc=$rc  wireguard DOCKER=`cat /etc/wireguard/STATE`" #| tee -a NOIA.log
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  -   either new DARP code or new docker  - - - - -  rc=$rc" #| tee -a NOIA.log 
-    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" > ~/wireguard/DARP.log
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" > /etc/wireguard/DARP.log
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -219,18 +219,18 @@ do
     if [ $rc -eq 86 ]; then echo `date`" STOPPING - STOP MESSAGE RECEIVED" ; echo "STOP">$WGDIR/STATE;  exit 86; fi     #STOP COMMAND
 
     if [ $rc -eq 0 ]; then
-        echo "rc=0 - New Docker Available: "`cat /etc/wireguard/STATE` > ~/wireguard/DARP.log
+        echo "rc=0 - New Docker Available: "`cat /etc/wireguard/STATE` > /etc/wireguard/DARP.log
         echo "rc=0 - New Docker Available: "`cat /etc/wireguard/STATE` 
         exit 0
     else
         if [ $rc -ne 36 ]; then
             echo "rc=$rc * * * * * * * * * * * *         uNKNOWN rc        E X I T T I N G               * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-            echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    > ~/wireguard/DARP.log 
+            echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    > /etc/wireguard/DARP.log 
             echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #| tee -a NOIA.log 
             exit 0
         else    
-            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and run another loop > ~/wireguard/DARP.log 
+            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and run another loop > /etc/wireguard/DARP.log 
             echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and run another loop
 
             #./updateSW.bash
@@ -257,7 +257,7 @@ do
 
     CYCLES=`expr $CYCLES + 1`
     if [ $CYCLES -ge $MAXCYCLES ]; then    
-        echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  > ~/wireguard/DARP.log  
+        echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  > /etc/wireguard/DARP.log  
         echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         
         exit 86;
@@ -265,7 +265,7 @@ do
 
     echo GENESIS Node is $GENESIS $FIRST_RESPONDER_LATENCY ms away
     if [ "$FIRST_RESPONDER_LATENCY" == "0" ]; then   ###connecting to self did not work - port forward issue
-        echo `date` PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT > ~/wireguard/DARP.log 
+        echo `date` PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT > /etc/wireguard/DARP.log 
         echo `dte` PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT 
         #exit 86
     fi
