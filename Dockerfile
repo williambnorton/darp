@@ -30,9 +30,6 @@ RUN npm update
 RUN npm install express
 RUN npm install ejs
 RUN npm install
-# Get Rust
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-RUN source $HOME/.cargo/env
 
 #My docker couldn't find the node express module...
 COPY node_modules /root/node_modules
