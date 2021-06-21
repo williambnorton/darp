@@ -30,7 +30,7 @@ wireguard_rc=$?
 if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 
     #echo STARTING > ~/wireguard/STATE
-    echo `date` $0 STARTING DARP  `ls Docker.*`:`ls Build.*`  >> ~/wireguard/DARP.log
+    echo `date` $0 STARTING DARP  `ls Docker.*`:`ls Build.*`  #>> ~/wireguard/DARP.log
     STATE="STARTING"
 
     while [ "$STATE" != "STOP" ]
@@ -85,7 +85,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
 #specific        docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp:DOCKERTAG      
         docker run --rm -p 65013:65013 -p 65013:65013/udp  -e PUID=1000 -e PGID=1000 -v ~/wireguard:/etc/wireguard  -e "HOSTNAME="`hostname` -e "WALLET=auto"   williambnorton/darp     # | tee ~/wireguard/DARPdocker.log
         darp_docker_rc=$?
-        echo `date` * DARP Docker Exitted with darp_docker_rc=$darp_docker_rc >>~/wireguard/DARP.log
+        echo `date` * DARP Docker Exitted with darp_docker_rc=$darp_docker_rc #>>~/wireguard/DARP.log
         echo `date` ** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
         echo `date` *** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
         echo `date` **** DARP Docker Exitted with darp_docker_rc=$darp_docker_rc
@@ -101,7 +101,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
         case "$darp_docker_rc" in
             "36" )
                 echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== "
-                echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== ">>~/wireguard/DARP.log
+                echo `date` "= = = = = =       DOCKER SOFTWARE RELOAD REQUESTED       = = = = = =   docker_rc=$darp_docker_rc ==== RELOADING SOFTWARE =========== " #>>~/wireguard/DARP.log
                 ;;
             "86" )
                 echo `date` "* * * * * *       DOCKER STOP REQUESTED         * * * * * * *" 
@@ -117,7 +117,7 @@ if [ $wireguard_rc -eq 0 -a $docker_rc -eq 0 ]; then
                 ;;                
             * )
                 echo `date` "=========== RESTARTING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== RESTARTING =========== "
-                echo `date` "=========== RESTARTING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== RESTARTING =========== " >>~/wireguard/DARP.log
+                echo `date` "=========== RESTARTING : DOCKER EXITTED docker_rc=$darp_docker_rc ==== RESTARTING =========== " #>>~/wireguard/DARP.log
                 ;;            
         esac
         CYCLE=`expr $CYCLE + 1`

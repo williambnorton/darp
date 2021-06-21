@@ -210,7 +210,7 @@ do
     echo `date` `hostname`"FINISHED DARP Protocol index.js done rc=$rc  wireguard DOCKER=`cat /etc/wireguard/STATE`" #| tee -a NOIA.log
 
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  -   either new DARP code or new docker  - - - - -  rc=$rc" #| tee -a NOIA.log 
-    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" > /etc/wireguard/DARP.log
+    echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc" #> /etc/wireguard/DARP.log
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
     echo `date` "- - - - - - - - - - - - FINISHED DARP $VERSION  - - - - - - - - - - -  rc=$rc"
@@ -226,11 +226,11 @@ do
         if [ $rc -ne 36 ]; then
             echo "rc=$rc * * * * * * * * * * * *         uNKNOWN rc        E X I T T I N G               * * * * * * * * * * * * * * * * * * *"
             echo `date` "$0 rc=$rc ... handlePulse crashed, or updateSW.bash detected NEW SOFTWARE and killed handlepulse processes"
-            echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    > /etc/wireguard/DARP.log 
+            echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #> /etc/wireguard/DARP.log 
             echo `date` "$0 result: unexpected rc from $VERSION rc=$rc"    #| tee -a NOIA.log 
             exit 0
         else    
-            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and run another loop > /etc/wireguard/DARP.log 
+            echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and run another loop #> /etc/wireguard/DARP.log 
             echo `date` SIMPLE SOFTWARE RELOAD so DOCKER REMAINS we shall fall through and run another loop
 
             #./updateSW.bash
@@ -257,7 +257,7 @@ do
 
     CYCLES=`expr $CYCLES + 1`
     if [ $CYCLES -ge $MAXCYCLES ]; then    
-        echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  > /etc/wireguard/DARP.log  
+        echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  #> /etc/wireguard/DARP.log  
         echo `date` "RAN $MAXCYCLES CYCLES - $0 EXiTTING"  #| tee -a NOIA.log 
         
         exit 86;
@@ -265,7 +265,7 @@ do
 
     echo GENESIS Node is $GENESIS $FIRST_RESPONDER_LATENCY ms away
     if [ "$FIRST_RESPONDER_LATENCY" == "0" ]; then   ###connecting to self did not work - port forward issue
-        echo `date` PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT > /etc/wireguard/DARP.log 
+        echo `date` PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT #> /etc/wireguard/DARP.log 
         echo `dte` PORT FORWARDING NOT SET UP PROPERLY OR I AM THE GENESIS NODE $GENESIS $GENESISIP:$GENESISPORT 
         #exit 86
     fi
