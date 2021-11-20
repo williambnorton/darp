@@ -1,16 +1,20 @@
-"use strict";
 /** @module sender emits pulse message to a group of nodes */
-exports.__esModule = true;
-var dgram = require("dgram");
-var logger_1 = require("./logger");
-logger_1.logger.setLevel(logger_1.LogLevel.ERROR);
-var PULSE_INTERVAL = parseInt(process.argv[2]);
-var sender = dgram.createSocket("udp4");
-var pulseGroupMap = new Map();
-process.on('message', function (senderMessage) {
+/*
+import dgram = require("dgram");
+import { now } from "./lib";
+import { logger, LogLevel } from "./logger";
+import { NodeAddress, PulseMessageEncoding, SenderMessage, SenderPayloadType } from "./types";
+
+logger.setLevel(LogLevel.ERROR);
+
+const PULSE_INTERVAL = parseInt(process.argv[2]);
+const sender = dgram.createSocket("udp4");
+const pulseGroupMap = new Map();
+
+process.on('message', (senderMessage: SenderMessage) => {
     pulseGroupMap.set(senderMessage.type, senderMessage.payload);
 });
-/*
+
 // Send same message to all nodes in nodelist
 setInterval(() => {
     const nodeList: NodeAddress[] = pulseGroupMap.get(SenderPayloadType.NodeList)

@@ -17,7 +17,7 @@ echo `date` "$0 UpdateSW $NEWDARP"
 #   Case 1 - currently running latest DARP SW VERSION
 #
 echo `date` " *****************  $0 NEWDARP=$NEWDARP"
-DARPDIR=~/darp
+#DARPDIR=~/darp
 cd $DARPDIR
 ls -l
 CURRENTDOCKER=`ls Docker.*`

@@ -5,23 +5,36 @@
 //  testport - test my and port connectivity to all gneesis nodes
 //  should be:
 //  in: 
-//          GENESIS - overrides closest Genesis Node discovery logic
 //          GENESISNODELIST as environmental variable
 //
 //  out: 
 //          stdout  latency for responding genesis nodes excluding self
 //          eventually this module could test the port to self to verify port forwarding works
 //
-console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
-if ( process.env.MY_IP == "" || process.env.MY_PORT == "" || process.env.GENESISNODELIST == "" || process.env.MY_SWVERSION == ""|| process.env.MY_GEO == "") {
-    console.log(`missing environmental variable. try  echo $MY_IP $MY_PORT $MY_SWVERSION $GENESISNODELIST $MY_GEO`);
-    process.exit(86);
-}
+//console.log(`# testport MY_IP=${process.env.MY_IP} MY_PORT=${process.env.MY_PORT} MY_SWVERSION=${process.env.MY_SWVERSION} MY_GEO=${process.env.MY_GEO}`);
+
 var numberPings=1;
-//const GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
-var GENESISNODELIST=process.env.GENESISNODELIST
+var numberResponses=0;
+
+//
+//  choose defaults for the DARP Ping msg
+//
+if (typeof process.env.MY_IP == "undefined") { process.env.MY_IP="1.1.1.1"; }  //would be better to have real #'s here
+if (typeof process.env.MY_PORT == "undefined") { process.env.MY_PORT="65013"; }
+if (typeof process.env.MY_SWVERSION == "undefined") { process.env.MY_SWVERSION="dockerversiongoeshere:darpVersionGoesHere"; } //"Docker.unknown:Build.unknown"; }  //would be better to get from li
+if (typeof process.env.MY_GEO == "undefined") { process.env.MY_GEO="hostNameHere"; }
+
+//var GENESISNODELIST=process.env.MY_IP+","+process.env.MY_PORT+","+process.env.MY_GEO+" "+process.env.GENESISNODELIST
+//var GNL="";
+//if (typeof process.env.GENESISNODELIST == "undefined") {
+//    for (var i = 2; i < process.argv.length; i++){
+//        GNL=GNL+process.argv[i];
+//    }//
+//}
+
+var GENESISNODELIST = process.env.GENESISNODELIST || ""; //|| GNL;
 if (GENESISNODELIST=="") {
-    console.log(`testport.ts something really wrong - no GENESISNODE LIST - EXITTING`);
+    console.log(`testport.ts something really wrong - no GENESISNODELIST - EXITTING`);
     process.exit(86);  //something really wrong - no GENESINODE LIST - EXIT
 }
 GENESISNODELIST=GENESISNODELIST.replace(/\n/g," ")
@@ -32,10 +45,19 @@ var client = dgram.createSocket('udp4');
 
 client.on('listening', function () {
     var address = client.address();
-    console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
+    //console.log('# testport.ts : UDP Server listening on ' + address.address + ":" + address.port);
 });
+
+
 client.bind(process.env.MY_PORT);  //server listening 0.0.0.0:65013
 
+//
+//  GENESISNODELIST = IP,PORT,GEO,ROLE,LATENCY
+//  ROLE=GENESIS or MEMBER
+//
+//var surplus=new Array();
+
+var surplus = new Array();
 
 function darpPing() {
     startTime=new Date();  //reset start timestamp
@@ -44,33 +66,25 @@ function darpPing() {
     //console.log(`**** ary=${JSON.stringify(ary,null,2)}`); 
     var ary=GENESISNODELIST.split(" ")
     for (var genesisNode in ary) {
- 
-        //pulseTimestamp: pulseTimestamp,
-        //outgoingTimestamp: senderTimestamp,
-        //msgType: ary[2],
-        //version: ary[3],
-        //geo: ary[4],
-        //group: ary[5],
-        ///seq: parseInt(ary[6]),
-        //bootTimestamp: parseInt(ary[7]), //if genesis node reboots --> all node reload SW too
-        //mint: parseInt(ary[8]),
-       // owls: pulseOwls,
-        //owl: OWL,
-        //lastMsg: incomingMessage,
-
- 
         //console.log(`genesisNode=${ary[genesisNode]}`);
-        let IP=ary[genesisNode].split(",")[0]
-        let Port=ary[genesisNode].split(",")[1]
-        let Name=ary[genesisNode].split(",")[2]
+        let IP=ary[genesisNode].split(",")[0];
+        let port=ary[genesisNode].split(",")[1];
+        let Port=parseInt(port);
+        let Name=ary[genesisNode].split(",")[2];
+        let role=ary[genesisNode].split(",")[3];
         var message=`${startTime.getTime()},11,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO},${IP},${Port},${Name},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
         if ( IP == process.env.MY_IP ) message=message+",SELF"
-        //console.log(`# Here we send DARP Ping to ${Name} ${IP}:${Port} message=${message}`);
 
-        client.send(message, 0, message.length, Port, IP, function(err, bytes) {
-            if (err) throw err;
-            //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
-        });
+	    if ( typeof Name != "undefined" ) {
+        	//console.log(`# Here we send DARP Ping to ${role} ${Name} ${IP}:${Port} message=${message}`);
+
+        	client.send(message, 0, message.length, Port, IP, function(err, bytes) {
+            	if (err) throw err;
+                //console.log('# sent ' + Name + " " + IP +':'+ Port+" "+message);
+            });
+            var index=""+IP+","+port+","+Name+","+role
+            surplus[index]=""+99999;
+	    }
     }
     setTimeout(darpPing,1000);
 }
@@ -81,7 +95,7 @@ function darpPing() {
 //
 //var responses=[];
 client.on('message', function (message, remote) {
-    console.log(`# GOT A DARP PING REPLY : ${message}`);
+    //console.log(`# GOT A DARP PING REPLY : ${message}`);
 
     var timeNow=new Date(); 
     var inmsg=message.toString();
@@ -100,19 +114,40 @@ client.on('message', function (message, remote) {
     
     if ( remote.address==process.env.MY_IP && msgType==11 ) {  //respond to my own ping
         var msg=`${timeNow.getTime()},12,${process.env.MY_SWVERSION},${process.env.MY_IP},${process.env.MY_PORT},${process.env.MY_GEO}`; //specify GENESIS Node directly
-        console.log(`# Sending PONG (12) response to my own ping to publicIP: ${remote.address}:${process.env.MY_PORT} message=${msg}`);
+        //console.log(`# Sending PONG (12) response to my own ping to publicIP: ${remote.address}:${process.env.MY_PORT} message=${msg}`);
         client.send(msg, genesisport, remote.address);
         return;
     } else {
-        console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
-        console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTime.getTime()) +" ms with : "+ inmsg);
-        console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
+        //console.log(`# pong message received remote.address=${remote.address} msgType=${msgType} genesisgeo=${genesisgeo} genesisip=${genesisip} genesisport=${genesisport} swversion=${swversion}`);
+//        console.log('# '+remote.address + ' responded ' + (timeNow.getTime()-startTime.getTime()) +" ms with : "+ inmsg);
+//        console.log(`# ${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo}`);
         
-        if (remote.address==process.env.MY_IP) {
-            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message},,,,SELF`);
-        } else {
-            console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message}`);
-        }
+        //if (remote.address==process.env.MY_IP) {
+        //    console.log(`${(timeNow.getTime()-startTime.getTime())},${genesisip},${genesisport},${genesisgeo},${message},,,,SELF`);
+        //} else {
+            //console.log(`message=${message}`); 
+        var pongMsg=message.toString().split(",");
+        var DarpPong={
+            ts : pongMsg[0],
+            msgType : pongMsg[1],   //msgType 12 is PONG
+            version : pongMsg[2],
+            IP : pongMsg[3],
+            port : pongMsg[4],
+            geo : pongMsg[5],
+            bootTimestamp : pongMsg[6],
+            publicKey : pongMsg[7],
+            From : pongMsg[8],
+            MYIP : pongMsg[9],
+            MYPORT : pongMsg[10]
+        };
+        //console.log(`DARPPong=${JSON.stringify(DarpPong,null,2)}`);
+        //console.log(`DARPPongMsg=${JSON.stringify(DarpPong,null,2)}`);
+        console.log(`${genesisip},${genesisport},${genesisgeo},GENESIS,${(timeNow.getTime()-startTime.getTime())},${DarpPong.MYIP}`);
+
+        delete surplus[DarpPong.IP+","+DarpPong.port+","+DarpPong.geo+",GENESIS"];
+
+        numberResponses++;
+        //}
     }
     //    var response={ latency:(timeNow.getTime()-startTimestamp), srcIP:remote.address, url:inmsg };
     
@@ -124,29 +159,14 @@ client.on('message', function (message, remote) {
 //      finish on timeout
 //
 function finish() {
-
-    console.log(`#  testport complete finish`);
-  //  for (var g in responses) {
-        //
-        //
-        //
-    //    console.log(`${responses[g].latency},${responses[g].srcIP},${responses[g].url},`);
-        //                34                    52.53.222.151       
-        //
-        //
-   //}
-    //if (responses.length==0) {
-      //  console.log(`# testport.bash  No Responses`);
-   // }
-    //var selectURL=responses.pop();
-    //console.log(`${selectURL.url}`);  //pick one in the middle
-    //console.log(`${JSON.stringify(selectURL,null,2)}`);  //pick one in the middle
-    //console.log(`auto=${JSON.stringify(responses[ Math.floor(responses.length/2) ].url,null,2)}`);  //pick one in the middle
-    process.exit(0);
+    for (var s in surplus) {
+        //console.log(`# FINISHED WITH ${s}`);
+        console.log(`${s}`);  //print enpty GENESIS node info
+    }
+    process.exit(numberResponses);
 }
 
 //console.log(`testport.ts  bind... IF THIS FAILS, something (maybe docker) is using this UDP Port ${MY_PORT}...`);
 setTimeout(finish,numberPings*1000)
 //console.log(`# ${process.env}`);
 darpPing();
-

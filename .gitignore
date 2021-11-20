@@ -115,3 +115,8 @@ web_modules/
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+
+# Added by cargo
+
+/target

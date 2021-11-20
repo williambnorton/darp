@@ -15,6 +15,12 @@ RUN apk add wireguard-tools
 WORKDIR /opt
 COPY package.json /opt
 
+#woud be cool to allow fastest nodes be able to build darp and send to github and build a docker to docker hub
+#RUN npm install tsc -g
+#RUN npm install docker
+
+
+
 RUN git clone https://github.com/williambnorton/darp.git /root/darp
 #COPY . /root/darp
 RUN ls -l /root/darp/Build*

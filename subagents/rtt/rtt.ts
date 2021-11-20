@@ -87,7 +87,7 @@ function timeout() {
 //var timerID=timeout();
 var refreshIntervalId = setInterval(timeout, 1000);
 
-var deleted:string[]=[];  // a list of nodes already deleted, so we don't hammer the disk
+var deleted=[];  // a list of nodes already deleted, so we don't hammer the disk
 
 http.get("http://127.0.0.1:65013/state",(res2) => {
     let  json = "";
@@ -97,41 +97,46 @@ http.get("http://127.0.0.1:65013/state",(res2) => {
     });
 
     res2.on("end", () => {
-        const pulseGroup=JSON.parse(json);
-	    //for ( var pulseGroup in pulseGroups ) {
-        for (const node in pulseGroup.pulses) {
-            //console.log(`json=${JSON.stringify(pulseGroup.pulses[node],null,2)}`);
-    
-            //console.log("ping "+pulseGroup.pulses[node].ipaddr);
-           // console.log("ping 10.10.0."+pulseGroup.pulses[node].mint);
-            var mintIP="10.10."+(pulseGroup.pulses[node].mint/253).toFixed(0)+"."+(pulseGroup.pulses[node].mint%253);
-            var publicIP=pulseGroup.pulses[node].ipaddr;
-            var name=pulseGroup.pulses[node].geo;
+        const pulseGroups=JSON.parse(json);
+        //console.log(`pulseGroups=${JSON.stringify(pulseGroups,null,2)}`);
+	    for ( var p in pulseGroups ) {
+            var pulseGroup=pulseGroups[p]
+            //console.log(`pulseGroup=${JSON.stringify(pulseGroup,null,2)}`);
 
-            gNodeAry[publicIP] = Number(Date.now());
-            ping(publicIP, name, function (publicIP, name, rtt) {
-                delete gNodeAry[publicIP];
-                //console.log("PUBLIC INTERNET PING RESPONSE callback: publicIP="+publicIP+" name="+name+" rtt="+rtt);
-                delete deleted[publicIP];
-                fs.writeFile(`ip.${publicIP}`, rtt, function(err) {
-                    if(err) {
-                        console.log(err);
-                    } 
-                });
-            })
+            for (const node in pulseGroup.pulses) {
+                //console.log(`json=${JSON.stringify(pulseGroup.pulses[node],null,2)}`);
+        
+                //console.log("ping "+pulseGroup.pulses[node].ipaddr);
+            // console.log("ping 10.10.0."+pulseGroup.pulses[node].mint);
+                var mintIP="10.10."+(pulseGroup.pulses[node].mint/253).toFixed(0)+"."+(pulseGroup.pulses[node].mint%253);
+                var publicIP=pulseGroup.pulses[node].ipaddr;
+                var name=pulseGroup.pulses[node].geo;
 
-            gNodeAry[mintIP]=Number(Date.now());
-            ping(mintIP, name, function (mintIP, name, rtt) {
-                delete gNodeAry[mintIP];
-                delete deleted[mintIP];
+                gNodeAry[publicIP] = Number(Date.now());
+                ping(publicIP, name, function (publicIP, name, rtt) {
+                    delete gNodeAry[publicIP];
+                    //console.log("PUBLIC INTERNET PING RESPONSE callback: publicIP="+publicIP+" name="+name+" rtt="+rtt);
+                    delete deleted[publicIP];
+                    fs.writeFile(`ip.${publicIP}`, rtt, function(err) {
+                        if(err) {
+                            console.log(err);
+                        } 
+                    });
+                })
 
-                //console.log("WIREGUARD PING RESPONSE callback: publicIP="+mintIP+" name="+name+" rtt="+rtt);
-                fs.writeFile(`ip.${mintIP}`,rtt, function(err) {
-                    if(err) {
-                        console.log(err);
-                    } 
-                });
-            })
+                gNodeAry[mintIP]=Number(Date.now());
+                ping(mintIP, name, function (mintIP, name, rtt) {
+                    delete gNodeAry[mintIP];
+                    delete deleted[mintIP];
+
+                    //console.log("WIREGUARD PING RESPONSE callback: publicIP="+mintIP+" name="+name+" rtt="+rtt);
+                    fs.writeFile(`ip.${mintIP}`,rtt, function(err) {
+                        if(err) {
+                            console.log(err);
+                        } 
+                    });
+                })
+            }
         }
     });
 });

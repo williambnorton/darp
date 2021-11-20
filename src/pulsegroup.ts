@@ -3,34 +3,40 @@
 import fs = require("fs");
 import os = require("os");
 import http = require("http");
-import { exec, ExecException, fork, ChildProcess } from 'child_process';
 import express = require("express");
-import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, YYMMDD, Log  } from "./lib";
+import { dump, now, MYVERSION, median, mint2IP, nth_occurrence, ts, Log  } from "./lib";
 import { logger, LogLevel } from "./logger";
-import { NodeAddress, IncomingPulse, SenderMessage, SenderPayloadType } from "./types";
+import { NodeAddress, IncomingPulse } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
-import e = require("express");
+import { addPulseGroup } from "./pulsegroups";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
+
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
+
+
 const MEASURE_RTT=true;   //ping across wireguard interface
 const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 
 const SECURE_PORT=65020;    
 
-const CHECK_SW_VERSION_CYCLE_TIME = 30; // CHECK for new SW updates every 60 seconds
+const CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
 const NO_MEASURE = 99999;       //value to indis=cate no measurement exists
 const DEFAULT_START_STATE = "QUARANTINE"; // "SINGLESTEP"; console.log(ts()+"EXPRESS: ALL NODES START IN SINGLESTEP (no pulsing) Mode");
 logger.info("pulsegroup: ALL NODES START IN " + DEFAULT_START_STATE + " Mode");
 const GENESIS_NODE_TIMEOUT=15;    // go away when our GENESIS node is unreachable, our optimization group no longer helps its creator.
-const STAT_HOURS_TO_STORE=2;    //hpow many hours of data to collect and store
+const STAT_HOURS_TO_STORE=1;    //hpow many hours of data to collect and store
 // const DEVIATION_THRESHOLD=20;  // Threshold to flag a matrix cell as "interesting", exceeding this percentage from median
 
 // Define data structures used in the protocol
 
 /** App configuration settings obtained from ENV variables */
+
+//
+//  Config - this should be eventually for all pulseGroups
+//
 export class Config {
     DARPDIR: string;
     GENESIS: string;
@@ -42,6 +48,7 @@ export class Config {
     PUBLICKEY: string;
     VERSION: string;
     WALLET: string;
+    GENESISNODELIST: string;
     BOOTTIMESTAMP: number;
     MAXNODES: number;
     constructor() {
@@ -83,7 +90,7 @@ export class Config {
             logger.warning(`No VERSION environmental variable specified - setting to ${process.env.VERSION}`);
         }
         this.VERSION = process.env.VERSION || "NoVersion";
-        console.log(`&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=${this.VERSION} MYVERSION()=${MYVERSION()}`);
+        //console.log(`&&&&&&&&&&&&&   @WBN       pulsegroup.ts in constructor VERSION=${this.VERSION} MYVERSION()=${MYVERSION()}`);
 
         if (!process.env.MY_IP) {
             console.log("No MY_IP environmental variable specified - ERROR - but I will try and find an IP myself from incoming message");
@@ -91,7 +98,7 @@ export class Config {
         }
         this.IP = process.env.MY_IP.replace(/['"]+/g, "");  //trim quotes
 
-        console.log(`pulseGroup constructor this.IP=${this.IP}`);
+        //console.log(`pulseGroup constructor this.IP=${this.IP}`);
 
         var GEO = HOSTNAME; //passed into docker
         GEO = GEO.toUpperCase().split(".")[0].split(":")[0].split(",")[0].split("+")[0];  //remove problem characters
@@ -118,12 +125,13 @@ export class Config {
         this.PUBLICKEY = PUBLICKEY;
 
 
-
+        this.GENESISNODELIST = process.env.GENESISNODELIST || "SELF";
         this.WALLET = process.env.WALLET || "auto";
-        this.MAXNODES = 25;
+        this.MAXNODES = 75;
         console.log(`config constructor made: ${JSON.stringify(this,null,2)}`);
     }
 }
+export const CONFIG=new Config();   //use this gloablly to fill in my PUBLIC KEY/IP/etc.
 
 /** Node configuraton details */
 export class MintEntry {
@@ -222,7 +230,7 @@ export class PulseGroup {
     nextMint: number;
     cycleTime: number;
     matrix: number[][];
-    csvMatrix: number[];
+    //csvMatrix: number[];
     constructor(me: MintEntry, genesis: MintEntry, pulse: PulseEntry) {
         this.groupName = me.geo + ".1";
         this.groupOwner = me.geo;
@@ -236,7 +244,7 @@ export class PulseGroup {
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
         this.matrix = [];
-        this.csvMatrix = [];
+        //this.csvMatrix = [];
     }
 }
 
@@ -253,19 +261,19 @@ export class AugmentedPulseGroup {
     nextMint: number;
     cycleTime: number;
     matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
-    csvMatrix: number[];    //goes away
+    //csvMatrix: number[];    //goes away
 
     // additional attributes
     adminControl: string;
     config: Config;
     extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
-    incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
+    //incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     
     // child processes for sending and receiving the pulse messages
-    receiver: ChildProcess;
-    sender: ChildProcess;
+    //receiver: ChildProcess;
+    //sender: ChildProcess;
 
-    constructor(config: Config, pulseGroup: PulseGroup) {
+    constructor(pulseGroup: PulseGroup) {
         this.groupName = pulseGroup.groupName;
         this.groupOwner = pulseGroup.groupOwner;
         this.mintTable = pulseGroup.mintTable; // Simplification: me should always be mintTable[0], genesis node should always be mintTable[1]
@@ -276,21 +284,25 @@ export class AugmentedPulseGroup {
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
         this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
-        this.csvMatrix = pulseGroup.csvMatrix; //should go away
+        //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         
         this.adminControl = "";
-        this.config = config;
+        this.config = new Config();  //pulse Object needs to know some things about the node config
         this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
-        this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
+        //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
     // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
-
+    
+    /**
+    //
+    //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
+    //
     var dgram = require("dgram");
 
     const receiver = dgram.createSocket("udp4");
 
-    receiver.on("error", (err) => {
-        logger.error(`Receiver error:\n${err.stack}`);
+    receiver.on("error", (err:string) => {
+        logger.error(`Receiver error:\n${err}`);
         receiver.close();
     });
 
@@ -299,25 +311,22 @@ export class AugmentedPulseGroup {
         logger.info(`Receiver listening ${address.address}:${address.port}`);
     });
 
-    receiver.on("message", (pulseBuffer, rinfo) => {
+    receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
-        logger.info(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
     });
 
     receiver.bind(this.config.PORT);
-
-
-
-
-
-
-
-
+  ****/
     }
-
+  
+    //
+    //  
+    //
+    
     forEachNode = (callback: CallableFunction) => {
         for (var node in this.pulses) callback(node, this.pulses[node]);
     };
@@ -470,7 +479,8 @@ export class AugmentedPulseGroup {
         //  First make OWL list for the pulse message
         //      to pulse and highlight segments that should be looked aty with a FLAG '@'
         //
-        console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
+        //console.log(`pulse(): working on pulseGroup=${JSON.stringify(this,null,2) }`);
+        //console.log(ts()+`pulse(): ${this.groupName}`);
         for (var pulse in this.pulses) {
             var pulseEntry = this.pulses[pulse];
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
@@ -516,7 +526,7 @@ export class AugmentedPulseGroup {
         logger.debug(`pulse(): looking for my entry to pulse: ${this.config.GEO}:${this.groupName}`);
         
         if (myEntry == null) {
-            logger.warning(`Cannot find ${this.config.GEO}:${this.groupName}`);
+            logger.warning(`pulse(): Cannot find pulse Entry for ${this.config.GEO}:${this.groupName}`);
         } else {
             myEntry.seq++;
             const myMint = this.mintTable[0].mint;
@@ -530,7 +540,7 @@ export class AugmentedPulseGroup {
                 myMint + "," + 
                 owls;
                 //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
 
@@ -543,10 +553,10 @@ export class AugmentedPulseGroup {
             const pulseBuffer = Buffer.from(pulseMessage);
 
             nodeList.forEach(function (node: NodeAddress) {
-                //console.log(`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
-                client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error) => {
+                //console.log(ts()+`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error:string) => {
                     if (error) {
-                        logger.error(`Sender error: ${error.message}`);
+                        console.log(`Sender error: ${error}`);
                     }
                 });
             });
@@ -575,7 +585,8 @@ export class AugmentedPulseGroup {
         // INSTRUMENTATION POINT shows load on node - DO NOT DELETE
         //console.log(`timeNow%1000=${timeNow%1000} sleeping ${sleepTime} ms`);
         //console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
-        setTimeout(this.pulse, sleepTime); //pull back to on-second boundary
+        if (this.adminControl!="STOP")
+            setTimeout(this.pulse, sleepTime); //pull back to on-second boundary
     };
 
     isGenesisNode = (): Boolean => {
@@ -597,8 +608,9 @@ export class AugmentedPulseGroup {
         if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp> (GENESIS_NODE_TIMEOUT*1000) ) {
             console.log(`timeout(): GENESIS NODE MIA for ${GENESIS_NODE_TIMEOUT} seconds -- EXITTING...`);
             Log(`timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...`);
-
-            process.exit(36);
+            
+            this.adminControl="STOP"; //@wbnwbn
+            //process.exit(36);
         }
 
         for (var m in this.mintTable) {
@@ -608,8 +620,8 @@ export class AugmentedPulseGroup {
                 var elapsedMSincePulse = now() - this.mintTable[m].lastPulseTimestamp;
 
                 if (elapsedMSincePulse > 2.5*this.cycleTime * 1000) {  //after __ cycles no mintTable updates - mark as pkt loss
-                    logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
-                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse} clearing OWL in mint entry which missed at least one cycle ${this.mintTable[m].geo}`);
+                    logger.debug(`m=${m} elapsedMSincePulse=${elapsedMSincePulse}  ${this.mintTable[m].geo} missed OWL`);
+                    console.log(`m=${m} elapsedMSincePulse=${elapsedMSincePulse}  ${this.mintTable[m].geo} missed OWL`);
 
                     this.mintTable[m].lastOWL = NO_MEASURE;  // we don't have a valid OWL
                     if (this.mintTable[m].state != "QUARANTINE") {
@@ -637,7 +649,8 @@ export class AugmentedPulseGroup {
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             console.log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
-                            process.exit(36);
+                            this.adminControl="STOP"; //@wbnwbn
+                            //process.exit(36);
                         }
 
                         // we may timeout the group owner and kill the pulsegroup
@@ -670,7 +683,7 @@ export class AugmentedPulseGroup {
                     pulseEntry.pktDrops++;
                     Log(`timeout(): ${pulseEntry.geo}:${pulseEntry.group} PKT DROP  pktDrops=${pulseEntry.pktDrops}`);
 
-                    // only Genesis can delete inactive nodes within the group
+                    // only Genesis can delete inactive/unwanted nodes within the group
                     if (this.isGenesisNode()) {
                         if (elapsedMSincePulse > 10 * this.cycleTime * 1000) {
                             logger.warning(`timeout() : Genesis DELETING Node ${this.pulses[p].geo} with ${elapsedMSincePulse} ms old timestamp `);
@@ -911,7 +924,8 @@ export class AugmentedPulseGroup {
         this.mintTable[0].lastPulseTimestamp = timeNow;
         var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
         //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
-        setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
+        if (this.adminControl!="STOP")
+            setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
     }
 
     checkSWversion = () => {        //we check SW version with lead genesis node
@@ -963,7 +977,7 @@ export class AugmentedPulseGroup {
                 this.config.VERSION=mySWversion   //we will exit 
                 //var mySWversion = this.config.VERSION = MYVERSION();  // find the Build.*
                 //console.log(`checkSWversion(): genesis SWversion==${dump(genesisVersion)} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
-                console.log(`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
+                //console.log(ts()+`checkSWversion(): genesis SWversion==${genesisVersion} MY SW Version=${mySWversion} me.version=${this.config.VERSION}`);
                 if (genesisVersion != mySWversion) {
                     const dockerVersion=genesisVersion.split(":")[0];
                     const darpVersion=genesisVersion.split(":")[1];
@@ -988,7 +1002,7 @@ export class AugmentedPulseGroup {
 
                     const { exec } = require('child_process');
                     var yourscript = exec('sh ../updateSW.bash '+genesisVersion,
-                        (error, stdout, stderr) => {
+                        (error:string, stdout:string, stderr:string) => {
                         console.log(stdout);
                         console.log(stderr);
                         if (error !== null) {
@@ -1006,16 +1020,16 @@ export class AugmentedPulseGroup {
                 }
             });
         }).on("error", function () {
-            console.log(`checkSW(): fetching version failed ${url} genesis node out of reach - NOT EXITTING `);
+            console.log(ts()+`checkSW(): ${CONFIG.GEO} fetching version failed ${url} genesis node out of reach - NOT EXITTING `);
             //process.exit(36);    //when genesis node is gone for 15 seconds it will be dropped. dropping here is uneeded
         });
-        if (this.isGenesisNode()) //non-genesis nodes will use pulses every second to check software version
+        if (this.isGenesisNode() && (this.adminControl!="STOP") ) //non-genesis nodes will use pulses every few seconds to check software version
             setTimeout(this.checkSWversion, CHECK_SW_VERSION_CYCLE_TIME * 1000); // Genesis nodes check SW with 1st genesis node in GENESISNODELIST
     };
     
     processIncomingPulse = (incomingPulse: IncomingPulse) => {
        // look up the pulse claimed mint
-       //console.log(`incomingPulse=${dump(incomingPulse)}`);
+       //console.log(`pulseGroup.processIncomingPulse(): incomingPulse=${dump(incomingPulse)}`);
        var incomingPulseEntry = this.pulses[incomingPulse.geo + ":" + incomingPulse.group];
        var incomingPulseMintEntry = this.mintTable[incomingPulse.mint];
 
@@ -1038,7 +1052,7 @@ export class AugmentedPulseGroup {
            logger.info(`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint}  `);
            console.log(ts()+`IGNORING ${incomingPulse.geo}:${incomingPulse.group} - we do not have this pulse ${incomingPulse.geo + ":" + incomingPulse.group} as mint ${incomingPulse.mint} -it is OK for a few of these to show up during transditions.  `);
 
-            Log(`IGNORING UnExpected incoming pulse: To Do: send instead a pulse Quarantine Config: Genesis and newNode only. then he can die immediately. `);
+            Log(`IGNORING UnExpected incoming pulse: ${incomingPulse.geo}:${incomingPulse.group} To Do: send instead a pulse Quarantine Config: Genesis and newNode only. then he can die immediately. `);
             //Opportunity to reply with a config 
             //OR Could use this as an add request - just add it to the mintTable and pulseTable with new mint#?
             //Better to put it into Quarttine mode
@@ -1084,7 +1098,7 @@ export class AugmentedPulseGroup {
                     //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
                     if (srcMintEntry == null) {
                         console.log(`We do not have this mint and group Owner announced it: ${mint}`);
-                        //we do not have this mint in our mintTale
+                        //we do not have this mint in our mintTable
                         logger.info(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
                         console.log(`Owner announced a  MINT ${mint} we do not have - HACK: re-syncing with genesis node for new mintTable and pulses for its config`);
                         this.syncGenesisPulseGroup();  // HACK: any membership change we need resync
@@ -1295,6 +1309,7 @@ export class AugmentedPulseGroup {
             //maybe also add empty pulse records for each that don't have a pulse record
         }
     }
+    /*
     //called every 10ms to see if there are pkts to process
     workerThread = () => {
         return;  //removing complexixity
@@ -1308,6 +1323,9 @@ export class AugmentedPulseGroup {
             this.processIncomingPulse(pulse);
         }
     }
+    */
+
+    /*****
     //
     //  recvPulses
     //
@@ -1375,6 +1393,7 @@ export class AugmentedPulseGroup {
         }
         //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
     };
+    ***/
 
     // Store one-way latencies to file or graphing & history
     //
@@ -1410,8 +1429,9 @@ export class AugmentedPulseGroup {
             this.flashWireguard(); // change my wg config
             return; // genesis node dies not fetch its own configuration
         }
-        var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/pulsegroup/" + this.groupName + "/" + this.mintTable[0].mint);
-        logger.info(`syncGenesisPulseGroup(): url=${url}`);
+        //var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName + "/" + this.mintTable[0].mint);  //ask for mintTable with my mint in as mint 0
+        var url = encodeURI('http://' + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/mintTable/" + this.groupName);  //ask for mintTable with my mint in as mint 0
+        console.log(`syncGenesisPulseGroup(): url=${url}`);
         const self = this;
 
         // Fetch mintTable and pulses from genesis node
@@ -1459,6 +1479,47 @@ export class AugmentedPulseGroup {
             });
         });
     };
+
+
+
+    launch = () => {
+        try {
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+                
+            this.flashWireguard();  // create our wireguard files based on our mint Table
+            this.pulse();               //start pulsing -sets own timeout
+            //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
+            setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
+            setTimeout(this.checkSWversion, 10 * 1000);  // check that we have the best software
+            setTimeout(this.measurertt, 2 * 1000); // ping across wireguard every other second  
+
+            //
+            //  Here is where you add your customer scripts to run on all pof your instances of this docker
+            //
+
+            console.log(ts()+`pulseGroup(): Launched sub agent: here is where you launch your customer code...`);
+
+            //
+            //  
+            //
+
+            console.log(`index.ts: pulseGroup.launched() -> ${this.groupName} `);
+
+        } catch (error) {
+            logger.error(error);
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
 
     //
     //  measurertt() - subagents/rtt doing measurements based on pulling pulseGroup once a minute
@@ -1508,7 +1569,8 @@ export class AugmentedPulseGroup {
             });
 
         }
-        setTimeout(this.measurertt, 1 * 1000 );  // check ping every node every 
+        if (this.adminControl!="STOP")
+            setTimeout(this.measurertt, 1 * 1000 );  // check ping every node every 
     }
 
     //
@@ -1539,11 +1601,14 @@ export class AugmentedPulseGroup {
     };
 }
 
-/**
+/** the reason to do this is to exercie the forwarding path to check that ports to ourselves work
  * Initiates construction of the pulsegroup object by sneding the request to the genesis node
  * @param {Config} config contains constants and environmental variables, such as ip and port
+ * *
+ * * This adds and starts a pulseGroup
  */
 export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
+
     const configurl = "http://" + config.GENESIS +
         "/nodefactory?geo=" + config.GEO +
         "&port=" + config.PORT +
@@ -1553,17 +1618,22 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
         "&wallet=" + config.WALLET +
         "&myip=" + config.IP +
         "&ts=" + now();
+        return(getPulseGroupURL(configurl))
+}
+export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
+
     var pulseGroupObjectURL = encodeURI(configurl);
 
     logger.info(
-        `getPulseGroup(): getting pulseGroup from url=${pulseGroupObjectURL}`
+        `getPulseGroupURL(): getting pulseGroup from url=${pulseGroupObjectURL}`
     );
 
     return new Promise((resolve, reject) => {
+        try {
         const req = http.get(pulseGroupObjectURL, (res) => {
             if (res.statusCode != 200) {
                 return reject(
-                    new Error(`getPulseGroup(): received status code ${res.statusCode}`)
+                    new Error(`getPulseGroupURL(): received status code ${res.statusCode}`)
                 );
             }
 
@@ -1574,28 +1644,36 @@ export const getPulseGroup = async (config: Config): Promise<PulseGroup> => {
 
             res.on("error", () => {
                 return reject(
-                    new Error(`getPulseGroup(): received error from ${pulseGroupObjectURL}`)
+                    new Error(`getPulseGroupURL(): received error from ${pulseGroupObjectURL}`)
                 );
             });
 
             res.on("end", () => {
                 var newPulseGroup: PulseGroup = JSON.parse(data);
-                logger.info(`getPulseGroup(): from node factory: ${dump(newPulseGroup)}`);
+                logger.info(`getPulseGroupURL(): from node factory: ${dump(newPulseGroup)}`);
                 if (newPulseGroup==null) {
-                    console.log(`ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
-                    process.exit(36);  //reload software and take another pass
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                    console.log(`pulseGroup ERROR: Genesis node refused connection request @${pulseGroupObjectURL} exitting...`);
+                   return;                    
+                    //process.exit(36);  //reload software and take another pass
                 }
-                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
-                    logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
-                } else {
-                    logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
-                }
-                Log(`JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port}`);
-
+//                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
+  //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
+    //            } else {
+      //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
+        //        }
+                Log(`getPulseGroupURL JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port} and Launching...`);
+                addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
                 return resolve(newPulseGroup);
             });
         });
         req.end();
+    } catch(e) {
+        console.log(`getPulseGroupURL: get ${pulseGroupObjectURL} Failed`);
+    }
     });
 };
 

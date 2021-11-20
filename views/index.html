@@ -9,12 +9,13 @@
     <script>
         const NO_OWL=99999;         //99.999seconds is our NO_MEASURETODO: This needs to change as the NO_OWL constant changes in pulseGroups.
         $(document).ready(function() {
-            console.log("document loaded");
+            console.log("document loaded - BUG HERE: we assume only one table ");
             fetchState();
-            $('#matrix').DataTable({'iDisplayLength': 25});
-            $('#extraordinary').DataTable({'iDisplayLength': 100});
-            $('#pulses').DataTable({'iDisplayLength': 25});
-            $('#mintTable').DataTable({'iDisplayLength': 25});
+            $('#matrix').DataTable({'iDisplayLength': 50});
+            $('#extraordinary').DataTable({'iDisplayLength': 50});
+            //$('#pulses').DataTable({'iDisplayLength': 25});
+            //$('#mintTable').DataTable({'iDisplayLength': 25});
+            //console.log(`index.html - launched`);
         });
         
         $(window).on( "load", function() {
@@ -28,20 +29,28 @@
         const me = JSON.parse(me_str);
 
         function fetchState() {
-            console.log();
+            //console.log(`fetcState() called`);
             var url = `http://${me.ipaddr}:${me.port}/pulseGroups`;
-            console.log("fetchState(): url="+url);
+            //console.log("index.html: fetchState(): url="+url);
             $.getJSON(url, function(pulseGroups) {
                 $(document.body).css( "background", "white" );
-
-                //console.log("** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
-
+                //console.log("fetcState() about to work through each pulseGroups  ** = - = - = - = - ******************** pulseGroups="+JSON.stringify(pulseGroups,null,2));
+                //console.log(`fetcState() about to work through each pulseGroups`);
+                
                 for (var p in pulseGroups ) {
                     //console.log("---------------------------- - - - - - - -> p= "+p);
                     var pulseGroup=pulseGroups[p];
+                    
 
+                    //
+                    //  could only show own matrix, not ones it participates in
+                    //
+                    //if (pulseGroup.owner==me.geo) {
+
+
+                    //console.log(`pulseGroup ${pulseGroup.groupName} has ${pulseGroup.nodeCount} member nodes`)    
                     //var pulseGroup = config[n];
-                    console.log("pulseGroups="+JSON.stringify(pulseGroups,null,2) );
+                    //console.log("index.html: pulseGroups="+JSON.stringify(pulseGroups,null,2) );
                     // Fill the OWL matrix using only the owls - TODO: remove matrix ugliness.
                     for (var src in pulseGroup.pulses) {
                         var pulseEntry=pulseGroup.pulses[src];
@@ -82,14 +91,14 @@
                                     //console.log(timeNow+`fetchState(): found entry flagged `+srcOwlMintEntry.geo+"-"+pulseEntry.geo+'='+owl+' ms');
                                     if ((srcOwlMintEntry!=null) && (destOwlMintEntry!=null)) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).addClass("BUSY");
-                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow").css("border-width", "3px");
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "yellow");//.css("border-width", "3px");
                                     }
                                 } else {
                                     //console.log(`fetchState(): unflagged `+srcOwlMintEntry.mint+"-"+pulseEntry.mint);
 
                                     if (srcOwlMintEntry!=null && destOwlMintEntry!=null) {
                                         $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).removeClass("BUSY");
-                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black").css("border-width", "1px");
+                                        $("."+srcOwlMintEntry.mint+"-"+pulseEntry.mint).css("border-color", "black");//.css("border-width", "3px");
                                     }
                                 }
                             }
@@ -164,16 +173,19 @@
                     //    $("#extraordinary").append("<tr><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
 
 
+                    /*
                     // console.log(" pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                     if ( pulseGroup.nodeCount >= 1 ) {
                         if (nodeCountLastTime!=0) {
-                            if ( nodeCountLastTime != pulseGroup.nodeCount ) {  //immediately show changes so screen reflects reality
-                            //if (( nodeCountLastTime > pulseGroup.nodeCount+1) || (nodeCountLastTime < pulseGroup.nodeCount-1 )) {
+                            //if ( nodeCountLastTime != pulseGroup.nodeCount ) {  //immediately show changes so screen reflects reality
+                            //    if (( nodeCountLastTime > pulseGroup.nodeCount+1) || (nodeCountLastTime < pulseGroup.nodeCount-1 )) {
+                                if ( Math.abs(nodeCountLastTime - pulseGroup.nodeCount ) >20 ) {
                                     console.log("index.html: RELOAD(): pulseGroup.nodeCount="+pulseGroup.nodeCount+" nodeCountLastTime="+nodeCountLastTime );
                                     location.reload();
                             }
                         } else nodeCountLastTime=pulseGroup.nodeCount;
                     }
+                    */
                     nodeCountLastTime=pulseGroup.nodeCount ;
 
                     // update the dateTime so people know the updates re coming in
@@ -239,13 +251,23 @@
 
                     measurementCosts = parseFloat(measurementCosts.toFixed(6));
                     $(".total_earn").text("measurementCosts @8.5cents/GB: $"+measurementCosts);
+
+//
+//
+//
+//             }
+
+
+
+
+
+
                 }
 
             }).fail(function() {
                 console.log("JSON Fetch error");
                 $(document.body).css( "background", "pink" );
             })
-
             var d = new Date();
             sleepTime = 1000 - (d.getTime() + 1000) % 1000;  //start on second boundaries.
             setTimeout(fetchState, sleepTime);
@@ -291,7 +313,7 @@
 </head>
 <body>    
     <!--<h1><%= me.geo %> PulseGroup Encrypted Mesh WAN http://<%= me.ipaddr %>:<%= me.port %> <%= config.VERSION %> ALPHA Test 2.0</h1> -->
-    <h1><%= me.geo %> http://<%= me.ipaddr %>:<%= me.port %> ALPHA <%= config.VERSION %> </h1>
+    <h1><%= me.geo %> DARP @ http://<%= me.ipaddr %>:<%= me.port %> nodeJS Modeling DARP : <%= config.VERSION %> </h1>
 
     <% var d = new Date(); %>
     <% function now() { var dateNow = new Date(); return dateNow.getTime(); } %>
@@ -302,7 +324,7 @@
 
 
     <p id="dateTime">*Refresh: <%= timeStr %> Your Docker: <a href="http://localhost:65013/"> http://localhost:65013/ </a> MAXNODES= <%= config.MAXNODES %></p>
-
+    <p><%= config.GENESISNODELIST %></p>
 
 
 
@@ -312,7 +334,7 @@
     <% for (var p in myPulseGroups) { %>
         <% var pulseGroup=myPulseGroups[p];   %>
 
-        <h1> Pulse Group: <%= pulseGroup.groupName %>  POLLFREQ <%= pulseGroup.cycleTime %> seconds</h1>
+        <h1> pulseGroup: <%= pulseGroup.groupName %>  POLLFREQ <%= pulseGroup.cycleTime %> seconds</h1>
 
         <!-- show OWL Matrix table -->
             <br><h2><%= pulseGroup.groupName %> pulseGroup: <%= pulseGroup.groupName %></h2>
@@ -337,7 +359,11 @@
             <% if (srcMintEntry != null) { %>
                 <% if (srcMintEntry.state == "UP") { %>
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
+
+
                     <% let srcMintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString(); %>
+                    
+
                     <% var leadingDigitMint="0"+srcMintEntry.mint; %>
                     <%  leadingDigitMint=leadingDigitMint.slice(-2); %>
                     <tr class="<%= classNameUp %>">
@@ -411,8 +437,8 @@
                 <th>pulseTimestamp</th>
                 <th>mint</th>
                 <th>owl</th>
-                <th>rtt</th>
-                <th>wg rtt</th>
+                <th>Ping</th>
+                <th>wgPing</th>
                 <th>relayCount</th>
                 <!-- <th>median</th>
                 <th>owls</th>
@@ -535,11 +561,6 @@
                 <% let classNameGeoBalance = pulseEntry.geo + "_balance"; %>
                 <td class="<%= classNameGeoBalance %>">&#xa2; <%= balance.toFixed(6) %></td>
                 
-                
-                
-                
-                <!-- <td><%= pulseEntry.lastMsg %></td>                    <td class="<%= classNameGeoBalance %>">$ <%= balance.toFixed(6).replace(/\d(?=(\d{3})+\.)/g, '$&,') %></td>
-   -->
             <% } %>
             </tr>
         <% } %>
@@ -567,10 +588,14 @@
             </tr>
         </tbody>
         </table>
-    <% } %>
+ 
+ 
+ 
 
-    <% for (var p in myPulseGroups) { %>
-        <% var pulseGroup = myPulseGroups[p]; %>
+
+
+
+
 
         <!-- Display mintTable -->
         <br>
@@ -580,9 +605,10 @@
             <tr>
                 <th>mint</th>
                 <th>geo</th>
+                <th>dropHere2join</th>
                 <th>port</th>
                 <th>ipaddr</th>
-                <th>publickey</th>
+                <th>publickey (end-points)</th>
                 <th>state</th>
                 <th>lastPulseTimestamp</th>
                 <th>lastOWL</th>
@@ -607,7 +633,7 @@
                     <% } else if (srcMintEntry.mint == 1) { %>
                         <% mintClass += "GENESIS "; %>
                     <% } %>
-    
+                        
                     <% if (srcMintEntry.state == "UP") { %>
                         <% mintClass += "UP "; %>
                     <% } else if (srcMintEntry.state == "NR") { %>
@@ -618,15 +644,18 @@
                     <tr class="<%= classNameGeoMintClass %>">
                         <td><%= srcMintEntry.mint %></td>
 
-                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/"; %>
+                        
+                        <% let mintEntryUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() +'/'; %>
                         <td class="<%= srcMintEntry.state %>"><a target="_blank" href="<%= mintEntryUrl %>"><%= srcMintEntry.geo %></a></td>
+
+                        <td><input type="text" class="dropName" name="dropName" onchange   = "window.location.href=this.value+'join/'+me.ipaddr+':'+me.port;" onkeypress = "this.onchange();" onpaste = "this.onchange();" oninput = "this.onchange();" /></td>
                         
                         <td><%= srcMintEntry.port %></td>
 
                         <% let encodedUrl = encodeURI("http://127.0.0.1:8081/ssh?ip=ubuntu@"+srcMintEntry.ipaddr); %>
                         <td><a target="_blank" href="<%= encodedUrl %>"><%= srcMintEntry.ipaddr %></a></td>
 
-                        <td><%= srcMintEntry.publickey.substring(0, 3) %>...<%= srcMintEntry.publickey.substring(40, srcMintEntry.publickey.length) %></td>
+                        <td><%= srcMintEntry.publickey %></td>
 
                         <% let classNameGeoState = srcMintEntry.geo + " " + srcMintEntry.geo + "_state" + " " + srcMintEntry.state; %>  <!-- WEIRD CLASS NAME-->
                         <% let dddwbnwbnwbnddddpulseEntryMintTableUrl = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/mintTable"; %>
@@ -652,6 +681,7 @@
 
                         <% let stopButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/stop"; %>
                         <% let rebootButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/reboot"; %>
+                        <% let pauseButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/pause"; %>
                         <% let reloadButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/reload"; %>
                         <% let SINGLESTEPButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/SINGLESTEP"; %>
                         <% let pulseMsgButtonURL = "http://" + srcMintEntry.ipaddr + ":" + srcMintEntry.port.toString() + "/pulseMsg"; %>
@@ -660,6 +690,7 @@
                                 <INPUT Type="BUTTON" Value="PULSE1" Onclick='window.location.href="<%= pulseMsgButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="RELOAD" Onclick='window.location.href="<%= reloadButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="SINGLESTEP" Onclick='window.location.href="<%= SINGLESTEPButtonURL %>"'>
+                                <INPUT Type="BUTTON" Value="PAUSE" Onclick='window.location.href="<%= pauseButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="STOP" Onclick='window.location.href="<%= stopButtonURL %>"'>
                                 <INPUT Type="BUTTON" Value="REBOOT" Onclick='window.location.href="<%= rebootButtonURL %>"'>
                             </FORM>

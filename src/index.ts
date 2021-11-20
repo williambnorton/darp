@@ -5,28 +5,32 @@ import ejs = require('ejs');
 import { logger, LogLevel } from './logger';
 import { dump, Log, now, ts, MYVERSION } from './lib';
 import { grapher } from './grapher';
-import { getPulseGroup, AugmentedPulseGroup, Config, MintEntry, PulseEntry, PulseGroup, PulseGroups } from './pulsegroup';
+import { getPulseGroup, getPulseGroupURL, CONFIG, AugmentedPulseGroup, MintEntry, PulseEntry, PulseGroup } from './pulsegroup';
+import { myPulseGroups, addPulseGroup } from './pulsegroups';
 
 
 logger.setLevel(LogLevel.WARNING);
 //const MAXNODES=25;   //MAX NODES PER PULSEGROUP - reject after this popiulation size
 // Load config
 
-const config = new Config();
-
+const config=CONFIG;  //map to global constants from inital pulseGroup CONFIG creation
 
 // Construct my own pulseGroup for others to connect to
 const me = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
+//const genesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
 var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-var myPulseGroup = new PulseGroup(me, genesis, pulse);  //this is where I allow others to connect to me
-var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
+var myPulseGroup = new PulseGroup(me, me, pulse);  //this is where I allow others to connect to me
+//myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
+//    myPulseGroups[pulseGroup.groupName]=new AugmentedPulseGroup(pulseGroup);
+
+//var myPulseGroups: PulseGroups = {};  // TO ADD a PULSE: pulseGroup.pulses["newnode" + ":" + genesis.geo+".1"] = pulse;
+//var myPulseGroups = getMyPulseGroups();
 logger.info(`Starting with my own pulseGroup=${dump(myPulseGroup)}`);
 
 
 // Start instrumentaton web server
 
-const REFRESH = 120;  //Every 2 minutes force web page instrumentation refresh
+const REFRESH = 60;  //Every 2 minutes force web page instrumentation refresh
 const OWLS_DISPLAYED = 30;
 
 var app = express();
@@ -48,6 +52,9 @@ var server = app.listen(config.PORT, '0.0.0.0', function() {
     console.log(`UDP server listening on ${config.PORT}`);
 }) //.on('error', console.log);
 
+//
+//  / is for instrumentation for ALL pulseGroups
+//
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -67,7 +74,7 @@ app.get('/', function(req, res) {
     });
 });
 
-
+//
 //  http://191.237.254.39:65013/extra?a=MAZ-SOUTHEASTASIA-00&i=AWS-AP-SOUTHEAST-1B&z=MAZ-CENTRALUS-00
 //
 app.get('/extra/:src/:intermediary/:dst', function(req, res) {
@@ -82,6 +89,9 @@ app.get('/extra/:src/:intermediary/:dst', function(req, res) {
     return;
 });
 
+//
+//  /version - is showing the config software version for all groups
+//
 app.get('/version', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -89,7 +99,120 @@ app.get('/version', function(req, res) {
     res.end(JSON.stringify(config.VERSION));
     return;
  });
- 
+
+//
+//  /genesis - is showing the config software version for all groups
+//
+app.get('/genesis', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    //console.log(`/version returning ${config.VERSION}`);
+    res.end(JSON.stringify(config.GENESIS));
+    return;
+ });
+
+//
+//  /genesisnodelist - for discovery - should be JSON
+//
+app.get('/darpdocker', function(req, res) {
+    res.setHeader('Content-Type', 'application/binary');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    let filename="/etc/wireguard/darpdocker.tgz";  //deliver cached JSON file instead of stringifying many times
+   //console.log(`/darpdocker sending contents of ${filename} to ${req.connection.remoteAddress}`);
+    const options = {
+        //root: path.join(__dirname, 'files'),
+        dotfiles: 'deny',
+        headers: {
+          'x-timestamp': Date.now(),
+          'x-sent': true
+        }
+      }
+      res.sendFile(filename, options);
+      console.log(ts()+`/darpdocker sent contents of ${filename} to ${req.connection.remoteAddress}`);
+
+    return;
+});
+
+
+ //
+ // /pause - not used yet - should be per group
+ //
+ app.get('/pause', function(req, res) {
+    console.log(`PAUSING -- here we would set adminControl on the pulse group to SINGLESTEP`);
+    return;
+});
+
+//
+//  findNode
+//
+function findNode(ipport:String) {
+   const ip=ipport.split(":")[0]; 
+   const port=parseInt(ipport.split(":")[1]); 
+   for (var pg in myPulseGroups) {
+       var pulseGroup=myPulseGroups[pg];
+   //var pulseGroup=myPulseGroups[CONFIG.GEO+".1"];
+       for (var m in pulseGroup.mintTable) {
+           var mintTableEntry=pulseGroup.mintTable[m];
+           if (mintTableEntry!=null && mintTableEntry.ipaddr==ip && mintTableEntry.port==port) {
+              console.log(`findNode(): FOUND ${mintTableEntry.geo}`);
+              return mintTableEntry;
+           }
+       }
+   }
+   return null;
+}
+ //
+ //     /join - this message is sent by Genesis node invinting to be potential relay
+ //             simpler - Genesis node sends as new PG payload (the pulseGroup object)
+ //
+ app.get('/join/:pulsegroupaddress', function(req, res) {
+    var pulsegroupaddress=req.params.pulsegroupaddress
+    //@wbn@wbn - try a put and just instantiate and start the freeze dried pulsegroup
+    console.log(`join -- This would be only valid over an encrypted path coming from ${CONFIG.GENESIS}`);
+//    const configurl = "http://" + req.params.destip + ":" + req.params.destport + 
+
+    if (pulsegroupaddress.indexOf(':')==-1) 
+        pulsegroupaddress=pulsegroupaddress+":65013";  //default port
+
+    const configurl = "http://" + pulsegroupaddress + 
+        "/nodefactory?geo=" + CONFIG.GEO +    
+        "&port=" + config.PORT +
+        "&publickey=" + config.PUBLICKEY +
+        "&genesisport=" + config.GENESISPORT +
+        "&version=" + config.VERSION +
+        "&wallet=" + config.WALLET +
+        "&myip=" + config.IP +
+        "&ts=" + now();
+    
+    //console.log(`DISABLED /JOIN ${CONFIG.GEO} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
+    //return;
+    if ( pulsegroupaddress != config.IP+":"+config.PORT ) { //not me
+        //if ( pulseGroupsFind(pulsegroupaddress) ) //don't join if I am already with them
+
+        //if ( findNode(pulsegroupaddress) == null ) { //if we don't already see him
+        if ( findNode(pulsegroupaddress) == null ) { //if our group doesn't already see him
+            getPulseGroupURL(configurl);        //join this guys group
+            console.log(`index.ts: /JOINING ${CONFIG.GEO} ${CONFIG.IP} /join will execute /nodeFactory on ${pulsegroupaddress} to join ${configurl}`);    //return
+        } else {
+            console.log(`index.ts: NOT /JOINING ${CONFIG.GEO} ${CONFIG.IP} `);    //return
+        }
+    }
+    else console.log(`not connecting to myself via /join`);
+
+    //    res.redirect( 'http://' + CONFIG.IP+":"+CONFIG.PORT+"/" );
+        res.redirect( 'http://' + pulsegroupaddress+"/" );
+    return;
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.end(JSON.stringify(ts()+"/join pulseGroup with " + configurl));
+    return;
+ });
+
+ //
+ // /stop - stops ALL pulse Groups by exiting 86 - this means kill docker
+ //
  app.get('/stop', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger.info(`EXITTING and Stopping the node request from ${ip}`);
@@ -105,10 +228,16 @@ app.get('/version', function(req, res) {
         res.redirect(referer);
     } else {
         //TODO
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify("stop"));
     }
     process.exit(86);
 });
  
+//
+//  /reboot - reboot - stops ALL pulse Groups by exitting -1 - this means reboot/refetch/reload docker
+//
  app.get('/reboot', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger.info(`/reboot: THIS SHOULD KICK YOU OUT OF DOCKER request from ${ip}`);
@@ -125,12 +254,17 @@ app.get('/version', function(req, res) {
         res.redirect(referer);
     } else {
         //TODO
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify("reboot"));
     }
     process.exit(-1) 
  });
  
 
-
+//
+//  /reload - refetch/reload the DARP protocol software by exitting 36
+//
  app.get('/reload', function(req, res) {
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     logger.info(`EXITTING to reload the system request from: ${ip}`)
@@ -146,6 +280,9 @@ app.get('/version', function(req, res) {
         res.redirect(referer);
     } else {
         //TODO
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify("reloaded"));
     }
     //
     //  might be possible here to reload by running updateSW and not lose state
@@ -153,6 +290,9 @@ app.get('/version', function(req, res) {
     process.exit(36);
  });
 
+ //
+ // /asset-manifest - stops the complaining
+ //
  app.get('/asset-manifest.json', function (req, res) {  //I don't know browser complains of this absence
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -160,6 +300,9 @@ app.get('/version', function(req, res) {
     return;
 });
 
+//
+//  /graph - this should be per pulseGroup
+//
 app.get('/graph/:src/:dst', function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -167,87 +310,96 @@ app.get('/graph/:src/:dst', function(req, res) {
     var src=req.params.src;
     var txt='';
     txt+=grapher(src,dest); //get the HTML to display and show graph
-
-    // txt+='<meta http-equiv="refresh" content="'+60+'">';
-    // txt+="<html> <head> <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script> <script> google.charts.load('current', {packages: ['corechart', 'line']}); google.charts.setOnLoadCallback(drawBackgroundColor); function drawBackgroundColor() { var data = new google.visualization.DataTable(); data.addColumn('date', 'X'); data.addColumn('number', 'one-way'); data.addRows([";
-    // var myYYMMDD=YYMMDD();
-    // var path=SRC+"-"+DST+"."+myYYMMDD+'.txt';
-    // try {
-    //     if (fs.existsSync(path)) {
-    //         txt+=fs.readFileSync(path);
-    //         console.log(`found graph data file ${path}:${txt}`);
-    //     }
-    //     else console.log("could not find live pulseGroup graph data from "+path);
-    // } catch(err) {
-    //     return console.error(err)
-    // }
-    // txt+=" ]); var options = { hAxis: { title: '"+SRC+"-"+DST+" ("+myYYMMDD+")' }, vAxis: { title: 'latency (in ms)' }, backgroundColor: '#f1f8e9' }; var chart = new google.visualization.LineChart(document.getElementById('chart_div')); chart.draw(data, options); } </script> </head> <body> <div id='chart_div'></div>";
-    // txt+="<p><a href="+'http://' + me.ipaddr + ':' + me.port + '>Back</a></p></body> </html>';
-    // console.log(`graph txt=${txt}`);
-
     res.end(txt);
     return;
 });
 
-
+//
+//  /mintTable - BUG this returns pulseGroup - should return only mintTable, but caller uses the fuull pulseGroup pulses and all
+//
 //  this API should be the heart of the project - request a pulseGroup configuration for yourself (w/paramters), 
 //  or update your specific pulseGroup to the group owner's 
-app.get('/pulsegroup/:pulsegroup/:mint', function(req, res) {
+app.get(['/mintTable','/mintTable/:pulsegroup/:mint','/mintTable/:pulsegroup'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
-
+    console.log(`index.ts: ${req.connection.remoteAddress} fetching pulseGroup ${req.params.pulsegroup} ${req.params.mint||"all"}`);
     // pulseGroup 
-    if (typeof req.params.pulsegroup != "undefined") { 
-        for (var pulseGroup in myPulseGroups) {
-            if (myPulseGroups[pulseGroup].groupName==req.params.pulsegroup) {
-                var mint=0;
-                if (typeof req.params.mint != "undefined")  // use our mint 0
-                    mint=parseInt(req.params.mint)          // or send mint0 of caller
-                
-                let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));  // clone my pulseGroup obecjt 
-                clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
-
-                res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
-                return;  // we sent the more specific
-            }
-        }
-        res.end(JSON.stringify(null));
-    } else {
-        logger.warning("No pulseGroup specified");
-        res.end(JSON.stringify(myPulseGroups, null, 2));
-        return;
+    var pulseGroupName=me.geo+".1";  //assume 
+    if (typeof req.params.pulsegroup != "undefined") {
+        pulseGroupName=req.params.pulsegroup; 
     }
+    for (var pulseGroup in myPulseGroups) {
+        if (myPulseGroups[pulseGroup].groupName==pulseGroupName) {
+            var mint=0;
+            if (typeof req.params.mint != "undefined")  // use our mint 0
+                mint=parseInt(req.params.mint)          // or send mint0 of caller
+            
+            let clonedPulseGroup = JSON.parse(JSON.stringify(myPulseGroups[pulseGroup]));  // clone my pulseGroup obecjt 
+            if (typeof clonedPulseGroup.mintTable[mint] != "undefined"  && clonedPulseGroup.mintTable[mint] != null ) 
+                clonedPulseGroup.mintTable[0]=clonedPulseGroup.mintTable[mint];  // assign him his mint and config
+            res.end(JSON.stringify(clonedPulseGroup, null, 2));  // send the cloned group with his mint as mint0
+            return;  // we sent the more specific
+        }
+    }
+    res.end(JSON.stringify(null));
 });
 
+//
+//  /pulseGroups /state    <-- this is actually the workhorse
+//
 const fs = require('fs');
 app.get(['/pulsegroups','/state'], function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    //console.log(`sending JSON stringify of pulseGroups object`);
-    res.end(JSON.stringify(myPulseGroups,null,2)); 
-    return;
-    // cache 
-    let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
-    //console.log(`sending contents of ${filename}`);
-    try {
-        var fileContents = fs.readFileSync(filename);
-        res.end(fileContents); //CRASH - catch 
-    } catch (err) {
-        // Here you get the error when the file was not found,
-        // but you also get any other error
-        res.end("INTERNAL ERROR - can't find pulseGroup object me=${me}"); //CRASH - catch 
-    }
+    // remove history
 
+
+
+    var clonedPulseGroups=JSON.parse(JSON.stringify(myPulseGroups,null,2));
+    for (var i in clonedPulseGroups) {
+            var pulseGroup=clonedPulseGroups[i];
+            for (var p in pulseGroup.pulses) {
+                pulseGroup.pulses[p].history={}
+            }
+    }
+    var myShortPulseGroups=JSON.stringify(clonedPulseGroups,null,2)
+    res.end(myShortPulseGroups); 
     return;
 });
 
+//
+//  /genesisnodelist - for discovery - should be JSON
+//
+app.get('/genesisnodelist', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    let filename="../"+"genesisnodelist.config";  //deliver cached JSON file instead of stringifying many times
+    console.log(`/genesisnodelist sending contents of ${filename} - maybe should be JSON formtted`);
+    try {
+        var fileContents = fs.readFileSync(filename);
+        //console.log(`filecontents=${fileContents}`);
+        res.end(fileContents); //
+    } catch (err) {
+        // Here you get the error when the file was not found,
+        // but you also get any other error
+        res.end("INTERNAL ERROR - can't find genesisnodelist.config "); 
+    }
+    return;
+});
+
+
+//
+//  /me - shorthand for my pulseGroup
+//
 app.get('/me', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     res.end(JSON.stringify(myPulseGroups[me.geo+".1"], null, 2)); 
 /*
+    //      DO NOT DELETE     CACHING HELPS HERE
     let filename="../"+me.ipaddr+"."+me.port+'.json';  //deliver cached JSON file instead of stringifying many times
     console.log(`/me sending contents of ${filename}`);
     try {
@@ -264,8 +416,11 @@ app.get('/me', function(req, res) {
     return;
 });
 
-
-app.get('/mintTable', function(req, res) {
+/*
+//
+//  /mintTable - should return my pulseGroups[ me.geo + ".1" ]
+//
+app.get('/oldmintTable', function(req, res) {
     logger.info("fetching '/mintTable' ");
     res.setHeader('Content-Type', 'application/json');
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -274,6 +429,7 @@ app.get('/mintTable', function(req, res) {
     } catch(e) {};
     return;
 });
+*/
 
 function findPublicKey(incomingKey:string) {
 const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
@@ -285,7 +441,7 @@ const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
     return null;
 }
 //
-//  only return if you have it
+//  /publickey  -  only return if you have it
 //
 app.get(['/publickey','/publickey/:publickey'], function(req, res) {
     console.log("fetching '/publickey' searching for "+ req.params.publickey );
@@ -320,11 +476,88 @@ app.get(['/publickey','/publickey/:publickey'], function(req, res) {
         return;
     }
 });
+//
+//  /lookup  -  only return if you have it
+//
+app.get(['/lookup/:searchString','/lookup/','/lookup/:searchString/:sourceGeo'], function(req, res) {
+    console.log("fetching '/lookup' searching for "+ req.params.searchString );
+    if (typeof req.params.searchString == "undefined" || req.params.searchString=="" || req.params.searchString == null) {
+        console.log(`NULL key searched - sending all mintTable`);
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify(myPulseGroups[me.geo+".1"].mintTable,null,2));
+        return;
+    }
 
+    console.log(`looking up search string ${req.params.searchString} in this mintTable`);
+    var sourceGeo=""
+    if (typeof req.params.sourceGeo != "undefined" ) {
+        sourceGeo=req.params.sourceGeo;
+    }
+
+    const myMintTable=myPulseGroups[me.geo+".1"].mintTable;
+    var searchString=req.params.searchString
+
+
+    //var re=new RegExp(searchString,"g")
+    for (var m in myMintTable) {
+        if (myMintTable[m]!=null) {
+            console.log(`/lookup looking for ${searchString} from mintEntry ${myMintTable[m].geo} `);
+            if ((myMintTable[m].publickey==searchString) || 
+            (myMintTable[m].ipaddr+":"+myMintTable[m].port==searchString) || 
+            (myMintTable[m].geo==searchString) ||
+            (myMintTable[m].ipaddr==searchString && myMintTable[m].port==65013) /* ||  //DEFAULT PORT DEFAULT
+            (re.test(myMintTable[m].geo)) */ ) {
+
+                res.setHeader('Content-Type', 'application/json');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                console.log(`/lookup FOUND ${searchString} `);
+                /*
+                var returnedObject = {  //do we want to add
+                    publickey:G.publickey,
+                    genesisIP:myPulseGroups[me.geo+".1"].mintTable[1].ipaddr, 
+                    genesisPort:myPulseGroups[me.geo+".1"].mintTable[1].port, 
+                    destIP:G.ipaddr, 
+                    destPort:G.port
+                }
+                */
+                //console.log(`returnedObject=${JSON.stringify(returnedObject,null,2)}`);
+                res.end(JSON.stringify(JSON.stringify(myMintTable[m]),null,2)); // IPADDR : PORT of my genesis node 
+                return;
+            }
+        }
+    }
+// We do not have this deztination in our own groups
+
+// ONLY One Genesis Node should do the GeneisNodeList-wide search
+    if ( sourceGeo != "" && typeof myPulseGroups[ CONFIG.GEO+".1" ].pulses[ sourceGeo + ":" + CONFIG.GEO+".1" ] != "undefined" ) {
+        //      ask every node in the GenesisLNodeList
+        console.log(`/lookup - Here we would ask the GenesisNodeList if they have it in their own mintTable : GNL=${process.env.GENESISNODELIST}`);
+        
+    } else {
+        // else return null, that we don't have this search entry
+
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.end(JSON.stringify({})) // don't have it - might be easier to just ignore the request - this is better UDP
+    }
+});
+
+//
 // nodeFactory - the engine of the system - Genesis node we clone ourselves and set self to the new guy
+//
 // this way the new guy starts wth our collective (genesis) understanding of counters)
 // we also sync counters this with genesis certain times as a hack or defensive measure
 // Configuration for node - allocate a mint
+//
+//  if (destination specified)
+//      for each in GenesisNodeList
+//          if (node.lookup(destination) ) {
+//              return genesisNode.buildPulseGroup(srcPulseGroup,source,destination)
+//              
+// //buildPulseGroup(PG,source,destination)
+//          if (destination is me) blend(source,sourcePG,destination,destinationPG)
+// 
 app.get('/nodefactory', function(req, res) {
     // additional nodes adding to pulseGroup
 
@@ -371,7 +604,8 @@ app.get('/nodefactory', function(req, res) {
     version=MYVERSION(); 
     version=config.VERSION;
 
-
+    //var myPulseGroup=myPulseGroups[ me.geo + ".1"];  //this is the pulseGroup to add to
+    //console.log(`index.ts: myPulseGroup that I can add to is:${dump(myPulseGroup)}`);
 
 
     // handle Genesis node case - first to start up
@@ -379,12 +613,22 @@ app.get('/nodefactory', function(req, res) {
         console.log(`I AM GENESIS NODE incomingIP=${incomingIP} port=${port} GENESIS=${config.GENESIS} GENESISPORT=${config.GENESISPORT} me=`+dump(me));
         
         //Log(ts()+` NEW NODEFACTORY Created GENESIS NODE ${myPulseGroup.groupOwner} : ${myPulseGroup.groupName} ${JSON.stringify(myPulseGroup)}`);
-        Log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
-        console.log(`NEW NODEFACTORY Created GENESIS NODE   ${myPulseGroup.mintTable[0].geo} : ${myPulseGroup.groupName} ${myPulseGroup.mintTable[0].ipaddr}:${myPulseGroup.mintTable[0].port}`);
-        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
-        myPulseGroup.rc="SELF"
+        Log(`NEW NODEFACTORY Created GENESIS NODE   ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
+        console.log(`NEW NODEFACTORY Created GENESIS NODE    ${CONFIG.GEO} : ${CONFIG.GEO+".1"} ${CONFIG.IP}:${CONFIG.PORT}`);
+        console.log(`At this point, we ourselves are GENESIS NODE`);
+
+        //myPulseGroups[ me.geo + ".1"]=new AugmentedPulseGroup(myPulseGroup);
+
+//        myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
+
+        //myPulseGroup.rc="SELF"
         //myPulseGroups[ config.GEO + ":" + config.GEO + ".1" ]=myPulseGroup
-        myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
+
+        //myPulseGroups[ config.GEO + ".1" ]=myPulseGroup
+        //@wbnwbnwbn - replace with this
+        //addPulseGroup(myPulseGroup);    
+        //addPulseGroup(myPulseGroup);   //add a new pulseGroup <-- already started or wouldn't not be able to call this API
+
         logger.info("...........................GENESIS NODE CONFIGURED : ${JSON.stringify(myPulseGroups[ config.GEO + '.1' ],null,2)}");
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(myPulseGroup)); 
@@ -399,7 +643,6 @@ app.get('/nodefactory', function(req, res) {
 
 
 
-
     if ( Object.keys(myPulseGroup.pulses).length >= config.MAXNODES) {
         console.log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${config.MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${incomingGeo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
         Log(ts()+`EXCEEDED MAX NODES (${myPulseGroup.nodeCount}>${config.MAXNODES})IN PULSE GROUP - IGNORING REQUEST from ${incomingGeo} ${incomingIP} ${clientIncomingIP} ${req.query.myip}`);
@@ -407,51 +650,6 @@ app.get('/nodefactory', function(req, res) {
         res.end(JSON.stringify(null)); 
         return;
     }
-
-
-
-
-
-
-/*
-
-    if ( incomingGeo != config.GEO ) {       //  incoming geo NOT US? 
-        //var redirectedURL='http://'+genesis.ipaddr+":"+genesis.port+req.originalUrl;
-        //console.log(`I DO NOT OWN THIS GROUP - REDIRECTING TO my Genesis node... Redirecting /nodeFactory request to my GENESIS NODE ${redirectedURL} `);
-        console.log(`nodefactory(): I am NON-GENESIS but node requested nodeFactory - could redirect, or accept and deal with multi-pulseGroup dockers...`);
-        console.log(`********* NON-GENESIS NODE RECEIVING NODE REQUEST`);
-
-        // HANDLE  MY GENESIS GROUP  own pulseGroup for others to connect to
-        if ( typeof myPulseGroups[ config.GEO+".1" ] == "undefined") {  // Construct my own pulseGroup for others to connect to
-
-            const me = new MintEntry(0, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes can count on 'me' always being present
-            const megenesis = new MintEntry(1, config.GEO, config.PORT, config.IP, config.PUBLICKEY, config.VERSION, config.WALLET, config.BOOTTIMESTAMP);  //All nodes also start out ready to be a genesis node for others
-            var pulse = new PulseEntry(1, config.GEO, config.GEO+".1", config.IP, config.PORT, config.VERSION, config.BOOTTIMESTAMP);    //makePulseEntry(mint, geo, group, ipaddr, port, version) 
-            var mePulseGroup = new PulseGroup(me, megenesis, pulse);  //my pulseGroup Configuration, these two me and genesis are the start of the mintTable
-
-            //  
-            var newNode = new MintEntry(2, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
-            myPulseGroup.mintTable[2] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
-            myPulseGroup.pulses[incomingGeo + ":" + config.GEO+".1"] = new PulseEntry(2, incomingGeo, config.GEO+".1", String(incomingIP), port, config.VERSION, incomingBootTimestamp);
-
-            myPulseGroups[ config.GEO+".1" ] = mePulseGroup;  //@WBNWBNWBN
-
-            //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on this newly formed pulseGorup of ours
-
-            console.log(`mePulseGroup=${JSON.stringify(mePulseGroup,null,2)}`);
-            //return;
-        } 
-
-        //myPulseGroup = myPulseGroups[ config.GEO+".1" ]   //we work on our newly formed group
-        
-    } else {
-        //   @WBNWBNWBN - use the geo of incoming pulse
-        //myPulseGroup = myPulseGroups[ geo + ".1" ]   //we work on this newly formed pulseGorup of ours
-    }
-
-    console.log(`continuing on to nodeFactory myPulseGroup=${myPulseGroup}`);
-*/
-
 
     // First, remove previous instances from this IP:port - one IP:port per pulseGroup-we accept the last
     // TODO - this next block should probably use the deleteNode code instead.
@@ -484,12 +682,13 @@ app.get('/nodefactory', function(req, res) {
     //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
     myPulseGroup.nodeCount=Object.keys(myPulseGroup.pulses).length;
 
-    myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
+    //myPulseGroups[ myPulseGroup.groupName ] = myPulseGroup;  //
+    //addPulseGroup(myPulseGroup);   //@wbnwbnwbn Add new pulseGroup as an Augmented Pulse Group Object
 
-    console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
+    //console.log(`********* = = = = = = = = =     myPulseGroups = ${JSON.stringify(myPulseGroups,null,2)}`); 
     
 
-    //--------------------------------------------------------------------------
+    //------------------------------  CLONE SELF   --------------------------------------------
     // make a copy of the pulseGroup for the new node and set its passed-in startup variables
     let newNodePulseGroup = JSON.parse(JSON.stringify(myPulseGroup));  // CLONE my pulseGroup object 
     newNodePulseGroup.mintTable[0]=newNode;  // assign him his mint and config
@@ -528,36 +727,45 @@ app.get('/nodefactory', function(req, res) {
 (async () => {
     try {
         var myOriginalPulseGroup=myPulseGroup
-        myPulseGroup = await getPulseGroup(config);   //replaces starting myPulseGroup
+        myPulseGroup = await getPulseGroup(config);   //get config from Geneis node and start it
+
         //var anchorPulseGroup = await getPulseGroup(config);   //t
 
-        console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
-        var augmentedPulseGroup = new AugmentedPulseGroup(config, myPulseGroup);   //augmented with pulseGroup methods
+        //console.log(`asynch() DARP NODE STARTED: anchor GENESIS=${myPulseGroup.groupOwner} pulseGroup=${dump(myPulseGroup)}`);
+        //var augmentedPulseGroup = new AugmentedPulseGroup(myPulseGroup);   //augmented with pulseGroup methods
 
         //console.log(`augmentedPulseGroup=${JSON.stringify(augmentedPulseGroup,null,2)}`);
         
-        augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
-        augmentedPulseGroup.pulse();
-        augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
-        setTimeout(augmentedPulseGroup.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
-        setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
-        setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
+        //augmentedPulseGroup.flashWireguard();  // create our wireguard files based on our mint Table
+        //augmentedPulseGroup.pulse();
+        //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
+        //setTimeout(augmentedPulseGroup.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
+        //setTimeout(augmentedPulseGroup.checkSWversion, 10 * 1000);  // check that we have the best software
+        //setTimeout(augmentedPulseGroup.measurertt, 2 * 1000); // ping across wireguard every other second
 
-        myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in
+        //myPulseGroups[ myPulseGroup.groupName ] = augmentedPulseGroup;     //wire it in started up from self or genesis node
 
+        //addPulseGroup(myPulseGroup);    //create and start this first connetion into the ecosystem
 
-        if (myPulseGroup.groupOwner  != me.geo ) {
-            myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(config, myOriginalPulseGroup);           
-            console.log(`index.ts:  WE LAUNCHED OUR OWN PULSE GROUP ${JSON.stringify(myPulseGroups[ me.geo+".1" ],null,2) }`);
+        if (myPulseGroup.groupOwner != CONFIG.GEO ) {  //if we instantiated someone else's pulse group, also spin up our own
+            //myPulseGroups[ me.geo+".1" ] = new AugmentedPulseGroup(myOriginalPulseGroup); 
+            
+            addPulseGroup(myOriginalPulseGroup);  //start up my own pulse group
+            //myPulseGroup=myPulseGroups[ me.geo+".1" ];
+            console.log(`******* Also instantiated myPulseGroup Object: You should see two groups - we are *not* GENESIS node`);
+            //myPulseGroups[ config.GEO + ".1" ] = new AugmentedPulseGroup(myPulseGroup);
+        } else {         
+            console.log(`index.ts:  WE LAUNCHED ${myPulseGroup.groupName} OUR OWN ${CONFIG.GEO} PULSE GROUP ${JSON.stringify(myPulseGroups[ CONFIG.GEO+".1" ],null,2) }`);
         }
-
+        myPulseGroup=myPulseGroups[CONFIG.GEO+".1"]
         //could clone this new pulseGroup as my own for accepting new connections
 
-        console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
+        //console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
     } catch (error) {
         logger.error(error);
     }
 })();
+/**/
 
 //
 //  darp.bash substitutes in proper CODE and CONFIG for new node
@@ -569,7 +777,7 @@ app.get('/darp.bash', function(req, res) {
     fs.readFile('darp.bash', function(err:string, data:string){
         if (err) console.log(`darp.bash file unavailable`);//console.log(`sending data ${data}`);
         else {
-            console.log(`retrieving darp.bash config.GENESIS=${config.GENESIS}`);
+            console.log(`retrieving darp.bash for ${req.connection.remoteAddress} config.GENESIS=${config.GENESIS}`);
             //console.log(`data=${data}`);
             var str=data.toString();
 
@@ -582,14 +790,16 @@ app.get('/darp.bash', function(req, res) {
 
             //option 2 - connect to the ndoe that responds first.
             //          get code from any genesis node on genesislist, but we will use first
-            var genesislist=process.env.GENESISNODELIST||"";
-            var genesisNodes=genesislist.split(",");
-
+            //var genesislist=process.env.GENESISNODELIST||"";
+            //var genesisNodes=genesislist.split(",");
             
             //str=str.replace(/MYGENESISIP/gi, genesisNodes[0] );
             str=str.replace(/MYGENESISIP/gi, "auto" );
             str=str.replace(/DOCKERTAG/gi, config.VERSION.split(":")[0] );
             str=str.replace(/GITTAG/gi, config.VERSION.split(":")[1] );
+            str=str.replace(/GENESIS_NODE_LIST/gi, process.env.GENESISNODELIST||"" );  //inherit GNL
+            str=str.replace(/_MY_IP/gi, config.IP||"" );  //inherit GNL
+            str=str.replace(/_MY_PORT/gi, config.PORT.toString());  //inherit GNL
             //console.log(`genesisNodes[0]=${genesisNodes[0]}   <--- Here I plug in the First Genesis node in list - `);
 
             //console.log("darp.bash="+str);
