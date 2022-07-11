@@ -7,7 +7,7 @@
 
 #if you are in a noia directory you can build and push the code to your own repo
 #otherwise, this script does not ap[ply to running nodes - maybe don't put it in docker?
-pwd |grep noia
+pwd |grep Development
 if [ $? -ne 0 ]; then
 	echo $0 can not run from a non-development area
 	exit 86
