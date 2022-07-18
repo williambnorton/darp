@@ -18,7 +18,8 @@ const PULSEFREQ=1;  // (in seconds) how often to send pulses
 
 
 const MEASURE_RTT=true;   //ping across wireguard interface
-const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
+//const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
+const FIND_EFFICIENCIES=false; //write json file out without better paths
 
 const SECURE_PORT=65020;    
 

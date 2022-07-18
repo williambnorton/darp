@@ -52,7 +52,8 @@ logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
 var MEASURE_RTT = true; //ping across wireguard interface
-var FIND_EFFICIENCIES = true; //search for better paths through intermediaries
+//const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
+var FIND_EFFICIENCIES = false; //write json file out without better paths
 var SECURE_PORT = 65020;
 var CHECK_SW_VERSION_CYCLE_TIME = 60; // CHECK for new SW updates every 60 seconds
 var NO_MEASURE = 99999; //value to indis=cate no measurement exists
