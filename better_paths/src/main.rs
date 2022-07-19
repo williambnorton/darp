@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use serde_json;
+use serde_json::{Result,Value};
 use std::fs::File;
 use std::io::Read;
 use std::path;
@@ -25,6 +25,6 @@ fn main() {
     let mut data = String::new();
     file.read_to_string(&mut data).unwrap();
 
-    let json:PulseGroups = serde_json::from_str(&data).unwrap();
+    let json:Value = serde_json::from_str(&data).unwrap();
     println!("{:?}", json);
 }
