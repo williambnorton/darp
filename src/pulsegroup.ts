@@ -1511,17 +1511,6 @@ export class AugmentedPulseGroup {
         }
     };
 
-
-
-
-
-
-
-
-
-
-
-
     //
     //  measurertt() - subagents/rtt doing measurements based on pulling pulseGroup once a minute
     //              it creates a file ip.<ipaddr> if it responds to ping, deletes if it does not respond
