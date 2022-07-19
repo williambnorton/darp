@@ -12,12 +12,17 @@ struct PulseGroups {
 
 fn main() {
 
+    // read pulse_groups.json file once a second, 
+    // crunch better paths, 
+    //   spit out pulse_groups+.json
+
+
+
     //while :
     //    sleep 1 
     //    if wireguard file changed, launch wg-quick
     //    if pulsegroups file changed, run better path
     //let pgs=readfile();
-
   
     let darp_dir = std::env::var("DARPDIR").unwrap_or("./".to_string());
     let filename = darp_dir+"/pulse_groups.json";
