@@ -72,7 +72,7 @@ do
 					#sleep 90
 				#echo `date` SLEEPING...
 				if [ "$ip" == "52.53.222.151" ]; then
-					echo `date` Sleeping for Genesis node start up
+					echo `date` "Sleeping 15 seconds lfor Genesis node start up"
 					sleep 15
 				fi
 			else 
