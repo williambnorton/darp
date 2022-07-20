@@ -758,7 +758,7 @@ export class AugmentedPulseGroup {
 
 
 
-            var pg=JSON.parse(JSON.stringify(myPulseGroups));
+            var pg=JSON.parse(JSON.stringify(this));
             var filename="../pulseGroups.json";  // gets polled often ~every second
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
