@@ -751,20 +751,21 @@ export class AugmentedPulseGroup {
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
+            var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
 
 
-
+/*
             var pg=JSON.parse(JSON.stringify(this));
             var filename="../pulseGroups.json";  // gets polled often ~every second
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
-
+*/
 
         //}
 
@@ -791,13 +792,13 @@ export class AugmentedPulseGroup {
             //    
             //}
         }  /**/
-        var pg=JSON.parse(JSON.stringify(this));
-        var filename=process.env.DARPDIR+"/pulsegroups.json";  // gets polled often ~every second
+        //var pg=JSON.parse(JSON.stringify(this));
+        //var filename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
         //console.log("writing filename="+filename);
-        fs.writeFile(filename, strCopy, (err:string) => {
-            if (err) throw err;
+        //fs.writeFile(filename, strCopy, (err:string) => {
+        //    if (err) throw err;
             //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-        });
+        //});
     };
 
 

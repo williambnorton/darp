@@ -578,18 +578,20 @@ var AugmentedPulseGroup = /** @class */ (function () {
             delete copy.config;
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
             var filename = "../" + _this.config.IP + "." + _this.config.PORT + '.json'; // gets polled often ~every second
+            var filename = process.env.WGDIR + "/pulse_group." + _this.config.IP + "." + _this.config.PORT + '.json'; // gets polled often ~every second
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
-            var pg = JSON.parse(JSON.stringify(_this));
-            var filename = "../pulseGroups.json"; // gets polled often ~every second
-            fs.writeFile(filename, strCopy, function (err) {
-                if (err)
-                    throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
+            /*
+                        var pg=JSON.parse(JSON.stringify(this));
+                        var filename="../pulseGroups.json";  // gets polled often ~every second
+                        fs.writeFile(filename, strCopy, (err:string) => {
+                            if (err) throw err;
+                            //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+                        });
+            */
             //}
             /*
                 var genesislist=process.env.GENESISNODELIST||"";
@@ -614,14 +616,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //
                 //}
             }  /**/
-            var pg = JSON.parse(JSON.stringify(_this));
-            var filename = process.env.DARPDIR + "/pulsegroups.json"; // gets polled often ~every second
+            //var pg=JSON.parse(JSON.stringify(this));
+            //var filename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
             //console.log("writing filename="+filename);
-            fs.writeFile(filename, strCopy, function (err) {
-                if (err)
-                    throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
+            //fs.writeFile(filename, strCopy, (err:string) => {
+            //    if (err) throw err;
+            //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+            //});
         };
         //
         //  
