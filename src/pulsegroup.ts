@@ -408,7 +408,7 @@ export class AugmentedPulseGroup {
 
     // Build matrix of objects for each segment
     buildMatrix = () => {
-        //return ;
+        if (!FIND_EFFICIENCIES) return;
         var matrix: number[][] = [];
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
@@ -750,8 +750,10 @@ export class AugmentedPulseGroup {
             delete copy.config;                         
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
-            var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
-            var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
+            //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
+            //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
+            var filename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
+
             fs.writeFile(filename, strCopy, (err:string) => {
                 if (err) throw err;
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);

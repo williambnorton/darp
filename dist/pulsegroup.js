@@ -280,7 +280,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         // Build matrix of objects for each segment
         this.buildMatrix = function () {
-            //return ;
+            if (!FIND_EFFICIENCIES)
+                return;
             var matrix = [];
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
@@ -577,8 +578,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
             delete copy.receiver;
             delete copy.config;
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
-            var filename = "../" + _this.config.IP + "." + _this.config.PORT + '.json'; // gets polled often ~every second
-            var filename = process.env.WGDIR + "/pulse_group." + _this.config.IP + "." + _this.config.PORT + '.json'; // gets polled often ~every second
+            //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
+            //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
+            var filename = process.env.WGDIR + "/pulse_groups.json"; // gets polled often ~every second
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
