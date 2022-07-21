@@ -793,7 +793,7 @@ export class AugmentedPulseGroup {
         }  /**/
         var pg=JSON.parse(JSON.stringify(this));
         var filename=process.env.DARPDIR+"/pulsegroups.json";  // gets polled often ~every second
-        console.log("writing filename="+filename);
+        //console.log("writing filename="+filename);
         fs.writeFile(filename, strCopy, (err:string) => {
             if (err) throw err;
             //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);

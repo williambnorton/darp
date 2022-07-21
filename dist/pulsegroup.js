@@ -616,7 +616,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }  /**/
             var pg = JSON.parse(JSON.stringify(_this));
             var filename = process.env.DARPDIR + "/pulsegroups.json"; // gets polled often ~every second
-            console.log("writing filename=" + filename);
+            //console.log("writing filename="+filename);
             fs.writeFile(filename, strCopy, function (err) {
                 if (err)
                     throw err;
