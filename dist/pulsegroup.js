@@ -411,7 +411,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     owls;
                 //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
+                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST - Chasing down measurement difference running by hand and in code
                 var dgram = require("dgram");
