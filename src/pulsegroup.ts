@@ -761,6 +761,7 @@ export class AugmentedPulseGroup {
             delete copy.config;                         
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
+            console.log(" about to write strCopy="+strCopy+" to pulse_groups0.json");
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             let tmpfilename=process.env.WGDIR+"/pulse_groups0.json";  // gets polled often ~every second
@@ -773,7 +774,7 @@ export class AugmentedPulseGroup {
                 });
             //}
             fs.rename(tmpfilename,realfilename,(err:string) => {
-                if (err) throw err;
+                if (err) console.log("Error "+err+" renaming "+tmpfilename+" to "+realfilename);
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
             //BEVBEV
