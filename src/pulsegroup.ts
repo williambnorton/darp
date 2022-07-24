@@ -652,7 +652,12 @@ export class AugmentedPulseGroup {
                             logger.error(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             console.log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
                             Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
-                            this.adminControl="STOP"; //@wbnwbn
+                            Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                            Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                            Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                            Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. Exitting. newpulseGorup=${dump(this)}`);
+                            Log(`timeout(): Genesis node disappeared. age of = ${age} ms Exit, our work is done. SHOULD Exitting. newpulseGorup=${dump(this)}`);
+                           //this.adminControl="STOP"; //@wbnwbn
                             //process.exit(36);
                         }
 

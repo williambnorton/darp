@@ -506,7 +506,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                                 logger_1.logger.error("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 console.log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
                                 lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
-                                _this.adminControl = "STOP"; //@wbnwbn
+                                lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
+                                lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
+                                lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
+                                lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. Exitting. newpulseGorup=" + lib_1.dump(_this));
+                                lib_1.Log("timeout(): Genesis node disappeared. age of = " + age + " ms Exit, our work is done. SHOULD Exitting. newpulseGorup=" + lib_1.dump(_this));
+                                //this.adminControl="STOP"; //@wbnwbn
                                 //process.exit(36);
                             }
                             // we may timeout the group owner and kill the pulsegroup
