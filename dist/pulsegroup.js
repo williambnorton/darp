@@ -348,7 +348,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //         then they get all nodes as needed to measure/communicate
         // TODO: pulse (measure OWLs) over secure channel - just change to private addr
         this.pulse = function () {
-            console.log("PULSE");
             var nodeList = [];
             var owls = "";
             //
@@ -393,7 +392,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
                 }
             }
-            console.log("HERE HERE 1 2 3");
             owls = owls.replace(/,+$/, ""); // remove trailing comma
             var myEntry = _this.pulses[_this.config.GEO + ":" + _this.groupName];
             logger_1.logger.debug("pulse(): looking for my entry to pulse: " + _this.config.GEO + ":" + _this.groupName);
@@ -438,15 +436,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
                 */
             }
-            console.log("Clearing timedout nodes before pulsing");
             _this.timeout(); // and timeout the non-responders
-            console.log("           timedout nodes before pulsing");
             if (_this.adminControl == "RESYNCH") {
                 logger_1.logger.info("Resynching with genesis node...");
                 _this.syncGenesisPulseGroup(); // fetch new config from genesis
                 _this.adminControl = "";
             }
-            console.log("X after resynch");
             // this.mintTable[0].state = "UP";
             _this.mintTable[0].lastPulseTimestamp = lib_1.now();
             var timeNow = _this.mintTable[0].lastPulseTimestamp; //
@@ -456,7 +451,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
             if (_this.adminControl != "STOP")
                 setTimeout(_this.pulse, sleepTime); //pull back to on-second boundary
-            console.log("Exitting Clearing timedout nodes before pulsing : this=" + JSON.stringify(_this, null, 2));
         };
         this.isGenesisNode = function () {
             return _this.mintTable[0].geo == _this.groupOwner;

@@ -476,7 +476,6 @@ export class AugmentedPulseGroup {
     //         then they get all nodes as needed to measure/communicate
     // TODO: pulse (measure OWLs) over secure channel - just change to private addr
     pulse = () => {
-        console.log("PULSE");
 
         var nodeList: NodeAddress[] = [];
         var owls = "";
@@ -525,7 +524,6 @@ export class AugmentedPulseGroup {
                 owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
             }
         }
-console.log("HERE HERE 1 2 3");
         owls = owls.replace(/,+$/, ""); // remove trailing comma
         var myEntry = this.pulses[this.config.GEO + ":" + this.groupName];
         logger.debug(`pulse(): looking for my entry to pulse: ${this.config.GEO}:${this.groupName}`);
@@ -575,17 +573,14 @@ console.log("HERE HERE 1 2 3");
             //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
             */
         }
-console.log("Clearing timedout nodes before pulsing");
 
         this.timeout(); // and timeout the non-responders
-console.log("           timedout nodes before pulsing");
 
         if (this.adminControl == "RESYNCH") {
             logger.info("Resynching with genesis node...");
             this.syncGenesisPulseGroup(); // fetch new config from genesis
             this.adminControl = "";
         }
-console.log("X after resynch");
 
         // this.mintTable[0].state = "UP";
         this.mintTable[0].lastPulseTimestamp = now();
@@ -598,7 +593,6 @@ console.log("X after resynch");
         if (this.adminControl!="STOP")
             setTimeout(this.pulse, sleepTime); //pull back to on-second boundary
 
-console.log("Exitting Clearing timedout nodes before pulsing : this="+JSON.stringify(this,null,2));
 
     };
 
