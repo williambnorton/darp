@@ -652,13 +652,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             return NO_MEASURE; // did not find the srcMint
         };
+        /*
         //
-        //  
+        //
         //      Secret sauce - the measures are relative so skews are systematic and offset each other
         //                  we only need to know if it is faster through intermediary
         //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
         //
-        /*
         findEfficiencies = () => {      //run every second - compute intensive
             if (!FIND_EFFICIENCIES) return;
             const s=new Date(); const startTimestampFE=s.getTime();
@@ -1115,23 +1115,21 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
         }
         */
-        /*****
         //
         //  recvPulses
         //
-         dgram = require("dgram");
-    
-         udp = this.dgram.createSocket("udp4");
-        recvPulses = (incomingMessage: string, ipaddr: string, port: string) => {
+        this.dgram = require("dgram");
+        this.udp = this.dgram.createSocket("udp4");
+        this.recvPulses = function (incomingMessage, ipaddr, port) {
             // try {
-                // const incomingPulse = await parsePulseMessage(incomingMessage)
+            // const incomingPulse = await parsePulseMessage(incomingMessage)
             var ary = incomingMessage.split(",");
-            const pulseTimestamp = parseInt(ary[0]);
-            const senderTimestamp = parseInt(ary[1]);
-            const OWL = pulseTimestamp - senderTimestamp;
-            var owlsStart = nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
+            var pulseTimestamp = parseInt(ary[0]);
+            var senderTimestamp = parseInt(ary[1]);
+            var OWL = pulseTimestamp - senderTimestamp;
+            var owlsStart = lib_1.nth_occurrence(incomingMessage, ",", 9); //owls start after the 7th comma
             var pulseOwls = incomingMessage.substring(owlsStart + 1, incomingMessage.length);
-            var incomingPulse: IncomingPulse = {
+            var incomingPulse = {
                 pulseTimestamp: pulseTimestamp,
                 outgoingTimestamp: senderTimestamp,
                 msgType: ary[2],
@@ -1139,31 +1137,30 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 geo: ary[4],
                 group: ary[5],
                 seq: parseInt(ary[6]),
-                bootTimestamp: parseInt(ary[7]), //if genesis node reboots --> all node reload SW too
+                bootTimestamp: parseInt(ary[7]),
                 mint: parseInt(ary[8]),
                 owls: pulseOwls,
                 owl: OWL,
-                lastMsg: incomingMessage,
+                lastMsg: incomingMessage
             };
             //  Mgmt layer
             //console.log(`incomingPulse=${incomingPulse} incomingPulse.msgType=${incomingPulse.msgType}`);
-            if (incomingPulse.msgType=="11") {
+            if (incomingPulse.msgType == "11") {
                 //console.log(`incomingPulse DARP PING (testport)`); // request=${JSON.stringify(incomingPulse)}`);
-                console.log(`PING MESSAGE incomingPulse.msgType=${incomingPulse.msgType}    incomingPulse=${JSON.stringify(incomingPulse,null,2)}`);
+                console.log("PING MESSAGE incomingPulse.msgType=" + incomingPulse.msgType + "    incomingPulse=" + JSON.stringify(incomingPulse, null, 2));
                 //
                 //if (this.isGenesisNode() && this.nodeCount<this.config.MAXNODES) {
-                if ( this.nodeCount<this.config.MAXNODES) {
-                        //HERE put the nodeCount and the # better paths
+                if (_this.nodeCount < _this.config.MAXNODES) {
+                    //HERE put the nodeCount and the # better paths
                     //PONG MESSAGE
-                    var message=`${now()},12,${this.config.VERSION},${this.config.IP},${this.config.PORT},${this.config.GEO},${this.config.BOOTTIMESTAMP},${this.config.PUBLICKEY}`   //,${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
-    
+                    var message = lib_1.now() + ",12," + _this.config.VERSION + "," + _this.config.IP + "," + _this.config.PORT + "," + _this.config.GEO + "," + _this.config.BOOTTIMESTAMP + "," + _this.config.PUBLICKEY; //,${process.env.GENESISNODELIST}`; //specify GENESIS Node directly
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
-    
-                    console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
-                    this.udp.send(message, 65013, ipaddr);
-                } else {
-                    console.log(`pulseGroup full - not answering request to join... `);
+                    console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
+                    _this.udp.send(message, 65013, ipaddr);
+                }
+                else {
+                    console.log("pulseGroup full - not answering request to join... ");
                 }
                 //
                 //
@@ -1171,19 +1168,20 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //  PONG should include enough to advocate the desired outcome - connect to me, to my genesis node, to this obne closer to you.
                 //
                 //
-            } else {
+            }
+            else {
                 //console.log(`incomingPulse.msgType=${incomingPulse.msgType}`);
-                if (parseInt(incomingPulse.msgType)==12) {    //PONG response
+                if (parseInt(incomingPulse.msgType) == 12) { //PONG response
                     //console.log(`INCOMING DARP PONG (12).... incomingPulse.msgType=${incomingPulse.msgType}`);
                     //console.log(`pulsegroup.ts: PONG RESPONSE: ${JSON.stringify(incomingPulse,null,2)}`);
-                } else {  //default pass up the stack
+                }
+                else { //default pass up the stack
                     //console.log(`INCOMING PULSE incomingPulse.msgType=${incomingPulse.msgType}`);
-                    this.processIncomingPulse(incomingPulse);
+                    _this.processIncomingPulse(incomingPulse);
                 }
             }
             //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
         };
-        ***/
         // Store one-way latencies to file or graphing & history
         //
         //  TOSO: This is called for EACH Measure - do not do a lot here! store and move on
@@ -1378,34 +1376,27 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
-        /**
         //
         //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
         //
         var dgram = require("dgram");
-    
-        const receiver = dgram.createSocket("udp4");
-    
-        receiver.on("error", (err:string) => {
-            logger.error(`Receiver error:\n${err}`);
+        var receiver = dgram.createSocket("udp4");
+        receiver.on("error", function (err) {
+            logger_1.logger.error("Receiver error:\n" + err);
             receiver.close();
         });
-    
-        receiver.on("listening", () => {
-            const address = receiver.address();
-            logger.info(`Receiver listening ${address.address}:${address.port}`);
+        receiver.on("listening", function () {
+            var address = receiver.address();
+            logger_1.logger.info("Receiver listening " + address.address + ":" + address.port);
         });
-    
-        receiver.on("message", (pulseBuffer:string, rinfo) => {
-            const incomingTimestamp = now().toString();
-            console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        receiver.on("message", function (pulseBuffer, rinfo) {
+            var incomingTimestamp = lib_1.now().toString();
+            console.log("Received " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
             // prepend our timeStamp
-            const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-            this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
+            var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+            _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
         });
-    
         receiver.bind(this.config.PORT);
-      ****/
     }
     return AugmentedPulseGroup;
 }());

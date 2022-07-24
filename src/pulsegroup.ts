@@ -294,7 +294,7 @@ export class AugmentedPulseGroup {
         
     // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
     
-    /**
+    
     //
     //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
     //
@@ -321,7 +321,7 @@ export class AugmentedPulseGroup {
     });
 
     receiver.bind(this.config.PORT);
-  ****/
+  
     }
   
     //
@@ -828,13 +828,13 @@ export class AugmentedPulseGroup {
             }
             return NO_MEASURE; // did not find the srcMint
     };
+    /*
     //
     //  
     //      Secret sauce - the measures are relative so skews are systematic and offset each other
     //                  we only need to know if it is faster through intermediary
     //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
     //
-    /*
     findEfficiencies = () => {      //run every second - compute intensive
         if (!FIND_EFFICIENCIES) return;
         const s=new Date(); const startTimestampFE=s.getTime();
@@ -1342,7 +1342,7 @@ export class AugmentedPulseGroup {
     }
     */
 
-    /*****
+    
     //
     //  recvPulses
     //
@@ -1410,7 +1410,7 @@ export class AugmentedPulseGroup {
         }
         //this.incomingPulseQueue.push(incomingPulse);  //tmp patch to test
     };
-    ***/
+    
 
     // Store one-way latencies to file or graphing & history
     //
@@ -1496,8 +1496,6 @@ export class AugmentedPulseGroup {
             });
         });
     };
-
-
 
     launch = () => {
         try {
