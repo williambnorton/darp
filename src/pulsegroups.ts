@@ -57,7 +57,7 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
 
     const receiver = dgram.createSocket("udp4");
     const udp = dgram.createSocket("udp4");   
-     
+
     var forwardingPlane=[dgram];  //
 
    for (var i=0; i<25; i++) {
@@ -95,7 +95,7 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
 
     receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
-        console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         //demux here to send to proper pulseGroup

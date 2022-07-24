@@ -88,7 +88,7 @@ receiver.on("listening", function () {
 });
 receiver.on("message", function (pulseBuffer, rinfo) {
     var incomingTimestamp = lib_1.now().toString();
-    console.log(lib_2.ts() + ("PulseGroups : Received pulse " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port));
+    //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
     // prepend our timeStamp
     var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
     //demux here to send to proper pulseGroup
