@@ -598,21 +598,21 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(" about to write strCopy="+strCopy+" to pulse_groups0.json");
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
-            var tmpfilename = process.env.WGDIR + "/pulse_groups0.json"; // gets polled often ~every second
-            var realfilename = process.env.WGDIR + "/pulse_groups.json"; // gets polled often ~every second
-            {
-                fs.writeFile(tmpfilename, strCopy, function (err) {
+            if (_this.isGenesisNode()) {
+                var tmpfilename_1 = process.env.WGDIR + "/pulse_groups0.json"; // gets polled often ~every second
+                var realfilename_1 = process.env.WGDIR + "/pulse_groups.json"; // gets polled often ~every second
+                fs.writeFile(tmpfilename_1, strCopy, function (err) {
                     if (err)
                         throw err;
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
+                fs.rename(tmpfilename_1, realfilename_1, function (err) {
+                    if (err)
+                        console.log("Error " + err + " renaming " + tmpfilename_1 + " to " + realfilename_1);
+                    //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+                });
+                //BEVBEV
             }
-            fs.rename(tmpfilename, realfilename, function (err) {
-                if (err)
-                    console.log("Error " + err + " renaming " + tmpfilename + " to " + realfilename);
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
-            //BEVBEV
             /*
                         var pg=JSON.parse(JSON.stringify(this));
                         var filename="../pulseGroups.json";  // gets polled often ~every second
