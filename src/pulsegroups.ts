@@ -78,7 +78,7 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
             const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
             console.log(ts()+`incoming FORWARDing plane for port ${index} Message: ${incomingTimestamp} ${incomingMessage}`);
         });
-        console.log(`binding ${65014+i}`);
+        console.log(`binding PORT ${65014+i}`);
         forwardingPlane[i].bind(65014+i);
     }
 
@@ -94,7 +94,7 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
 
     receiver.on("message", (pulseBuffer:string, rinfo) => {
         const incomingTimestamp = now().toString();
-        //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+        console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
         // prepend our timeStamp
         const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         //demux here to send to proper pulseGroup

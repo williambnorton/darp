@@ -72,7 +72,7 @@ var _loop_1 = function () {
         var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
         console.log(lib_2.ts() + ("incoming FORWARDing plane for port " + index + " Message: " + incomingTimestamp + " " + incomingMessage));
     });
-    console.log("binding " + (65014 + i));
+    console.log("binding PORT " + (65014 + i));
     forwardingPlane[i].bind(65014 + i);
 };
 for (var i = 0; i < 25; i++) {
@@ -88,7 +88,7 @@ receiver.on("listening", function () {
 });
 receiver.on("message", function (pulseBuffer, rinfo) {
     var incomingTimestamp = lib_1.now().toString();
-    //console.log(ts()+`PulseGroups : Received pulse ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+    console.log(lib_2.ts() + ("PulseGroups : Received pulse " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port));
     // prepend our timeStamp
     var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
     //demux here to send to proper pulseGroup
