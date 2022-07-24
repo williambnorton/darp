@@ -279,56 +279,67 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
         };
-        // Build matrix of objects for each segment
-        this.buildMatrix = function () {
-            if (!FIND_EFFICIENCIES)
-                return;
-            var matrix = [];
-            for (var pulse in _this.pulses) {
-                var pulseEntry = _this.pulses[pulse];
-                if (lib_1.now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ * 1000) { //! miss 2 poll cycles
-                    // valid pulse - put all my OWLs into matrix
-                    var ary = pulseEntry.owls.split(",");
-                    for (var owlEntry in ary) {
-                        var m = parseInt(ary[owlEntry].split("=")[0]);
-                        var owl = NO_MEASURE;
-                        var strOwl = ary[owlEntry].split("=")[1];
-                        if (typeof strOwl != "undefined") {
-                            owl = parseInt(strOwl);
+        /*
+            // Build matrix of objects for each segment
+            buildMatrix = () => {
+                if (!FIND_EFFICIENCIES) return;
+                var matrix: number[][] = [];
+                for (var pulse in this.pulses) {
+                    const pulseEntry = this.pulses[pulse];
+        
+                    if (now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ*1000) {  //! miss 2 poll cycles
+                        // valid pulse - put all my OWLs into matrix
+                        var ary = pulseEntry.owls.split(",");
+        
+                        for (var owlEntry in ary) {
+                            var m = parseInt(ary[owlEntry].split("=")[0]);
+                            var owl = NO_MEASURE;
+                            var strOwl = ary[owlEntry].split("=")[1];
+        
+                            if (typeof strOwl != "undefined") {
+                                owl = parseInt(strOwl);
+                            }
+        
+                            if (typeof matrix[m] == "undefined") {
+                                matrix[m] = [];
+                            }
+        
+                            matrix[m][pulseEntry.mint] = owl; // pulse measured to peer
                         }
-                        if (typeof matrix[m] == "undefined") {
-                            matrix[m] = [];
+        
+                        if (typeof matrix[pulseEntry.mint] == "undefined") {
+                            matrix[pulseEntry.mint] = [];
                         }
-                        matrix[m][pulseEntry.mint] = owl; // pulse measured to peer
+        
+                        matrix[pulseEntry.mint][this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
+                    } else {
+                        // old pulse - clear these entries
+         
+                        if (pulseEntry.pulseTimestamp!=0)
+                            logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
+                        
+                        //it is possible that the node has not received a pulse yet - so value==0
+                        
+                            // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                        // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                        //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
+                        //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
+                        //});
+        
+                        // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                        // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
+        
+                        if (typeof matrix[pulseEntry.mint] == "undefined") {
+                            matrix[pulseEntry.mint] = [];
+                        }
+                        matrix[pulseEntry.mint][this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
                     }
-                    if (typeof matrix[pulseEntry.mint] == "undefined") {
-                        matrix[pulseEntry.mint] = [];
-                    }
-                    matrix[pulseEntry.mint][_this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
                 }
-                else {
-                    // old pulse - clear these entries
-                    /*
-                                   if (pulseEntry.pulseTimestamp!=0)
-                                       logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
-                   */
-                    //it is possible that the node has not received a pulse yet - so value==0
-                    // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                    // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
-                    //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
-                    //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
-                    //});
-                    // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                    // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-                    if (typeof matrix[pulseEntry.mint] == "undefined") {
-                        matrix[pulseEntry.mint] = [];
-                    }
-                    matrix[pulseEntry.mint][_this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
-                }
-            }
-            // replace existing matrix
-            _this.matrix = matrix;
-        };
+        
+                // replace existing matrix
+                this.matrix = matrix;
+            };
+        */
         // Send our OWL measurements to all in the pulseGroup
         // TODO: SECURITY - least privelege principle -
         //         DO NOT pulse nodes in Quarantine the same - only send OWLs and mints for you and new guys

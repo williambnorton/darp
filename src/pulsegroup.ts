@@ -320,6 +320,7 @@ export class AugmentedPulseGroup {
         this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
     });
 
+    
     receiver.bind(this.config.PORT);
   
     }
@@ -405,7 +406,7 @@ export class AugmentedPulseGroup {
 
         this.nodeCount = Object.keys(this.pulses).length;
     };
-
+/*
     // Build matrix of objects for each segment
     buildMatrix = () => {
         if (!FIND_EFFICIENCIES) return;
@@ -440,10 +441,10 @@ export class AugmentedPulseGroup {
                 matrix[pulseEntry.mint][this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
             } else {
                 // old pulse - clear these entries
- /*
+ 
                 if (pulseEntry.pulseTimestamp!=0) 
                     logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
-*/                
+                
                 //it is possible that the node has not received a pulse yet - so value==0
                 
                     // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
@@ -465,7 +466,7 @@ export class AugmentedPulseGroup {
         // replace existing matrix
         this.matrix = matrix;
     };
-
+*/
     // Send our OWL measurements to all in the pulseGroup
     // TODO: SECURITY - least privelege principle -
     //         DO NOT pulse nodes in Quarantine the same - only send OWLs and mints for you and new guys
