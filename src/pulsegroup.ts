@@ -610,7 +610,7 @@ export class AugmentedPulseGroup {
         var mustFlash=false;  //if node add/delete
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
-        console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
+        //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
 
         if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp> (GENESIS_NODE_TIMEOUT*1000) ) {
             console.log(`timeout(): GENESIS NODE MIA for ${GENESIS_NODE_TIMEOUT} seconds -- EXITTING...`);
@@ -760,7 +760,6 @@ export class AugmentedPulseGroup {
             delete copy.receiver;
             delete copy.config;                         
 
-            console.log("About to write pulse_groups.json file");
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
@@ -778,7 +777,6 @@ export class AugmentedPulseGroup {
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
             //BEVBEV
-            console.log("After write pulse_groups.json file");
 
 /*
             var pg=JSON.parse(JSON.stringify(this));
