@@ -349,10 +349,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
         // TODO: pulse (measure OWLs) over secure channel - just change to private addr
         this.pulse = function () {
             console.log("PULSE");
-            console.log("PULSE");
-            console.log("PULSE");
-            console.log("PULSE");
-            console.log("PULSE");
             var nodeList = [];
             var owls = "";
             //
@@ -397,6 +393,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
                 }
             }
+            console.log("HERE HERE 1 2 3");
             owls = owls.replace(/,+$/, ""); // remove trailing comma
             var myEntry = _this.pulses[_this.config.GEO + ":" + _this.groupName];
             logger_1.logger.debug("pulse(): looking for my entry to pulse: " + _this.config.GEO + ":" + _this.groupName);
@@ -416,7 +413,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     owls;
                 //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
+                console.log("pulseGroup.pulse(): pulseMessage=" + pulseMessage + " to " + lib_1.dump(nodeList));
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST - Chasing down measurement difference running by hand and in code
                 var dgram = require("dgram");
@@ -441,6 +438,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
                 */
             }
+            console.log("Clearing timedout nodes before pulsing");
             _this.timeout(); // and timeout the non-responders
             if (_this.adminControl == "RESYNCH") {
                 logger_1.logger.info("Resynching with genesis node...");
@@ -456,6 +454,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(ts()+`** pulsing took=${now()%1000} ms since we started on second boundary`);
             if (_this.adminControl != "STOP")
                 setTimeout(_this.pulse, sleepTime); //pull back to on-second boundary
+            console.log("Exitting Clearing timedout nodes before pulsing : this=" + JSON.stringify(_this, null, 2));
         };
         this.isGenesisNode = function () {
             return _this.mintTable[0].geo == _this.groupOwner;
