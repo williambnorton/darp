@@ -611,6 +611,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                         console.log("Error " + err + " renaming " + tmpfilename_1 + " to " + realfilename_1);
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
+                console.log("wrote " + _this.groupName + " to file " + realfilename_1);
                 //BEVBEV
             }
             /*
