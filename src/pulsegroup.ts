@@ -765,9 +765,9 @@ export class AugmentedPulseGroup {
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             
-            if (this.isGenesisNode() ) {
+            //if (this.isGenesisNode() ) {
                 let tmpfilename=process.env.WGDIR+"/pulse_groups0.json";  // gets polled often ~every second
-                let realfilename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
+                let realfilename=process.env.WGDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
 
                 fs.writeFile(tmpfilename, strCopy, (err:string) => {
                     if (err) throw err;
@@ -778,9 +778,9 @@ export class AugmentedPulseGroup {
                     if (err) console.log("Error "+err+" renaming "+tmpfilename+" to "+realfilename);
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
-                console.log("wrote "+this.groupName+" to file "+realfilename);
+                //console.log("wrote "+this.groupName+" to file "+realfilename);
                 //BEVBEV
-            }
+            //}
 /*
             var pg=JSON.parse(JSON.stringify(this));
             var filename="../pulseGroups.json";  // gets polled often ~every second
