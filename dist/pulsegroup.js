@@ -470,7 +470,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //console.log(ts()+`timeout() `);
             var mustFlash = false; //if node add/delete
             var startingPulseEntryCount = Object.keys(_this.pulses).length;
-            //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
+            console.log(lib_1.ts() + ("timeout() " + _this.mintTable[1].lastPulseTimestamp));
             if (_this.mintTable[1].lastPulseTimestamp != 0 && lib_1.now() - _this.mintTable[1].lastPulseTimestamp > (GENESIS_NODE_TIMEOUT * 1000)) {
                 console.log("timeout(): GENESIS NODE MIA for " + GENESIS_NODE_TIMEOUT + " seconds -- EXITTING...");
                 lib_1.Log("timeout(): GENESIS NODE MIA for 15 seconds -- EXITTING...");
@@ -600,20 +600,22 @@ var AugmentedPulseGroup = /** @class */ (function () {
             delete copy.sender;
             delete copy.receiver;
             delete copy.config;
+            console.log("About to write pulse_groups.json file");
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             var tmpfilename = process.env.WGDIR + "/pulse_groups0.json"; // gets polled often ~every second
             var realfilename = process.env.WGDIR + "/pulse_groups.json"; // gets polled often ~every second
-            {
-                fs.writeFile(tmpfilename, strCopy, function (err) {
-                    if (err)
-                        throw err;
-                    //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-                });
-            }
+            //{
+            fs.writeFile(tmpfilename, strCopy, function (err) {
+                if (err)
+                    throw err;
+                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+            });
+            //}
             fs.rename(tmpfilename, realfilename);
             //BEVBEV
+            console.log("After write pulse_groups.json file");
             /*
                         var pg=JSON.parse(JSON.stringify(this));
                         var filename="../pulseGroups.json";  // gets polled often ~every second

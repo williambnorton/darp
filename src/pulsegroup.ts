@@ -616,7 +616,7 @@ console.log("Exitting Clearing timedout nodes before pulsing : this="+JSON.strin
         var mustFlash=false;  //if node add/delete
         const startingPulseEntryCount = Object.keys(this.pulses).length;
 
-        //console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
+        console.log(ts()+`timeout() ${this.mintTable[1].lastPulseTimestamp}`);
 
         if (this.mintTable[1].lastPulseTimestamp!=0 && now()-this.mintTable[1].lastPulseTimestamp> (GENESIS_NODE_TIMEOUT*1000) ) {
             console.log(`timeout(): GENESIS NODE MIA for ${GENESIS_NODE_TIMEOUT} seconds -- EXITTING...`);
@@ -766,20 +766,22 @@ console.log("Exitting Clearing timedout nodes before pulsing : this="+JSON.strin
             delete copy.receiver;
             delete copy.config;                         
 
+            console.log("About to write pulse_groups.json file");
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             let tmpfilename=process.env.WGDIR+"/pulse_groups0.json";  // gets polled often ~every second
             let realfilename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
 
-            {
+            //{
                 fs.writeFile(tmpfilename, strCopy, (err:string) => {
                     if (err) throw err;
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
-            }
+            //}
             fs.rename(tmpfilename,realfilename);
             //BEVBEV
+            console.log("After write pulse_groups.json file");
 
 /*
             var pg=JSON.parse(JSON.stringify(this));
