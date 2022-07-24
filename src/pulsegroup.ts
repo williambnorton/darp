@@ -407,10 +407,10 @@ export class AugmentedPulseGroup {
 
         this.nodeCount = Object.keys(this.pulses).length;
     };
-/*
+
     // Build matrix of objects for each segment
     buildMatrix = () => {
-        if (!FIND_EFFICIENCIES) return;
+       //if (!FIND_EFFICIENCIES) return;
         var matrix: number[][] = [];
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
@@ -467,7 +467,7 @@ export class AugmentedPulseGroup {
         // replace existing matrix
         this.matrix = matrix;
     };
-*/
+
     // Send our OWL measurements to all in the pulseGroup
     // TODO: SECURITY - least privelege principle -
     //         DO NOT pulse nodes in Quarantine the same - only send OWLs and mints for you and new guys
@@ -744,7 +744,7 @@ export class AugmentedPulseGroup {
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
-        //this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
+        this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
         
         
         //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
