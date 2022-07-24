@@ -348,6 +348,11 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //         then they get all nodes as needed to measure/communicate
         // TODO: pulse (measure OWLs) over secure channel - just change to private addr
         this.pulse = function () {
+            console.log("PULSE");
+            console.log("PULSE");
+            console.log("PULSE");
+            console.log("PULSE");
+            console.log("PULSE");
             var nodeList = [];
             var owls = "";
             //
