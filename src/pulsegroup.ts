@@ -10,6 +10,7 @@ import { NodeAddress, IncomingPulse } from "./types";
 import { grapherStoreOwls } from "./grapher";
 import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 import { addPulseGroup } from "./pulsegroups";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
@@ -292,37 +293,36 @@ export class AugmentedPulseGroup {
         //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
-    // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
+        // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
     
-    
-    //
-    //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
-    //
-    var dgram = require("dgram");
+        //
+        //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
+        //
+        var dgram = require("dgram");
 
-    const receiver = dgram.createSocket("udp4");
+        const receiver = dgram.createSocket("udp4");
 
-    receiver.on("error", (err:string) => {
-        logger.error(`Receiver error:\n${err}`);
-        receiver.close();
-    });
+        receiver.on("error", (err:string) => {
+            logger.error(`Receiver error:\n${err}`);
+            receiver.close();
+        });
 
-    receiver.on("listening", () => {
-        const address = receiver.address();
-        logger.info(`Receiver listening ${address.address}:${address.port}`);
-    });
+        receiver.on("listening", () => {
+            const address = receiver.address();
+            logger.info(`Receiver listening ${address.address}:${address.port}`);
+        });
 
-    receiver.on("message", (pulseBuffer:string, rinfo) => {
-        const incomingTimestamp = now().toString();
-        console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
-        // prepend our timeStamp
-        const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-        this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
-    });
+        receiver.on("message", (pulseBuffer:string, rinfo) => {
+            const incomingTimestamp = now().toString();
+            console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
+            // prepend our timeStamp
+            const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+            this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
+        });
 
 
-    receiver.bind(this.config.PORT);
-  
+        receiver.bind(this.config.PORT);
+        console.log("BIND 65013 DONE");
     }
   
     //

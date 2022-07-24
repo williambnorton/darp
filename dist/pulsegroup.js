@@ -1408,6 +1408,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
             _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
         });
         receiver.bind(this.config.PORT);
+        console.log("BIND 65013 DONE");
     }
     return AugmentedPulseGroup;
 }());
