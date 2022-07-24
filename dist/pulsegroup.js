@@ -440,11 +440,13 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             console.log("Clearing timedout nodes before pulsing");
             _this.timeout(); // and timeout the non-responders
+            console.log("           timedout nodes before pulsing");
             if (_this.adminControl == "RESYNCH") {
                 logger_1.logger.info("Resynching with genesis node...");
                 _this.syncGenesisPulseGroup(); // fetch new config from genesis
                 _this.adminControl = "";
             }
+            console.log("X after resynch");
             // this.mintTable[0].state = "UP";
             _this.mintTable[0].lastPulseTimestamp = lib_1.now();
             var timeNow = _this.mintTable[0].lastPulseTimestamp; //
