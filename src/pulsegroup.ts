@@ -320,7 +320,7 @@ export class AugmentedPulseGroup {
         this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
     });
 
-    
+
     receiver.bind(this.config.PORT);
   
     }
@@ -734,7 +734,7 @@ export class AugmentedPulseGroup {
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
-        this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
+        //this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
         
         
         //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
