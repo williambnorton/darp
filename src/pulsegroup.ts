@@ -293,7 +293,7 @@ export class AugmentedPulseGroup {
         //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
-        // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
+        /*
     
         //
         //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
@@ -323,6 +323,7 @@ export class AugmentedPulseGroup {
 
         receiver.bind(this.config.PORT);
         console.log("BIND 65013 DONE");
+        */
     }
   
     //

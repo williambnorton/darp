@@ -1386,29 +1386,37 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.config = new Config(); //pulse Object needs to know some things about the node config
         //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
-        // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
+        /*
+    
         //
         //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
         //
         var dgram = require("dgram");
-        var receiver = dgram.createSocket("udp4");
-        receiver.on("error", function (err) {
-            logger_1.logger.error("Receiver error:\n" + err);
+
+        const receiver = dgram.createSocket("udp4");
+
+        receiver.on("error", (err:string) => {
+            logger.error(`Receiver error:\n${err}`);
             receiver.close();
         });
-        receiver.on("listening", function () {
-            var address = receiver.address();
-            logger_1.logger.info("Receiver listening " + address.address + ":" + address.port);
+
+        receiver.on("listening", () => {
+            const address = receiver.address();
+            logger.info(`Receiver listening ${address.address}:${address.port}`);
         });
-        receiver.on("message", function (pulseBuffer, rinfo) {
-            var incomingTimestamp = lib_1.now().toString();
-            console.log("Received " + pulseBuffer + " from " + rinfo.address + ":" + rinfo.port);
+
+        receiver.on("message", (pulseBuffer:string, rinfo) => {
+            const incomingTimestamp = now().toString();
+            console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
             // prepend our timeStamp
-            var incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-            _this.recvPulses(incomingMessage, rinfo.address, rinfo.port);
+            const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
+            this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
         });
+
+
         receiver.bind(this.config.PORT);
         console.log("BIND 65013 DONE");
+        */
     }
     return AugmentedPulseGroup;
 }());
