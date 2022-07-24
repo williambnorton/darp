@@ -752,13 +752,17 @@ export class AugmentedPulseGroup {
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
-            var filename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
+            let tmpfilename=process.env.WGDIR+"/pulse_groups0.json";  // gets polled often ~every second
+            let realfilename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
 
-            fs.writeFile(filename, strCopy, (err:string) => {
-                if (err) throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
-
+            {
+                fs.writeFile(tmpfilename, strCopy, (err:string) => {
+                    if (err) throw err;
+                    //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+                });
+            }
+            fs.rename(tmpfilename,realfilename);
+            //BEVBEV
 
 /*
             var pg=JSON.parse(JSON.stringify(this));
