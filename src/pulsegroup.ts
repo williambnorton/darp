@@ -779,7 +779,10 @@ console.log("Exitting Clearing timedout nodes before pulsing : this="+JSON.strin
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
             //}
-            fs.rename(tmpfilename,realfilename);
+            fs.rename(tmpfilename,realfilename,(err:string) => {
+                if (err) throw err;
+                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+            });
             //BEVBEV
             console.log("After write pulse_groups.json file");
 
