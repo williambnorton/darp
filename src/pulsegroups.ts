@@ -56,7 +56,8 @@ setTimeout(skulker,60*1000);  //give the docker 60 seconds to connect
     var dgram = require("dgram");
 
     const receiver = dgram.createSocket("udp4");
-    const udp = dgram.createSocket("udp4");    
+    const udp = dgram.createSocket("udp4");   
+     
     var forwardingPlane=[dgram];  //
 
    for (var i=0; i<25; i++) {

@@ -1502,6 +1502,16 @@ export class AugmentedPulseGroup {
     launch = () => {
         try {
             console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
+            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
                 
             this.flashWireguard();  // create our wireguard files based on our mint Table
             this.pulse();               //start pulsing -sets own timeout

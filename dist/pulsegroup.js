@@ -1272,6 +1272,16 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.launch = function () {
             try {
                 console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
+                console.log("index.ts: pulseGroup.launch() -> " + _this.groupName + " ");
                 _this.flashWireguard(); // create our wireguard files based on our mint Table
                 _this.pulse(); //start pulsing -sets own timeout
                 //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
