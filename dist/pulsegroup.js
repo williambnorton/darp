@@ -210,6 +210,7 @@ var PulseGroup = /** @class */ (function () {
 exports.PulseGroup = PulseGroup;
 /** PulseGroup object with all necessary functions for sending and receiving pulses */
 var AugmentedPulseGroup = /** @class */ (function () {
+    //extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
     //incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     // child processes for sending and receiving the pulse messages
     //receiver: ChildProcess;
@@ -657,61 +658,64 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //                  we only need to know if it is faster through intermediary
         //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
         //
-        this.findEfficiencies = function () {
-            if (!FIND_EFFICIENCIES)
-                return;
-            var s = new Date();
-            var startTimestampFE = s.getTime();
-            for (var srcP in _this.pulses) {
-                var srcEntry = _this.pulses[srcP];
-                for (var destP in _this.pulses) {
-                    var destEntry = _this.pulses[destP]; //this code is passed n-squared times!!!
-                    if (typeof _this.matrix[srcEntry.mint] != "undefined") {
+        /*
+        findEfficiencies = () => {      //run every second - compute intensive
+            if (!FIND_EFFICIENCIES) return;
+            const s=new Date(); const startTimestampFE=s.getTime();
+    
+            for (var srcP in this.pulses) {
+                var srcEntry = this.pulses[srcP];
+                for (var destP in this.pulses) {
+                    var destEntry = this.pulses[destP];     //this code is passed n-squared times!!!
+                    if (typeof this.matrix[srcEntry.mint] != "undefined") {
                         //console.log(`findEfficiencies(): matrix=${dump(this.matrix[srcEntry.mint])} ${dump(this.matrix[destEntry.mint])} ${dump(destEntry)} ${dump(srcEntry)}`);
-                        var direct = _this.matrix[srcEntry.mint][destEntry.mint]; // 
+                        var direct = this.matrix[srcEntry.mint][destEntry.mint];  //
                         //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
                         //console.log(ts()+"findEfficiencies(): Here we would compare srcEntry.mint="+srcEntry.mint+"-destEntry.mint="+destEntry.mint+" direct="+direct);
-                        if (destEntry != srcEntry && typeof direct != "undefined") { //avoid self-self, direct owl has a value
-                            for (var iP in _this.pulses) {
-                                var intermediaryEntry = _this.pulses[iP]; //this code is passed n-cubed times
+                        if (destEntry!=srcEntry && typeof direct != "undefined" ) {  //avoid self-self, direct owl has a value
+                            for (var iP in this.pulses) {
+                                var intermediaryEntry = this.pulses[iP];  //this code is passed n-cubed times
                                 //console.log(`intermediaryEntry.mint=${intermediaryEntry.mint}`);
                                 if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                                    var srcToIntermediary = _this.matrix[srcEntry.mint][intermediaryEntry.mint]; //^^^^^ these lookups done n-cubed times
+                                    var srcToIntermediary = this.matrix[srcEntry.mint][intermediaryEntry.mint];  //^^^^^ these lookups done n-cubed times
+                                    
                                     //console.log(`srcToIntermediary=${srcToIntermediary}`);
-                                    if (typeof srcToIntermediary != "undefined") {
-                                        //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
-                                        var intermediaryToDest = _this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
+                                    if (typeof srcToIntermediary != "undefined" ) {
+                                    //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
+                                        var intermediaryToDest = this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
                                         //console.log(`intermediaryToDest=${intermediaryToDest}`);
                                         //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
                                         if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
                                             //  We have a path to compare against the direct path
-                                            var intermediaryPathLatency = srcToIntermediary + intermediaryToDest; //^^^^^^ possible better path through intermeidary
-                                            var delta = intermediaryPathLatency - direct;
+                                            var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //^^^^^^ possible better path through intermeidary
+                                            var delta=intermediaryPathLatency - direct;
                                             //console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                             if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
-                                                var dd = new Date();
+                                                var dd=new Date();
                                                 //console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
                                                 // This overwrites existing entry, replacing timestamp
-                                                var pulseIndex = srcEntry.geo + "-" + destEntry.geo;
+                                                const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
+    
                                                 //TODO: Create a URL and clickable link Z:port ==> (A=ip:port,I=ip:port,Z=ip:port)
-                                                //Create a graph pulling from A --> or all nodes store all owl threads ?     A->I    I->Z    A->Z    
+                                                //Create a graph pulling from A --> or all nodes store all owl threads ?     A->I    I->Z    A->Z
                                                 // All store all means 100 node network appends a record 10,000 every second.
                                                 //TODO: Instead, store all in native format - Log the pulseRecords
                                                 //TODO write routine to go through the Log'd pulseRecords pulling out archiveOWLs(A,Z)
                                                 //write glue code to spew out graph format from these owls
+    
                                                 //asideIP:srcEntry.ipaddr,asidePort:srcEntry.port,zsideIP:destEntry.ipaddr,zsidePort:destEntry.port,intermediaryIP:intermediaryEntry.ipaddr,intermediaryPort:intermediaryEntry.port,
                                                 //@SETextraordinaryPath
-                                                if (typeof _this.extraordinaryPaths[pulseIndex] == "undefined") {
+                                                if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
                                                     //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: dd.getTime(), lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta, aSideIP: srcEntry.ipaddr, aSidePort: srcEntry.port, zSideIP: destEntry.ipaddr, zSidePort: destEntry.port, intermediaryIP: intermediaryEntry.ipaddr, intermediaryPort: intermediaryEntry.port };
-                                                }
-                                                else {
+                                                    this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta, aSideIP:srcEntry.ipaddr, aSidePort:srcEntry.port, zSideIP:destEntry.ipaddr, zSidePort:destEntry.port, intermediaryIP:intermediaryEntry.ipaddr, intermediaryPort:intermediaryEntry.port };
+                                                } else {
                                                     //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
                                                     //console.log("Existing startTimestamp="+startTimestamp);
-                                                    _this.extraordinaryPaths[pulseIndex] = { startTimestamp: _this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated: dd.getTime(), aSide: srcEntry.geo, zSide: destEntry.geo, direct: direct, relayMint: intermediaryEntry.mint, intermediary: intermediaryEntry.geo, intermediaryPathLatency: intermediaryPathLatency, srcToIntermediary: srcToIntermediary, intermediaryToDest: intermediaryToDest, delta: delta, aSideIP: srcEntry.ipaddr, aSidePort: srcEntry.port, zSideIP: destEntry.ipaddr, zSidePort: destEntry.port, intermediaryIP: intermediaryEntry.ipaddr, intermediaryPort: intermediaryEntry.port };
+                                                    this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta, aSideIP:srcEntry.ipaddr, aSidePort:srcEntry.port, zSideIP:destEntry.ipaddr, zSidePort:destEntry.port, intermediaryIP:intermediaryEntry.ipaddr, intermediaryPort:intermediaryEntry.port };
                                                 }
                                                 //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
                                             }
+                                            
                                         }
                                     }
                                 }
@@ -721,50 +725,49 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 }
             }
             //
-            //  remove extraordinarty path entries with old lastUpdated fields 
+            //  remove extraordinarty path entries with old lastUpdated fields
             //
-            var d = new Date();
-            var timeNow = d.getTime();
-            for (var e in _this.extraordinaryPaths) {
-                var extraordinaryPath = _this.extraordinaryPaths[e];
+            const d=new Date();const timeNow=d.getTime();
+            for (var e in this.extraordinaryPaths) {
+                var extraordinaryPath=this.extraordinaryPaths[e];
                 // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
-                var freshness = timeNow - extraordinaryPath.lastUpdated;
+                var freshness=timeNow-extraordinaryPath.lastUpdated;
                 // console.log("freshness="+freshness);
-                if (freshness > 2000) {
+                if (freshness>2000) {
                     //console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
-                    delete _this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
-                }
-                else {
-                    var duration = timeNow - extraordinaryPath.startTimestamp;
-                    if (duration > 10000) { //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec
+                    delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
+                } else {
+    
+                    var duration=timeNow-extraordinaryPath.startTimestamp;
+                    if (duration>10000) {  //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec
                         //  Simulate relaying 10 packets per second traffic
                         //  credit relay, debit users
                         // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available
                         //BETTER ALGO needed here
-                        //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
-                        if ((typeof _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] != "undefined") &&
-                            (typeof _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName] != "undefined")) {
-                            _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName].relayCount += 10; //Assume better paths are relayed through for 10 pkts
+        //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
+                        if ((typeof this.pulses[extraordinaryPath.intermediary+':'+this.groupName] != "undefined" ) &&
+                            (typeof this.pulses[extraordinaryPath.aSide+':'+this.groupName] != "undefined")) {
+                                this.pulses[extraordinaryPath.intermediary+':'+this.groupName].relayCount+=10;  //Assume better paths are relayed through for 10 pkts
                             //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=100;   //relay meas forwrd 100 pktys/sec
                             //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=100;   //we assume those with better path, use it for 10 pkts
                             //this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=100;   //relay meas forwrd 100 pktys/sec
                             //this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=100;   //we assume those with better path, use it for 10 pkts
-                            _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName].relayCount -= 10; //Assume better paths are always taken and paid for as 10 pkts
+                                this.pulses[extraordinaryPath.aSide+':'+this.groupName].relayCount-=10;   //Assume better paths are always taken and paid for as 10 pkts
                             // bump the in/outMsgs by 10 pkts
-                        }
-                        else {
-                            console.log("findEfficiencies(): this.pulses[extraordinaryPath.intermediary+':'+this.groupName]=" + _this.pulses[extraordinaryPath.intermediary + ':' + _this.groupName] + " this.pulses[extraordinaryPath.aSide+':'+this.groupName]=" + _this.pulses[extraordinaryPath.aSide + ':' + _this.groupName]);
+                        } else {
+                            console.log(`findEfficiencies(): this.pulses[extraordinaryPath.intermediary+':'+this.groupName]=${this.pulses[extraordinaryPath.intermediary+':'+this.groupName]} this.pulses[extraordinaryPath.aSide+':'+this.groupName]=${this.pulses[extraordinaryPath.aSide+':'+this.groupName]}`);
                         }
                     }
                 }
             }
             //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
-            _this.mintTable[0].lastPulseTimestamp = timeNow;
-            var sleepTime = PULSEFREQ * 1000 - timeNow % 1000 + 600; //let's run find efficiencies happens in last 400ms
+            this.mintTable[0].lastPulseTimestamp = timeNow;
+            var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
             //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
-            if (_this.adminControl != "STOP")
-                setTimeout(_this.findEfficiencies, sleepTime); //run again in a second
-        };
+            if (this.adminControl!="STOP")
+                setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
+        }
+        */
         this.checkSWversion = function () {
             var url = encodeURI("http://" + _this.mintTable[1].ipaddr + ":" + _this.mintTable[1].port + "/version?ts=" + lib_1.now() +
                 "&x=" + (lib_1.now() % 2000)); // Assume GENESIS node    x=add garbage to avoid caches
@@ -1263,7 +1266,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.flashWireguard(); // create our wireguard files based on our mint Table
                 _this.pulse(); //start pulsing -sets own timeout
                 //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
-                setTimeout(_this.findEfficiencies, 1000); //find where better paths exist between intermediaries - wait a second 
+                //setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
                 setTimeout(_this.checkSWversion, 10 * 1000); // check that we have the best software
                 setTimeout(_this.measurertt, 2 * 1000); // ping across wireguard every other second  
                 //
@@ -1372,7 +1375,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         this.adminControl = "";
         this.config = new Config(); //pulse Object needs to know some things about the node config
-        this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
+        //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
         /**

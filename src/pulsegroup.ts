@@ -267,7 +267,7 @@ export class AugmentedPulseGroup {
     // additional attributes
     adminControl: string;
     config: Config;
-    extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
+    //extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
     //incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
     
     // child processes for sending and receiving the pulse messages
@@ -289,7 +289,7 @@ export class AugmentedPulseGroup {
         
         this.adminControl = "";
         this.config = new Config();  //pulse Object needs to know some things about the node config
-        this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
+        //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
         //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
         
     // Thia constructur binds default=65013 UDP PORT to my pulseGroup object
@@ -834,6 +834,7 @@ export class AugmentedPulseGroup {
     //                  we only need to know if it is faster through intermediary
     //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
     //
+    /*
     findEfficiencies = () => {      //run every second - compute intensive
         if (!FIND_EFFICIENCIES) return;
         const s=new Date(); const startTimestampFE=s.getTime();
@@ -942,6 +943,7 @@ export class AugmentedPulseGroup {
         if (this.adminControl!="STOP")
             setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
     }
+    */
 
     checkSWversion = () => {        //we check SW version with lead genesis node
         var url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
@@ -1504,7 +1506,7 @@ export class AugmentedPulseGroup {
             this.flashWireguard();  // create our wireguard files based on our mint Table
             this.pulse();               //start pulsing -sets own timeout
             //augmentedPulseGroup.workerThread();  //start workerthread to asynchronously processes pulse messages
-            setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
+            //setTimeout(this.findEfficiencies,1000);  //find where better paths exist between intermediaries - wait a second 
             setTimeout(this.checkSWversion, 10 * 1000);  // check that we have the best software
             setTimeout(this.measurertt, 2 * 1000); // ping across wireguard every other second  
 
