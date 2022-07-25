@@ -411,7 +411,8 @@ export class AugmentedPulseGroup {
     // Build matrix of objects for each segment
     buildMatrix = () => {
        //if (!FIND_EFFICIENCIES) return;
-        var matrix: number[][] = [];
+        //var matrix: number[][] = [];
+        var matrix = new Array(32).fill(NO_MEASURE).map(() => new Array(32).fill(NO_MEASURE));
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
 
