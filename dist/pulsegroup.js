@@ -48,6 +48,7 @@ var types_1 = require("./types");
 var grapher_1 = require("./grapher");
 var wireguard_1 = require("./wireguard");
 var pulsegroups_1 = require("./pulsegroups");
+var dgram = require("dgram");
 logger_1.logger.setLevel(logger_1.LogLevel.ERROR); //wbn-turn off extraneous for debugging
 // Define constants
 var PULSEFREQ = 1; // (in seconds) how often to send pulses
@@ -406,7 +407,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
                 // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST - Chasing down measurement difference running by hand and in code
-                var dgram = require("dgram");
                 var client = dgram.createSocket('udp4');
                 var outgoingTimestamp = lib_1.now().toString();
                 pulseMessage = outgoingTimestamp + "," + pulseMessage;
@@ -1136,10 +1136,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         */
         //
         //  recvPulses
-        //
-        this.dgram = require("dgram");
-        this.udp = this.dgram.createSocket("udp4");
+        //dgram = require("dgram");
         this.recvPulses = function (incomingMessage, ipaddr, port) {
+            var udp = dgram.createSocket("udp4");
             // try {
             // const incomingPulse = await parsePulseMessage(incomingMessage)
             var ary = incomingMessage.split(",");
@@ -1176,7 +1175,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
                     console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
-                    _this.udp.send(message, 65013, ipaddr);
+                    udp.send(message, 65013, ipaddr);
                 }
                 else {
                     console.log("pulseGroup full - not answering request to join... ");

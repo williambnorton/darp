@@ -12,6 +12,8 @@ import { setWireguard, addPeerWGStanza, addMyWGStanza } from "./wireguard";
 import { addPulseGroup } from "./pulsegroups";
 import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
+var dgram = require("dgram");
+
 logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 // Define constants
 
@@ -555,20 +557,19 @@ export class AugmentedPulseGroup {
 
 
                 //TEST - Chasing down measurement difference running by hand and in code
-            var dgram = require("dgram");
-            var client = dgram.createSocket('udp4');
-            const outgoingTimestamp = now().toString();
-            pulseMessage = outgoingTimestamp + "," + pulseMessage;
-            const pulseBuffer = Buffer.from(pulseMessage);
+                var client = dgram.createSocket('udp4');
+                const outgoingTimestamp = now().toString();
+                pulseMessage = outgoingTimestamp + "," + pulseMessage;
+                const pulseBuffer = Buffer.from(pulseMessage);
 
-            nodeList.forEach(function (node: NodeAddress) {
-                //console.log(ts()+`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
-                client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error:string) => {
-                    if (error) {
-                        console.log(`Sender error: ${error}`);
-                    }
+                nodeList.forEach(function (node: NodeAddress) {
+                    //console.log(ts()+`Sending ${pulseMessage} to ${node.ipaddr}:${node.port}`);
+                    client.send(pulseBuffer, 0, pulseBuffer.length, node.port, node.ipaddr, (error:string) => {
+                        if (error) {
+                            console.log(`Sender error: ${error}`);
+                        }
+                    });
                 });
-            });
 
             /*
             const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
@@ -1371,11 +1372,10 @@ export class AugmentedPulseGroup {
     
     //
     //  recvPulses
-    //
-     dgram = require("dgram");
+    //dgram = require("dgram");
 
-     udp = this.dgram.createSocket("udp4");    
     recvPulses = (incomingMessage: string, ipaddr: string, port: string) => {
+        let udp = dgram.createSocket("udp4");    
         // try {
             // const incomingPulse = await parsePulseMessage(incomingMessage)
         var ary = incomingMessage.split(",");
@@ -1414,7 +1414,7 @@ export class AugmentedPulseGroup {
                 //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
                 console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
-                this.udp.send(message, 65013, ipaddr);
+                udp.send(message, 65013, ipaddr);
             } else {
                 console.log(`pulseGroup full - not answering request to join... `);
             }
