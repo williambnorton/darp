@@ -599,7 +599,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     console.log("Error " + err + " renaming " + tmpfilename + " to " + realfilename);
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
-            console.log("wrote " + _this.groupName + " to file " + realfilename);
+            //console.log("wrote "+this.groupName+" to file "+realfilename);
             //BEVBEV
             //}
             /*
