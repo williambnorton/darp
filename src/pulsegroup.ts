@@ -758,7 +758,8 @@ export class AugmentedPulseGroup {
             }
             delete copy.sender;
             delete copy.receiver;
-            delete copy.config;                         
+            delete copy.config;  
+            delete copy.u                       
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             //console.log(" about to write strCopy="+strCopy+" to pulse_groups0.json");
@@ -766,18 +767,21 @@ export class AugmentedPulseGroup {
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             
             //if (this.isGenesisNode() ) {
-            let tmpfilename=process.env.WGDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
-                {
+                //let tmpfilename=process.env.WGDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
+            let tmpfilename="/tmp/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
+            {
                 fs.writeFile(tmpfilename, strCopy, (err:string) => {
                     if (err) throw err;
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
             }
-            let realfilename=process.env.WGDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
-            fs.rename(tmpfilename,realfilename,(err:string) => {
-                if (err) console.log("Error "+err+" renaming "+tmpfilename+" to "+realfilename);
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
+            {
+                let realfilename=process.env.WGDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
+                fs.rename(tmpfilename,realfilename,(err:string) => {
+                    if (err) console.log("Error "+err+" renaming "+tmpfilename+" to "+realfilename);
+                    //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+                });
+            }
             //console.log("wrote "+this.groupName+" to file "+realfilename);
             //BEVBEV
             //}
