@@ -585,19 +585,21 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //var filename="../"+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             //if (this.isGenesisNode() ) {
-            var tmpfilename = process.env.WGDIR + "/pulse_groups0.json"; // gets polled often ~every second
+            var tmpfilename = process.env.WGDIR + "/pulse_groups0" + _this.groupName + ".json"; // gets polled often ~every second
             var realfilename = process.env.WGDIR + "/pulse_group." + _this.groupName + ".json"; // gets polled often ~every second
-            fs.writeFile(tmpfilename, strCopy, function (err) {
-                if (err)
-                    throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
+            {
+                fs.writeFile(tmpfilename, strCopy, function (err) {
+                    if (err)
+                        throw err;
+                    //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
+                });
+            }
             fs.rename(tmpfilename, realfilename, function (err) {
                 if (err)
                     console.log("Error " + err + " renaming " + tmpfilename + " to " + realfilename);
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
             });
-            //console.log("wrote "+this.groupName+" to file "+realfilename);
+            console.log("wrote " + _this.groupName + " to file " + realfilename);
             //BEVBEV
             //}
             /*
