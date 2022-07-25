@@ -767,8 +767,7 @@ export class AugmentedPulseGroup {
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             
             //if (this.isGenesisNode() ) {
-                //let tmpfilename=process.env.WGDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
-            let tmpfilename="/tmp/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
+            let tmpfilename=process.env.WGDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
             {
                 fs.writeFile(tmpfilename, strCopy, (err:string) => {
                     if (err) throw err;
