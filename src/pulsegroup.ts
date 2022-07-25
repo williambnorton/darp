@@ -766,14 +766,14 @@ export class AugmentedPulseGroup {
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             
             //if (this.isGenesisNode() ) {
-            let tmpfilename=process.env.WGDIR+"/pulse_groups0"+this.groupName+".json";  // gets polled often ~every second
-            let realfilename=process.env.WGDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
-            {
+            let tmpfilename=process.env.WGDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
+                {
                 fs.writeFile(tmpfilename, strCopy, (err:string) => {
                     if (err) throw err;
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
             }
+            let realfilename=process.env.WGDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
             fs.rename(tmpfilename,realfilename,(err:string) => {
                 if (err) console.log("Error "+err+" renaming "+tmpfilename+" to "+realfilename);
                 //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
