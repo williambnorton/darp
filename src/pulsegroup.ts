@@ -412,7 +412,8 @@ export class AugmentedPulseGroup {
     buildMatrix = () => {
        //if (!FIND_EFFICIENCIES) return;
         //var matrix: number[][] = [];
-        var matrix = new Array(32).fill(NO_MEASURE).map(() => new Array(32).fill(NO_MEASURE));
+
+        var matrix = new Array(this.mintTable.length).fill(NO_MEASURE).map(() => new Array(this.mintTable.length).fill(NO_MEASURE));
         for (var pulse in this.pulses) {
             const pulseEntry = this.pulses[pulse];
 

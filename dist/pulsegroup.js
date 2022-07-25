@@ -283,7 +283,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.buildMatrix = function () {
             //if (!FIND_EFFICIENCIES) return;
             //var matrix: number[][] = [];
-            var matrix = new Array(32).fill(NO_MEASURE).map(function () { return new Array(32).fill(NO_MEASURE); });
+            var matrix = new Array(_this.mintTable.length).fill(NO_MEASURE).map(function () { return new Array(_this.mintTable.length).fill(NO_MEASURE); });
             for (var pulse in _this.pulses) {
                 var pulseEntry = _this.pulses[pulse];
                 if (lib_1.now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ * 1000) { //! miss 2 poll cycles
