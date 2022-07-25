@@ -425,7 +425,7 @@ export class AugmentedPulseGroup {
                     var strOwl = ary[owlEntry].split("=")[1];
 
                     if (typeof strOwl != "undefined") {
-                        owl = parseInt(strOwl);
+                        owl = parseInt(strOwl)||NO_MEASURE;
                     }
 
                     if (typeof matrix[m] == "undefined") {
@@ -840,7 +840,7 @@ export class AugmentedPulseGroup {
                     var owl = ary[i].split("=")[1];
                     if (typeof owl != "undefined" && owl != null) {
                         // console.log("returning srcMint="+srcMint+" owl="+owl);
-                        return parseInt(owl);
+                        return parseInt(owl)||NO_MEASURE;
                     } else {
                         return NO_MEASURE; // no OWL measurement
                     }
@@ -1129,7 +1129,7 @@ export class AugmentedPulseGroup {
                 // addNode/resynch with groupOwner if we don't have this mint, optimize would be fetch only mint we are missing
                 for (var o in owlsAry) {
                     const owlEntry = owlsAry[o];
-                    var mint = parseInt(owlEntry.split("=")[0]);
+                    var mint = parseInt(owlEntry.split("=")[0])||999;
                     var srcMintEntry = this.mintTable[mint];
                     //console.log(`owlEntry=${owlEntry} mint=${mint} srcMintEntry=${srcMintEntry}`);    //#1
                     //console.log(`owlEntry=${owlEntry} mint=${mint} mintTable[mint]==${dump(self.mintTable[mint])}`);    //#2
@@ -1149,7 +1149,7 @@ export class AugmentedPulseGroup {
                     var found = false;
                     //var owlsAry = incomingPulse.owls.split(","); // TODO: test probably dont need this
                     for (var o in owlsAry) {
-                        var owlmint = parseInt(owlsAry[o].split("=")[0]);
+                        var owlmint = parseInt(owlsAry[o].split("=")[0])||999;
                         if (owlmint == myPulseEntry.mint) {
                             found = true;
                         }
