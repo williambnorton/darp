@@ -598,7 +598,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 var realfilename_1 = process.env.WGDIR + "/pulse_group." + _this.groupName + ".json"; // gets polled often ~every second
                 fs.rename(tmpfilename, realfilename_1, function (err) {
                     if (err)
-                        console.log("Error " + err + " renaming " + tmpfilename + " to " + realfilename_1);
+                        console.log("Error " + err + " renaming " + tmpfilename + " to " + realfilename_1 + " trying to read back strCopy=" + strCopy);
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
             }
