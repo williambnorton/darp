@@ -354,9 +354,9 @@
         </tr>
         </thead>
         <tbody>
-        <% var firstEntry=true; for (let src in pulseGroup.matrix) { %>
+        <% for (let src in pulseGroup.matrix) { %>
             <% let srcMintEntry = pulseGroup.mintTable[src]; %>
-            <%     if (firstEntry) { firstEntry=false; continue; } %>
+            
             <% if (srcMintEntry != null) { %>
                 <% if (srcMintEntry.state == "UP") { %>
                     <% let classNameUp = srcMintEntry.geo + " UP"; %>
