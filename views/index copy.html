@@ -354,10 +354,7 @@
         </tr>
         </thead>
         <tbody>
-
-        <% var firstSrcEntry=true; %>           
-        <% for (let src in pulseGroup.mintTable) { %>           
-            <% if (firstSrcEntry==true) { firstSrcEntry=false; continue; } %>
+        <% for (let src in pulseGroup.matrix) { %>
             <% let srcMintEntry = pulseGroup.mintTable[src]; %>
             
             <% if (srcMintEntry != null) { %>
@@ -381,23 +378,21 @@
 
                 <% } %>
 
-                <% var firstDestEntry=true; %>                           
-                <% for (let dest in pulseGroup.mintTable) { %>
-                    <% if (firstDestEntry==true) { firstDestEntry=false; continue; } %>
-                    <% let destMintEntry=pulseGroup.mintTable[dest]; %>
-
+                
+                <% for (let dest in pulseGroup.matrix[src]) { %>
+                    <% let destMintEntry=pulseGroup.mintTable[parseInt(dest)]; %>
                     <% if (destMintEntry!=null) { %>
                         <% let classNameMintsGeos = srcMintEntry.mint + "-" + destMintEntry.mint + " " + srcMintEntry.geo + " " + destMintEntry.geo + " "+srcMintEntry.geo + "-" + destMintEntry.geo; %>
                         <% let classNameMints = srcMintEntry.mint + "-" + destMintEntry.mint; %>
                         <% let destMintEntryUrl = "http://" + destMintEntry.ipaddr + ":" + destMintEntry.port.toString() + "/graph/" + srcMintEntry.geo + "/" + destMintEntry.geo; %>
                         <td class="<%= classNameMintsGeos %>">
                             <div class="%= classNameMints %>">
-                                <a target="_blank" href="<%= destMintEntryUrl %>">99999</a>
+                                <a target="_blank" href="<%= destMintEntryUrl %>"><%= pulseGroup.matrix[src][dest] %></a>
                             </div>
                         </td>
                     <% } else { %>
                         <% let classNameSrcDest = src + "-" + dest %>
-                        <td class="<%= classNameSrcDest %>">99999</td>
+                        <td class="<%= classNameSrcDest %>">ERRnomint <%= pulseGroup.matrix[src][dest] %> ms</td>
                     <% } %>
                 <% } %>
 
