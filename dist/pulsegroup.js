@@ -218,18 +218,17 @@ var AugmentedPulseGroup = /** @class */ (function () {
     //sender: ChildProcess;
     function AugmentedPulseGroup(pulseGroup) {
         var _this = this;
-        //
-        //  
-        //
-        this.forEachNode = function (callback) {
-            for (var node in _this.pulses)
-                callback(node, _this.pulses[node]);
-        };
-        this.forEachMint = function (callback) {
-            for (var mint in _this.mintTable)
-                if (_this.mintTable[mint] != null)
-                    callback(mint, _this.mintTable[mint]);
-        };
+        /*
+            //This could be used to avoid duplicating the firstEntry code
+            forEachNode = (callback: CallableFunction) => {
+                for (var node in this.pulses) callback(node, this.pulses[node]);
+            };
+        */
+        /*
+            forEachMint = (callback: CallableFunction) => {
+                for (var mint in this.mintTable) if (this.mintTable[mint]!=null) callback(mint, this.mintTable[mint]);
+            };
+        */
         this.flashWireguard = function () {
             console.log("flashWireguard()");
             var myStanza = "";
@@ -280,73 +279,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
         };
-        /*
-            // Build matrix of objects for each segment
-            buildMatrix = () => {
-               if (!FIND_EFFICIENCIES) return;
-                //var matrix: number[][] = [];
-        
-                var matrix = new Array(this.mintTable.length-1).fill(NO_MEASURE).map(() => new Array(this.mintTable.length-1).fill(NO_MEASURE));
-                var firstEntry=true;  // so we can skip the first entry [0] points to self
-                for (var pulse in this.pulses) {
-                    const pulseEntry = this.pulses[pulse];
-                    if (firstEntry==true) {
-                        firstEntry=false;
-                        continue;
-                    }
-                    if (now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ*1000) {  //! miss 2 poll cycles
-                        // valid pulse - put all my OWLs into matrix
-                        var ary = pulseEntry.owls.split(",");
-        
-                        for (var owlEntry in ary) {
-                            var m = parseInt(ary[owlEntry].split("=")[0]);
-                            var owl = NO_MEASURE;
-                            var strOwl = ary[owlEntry].split("=")[1];
-        
-                            if (typeof strOwl != "undefined") {
-                                owl = parseInt(strOwl)||NO_MEASURE;
-                            }
-        
-                            if (typeof matrix[m] == "undefined") {
-                                matrix[m] = [];
-                            }
-        
-                            matrix[m][pulseEntry.mint] = owl; // pulse measured to peer
-                        }
-        
-                        if (typeof matrix[pulseEntry.mint] == "undefined") {
-                            matrix[pulseEntry.mint] = [];
-                        }
-        
-                        matrix[pulseEntry.mint][this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
-                    } else {
-                        // old pulse - clear these entries
-         
-                        if (pulseEntry.pulseTimestamp!=0)
-                            logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
-                        
-                        //it is possible that the node has not received a pulse yet - so value==0
-                        
-                            // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                        // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
-                        //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
-                        //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
-                        //});
-        
-                        // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                        // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-        
-                        if (typeof matrix[pulseEntry.mint] == "undefined") {
-                            matrix[pulseEntry.mint] = [];
-                        }
-                        matrix[pulseEntry.mint][this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
-                    }
-                }
-        
-                // replace existing matrix
-                this.matrix = matrix;
-            };
-            */
         // Send our OWL measurements to all in the pulseGroup
         // TODO: SECURITY - least privelege principle -
         //         DO NOT pulse nodes in Quarantine the same - only send OWLs and mints for you and new guys
@@ -591,14 +523,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
             //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
             var fs = require('fs');
             var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
-            //TODO: loop through pulses remove history and medianHistory - really should move this to a separate object
-            for (var p in copy.pulses) {
-                //                console.log(`trimming history from record pulse=${copy.pulses[p]}`);
-                delete copy.pulses[p].history;
-                delete copy.pulses[p].medianHistory;
-            }
-            delete copy.sender;
-            delete copy.receiver;
             delete copy.config;
             //delete copy.u                       
             var strCopy = JSON.stringify(copy); //and put it backj into lightweight JSON stringify format
@@ -1193,44 +1117,9 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.ts = pulseGroup.ts;
         this.nodeCount = pulseGroup.nodeCount; //how many nodes in this pulsegroup
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
-        this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
-        //this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
-        //this.csvMatrix = pulseGroup.csvMatrix; //should go away
+        this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses       
         this.adminControl = "";
         this.config = new Config(); //pulse Object needs to know some things about the node config
-        //this.extraordinaryPaths = {}; //object array of better paths through intermediaries 
-        //this.incomingPulseQueue = []; //queue of incoming pulses to handle TESTING
-        /*
-    
-        //
-        //  @WBNWBNWBN ... receiver will be for all pulseGroups, demux here to proper pulseGroup by group
-        //
-        var dgram = require("dgram");
-
-        const receiver = dgram.createSocket("udp4");
-
-        receiver.on("error", (err:string) => {
-            logger.error(`Receiver error:\n${err}`);
-            receiver.close();
-        });
-
-        receiver.on("listening", () => {
-            const address = receiver.address();
-            logger.info(`Receiver listening ${address.address}:${address.port}`);
-        });
-
-        receiver.on("message", (pulseBuffer:string, rinfo) => {
-            const incomingTimestamp = now().toString();
-            console.log(`Received ${pulseBuffer} from ${rinfo.address}:${rinfo.port}`);
-            // prepend our timeStamp
-            const incomingMessage = incomingTimestamp + "," + pulseBuffer.toString();
-            this.recvPulses(incomingMessage,rinfo.address,rinfo.port);
-        });
-
-
-        receiver.bind(this.config.PORT);
-        console.log("BIND 65013 DONE");
-        */
     }
     return AugmentedPulseGroup;
 }());
