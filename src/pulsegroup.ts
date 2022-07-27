@@ -19,7 +19,6 @@ logger.setLevel(LogLevel.ERROR);  //wbn-turn off extraneous for debugging
 
 const PULSEFREQ=1;  // (in seconds) how often to send pulses
 
-
 const MEASURE_RTT=true;   //ping across wireguard interface
 //const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
 
@@ -263,18 +262,9 @@ export class AugmentedPulseGroup {
     nodeCount: number;
     nextMint: number;
     cycleTime: number;
-   // matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
-    //csvMatrix: number[];    //goes away
-
     // additional attributes
     adminControl: string;
     config: Config;
-    //extraordinaryPaths: { [index:string] : { startTimestamp:number, lastUpdated:number, aSide:string, zSide:string, direct:number, relayMint: number, intermediary:string, intermediaryPathLatency:number, srcToIntermediary:number, intermediaryToDest:number, delta:number, aSideIP:string, aSidePort:number, zSideIP:string, zSidePort:number, intermediaryIP:string, intermediaryPort:number } };
-    //incomingPulseQueue: IncomingPulse[];   //queue of incoming pulses to handle TESTING
-    
-    // child processes for sending and receiving the pulse messages
-    //receiver: ChildProcess;
-    //sender: ChildProcess;
 
     constructor(pulseGroup: PulseGroup) {
         this.groupName = pulseGroup.groupName;
@@ -394,39 +384,8 @@ export class AugmentedPulseGroup {
             nodeList.push(new NodeAddress(pulseEntry.ipaddr, pulseEntry.port));
             //nodeList.push(new NodeAddress(mint2IP(pulseEntry.mint), SECURE_PORT)); // wbnwbn send to secure channel also
             pulseEntry.outPulses++;
+            owls += pulseEntry.mint + "=" + pulseEntry.owl + ",";
 
-            // this section flags "interesting" cells to click on and explore (Compute cost: order N)
-            var flag = "";
-            if (pulseEntry.owl == NO_MEASURE) {
-                //owls += pulseEntry.mint + ",";
-            } else {
-                var medianOfMeasures = median(pulseEntry.history);
-                if (pulseEntry.medianHistory.length > 0 && pulseEntry.owl!=0) {   //medianHistory will take a minute to get an entry
-                    // use medianHistory to identify a median to deviate from
-                    var medianOfMedians = median(pulseEntry.medianHistory);
-                    var deviation = Math.round(
-                        (Math.abs(medianOfMedians - pulseEntry.owl) * 100) /
-                            medianOfMedians
-                    );
-                    var delta = Math.abs(medianOfMedians - pulseEntry.owl);  //# ms different
-                    //TURN ON TO DEBUG FLAGGING
-                     //if (deviation!=0) 
-
-                     if ( ( delta>5) && (pulseEntry.owl>3) && (deviation>20) ) {  //flag if off by 20% from median saving more than 5ms
-                        //console.log(`pulse(): geo=${pulseEntry.geo} pulseEntry.owl=${pulseEntry.owl} medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}% delta=${delta}`);
-                            // flag if deviation is > 10ms - we can improve that
-                            //console.log(ts()+`pulse(): Flagging ${pulseEntry.mint}-${this.mintTable[0].mint}=${pulseEntry.owl}  delta=${delta} geo=${pulseEntry.geo} --> ${this.config.GEO} nodeEntry.owl=${pulseEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                            logger.info(`pulse(): Flagging ${pulseEntry.mint}-${this.mintTable[0].mint}=${pulseEntry.owl}  delta=${delta} geo=${pulseEntry.geo} to ${this.config.GEO} nodeEntry.owl=${pulseEntry.owl}@ medianOfMeasures=${medianOfMeasures} medianOfMedians=${medianOfMedians} deviation=${deviation}%`);
-                            flag = "@";
-                    }
-                }
-            }
-
-            if (pulseEntry.owl == NO_MEASURE) {
-                owls += pulseEntry.mint + ",";
-            } else {
-                owls += pulseEntry.mint + "=" + pulseEntry.owl + flag + ",";
-            }
         }
         owls = owls.replace(/,+$/, ""); // remove trailing comma
         var myEntry = this.pulses[this.config.GEO + ":" + this.groupName];
@@ -467,14 +426,7 @@ export class AugmentedPulseGroup {
                     });
                 });
 
-            /*
-            const nodelistMessage = new SenderMessage(SenderPayloadType.NodeList, nodeList)
-            this.sender.send(nodelistMessage)
 
-            const outgoingMessage = new SenderMessage(SenderPayloadType.OutgoingMessage, pulseMessage)
-            this.sender.send(outgoingMessage)
-            //console.log(`pulse(): sent ${dump(outgoingMessage)}`);
-            */
         }
 
         this.timeout(); // and timeout the non-responders
@@ -815,14 +767,17 @@ export class AugmentedPulseGroup {
            return;
        }
 
+       /*
        //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
 
        const dir = "/root/darp/history/"
-        
+
        if ( ! fs.existsSync(dir)) {
            fs.mkdirSync(dir);
            //console.log(`pulsegroup.ts created ${dir} history directrory`);
        }  
+       */
+
        // debugging - log every pulse - 
 //       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
 //       fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec
@@ -974,7 +929,7 @@ export class AugmentedPulseGroup {
                 
                 // store 60 samples
                 if (incomingPulseEntry.medianHistory.length > 60*STAT_HOURS_TO_STORE) {   //save only 2 hours worth of data for now
-                    incomingPulseEntry.history.shift(); // drop off the last sample
+                    incomingPulseEntry.medianHistory.shift(); // drop off the last median
                 }
                 
             }
@@ -1020,33 +975,10 @@ export class AugmentedPulseGroup {
                 //
             }               
 
-            const dir = "/root/darp/history/"
-        
-            if ( ! fs.existsSync(dir)) {
-                fs.mkdirSync(dir);
-                //console.log(`pulsegroup.ts created ${dir} history directrory`);
-            }       
-            var filename = dir+incomingPulse.geo +"-"+this.mintTable[0].geo+ ".medianHistory.json";    //once a minute peel off the median history and store for later grapher calls
-            //console.log(`...concatentaing dataPoint sets ${incomingPulseEntry.medianHistory} + ${incomingPulseEntry.history}`);
-            
-            //
-            //  Could more easily go through array here and kill any node with more than 60 measures in a row in the same direction
-            //      so slow clock drift (<60ms/min) machines can live in the ecocytem for an hour
-            //
-            
-            //console.log(`...writing dataPoints to ${filename} : ${dataPoints}`);
-            var str=JSON.stringify(dataPoints);
-            fs.writeFile(filename, str, (err) => {  //appended asynchronously ".medianHistory.json"
-                if (err) throw err;
-            });
-
-            this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
+            this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me for later graphing
             
         } else {
             logger.warning(`Received pulse but could not find a matching pulseRecord for it. Ignoring until group owner sends us a new mintTable entry for: ${incomingPulse.geo}`);
-            
-            //newPulseGroup.fetchMintTable();  //this should be done only when group owner sends a pulse with mint we havn't seen
-            //maybe also add empty pulse records for each that don't have a pulse record
         }
     }
 

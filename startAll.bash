@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+#	startAll.bash - start all instances in cloud
+#
 if [ $# -ne 1 ]; then
 	echo "usage: $0 selector"
 	echo 'leverage your neming convention here'
@@ -19,12 +22,14 @@ if [ $? -eq 0 ]; then
 	MY_ENTRY=`echo $MY_GEO:$MY_IP`
 	echo MY_ENTRY=$MY_ENTRY
 	SPINUPORDER=`echo AWS-US-WEST-1:52.53.222.151 $MY_ENTRY $SPINUPORDER`	
+	SPINUPORDER=`echo $MY_ENTRY $SPINUPORDER`	
 	echo `date` SPINNING UP AWS with AWS-US-WEST as Genesis node $SPINUPORDER
 else
 	SPINUPORDER=`cat publicrelays.config|grep -v '#' | grep $1 | grep -v 52.53.222.151`
 	echo `date` SPINNING UP non-AWS node
 
 fi
+
 for node in $SPINUPORDER 
 do
 	#echo echo $node
