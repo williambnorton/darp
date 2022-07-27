@@ -22,7 +22,6 @@ const PULSEFREQ=1;  // (in seconds) how often to send pulses
 
 const MEASURE_RTT=true;   //ping across wireguard interface
 //const FIND_EFFICIENCIES=true; //search for better paths through intermediaries
-const FIND_EFFICIENCIES=false; //write json file out without better paths
 
 const SECURE_PORT=65020;    
 
@@ -767,7 +766,7 @@ export class AugmentedPulseGroup {
             delete copy.sender;
             delete copy.receiver;
             delete copy.config;  
-            delete copy.u                       
+            //delete copy.u                       
 
             let strCopy=JSON.stringify(copy);           //and put it backj into lightweight JSON stringify format
             //console.log(" about to write strCopy="+strCopy+" to pulse_groups0.json");
@@ -775,203 +774,24 @@ export class AugmentedPulseGroup {
             //var filename=process.env.WGDIR+"/pulse_group."+this.config.IP+"."+this.config.PORT+'.json';  // gets polled often ~every second
             
             //if (this.isGenesisNode() ) {
-            let tmpfilename=process.env.WGDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
+            let tmpfilename=process.env.DARPDIR+"/pulse_groups0."+this.groupName+".json";  // gets polled often ~every second
             {
                 fs.writeFile(tmpfilename, strCopy, (err:string) => {
                     if (err) throw err;
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
             }
+
             {
-                let realfilename=process.env.WGDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
+                let realfilename=process.env.DARPDIR+"/pulse_group."+this.groupName+".json";  // gets polled often ~every second
                 fs.rename(tmpfilename,realfilename,(err:string) => {
                     if (err) console.log("Error "+err+" renaming "+tmpfilename+" to "+realfilename+" trying to read back strCopy="+strCopy);
                     //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
                 });
             }
-            //console.log("wrote "+this.groupName+" to file "+realfilename);
-            //BEVBEV
-            //}
-/*
-            var pg=JSON.parse(JSON.stringify(this));
-            var filename="../pulseGroups.json";  // gets polled often ~every second
-            fs.writeFile(filename, strCopy, (err:string) => {
-                if (err) throw err;
-                //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-            });
-*/
 
-        //}
-
-        /*
-            var genesislist=process.env.GENESISNODELIST||"";
-            var genesisNodes=genesislist.split(",");
-            
-            console.log(`genesisNodes=${genesisNodes}`);
-            for (var node in genesisNodes ) {
-                //console.log(`Here we would UDP pulse our matrix to every other genesis node: ${genesisNodes[node]}`);
-
-                //send UDP datagram of pulseGroupsObject
-                //wbnwbnwbn - here use raw send
-                var dgram = require('dgram');
-
-                var client = dgram.createSocket('udp4');
-                var matrixPulseMsg=JSON.stringify(this.mintTable);
-                //client.send(matrixPulseMsg, 0, matrixPulseMsg.length, 65013, genesisNodes[node]); //send matrix pulse to all other genesis nodes
-                console.log(ts()+`sent matrix pulse to ${genesisNodes[node]} msg=${matrixPulseMsg}`);
-            }
-            
-            //if (isGenesisNode) {
-            //    pullState from a Genesis Node[i]
-            //    
-            //}
-        }  /**/
-        //var pg=JSON.parse(JSON.stringify(this));
-        //var filename=process.env.WGDIR+"/pulse_groups.json";  // gets polled often ~every second
-        //console.log("writing filename="+filename);
-        //fs.writeFile(filename, strCopy, (err:string) => {
-        //    if (err) throw err;
-            //console.log(ts()+`pulse group object stored in file ${filename} asynchronously as ${strCopy}`);
-        //});
     };
 
-
-
-    //
-    //  
-    //
-    getOWLfrom = (srcMint:number,owls:string) : number => {
-            var ary = owls.split(",");
-            for (var i = 0; i < ary.length; i++) {
-                var mint = parseInt(ary[i].split("=")[0]);
-                if (mint == srcMint) {
-                    var owl = ary[i].split("=")[1];
-                    if (typeof owl != "undefined" && owl != null) {
-                        // console.log("returning srcMint="+srcMint+" owl="+owl);
-                        return parseInt(owl)||NO_MEASURE;
-                    } else {
-                        return NO_MEASURE; // no OWL measurement
-                    }
-                }
-            }
-            return NO_MEASURE; // did not find the srcMint
-    };
-    /*
-    //
-    //  
-    //      Secret sauce - the measures are relative so skews are systematic and offset each other
-    //                  we only need to know if it is faster through intermediary
-    //  TODO: Strategy 2 - use matrix to quickly find OWLs, don't look up through owl table for all the cells
-    //
-    findEfficiencies = () => {      //run every second - compute intensive
-        if (!FIND_EFFICIENCIES) return;
-        const s=new Date(); const startTimestampFE=s.getTime();
-
-        for (var srcP in this.pulses) {
-            var srcEntry = this.pulses[srcP];
-            for (var destP in this.pulses) {
-                var destEntry = this.pulses[destP];     //this code is passed n-squared times!!!
-                if (typeof this.matrix[srcEntry.mint] != "undefined") {
-                    //console.log(`findEfficiencies(): matrix=${dump(this.matrix[srcEntry.mint])} ${dump(this.matrix[destEntry.mint])} ${dump(destEntry)} ${dump(srcEntry)}`);
-                    var direct = this.matrix[srcEntry.mint][destEntry.mint];  // 
-                    //var direct = this.getOWLfrom(srcEntry.mint, destEntry.owls);  // ^^^^^get direct latency measure
-                    //console.log(ts()+"findEfficiencies(): Here we would compare srcEntry.mint="+srcEntry.mint+"-destEntry.mint="+destEntry.mint+" direct="+direct);
-                    if (destEntry!=srcEntry && typeof direct != "undefined" ) {  //avoid self-self, direct owl has a value
-                        for (var iP in this.pulses) {
-                            var intermediaryEntry = this.pulses[iP];  //this code is passed n-cubed times
-                            //console.log(`intermediaryEntry.mint=${intermediaryEntry.mint}`);
-                            if (intermediaryEntry != srcEntry && intermediaryEntry != destEntry) {
-                                var srcToIntermediary = this.matrix[srcEntry.mint][intermediaryEntry.mint];  //^^^^^ these lookups done n-cubed times
-                                
-                                //console.log(`srcToIntermediary=${srcToIntermediary}`);
-                                if (typeof srcToIntermediary != "undefined" ) {
-                                //var srcToIntermediary = this.getOWLfrom(srcEntry.mint, intermediaryEntry.owls);  //^^^^^ these lookups done n-cubed times
-                                    var intermediaryToDest = this.matrix[intermediaryEntry.mint][destEntry.mint]; //^^^^^
-                                    //console.log(`intermediaryToDest=${intermediaryToDest}`);
-                                    //var intermediaryToDest = this.getOWLfrom(intermediaryEntry.mint, destEntry.owls); //^^^^^
-                                    if (typeof srcToIntermediary != "undefined" && typeof intermediaryToDest != "undefined") {
-                                        //  We have a path to compare against the direct path
-                                        var intermediaryPathLatency = srcToIntermediary + intermediaryToDest;   //^^^^^^ possible better path through intermeidary
-                                        var delta=intermediaryPathLatency - direct;
-                                        //console.log("*  PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                        if (srcToIntermediary != NO_MEASURE && intermediaryToDest != NO_MEASURE && delta < -10) {
-                                            var dd=new Date();
-                                            //console.log("*  extraordinary PATH       "+srcEntry.geo+"-"+destEntry.geo+"="+direct+" through "+intermediaryEntry.geo+" intermediaryPathLatency="+intermediaryPathLatency+" delta="+delta);
-                                            // This overwrites existing entry, replacing timestamp
-                                            const pulseIndex:string=srcEntry.geo+"-"+destEntry.geo;
-
-                                            //TODO: Create a URL and clickable link Z:port ==> (A=ip:port,I=ip:port,Z=ip:port)
-                                            //Create a graph pulling from A --> or all nodes store all owl threads ?     A->I    I->Z    A->Z    
-                                            // All store all means 100 node network appends a record 10,000 every second.
-                                            //TODO: Instead, store all in native format - Log the pulseRecords
-                                            //TODO write routine to go through the Log'd pulseRecords pulling out archiveOWLs(A,Z)
-                                            //write glue code to spew out graph format from these owls
-
-                                            //asideIP:srcEntry.ipaddr,asidePort:srcEntry.port,zsideIP:destEntry.ipaddr,zsidePort:destEntry.port,intermediaryIP:intermediaryEntry.ipaddr,intermediaryPort:intermediaryEntry.port,
-                                            //@SETextraordinaryPath
-                                            if (typeof this.extraordinaryPaths[pulseIndex] == "undefined") {
-                                                //console.log("New extraordinary path: "+srcEntry.geo+"-"+destEntry.geo);
-                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:dd.getTime(), lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta, aSideIP:srcEntry.ipaddr, aSidePort:srcEntry.port, zSideIP:destEntry.ipaddr, zSidePort:destEntry.port, intermediaryIP:intermediaryEntry.ipaddr, intermediaryPort:intermediaryEntry.port };
-                                            } else {
-                                                //var startTimestamp=this.extraordinaryPaths[srcEntry.geo+"-"+destEntry.geo].startTimestamp;
-                                                //console.log("Existing startTimestamp="+startTimestamp);
-                                                this.extraordinaryPaths[pulseIndex] = { startTimestamp:this.extraordinaryPaths[pulseIndex].startTimestamp, lastUpdated:dd.getTime(), aSide:srcEntry.geo, zSide:destEntry.geo, direct:direct, relayMint:intermediaryEntry.mint, intermediary:intermediaryEntry.geo, intermediaryPathLatency:intermediaryPathLatency, srcToIntermediary:srcToIntermediary, intermediaryToDest:intermediaryToDest, delta:delta, aSideIP:srcEntry.ipaddr, aSidePort:srcEntry.port, zSideIP:destEntry.ipaddr, zSidePort:destEntry.port, intermediaryIP:intermediaryEntry.ipaddr, intermediaryPort:intermediaryEntry.port };
-                                            }
-                                            //console.log(` findEfficiencies(): extraordinary route: ${dump(this.extraordinaryPaths[pulseIndex])}`);
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //
-        //  remove extraordinarty path entries with old lastUpdated fields 
-        //
-        const d=new Date();const timeNow=d.getTime();
-        for (var e in this.extraordinaryPaths) {
-            var extraordinaryPath=this.extraordinaryPaths[e];
-            // console.log("extraordinaryPath: "+JSON.stringify(extraordinaryPath,null,2));
-            var freshness=timeNow-extraordinaryPath.lastUpdated;
-            // console.log("freshness="+freshness);
-            if (freshness>2000) {
-                //console.log(`timeout(): deleting old extraordoinary path ${this.extraordinaryPaths[e].aSide}-${this.extraordinaryPaths[e].zSide} lasted ${duration} ms`);
-                delete this.extraordinaryPaths[e]; // delete extraordinary not extraordinary any more
-            } else {
-
-                var duration=timeNow-extraordinaryPath.startTimestamp;
-                if (duration>10000) {  //if a path lasts more than 10 seconds we assume worse path starts sending 100pkts/sec
-                    //  Simulate relaying 10 packets per second traffic
-                    //  credit relay, debit users
-                    // HACK: to demoinstrate math, assume that a better path DRAWS 100 pkts per second while available
-                    //BETTER ALGO needed here
-    //              console.log(`HERE WE simulate RElAYING packets on behalf of others, so assume 10*1500bytes=10messages and 15KB through mint #${extraordinaryPath.relayMint} ${extraordinaryPath.aSide}-${extraordinaryPath.intermediary}`);
-                    if ((typeof this.pulses[extraordinaryPath.intermediary+':'+this.groupName] != "undefined" ) && 
-                        (typeof this.pulses[extraordinaryPath.aSide+':'+this.groupName] != "undefined")) {
-                            this.pulses[extraordinaryPath.intermediary+':'+this.groupName].relayCount+=10;  //Assume better paths are relayed through for 10 pkts
-                        //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].inPulses +=100;   //relay meas forwrd 100 pktys/sec
-                        //this.pulses[extraordinaryPath.intermediary+':'+this.groupName].outPulses+=100;   //we assume those with better path, use it for 10 pkts
-                        //this.pulses[extraordinaryPath.aSide+':'+this.groupName].inPulses -=100;   //relay meas forwrd 100 pktys/sec
-                        //this.pulses[extraordinaryPath.aSide+':'+this.groupName].outPulses-=100;   //we assume those with better path, use it for 10 pkts
-                            this.pulses[extraordinaryPath.aSide+':'+this.groupName].relayCount-=10;   //Assume better paths are always taken and paid for as 10 pkts
-                        // bump the in/outMsgs by 10 pkts
-                    } else {
-                        console.log(`findEfficiencies(): this.pulses[extraordinaryPath.intermediary+':'+this.groupName]=${this.pulses[extraordinaryPath.intermediary+':'+this.groupName]} this.pulses[extraordinaryPath.aSide+':'+this.groupName]=${this.pulses[extraordinaryPath.aSide+':'+this.groupName]}`);
-                    }
-                }
-            }
-        }
-        //if (Object.keys(this.extraordinaryPaths).length>0) console.log(`findEfficiencies():${dump(this.extraordinaryPaths)}`);  //INSTRUMANTATION
-        this.mintTable[0].lastPulseTimestamp = timeNow;
-        var sleepTime=PULSEFREQ*1000-timeNow%1000+600; //let's run find efficiencies happens in last 400ms
-        //console.log(`Processing findEfficiencies() took ${timeNow-startTimestampFE}ms . Launching findEfficiencies() in ${sleepTime}ms`);
-        if (this.adminControl!="STOP")
-            setTimeout(this.findEfficiencies,sleepTime);  //run again in a second
-    }
-    */
 
     checkSWversion = () => {        //we check SW version with lead genesis node
         var url = encodeURI("http://" + this.mintTable[1].ipaddr + ":" + this.mintTable[1].port + "/version?ts=" + now() +
@@ -1262,11 +1082,6 @@ export class AugmentedPulseGroup {
                 incomingPulseEntry.medianHistory.push(
                     Math.round(median(incomingPulseEntry.history))   //wbnwbnwbn TODO: Here push { ts:timestamp, data: dataPoint }
                 );
-
-
-                
-                
-                
                 
                 // store 60 samples
                 if (incomingPulseEntry.medianHistory.length > 60*STAT_HOURS_TO_STORE) {   //save only 2 hours worth of data for now
@@ -1305,10 +1120,7 @@ export class AugmentedPulseGroup {
                 }
                 if (!UPANDDOWNMEASURES && direction!="" && steady < (dataPoints.length/2) ) {    //kill always increasing/decreasing latency but leave steady ones alone
                     console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.group} ${incomingPulseEntry.ipaddr} DELETING NODE`);
-                    console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.group} ${incomingPulseEntry.ipaddr} DELETING NODE`);
-                    console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.group} ${incomingPulseEntry.ipaddr} DELETING NODE`);
-                    console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.group} ${incomingPulseEntry.ipaddr} DELETING NODE`);
-                    console.log(`FOUND CLOCK SKEW for node ${incomingPulseEntry.geo} ${incomingPulseEntry.group} ${incomingPulseEntry.ipaddr} DELETING NODE`);
+
                     Log(`DELETING node for CLOCK SKEW ISSUES ${incomingPulseEntry.geo} ${incomingPulseEntry.ipaddr} DELETING NODE`);
                     this.deleteNode(this.mintTable[incomingPulseEntry.mint].ipaddr, this.mintTable[incomingPulseEntry.mint].port);   
                 } else {
@@ -1338,13 +1150,7 @@ export class AugmentedPulseGroup {
             fs.writeFile(filename, str, (err) => {  //appended asynchronously ".medianHistory.json"
                 if (err) throw err;
             });
-            
-            
-            
-            
-            
-            
-            // TODO: Also resync if the groupOwner has removed an item
+
             this.storeOWL(incomingPulse.geo, this.mintTable[0].geo, incomingPulse.mint);  // store pulse latency To me
             
         } else {
@@ -1354,26 +1160,6 @@ export class AugmentedPulseGroup {
             //maybe also add empty pulse records for each that don't have a pulse record
         }
     }
-    /*
-    //called every 10ms to see if there are pkts to process
-    workerThread = () => {
-        return;  //removing complexixity
-        //setTimeout(this.workerThread, 50);  // queue up incoming packets and come back again to batch process every 50 milliseconds
-        
-        if (this.incomingPulseQueue.length==0) {
-            return;
-        }
-        
-        for (var pulse=this.incomingPulseQueue.pop(); pulse != null; pulse=this.incomingPulseQueue.pop()) {
-            this.processIncomingPulse(pulse);
-        }
-    }
-    */
-
-    
-    //
-    //  recvPulses
-    //dgram = require("dgram");
 
     recvPulses = (incomingMessage: string, ipaddr: string, port: string) => {
         let udp = dgram.createSocket("udp4");    
@@ -1452,12 +1238,6 @@ export class AugmentedPulseGroup {
         if (pulseEntry != null) {
             //
             var strDataPoints = ""; // format: { label: "22:37:49", y: 10 }, we have no timestamps yet in this model
-//            for (var dp in pulseEntry.medianHistory) {
-//                strDataPoints += `{ label: "median", y: ${pulseEntry.medianHistory[dp]} },`;
-//            }
-//            for (var dp in pulseEntry.history) {
-//                strDataPoints += `{ label: "current", y: ${pulseEntry.history[dp]} },`;
-//            }
             //
             strDataPoints=`{ label: "${ts()}", y: ${pulseEntry.history[0]} }`  //TODO: VERIFY-CHECK - is [0] always the latest measure?
 //            grapherStoreOwls(src, dst, strDataPoints); // store OWL in a way the grapher can parse it
@@ -1526,16 +1306,6 @@ export class AugmentedPulseGroup {
 
     launch = () => {
         try {
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
-            console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
             console.log(`index.ts: pulseGroup.launch() -> ${this.groupName} `);
                 
             this.flashWireguard();  // create our wireguard files based on our mint Table
@@ -1701,11 +1471,7 @@ export var getPulseGroupURL= async (configurl:string): Promise<PulseGroup> => {
                    return;                    
                     //process.exit(36);  //reload software and take another pass
                 }
-//                if (newPulseGroup.mintTable[1].publickey == config.PUBLICKEY) {
-  //                  logger.info(`getPulseGroup(): My publickey matches genesis node public key - I am genesis node : GENESIS node already configured.`);
-    //            } else {
-      //              logger.info(`getPulseGroup(): Configuring non-genesis node ...`);
-        //        }
+
                 Log(`getPulseGroupURL JOINED NEW PULSEGROUP:   ${newPulseGroup.mintTable[0].geo} : ${newPulseGroup.groupName} ${newPulseGroup.mintTable[0].ipaddr}:${newPulseGroup.mintTable[0].port} and Launching...`);
                 addPulseGroup(newPulseGroup);  //don't start self as Genesis - already started
                 return resolve(newPulseGroup);
