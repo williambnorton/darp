@@ -1176,7 +1176,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
                     console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
-                    _this.udp.send(message, 65013, ipaddr);
+                    udp.send(message, 65013, ipaddr);
                 }
                 else {
                     console.log("pulseGroup full - not answering request to join... ");
