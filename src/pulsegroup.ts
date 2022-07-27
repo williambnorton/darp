@@ -233,7 +233,7 @@ export class PulseGroup {
     nodeCount: number;
     nextMint: number;
     cycleTime: number;
-    matrix: number[][];
+    //matrix: number[][];
     //csvMatrix: number[];
     constructor(me: MintEntry, genesis: MintEntry, pulse: PulseEntry) {
         this.groupName = me.geo + ".1";
@@ -247,7 +247,7 @@ export class PulseGroup {
         this.nodeCount = 1; // how many nodes in this pulsegroup
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
-        this.matrix = [];
+        //this.matrix = [];
         //this.csvMatrix = [];
     }
 }
@@ -264,7 +264,7 @@ export class AugmentedPulseGroup {
     nodeCount: number;
     nextMint: number;
     cycleTime: number;
-    matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
+   // matrix: number[][];     //should go away - we can peruse owls in pulseTable to get this
     //csvMatrix: number[];    //goes away
 
     // additional attributes
@@ -287,7 +287,7 @@ export class AugmentedPulseGroup {
         this.nodeCount = pulseGroup.nodeCount; //how many nodes in this pulsegroup
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
-        this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
+        //this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
         //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         
         this.adminControl = "";
@@ -409,7 +409,7 @@ export class AugmentedPulseGroup {
 
         this.nodeCount = Object.keys(this.pulses).length;
     };
-
+/*
     // Build matrix of objects for each segment
     buildMatrix = () => {
        if (!FIND_EFFICIENCIES) return;
@@ -475,6 +475,7 @@ export class AugmentedPulseGroup {
         // replace existing matrix
         this.matrix = matrix;
     };
+    */
 
     // Send our OWL measurements to all in the pulseGroup
     // TODO: SECURITY - least privelege principle -
@@ -751,7 +752,7 @@ export class AugmentedPulseGroup {
             this.flashWireguard();  //node list changed recreate wireguard file
         }
         this.nodeCount = Object.keys(this.pulses).length;
-        this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
+        //this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
         
         
         //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups

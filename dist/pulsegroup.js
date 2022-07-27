@@ -189,6 +189,7 @@ var PulseEntry = /** @class */ (function () {
 exports.PulseEntry = PulseEntry;
 /** Main object containing all details about a group of nodes */
 var PulseGroup = /** @class */ (function () {
+    //matrix: number[][];
     //csvMatrix: number[];
     function PulseGroup(me, genesis, pulse) {
         var _a;
@@ -203,7 +204,7 @@ var PulseGroup = /** @class */ (function () {
         this.nodeCount = 1; // how many nodes in this pulsegroup
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
-        this.matrix = [];
+        //this.matrix = [];
         //this.csvMatrix = [];
     }
     return PulseGroup;
@@ -280,60 +281,73 @@ var AugmentedPulseGroup = /** @class */ (function () {
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
         };
-        // Build matrix of objects for each segment
-        this.buildMatrix = function () {
-            if (!FIND_EFFICIENCIES)
-                return;
-            //var matrix: number[][] = [];
-            var matrix = new Array(_this.mintTable.length - 1).fill(NO_MEASURE).map(function () { return new Array(_this.mintTable.length - 1).fill(NO_MEASURE); });
-            var firstEntry = true; // so we can skip the first entry [0] points to self
-            for (var pulse in _this.pulses) {
-                var pulseEntry = _this.pulses[pulse];
-                if (firstEntry == true) {
-                    firstEntry = false;
-                    continue;
-                }
-                if (lib_1.now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ * 1000) { //! miss 2 poll cycles
-                    // valid pulse - put all my OWLs into matrix
-                    var ary = pulseEntry.owls.split(",");
-                    for (var owlEntry in ary) {
-                        var m = parseInt(ary[owlEntry].split("=")[0]);
-                        var owl = NO_MEASURE;
-                        var strOwl = ary[owlEntry].split("=")[1];
-                        if (typeof strOwl != "undefined") {
-                            owl = parseInt(strOwl) || NO_MEASURE;
+        /*
+            // Build matrix of objects for each segment
+            buildMatrix = () => {
+               if (!FIND_EFFICIENCIES) return;
+                //var matrix: number[][] = [];
+        
+                var matrix = new Array(this.mintTable.length-1).fill(NO_MEASURE).map(() => new Array(this.mintTable.length-1).fill(NO_MEASURE));
+                var firstEntry=true;  // so we can skip the first entry [0] points to self
+                for (var pulse in this.pulses) {
+                    const pulseEntry = this.pulses[pulse];
+                    if (firstEntry==true) {
+                        firstEntry=false;
+                        continue;
+                    }
+                    if (now() - pulseEntry.pulseTimestamp < 2 * PULSEFREQ*1000) {  //! miss 2 poll cycles
+                        // valid pulse - put all my OWLs into matrix
+                        var ary = pulseEntry.owls.split(",");
+        
+                        for (var owlEntry in ary) {
+                            var m = parseInt(ary[owlEntry].split("=")[0]);
+                            var owl = NO_MEASURE;
+                            var strOwl = ary[owlEntry].split("=")[1];
+        
+                            if (typeof strOwl != "undefined") {
+                                owl = parseInt(strOwl)||NO_MEASURE;
+                            }
+        
+                            if (typeof matrix[m] == "undefined") {
+                                matrix[m] = [];
+                            }
+        
+                            matrix[m][pulseEntry.mint] = owl; // pulse measured to peer
                         }
-                        if (typeof matrix[m] == "undefined") {
-                            matrix[m] = [];
+        
+                        if (typeof matrix[pulseEntry.mint] == "undefined") {
+                            matrix[pulseEntry.mint] = [];
                         }
-                        matrix[m][pulseEntry.mint] = owl; // pulse measured to peer
+        
+                        matrix[pulseEntry.mint][this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
+                    } else {
+                        // old pulse - clear these entries
+         
+                        if (pulseEntry.pulseTimestamp!=0)
+                            logger.warning(`buildMatrix(): ${pulseEntry.geo} mint#${pulseEntry.mint} has an old pulseTimestamp ${pulseEntry.pulseTimestamp}. TODO: Enter NO_OWL for all values to this node`);
+                        
+                        //it is possible that the node has not received a pulse yet - so value==0
+                        
+                            // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
+                        // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
+                        //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
+                        //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
+                        //});
+        
+                        // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
+                        // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
+        
+                        if (typeof matrix[pulseEntry.mint] == "undefined") {
+                            matrix[pulseEntry.mint] = [];
+                        }
+                        matrix[pulseEntry.mint][this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
                     }
-                    if (typeof matrix[pulseEntry.mint] == "undefined") {
-                        matrix[pulseEntry.mint] = [];
-                    }
-                    matrix[pulseEntry.mint][_this.mintTable[0].mint] = pulseEntry.owl; // pulse measured to me
                 }
-                else {
-                    // old pulse - clear these entries
-                    if (pulseEntry.pulseTimestamp != 0)
-                        logger_1.logger.warning("buildMatrix(): " + pulseEntry.geo + " mint#" + pulseEntry.mint + " has an old pulseTimestamp " + pulseEntry.pulseTimestamp + ". TODO: Enter NO_OWL for all values to this node");
-                    //it is possible that the node has not received a pulse yet - so value==0
-                    // node did not respond - so we have no data - no entry, should we mark call all NO_OWL
-                    // newPulseGroup.forEachNode(function(index:string,groupNode:PulseEntry) {
-                    //    if ((index!="0") && (groupNode.mint!=nodeEntry.mint))
-                    //        matrix[groupNode.mint][nodeEntry.mint]=NO_OWL;  //clear out previously published measurements
-                    //});
-                    // if (typeof newPulseGroup.mintTable[0].mint=="undefined")  return console.log("UNDEFINED MINT 0 - too early");
-                    // console.log(`nodeEntry.mint=${nodeEntry.mint} mymint=${newPulseGroup.mintTable[0].mint}`);
-                    if (typeof matrix[pulseEntry.mint] == "undefined") {
-                        matrix[pulseEntry.mint] = [];
-                    }
-                    matrix[pulseEntry.mint][_this.mintTable[0].mint] = NO_MEASURE; // this guy missed his pulse - mark his entries empty
-                }
-            }
-            // replace existing matrix
-            _this.matrix = matrix;
-        };
+        
+                // replace existing matrix
+                this.matrix = matrix;
+            };
+            */
         // Send our OWL measurements to all in the pulseGroup
         // TODO: SECURITY - least privelege principle -
         //         DO NOT pulse nodes in Quarantine the same - only send OWLs and mints for you and new guys
@@ -574,7 +588,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 _this.flashWireguard(); //node list changed recreate wireguard file
             }
             _this.nodeCount = Object.keys(_this.pulses).length;
-            _this.buildMatrix(); //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
+            //this.buildMatrix();    //goes way - eventually remove this - WRONG IT IS CPU INTENSIVE (was: it is easy enough ) to search existing pulse OWLs with getOWLs.from()
             //if (this.isGenesisNode()) {     //save pulseGroup in JSON format in filesystem <-- this is fetched by all real-time displays, and to assimilate into groups of groups
             var fs = require('fs');
             var copy = JSON.parse(JSON.stringify(_this)); //make a copy -//remove stuff - this file will be fetched and procesed by many
@@ -1398,7 +1412,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
         this.nodeCount = pulseGroup.nodeCount; //how many nodes in this pulsegroup
         this.nextMint = pulseGroup.nextMint; //assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = pulseGroup.cycleTime; //pulseGroup-wide setting: number of seconds between pulses
-        this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
+        //this.matrix = pulseGroup.matrix; //should go away - we can always peruse the pulseTable owls
         //this.csvMatrix = pulseGroup.csvMatrix; //should go away
         this.adminControl = "";
         this.config = new Config(); //pulse Object needs to know some things about the node config
