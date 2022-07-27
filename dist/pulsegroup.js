@@ -282,7 +282,8 @@ var AugmentedPulseGroup = /** @class */ (function () {
         };
         // Build matrix of objects for each segment
         this.buildMatrix = function () {
-            //if (!FIND_EFFICIENCIES) return;
+            if (!FIND_EFFICIENCIES)
+                return;
             //var matrix: number[][] = [];
             var matrix = new Array(_this.mintTable.length - 1).fill(NO_MEASURE).map(function () { return new Array(_this.mintTable.length - 1).fill(NO_MEASURE); });
             var firstEntry = true; // so we can skip the first entry [0] points to self
@@ -1175,7 +1176,7 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     //else
                     //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
                     console.log("Sending PONG (12) to " + ipaddr + ":65013 message=" + message);
-                    udp.send(message, 65013, ipaddr);
+                    _this.udp.send(message, 65013, ipaddr);
                 }
                 else {
                     console.log("pulseGroup full - not answering request to join... ");

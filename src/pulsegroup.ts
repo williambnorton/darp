@@ -412,7 +412,7 @@ export class AugmentedPulseGroup {
 
     // Build matrix of objects for each segment
     buildMatrix = () => {
-       //if (!FIND_EFFICIENCIES) return;
+       if (!FIND_EFFICIENCIES) return;
         //var matrix: number[][] = [];
 
         var matrix = new Array(this.mintTable.length-1).fill(NO_MEASURE).map(() => new Array(this.mintTable.length-1).fill(NO_MEASURE));
@@ -1414,7 +1414,7 @@ export class AugmentedPulseGroup {
                 //    var message="http://"+this.config.GENESIS+":"+this.config.GENESISPORT+"/darp.bash?pongMsg="+pongMsgEncoded;
 
                 console.log(`Sending PONG (12) to ${ipaddr}:65013 message=${message}`);
-                udp.send(message, 65013, ipaddr);
+                this.udp.send(message, 65013, ipaddr);
             } else {
                 console.log(`pulseGroup full - not answering request to join... `);
             }
