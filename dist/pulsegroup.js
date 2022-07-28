@@ -188,8 +188,6 @@ var PulseEntry = /** @class */ (function () {
 exports.PulseEntry = PulseEntry;
 /** Main object containing all details about a group of nodes */
 var PulseGroup = /** @class */ (function () {
-    //matrix: number[][];
-    //csvMatrix: number[];
     function PulseGroup(me, genesis, pulse) {
         var _a;
         this.groupName = me.geo + ".1";
@@ -203,8 +201,6 @@ var PulseGroup = /** @class */ (function () {
         this.nodeCount = 1; // how many nodes in this pulsegroup
         this.nextMint = 2; // assign IP. Allocate IP out of 10.10.0.<mint>
         this.cycleTime = PULSEFREQ; // pulseGroup-wide setting: number of seconds between pulses
-        //this.matrix = [];
-        //this.csvMatrix = [];
     }
     return PulseGroup;
 }());
@@ -314,10 +310,6 @@ var AugmentedPulseGroup = /** @class */ (function () {
                     _this.mintTable[0].bootTimestamp + "," +
                     myMint + "," +
                     owls;
-                //logger.debug(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                //console.log(`pulseGroup.pulse(): pulseMessage=${pulseMessage} to ${dump(nodeList)}`);
-                // sendPulses(pulseMessage, ipary);  //INSTRUMENTATION POINT
                 //TEST - Chasing down measurement difference running by hand and in code
                 var client = dgram.createSocket('udp4');
                 var outgoingTimestamp = lib_1.now().toString();
