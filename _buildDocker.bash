@@ -52,7 +52,12 @@ echo `date` About to launch SR-WAN docker $DOCKERVERSION   #this is for the firs
 #echo `date` About to launch SR-WAN Instrumentation docker
 echo `date` $0 $DOCKERVERSION V=$V COMPLETE
 V=`echo $DOCKERVERSION|awk -F. '{ print $3 }'| sed 's/.\{1\}/& /g'`
+export DOCKER_BASE_PORT=65013
+if [ -f DOCKER_BASE_PORT ]; then
+	export DOCKER_BASE_PORT=`cat DOCKER_BASE_PORT`
+fi
 
+echo "Start docker with ==>    docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT williambnorton/darp:$DOCKER_VERSION"
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 
 
