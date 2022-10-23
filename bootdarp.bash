@@ -138,10 +138,10 @@ do
     DARP_SWVERSION=`echo $MY_GENESIS_SWVERSION | awk -F: '{ print $2 }'`   # <Docker.YYMMDD.HHMM>:<Build.YYMMDD.HHMM>
 
     if [ "$MY_GENESIS_SWVERSION" == "$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION" ]; then
-        echo `date` "!!! We are genesis node so we are already running the latest SW"
+        echo `date` "!!! We are genesis node so we are already running the latest SW: $MY_GENESIS_SWVERSION"
         ./updateSW.bash
     else
-        echo `date` "        ***** DARP_SWVERSION = $DARP_SWVERSION MY_GENESIS_VERSION=$MY_GENESIS_SWVERSION"
+        echo `date` "       NEW VERSION  ***** DARP_SWVERSION = $DARP_SWVERSION MY_VERSION=$CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION"
         ./updateSW.bash $MY_GENESIS_SWVERSION #$DARP_SWVERSION     #we want to start with the newest software
         rc=$?
         echo `date` "return from updateSW $DARP_SWVERSION is $rc " 
