@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ $0 == "genesis" ]; then
+    # Start Genesis node
+    echo "`date` Starting DARP Genesis node"
+    docker rm -f $(docker ps -a -q);
+    docker rmi -f $(docker images -q);
+    docker run -p65013:65013/udp -p65013:65013/tcp -eMY_GEO=AWS-WEST  williambnorton/darp
+else 
+    # Start User node connected to genesis node
+    echo "`date` Starting DARP Genesis node"
+    curl http://52.53.222.151:65013/darp.bash | bash
+fi
