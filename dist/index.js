@@ -636,11 +636,11 @@ app.get('/nodefactory', function (req, res) {
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup CLONE CLONE CLONE
     var newMint = myPulseGroup.nextMint++;
     console.log(incomingGeo + ": mint=" + newMint + " publickey=" + publickey + " version=" + version + " wallet=" + wallet);
-    myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, incomingGeo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
+    myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName] = new pulsegroup_1.PulseEntry(newMint, incomingGeo.toString(), myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
     logger_1.logger.debug("Added pulse: " + incomingGeo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName]));
     console.log("Added pulse: " + incomingGeo + ":" + myPulseGroup.groupName + "=" + lib_1.dump(myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName]));
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new pulsegroup_1.MintEntry(newMint, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
+    var newNode = new pulsegroup_1.MintEntry(newMint, incomingGeo.toString(), port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
     myPulseGroup.mintTable[newMint] = newNode; // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     logger_1.logger.info("Added mint# " + newMint + " = " + newNode.geo + ":" + newNode.ipaddr + ":" + newNode.port + ":" + newMint + " to " + myPulseGroup.groupName);
     //console.log(`After adding node, pulseGroup=${dump(myPulseGroup)}`);
@@ -715,7 +715,7 @@ app.get('/nodefactory', function (req, res) {
                 return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
-                logger_1.logger.error(error_1);
+                console.log("index.ts:  error ");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -726,6 +726,7 @@ app.get('/nodefactory', function (req, res) {
 //  darp.bash substitutes in proper CODE and CONFIG for new node
 //
 app.get('/darp.bash', function (req, res) {
+    console.log("req.query=", req.query);
     logger_1.logger.info("sending '/darp.bash' to new cadet ");
     res.setHeader('Content-Type', 'text/javascript');
     res.setHeader("Access-Control-Allow-Origin", "*");

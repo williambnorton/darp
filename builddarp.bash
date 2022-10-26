@@ -16,7 +16,7 @@ fi
 echo `date` $0 compiling typescript into javascript 
 rm Build.??????.????
 find . -name '*.pid' -delete
-MESSAGE="DARP Protocol"
+MESSAGE="DARP Protocol Tinkering"
 START=`date +%s`
 
 date>"Build."`date +%y%m%d.%H%M`
@@ -31,6 +31,10 @@ rm -f subagents/rtt/ip*
 #
 # build then copy compiled code into dist directory
 cd src;tsc *.ts;mv *.js ../dist/; cd ..
+
+
+echo EXITTING NOW
+exit 3
 
 git add . && git commit -m "$MESSAGE" && git pull && git push 
 

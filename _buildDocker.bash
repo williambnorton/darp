@@ -8,13 +8,14 @@ DARP_DOCKER_VERSION=`ls Docker.*`
 START=`date +%s`
 
 echo `date` $0 Building darp docker $DARP_DOCKER_VERSION START=$START
-./builddarp.bash --noRelaunch
-if [ $? -ne 0 ]; then
-	echo `date` builddarp failed
-	exit -1
-fi
+#./builddarp.bash --noRelaunch
+# build darp fails from my MocOs which is old
+#if [ $? -ne 0 ]; then
+#	echo `date` builddarp failed
+#	exit -1
+#fi
 
-npm install && npm update
+#npm install && npm update
 echo `date` Building the docker container
 #
 #	this will push the tagged image : Docker.YYMMDD.HHMM
@@ -25,7 +26,7 @@ echo `date` Building the docker container
 
 
 docker build --no-cache -t williambnorton/darp:latest -t williambnorton/darp:$DARP_DOCKER_VERSION . && docker push williambnorton/darp:$DARP_DOCKER_VERSION
-docker push williambnorton/darp:latest
+#docker push williambnorton/darp:latest
 
 
 
@@ -52,12 +53,13 @@ echo `date` About to launch SR-WAN docker $DARP_DOCKER_VERSION   #this is for th
 #echo `date` About to launch SR-WAN Instrumentation docker
 echo `date` $0 $DARP_DOCKER_VERSION V=$V COMPLETE
 V=`echo $DARP_DOCKER_VERSION|awk -F. '{ print $3 }'| sed 's/.\{1\}/& /g'`
-export DOCKER_BASE_PORT=65013
-if [ -f DOCKER_BASE_PORT ]; then
-	export DOCKER_BASE_PORT=`cat DOCKER_BASE_PORT`
+export DARP_BASE_PORT=65013
+if [ -f DARP_BASE_PORT ]; then
+	export DARP_BASE_PORT=`cat DOCKER_BASE_PORT`
+	echo Overiding DARP_BASE_PORT with $DARP_BASE_PORT
 fi
 
-echo "Start docker with ==>    docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT williambnorton/darp:$DOCKER_VERSION"
+echo "Start docker with ==>    docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT williambnorton/darp:$DARP_DOCKER_VERSION"
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 
 

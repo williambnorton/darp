@@ -565,7 +565,7 @@ app.get('/nodefactory', function(req, res) {
 
     // parse incoming parameters
     
-    var incomingGeo = String(req.query.geo);
+    var incomingGeo:String = String(req.query.geo);
     var publickey = String(req.query.publickey);
     var port = Number(req.query.port) || 65013;
     var wallet = String(req.query.wallet) || "";
@@ -670,12 +670,12 @@ app.get('/nodefactory', function(req, res) {
     // Add pulseGroup mintEntry and pulseEntry and Clone ourselves as the new pulsegroup CLONE CLONE CLONE
     var newMint = myPulseGroup.nextMint++;
     console.log(`${incomingGeo}: mint=${newMint} publickey=${publickey} version=${version} wallet=${wallet}`);
-    myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, incomingGeo, myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
+    myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName] = new PulseEntry(newMint, incomingGeo.toString(), myPulseGroup.groupName, String(incomingIP), port, config.VERSION, incomingBootTimestamp);
     logger.debug(`Added pulse: ${incomingGeo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName])}`);
     console.log(`Added pulse: ${incomingGeo}:${myPulseGroup.groupName}=${dump(myPulseGroup.pulses[incomingGeo + ":" + myPulseGroup.groupName])}`);
 
     // mintTable - first mintTable[0] is always me and [1] is always genesis node for this pulsegroup
-    var newNode = new MintEntry(newMint, incomingGeo, port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
+    var newNode = new MintEntry(newMint, incomingGeo.toString(), port, String(incomingIP), publickey, version, wallet, incomingBootTimestamp);
     myPulseGroup.mintTable[newMint] = newNode;  // we already have a mintTable[0] and a mintTable[1] - add new guy to end mof my genesis mintTable
     
     logger.info(`Added mint# ${newMint} = ${newNode.geo}:${newNode.ipaddr}:${newNode.port}:${newMint} to ${myPulseGroup.groupName}`);
@@ -762,7 +762,8 @@ app.get('/nodefactory', function(req, res) {
 
         //console.log(`index.ts:    launching------>       myPulseGroups=${JSON.stringify(myPulseGroups,null,2)}`);
     } catch (error) {
-        logger.error(error);
+        console.log(`index.ts:  error `);
+        //logger.error(error);
     }
 })();
 /**/
@@ -771,6 +772,7 @@ app.get('/nodefactory', function(req, res) {
 //  darp.bash substitutes in proper CODE and CONFIG for new node
 //
 app.get('/darp.bash', function(req, res) {
+    console.log("req.query=",req.query);
     logger.info("sending '/darp.bash' to new cadet ");
     res.setHeader('Content-Type', 'text/javascript');
     res.setHeader("Access-Control-Allow-Origin", "*");

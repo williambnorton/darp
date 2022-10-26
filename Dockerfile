@@ -37,4 +37,10 @@ COPY package.json .
 
 EXPOSE 65013/tcp 65013/udp 80/udp 80/tcp
 WORKDIR /root/darp
-ENTRYPOINT ["/bin/bash","-c","./bootdarp.bash"]
+
+#ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["/bin/bash","-c","./bootdarp.bash"]
+#ENTRYPOINT ["/bin/bash","-c","./forever.bash"]
+# ONLY LAST ONE GETS USED
+CMD ["/bin/bash","-c","./forever.bash"]
+CMD ["/bin/bash"]
