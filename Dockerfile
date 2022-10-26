@@ -21,8 +21,8 @@ COPY package.json /opt
 
 
 
-RUN git clone https://github.com/williambnorton/darp.git /root/darp
-#COPY . /root/darp
+#RUN git clone https://github.com/williambnorton/darp.git /root/darp
+COPY . /root/darp
 RUN ls -l /root/darp/Build*
 RUN echo INSTALLING EXPRESS AND EJS
 
