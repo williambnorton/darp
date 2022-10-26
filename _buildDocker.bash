@@ -3,8 +3,12 @@
 #
 rm Docker.??????.????
 date > "Docker."`date +%y%m%d.%H%M`
-ls -l Docker.*
 DARP_DOCKER_VERSION=`ls Docker.*`
+
+echo "`date` Pushing our DARP Build to Source Code Repository"
+./push
+DARP_BUILD_VERSION=`ls Build.*`
+
 START=`date +%s`
 
 echo `date` $0 Building darp docker $DARP_DOCKER_VERSION START=$START
@@ -16,8 +20,6 @@ echo `date` $0 Building darp docker $DARP_DOCKER_VERSION START=$START
 #fi
 
 #npm install && npm update
-echo "`date` Pushing new DARP Build for container"
-./push
 #
 #	this will push the tagged image : Docker.YYMMDD.HHMM
 #
@@ -59,7 +61,7 @@ if [ -f DARP_BASE_PORT ]; then
 	echo Overiding DARP_BASE_PORT with $DARP_BASE_PORT
 fi
 
-echo "Start docker with ==>    docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT williambnorton/darp:$DARP_DOCKER_VERSION"
+echo "Start docker with ==>    docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT/udp -p$DARP_BASE_PORT:$DARP_BASE_PORT/tcp williambnorton/darp:$DARP_DOCKER_VERSION"
 
 #ssh -i ~/PEM/AWS-US-WEST-1A.pem ubuntu@52.53.222.151 
 

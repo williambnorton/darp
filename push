@@ -1,5 +1,8 @@
 #!/bin/bash
-MESSAGE="Developing CI/CD DARP docker"
+rm -rf Build.*
+date > "Build."`date +%y%m%d.%H%M`
+
+MESSAGE="Developing CI/CD DARP Build"
 BUILD_TAG=`ls Build*`
 git add . && git commit -m "$MESSAGE" && git pull && git push 
 
