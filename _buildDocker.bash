@@ -16,12 +16,12 @@ echo `date` $0 Building darp docker $DARP_DOCKER_VERSION START=$START
 #fi
 
 #npm install && npm update
-echo `date` Building the docker container
+echo "`date` Pushing new DARP Build for container"
+./push
 #
 #	this will push the tagged image : Docker.YYMMDD.HHMM
 #
 #docker tag williambnorton/darp:$DARP_DOCKER_VERSION
-
 
 
 
