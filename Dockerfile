@@ -43,4 +43,5 @@ WORKDIR /root/darp
 #ENTRYPOINT ["/bin/bash","-c","./forever.bash"]
 # ONLY LAST ONE GETS USED
 CMD ["/bin/bash","-c","./forever.bash"]
-CMD ["/bin/bash"]
+CMD ["/bin/bash","-c","./bootdarp.bash"]
+#CMD ["/bin/bash"]
