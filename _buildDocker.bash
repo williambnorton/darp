@@ -28,7 +28,7 @@ echo `date` $0 Building darp docker $DARP_DOCKER_VERSION START=$START
 
 
 docker build --no-cache -t williambnorton/darp:latest -t williambnorton/darp:$DARP_DOCKER_VERSION . && docker push williambnorton/darp:$DARP_DOCKER_VERSION
-#docker push williambnorton/darp:latest
+docker push williambnorton/darp:latest
 
 
 
