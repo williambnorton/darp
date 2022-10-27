@@ -1,11 +1,13 @@
 #!/bin/bash
 
-if [ $0 == "genesis" ]; then
+pat="[genesis]"
+if [[ $0 =~ $pat ]]; then
     # Start Genesis node
     echo "`date` Starting DARP Genesis node"
     docker rm -f $(docker ps -a -q);
     docker rmi -f $(docker images -q);
-    docker run -p65013:65013/udp -p65013:65013/tcp -eMY_GEO=AWS-WEST  williambnorton/darp
+    DARP_DOCKER_VERSION=`ls Docker.??????.????`
+    docker run -p65013:65013/udp -p65013:65013/tcp -eHOSTNAME=AWS-WEST-GENESIS  williambnorton/darp
 else 
     # Start User node connected to genesis node
     echo "`date` Starting DARP Genesis node"

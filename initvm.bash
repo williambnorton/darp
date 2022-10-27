@@ -20,6 +20,6 @@ if [ $? -ne 0 ]; then   # Yes - install all assuming an ubuntu instance
     echo "Relogin and docker is ready to run DARP by typing "
     DARP_VERSION=`ls Docker.??????.????`
     DARP_BASE_PORT=65013
-    echo "docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT -eMY_GEO=`hostname` williambnorton/darp:$DARP_VERSION"
+    echo "docker run -p$DARP_BASE_PORT:$DARP_BASE_PORT/udp -p$DARP_BASE_PORT:$DARP_BASE_PORT/tcp -eMY_GEO="'`hostname` '"williambnorton/darp:$DARP_VERSION"
     sudo reboot
 fi

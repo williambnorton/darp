@@ -50,9 +50,8 @@ export WGDIR=/etc/wireguard
 export MY_GEO=`echo $HOSTNAME	| awk '{ print $1 }' | awk -F. '{ print $1 }' | awk -F, '{ print $1 }' `
 
 if [ "$MY_PORT" == "" ]; then
-    MY_PORT=65013    
+    export MY_PORT="65013"    
 fi
-export MY_PORT
 export MY_IP=`curl ifconfig.io`	#	get my public IP
 
 
