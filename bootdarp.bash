@@ -271,5 +271,10 @@ do
 
     
     #echo `date` ".. $MY_GEO $MY_IP:$MY_PORT  .. running $CURRENT_DOCKERVERSION:$CURRENT_DARPVERSION ........BOTTOM OF LOOP #$CYCLES of $MAXCYCLES .....GENESIS was $GENESIS $GENESISIP:$GENESISPORT ........ SLEEPING "$SLEEPTIME #| tee -a NOIA.log 
-    sleep $SLEEPTIME
+    if [ "$IS_GENESIS" != "0" ]; then
+        echo sleeping member node
+        sleep $SLEEPTIME
+    else
+        echo immediately restarting genesis node
+    fi
 done
