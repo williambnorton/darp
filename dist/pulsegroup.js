@@ -610,16 +610,12 @@ var AugmentedPulseGroup = /** @class */ (function () {
                 //Sender should not receive pulses from genesis node for 20 seconds and time out
                 return;
             }
-            /*
             //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
-     
-            const dir = "/root/darp/history/"
-     
-            if ( ! fs.existsSync(dir)) {
+            var dir = "/root/darp/history/";
+            if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir);
                 //console.log(`pulsegroup.ts created ${dir} history directrory`);
             }
-            */
             // debugging - log every pulse - 
             //       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
             //       fs.appendFile(filename, incomingPulse.lastMsg+"\n", (err) => {  //appended RAW pulse message asynchronously  LOAD: Max: 1K/sec * nodeCount, Avg: .1K * 25 nodes=2.5K/sec

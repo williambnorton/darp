@@ -759,7 +759,7 @@ export class AugmentedPulseGroup {
            return;
        }
 
-       /*
+       
        //    BEVBEVBEV   DEBUG - STORE EVERY PULSE
 
        const dir = "/root/darp/history/"
@@ -768,7 +768,7 @@ export class AugmentedPulseGroup {
            fs.mkdirSync(dir);
            //console.log(`pulsegroup.ts created ${dir} history directrory`);
        }  
-       */
+       
 
        // debugging - log every pulse - 
 //       var filename = "/root/darp/history/"+incomingPulse.geo + ".pulses." + YYMMDD() + ".txt";
